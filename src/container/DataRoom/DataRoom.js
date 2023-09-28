@@ -58,7 +58,7 @@ import sharedIcon from "../../assets/images/shared_icon.svg";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
 import { _justShowDateformat } from "../../commen/functions/date_formater";
 import GridViewDataRoom from "./GridViewDataRoom/GridViewDataRoom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteNotificationBox from "./DeleteNotification/deleteNotification";
 import FileRemoveBox from "./FileRemoved/FileRemoveBox";
 import ShowRenameNotification from "./ShowRenameNotification/ShowRenameNotification";
@@ -543,6 +543,7 @@ const DataRoom = () => {
     // Call your API with the selected sort order and current filter value
     // Update the data state with the response data
   };
+
   const MyRecentTab = [
     {
       title: t("Name"),
@@ -880,6 +881,14 @@ const DataRoom = () => {
       sortDirections: ["descend", "ascend"],
 
       render: (text, data) => {
+        let ext = data.name.split(".").pop();
+        const pdfData = {
+          taskId: data.id,
+          commingFrom: 4,
+          fileName: data.name,
+          attachmentID: data.id,
+        };
+        const pdfDataJson = JSON.stringify(pdfData);
         if (data.isShared) {
           if (data.isFolder) {
             return (
@@ -898,8 +907,32 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            return (
-              <>
+            if (ext === "pdf") {
+              return (
+                <Link
+                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    pdfDataJson
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <section className="d-flex gap-2 cursor-pointer">
+                    <img
+                      src={getIconSource(getFileExtension(data.name))}
+                      alt=""
+                      width={"25px"}
+                      height={"25px"}
+                    />
+                    <abbr title={text}>
+                      <span className={styles["dataroom_table_heading"]}>
+                        {text}
+                      </span>
+                    </abbr>
+                  </section>
+                </Link>
+              );
+            } else {
+              return (
                 <section className="d-flex gap-2">
                   <img
                     src={getIconSource(getFileExtension(data.name))}
@@ -909,12 +942,12 @@ const DataRoom = () => {
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
-                      {text} <img src={sharedIcon} alt="" draggable="false" />
+                      {text}
                     </span>
                   </abbr>
                 </section>
-              </>
-            );
+              );
+            }
           }
         } else {
           if (data.isFolder) {
@@ -934,8 +967,32 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            return (
-              <>
+            if (ext === "pdf") {
+              return (
+                <Link
+                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    pdfDataJson
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <section className="d-flex gap-2 cursor-pointer">
+                    <img
+                      src={getIconSource(getFileExtension(data.name))}
+                      alt=""
+                      width={"25px"}
+                      height={"25px"}
+                    />
+                    <abbr title={text}>
+                      <span className={styles["dataroom_table_heading"]}>
+                        {text}
+                      </span>
+                    </abbr>
+                  </section>
+                </Link>
+              );
+            } else {
+              return (
                 <section className="d-flex gap-2">
                   <img
                     src={getIconSource(getFileExtension(data.name))}
@@ -949,8 +1006,8 @@ const DataRoom = () => {
                     </span>
                   </abbr>
                 </section>
-              </>
-            );
+              );
+            }
           }
         }
       },
@@ -1232,6 +1289,14 @@ const DataRoom = () => {
       key: "name",
       width: "250px",
       render: (text, record) => {
+        let ext = data.name.split(".").pop();
+        const pdfData = {
+          taskId: data.id,
+          commingFrom: 4,
+          fileName: data.name,
+          attachmentID: data.id,
+        };
+        const pdfDataJson = JSON.stringify(pdfData);
         if (record.isFolder) {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
@@ -1245,22 +1310,47 @@ const DataRoom = () => {
             </div>
           );
         } else {
-          return (
-            <div className={`${styles["dataFolderRow"]}`}>
-              <img
-                src={getIconSource(getFileExtension(record.name))}
-                alt=""
-                width={"25px"}
-                height={"25px"}
-              />
-              <span
-                className={styles["dataroom_table_heading"]}
-                // onClick={() => getFolderDocuments(data.id)}
-              >
-                {text} <img src={sharedIcon} alt="" draggable="false" />
-              </span>
-            </div>
-          );
+          if (ext === "pdf") {
+            <Link
+              to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                pdfDataJson
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className={`${styles["dataFolderRow"]}`}>
+                <img
+                  src={getIconSource(getFileExtension(record.name))}
+                  alt=""
+                  width={"25px"}
+                  height={"25px"}
+                />
+                <span
+                  className={styles["dataroom_table_heading"]}
+                  // onClick={() => getFolderDocuments(data.id)}
+                >
+                  {text} <img src={sharedIcon} alt="" draggable="false" />
+                </span>
+              </div>
+            </Link>;
+          } else {
+            return (
+              <div className={`${styles["dataFolderRow"]}`}>
+                <img
+                  src={getIconSource(getFileExtension(record.name))}
+                  alt=""
+                  width={"25px"}
+                  height={"25px"}
+                />
+                <span
+                  className={styles["dataroom_table_heading"]}
+                  // onClick={() => getFolderDocuments(data.id)}
+                >
+                  {text} <img src={sharedIcon} alt="" draggable="false" />
+                </span>
+              </div>
+            );
+          }
         }
       },
     },
@@ -1997,15 +2087,6 @@ const DataRoom = () => {
                       <Row>
                         <Col lg={12} md={12} sm={12} className="d-flex gap-3">
                           <Button
-                            text={t("Recently-added")}
-                            className={
-                              currentView === 4
-                                ? `${styles["allDocuments_btn_active"]}`
-                                : `${styles["allDocuments_btn"]}`
-                            }
-                            onClick={RecentTab}
-                          />
-                          <Button
                             text={t("All")}
                             className={
                               currentView === 3
@@ -2032,6 +2113,15 @@ const DataRoom = () => {
                             }
                             // onClick={showCancellUploadModal}
                             onClick={SharewithmeButonShow}
+                          />
+                          <Button
+                            text={t("Recently-added")}
+                            className={
+                              currentView === 4
+                                ? `${styles["allDocuments_btn_active"]}`
+                                : `${styles["allDocuments_btn"]}`
+                            }
+                            onClick={RecentTab}
                           />
                         </Col>
                       </Row>

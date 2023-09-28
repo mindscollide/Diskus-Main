@@ -20,6 +20,7 @@ import {
   _justShowDateformat,
 } from "../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
 
@@ -212,6 +213,13 @@ const ModalViewNote = ({
 
                           const first =
                             data.displayAttachmentName.split(" ")[0];
+                          const pdfData = {
+                            taskId: data.fK_NotesID,
+                            attachmentID: data.pK_NAID,
+                            fileName: data.displayAttachmentName,
+                            commingFrom: 2,
+                          };
+                          const pdfDataJson = JSON.stringify(pdfData);
                           return (
                             <Col
                               sm={12}
@@ -250,11 +258,19 @@ const ModalViewNote = ({
                                   labelColor={"rgba(16, 121, 63)"}
                                 />
                               ) : ext === "pdf" ? (
-                                <FileIcon
-                                  extension={"pdf"}
-                                  size={78}
-                                  {...defaultStyles.pdf}
-                                />
+                                <Link
+                                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                                    pdfDataJson
+                                  )}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <FileIcon
+                                    extension={"pdf"}
+                                    size={78}
+                                    {...defaultStyles.pdf}
+                                  />
+                                </Link>
                               ) : ext === "png" ? (
                                 <FileIcon
                                   extension={"png"}

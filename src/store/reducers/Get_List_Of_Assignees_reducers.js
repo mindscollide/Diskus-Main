@@ -243,7 +243,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        SearchMeetingData: [],
+        SearchMeetingData: null,
         ResponseMessage: action.message,
       };
     }

@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
 import { viewResolutionModal } from "../../../store/actions/Resolution_actions";
 import { ArrowLeft } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector((state) => state);
@@ -374,11 +375,25 @@ const ViewResolution = ({ setViewresolution }) => {
                             {resolutionData?.attachments.length > 0
                               ? resolutionData?.attachments.map(
                                   (data, index) => {
-                                    var ext = data.displayAttachmentName
+                                    console.log(
+                                      data,
+                                      resolutionData,
+                                      "datadatadata"
+                                    );
+                                    let ext = data.displayAttachmentName
                                       .split(".")
                                       .pop();
                                     const first =
                                       data.displayAttachmentName.split(" ")[0];
+                                    const pdfData = {
+                                      taskId:
+                                        resolutionData?.resolution
+                                          .pK_ResolutionID,
+                                      attachmentID: data.pK_RAID,
+                                      fileName: data.displayAttachmentName,
+                                      commingFrom: 3,
+                                    };
+                                    const pdfDataJson = JSON.stringify(pdfData);
                                     return (
                                       <>
                                         <Col
@@ -416,11 +431,19 @@ const ViewResolution = ({ setViewresolution }) => {
                                               labelColor={"rgba(16, 121, 63)"}
                                             />
                                           ) : ext === "pdf" ? (
-                                            <FileIcon
-                                              extension={"pdf"}
-                                              size={78}
-                                              {...defaultStyles.pdf}
-                                            />
+                                            <Link
+                                              to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                                                pdfDataJson
+                                              )}`}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                            >
+                                              <FileIcon
+                                                extension={"pdf"}
+                                                size={78}
+                                                {...defaultStyles.pdf}
+                                              />
+                                            </Link>
                                           ) : ext === "png" ? (
                                             <FileIcon
                                               extension={"png"}

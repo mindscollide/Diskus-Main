@@ -849,6 +849,31 @@ const getEventsTypeRM = {
 const GetDiskusEventDetailsRM = {
   RequestMethod: "ServiceManager.GetDiskusEventDetails",
 };
+
+const getAnnotationOfNotesAttachment = {
+  RequestMethod: "ServiceManager.GetAnnotationOfNotesAttachement",
+};
+
+const addAnnotationOnNotesAttachment = {
+  RequestMethod: "ServiceManager.AddAnnotationOnNotesAttachement",
+};
+
+const getAnnotationOfResolutionAttachment = {
+  RequestMethod: "ServiceManager.GetAnnotationOfResolutionAttachement",
+};
+
+const addAnnotationOnResolutionAttachment = {
+  RequestMethod: "ServiceManager.AddAnnotationOnResolutionAttachement",
+};
+
+const getAnnotationOfDataroomAttachment = {
+  RequestMethod: "ServiceManager.GetAnnotationOfFilesAttachement",
+};
+
+const addAnnotationOnDataroomAttachment = {
+  RequestMethod: "ServiceManager.AddAnnotationOnFilesAttachement",
+};
+
 export {
   updateProfilePictureRM,
   DeleteCommentRM,
@@ -1079,4 +1104,10 @@ export {
   addAnnotationOnToDoAttachement,
   getEventsTypeRM,
   GetDiskusEventDetailsRM,
+  getAnnotationOfNotesAttachment,
+  addAnnotationOnNotesAttachment,
+  addAnnotationOnResolutionAttachment,
+  getAnnotationOfResolutionAttachment,
+  addAnnotationOnDataroomAttachment,
+  getAnnotationOfDataroomAttachment,
 };
