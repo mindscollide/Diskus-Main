@@ -430,7 +430,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   };
 
-  const toDoDateHandler = (e, date, format = "YYYYMMDD") => {
+  const toDoDateHandler = (date, format = "YYYYMMDD") => {
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let toDoDateSaveFormat = new DateObject(date).format("YYYYMMDD");
     setCreateTodoDate(toDoDateSaveFormat);

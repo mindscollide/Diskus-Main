@@ -1289,12 +1289,12 @@ const DataRoom = () => {
       key: "name",
       width: "250px",
       render: (text, record) => {
-        let ext = data.name.split(".").pop();
+        let ext = record.name.split(".").pop();
         const pdfData = {
-          taskId: data.id,
+          taskId: record.id,
           commingFrom: 4,
-          fileName: data.name,
-          attachmentID: data.id,
+          fileName: record.name,
+          attachmentID: record.id,
         };
         const pdfDataJson = JSON.stringify(pdfData);
         if (record.isFolder) {
