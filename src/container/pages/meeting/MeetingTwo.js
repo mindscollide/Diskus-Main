@@ -16,13 +16,17 @@ import {
   TextField,
   ResultMessage,
 } from "../../../components/elements";
+import { Paper } from "@material-ui/core";
+
 import { Col, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import moment from "moment";
 import SceduleMeeting from "./scedulemeeting/SceduleMeeting";
+import UnpublishedProposedMeeting from "./scedulemeeting/meetingDetails/UnpublishedProposedMeeting/UnpublishedProposedMeeting";
 const NewMeeting = () => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const [unPublishedMeeting, setUnPublishedMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
   // data for rows for first table
@@ -51,6 +55,10 @@ const NewMeeting = () => {
 
   const openSceduleMeetingPage = () => {
     setSceduleMeeting(true);
+  };
+
+  const EnableUnpublishedMeetingPage = () => {
+    setUnPublishedMeeting(true);
   };
 
   useEffect(() => {
@@ -337,88 +345,115 @@ const NewMeeting = () => {
               </span>
             </Col>
           </Row>
-          <Row>
+          <Row className="mt-2">
             <Col lg={12} md={12} sm={12}>
-              {tablerowsData.length > 0 ? (
-                <>
-                  <Table
-                    column={MeetingColoumns}
-                    scroll={{ y: "62vh" }}
-                    pagination={false}
-                    className="Polling_table"
-                    rows={tablerowsData}
-                    // expandable={{
-                    //   expandedRowRender: (record) => {
-                    //     return record.meetingAgenda.map((data) => (
-                    //       <p className="meeting-expanded-row">
-                    //         {/* {data.objMeetingAgenda.title} */}
-                    //       </p>
-                    //     ));
-                    //   },
-                    //   rowExpandable: (record) => record.host !== "Test",
-                    // }}
-                  />
-                </>
-              ) : (
-                <>
-                  <Row>
-                    <Col lg={4} md={4} sm={4}></Col>
-                    <Col
-                      lg={4}
-                      md={4}
-                      sm={4}
-                      className={styles["Empty_State_styles"]}
-                    >
-                      <ResultMessage
-                        icon={
-                          <img
-                            src={NoMeetingsIcon}
-                            className="nodata-table-icon"
-                          />
-                        }
-                        title={t("No-new-meetings")}
-                        subTitle={t(
-                          "Anything-important-thats-needs-discussion"
+              <Paper className={styles["PaperStylesMeetingTwoPage"]}>
+                <Row>
+                  <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Button
+                      text={t("Published-meeting")}
+                      className={styles["UnpublishedMeetingButton"]}
+                    />
+                    <Button
+                      text={t("Unpublished-proposed-meetings")}
+                      className={styles["UnpublishedMeetingButton"]}
+                      onClick={EnableUnpublishedMeetingPage}
+                    />
+                  </Col>
+                </Row>
+                {unPublishedMeeting ? (
+                  <UnpublishedProposedMeeting />
+                ) : (
+                  <>
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        {tablerowsData.length > 0 ? (
+                          <>
+                            <Table
+                              column={MeetingColoumns}
+                              scroll={{ y: "62vh" }}
+                              pagination={false}
+                              className="Polling_table"
+                              rows={tablerowsData}
+                              // expandable={{
+                              //   expandedRowRender: (record) => {
+                              //     return record.meetingAgenda.map((data) => (
+                              //       <p className="meeting-expanded-row">
+                              //         {/* {data.objMeetingAgenda.title} */}
+                              //       </p>
+                              //     ));
+                              //   },
+                              //   rowExpandable: (record) => record.host !== "Test",
+                              // }}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <Row>
+                              <Col lg={4} md={4} sm={4}></Col>
+                              <Col
+                                lg={4}
+                                md={4}
+                                sm={4}
+                                className={styles["Empty_State_styles"]}
+                              >
+                                <ResultMessage
+                                  icon={
+                                    <img
+                                      src={NoMeetingsIcon}
+                                      className="nodata-table-icon"
+                                    />
+                                  }
+                                  title={t("No-new-meetings")}
+                                  subTitle={t(
+                                    "Anything-important-thats-needs-discussion"
+                                  )}
+                                />
+                              </Col>
+                              <Col lg={4} md={4} sm={4}></Col>
+                            </Row>
+                          </>
                         )}
-                      />
-                    </Col>
-                    <Col lg={4} md={4} sm={4}></Col>
-                  </Row>
-                </>
-              )}
+                      </Col>
+                    </Row>
+                    {tablerowsData.length <= 0 ? (
+                      <>
+                        <Row className="mt-5">
+                          <Col lg={4} md={4} sm={4}></Col>
+                          <Col
+                            lg={4}
+                            md={4}
+                            sm={4}
+                            className="d-flex justify-content-center "
+                          >
+                            <Row
+                              className={styles["PaginationStyle-Committee"]}
+                            >
+                              <Col
+                                className={"pagination-groups-table"}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                              >
+                                <Pagination
+                                  showSizeChanger
+                                  locale={{
+                                    items_per_page: t("items_per_page"),
+                                    page: t("page"),
+                                  }}
+                                  pageSizeOptions={["30", "50", "100", "200"]}
+                                />
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </>
+                    ) : null}
+                  </>
+                )}
+              </Paper>
             </Col>
           </Row>
-          {tablerowsData.length <= 0 ? (
-            <>
-              <Row className="mt-5">
-                <Col lg={4} md={4} sm={4}></Col>
-                <Col
-                  lg={4}
-                  md={4}
-                  sm={4}
-                  className="d-flex justify-content-center "
-                >
-                  <Row className={styles["PaginationStyle-Committee"]}>
-                    <Col
-                      className={"pagination-groups-table"}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                    >
-                      <Pagination
-                        showSizeChanger
-                        locale={{
-                          items_per_page: t("items_per_page"),
-                          page: t("page"),
-                        }}
-                        pageSizeOptions={["30", "50", "100", "200"]}
-                      />
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </>
-          ) : null}
         </>
       )}
     </section>

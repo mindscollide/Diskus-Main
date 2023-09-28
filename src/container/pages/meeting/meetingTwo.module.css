@@ -239,3 +239,28 @@ body[dir="rtl"] .PaginationStyle-Committee {
   align-items: center !important;
   flex-direction: column;
 }
+
+.PaperStylesMeetingTwoPage {
+  width: 100% !important;
+  min-height: 78vh !important;
+  height: auto !important;
+  padding: 20px 20px !important;
+}
+
+.UnpublishedMeetingButton {
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.UnpublishedMeetingButton:is(:hover, :active, :focus, :focus-visible) {
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}

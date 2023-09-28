@@ -1495,5 +1495,10 @@
   "Contributor-title": "Contributor Title",
   "Participant-title": "Participant Title",
   "Attendence": "Attendence",
-  "Clone-meeting": "Clone Meeting"
+  "Clone-meeting": "Clone Meeting",
+  "Unpublished-proposed-meetings": "Unpublished / Proposed Meetings",
+  "Published-Meeting:": "Published Meeting",
+  "Published-meeting": "Published Meeting",
+  "Meeting-poll": "Meeting Poll",
+  "Send-reponse-by": "Send Reponse by"
 }
