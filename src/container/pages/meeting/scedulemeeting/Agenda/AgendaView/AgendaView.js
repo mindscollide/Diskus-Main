@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import profile from "../../../../../../assets/images/newprofile.png";
 import PDFIcon from "../../../../../../assets/images/pdf_icon.svg";
 import SubAgendaView from "./SubAgendaView/SubAgendaView";
+import { Button } from "../../../../../../components/elements";
 const AgendaView = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -313,6 +314,17 @@ const AgendaView = () => {
                 })
               : null}
           </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          <Button text={t("Cancel")} className={styles["Cancel_Classname"]} />
+          <Button text={t("Save")} className={styles["Save_Classname"]} />
         </Col>
       </Row>
     </section>
