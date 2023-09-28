@@ -9,7 +9,7 @@ import PDFIcon from "../../../../../../../assets/images/pdf_icon.svg";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-const SubAgendaView = ({ MainAgendaData }) => {
+const SubAgendaView = ({ MainAgendaData, MainAgendaIndex }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -97,6 +97,10 @@ const SubAgendaView = ({ MainAgendaData }) => {
                                                     styles["SubagendaTitle"]
                                                   }
                                                 >
+                                                  <span>
+                                                    {MainAgendaIndex + 1}.
+                                                    {subagendaIndex + 1}
+                                                  </span>{" "}
                                                   {SubagendaData.SubagendaTitle}
                                                 </span>
                                               </Col>

@@ -132,7 +132,7 @@ const AgendaView = () => {
                                           styles["Heading_View_Agenda"]
                                         }
                                       >
-                                        <span>{MainAgendaIndex + 1}.</span>
+                                        <span>{MainAgendaIndex + 1}.</span>{" "}
                                         {MainAgendaData.MainAgendaTitle}
                                       </span>
                                     </Col>
@@ -302,7 +302,10 @@ const AgendaView = () => {
                       </Col>
                       <Row className="m-0 p-0">
                         <Col lg={12} md={12} sm={12} className="mt-2">
-                          <SubAgendaView MainAgendaData={MainAgendaData} />
+                          <SubAgendaView
+                            MainAgendaData={MainAgendaData}
+                            MainAgendaIndex={MainAgendaIndex}
+                          />
                         </Col>
                       </Row>
                     </>
