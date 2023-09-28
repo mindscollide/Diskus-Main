@@ -42,13 +42,13 @@ const UnpublishedProposedMeeting = () => {
       ),
       dataIndex: "pollTitle",
       key: "pollTitle",
-      width: "195px",
+      width: "215px",
     },
     {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "40px",
+      width: "55px",
       filters: [
         {
           text: t("Active"),
@@ -83,7 +83,7 @@ const UnpublishedProposedMeeting = () => {
       title: t("Date-time"),
       dataIndex: "Date",
       key: "Date",
-      width: "110px",
+      width: "120px",
     },
     {
       title: t("Meeting-poll"),
