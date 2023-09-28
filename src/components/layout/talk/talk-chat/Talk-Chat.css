@@ -104,14 +104,38 @@ body[dir="rtl"] .chat-block {
 
 .chat-messenger-head-video {
   z-index: 9999999;
-  height: 45.7vh;
+  height: 47.3vh;
   position: fixed;
-  bottom: 35px;
-  right: 35px;
-  width: 325px;
+  bottom: 0px;
+  right: 1%;
+  width: 450px;
   background: #fff;
   border: 1px solid #6172d6;
   border-radius: 4px;
+}
+
+.chat-messenger-head-video .container .row .col .chat-section {
+  position: relative;
+  height: 30.7vh;
+  padding: 15px;
+  overflow: hidden auto;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.chat-messenger-head-video .container .row .col .chat-input-section {
+  border-top: 1px solid #e1e1e1;
+  height: auto;
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: 446px !important;
+  background: #fff;
+}
+
+.chat-messenger-head-video .container .row .col .chat-input-section .chat-input-field {
+  margin: 5px 0px;
+  width: 330px;
 }
 
 .chatFilter {
