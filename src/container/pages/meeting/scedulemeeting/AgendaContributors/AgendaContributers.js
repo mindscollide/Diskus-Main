@@ -79,6 +79,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
           <Row>
             <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <img
+                draggable={false}
                 src={redcrossIcon}
                 width="21.79px"
                 height="21.79px"
@@ -122,7 +123,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
       //             className="d-flex justify-content-end"
       //           >
       //             <Tooltip placement="topRight" title={t("Edit")}>
-      //               <img
+      //               <img draggable = {false}
       //                 // src={EditIcon}
       //                 className="cursor-pointer"
       //                 width="17.11px"
@@ -154,8 +155,13 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
         <>
           <Row>
             <Col lg={6} md={6} sm={6} className="d-flex justify-content-center">
-              <img src={NotificationIcon} width="17.64px" height="12.4px" />
-              {/* <img src={redMailIcon} width="17.64px" height="12.4px" /> */}
+              <img
+                draggable={false}
+                src={NotificationIcon}
+                width="17.64px"
+                height="12.4px"
+              />
+              {/* <img draggable = {false} src={redMailIcon} width="17.64px" height="12.4px" /> */}
             </Col>
           </Row>
         </>
@@ -222,16 +228,21 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <img src={NotificationIcon} width="17.64px" height="12.4px" />
-              {/* <img src={redMailIcon} width="17.64px" height="12.4px" /> */}
+              <img
+                draggable={false}
+                src={NotificationIcon}
+                width="17.64px"
+                height="12.4px"
+              />
+              {/* <img draggable = {false} src={redMailIcon} width="17.64px" height="12.4px" /> */}
             </Col>
           </Row>
         </>
       ),
       rspv: (
         <>
-          <img src={RspvIcon} height="30px" width="30px" />
-          {/* <img src={RspcAbstainIcon} height="30px" width="30px" /> */}
+          <img draggable={false} src={RspvIcon} height="30px" width="30px" />
+          {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
         </>
       ),
     },
@@ -287,7 +298,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
               <span className={styles["label_Styles"]}>{label}</span>
             </Col>
             <Col lg={1} md={1} sm={1}>
-              {isSelected && <img src={tick} />}
+              {isSelected && <img draggable={false} src={tick} />}
             </Col>
           </Row>
         </Col>
@@ -354,7 +365,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
         <AgendaContributorView />
       ) : (
         <>
-          <section>
+          <section className="position-relative">
             <Row className="mt-5">
               <Col lg={4} md={4} sm={12}>
                 <Select
@@ -375,7 +386,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
               >
                 <Button
                   text={t("Add-more")}
-                  icon={<img src={addmore} />}
+                  icon={<img draggable={false} src={addmore} />}
                   className={styles["AddMoreBtn"]}
                   onClick={openAddAgendaModal}
                 />
@@ -409,6 +420,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                                 className="d-flex justify-content-center"
                               >
                                 <img
+                                  draggable={false}
                                   src={emptyContributorState}
                                   width="274.05px"
                                   height="230.96px"
@@ -465,6 +477,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                                 className="d-flex justify-content-center"
                               >
                                 <img
+                                  draggable={false}
                                   src={emptyContributorState}
                                   width="274.05px"
                                   height="230.96px"
@@ -520,6 +533,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                                 className="d-flex justify-content-center"
                               >
                                 <img
+                                  draggable={false}
                                   src={emptyContributorState}
                                   width="274.05px"
                                   height="230.96px"
@@ -562,13 +576,10 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                 )}
               </Col>
             </Row>
-            <Row className="mt-5">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex gap-2 justify-content-end"
-              >
+          </section>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <section className={styles["Footer_Class"]}>
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Organization"]}
@@ -589,9 +600,9 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
-              </Col>
-            </Row>
-          </section>
+              </section>
+            </Col>
+          </Row>
         </>
       )}
 

@@ -97,3 +97,12 @@
   font-family: "MontserratMedium-500" !important;
   color: #707070 !important;
 }
+
+.Footer_Class {
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  position: absolute !important;
+  right: 120px !important;
+  bottom: 0px !important;
+}

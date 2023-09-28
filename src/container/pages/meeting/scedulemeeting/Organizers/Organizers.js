@@ -100,6 +100,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
           <Row>
             <Col lg={12} md={12} sm={12}>
               <img
+                draggable={false}
                 src={redcrossIcon}
                 width="21.79px"
                 height="21.79px"
@@ -158,7 +159,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
       //             className="d-flex justify-content-end"
       //           >
       //             <Tooltip placement="topRight" title={t("Edit")}>
-      //               <img
+      //               <img draggable = {false}
       //                 // src={EditIcon}
       //                 className="cursor-pointer"
       //                 width="17.11px"
@@ -198,8 +199,13 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
         <>
           <Row>
             <Col lg={7} md={7} sm={7} className="d-flex justify-content-center">
-              <img src={greenMailIcon} height="17.64px" width="12.4px" />
-              {/* <img src={redMailIcon} height="17.64px" width="12.4px" /> */}
+              <img
+                draggable={false}
+                src={greenMailIcon}
+                height="17.64px"
+                width="12.4px"
+              />
+              {/* <img draggable = {false} src={redMailIcon} height="17.64px" width="12.4px" /> */}
             </Col>
           </Row>
         </>
@@ -272,16 +278,26 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
         <>
           <Row>
             <Col lg={7} md={7} sm={7} className="d-flex justify-content-center">
-              <img src={greenMailIcon} height="17.64px" width="12.4px" />
-              {/* <img src={redMailIcon} height="17.64px" width="12.4px" /> */}
+              <img
+                draggable={false}
+                src={greenMailIcon}
+                height="17.64px"
+                width="12.4px"
+              />
+              {/* <img draggable = {false} src={redMailIcon} height="17.64px" width="12.4px" /> */}
             </Col>
           </Row>
         </>
       ),
       rspv: (
         <>
-          <img src={rspvGreenIcon} height="30px" width="30px" />
-          {/* <img src={rspvAbstainIcon} height="30px" width="30px" /> */}
+          <img
+            draggable={false}
+            src={rspvGreenIcon}
+            height="30px"
+            width="30px"
+          />
+          {/* <img draggable = {false} src={rspvAbstainIcon} height="30px" width="30px" /> */}
         </>
       ),
       Primary: <label className="column-boldness">Primary</label>,
@@ -367,7 +383,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
         <OrganizersViewPage />
       ) : (
         <>
-          <section>
+          <section className="position-relative">
             <Row className="mt-4 m-0 p-0">
               <Col
                 lg={12}
@@ -378,18 +394,32 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
                 <Button
                   text={t("Notification1")}
                   className={styles["Notification_button"]}
-                  icon={<img src={mail} width="17.18px" height="12.08px" />}
+                  icon={
+                    <img
+                      draggable={false}
+                      src={mail}
+                      width="17.18px"
+                      height="12.08px"
+                    />
+                  }
                   onClick={enableNotificationTable}
                 />
                 <Button
                   text={t("Edit")}
                   className={styles["Edit_Button_Organizers"]}
-                  icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
+                  icon={
+                    <img
+                      draggable={false}
+                      src={EditIcon}
+                      width="11.75px"
+                      height="11.75px"
+                    />
+                  }
                   onClick={enableRspvTable}
                 />
                 <Button
                   text={t("Add-more")}
-                  icon={<img src={addmore} />}
+                  icon={<img draggable={false} src={addmore} />}
                   className={styles["AddMoreBtn"]}
                   onClick={openAddUserModal}
                 />
@@ -401,7 +431,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
                   <>
                     <Table
                       column={NotifcatoinColoumns}
-                      scroll={{ y: "62vh" }}
+                      scroll={{ y: "92vh" }}
                       pagination={false}
                       className="Polling_table"
                       rows={notificationRows}
@@ -430,20 +460,17 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
                 )}
               </Col>
             </Row>
-            <Row className="mt-4">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex gap-2 justify-content-end"
-              >
+          </section>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <section className={styles["Footer_button"]}>
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Organization"]}
                 />
                 <Button
                   text={t("Publish")}
-                  className={styles["Cancel_Organization"]}
+                  className={styles["publish_button_Organization"]}
                   onClick={EnableOrganizersView}
                 />
                 <Button
@@ -451,9 +478,9 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
-              </Col>
-            </Row>
-          </section>
+              </section>
+            </Col>
+          </Row>
         </>
       )}
 

@@ -83,6 +83,7 @@ const ViewMinutes = ({ AgendaData }) => {
                               <Row className="d-flex justify-content-end">
                                 <Col lg={2} md={2} sm={2}>
                                   <img
+                                    draggable={false}
                                     src={profile}
                                     height="39px"
                                     width="39px"
@@ -230,6 +231,7 @@ const ViewMinutes = ({ AgendaData }) => {
                                               <Row className="d-flex justify-content-end">
                                                 <Col lg={2} md={2} sm={2}>
                                                   <img
+                                                    draggable={false}
                                                     src={profile}
                                                     height="39px"
                                                     width="39px"

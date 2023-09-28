@@ -146,7 +146,11 @@ const CreateFromScratch = () => {
                 modules={modules}
                 className={styles["quill-height-addNote"]}
               />
-              <img src={RedCroseeIcon} className={styles["RedCrossForEdit"]} />
+              <img
+                draggable={false}
+                src={RedCroseeIcon}
+                className={styles["RedCrossForEdit"]}
+              />
             </Col>
           </Row>
         </>
@@ -177,6 +181,7 @@ const CreateFromScratch = () => {
                             className={styles["quill-height-addNote"]}
                           />
                           <img
+                            draggable={false}
                             src={RedCroseeIcon}
                             className={styles["RedCrossForEdit_AfterSave"]}
                           />
@@ -267,6 +272,7 @@ const CreateFromScratch = () => {
                                 <Row className="d-flex justify-content-end">
                                   <Col lg={2} md={2} sm={2}>
                                     <img
+                                      draggable={false}
                                       src={profile}
                                       height="39px"
                                       width="39px"
@@ -303,6 +309,7 @@ const CreateFromScratch = () => {
                                     className="d-flex justify-content-start align-items-center"
                                   >
                                     <img
+                                      draggable={false}
                                       src={EditIcon}
                                       height="21.55px"
                                       width="21.55px"
@@ -316,6 +323,7 @@ const CreateFromScratch = () => {
                               </Col>
                             </Row>
                             <img
+                              draggable={false}
                               src={RedCroseeIcon}
                               height="20.76px"
                               width="20.76px"

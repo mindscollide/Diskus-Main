@@ -243,6 +243,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
                       />
                     </Col>
                   </Row>
+
                   {meetingDetails && (
                     <MeetingDetails
                       setorganizers={setorganizers}
