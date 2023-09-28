@@ -91,6 +91,7 @@ const Participants = ({
           <Row>
             <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <img
+                draggable={false}
                 src={redcrossIcon}
                 width="21.79px"
                 height="21.79px"
@@ -159,8 +160,13 @@ const Participants = ({
 
       rspv: (
         <>
-          <img src={rspvGreenIcon} height="30px" width="30px " />
-          {/* <img src={rspvAbstainIcon} height="30px" width="30px " /> */}
+          <img
+            draggable={false}
+            src={rspvGreenIcon}
+            height="30px"
+            width="30px "
+          />
+          {/* <img draggable = {false} src={rspvAbstainIcon} height="30px" width="30px " /> */}
         </>
       ),
     },
@@ -242,13 +248,20 @@ const Participants = ({
                 <Button
                   text={t("Edit")}
                   className={styles["Edit_Button_Organizers"]}
-                  icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
+                  icon={
+                    <img
+                      draggable={false}
+                      src={EditIcon}
+                      width="11.75px"
+                      height="11.75px"
+                    />
+                  }
                   onClick={enableRspvTable}
                 />
 
                 <Button
                   text={t("Add-more")}
-                  icon={<img src={addmore} />}
+                  icon={<img draggable={false} src={addmore} />}
                   className={styles["AddMoreBtn"]}
                   onClick={openAddPartcipantModal}
                 />

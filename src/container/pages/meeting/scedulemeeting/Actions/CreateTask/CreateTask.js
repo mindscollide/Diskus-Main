@@ -60,6 +60,7 @@ const CreateTask = ({ setCreateaTask }) => {
           <Row>
             <Col lg={12} md={12} sm={12} className="d-flex gap-2">
               <img
+                draggable={false}
                 src={profile}
                 height="17px"
                 width="17px"
@@ -90,7 +91,7 @@ const CreateTask = ({ setCreateaTask }) => {
           <Row className="mt-2">
             <Col lg={12} md={12} sm={12} className="d-flex gap-2">
               <span className={styles["label_Styles"]}>{label}</span>
-              {isSelected && <img src={tick} width={20} />}
+              {isSelected && <img draggable={false} src={tick} width={20} />}
             </Col>
 
             <span className={styles["BottomLine"]}></span>
@@ -114,7 +115,7 @@ const CreateTask = ({ setCreateaTask }) => {
           <Row className="mt-2">
             <Col lg={12} md={12} sm={12} className="d-flex gap-2">
               <span className={styles["label_Styles"]}>{label}</span>
-              {isSelected && <img src={tick} width={20} />}
+              {isSelected && <img draggable={false} src={tick} width={20} />}
             </Col>
             <span className={styles["BottomLine"]}></span>
           </Row>
@@ -442,6 +443,7 @@ const CreateTask = ({ setCreateaTask }) => {
                                                   className="d-flex gap-2 align-items-center"
                                                 >
                                                   <img
+                                                    draggable={false}
                                                     src={PDFIcon}
                                                     height="31.57px"
                                                     width="31.57px"
@@ -463,6 +465,7 @@ const CreateTask = ({ setCreateaTask }) => {
                                               className="d-flex align-items-center justify-content-start mt-1"
                                             >
                                               <img
+                                                draggable={false}
                                                 src={RedCrossIcon}
                                                 height="20.76px"
                                                 width="20.76px"
@@ -494,6 +497,7 @@ const CreateTask = ({ setCreateaTask }) => {
                               className="d-flex justify-content-end align-items-center"
                             >
                               <img
+                                draggable={false}
                                 src={DrapDropIcon}
                                 width={100}
                                 className={styles["ClassImage"]}

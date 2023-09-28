@@ -169,6 +169,7 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                                         className="d-flex align-items-center gap-2"
                                       >
                                         <img
+                                          draggable={false}
                                           src={Profile}
                                           height="33px"
                                           width="33px"

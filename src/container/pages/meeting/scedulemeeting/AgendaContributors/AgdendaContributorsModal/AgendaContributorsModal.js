@@ -85,6 +85,7 @@ const AgendaContributorsModal = () => {
                     className="d-flex justify-content-end"
                   >
                     <img
+                      draggable={false}
                       src={BlackCrossIcon}
                       className={"cursor-pointer"}
                       width="16px"
@@ -122,6 +123,7 @@ const AgendaContributorsModal = () => {
                                       <Row className={styles["Card_border2"]}>
                                         <Col sm={12} md={10} lg={10}>
                                           <img
+                                            draggable={false}
                                             src={profile}
                                             width="33px"
                                             height="33px"
@@ -134,6 +136,7 @@ const AgendaContributorsModal = () => {
                                         </Col>
                                         <Col sm={12} md={2} lg={2}>
                                           <img
+                                            draggable={false}
                                             src={CrossIcon}
                                             width="14px"
                                             height="14px"

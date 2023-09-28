@@ -138,7 +138,7 @@ const Minutes = ({ setMinutes }) => {
                                     sm={12}
                                     className="d-flex align-items-center gap-3"
                                   >
-                                    <img src={Clip} />
+                                    <img draggable={false} src={Clip} />
                                     <span className={styles["Title_File"]}>
                                       {data.name}
                                     </span>
@@ -174,6 +174,7 @@ const Minutes = ({ setMinutes }) => {
                                     className="d-flex gap-2 align-items-center"
                                   >
                                     <img
+                                      draggable={false}
                                       src={profile}
                                       height="27px"
                                       width="27px"
@@ -187,6 +188,7 @@ const Minutes = ({ setMinutes }) => {
                               </Col>
                             </Row>
                             <img
+                              draggable={false}
                               src={RedCroseeIcon}
                               height="20.76px"
                               width="20.76px"
@@ -217,6 +219,7 @@ const Minutes = ({ setMinutes }) => {
                     className="d-flex justify-content-end align-items-center"
                   >
                     <img
+                      draggable={false}
                       src={DrapDropIcon}
                       width={100}
                       className={styles["ClassImage"]}
@@ -286,7 +289,7 @@ const Minutes = ({ setMinutes }) => {
                                     sm={12}
                                     className="d-flex align-items-center gap-3"
                                   >
-                                    <img src={Clip} />
+                                    <img draggable={false} src={Clip} />
                                     <span className={styles["Title_File"]}>
                                       {data.name}
                                     </span>
@@ -322,6 +325,7 @@ const Minutes = ({ setMinutes }) => {
                                     className="d-flex gap-2 align-items-center"
                                   >
                                     <img
+                                      draggable={false}
                                       src={profile}
                                       height="27px"
                                       width="27px"
@@ -335,6 +339,7 @@ const Minutes = ({ setMinutes }) => {
                               </Col>
                             </Row>
                             <img
+                              draggable={false}
                               src={RedCroseeIcon}
                               height="20.76px"
                               width="20.76px"
@@ -391,7 +396,14 @@ const Minutes = ({ setMinutes }) => {
               />
               <Button
                 text={t("Edit")}
-                icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
+                icon={
+                  <img
+                    draggable={false}
+                    src={EditIcon}
+                    width="11.75px"
+                    height="11.75px"
+                  />
+                }
                 className={styles["InviteToContributeButton"]}
                 onClick={handleEditButton}
               />
@@ -419,7 +431,7 @@ const Minutes = ({ setMinutes }) => {
                                     sm={12}
                                     className="d-flex align-items-center gap-3"
                                   >
-                                    <img src={Clip} />
+                                    <img draggable={false} src={Clip} />
                                     <span className={styles["Title_File"]}>
                                       {data.name}
                                     </span>
@@ -455,6 +467,7 @@ const Minutes = ({ setMinutes }) => {
                                     className="d-flex gap-2 align-items-center"
                                   >
                                     <img
+                                      draggable={false}
                                       src={profile}
                                       height="27px"
                                       width="27px"
@@ -513,6 +526,7 @@ const Minutes = ({ setMinutes }) => {
                       <Row>
                         <Col lg={12} md={12} sm={12} className="mt-4">
                           <img
+                            draggable={false}
                             src={download}
                             width="161.76px"
                             height="161.76px"
@@ -551,6 +565,7 @@ const Minutes = ({ setMinutes }) => {
                       <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <img
+                            draggable={false}
                             src={scratch}
                             width="161.76px"
                             height="161.76px"
@@ -589,6 +604,7 @@ const Minutes = ({ setMinutes }) => {
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <img
+                            draggable={false}
                             src={AgendaIcon}
                             width="161.76px"
                             height="161.76px"

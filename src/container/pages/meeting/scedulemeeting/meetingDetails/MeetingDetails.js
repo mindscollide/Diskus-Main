@@ -388,6 +388,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                           <Button
                             icon={
                               <img
+                                draggable={false}
                                 src={MeetingVideoChatIcon}
                                 width="22.32px"
                                 height="14.75px"
@@ -497,7 +498,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                           sm={12}
                                           className="d-flex justify-content-end align-items-center"
                                         >
-                                          <img src={desh} width="19.02px" />
+                                          <img
+                                            draggable={false}
+                                            src={desh}
+                                            width="19.02px"
+                                          />
                                         </Col>
                                         <Col
                                           lg={3}
@@ -526,6 +531,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                           className="d-flex justify-content-end position-relative align-items-center"
                                         >
                                           <img
+                                            draggable={false}
                                             src={redcrossIcon}
                                             width="23px"
                                             height="23px"
@@ -574,7 +580,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                           sm={12}
                                           className="d-flex justify-content-end align-items-center"
                                         >
-                                          <img src={desh} width="19.02px" />
+                                          <img
+                                            draggable={false}
+                                            src={desh}
+                                            width="19.02px"
+                                          />
                                         </Col>
                                         <Col
                                           lg={3}
@@ -601,6 +611,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                           className="d-flex justify-content-end position-relative align-items-center"
                                         >
                                           <img
+                                            draggable={false}
                                             src={redcrossIcon}
                                             width="23px"
                                             height="23px"
@@ -635,6 +646,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                 className="d-flex justify-content-center gap-2 align-items-center"
                               >
                                 <img
+                                  draggable={false}
                                   src={plusFaddes}
                                   width="15.87px"
                                   height="15.87px"

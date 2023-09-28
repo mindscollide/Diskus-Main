@@ -120,7 +120,7 @@ const ViewActions = () => {
                     className="d-flex gap-2 align-items-center"
                   >
                     <img
-                      draggable="false"
+                      draggable={false}
                       src={PDFIcon}
                       height="31.57px"
                       width="31.57px"
