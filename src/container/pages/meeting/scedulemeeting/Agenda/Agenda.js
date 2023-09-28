@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Agenda.module.css";
 import { Col, Row } from "react-bootstrap";
 import { Button, TextField } from "../../../../../components/elements";
@@ -67,7 +67,6 @@ const Agenda = () => {
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
   const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);
-  const [agendasData, setAgendasData] = useState([]);
   const [rows, setRows] = useState([
     {
       ID: "0",
@@ -79,7 +78,52 @@ const Agenda = () => {
       urlFieldMain: "",
       requestContributorURl: "",
       MainNote: "",
-      files: [],
+      files: [
+        {
+          FileID: "0",
+          name: "MeetingAgendas",
+        },
+        {
+          FileID: "1",
+          name: "Saif Meeting",
+        },
+        {
+          FileID: "2",
+          name: "Owais Meeting",
+        },
+        {
+          FileID: "3",
+          name: "Tresmark",
+        },
+        {
+          FileID: "4",
+          name: "Minds Collide",
+        },
+        {
+          FileID: "5",
+          name: "Aun File",
+        },
+        {
+          FileID: "6",
+          name: "Ali Raza Mamdani",
+        },
+        {
+          FileID: "7",
+          name: "Talha",
+        },
+        {
+          FileID: "8",
+          name: "Jawad Faisal",
+        },
+        {
+          FileID: "9",
+          name: "Fahad Hassan",
+        },
+        {
+          FileID: "10",
+          name: "Saroush Yahyas",
+        },
+      ],
       subAgenda: [
         {
           SubAgendaID: "0",
@@ -127,9 +171,7 @@ const Agenda = () => {
       ],
     },
   ]);
-  useEffect(() => {
-    setAgendasData(rows);
-  });
+
   const options = [
     {
       value: "chocolate",

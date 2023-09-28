@@ -21,7 +21,7 @@ const DocumentViewer = () => {
   const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
   // Deserialize the JSON string into an object
   const pdfData = JSON.parse(pdfDataJson);
-  const { taskId, attachmentID, fileName, commingFrom } = pdfData;
+  const { taskId, attachmentID, fileName } = pdfData;
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -33,16 +33,8 @@ const DocumentViewer = () => {
         TaskID: Number(taskId),
         TaskAttachementID: Number(attachmentID),
       };
-      if (Number(commingFrom) === 1) {
-        // for todo
-        dispatch(getAnnotationsOfToDoAttachement(navigate, t, data));
-      } else if (Number(commingFrom) === 2) {
-        // for notes
-      } else if (Number(commingFrom) === 3) {
-        // for resultion
-      } else if (Number(commingFrom) === 4) {
-        // for data room
-      }
+
+      dispatch(getAnnotationsOfToDoAttachement(navigate, t, data));
     }
   }, []);
 
@@ -108,16 +100,7 @@ const DocumentViewer = () => {
               };
 
               // Dispatch your Redux action to send the data to the API
-              if (Number(commingFrom) === 1) {
-                // for todo
-                dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
-              } else if (Number(commingFrom) === 2) {
-                // for notes
-              } else if (Number(commingFrom) === 3) {
-                // for resultion
-              } else if (Number(commingFrom) === 4) {
-                // for data room
-              }
+              dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
               // console.log("exportAnnotationsDocument saved successfully:", blob);
               // console.log(
               //   "exportAnnotations",
