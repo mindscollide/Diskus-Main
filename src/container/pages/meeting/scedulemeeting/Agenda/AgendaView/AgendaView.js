@@ -39,14 +39,19 @@ const AgendaView = () => {
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12}>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className={styles["MainAgendaScrollerView"]}
+        >
           <Row className="mt-4">
             {viewDataAgenda.length > 0
               ? viewDataAgenda.map((MainAgendaData, MainAgendaIndex) => {
                   console.log(MainAgendaData, "MainAgendaDataMainAgendaData");
                   return (
                     <>
-                      <Col lg={12} md={12} sm={12}>
+                      <Col lg={12} md={12} sm={12} className="mt-2">
                         <section
                           className={
                             expandMainAgenda
@@ -104,7 +109,8 @@ const AgendaView = () => {
                                           styles["Heading_View_Agenda"]
                                         }
                                       >
-                                        1.{MainAgendaData.MainAgendaTitle}
+                                        <span>{MainAgendaIndex + 1}.</span>
+                                        {MainAgendaData.MainAgendaTitle}
                                       </span>
                                     </Col>
                                   </Row>
@@ -194,55 +200,72 @@ const AgendaView = () => {
                                           </span>
                                         </Col>
                                       </Row>
-                                      <Row className="mt-2">
-                                        {MainAgendaData.AttachmentsMain > 0
-                                          ? MainAgendaData.AttachmentsMain.map(
-                                              (
-                                                MainAgendaFiles,
-                                                MainAgendaFilesIndex
-                                              ) => {
-                                                return (
-                                                  <>
-                                                    <Col lg={3} md={3} sm={3}>
-                                                      <section
-                                                        className={
-                                                          styles[
-                                                            "Border_Attachments"
-                                                          ]
-                                                        }
-                                                      >
-                                                        <Row className="mt-2">
-                                                          <Col
-                                                            lg={12}
-                                                            md={12}
-                                                            sm={12}
-                                                            className="d-flex gap-3 align-items-center"
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={
+                                            styles["MainAgendaFileScroller"]
+                                          }
+                                        >
+                                          <Row>
+                                            {MainAgendaData.AttachmentsMain
+                                              .length > 0
+                                              ? MainAgendaData.AttachmentsMain.map(
+                                                  (
+                                                    MainAgendaFiles,
+                                                    MainAgendaFilesIndex
+                                                  ) => {
+                                                    return (
+                                                      <>
+                                                        <Col
+                                                          lg={3}
+                                                          md={3}
+                                                          sm={3}
+                                                          className="mt-2"
+                                                        >
+                                                          <section
+                                                            className={
+                                                              styles[
+                                                                "Border_Attachments"
+                                                              ]
+                                                            }
                                                           >
-                                                            <img
-                                                              src={PDFIcon}
-                                                              height="31.57px"
-                                                              width="31.57px"
-                                                            />
-                                                            <span
-                                                              className={
-                                                                styles[
-                                                                  "File_Name"
-                                                                ]
-                                                              }
-                                                            >
-                                                              {
-                                                                MainAgendaFiles.MainFileName
-                                                              }
-                                                            </span>
-                                                          </Col>
-                                                        </Row>
-                                                      </section>
-                                                    </Col>
-                                                  </>
-                                                );
-                                              }
-                                            )
-                                          : null}
+                                                            <Row className="mt-2">
+                                                              <Col
+                                                                lg={12}
+                                                                md={12}
+                                                                sm={12}
+                                                                className="d-flex gap-3 align-items-center"
+                                                              >
+                                                                <img
+                                                                  src={PDFIcon}
+                                                                  height="31.57px"
+                                                                  width="31.57px"
+                                                                />
+                                                                <span
+                                                                  className={
+                                                                    styles[
+                                                                      "File_Name"
+                                                                    ]
+                                                                  }
+                                                                >
+                                                                  {
+                                                                    MainAgendaFiles.MainFileName
+                                                                  }
+                                                                </span>
+                                                              </Col>
+                                                            </Row>
+                                                          </section>
+                                                        </Col>
+                                                      </>
+                                                    );
+                                                  }
+                                                )
+                                              : null}
+                                          </Row>
+                                        </Col>
                                       </Row>
                                     </>
                                   ) : null}
