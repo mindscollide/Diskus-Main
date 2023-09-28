@@ -117,3 +117,37 @@
   display: flex !important;
   align-items: center !important;
 }
+
+.MainAgendaScrollerView {
+  height: 60vh !important;
+  overflow-x: hidden !important;
+}
+
+.MainAgendaScrollerView::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.MainAgendaScrollerView::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.MainAgendaFileScroller {
+  height: 12vh !important;
+  overflow-x: hidden !important;
+}
+
+.MainAgendaFileScroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.MainAgendaFileScroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
