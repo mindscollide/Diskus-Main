@@ -148,9 +148,7 @@ p.todoModalFileAttach {
 }
 
 .modalTodoViewBody {
-  max-height: 95% !important;
-  height: 95% !important;
-  min-height: 95% !important;
+  max-height: 75vh !important;
   padding: 0px 30px !important;
   overflow-y: auto;
 }
@@ -168,7 +166,7 @@ p.todoModalFileAttach {
 }
 
 .comment-Height.row {
-  height: 24%;
+  height: 30vh !important;
   overflow: hidden auto;
   margin-top: 15px;
   max-height: 160px !important;
@@ -260,10 +258,6 @@ textarea.comment-view.text-right.form-control {
 
 form.relative-position-form {
   position: relative !important;
-}
-
-.modal-content:has(.modalTodoViewHeader) {
-  height: 620px;
 }
 
 .fileIconBoxView {

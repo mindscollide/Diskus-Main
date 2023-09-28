@@ -65,7 +65,7 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
-.meeting-searchfileds {
+.meeting-meeting-searchfileds_oldMeeting {
   margin-left: -25px !important;
   margin-top: 5px !important;
 }
