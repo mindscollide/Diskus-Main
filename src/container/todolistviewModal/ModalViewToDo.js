@@ -624,6 +624,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                             attachmentID: modalviewAttachmentFiles.PK_MAAID,
                             fileName:
                               modalviewAttachmentFiles.DisplayAttachmentName,
+                            commingFrom: 1,
                           };
                           const pdfDataJson = JSON.stringify(pdfData);
                           return (
