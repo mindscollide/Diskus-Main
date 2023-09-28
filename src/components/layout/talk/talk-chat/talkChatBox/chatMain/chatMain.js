@@ -5472,9 +5472,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               <>
                                 {isLoading ? (
                                   <Spin className="talk-overallchat-spinner" />
-                                ) : (
-                                  <p>{'No-Chat-Messages'}</p>
-                                )}
+                                ) : // <p>{'No-Chat-Messages'}</p>
+                                null}
                               </>
                             )}
                             <div ref={chatMessages} />
