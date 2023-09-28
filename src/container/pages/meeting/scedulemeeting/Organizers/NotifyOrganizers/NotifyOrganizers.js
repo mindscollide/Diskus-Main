@@ -105,6 +105,7 @@ const NotifyOrganizers = () => {
               </Col>
               <Col lg={7} md={7} sm={12} className="d-flex justify-content-end">
                 <img
+                  draggable={false}
                   src={BlackCrossIcon}
                   className={styles["Cross_Icon_Styling"]}
                   width="16px"
@@ -150,6 +151,7 @@ const NotifyOrganizers = () => {
                 className="d-flex justify-content-end align-items-center cursor-pointer"
               >
                 <img
+                  draggable={false}
                   src={membersHide ? downdirect : UpperArrow}
                   width="18.4px"
                   height="9.2px"
@@ -186,6 +188,7 @@ const NotifyOrganizers = () => {
                                     className="d-flex gap-2 align-items-center"
                                   >
                                     <img
+                                      draggable={false}
                                       src={profile}
                                       width="33px"
                                       height="33px"

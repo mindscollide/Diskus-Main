@@ -175,3 +175,20 @@ body[dir="rtl"] .errorMessage-inLogin {
   background: #ccc;
   margin-left: -15px;
 }
+
+.Create_Task_main_Scroller {
+  height: 55vh !important;
+  overflow-x: hidden !important;
+}
+
+.Create_Task_main_Scroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Create_Task_main_Scroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

@@ -100,6 +100,7 @@ const NotifyAgendaModal = () => {
               </Col>
               <Col lg={5} md={5} sm={12} className="d-flex justify-content-end">
                 <img
+                  draggable={false}
                   src={BlackCrossIcon}
                   className={styles["Cross_Icon_Styling"]}
                   width="16px"
@@ -134,6 +135,7 @@ const NotifyAgendaModal = () => {
                   {hidemembes ? t("Show-names") : t("Hide-names")}
                 </span>
                 <img
+                  draggable={false}
                   src={hidemembes ? BlueDownArrow : UpperArrow}
                   width="18.4px"
                   height="9.2px"
@@ -170,6 +172,7 @@ const NotifyAgendaModal = () => {
                                     className="d-flex gap-2 align-items-center"
                                   >
                                     <img
+                                      draggable={false}
                                       src={profile}
                                       width="33px"
                                       height="33px"

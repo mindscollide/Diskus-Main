@@ -6,7 +6,7 @@
 
 .Scedule_meeting_paper {
   width: 100% !important;
-  height: auto !important;
+  height: 78vh !important;
   padding: 40px 40px !important;
 }
 
@@ -38,4 +38,7 @@
   background: #5f78d6 !important;
   font-family: "MontserratSemiBold-600" !important;
   color: #fff !important;
+}
+
+.Meetin_Details_Scroller {
 }

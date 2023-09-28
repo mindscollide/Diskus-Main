@@ -406,7 +406,6 @@ const ViewMeeting = (
                   t("Record-found")
                 )
               );
-              await dispatch(GetAllReminders(navigate, t));
               if (no === 1) {
                 setViewFlag(true);
               } else if (no === 2) {

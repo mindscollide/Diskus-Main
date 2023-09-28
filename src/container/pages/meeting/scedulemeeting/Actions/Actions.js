@@ -47,7 +47,7 @@ const Actions = () => {
           <Row>
             <Col lf={12} md={12} sm={12}>
               <img
-                draggable="false"
+                draggable={false}
                 src={CrossIcon}
                 className="cursor-pointer"
                 onClick={handleCrossIconModal}
@@ -120,7 +120,7 @@ const Actions = () => {
               <Button
                 text={t("Create-task")}
                 className={styles["Create_Task_Button"]}
-                icon={<img draggable="false" src={addmore} />}
+                icon={<img draggable={false} src={addmore} />}
                 onClick={handleCreateTaskButton}
               />
             </Col>
@@ -137,7 +137,7 @@ const Actions = () => {
                       className="d-flex justify-content-center"
                     >
                       <img
-                        draggable="false"
+                        draggable={false}
                         src={EmptyStates}
                         width="306.27px"
                         height="230px"

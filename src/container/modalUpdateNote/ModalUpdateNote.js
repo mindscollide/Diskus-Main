@@ -46,6 +46,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [attachments, setAttachments] = useState([]);
+  console.log(attachments, "attachmentsattachmentsattachments");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const deleteNoteModalHandler = async () => {
@@ -126,15 +127,23 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   });
 
   const deleteFilefromAttachments = (data, index) => {
-    let searchIndex = tasksAttachments.TasksAttachments;
+    console.log(data, "deleteFilefromAttachments");
+    let searchIndex = [...tasksAttachments.TasksAttachments];
+    let removeFilefromAttachments = attachments.findIndex(
+      (attacData, index) =>
+        data.displayAttachmentName === attacData.displayAttachmentName
+    );
+    let copyattachments = [...attachments];
     let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
       (newData, index) => newData.name === data.displayAttachmentName
     );
+    copyattachments.splice(removeFilefromAttachments, 1);
     searchIndex.splice(index, 1);
     fileForSend.splice(fileForSendingIndex, 1);
     setFileForSend(fileForSend);
     setFileSize(fileSizefound);
+    setAttachments(copyattachments);
     setTasksAttachments({
       ...tasksAttachments,
       ["TasksAttachments"]: searchIndex,
@@ -244,33 +253,35 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           FK_NotesStatusID: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
         });
         setIsStarrted(NotesReducer.GetNotesByNotesId.isStarred);
-        setTasksAttachments({
-          TasksAttachments: NotesReducer.GetNotesByNotesId.notesAttachments,
-        });
+        let copyData = [...attachments];
+        let newData = [];
+        if (NotesReducer.GetNotesByNotesId.notesAttachments.length > 0) {
+          NotesReducer.GetNotesByNotesId.notesAttachments.map((data, index) => {
+            copyData.push({
+              displayAttachmentName: data.displayAttachmentName,
+              originalAttachmentName: data.originalAttachmentName,
+              fK_NotesID: data.fK_NotesID,
+              pK_NAID: data.pK_NAID,
+            });
+            newData.push({
+              DisplayAttachmentName: data.displayAttachmentName,
+              OriginalAttachmentName: data.originalAttachmentName,
+              FK_NotesID: data.fK_NotesID,
+            });
+          });
+          setAttachments(copyData);
+          setTasksAttachments({
+            TasksAttachments: newData,
+          });
+        }
       }
     } catch (error) {}
   }, [NotesReducer.GetNotesByNotesId]);
 
-  useEffect(() => {
-    if (
-      uploadReducer.uploadDocumentsList !== null &&
-      uploadReducer.uploadDocumentsList !== undefined
-    ) {
-      let uploadDocument = uploadReducer.uploadDocumentsList;
-      let data = {
-        displayAttachmentName: uploadDocument.displayFileName,
-        originalAttachmentName: uploadDocument.originalFileName,
-      };
-      setTasksAttachments({
-        TasksAttachments: [...tasksAttachments.TasksAttachments, data],
-      });
-    }
-  }, [uploadReducer.uploadDocumentsList]);
-
   console.log(tasksAttachments, "tasksAttachmentstasksAttachments");
   const uploadFilesToDo = (data) => {
     let fileSizeArr;
-    if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
+    if (tasksAttachments === 10) {
       console.log("uploadedFile");
       setTimeout(
         setOpen({
@@ -288,12 +299,9 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         3000
       );
     } else {
-      const uploadFilePath = data.target.value;
       const uploadedFile = data.target.files[0];
       var ext = uploadedFile.name.split(".").pop();
-      console.log("uploadedFile", uploadedFile.name);
-      let file = tasksAttachments.TasksAttachments;
-      console.log("uploadedFile 12");
+      let file = attachments;
       if (
         ext === "doc" ||
         ext === "docx" ||
@@ -306,20 +314,12 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         ext === "jpeg" ||
         ext === "gif"
       ) {
-        console.log(
-          "uploadedFile 22",
-          uploadedFile.size,
-          uploadedFile.size > 10485760
-        );
-
         let data;
         let sizezero;
         let size;
         if (file.length > 0) {
-          console.log("uploadedFile 12");
-
           file.map((filename, index) => {
-            if (filename.DisplayFileName === uploadedFile.name) {
+            if (filename.displayAttachmentName === uploadedFile.name) {
               data = false;
             }
           });
@@ -328,21 +328,16 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           } else if (uploadedFile.size === 0) {
             sizezero = false;
           }
-          console.log("uploadedFile 12", size);
 
           if (data === false) {
-            console.log("uploadedFile 12");
-
             setTimeout(
               setOpen({
                 open: true,
-                message: t("File-already-exisit"),
+                message: t("File-already-exists"),
               }),
               3000
             );
           } else if (size === false) {
-            console.log("uploadedFile 12");
-
             setTimeout(
               setOpen({
                 open: true,
@@ -351,8 +346,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
               3000
             );
           } else if (sizezero === false) {
-            console.log("uploadedFile 12");
-
             setTimeout(
               setOpen({
                 open: true,
@@ -361,23 +354,16 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
               3000
             );
           } else {
+            let data = {
+              displayAttachmentName: uploadedFile.name,
+              originalAttachmentName: uploadedFile.name,
+              fK_NotesID: 0,
+              pK_NAID: 0,
+            };
             fileSizeArr = uploadedFile.size + fileSize;
             setFileForSend([...fileForSend, uploadedFile]);
             setFileSize(fileSizeArr);
-            let fileData = {
-              pK_NAID: 0,
-              displayAttachmentName: uploadedFile.name,
-              originalAttachmentName: uploadFilePath,
-              dreationDateTime: "",
-              fK_NotesID: 0,
-              fileSize: uploadedFile.size,
-            };
-            setTasksAttachments({
-              ["TasksAttachments"]: [
-                ...tasksAttachments.TasksAttachments,
-                fileData,
-              ],
-            });
+            setAttachments([...attachments, data]);
           }
         } else {
           console.log("uploadedFile 12");
@@ -390,8 +376,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
             sizezero = false;
           }
           if (size === false) {
-            console.log("uploadedFile 12");
-
             setTimeout(
               setOpen({
                 open: true,
@@ -400,8 +384,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
               3000
             );
           } else if (sizezero === false) {
-            console.log("uploadedFile 12");
-
             setTimeout(
               setOpen({
                 open: true,
@@ -410,85 +392,89 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
               3000
             );
           } else {
+            let data = {
+              displayAttachmentName: uploadedFile.name,
+              originalAttachmentName: uploadedFile.name,
+              fK_NotesID: 0,
+              pK_NAID: 0,
+            };
             fileSizeArr = uploadedFile.size + fileSize;
             setFileForSend([...fileForSend, uploadedFile]);
             setFileSize(fileSizeArr);
-            let fileData = {
-              pK_NAID: 0,
-              displayAttachmentName: uploadedFile.name,
-              originalAttachmentName: uploadFilePath,
-              dreationDateTime: "",
-              fK_NotesID: 0,
-              fileSize: uploadedFile.size,
-            };
-            setTasksAttachments({
-              ["TasksAttachments"]: [
-                ...tasksAttachments.TasksAttachments,
-                fileData,
-              ],
-            });
+            setAttachments([...attachments, data]);
           }
         }
       }
     }
   };
 
-  const notesSaveHandler = () => {
+  const notesSaveHandler = async () => {
     try {
       if (addNoteFields.Title.value !== "") {
         if (Object.keys(fileForSend).length > 0) {
-          const uploadFiles = (fileForSend) => {
-            const uploadPromises = fileForSend.map((newData) => {
-              dispatch(FileUploadToDo(navigate, newData, t));
+          let newfiles = [...tasksAttachments.TasksAttachments];
+          console.log(newfiles, "newfilesnewfiles");
+          const uploadPromises = fileForSend.map((newData) => {
+            // Return the promise from FileUploadToDo
+            return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
+          });
+
+          // Wait for all uploadPromises to resolve
+          await Promise.all(uploadPromises);
+          console.log(newfiles, "newfilesnewfiles");
+          setErrorBar(false);
+          let createrID = localStorage.getItem("userID");
+          let OrganizationID = localStorage.getItem("organizationID");
+          let notesAttachment = [];
+          newfiles.map((data, index) => {
+            notesAttachment.push({
+              DisplayAttachmentName: data.DisplayAttachmentName,
+              OriginalAttachmentName: data.OriginalAttachmentName,
+              FK_NotesID:
+                data.FK_NotesID !== null && data.FK_NotesID !== undefined
+                  ? data.FK_NotesID
+                  : 0,
             });
-            return Promise.all(uploadPromises);
+          });
+          console.log(notesAttachment, "newfilesnewfiles");
+          let Data = {
+            PK_NotesID: addNoteFields.PK_NotesID,
+            Title: addNoteFields.Title.value,
+            Description: addNoteFields.Description.value,
+            isStarred: isStarred,
+            FK_UserID: JSON.parse(createrID),
+            FK_OrganizationID: JSON.parse(OrganizationID),
+            FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
+            NotesAttachments: notesAttachment,
           };
-          uploadFiles(fileForSend)
-            .then((response) => {
-              setErrorBar(false);
-              let createrID = localStorage.getItem("userID");
-              let OrganizationID = localStorage.getItem("organizationID");
-              let notesAttachment = [];
-              if (tasksAttachments.TasksAttachments.length > 0) {
-                tasksAttachments.TasksAttachments.map((data, index) => {
-                  notesAttachment.push({
-                    DisplayAttachmentName: data.displayAttachmentName,
-                    OriginalAttachmentName: data.originalAttachmentName,
-                  });
-                });
-              }
 
-              let Data = {
-                PK_NotesID: addNoteFields.PK_NotesID,
-                Title: addNoteFields.Title.value,
-                Description: addNoteFields.Description.value,
-                isStarred: isStarred,
-                FK_UserID: JSON.parse(createrID),
-                FK_OrganizationID: JSON.parse(OrganizationID),
-                FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
-                NotesAttachments: notesAttachment,
-              };
-
-              dispatch(
-                UpdateNotesAPI(
-                  navigate,
-                  Data,
-                  t,
-                  setIsUpdateNote,
-                  setIsDeleteNote,
-                  setUpdateNotes
-                )
-              );
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          dispatch(
+            UpdateNotesAPI(
+              navigate,
+              Data,
+              t,
+              setIsUpdateNote,
+              setIsDeleteNote,
+              setUpdateNotes
+            )
+          );
         } else {
           setErrorBar(false);
           // setUpdateNotesModalHomePage(false);
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
+          let copData = [...tasksAttachments.TasksAttachments];
+          copData.map((data, index) => {
+            notesAttachment.push({
+              DisplayAttachmentName: data.DisplayAttachmentName,
+              OriginalAttachmentName: data.OriginalAttachmentName,
+              FK_NotesID:
+                data.FK_NotesID !== null && data.FK_NotesID !== undefined
+                  ? data.FK_NotesID
+                  : 0,
+            });
+          });
           let Data = {
             PK_NotesID: addNoteFields.PK_NotesID,
             Title: addNoteFields.Title.value,
@@ -742,125 +728,119 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                           md={12}
                           className={styles["notes-updates-attachment"]}
                         >
-                          {tasksAttachments.TasksAttachments.length > 0
-                            ? tasksAttachments.TasksAttachments.map(
-                                (data, index) => {
-                                  console.log("tasksAttachments", data);
-                                  var ext = data.displayAttachmentName
-                                    .split(".")
-                                    .pop();
+                          {attachments.length > 0
+                            ? attachments.map((data, index) => {
+                                var ext = data.displayAttachmentName
+                                  .split(".")
+                                  .pop();
 
-                                  const first =
-                                    data.displayAttachmentName.split(" ")[0];
-                                  return (
-                                    <Col
-                                      sm={12}
-                                      lg={2}
-                                      md={2}
+                                const first =
+                                  data.displayAttachmentName.split(" ")[0];
+                                return (
+                                  <Col
+                                    sm={12}
+                                    lg={2}
+                                    md={2}
+                                    className={
+                                      styles["modaltodolist-attachment-icon"]
+                                    }
+                                  >
+                                    {ext === "doc" ? (
+                                      <FileIcon
+                                        extension={"docx"}
+                                        size={78}
+                                        type={"document"}
+                                        labelColor={"rgba(44, 88, 152)"}
+                                      />
+                                    ) : ext === "docx" ? (
+                                      <FileIcon
+                                        extension={"docx"}
+                                        size={78}
+                                        type={"font"}
+                                        labelColor={"rgba(44, 88, 152)"}
+                                      />
+                                    ) : ext === "xls" ? (
+                                      <FileIcon
+                                        extension={"xls"}
+                                        type={"spreadsheet"}
+                                        size={78}
+                                        labelColor={"rgba(16, 121, 63)"}
+                                      />
+                                    ) : ext === "xlsx" ? (
+                                      <FileIcon
+                                        extension={"xls"}
+                                        type={"spreadsheet"}
+                                        size={78}
+                                        labelColor={"rgba(16, 121, 63)"}
+                                      />
+                                    ) : ext === "pdf" ? (
+                                      <FileIcon
+                                        extension={"pdf"}
+                                        size={78}
+                                        {...defaultStyles.pdf}
+                                      />
+                                    ) : ext === "png" ? (
+                                      <FileIcon
+                                        extension={"png"}
+                                        size={78}
+                                        type={"image"}
+                                        labelColor={"rgba(102, 102, 224)"}
+                                      />
+                                    ) : ext === "txt" ? (
+                                      <FileIcon
+                                        extension={"txt"}
+                                        size={78}
+                                        type={"document"}
+                                        labelColor={"rgba(52, 120, 199)"}
+                                      />
+                                    ) : ext === "jpg" ? (
+                                      <FileIcon
+                                        extension={"jpg"}
+                                        size={78}
+                                        type={"image"}
+                                        labelColor={"rgba(102, 102, 224)"}
+                                      />
+                                    ) : ext === "jpeg" ? (
+                                      <FileIcon
+                                        extension={"jpeg"}
+                                        size={78}
+                                        type={"image"}
+                                        labelColor={"rgba(102, 102, 224)"}
+                                      />
+                                    ) : ext === "gif" ? (
+                                      <FileIcon
+                                        extension={"gif"}
+                                        size={78}
+                                        {...defaultStyles.gif}
+                                      />
+                                    ) : (
+                                      <FileIcon
+                                        extension={ext}
+                                        size={78}
+                                        {...defaultStyles.ext}
+                                      />
+                                    )}
+                                    <span
                                       className={
-                                        styles["modaltodolist-attachment-icon"]
+                                        styles["deleteUpdateNoteAttachment"]
                                       }
                                     >
-                                      {ext === "doc" ? (
-                                        <FileIcon
-                                          extension={"docx"}
-                                          size={78}
-                                          type={"document"}
-                                          labelColor={"rgba(44, 88, 152)"}
-                                        />
-                                      ) : ext === "docx" ? (
-                                        <FileIcon
-                                          extension={"docx"}
-                                          size={78}
-                                          type={"font"}
-                                          labelColor={"rgba(44, 88, 152)"}
-                                        />
-                                      ) : ext === "xls" ? (
-                                        <FileIcon
-                                          extension={"xls"}
-                                          type={"spreadsheet"}
-                                          size={78}
-                                          labelColor={"rgba(16, 121, 63)"}
-                                        />
-                                      ) : ext === "xlsx" ? (
-                                        <FileIcon
-                                          extension={"xls"}
-                                          type={"spreadsheet"}
-                                          size={78}
-                                          labelColor={"rgba(16, 121, 63)"}
-                                        />
-                                      ) : ext === "pdf" ? (
-                                        <FileIcon
-                                          extension={"pdf"}
-                                          size={78}
-                                          {...defaultStyles.pdf}
-                                        />
-                                      ) : ext === "png" ? (
-                                        <FileIcon
-                                          extension={"png"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "txt" ? (
-                                        <FileIcon
-                                          extension={"txt"}
-                                          size={78}
-                                          type={"document"}
-                                          labelColor={"rgba(52, 120, 199)"}
-                                        />
-                                      ) : ext === "jpg" ? (
-                                        <FileIcon
-                                          extension={"jpg"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "jpeg" ? (
-                                        <FileIcon
-                                          extension={"jpeg"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "gif" ? (
-                                        <FileIcon
-                                          extension={"gif"}
-                                          size={78}
-                                          {...defaultStyles.gif}
-                                        />
-                                      ) : (
-                                        <FileIcon
-                                          extension={ext}
-                                          size={78}
-                                          {...defaultStyles.ext}
-                                        />
-                                      )}
-                                      <span
-                                        className={
-                                          styles["deleteUpdateNoteAttachment"]
+                                      <img
+                                        draggable="false"
+                                        src={deleteButtonCreateMeeting}
+                                        width={15}
+                                        height={15}
+                                        onClick={() =>
+                                          deleteFilefromAttachments(data, index)
                                         }
-                                      >
-                                        <img
-                                          draggable="false"
-                                          src={deleteButtonCreateMeeting}
-                                          width={15}
-                                          height={15}
-                                          onClick={() =>
-                                            deleteFilefromAttachments(
-                                              data,
-                                              index
-                                            )
-                                          }
-                                        />
-                                      </span>
-                                      <p className="modaltodolist-attachment-text">
-                                        {first}
-                                      </p>
-                                    </Col>
-                                  );
-                                }
-                              )
+                                      />
+                                    </span>
+                                    <p className="modaltodolist-attachment-text">
+                                      {first}
+                                    </p>
+                                  </Col>
+                                );
+                              })
                             : null}
                         </Col>
                       </Row>

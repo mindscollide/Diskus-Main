@@ -138,6 +138,7 @@ const Home = () => {
   const [recentActivityData, setRecentActivityData] = useState([]);
   // get new date
   let date = new Date();
+  let currentDateObject = new DateObject(date);
   let getCurrentDate = moment(date).format("DD");
   console.log(getCurrentDate, "getCurrentDategetCurrentDategetCurrentDate");
 
@@ -1015,6 +1016,7 @@ const Home = () => {
                               onChange={calendarClickFunction}
                               className="custom-multi-date-picker"
                               onMonthChange={handleMonthChange}
+                              currentDate={currentDateObject}
                               // format="YYYY-MM-DD"
                             />
                           </Col>
