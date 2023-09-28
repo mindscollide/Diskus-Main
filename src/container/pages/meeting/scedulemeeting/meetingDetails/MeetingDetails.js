@@ -234,544 +234,552 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
       ) : (
         <>
           <Row>
-            {/* First Half */}
-            <Col lg={7} md={7} sm={12}>
-              <Row className="mt-5">
-                <Col lg={12} md={12} sm={12}>
-                  <TextField
-                    placeholder={t("Meeting-title")}
-                    applyClass={"meetinInnerSearch"}
-                    name={"Meetingtitle"}
-                    labelClass="d-none"
-                    change={HandleChange}
-                    value={meetingDetails.MeetingTitle}
-                  />
-                  <Row>
-                    <Col>
-                      <p
-                        className={
-                          error && meetingDetails.MeetingTitle === ""
-                            ? ` ${styles["errorMessage-inLogin"]} `
-                            : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
-                        {t("Please-enter-meeting-title")}
-                      </p>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              <Row className="mt-3">
-                <Col lg={5} md={5} sm={12}>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <span className={styles["Meeting_type_heading"]}>
-                        {t("Meeting-type")}
-                        <span>*</span>
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      {/* TO BE CHANGED */}
-                      <Select
-                        value={rows.MeetingType}
-                        onChange={handleMeetingSelectChange}
-                        isSearchable={false}
-                      />
-
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              error && meetingDetails.MeetingType === ""
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
-                            {t("Please-select-meeting-type")}
-                          </p>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col lg={5} md={5} sm={12}>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <span className={styles["Meeting_type_heading"]}>
-                        {t("Location")}
-                        <span>*</span>
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <Select
-                        value={rows.Location}
-                        onChange={handleMeetingLocationChange}
-                        isSearchable={false}
-                        options={SelectLocations}
-                      />
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              error && meetingDetails.Location === 0
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
-                            {t("Please-select-location")}
-                          </p>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col
-                  lg={2}
-                  md={2}
-                  sm={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Row className="mt-3">
-                    <Col lg={12} md={12} sm={12}>
-                      <Button
-                        className={styles["Plus_Button_class"]}
-                        icon={
-                          <img
-                            src={whiteplusicon}
-                            height="23.88px"
-                            width="23.55px"
-                            className={styles["White_Icon_class"]}
-                          />
-                        }
-                      />
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className={styles["Scroller_meeting_detials"]}
+            >
               <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <TextField
-                    applyClass="text-area-create-resolution"
-                    type="text"
-                    as={"textarea"}
-                    rows="4"
-                    placeholder={t("Description") + "*"}
-                    required={true}
-                    name={"Description"}
-                    change={HandleChange}
-                    value={meetingDetails.Description}
-                    maxLength={500}
-                  />
-                  <Row>
-                    <Col>
-                      <p
-                        className={
-                          error && meetingDetails.Description === ""
-                            ? ` ${styles["errorMessage-inLogin"]} `
-                            : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
-                        {t("Please-enter-meeting-description")}
-                      </p>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              <Row className="mt-3">
-                <Col lg={4} md={4} sm={12}>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-3">
-                      <Switch onChange={handleGroupChat} />
-                      <span className={styles["Create_group_chat_heading"]}>
-                        {t("Create-group-chat")}
-                      </span>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col lg={8} md={8} sm={12}>
-                  <Row>
-                    <Col lg={1} md={1} sm={12} className="d-flex gap-3 m-0 p-0">
-                      <Button
-                        icon={
-                          <img
-                            src={MeetingVideoChatIcon}
-                            width="22.32px"
-                            height="14.75px"
-                            className={styles["Camera_icon"]}
-                          />
-                        }
-                        className={styles["Button_not_active"]}
-                      />
-                    </Col>
-                    <Col lg={11} md={11} sm={12}>
+                {/* First Half */}
+                <Col lg={7} md={7} sm={12}>
+                  <Row className="mt-5">
+                    <Col lg={12} md={12} sm={12}>
                       <TextField
-                        placeholder={t("Paste-microsoft-team-zoom-link") + "*"}
+                        placeholder={t("Meeting-title")}
                         applyClass={"meetinInnerSearch"}
+                        name={"Meetingtitle"}
                         labelClass="d-none"
-                        name={"Link"}
                         change={HandleChange}
-                        value={meetingDetails.Link}
+                        value={meetingDetails.MeetingTitle}
                       />
                       <Row>
                         <Col>
                           <p
                             className={
-                              error && meetingDetails.Link === ""
+                              error && meetingDetails.MeetingTitle === ""
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
                             }
                           >
-                            {t("Please-enter-meeting-link")}
+                            {t("Please-enter-meeting-title")}
                           </p>
                         </Col>
                       </Row>
                     </Col>
                   </Row>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["Scedule_heading"]}>
-                    {t("Scheduled-on")}
-                    <span>*</span>
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={styles["Scroller_meeting"]}
-                >
-                  {rows.length > 0
-                    ? rows.map((data, index) => {
-                        return (
-                          <>
-                            {index <= 1 ? (
-                              <Row>
-                                <Col lg={12} md={12} sm={12} key={index}>
-                                  <Row className="mt-2">
-                                    <Col lg={4} md={4} sm={12}>
-                                      <Select
-                                        value={rows.selectedOption}
-                                        onChange={handleSelectChange}
-                                        isSearchable={false}
-                                      />
-                                      <Row>
-                                        <Col>
-                                          <p
-                                            className={
-                                              error &&
-                                              data.selectedOption === ""
-                                                ? ` ${styles["errorMessage-inLogin"]} `
-                                                : `${styles["errorMessage-inLogin_hidden"]}`
-                                            }
-                                          >
-                                            {t("Please-select-data-and-time")}
-                                          </p>
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                    <Col
-                                      lg={3}
-                                      md={3}
-                                      sm={12}
-                                      className="timePicker"
-                                    >
-                                      <DatePicker
-                                        arrowClassName="arrowClass"
-                                        containerClassName="containerClassTimePicker"
-                                        className="timePicker"
-                                        disableDayPicker
-                                        inputClass="inputTIme"
-                                        format="HH:mm A"
-                                        plugins={[<TimePicker hideSeconds />]}
-                                        selected={rows.startDate}
-                                        onChange={handleStartDateChange}
-                                      />
-                                    </Col>
-                                    <Col
-                                      lg={1}
-                                      md={1}
-                                      sm={12}
-                                      className="d-flex justify-content-end align-items-center"
-                                    >
-                                      <img src={desh} width="19.02px" />
-                                    </Col>
-                                    <Col
-                                      lg={3}
-                                      md={3}
-                                      sm={12}
-                                      // className="d-flex justify-content-end"
-                                    >
-                                      <DatePicker
-                                        arrowClassName="arrowClass"
-                                        containerClassName="containerClassTimePicker"
-                                        className="timePicker"
-                                        disableDayPicker
-                                        inputClass="inputTIme"
-                                        format="HH:mm A"
-                                        plugins={[<TimePicker hideSeconds />]}
-                                        selected={rows.endDate}
-                                        onChange={handleEndDateChange}
-                                      />
-                                    </Col>
-                                    <Col
-                                      lg={1}
-                                      md={1}
-                                      sm={12}
-                                      className="d-flex justify-content-end position-relative align-items-center"
-                                    >
-                                      <img
-                                        src={redcrossIcon}
-                                        width="23px"
-                                        height="23px"
-                                        className={styles["Cross_icon_class"]}
-                                        onClick={() => {
-                                          HandleCancelFunction(index);
-                                        }}
-                                      />
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </Row>
-                            ) : (
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <Row className="mt-2">
-                                    <Col lg={4} md={4} sm={12}>
-                                      <Select
-                                        value={data.value}
-                                        isSearchable={false}
-                                      />
-                                    </Col>
-                                    <Col
-                                      lg={3}
-                                      md={3}
-                                      sm={12}
-                                      className="timePicker"
-                                    >
-                                      <DatePicker
-                                        arrowClassName="arrowClass"
-                                        containerClassName="containerClassTimePicker"
-                                        className="timePicker"
-                                        disableDayPicker
-                                        inputClass="inputTIme"
-                                        format="HH:mm A"
-                                        plugins={[<TimePicker hideSeconds />]}
-                                      />
-                                    </Col>
-                                    <Col
-                                      lg={1}
-                                      md={1}
-                                      sm={12}
-                                      className="d-flex justify-content-end align-items-center"
-                                    >
-                                      <img src={desh} width="19.02px" />
-                                    </Col>
-                                    <Col
-                                      lg={3}
-                                      md={3}
-                                      sm={12}
-                                      className="d-flex justify-content-start"
-                                    >
-                                      <DatePicker
-                                        arrowClassName="arrowClass"
-                                        containerClassName="containerClassTimePicker"
-                                        className="timePicker"
-                                        disableDayPicker
-                                        inputClass="inputTIme"
-                                        format="HH:mm A"
-                                        plugins={[<TimePicker hideSeconds />]}
-                                      />
-                                    </Col>
-                                    <Col
-                                      lg={1}
-                                      md={1}
-                                      sm={12}
-                                      className="d-flex justify-content-end position-relative align-items-center"
-                                    >
-                                      <img
-                                        src={redcrossIcon}
-                                        width="23px"
-                                        height="23px"
-                                        className={styles["Cross_icon_class"]}
-                                        onClick={() => {
-                                          HandleCancelFunction(index);
-                                        }}
-                                      />
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </Row>
-                            )}
-                          </>
-                        );
-                      })
-                    : null}
-                </Col>
-              </Row>
-              <Row className="mt-1">
-                <Col lg={12} md={12} sm={12}>
-                  <Button
-                    text={
-                      <>
-                        <Row className="mt-1">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center gap-2 align-items-center"
-                          >
-                            <img
-                              src={plusFaddes}
-                              width="15.87px"
-                              height="15.87px"
-                            />
-                            <span className={styles["Add_dates_label"]}>
-                              {t("Add-dates")}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    }
-                    className={styles["Add_Dates_Btn_Class"]}
-                    onClick={addRow}
-                  />
-                </Col>
-              </Row>
-            </Col>
-            {/* Second Half */}
-            <Col lg={5} md={5} sm={12}>
-              <Row className="mt-4">
-                <Row className="mt-1">
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Frequency_heading"]}>
-                      {t("Reminder-frequency")}
-                      <span>*</span>
-                    </span>
-                  </Col>
-                </Row>
-                <Col lg={4} md={4} sm={12}>
-                  <Select onChange={handleReminderFrequency} />
-                </Col>
-                <Col lg={4} md={4} sm={12}>
-                  <Select onChange={handleReminderFrequencyTwo} />
-                </Col>
-                <Col lg={4} md={4} sm={12}>
-                  <Select onChange={handleReminderFrequencyThree} />
-                </Col>
-                <Row>
-                  <Col>
-                    <p
-                      className={
-                        error &&
-                        meetingDetails.ReminderFrequency === 0 &&
-                        meetingDetails.ReminderFrequencyTwo === 0 &&
-                        meetingDetails.ReminderFrequencyThree === 0
-                          ? ` ${styles["errorMessage-inLogin"]} `
-                          : `${styles["errorMessage-inLogin_hidden"]}`
-                      }
-                    >
-                      {t("Please-select-reminder-frequency")}
-                    </p>
-                  </Col>
-                </Row>
-              </Row>
-              <Row className="mt-3">
-                <Col lg={12} md={12} sm={12}>
-                  <TextField
-                    applyClass="text-area-create-meeting"
-                    type="text"
-                    as={"textarea"}
-                    rows="6"
-                    placeholder={t("Note-for-this-meeting") + "*"}
-                    required={true}
-                    maxLength={500}
-                    value={meetingDetails.Notes}
-                  />
-                  <Row>
-                    <Col>
-                      <p
-                        className={
-                          error && meetingDetails.Notes === 0
-                            ? ` ${styles["errorMessage-inLogin"]} `
-                            : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
-                        {t("Please-select-reminder-frequency")}
-                      </p>
+                  <Row className="mt-3">
+                    <Col lg={6} md={6} sm={12}>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["Meeting_type_heading"]}>
+                            {t("Meeting-type")}
+                            <span>*</span>
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          {/* TO BE CHANGED */}
+                          <Select
+                            value={rows.MeetingType}
+                            onChange={handleMeetingSelectChange}
+                            isSearchable={false}
+                          />
+
+                          <Row>
+                            <Col>
+                              <p
+                                className={
+                                  error && meetingDetails.MeetingType === ""
+                                    ? ` ${styles["errorMessage-inLogin"]} `
+                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                }
+                              >
+                                {t("Please-select-meeting-type")}
+                              </p>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col lg={6} md={6} sm={12}>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["Meeting_type_heading"]}>
+                            {t("Location")}
+                            <span>*</span>
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <Select
+                            value={rows.Location}
+                            onChange={handleMeetingLocationChange}
+                            isSearchable={false}
+                            options={SelectLocations}
+                          />
+                          <Row>
+                            <Col>
+                              <p
+                                className={
+                                  error && meetingDetails.Location === 0
+                                    ? ` ${styles["errorMessage-inLogin"]} `
+                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                }
+                              >
+                                {t("Please-select-location")}
+                              </p>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
-                </Col>
-              </Row>
-              <Row className="mt-4">
-                <Col lg={4} md={4} sm={12}>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-3">
-                      <Switch onChange={handleRSPV} />
-                      <span className={styles["Notify_heading"]}>
-                        {t("Allow-rspv")}
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        applyClass="text-area-create-resolution"
+                        type="text"
+                        as={"textarea"}
+                        rows="4"
+                        placeholder={t("Description") + "*"}
+                        required={true}
+                        name={"Description"}
+                        change={HandleChange}
+                        value={meetingDetails.Description}
+                        maxLength={500}
+                      />
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              error && meetingDetails.Description === ""
+                                ? ` ${styles["errorMessage-inLogin"]} `
+                                : `${styles["errorMessage-inLogin_hidden"]}`
+                            }
+                          >
+                            {t("Please-enter-meeting-description")}
+                          </p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col lg={4} md={4} sm={12}>
+                      <Row className="mt-2">
+                        <Col lg={12} md={12} sm={12} className="d-flex gap-3">
+                          <Switch onChange={handleGroupChat} />
+                          <span className={styles["Create_group_chat_heading"]}>
+                            {t("Create-group-chat")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col lg={8} md={8} sm={12}>
+                      <Row>
+                        <Col
+                          lg={1}
+                          md={1}
+                          sm={12}
+                          className="d-flex gap-3 m-0 p-0"
+                        >
+                          <Button
+                            icon={
+                              <img
+                                src={MeetingVideoChatIcon}
+                                width="22.32px"
+                                height="14.75px"
+                                className={styles["Camera_icon"]}
+                              />
+                            }
+                            className={styles["Button_not_active"]}
+                          />
+                        </Col>
+                        <Col lg={11} md={11} sm={12}>
+                          <TextField
+                            placeholder={
+                              t("Paste-microsoft-team-zoom-link") + "*"
+                            }
+                            applyClass={"meetinInnerSearch"}
+                            labelClass="d-none"
+                            name={"Link"}
+                            change={HandleChange}
+                            value={meetingDetails.Link}
+                          />
+                          <Row>
+                            <Col>
+                              <p
+                                className={
+                                  error && meetingDetails.Link === ""
+                                    ? ` ${styles["errorMessage-inLogin"]} `
+                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                }
+                              >
+                                {t("Please-enter-meeting-link")}
+                              </p>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["Scedule_heading"]}>
+                        {t("Scheduled-on")}
+                        <span>*</span>
                       </span>
                     </Col>
                   </Row>
-                </Col>
-                <Col lg={8} md={8} sm={12}>
                   <Row>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-3 justify-content-start"
+                      className={styles["Scroller_meeting"]}
                     >
-                      <Switch onChange={handleNotifyOrganizers} />
-                      <span className={styles["Notify_heading"]}>
-                        {t("Notify-meeting-organizer-when-members-rspv")}
+                      {rows.length > 0
+                        ? rows.map((data, index) => {
+                            return (
+                              <>
+                                {index <= 1 ? (
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12} key={index}>
+                                      <Row className="mt-2">
+                                        <Col lg={4} md={4} sm={12}>
+                                          <Select
+                                            value={rows.selectedOption}
+                                            onChange={handleSelectChange}
+                                            isSearchable={false}
+                                          />
+                                          <Row>
+                                            <Col>
+                                              <p
+                                                className={
+                                                  error &&
+                                                  data.selectedOption === ""
+                                                    ? ` ${styles["errorMessage-inLogin"]} `
+                                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                                }
+                                              >
+                                                {t(
+                                                  "Please-select-data-and-time"
+                                                )}
+                                              </p>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                        <Col
+                                          lg={3}
+                                          md={3}
+                                          sm={12}
+                                          className="timePicker"
+                                        >
+                                          <DatePicker
+                                            arrowClassName="arrowClass"
+                                            containerClassName="containerClassTimePicker"
+                                            className="timePicker"
+                                            disableDayPicker
+                                            inputClass="inputTIme"
+                                            format="HH:mm A"
+                                            plugins={[
+                                              <TimePicker hideSeconds />,
+                                            ]}
+                                            selected={rows.startDate}
+                                            onChange={handleStartDateChange}
+                                          />
+                                        </Col>
+                                        <Col
+                                          lg={1}
+                                          md={1}
+                                          sm={12}
+                                          className="d-flex justify-content-end align-items-center"
+                                        >
+                                          <img src={desh} width="19.02px" />
+                                        </Col>
+                                        <Col
+                                          lg={3}
+                                          md={3}
+                                          sm={12}
+                                          // className="d-flex justify-content-end"
+                                        >
+                                          <DatePicker
+                                            arrowClassName="arrowClass"
+                                            containerClassName="containerClassTimePicker"
+                                            className="timePicker"
+                                            disableDayPicker
+                                            inputClass="inputTIme"
+                                            format="HH:mm A"
+                                            plugins={[
+                                              <TimePicker hideSeconds />,
+                                            ]}
+                                            selected={rows.endDate}
+                                            onChange={handleEndDateChange}
+                                          />
+                                        </Col>
+                                        <Col
+                                          lg={1}
+                                          md={1}
+                                          sm={12}
+                                          className="d-flex justify-content-end position-relative align-items-center"
+                                        >
+                                          <img
+                                            src={redcrossIcon}
+                                            width="23px"
+                                            height="23px"
+                                            className={
+                                              styles["Cross_icon_class"]
+                                            }
+                                            onClick={() => {
+                                              HandleCancelFunction(index);
+                                            }}
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                ) : (
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <Row className="mt-2">
+                                        <Col lg={4} md={4} sm={12}>
+                                          <Select
+                                            value={data.value}
+                                            isSearchable={false}
+                                          />
+                                        </Col>
+                                        <Col
+                                          lg={3}
+                                          md={3}
+                                          sm={12}
+                                          className="timePicker"
+                                        >
+                                          <DatePicker
+                                            arrowClassName="arrowClass"
+                                            containerClassName="containerClassTimePicker"
+                                            className="timePicker"
+                                            disableDayPicker
+                                            inputClass="inputTIme"
+                                            format="HH:mm A"
+                                            plugins={[
+                                              <TimePicker hideSeconds />,
+                                            ]}
+                                          />
+                                        </Col>
+                                        <Col
+                                          lg={1}
+                                          md={1}
+                                          sm={12}
+                                          className="d-flex justify-content-end align-items-center"
+                                        >
+                                          <img src={desh} width="19.02px" />
+                                        </Col>
+                                        <Col
+                                          lg={3}
+                                          md={3}
+                                          sm={12}
+                                          className="d-flex justify-content-start"
+                                        >
+                                          <DatePicker
+                                            arrowClassName="arrowClass"
+                                            containerClassName="containerClassTimePicker"
+                                            className="timePicker"
+                                            disableDayPicker
+                                            inputClass="inputTIme"
+                                            format="HH:mm A"
+                                            plugins={[
+                                              <TimePicker hideSeconds />,
+                                            ]}
+                                          />
+                                        </Col>
+                                        <Col
+                                          lg={1}
+                                          md={1}
+                                          sm={12}
+                                          className="d-flex justify-content-end position-relative align-items-center"
+                                        >
+                                          <img
+                                            src={redcrossIcon}
+                                            width="23px"
+                                            height="23px"
+                                            className={
+                                              styles["Cross_icon_class"]
+                                            }
+                                            onClick={() => {
+                                              HandleCancelFunction(index);
+                                            }}
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                )}
+                              </>
+                            );
+                          })
+                        : null}
+                    </Col>
+                  </Row>
+                  <Row className="mt-1">
+                    <Col lg={12} md={12} sm={12}>
+                      <Button
+                        text={
+                          <>
+                            <Row className="mt-1">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center gap-2 align-items-center"
+                              >
+                                <img
+                                  src={plusFaddes}
+                                  width="15.87px"
+                                  height="15.87px"
+                                />
+                                <span className={styles["Add_dates_label"]}>
+                                  {t("Add-dates")}
+                                </span>
+                              </Col>
+                            </Row>
+                          </>
+                        }
+                        className={styles["Add_Dates_Btn_Class"]}
+                        onClick={addRow}
+                      />
+                    </Col>
+                  </Row>
+                </Col>
+                {/* Second Half */}
+                <Col lg={5} md={5} sm={12}>
+                  <Row className="mt-4">
+                    <Row className="mt-1">
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["Frequency_heading"]}>
+                          {t("Reminder-frequency")}
+                          <span>*</span>
+                        </span>
+                      </Col>
+                    </Row>
+                    <Col lg={4} md={4} sm={12}>
+                      <Select onChange={handleReminderFrequency} />
+                    </Col>
+                    <Col lg={4} md={4} sm={12}>
+                      <Select onChange={handleReminderFrequencyTwo} />
+                    </Col>
+                    <Col lg={4} md={4} sm={12}>
+                      <Select onChange={handleReminderFrequencyThree} />
+                    </Col>
+                    <Row>
+                      <Col>
+                        <p
+                          className={
+                            error &&
+                            meetingDetails.ReminderFrequency === 0 &&
+                            meetingDetails.ReminderFrequencyTwo === 0 &&
+                            meetingDetails.ReminderFrequencyThree === 0
+                              ? ` ${styles["errorMessage-inLogin"]} `
+                              : `${styles["errorMessage-inLogin_hidden"]}`
+                          }
+                        >
+                          {t("Please-select-reminder-frequency")}
+                        </p>
+                      </Col>
+                    </Row>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        applyClass="text-area-create-meeting"
+                        type="text"
+                        as={"textarea"}
+                        rows="6"
+                        placeholder={t("Note-for-this-meeting") + "*"}
+                        required={true}
+                        maxLength={500}
+                        value={meetingDetails.Notes}
+                      />
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              error && meetingDetails.Notes === 0
+                                ? ` ${styles["errorMessage-inLogin"]} `
+                                : `${styles["errorMessage-inLogin_hidden"]}`
+                            }
+                          >
+                            {t("Please-select-reminder-frequency")}
+                          </p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <Col lg={3} md={3} sm={12}>
+                      <Row>
+                        <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                          <Switch onChange={handleRSPV} />
+                          <span className={styles["Notify_heading"]}>
+                            {t("Allow-rspv")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col lg={9} md={9} sm={12}>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 justify-content-start"
+                        >
+                          <Switch onChange={handleNotifyOrganizers} />
+                          <span className={styles["Notify_heading"]}>
+                            {t("Notify-meeting-organizer-when-members-rspv")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["reccurring_heading"]}>
+                        {t("Recurring")}
                       </span>
+                    </Col>
+                  </Row>
+                  <Row className="mt-2">
+                    <Col lg={12} md={12} sm={12}>
+                      <Select
+                        value={rows.RecurringOptions}
+                        onChange={handleRecurringSelectoptions}
+                        options={selectRecurringOptions}
+                      />
                     </Col>
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-4">
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["reccurring_heading"]}>
-                    {t("Recurring")}
-                  </span>
-                </Col>
-              </Row>
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12}>
-                  <Select
-                    value={rows.RecurringOptions}
-                    onChange={handleRecurringSelectoptions}
-                    options={selectRecurringOptions}
-                  />
-                </Col>
-              </Row>
-              <Row className="mt-5">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex gap-3 justify-content-end"
-                >
-                  <Button
-                    text={t("Publish")}
-                    className={styles["Published"]}
-                    onClick={handlePublish}
-                  />
-                  <Button
-                    text={t("Update-and-next")}
-                    className={styles["Update_Next"]}
-                    onClick={handleUpdateNext}
-                  />
-                </Col>
-              </Row>
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex gap-3 justify-content-end"
+            >
+              <Button
+                text={t("Publish")}
+                className={styles["Published"]}
+                onClick={handlePublish}
+              />
+              <Button
+                text={t("Update-and-next")}
+                className={styles["Update_Next"]}
+                onClick={handleUpdateNext}
+              />
             </Col>
           </Row>
         </>

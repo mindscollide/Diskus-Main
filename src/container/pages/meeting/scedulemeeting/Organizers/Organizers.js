@@ -367,7 +367,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
         <OrganizersViewPage />
       ) : (
         <>
-          <section>
+          <section className="position-relative">
             <Row className="mt-4 m-0 p-0">
               <Col
                 lg={12}
@@ -401,7 +401,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
                   <>
                     <Table
                       column={NotifcatoinColoumns}
-                      scroll={{ y: "62vh" }}
+                      scroll={{ y: "92vh" }}
                       pagination={false}
                       className="Polling_table"
                       rows={notificationRows}
@@ -430,20 +430,17 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
                 )}
               </Col>
             </Row>
-            <Row className="mt-4">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex gap-2 justify-content-end"
-              >
+          </section>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <section className={styles["Footer_button"]}>
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Organization"]}
                 />
                 <Button
                   text={t("Publish")}
-                  className={styles["Cancel_Organization"]}
+                  className={styles["publish_button_Organization"]}
                   onClick={EnableOrganizersView}
                 />
                 <Button
@@ -451,9 +448,9 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
-              </Col>
-            </Row>
-          </section>
+              </section>
+            </Col>
+          </Row>
         </>
       )}
 
