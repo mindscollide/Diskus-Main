@@ -4,3 +4,9 @@
   overflow: hidden;
   width: 350px !important;
 }
+
+.RatioClass {
+  color: #505050 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+}

@@ -6098,3 +6098,7 @@ input[type="time"]::-webkit-clear-button {
   font-family: "MontserratSemiBold-600";
   font-size: calc(19px - 20%);
 }
+
+.ProgressUNpublishedMeeting .ant-progress-text {
+  display: none !important;
+}

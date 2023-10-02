@@ -175,6 +175,13 @@ const showunsavedEditPollsMeetings = (response) => {
   };
 };
 
+const showDeleteMeetingModal = (response) => {
+  return {
+    type: actions.DELETE_MEETING_MODAL,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -201,4 +208,5 @@ export {
   showRemovedTableModal,
   showUnsavedPollsMeeting,
   showunsavedEditPollsMeetings,
+  showDeleteMeetingModal,
 };

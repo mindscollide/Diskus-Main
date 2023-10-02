@@ -8,11 +8,25 @@ import member from "../../../../../../assets/images/member.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { Tooltip } from "antd";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
+import { Progress } from "antd";
 import { Button, Table } from "../../../../../../components/elements";
+import rspvGreenIcon from "../../../../../../assets/images/rspvGreen.svg";
+import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
+import { useSelector } from "react-redux";
+import { showDeleteMeetingModal } from "../../../../../../store/actions/NewMeetingActions";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const UnpublishedProposedMeeting = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
+  const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
+
+  const handleDeleteMeetingModal = () => {
+    dispatch(showDeleteMeetingModal(true));
+  };
 
   const data = [
     {
@@ -23,9 +37,34 @@ const UnpublishedProposedMeeting = () => {
           Meeting from Boss's exe
         </label>
       ),
-      status: <label className="column-boldness">Active</label>,
+      status: <label className="column-boldness">Proposed</label>,
       Organizer: <label className="column-boldness">Mr. Abdul Qadir</label>,
       Date: <label className="column-boldness"> 3:30pm - 17th May, 2020</label>,
+      MeetingPoll: (
+        <>
+          <Row>
+            <Col
+              lg={8}
+              md={8}
+              sm={12}
+              className="d-flex justify-content-center"
+            >
+              <span className={styles["RatioClass"]}>3/8</span>
+              {/* <img src={rspvGreenIcon} height="17.06px" width="17.06px" /> */}
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Progress
+                className="ProgressUNpublishedMeeting"
+                percent={30}
+                size="small"
+              />
+            </Col>
+          </Row>
+        </>
+      ),
+      sendResponseby: <label> 17th May, 2020</label>,
     },
   ];
   const [tablerowsData, setTablerowsData] = useState(data);
@@ -51,21 +90,13 @@ const UnpublishedProposedMeeting = () => {
       width: "55px",
       filters: [
         {
-          text: t("Active"),
-          value: "Active",
+          text: t("Proposed"),
+          value: "Proposed",
           className: currentLanguage,
         },
         {
-          text: t("Upcoming"),
-          value: "Upcoming",
-        },
-        {
-          text: t("Ended"),
-          value: "Ended",
-        },
-        {
-          text: t("Not-conducted"),
-          value: "Not conducted",
+          text: t("Unpublished"),
+          value: "Unpublished",
         },
       ],
       defaultFilteredValue: ["Published", "Unpublished"],
@@ -93,8 +124,8 @@ const UnpublishedProposedMeeting = () => {
     },
     {
       title: t("Send-reponse-by"),
-      dataIndex: "MeetingPoll",
-      key: "MeetingPoll",
+      dataIndex: "sendResponseby",
+      key: "sendResponseby",
       width: "100px",
     },
     {
@@ -136,6 +167,7 @@ const UnpublishedProposedMeeting = () => {
                     className="cursor-pointer"
                     width="17.11px"
                     height="17.11px"
+                    onClick={handleDeleteMeetingModal}
                   />
                 </Tooltip>
               </Col>
@@ -178,6 +210,7 @@ const UnpublishedProposedMeeting = () => {
           />
         </Col>
       </Row>
+      {NewMeetingreducer.deleteMeetingModal && <DeleteMeetingModal />}
     </section>
   );
 };
