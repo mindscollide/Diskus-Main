@@ -221,7 +221,7 @@ const DataRoom = () => {
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {
-        dispatch(allAssignessList(navigate, t));
+        // dispatch(allAssignessList(navigate, t));
       }
       window.addEventListener("click", function (e) {
         let clsname = e.target.className;

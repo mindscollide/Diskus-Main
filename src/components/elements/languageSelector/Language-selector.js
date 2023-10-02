@@ -223,12 +223,12 @@ const LanguageSelector = () => {
         />
         {/* {selectedLanguage.languageTitle} */}
         {currentLanguage === "en"
-          ? "English"
+          ? t("English")
           : currentLanguage === "ar"
-          ? "Arabic"
+          ? t("Arabic")
           : currentLanguage === "fr"
-          ? "French"
-          : "English"}
+          ? t("French")
+          : t("English")}
         {languageDropdown ? (
           <img
             src={

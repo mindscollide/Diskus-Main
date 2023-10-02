@@ -1468,5 +1468,8 @@
   "No-record-inserted": "No Record Inserted",
   "No-record-updated": "No Record Updated",
   "Annotation-available": "Annotation Available",
-  "No-annotation-available": "No Annotation Available"
+  "No-annotation-available": "No Annotation Available",
+  "English": "English",
+  "Arabic": "عربي",
+  "French": "Français"
 }

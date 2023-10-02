@@ -41,7 +41,7 @@ const ModalArchivedCommittee = ({
       localStorage.setItem("groupsArCurrent", 1);
       dispatch(getArcheivedGroups(navigate, t, 1));
     }
-  }, [currentGroupPage]);
+  }, []);
 
   useEffect(() => {
     if (GroupsReducer.realtimeGroupStatus !== null) {

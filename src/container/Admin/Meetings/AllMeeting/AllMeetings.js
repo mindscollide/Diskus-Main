@@ -363,6 +363,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       align: "left",
       width: "120px",
       render: (text, record) => {
+        console.log(record, "recordrecordrecord");
         return (
           <>
             <div
@@ -379,7 +380,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               <Trash
                 size={22}
                 onClick={() => {
-                  openDeleteModal(record?.pK_MDID, record?.status);
+                  openDeleteModal(record?.meetingID);
                 }}
               />
             </i>
@@ -430,12 +431,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   };
 
   //open Delete modal on click
-  const openDeleteModal = async (meetingID, StatusID) => {
+  const openDeleteModal = async (meetingID) => {
     setMeetingDeleteModal(true);
     setMeetingModal(false);
     setFilterBarMeetingModal(false);
     setMeetingId(meetingID);
-    setMeetingStatusId(StatusID);
+    // setMeetingStatusId(StatusID);
   };
 
   const handleMeetingAtendees = (a, modalMeetingStates) => {
@@ -709,9 +710,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   }, [adminReducer.ResponseMessage]);
 
   const closeOnUpdateBtn = () => {
-    dispatch(
-      deleteOrganiationMessage(navigate, isMeetingId, isMeetingStatusId, t)
-    );
+    dispatch(deleteOrganiationMessage(navigate, isMeetingId, 7, t));
     setMeetingDeleteModal(false);
   };
 
@@ -1250,6 +1249,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Button
                         text={t("Discard")}
                         className={styles["icon-modalmeeting-ResetBtn"]}
+                        onClick={() => setMeetingDeleteModal(false)}
                         // onClick={closeOnUpdateBtn}
                       />
                     </Col>

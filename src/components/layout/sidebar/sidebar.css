@@ -149,7 +149,11 @@ a.iconSidebar {
 a.iconSidebar svg {
   height: 26px !important;
 }
-
+body[dir="rtl"] a.iconSidebar div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 a.iconSidebar div {
   margin-top: 5px !important;
 }
