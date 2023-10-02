@@ -280,7 +280,7 @@ const Polling = () => {
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span>{t("Post-title")}</span>
+              <span>{t("Poll-title")}</span>
             </Col>
           </Row>
         </>

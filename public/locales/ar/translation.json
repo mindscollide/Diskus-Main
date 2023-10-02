@@ -1462,5 +1462,14 @@
   "Six-monthly": "Six Monthly",
   "Leave-meeting": "Leave Meeting",
   "Contributor-title": "Contributor Title",
-  "Participant-title": "Participant Title"
+  "Participant-title": "Participant Title",
+  "Record-inserted": "Record Inserted",
+  "Record-updated": "Record Updated",
+  "No-record-inserted": "No Record Inserted",
+  "No-record-updated": "No Record Updated",
+  "Annotation-available": "Annotation Available",
+  "No-annotation-available": "No Annotation Available",
+  "English": "English",
+  "Arabic": "عربي",
+  "French": "Français"
 }

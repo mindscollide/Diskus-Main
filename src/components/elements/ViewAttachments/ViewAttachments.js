@@ -5,7 +5,12 @@ import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import Button from "../../elements/button/Button";
+import { Link } from "react-router-dom";
 const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
+  console.log(
+    resolutionAttachments,
+    "resolutionAttachmentsresolutionAttachmentsresolutionAttachments"
+  );
   const { t } = useTranslation();
   return (
     <Container fluid>
@@ -29,8 +34,15 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                 <Row>
                   {resolutionAttachments &&
                     resolutionAttachments.map((data, index) => {
-                      var ext = data.displayAttachmentName.split(".").pop();
+                      let ext = data.displayAttachmentName.split(".").pop();
                       const first = data.displayAttachmentName.split(" ")[0];
+                      const pdfData = {
+                        taskId: data.fK_ResolutionID,
+                        attachmentID: data.pK_RAID,
+                        fileName: data.displayAttachmentName,
+                        commingFrom: 3,
+                      };
+                      const pdfDataJson = JSON.stringify(pdfData);
                       return (
                         <Col
                           sm={12}
@@ -67,11 +79,19 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                               labelColor={"rgba(16, 121, 63)"}
                             />
                           ) : ext === "pdf" ? (
-                            <FileIcon
-                              extension={"pdf"}
-                              size={78}
-                              {...defaultStyles.pdf}
-                            />
+                            <Link
+                              to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                                pdfDataJson
+                              )}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <FileIcon
+                                extension={"pdf"}
+                                size={78}
+                                {...defaultStyles.pdf}
+                              />
+                            </Link>
                           ) : ext === "png" ? (
                             <FileIcon
                               extension={"png"}

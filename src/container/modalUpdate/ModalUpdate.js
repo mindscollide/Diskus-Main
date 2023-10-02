@@ -1003,11 +1003,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
     if (editFlag) {
       let user1 = createMeeting.MeetingAttendees;
       let List = addedParticipantNameList;
-
-      setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
-      setAddedParticipantNameList(List);
       dispatch(allAssignessList(navigate, t));
       dispatch(GetAllReminders(navigate, t));
+      setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
+      setAddedParticipantNameList(List);
     } else {
       setEditFlag(false);
       seteditRecordIndex(null);

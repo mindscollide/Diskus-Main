@@ -56,6 +56,7 @@ import {
   newDateFormaterAsPerUTC,
   newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
+  utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 
@@ -389,8 +390,8 @@ const TodoList = () => {
       width: "180px",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
-        newTimeFormaterAsPerUTCFullDate(a.deadlineDateTime) <
-        newTimeFormaterAsPerUTCFullDate(b.deadlineDateTime),
+        utcConvertintoGMT(a.deadlineDateTime) -
+        utcConvertintoGMT(b.deadlineDateTime),
       // width: "220px",
       render: (text, record) => {
         return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
