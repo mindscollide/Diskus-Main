@@ -196,6 +196,14 @@ const Actions = () => {
                         className={styles["CloneMeetingButton"]}
                       />
                       <Button
+                        text={t("Delete-meeting")}
+                        className={styles["CloneMeetingButton"]}
+                      />
+                      <Button
+                        text={t("Publish-the-meeting")}
+                        className={styles["CloneMeetingButton"]}
+                      />
+                      <Button
                         text={t("Cancel")}
                         className={styles["CloneMeetingButton"]}
                       />

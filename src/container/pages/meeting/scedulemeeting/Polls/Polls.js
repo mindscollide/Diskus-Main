@@ -238,15 +238,25 @@ const Polls = () => {
                       className="d-flex justify-content-end gap-2"
                     >
                       <Button
-                        text={"Clone-meeting"}
+                        text={t("Clone-meeting")}
+                        className={styles["Cancel_Button_Polls_meeting"]}
+                      />
+
+                      <Button
+                        text={t("Delete-meeting")}
+                        className={styles["Cancel_Button_Polls_meeting"]}
+                      />
+
+                      <Button
+                        text={t("Publish-the-meeting")}
                         className={styles["Cancel_Button_Polls_meeting"]}
                       />
                       <Button
-                        text={"Cancel"}
+                        text={t("Cancel")}
                         className={styles["Cancel_Button_Polls_meeting"]}
                       />
                       <Button
-                        text={"Save"}
+                        text={t("Save")}
                         className={styles["Save_Button_Polls_meeting"]}
                       />
                     </Col>

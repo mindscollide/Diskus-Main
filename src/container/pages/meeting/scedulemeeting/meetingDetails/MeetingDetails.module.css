@@ -182,6 +182,10 @@ body[dir="rtl"] .errorMessage-inLogin {
   color: #f16b6b;
 }
 
+.steric {
+  color: #f16b6b !important;
+}
+
 .White_Icon_class {
   margin-left: -3.5px !important;
   margin-top: 1px !important;

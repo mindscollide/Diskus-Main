@@ -1,0 +1,45 @@
+.EndMeetingTextStyles {
+  color: #6172d6 !important;
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.No_unsave_File_Upload {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.No_unsave_File_Upload:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Yes_unsave_File_Upload {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #f16b6b !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Yes_unsave_File_Upload:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #f16b6b !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}

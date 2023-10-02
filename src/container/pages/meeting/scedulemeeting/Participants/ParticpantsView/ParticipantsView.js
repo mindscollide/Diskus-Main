@@ -84,6 +84,12 @@ const ParticipantsView = () => {
             text={t("Clone-meeting")}
             className={styles["Cancel_Button_Organizers_view"]}
           />
+
+          <Button
+            text={t("View-poll")}
+            className={styles["Cancel_Button_Organizers_view"]}
+          />
+
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Button_Organizers_view"]}

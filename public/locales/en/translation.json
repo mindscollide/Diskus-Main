@@ -1510,5 +1510,12 @@
   "No-annotation-available": "No Annotation Available",
   "English": "English",
   "Arabic": "عربي",
-  "French": "Français"
+  "French": "Français",
+  "Are-you-sure-you-want-to-leave": "Are you sure you want to leave",
+  "The-meeting": "the meeting",
+  "End-for-all": "End for All",
+  "End-for-me": "End for Me",
+  "Publish-the-meeting": "Publish the meeting",
+  "Delete-meeting": "Delete Meeting",
+  "Schedule-proposed-meetings": "Schedule Proposed Meetings"
 }

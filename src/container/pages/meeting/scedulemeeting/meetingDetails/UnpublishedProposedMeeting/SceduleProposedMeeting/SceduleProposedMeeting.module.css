@@ -1,0 +1,53 @@
+.Scedule_Proposed_meeting_heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6;
+}
+
+.DateButtonSceduleProposedMeeting {
+  font-size: 12px !important;
+  background: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+.DateButtonSceduleProposedMeeting:is(:hover, :active, :focus, :focus-visible) {
+  font-size: 12px !important;
+  background: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.ParticipantName {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #505050;
+}
+
+.Designation {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6;
+}
+
+.SectionLineHeight {
+  line-height: 15px !important;
+}
+
+.custom-table td {
+  /* border-bottom: 1px solid #e1e1e1 !important; */
+  padding: 10px; /* Add padding to create spacing between columns */
+}
+
+.custom-table tr:first-child td {
+  padding: 20px; /* Add padding to create spacing between column headings */
+}
+
+.TotalVotes {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6;
+}
