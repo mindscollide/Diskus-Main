@@ -7,16 +7,8 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-import whiteplusicon from "../../../../../assets/images/white plus icon.svg";
 import { Col, Row } from "react-bootstrap";
-import {
-  Button,
-  Switch,
-  TextField,
-  Loader,
-  Notification,
-} from "../../../../../components/elements";
-import { Plus } from "react-bootstrap-icons";
+import { Button, Switch, TextField } from "../../../../../components/elements";
 import desh from "../../../../../assets/images/desh.svg";
 import {
   regexOnlyCharacters,
@@ -475,7 +467,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                         <Col
                                           lg={3}
                                           md={3}
-                                          sm={12}
+                                          sm={3}
                                           className="timePicker"
                                         >
                                           <DatePicker

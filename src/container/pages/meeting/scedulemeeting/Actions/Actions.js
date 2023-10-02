@@ -26,37 +26,37 @@ const Actions = () => {
   };
 
   const notificationData = [
-    {
-      key: "1",
-      Name: <label className={styles["DateClass"]}>15 July 2023</label>,
-      Action: (
-        <label className={styles["ActionsClass"]}>
-          Saifiiyousuf4002@gmail.com
-        </label>
-      ),
-      AssignedTo: <label className="column-boldness">Muhammad Saif</label>,
-      Status: <label className="column-boldness">Outstanding</label>,
-      MeetingTitle: (
-        <label className={styles["Meeting_Title"]}>
-          IT Departmental Meetin… Introduction
-        </label>
-      ),
-      MeetingDate: <label className="column-boldness">25 June 2023</label>,
-      RedCrossIcon: (
-        <>
-          <Row>
-            <Col lf={12} md={12} sm={12}>
-              <img
-                draggable={false}
-                src={CrossIcon}
-                className="cursor-pointer"
-                onClick={handleCrossIconModal}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
+    // {
+    //   key: "1",
+    //   Name: <label className={styles["DateClass"]}>15 July 2023</label>,
+    //   Action: (
+    //     <label className={styles["ActionsClass"]}>
+    //       Saifiiyousuf4002@gmail.com
+    //     </label>
+    //   ),
+    //   AssignedTo: <label className="column-boldness">Muhammad Saif</label>,
+    //   Status: <label className="column-boldness">Outstanding</label>,
+    //   MeetingTitle: (
+    //     <label className={styles["Meeting_Title"]}>
+    //       IT Departmental Meetin… Introduction
+    //     </label>
+    //   ),
+    //   MeetingDate: <label className="column-boldness">25 June 2023</label>,
+    //   RedCrossIcon: (
+    //     <>
+    //       <Row>
+    //         <Col lf={12} md={12} sm={12}>
+    //           <img
+    //             draggable={false}
+    //             src={CrossIcon}
+    //             className="cursor-pointer"
+    //             onClick={handleCrossIconModal}
+    //           />
+    //         </Col>
+    //       </Row>
+    //     </>
+    //   ),
+    // },
   ];
 
   const [actionsRows, setActionsRows] = useState(notificationData);
@@ -127,7 +127,7 @@ const Actions = () => {
           </Row>
           <Row className="mt-5">
             <Col lg={12} md={12} sm={12}>
-              {actionsRows.length <= 0 ? (
+              {actionsRows.length === 0 ? (
                 <>
                   <Row className="mt-0">
                     <Col

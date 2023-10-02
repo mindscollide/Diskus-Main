@@ -160,6 +160,10 @@ const MeetingActive = () => {
           className="d-flex justify-content-end gap-2"
         >
           <Button
+            text={t("Clone-meeting")}
+            className={styles["Cancel_Meeting_SaveMeeting"]}
+          />
+          <Button
             text={t("Cancel")}
             className={styles["Cancel_Meeting_SaveMeeting"]}
           />

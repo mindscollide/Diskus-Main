@@ -7,6 +7,7 @@ import { Col, Row } from "react-bootstrap";
 import backDownArrow from "../../../../../assets/images/downDirect.png";
 import upArrow from "../../../../../assets/images/UpperArrow.svg";
 import PDFIcon from "../../../../../assets/images/pdf_icon.svg";
+import { Button } from "../../../../../components/elements";
 
 const MeetingMaterial = () => {
   const { t } = useTranslation();
@@ -140,6 +141,21 @@ const MeetingMaterial = () => {
                 );
               })
             : null}
+        </Col>
+      </Row>
+      <Row>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          <Button
+            text={t("Clone-meeting")}
+            className={styles["Cancel_Classname"]}
+          />
+          <Button text={t("Cancel")} className={styles["Cancel_Classname"]} />
+          <Button text={t("Next")} className={styles["Save_Classname"]} />
         </Col>
       </Row>
     </section>

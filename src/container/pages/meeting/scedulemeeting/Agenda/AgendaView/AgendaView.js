@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import profile from "../../../../../../assets/images/newprofile.png";
 import PDFIcon from "../../../../../../assets/images/pdf_icon.svg";
+import SubAgendaView from "./SubAgendaView/SubAgendaView";
+import { Button } from "../../../../../../components/elements";
 const AgendaView = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -28,6 +30,28 @@ const AgendaView = () => {
         },
         {
           MainFileName: "Diskus File",
+        },
+      ],
+      SubAgendaView: [
+        {
+          SubagendaTitle: "Hello there I am subAgenda Title",
+          subAgendaParticipant: "Huzaifa jahangir",
+          SubAgendaStartDate: "1:30AM",
+          subAgendaEndDate: "5:00PM",
+          subAgendaFiles: [
+            {
+              subAgendaFileName: "Axis SubAgenda",
+            },
+            {
+              subAgendaFileName: "Diskus SubAgenda",
+            },
+            {
+              subAgendaFileName: "Bandwidgth SubAgenda",
+            },
+            {
+              subAgendaFileName: "Bandwidgth SubAgenda",
+            },
+          ],
         },
       ],
     },
@@ -109,7 +133,7 @@ const AgendaView = () => {
                                           styles["Heading_View_Agenda"]
                                         }
                                       >
-                                        <span>{MainAgendaIndex + 1}.</span>
+                                        <span>{MainAgendaIndex + 1}.</span>{" "}
                                         {MainAgendaData.MainAgendaTitle}
                                       </span>
                                     </Col>
@@ -120,7 +144,9 @@ const AgendaView = () => {
                                         className={styles["Show_more_Class"]}
                                         onClick={handleExpandMainAgendaView}
                                       >
-                                        {t("Show-more")}
+                                        {expandMainAgenda
+                                          ? t("Hide-details")
+                                          : t("Show-more")}
                                       </span>
                                     </Col>
                                   </Row>
@@ -275,11 +301,34 @@ const AgendaView = () => {
                           </Row>
                         </section>
                       </Col>
+                      <Row className="m-0 p-0">
+                        <Col lg={12} md={12} sm={12} className="mt-2">
+                          <SubAgendaView
+                            MainAgendaData={MainAgendaData}
+                            MainAgendaIndex={MainAgendaIndex}
+                          />
+                        </Col>
+                      </Row>
                     </>
                   );
                 })
               : null}
           </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          <Button
+            text={t("Clone-meeting")}
+            className={styles["Cancel_Classname"]}
+          />
+          <Button text={t("Cancel")} className={styles["Cancel_Classname"]} />
+          <Button text={t("Save")} className={styles["Save_Classname"]} />
         </Col>
       </Row>
     </section>

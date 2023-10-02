@@ -19,6 +19,7 @@ import Minutes from "./Minutes/Minutes";
 import ProposedMeetingDate from "./Participants/ProposedMeetingDate/ProposedMeetingDate";
 import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
+import Attendence from "./Attendence/Attendence";
 const SceduleMeeting = ({ setProposeMeetingDate }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -31,6 +32,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
   const [proposedMeetingDates, setProposedMeetingDates] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
+  const [attendance, setAttendance] = useState(false);
 
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
@@ -40,6 +42,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setAgenda(false);
     setMinutes(false);
     setactionsPage(false);
+    setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
   };
@@ -52,6 +55,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setAgenda(false);
     setMinutes(false);
     setactionsPage(false);
+    setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
   };
@@ -64,6 +68,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setAgenda(false);
     setMinutes(false);
     setactionsPage(false);
+    setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
   };
@@ -76,6 +81,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setAgenda(false);
     setMinutes(false);
     setactionsPage(false);
+    setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
   };
@@ -88,6 +94,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setmeetingDetails(false);
     setMinutes(false);
     setactionsPage(false);
+    setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
   };
@@ -100,6 +107,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setorganizers(false);
     setMinutes(false);
     setactionsPage(false);
+    setAttendance(false);
     setPolls(false);
     setmeetingDetails(false);
   };
@@ -112,6 +120,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setmeetingDetails(false);
     setorganizers(false);
     setAgenda(false);
+    setAttendance(false);
     setPolls(false);
     setactionsPage(false);
   };
@@ -124,6 +133,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setParticipants(false);
     setAgendaContributors(false);
     setorganizers(false);
+    setAttendance(false);
     setPolls(false);
     setmeetingDetails(false);
   };
@@ -137,7 +147,21 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setParticipants(false);
     setAgendaContributors(false);
     setorganizers(false);
+    setAttendance(false);
     setmeetingDetails(false);
+  };
+
+  const showAttendance = () => {
+    setAttendance(true);
+    setactionsPage(false);
+    setMinutes(false);
+    setMeetingMaterial(false);
+    setAgenda(false);
+    setParticipants(false);
+    setAgendaContributors(false);
+    setorganizers(false);
+    setmeetingDetails(false);
+    setPolls(false);
   };
 
   return (
@@ -167,7 +191,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
               </Col>
             </Row>
             <Row>
-              <Col lg={12} md={12} sm={12}>
+              <Col lg={12} md={12} sm={12} className="mb-4">
                 <Paper className={styles["Scedule_meeting_paper"]}>
                   <Row>
                     <Col
@@ -223,23 +247,48 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
                       />
                       <Button
                         text={t("Meeting-material")}
-                        className={styles["Schedule_meetings_options"]}
+                        className={
+                          meetingMaterial === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
                         onClick={showMeetingMaterial}
                       />
                       <Button
                         text={t("Minutes")}
-                        className={styles["Schedule_meetings_options"]}
+                        className={
+                          minutes === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
                         onClick={showMinutes}
                       />
                       <Button
                         text={t("Actions")}
-                        className={styles["Schedule_meetings_options"]}
+                        className={
+                          actionsPage === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
                         onClick={showActions}
                       />
                       <Button
                         text={t("Polls")}
-                        className={styles["Schedule_meetings_options"]}
+                        className={
+                          polls === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
                         onClick={ShowPolls}
+                      />
+                      <Button
+                        text={t("Attendence")}
+                        className={
+                          attendance === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showAttendance}
                       />
                     </Col>
                   </Row>
@@ -275,6 +324,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
                   {minutes && <Minutes setMinutes={setMinutes} />}
                   {actionsPage && <Actions />}
                   {polls && <Polls />}
+                  {attendance && <Attendence />}
                 </Paper>
               </Col>
             </Row>

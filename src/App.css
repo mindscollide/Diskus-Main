@@ -5792,6 +5792,7 @@ abbr[title] {
 
 .containerClassTimePicker .rmdp-input {
   height: 39px !important;
+  width: 100% !important;
 }
 
 .containerClassTimePicker .rmdp-time-picker.bottom {
@@ -5849,7 +5850,7 @@ abbr[title] {
 
 .containerClassTimePicker input[type="text"] {
   color: #5f78d6 !important;
-  width: 42px;
+  width: 100% !important;
   height: 18px;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
@@ -6044,8 +6045,8 @@ body[dir="rtl"] .bg-white.border-radius-4.border {
   display: block !important;
 }
 
-.Polls_Meeting__control.css-13cymwt-control {
-  width: 529px;
+.group-fields .css-b62m3t-container {
+  width: 100% !important;
 }
 .MuiAccordionSummary-expandIcon {
   width: 4vw !important;
@@ -6096,4 +6097,8 @@ input[type="time"]::-webkit-clear-button {
   color: #5a5a5a;
   font-family: "MontserratSemiBold-600";
   font-size: calc(19px - 20%);
+}
+
+.ProgressUNpublishedMeeting .ant-progress-text {
+  display: none !important;
 }

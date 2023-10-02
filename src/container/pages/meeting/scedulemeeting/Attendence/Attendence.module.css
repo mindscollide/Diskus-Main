@@ -1,0 +1,77 @@
+.PersonName {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #545454;
+}
+
+.Designation {
+  color: #6172d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Email {
+  color: #505050 !important;
+  font-family: "MontserratMedium-500" !important;
+  font-size: 12px !important;
+}
+
+.PresentBackgroundSection {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #81db86 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  display: flex;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+.AbsentBackgroundSection {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #f16b6b !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  display: flex;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+.WorkFromHomeSection {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #d8a709 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  display: flex;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+.CloneMeetingStyles {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1ee !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+}
+
+.CloneMeetingStyles:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1ee !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.fixedHeight {
+  height: 45vh !important;
+}

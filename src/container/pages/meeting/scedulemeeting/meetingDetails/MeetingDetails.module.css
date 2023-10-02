@@ -208,3 +208,10 @@ body[dir="rtl"] .White_Icon_class {
   background: #ccc;
   margin-left: -15px;
 }
+
+.UnpublishedMeetingButton {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+}
