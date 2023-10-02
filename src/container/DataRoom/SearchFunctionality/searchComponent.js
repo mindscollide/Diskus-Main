@@ -1245,6 +1245,8 @@ const SearchComponent = ({
 
   // this is for cleare state
   const handleClearAllSearchOptions = () => {
+    setSearchTabOpen(false);
+    // setSearchbarsearchoptions(false);
     setDateValue(t("Date-modified"));
     setSearchDataFields({
       UserID: userID ? parseInt(userID) : 0,

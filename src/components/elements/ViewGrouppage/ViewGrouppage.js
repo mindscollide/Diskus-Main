@@ -50,12 +50,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
       });
     }
   }, [GroupsReducer]);
-  useEffect(() => {
-    let UserID = JSON.parse(localStorage.getItem("userID"));
-    try {
-      dispatch(allAssignessList(navigate, t));
-    } catch {}
-  }, []);
+
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">
       <Row className="mt-3">

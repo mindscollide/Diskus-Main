@@ -78,8 +78,8 @@ body[dir="rtl"] .modal-View-title {
   font-size: 12px;
   color: #5a5a5a;
   font-family: "MontserratRegular" !important;
-  max-height: 95px !important;
-  height: 95px !important;
+  max-height: 125px !important;
+  overflow-y: auto;
 }
 
 body[dir="rtl"] .modal-view-discription {

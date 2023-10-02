@@ -1027,5 +1027,14 @@
   "Published-meeting": "Published Meeting",
   "Meeting-poll": "Meeting Poll",
   "Send-reponse-by": "Send Reponse by",
-  "Are-you-sure-to-delete-this-meeting": "Are you sure to delete this meeting?"
+  "Are-you-sure-to-delete-this-meeting": "Are you sure to delete this meeting?",
+  "Record-inserted": "Record Inserted",
+  "Record-updated": "Record Updated",
+  "No-record-inserted": "No Record Inserted",
+  "No-record-updated": "No Record Updated",
+  "Annotation-available": "Annotation Available",
+  "No-annotation-available": "No Annotation Available",
+  "English": "English",
+  "Arabic": "عربي",
+  "French": "Français"
 }

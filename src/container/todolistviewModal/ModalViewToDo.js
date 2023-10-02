@@ -597,7 +597,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 </Form>
               </Row>
               {/* File Attachments */}
-              <Row className="mt-3">
+              <Row className="my-3">
                 <Col
                   sm={12}
                   md={12}
@@ -607,11 +607,16 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                   {/* Attachments */}
                   {t("Attachement")}
                 </Col>
-                <Col sm={12} md={12} lg={12} className="todoModalViewFiles ">
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="todoModalViewFiles mt-2"
+                >
                   {tasksAttachments.TasksAttachments.length > 0
                     ? tasksAttachments.TasksAttachments.map(
                         (modalviewAttachmentFiles, index) => {
-                          let ext =
+                          var ext =
                             modalviewAttachmentFiles.DisplayAttachmentName.split(
                               "."
                             ).pop();
@@ -619,11 +624,16 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                             modalviewAttachmentFiles.DisplayAttachmentName.split(
                               " "
                             )[0];
+                          console.log(
+                            "modalviewAttachmentFilesmodalviewAttachmentFiles",
+                            modalviewAttachmentFiles
+                          );
                           const pdfData = {
                             taskId: modalviewAttachmentFiles.FK_TID,
                             attachmentID: modalviewAttachmentFiles.PK_MAAID,
                             fileName:
                               modalviewAttachmentFiles.DisplayAttachmentName,
+                            commingFrom: 1,
                           };
                           const pdfDataJson = JSON.stringify(pdfData);
                           return (
@@ -729,10 +739,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                     : null}
                 </Col>
               </Row>
-            </>
-          }
-          ModalFooter={
-            <>
               <Row>
                 <Col
                   className="d-flex justify-content-end"
@@ -749,6 +755,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               </Row>
             </>
           }
+          // ModalFooter = {() }
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />

@@ -4,24 +4,38 @@ import "./DocumentViwer.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  ClearMessageAnnotations,
+  GetAnnotationsOfToDoAttachementMessageCleare,
+  addAnnotationsOnDataroomAttachement,
+  addAnnotationsOnNotesAttachement,
+  addAnnotationsOnResolutionAttachement,
   addAnnotationsOnToDoAttachement,
+  getAnnotationsOfDataroomAttachement,
+  getAnnotationsOfNotesAttachement,
+  getAnnotationsOfResolutionAttachement,
   getAnnotationsOfToDoAttachement,
 } from "../../../store/actions/webVieverApi_actions";
 import { useTranslation } from "react-i18next";
+import { Notification, Loader } from "../index";
 const DocumentViewer = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const state = useSelector((state) => state);
-  const { webViewer } = state;
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
+  const { webViewer } = useSelector((state) => state);
   const viewer = useRef(null);
   let name = localStorage.getItem("name");
   // Parse the URL parameters to get the data
   const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
+  console.log(pdfDataJson, "pdfDataJsonpdfDataJsonpdfDataJson");
   // Deserialize the JSON string into an object
   const pdfData = JSON.parse(pdfDataJson);
-  const { taskId, attachmentID, fileName } = pdfData;
+  console.log(pdfData, "pdfDatapdfDatapdfDatapdfData");
+  const { taskId, attachmentID, fileName, commingFrom } = pdfData;
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -29,12 +43,40 @@ const DocumentViewer = () => {
 
   useEffect(() => {
     if (taskId && attachmentID) {
-      let data = {
-        TaskID: Number(taskId),
-        TaskAttachementID: Number(attachmentID),
-      };
-
-      dispatch(getAnnotationsOfToDoAttachement(navigate, t, data));
+      console.log("test", { taskId, attachmentID });
+      if (Number(commingFrom) === 1) {
+        let data = {
+          TaskID: Number(taskId),
+          TaskAttachementID: Number(attachmentID),
+        };
+        // for todo
+        dispatch(getAnnotationsOfToDoAttachement(navigate, t, data));
+      } else if (Number(commingFrom) === 2) {
+        let notesData = {
+          NoteID: Number(taskId),
+          NoteAttachementID: Number(attachmentID),
+        };
+        console.log("test", { commingFrom, notesData });
+        dispatch(getAnnotationsOfNotesAttachement(navigate, t, notesData));
+        // for notes
+      } else if (Number(commingFrom) === 3) {
+        let resolutionData = {
+          ResolutionID: Number(taskId),
+          ResolutionAttachementID: Number(attachmentID),
+        };
+        dispatch(
+          getAnnotationsOfResolutionAttachement(navigate, t, resolutionData)
+        );
+        // for resultion
+      } else if (Number(commingFrom) === 4) {
+        // for data room
+        let dataRoomData = {
+          FileID: attachmentID,
+        };
+        dispatch(
+          getAnnotationsOfDataroomAttachement(navigate, t, dataRoomData)
+        );
+      }
     }
   }, []);
 
@@ -93,14 +135,51 @@ const DocumentViewer = () => {
               // });
               // const arr = new Uint8Array(data);
               // const blob = new Blob([arr], { type: "application/pdf" });
-              const apiData = {
-                TaskID: taskId, // Assuming taskId is defined in your component
-                TaskAttachementID: attachmentID, // Assuming attachmentID is defined in your component
-                AnnotationString: xfdfString, // Pass the annotations data here
-              };
 
               // Dispatch your Redux action to send the data to the API
-              dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
+              if (Number(commingFrom) === 1) {
+                const apiData = {
+                  TaskID: taskId, // Assuming taskId is defined in your component
+                  TaskAttachementID: attachmentID, // Assuming attachmentID is defined in your component
+                  AnnotationString: xfdfString, // Pass the annotations data here
+                };
+                // for todo
+                dispatch(addAnnotationsOnToDoAttachement(navigate, t, apiData));
+              } else if (Number(commingFrom) === 2) {
+                let notesData = {
+                  NoteID: taskId,
+                  NoteAttachementID: attachmentID,
+                  AnnotationString: xfdfString,
+                };
+                dispatch(
+                  addAnnotationsOnNotesAttachement(navigate, t, notesData)
+                );
+                // for notes
+              } else if (Number(commingFrom) === 3) {
+                let resolutionData = {
+                  ResolutionID: taskId,
+                  ResolutionAttachementID: attachmentID,
+                  AnnotationString: xfdfString,
+                };
+                dispatch(
+                  addAnnotationsOnResolutionAttachement(
+                    navigate,
+                    t,
+                    resolutionData
+                  )
+                );
+                // for resultion
+              } else if (Number(commingFrom) === 4) {
+                // for data room
+                let dataRoomData = {
+                  FileID: attachmentID,
+                  AnnotationString: xfdfString,
+                };
+
+                dispatch(
+                  addAnnotationsOnDataroomAttachement(navigate, t, dataRoomData)
+                );
+              }
               // console.log("exportAnnotationsDocument saved successfully:", blob);
               // console.log(
               //   "exportAnnotations",
@@ -136,11 +215,34 @@ const DocumentViewer = () => {
       });
     }
   }, [webViewer.xfdfData, webViewer.attachmentBlob]);
-
+  useEffect(() => {
+    if (
+      webViewer.ResponseMessage !== "" &&
+      webViewer.ResponseMessage !== undefined
+    ) {
+      setOpen({
+        ...open,
+        message: webViewer.ResponseMessage,
+        open: true,
+      });
+      setTimeout(() => {
+        dispatch(ClearMessageAnnotations());
+        setOpen({
+          ...open,
+          message: "",
+          open: false,
+        });
+      }, 4000);
+    }
+  }, [webViewer.ResponseMessage]);
   return (
-    <div className="documnetviewer">
-      <div className="webviewer" ref={viewer}></div>
-    </div>
+    <>
+      <div className="documnetviewer">
+        <div className="webviewer" ref={viewer}></div>
+      </div>
+      {webViewer.Loading && <Loader />}
+      <Notification message={open.message} open={open.open} setOpen={setOpen} />
+    </>
   );
 };
 

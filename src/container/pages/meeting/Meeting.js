@@ -200,6 +200,8 @@ const Meeting = () => {
       ) {
         setRow(assignees.SearchMeetingData.meetings);
       }
+    } else {
+      setRow([]);
     }
   }, [assignees.SearchMeetingData]);
 
@@ -337,6 +339,10 @@ const Meeting = () => {
           text: t("Delete"),
           value: "7",
         },
+        {
+          text: t("Not-conducted"),
+          value: "8",
+        },
       ],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-meeting" />
@@ -384,6 +390,12 @@ const Meeting = () => {
           return (
             <div className="activebtn ">
               <span className="activebtn">{t("Delete")}</span>
+            </div>
+          );
+        } else if (text === "8") {
+          return (
+            <div className="activebtn ">
+              <span className="activebtn">{t("Not-conducted")}</span>
             </div>
           );
         }

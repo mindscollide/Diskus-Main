@@ -185,18 +185,19 @@ const Talk = () => {
     ) {
       let missedCallCountMqtt =
         VideoMainReducer.MissedCallCountMqttData.missedCallCount
-      if (missedCallCountMqtt !== 0) {
+      if (Object.keys(missedCallCountMqtt) !== null) {
         setMissedCallCount(missedCallCountMqtt)
       } else {
-        setMissedCallCount(
-          VideoMainReducer?.MissedCallCountData?.missedCallCount,
-        )
+        setMissedCallCount(VideoMainReducer.MissedCallCountData.missedCallCount)
       }
     }
-  }, [
-    VideoMainReducer?.MissedCallCountMqttData?.missedCallCount,
-    VideoMainReducer?.MissedCallCountData?.missedCallCount,
-  ])
+  }, [VideoMainReducer.MissedCallCountMqttData.missedCallCount])
+
+  console.log(
+    'MQTT Condition',
+    Object.keys(VideoMainReducer.MissedCallCountMqttData).length !== 0,
+    missedCallCount,
+  )
 
   let totalValue = Number(missedCallCount) + Number(unreadMessageCount)
 

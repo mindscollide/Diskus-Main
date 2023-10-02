@@ -45,11 +45,6 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
     }
   }, [CommitteeReducer.getCommitteeByCommitteeID]);
 
-  useEffect(() => {
-    let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(navigate, t));
-  }, []);
-
   return (
     <>
       <section className="MontserratSemiBold-600 color-5a5a5a">

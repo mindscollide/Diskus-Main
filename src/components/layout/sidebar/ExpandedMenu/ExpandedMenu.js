@@ -26,9 +26,6 @@ const ExpandedMenu = () => {
             as={Link}
             to="dataroom"
             eventKey="link-5"
-            onClick={() => {
-              dispatch(allAssignessList(navigate, t));
-            }}
             className={
               location.pathname === "/DisKus/dataroom" ||
               location.pathname === "/Diskus/dataroom"
