@@ -168,3 +168,24 @@
   background: #ccc;
   margin-left: -15px;
 }
+
+.CreateFromScratchScroller {
+  height: 50vh !important;
+  overflow-x: hidden !important;
+}
+
+.SaveCreateFromScratch {
+  padding-right: 25px !important;
+}
+
+.CreateFromScratchScroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.CreateFromScratchScroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
