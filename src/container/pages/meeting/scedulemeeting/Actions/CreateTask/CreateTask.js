@@ -572,6 +572,10 @@ const CreateTask = ({ setCreateaTask }) => {
                 className="d-flex justify-content-end gap-2"
               >
                 <Button
+                  text={"Clone-meeting"}
+                  className={styles["Cancel_Button_Polls_meeting"]}
+                />
+                <Button
                   text={"Cancel"}
                   className={styles["Cancel_Button_Polls_meeting"]}
                   onClick={handleUnsavedModal}

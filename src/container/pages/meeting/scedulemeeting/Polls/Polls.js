@@ -217,13 +217,40 @@ const Polls = () => {
                 </>
               ) : (
                 <>
-                  <Table
-                    column={PollsColoumn}
-                    scroll={{ y: "62vh" }}
-                    pagination={false}
-                    className="Polling_table"
-                    rows={pollsRows}
-                  />
+                  <section className={styles["MaintainingHeight"]}>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Table
+                          column={PollsColoumn}
+                          scroll={{ y: "62vh" }}
+                          pagination={false}
+                          className="Polling_table"
+                          rows={pollsRows}
+                        />
+                      </Col>
+                    </Row>
+                  </section>
+                  <Row>
+                    <Col
+                      lg={!2}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-end gap-2"
+                    >
+                      <Button
+                        text={"Clone-meeting"}
+                        className={styles["Cancel_Button_Polls_meeting"]}
+                      />
+                      <Button
+                        text={"Cancel"}
+                        className={styles["Cancel_Button_Polls_meeting"]}
+                      />
+                      <Button
+                        text={"Save"}
+                        className={styles["Save_Button_Polls_meeting"]}
+                      />
+                    </Col>
+                  </Row>
                 </>
               )}
             </Col>
