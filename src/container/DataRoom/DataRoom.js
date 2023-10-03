@@ -271,10 +271,6 @@ const DataRoom = () => {
       window.removeEventListener("offline", handleOnlineStatusChange);
     };
   }, []);
-  console.log(
-    DataRoomReducer.getAllDocumentandShareFolderResponse,
-    "DataRoomReducerDataRoomReducer"
-  );
   useEffect(() => {
     try {
       if (

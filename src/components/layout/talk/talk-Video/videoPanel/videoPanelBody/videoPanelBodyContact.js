@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { Container, Row, Col } from 'react-bootstrap'
-import { TextField, Loader, Modal, Button } from '../../../../../elements'
-import './videoPanelBody.css'
-import VideoCallIcon from '../../../../../../assets/images/VideoCall-Icon.png'
-import { Spin } from 'antd'
-import { LoaderPanel } from '../../../../../elements'
-import { Checkbox } from 'antd'
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Container, Row, Col } from "react-bootstrap";
+import { TextField, Loader, Modal, Button } from "../../../../../elements";
+import "./videoPanelBody.css";
+import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
+import { Spin } from "antd";
+import { LoaderPanel } from "../../../../../elements";
+import { Checkbox } from "antd";
 import {
   GetAllVideoCallUsers,
   InitiateVideoCall,
@@ -16,115 +16,117 @@ import {
   groupCallRecipients,
   callRequestReceivedMQTT,
   LeaveCall,
-} from '../../../../../../store/actions/VideoMain_actions'
+} from "../../../../../../store/actions/VideoMain_actions";
 import {
   normalizeVideoPanelFlag,
   videoChatPanel,
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
-} from '../../../../../../store/actions/VideoFeature_actions'
-import VideoPanelFooter from '../videoPanelFooter/videoPanelFooter'
+  leaveCallModal,
+  participantPopup,
+} from "../../../../../../store/actions/VideoFeature_actions";
+import VideoPanelFooter from "../videoPanelFooter/videoPanelFooter";
 
 const VideoPanelBodyContact = () => {
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state,
-  )
+    (state) => state
+  );
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  let currentOrganization = Number(localStorage.getItem('organizationID'))
+  let currentOrganization = Number(localStorage.getItem("organizationID"));
 
-  let currentUserID = Number(localStorage.getItem('userID'))
+  let currentUserID = Number(localStorage.getItem("userID"));
 
-  let activeCall = JSON.parse(localStorage.getItem('activeCall'))
+  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
-  let initiateRoomID = localStorage.getItem('initiateCallRoomID')
+  let initiateRoomID = localStorage.getItem("initiateCallRoomID");
 
-  let currentCallType = Number(localStorage.getItem('CallType'))
+  let currentCallType = Number(localStorage.getItem("CallType"));
 
-  let callTypeID = Number(localStorage.getItem('callTypeID'))
+  let callTypeID = Number(localStorage.getItem("callTypeID"));
 
-  let callerID = Number(localStorage.getItem('callerID'))
+  let callerID = Number(localStorage.getItem("callerID"));
 
-  const [searchChatValue, setSearchChatValue] = useState('')
+  const [searchChatValue, setSearchChatValue] = useState("");
 
-  const [allUsers, setAllUsers] = useState([])
+  const [allUsers, setAllUsers] = useState([]);
 
-  const [groupCallUsers, setGroupCallUsers] = useState([])
+  const [groupCallUsers, setGroupCallUsers] = useState([]);
 
-  const [groupCallActiveUsers, setGroupCallActiveUsers] = useState([])
+  const [groupCallActiveUsers, setGroupCallActiveUsers] = useState([]);
 
-  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false)
+  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
 
-  const [initiateVideoModalGroup, setInitiateVideoModalGroup] = useState(false)
+  const [initiateVideoModalGroup, setInitiateVideoModalGroup] = useState(false);
 
   const groupCallUsersHandler = (data) => {
     if (groupCallUsers.includes(data.userID)) {
       let groupUsersIndex = groupCallUsers.findIndex(
-        (userID) => userID === data.userID,
-      )
+        (userID) => userID === data.userID
+      );
       if (groupUsersIndex !== -1) {
-        groupCallUsers.splice(groupUsersIndex, 1)
-        setGroupCallUsers([...groupCallUsers])
+        groupCallUsers.splice(groupUsersIndex, 1);
+        setGroupCallUsers([...groupCallUsers]);
       }
     } else {
-      groupCallUsers.push(data.userID)
-      setGroupCallUsers([...groupCallUsers])
+      groupCallUsers.push(data.userID);
+      setGroupCallUsers([...groupCallUsers]);
     }
     if (groupCallActiveUsers.includes(data)) {
       let activeGroupCallUsersIndex = groupCallActiveUsers.findIndex(
-        (data2, index) => data === data2,
-      )
+        (data2, index) => data === data2
+      );
       if (activeGroupCallUsersIndex !== -1) {
-        groupCallActiveUsers.splice(activeGroupCallUsersIndex, 1)
-        setGroupCallActiveUsers([...groupCallActiveUsers])
+        groupCallActiveUsers.splice(activeGroupCallUsersIndex, 1);
+        setGroupCallActiveUsers([...groupCallActiveUsers]);
       }
     } else {
-      groupCallActiveUsers.push(data)
-      setGroupCallActiveUsers([...groupCallActiveUsers])
+      groupCallActiveUsers.push(data);
+      setGroupCallActiveUsers([...groupCallActiveUsers]);
     }
-  }
+  };
 
-  console.log('groupCallActiveUsers', groupCallActiveUsers)
+  console.log("groupCallActiveUsers", groupCallActiveUsers);
 
   const searchChat = (e) => {
-    setSearchChatValue(e)
+    setSearchChatValue(e);
     try {
       if (
         VideoMainReducer.VideoCallUsersData !== undefined &&
         VideoMainReducer.VideoCallUsersData !== null &&
         VideoMainReducer.VideoCallUsersData.length !== 0
       ) {
-        if (e !== '') {
+        if (e !== "") {
           let filteredData = VideoMainReducer.VideoCallUsersData.users.filter(
             (value) => {
-              return value.userName.toLowerCase().includes(e.toLowerCase())
-            },
-          )
+              return value.userName.toLowerCase().includes(e.toLowerCase());
+            }
+          );
           if (filteredData.length === 0) {
-            setAllUsers(VideoMainReducer.VideoCallUsersData.users)
+            setAllUsers(VideoMainReducer.VideoCallUsersData.users);
           } else {
-            setAllUsers(filteredData)
+            setAllUsers(filteredData);
           }
-        } else if (e === '' || e === null) {
-          let data = VideoMainReducer.VideoCallUsersData.users
-          setSearchChatValue('')
-          setAllUsers(data)
+        } else if (e === "" || e === null) {
+          let data = VideoMainReducer.VideoCallUsersData.users;
+          setSearchChatValue("");
+          setAllUsers(data);
         }
       }
     } catch {}
-  }
+  };
 
   useEffect(() => {
-    let Data = { OrganizationID: currentOrganization }
-    dispatch(GetAllVideoCallUsers(Data, navigate, t))
-  }, [])
+    let Data = { OrganizationID: currentOrganization };
+    dispatch(GetAllVideoCallUsers(Data, navigate, t));
+  }, []);
 
-  console.log('VideoMainReducer', VideoMainReducer)
+  console.log("VideoMainReducer", VideoMainReducer);
 
   //Setting state data of all users
   useEffect(() => {
@@ -133,127 +135,127 @@ const VideoPanelBodyContact = () => {
       VideoMainReducer.VideoCallUsersData !== null &&
       VideoMainReducer.VideoCallUsersData.length !== 0
     ) {
-      setAllUsers(VideoMainReducer?.VideoCallUsersData?.users)
+      setAllUsers(VideoMainReducer?.VideoCallUsersData?.users);
     } else {
-      setAllUsers([])
+      setAllUsers([]);
     }
-  }, [VideoMainReducer?.VideoCallUsersData])
+  }, [VideoMainReducer?.VideoCallUsersData]);
 
   const otoVideoCall = (userData) => {
     if (activeCall === false) {
-      console.log('Video Called User Data', userData)
+      console.log("Video Called User Data", userData);
       let Data = {
         RecipentIDs: [userData.userID],
         CallTypeID: 1,
         OrganizationID: currentOrganization,
-      }
-      localStorage.setItem('CallType', Data.CallTypeID)
-      dispatch(InitiateVideoCall(Data, navigate, t))
-      localStorage.setItem('activeCall', true)
-      localStorage.setItem('callerID', currentUserID)
-      localStorage.setItem('recipentCalledID', userData.userID)
-      dispatch(callRequestReceivedMQTT({}, ''))
-      dispatch(getVideoRecipentData(userData))
-      dispatch(normalizeVideoPanelFlag(true))
-      dispatch(videoChatPanel(false))
-      console.log('Video Called User Data', Data)
+      };
+      localStorage.setItem("CallType", Data.CallTypeID);
+      dispatch(InitiateVideoCall(Data, navigate, t));
+      localStorage.setItem("activeCall", true);
+      localStorage.setItem("callerID", currentUserID);
+      localStorage.setItem("recipentCalledID", userData.userID);
+      dispatch(callRequestReceivedMQTT({}, ""));
+      dispatch(getVideoRecipentData(userData));
+      dispatch(normalizeVideoPanelFlag(true));
+      dispatch(videoChatPanel(false));
+      console.log("Video Called User Data", Data);
     } else {
-      setInitiateVideoModalOto(true)
+      setInitiateVideoModalOto(true);
       // localStorage.setItem('callerID', currentUserID)
-      localStorage.setItem('recipentCalledID', userData.userID)
-      dispatch(callRequestReceivedMQTT({}, ''))
-      dispatch(getVideoRecipentData(userData))
+      localStorage.setItem("recipentCalledID", userData.userID);
+      dispatch(callRequestReceivedMQTT({}, ""));
+      dispatch(getVideoRecipentData(userData));
     }
-  }
+  };
 
   const initiateGroupCall = () => {
     if (activeCall === false) {
       if (groupCallUsers.length <= 1) {
-        console.log('Initiate Group Call Boys Less', groupCallUsers)
+        console.log("Initiate Group Call Boys Less", groupCallUsers);
       } else {
         let Data = {
           RecipentIDs: groupCallUsers,
           CallTypeID: 2,
           OrganizationID: currentOrganization,
-        }
-        localStorage.setItem('CallType', Data.CallTypeID)
-        dispatch(InitiateVideoCall(Data, navigate, t))
-        localStorage.setItem('activeCall', true)
-        localStorage.setItem('callerID', currentUserID)
-        dispatch(callRequestReceivedMQTT({}, ''))
-        dispatch(groupCallRecipients(groupCallActiveUsers))
+        };
+        localStorage.setItem("CallType", Data.CallTypeID);
+        dispatch(InitiateVideoCall(Data, navigate, t));
+        localStorage.setItem("activeCall", true);
+        localStorage.setItem("callerID", currentUserID);
+        dispatch(callRequestReceivedMQTT({}, ""));
+        dispatch(groupCallRecipients(groupCallActiveUsers));
         // dispatch(getVideoRecipentData(userData))
-        dispatch(normalizeVideoPanelFlag(true))
-        dispatch(videoChatPanel(false))
-        console.log('Initiate Group Call Boys More', groupCallUsers)
+        dispatch(normalizeVideoPanelFlag(true));
+        dispatch(videoChatPanel(false));
+        console.log("Initiate Group Call Boys More", groupCallUsers);
       }
     } else {
-      setInitiateVideoModalGroup(true)
+      setInitiateVideoModalGroup(true);
     }
-  }
+  };
 
   const leaveCallHostOto = () => {
-    let userCalledID = Number(localStorage.getItem('recipentCalledID'))
+    let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     let Data = {
       OrganizationID: currentOrganization,
       RoomID: initiateRoomID,
       IsCaller: true,
       CallTypeID: currentCallType,
-    }
+    };
     let Data2 = {
       RecipentIDs: [userCalledID],
       CallTypeID: 1,
       OrganizationID: currentOrganization,
-    }
-    dispatch(LeaveCall(Data, navigate, t))
-    dispatch(InitiateVideoCall(Data2, navigate, t))
-    const emptyArray = []
-    localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
-    dispatch(normalizeVideoPanelFlag(true))
-    dispatch(maximizeVideoPanelFlag(false))
-    dispatch(minimizeVideoPanelFlag(false))
-    dispatch(leaveCallModal(false))
-    setInitiateVideoModalOto(false)
-    dispatch(participantPopup(false))
-    localStorage.setItem('CallType', Data2.CallTypeID)
-    localStorage.setItem('activeCall', true)
-    localStorage.setItem('callerID', currentUserID)
-    localStorage.setItem('recipentCalledID', userCalledID)
-    dispatch(callRequestReceivedMQTT({}, ''))
-    dispatch(videoChatPanel(false))
-  }
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    dispatch(InitiateVideoCall(Data2, navigate, t));
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    setInitiateVideoModalOto(false);
+    dispatch(participantPopup(false));
+    localStorage.setItem("CallType", Data2.CallTypeID);
+    localStorage.setItem("activeCall", true);
+    localStorage.setItem("callerID", currentUserID);
+    localStorage.setItem("recipentCalledID", userCalledID);
+    dispatch(callRequestReceivedMQTT({}, ""));
+    dispatch(videoChatPanel(false));
+  };
 
   const leaveCallParticipantOto = () => {
-    let roomID = localStorage.getItem('acceptedRoomID')
-    let userCalledID = Number(localStorage.getItem('recipentCalledID'))
+    let roomID = localStorage.getItem("acceptedRoomID");
+    let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     let Data = {
       OrganizationID: currentOrganization,
       RoomID: roomID,
       IsCaller: false,
       CallTypeID: callTypeID,
-    }
+    };
     let Data2 = {
       RecipentIDs: [userCalledID],
       CallTypeID: 1,
       OrganizationID: currentOrganization,
-    }
-    dispatch(LeaveCall(Data, navigate, t))
-    dispatch(InitiateVideoCall(Data2, navigate, t))
-    const emptyArray = []
-    localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
-    dispatch(normalizeVideoPanelFlag(true))
-    dispatch(maximizeVideoPanelFlag(false))
-    dispatch(minimizeVideoPanelFlag(false))
-    dispatch(leaveCallModal(false))
-    setInitiateVideoModalOto(false)
-    dispatch(participantPopup(false))
-    localStorage.setItem('CallType', Data2.CallTypeID)
-    localStorage.setItem('activeCall', true)
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    dispatch(InitiateVideoCall(Data2, navigate, t));
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    setInitiateVideoModalOto(false);
+    dispatch(participantPopup(false));
+    localStorage.setItem("CallType", Data2.CallTypeID);
+    localStorage.setItem("activeCall", true);
     // localStorage.setItem('callerID', currentUserID)
     // localStorage.setItem('recipentCalledID', userCalledID)
-    dispatch(callRequestReceivedMQTT({}, ''))
-    dispatch(videoChatPanel(false))
-  }
+    dispatch(callRequestReceivedMQTT({}, ""));
+    dispatch(videoChatPanel(false));
+  };
 
   const leaveCallHostGroup = () => {
     let Data = {
@@ -261,62 +263,62 @@ const VideoPanelBodyContact = () => {
       RoomID: initiateRoomID,
       IsCaller: true,
       CallTypeID: currentCallType,
-    }
+    };
     let Data2 = {
       RecipentIDs: groupCallUsers,
       CallTypeID: 2,
       OrganizationID: currentOrganization,
-    }
-    dispatch(LeaveCall(Data, navigate, t))
-    dispatch(InitiateVideoCall(Data2, navigate, t))
-    localStorage.setItem('CallType', Data2.CallTypeID)
-    localStorage.setItem('activeCall', true)
-    localStorage.setItem('callerID', currentUserID)
-    dispatch(callRequestReceivedMQTT({}, ''))
-    dispatch(groupCallRecipients(groupCallActiveUsers))
-    dispatch(normalizeVideoPanelFlag(true))
-    dispatch(videoChatPanel(false))
-    dispatch(maximizeVideoPanelFlag(false))
-    dispatch(minimizeVideoPanelFlag(false))
-    dispatch(leaveCallModal(false))
-    setInitiateVideoModalGroup(false)
-    console.log('Initiate Group Call Boys More', groupCallUsers)
-  }
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    dispatch(InitiateVideoCall(Data2, navigate, t));
+    localStorage.setItem("CallType", Data2.CallTypeID);
+    localStorage.setItem("activeCall", true);
+    localStorage.setItem("callerID", currentUserID);
+    dispatch(callRequestReceivedMQTT({}, ""));
+    dispatch(groupCallRecipients(groupCallActiveUsers));
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(videoChatPanel(false));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    setInitiateVideoModalGroup(false);
+    console.log("Initiate Group Call Boys More", groupCallUsers);
+  };
 
   const leaveCallParticipantGroup = () => {
-    let roomID = localStorage.getItem('acceptedRoomID')
+    let roomID = localStorage.getItem("acceptedRoomID");
     let Data = {
       OrganizationID: currentOrganization,
       RoomID: roomID,
       IsCaller: false,
       CallTypeID: callTypeID,
-    }
+    };
     let Data2 = {
       RecipentIDs: groupCallUsers,
       CallTypeID: 2,
       OrganizationID: currentOrganization,
-    }
-    dispatch(LeaveCall(Data, navigate, t))
-    dispatch(InitiateVideoCall(Data2, navigate, t))
-    localStorage.setItem('CallType', Data2.CallTypeID)
-    localStorage.setItem('activeCall', true)
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    dispatch(InitiateVideoCall(Data2, navigate, t));
+    localStorage.setItem("CallType", Data2.CallTypeID);
+    localStorage.setItem("activeCall", true);
     // localStorage.setItem('callerID', currentUserID)
-    dispatch(callRequestReceivedMQTT({}, ''))
-    dispatch(groupCallRecipients(groupCallActiveUsers))
-    dispatch(normalizeVideoPanelFlag(true))
-    dispatch(videoChatPanel(false))
-    dispatch(maximizeVideoPanelFlag(false))
-    dispatch(minimizeVideoPanelFlag(false))
-    dispatch(leaveCallModal(false))
-    setInitiateVideoModalGroup(false)
-    console.log('Initiate Group Call Boys More', groupCallUsers)
-  }
+    dispatch(callRequestReceivedMQTT({}, ""));
+    dispatch(groupCallRecipients(groupCallActiveUsers));
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(videoChatPanel(false));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    setInitiateVideoModalGroup(false);
+    console.log("Initiate Group Call Boys More", groupCallUsers);
+  };
 
-  let buttonText = t('Group-call')
+  let buttonText = t("Group-call");
 
   if (groupCallUsers.length > 0) {
-    const formattedLength = String(groupCallUsers.length).padStart(2, '0')
-    buttonText += ' (' + formattedLength + ')'
+    const formattedLength = String(groupCallUsers.length).padStart(2, "0");
+    buttonText += " (" + formattedLength + ")";
   }
 
   return (
@@ -330,11 +332,11 @@ const VideoPanelBodyContact = () => {
                 applyClass="form-control2"
                 name="Name"
                 change={(e) => {
-                  searchChat(e.target.value)
+                  searchChat(e.target.value);
                 }}
                 value={searchChatValue}
                 placeholder="Search-Chat"
-                labelClass={'d-none'}
+                labelClass={"d-none"}
               />
             </Col>
           </Row>
@@ -344,7 +346,7 @@ const VideoPanelBodyContact = () => {
         allUsers.length > 0 &&
         VideoMainReducer.Loading === false ? (
           allUsers.map((userData, index) => {
-            console.log('userData', userData)
+            console.log("userData", userData);
             return (
               <Row className="single-chat" key={index}>
                 <Col lg={1} md={1} sm={1} className="mt-4">
@@ -359,7 +361,7 @@ const VideoPanelBodyContact = () => {
                   ></div>
                 </Col>
                 <Col lg={7} md={7} sm={7} className="bottom-border">
-                  <div className={'video-block'}>
+                  <div className={"video-block"}>
                     <p className="Video-chat-username m-0">
                       {userData.userName}
                     </p>
@@ -376,12 +378,12 @@ const VideoPanelBodyContact = () => {
                   />
                 </Col>
               </Row>
-            )
+            );
           })
         ) : VideoMainReducer.Loading === true ? (
           <>
             <LoaderPanel
-              message={'Safeguarding your data to enhance the experience'}
+              message={"Safeguarding your data to enhance the experience"}
             />
           </>
         ) : (
@@ -391,7 +393,7 @@ const VideoPanelBodyContact = () => {
       <VideoPanelFooter
         groupCallClick={initiateGroupCall}
         groupbtnClassName={
-          groupCallUsers.length <= 1 ? 'group-btn-gray' : 'group-btn'
+          groupCallUsers.length <= 1 ? "group-btn-gray" : "group-btn"
         }
         buttonText={buttonText}
       />
@@ -399,12 +401,12 @@ const VideoPanelBodyContact = () => {
       <Modal
         show={initiateVideoModalOto}
         onHide={() => {
-          setInitiateVideoModalOto(false)
+          setInitiateVideoModalOto(false);
         }}
         setShow={setInitiateVideoModalOto}
         modalFooterClassName="d-none"
         centered
-        size={'sm'}
+        size={"sm"}
         ModalBody={
           <>
             <Container>
@@ -423,9 +425,9 @@ const VideoPanelBodyContact = () => {
                   <Button
                     text={
                       callerID === currentUserID || callerID === 0
-                        ? t('End Host')
+                        ? t("End Host")
                         : callerID !== currentUserID
-                        ? t('End Participant')
+                        ? t("End Participant")
                         : null
                     }
                     className="leave-meeting-options__btn leave-meeting-red-button"
@@ -439,7 +441,7 @@ const VideoPanelBodyContact = () => {
                   />
 
                   <Button
-                    text={t('Cancel')}
+                    text={t("Cancel")}
                     className="leave-meeting-options__btn leave-meeting-gray-button"
                     onClick={() => setInitiateVideoModalOto(false)}
                   />
@@ -453,12 +455,12 @@ const VideoPanelBodyContact = () => {
       <Modal
         show={initiateVideoModalGroup}
         onHide={() => {
-          setInitiateVideoModalGroup(false)
+          setInitiateVideoModalGroup(false);
         }}
         setShow={setInitiateVideoModalGroup}
         modalFooterClassName="d-none"
         centered
-        size={'sm'}
+        size={"sm"}
         ModalBody={
           <>
             <Container>
@@ -477,9 +479,9 @@ const VideoPanelBodyContact = () => {
                   <Button
                     text={
                       callerID === currentUserID || callerID === 0
-                        ? t('End Host')
+                        ? t("End Host")
                         : callerID !== currentUserID
-                        ? t('End Participant')
+                        ? t("End Participant")
                         : null
                     }
                     className="leave-meeting-options__btn leave-meeting-red-button"
@@ -493,7 +495,7 @@ const VideoPanelBodyContact = () => {
                   />
 
                   <Button
-                    text={t('Cancel')}
+                    text={t("Cancel")}
                     className="leave-meeting-options__btn leave-meeting-gray-button"
                     onClick={() => setInitiateVideoModalGroup(false)}
                   />
@@ -504,7 +506,7 @@ const VideoPanelBodyContact = () => {
         }
       />
     </>
-  )
-}
+  );
+};
 
-export default VideoPanelBodyContact
+export default VideoPanelBodyContact;

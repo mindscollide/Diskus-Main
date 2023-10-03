@@ -1105,7 +1105,7 @@ img.recent-activity-icon {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .Notes-scrollbar-spinner::-webkit-scrollbar {
