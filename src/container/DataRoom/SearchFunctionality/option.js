@@ -412,7 +412,7 @@ export const optionsforFolder = (t) => [
 ];
 
 export const optionsforFile = (t) => [
-  { label: t("Open-with"), value: 1, labelIcon: PDFICON },
+  { label: t("Open"), value: 1, labelIcon: PDFICON },
   { label: t("Share"), value: 2, labelIcon: PDFICON },
   { label: t("Rename"), value: 3, labelIcon: PDFICON },
   { label: t("View-detail"), value: 4, labelIcon: PDFICON },

@@ -271,7 +271,10 @@ const DataRoom = () => {
       window.removeEventListener("offline", handleOnlineStatusChange);
     };
   }, []);
-
+  console.log(
+    DataRoomReducer.getAllDocumentandShareFolderResponse,
+    "DataRoomReducerDataRoomReducer"
+  );
   useEffect(() => {
     try {
       if (
@@ -456,8 +459,19 @@ const DataRoom = () => {
     localStorage.setItem("setTableView", 3);
   };
 
-  const fileOptionsSelect = (data, record) => {
-    if (data.value === 3) {
+  const fileOptionsSelect = (data, record, pdfDataJson) => {
+    console.log(
+      "fileOptionsSelectfileOptionsSelect",
+      data,
+      record,
+      pdfDataJson
+    );
+    if (data.value === 1) {
+      let ext = record.name.split(".").pop();
+      if (ext === "pdf") {
+        UniversalLink(pdfDataJson);
+      }
+    } else if (data.value === 3) {
       setShowRenameFile(true);
       setRenameFileData(record);
     } else if (data.value === 2) {
@@ -872,6 +886,13 @@ const DataRoom = () => {
     },
   ];
 
+  const UniversalLink = (pdfJSON) => {
+    let linkRef = `/DisKus/documentViewer?pdfData=${encodeURIComponent(
+      pdfJSON
+    )}`;
+    navigate(linkRef);
+  };
+
   const MyDocumentsColumns = [
     {
       title: t("Name"),
@@ -909,27 +930,22 @@ const DataRoom = () => {
           } else {
             if (ext === "pdf") {
               return (
-                <Link
-                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                    pdfDataJson
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <section
+                  className="d-flex gap-2 cursor-pointer"
+                  onDoubleClick={() => UniversalLink(pdfDataJson)}
                 >
-                  <section className="d-flex gap-2 cursor-pointer">
-                    <img
-                      src={getIconSource(getFileExtension(data.name))}
-                      alt=""
-                      width={"25px"}
-                      height={"25px"}
-                    />
-                    <abbr title={text}>
-                      <span className={styles["dataroom_table_heading"]}>
-                        {text}
-                      </span>
-                    </abbr>
-                  </section>
-                </Link>
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=""
+                    width={"25px"}
+                    height={"25px"}
+                  />
+                  <abbr title={text}>
+                    <span className={styles["dataroom_table_heading"]}>
+                      {text}
+                    </span>
+                  </abbr>
+                </section>
               );
             } else {
               return (
@@ -969,27 +985,22 @@ const DataRoom = () => {
           } else {
             if (ext === "pdf") {
               return (
-                <Link
-                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                    pdfDataJson
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <section
+                  className="d-flex gap-2 cursor-pointer"
+                  onDoubleClick={() => UniversalLink(pdfDataJson)}
                 >
-                  <section className="d-flex gap-2 cursor-pointer">
-                    <img
-                      src={getIconSource(getFileExtension(data.name))}
-                      alt=""
-                      width={"25px"}
-                      height={"25px"}
-                    />
-                    <abbr title={text}>
-                      <span className={styles["dataroom_table_heading"]}>
-                        {text}
-                      </span>
-                    </abbr>
-                  </section>
-                </Link>
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=""
+                    width={"25px"}
+                    height={"25px"}
+                  />
+                  <abbr title={text}>
+                    <span className={styles["dataroom_table_heading"]}>
+                      {text}
+                    </span>
+                  </abbr>
+                </section>
               );
             } else {
               return (
@@ -1091,6 +1102,13 @@ const DataRoom = () => {
       width: "180px",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
+        const pdfData = {
+          taskId: record.id,
+          commingFrom: 4,
+          fileName: record.name,
+          attachmentID: record.id,
+        };
+        const pdfDataJson = JSON.stringify(pdfData);
         return (
           <>
             <Row>
@@ -1264,7 +1282,9 @@ const DataRoom = () => {
                           return (
                             <Dropdown.Item
                               key={index}
-                              onClick={() => fileOptionsSelect(data, record)}
+                              onClick={() =>
+                                fileOptionsSelect(data, record, pdfDataJson)
+                              }
                             >
                               {data.label}
                             </Dropdown.Item>

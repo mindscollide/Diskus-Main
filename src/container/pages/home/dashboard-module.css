@@ -4,10 +4,6 @@
   height: 88vh;
 }
 
-.CircularProgressbar {
-  width: 70% !important;
-}
-
 .progressbar-count {
   font-size: calc(40px - 20%) !important;
 }
@@ -891,9 +887,9 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
     font-size: 9px !important;
   }
 
-  .progressbar-count {
+  /* .progressbar-count {
     font-size: 26px !important;
-  }
+  } */
 
   .home-meetingcount-text {
     font-size: 8px !important;
@@ -1109,7 +1105,7 @@ img.recent-activity-icon {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .Notes-scrollbar-spinner::-webkit-scrollbar {

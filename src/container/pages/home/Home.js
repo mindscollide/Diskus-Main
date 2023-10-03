@@ -564,12 +564,6 @@ const Home = () => {
   }, [meetingIdReducer]);
 
   useEffect(() => {
-    if (meetingIdReducer.UpcomingEventsData.length > 0) {
-      // console.log("NEW_UPCOMING123", meetingIdReducer.UpcomingEventsData);
-    }
-  }, [meetingIdReducer.UpcomingEventsData]);
-
-  useEffect(() => {
     setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
     setTodoListAssignedThisWeek(
       toDoListReducer.TotalNumberOfUpcommingTodoInWeek
@@ -590,10 +584,6 @@ const Home = () => {
     dispatch(HideNotificationMeetings());
     dispatch(HideNotification());
   }, [auth.ResponseMessage]);
-
-  const showsubTalkIcons = () => {
-    setSubIcons(!subIcons);
-  };
 
   useEffect(() => {
     if (
@@ -973,18 +963,21 @@ const Home = () => {
                       <CustomTextProgressbar
                         value={valueMeeting}
                         maxValue={meetingCountThisWeek}
-                      >
-                        <div className="progressbar-count m-0 ">
-                          <strong>
-                            {upcomingMeetingCountThisWeek}/
-                            {meetingCountThisWeek}
-                          </strong>
-                        </div>
-                        <div className="home-meetingcount-text Saved_money_Tagline">
-                          {t("Meetings")} <br />
-                          {t("This-month")}
-                        </div>
-                      </CustomTextProgressbar>
+                        text={
+                          <>
+                            <div className="progressbar-count m-0 ">
+                              <strong>
+                                {upcomingMeetingCountThisWeek}/
+                                {meetingCountThisWeek}
+                              </strong>
+                            </div>
+                            <div className="home-meetingcount-text Saved_money_Tagline">
+                              {t("Meetings")} <br />
+                              {t("This-month")}
+                            </div>
+                          </>
+                        }
+                      ></CustomTextProgressbar>
                     )}
                   </div>
                 </Col>
@@ -1077,17 +1070,20 @@ const Home = () => {
                     <CustomTextProgressbar
                       value={toDoValue}
                       maxValue={todoListThisWeek}
-                    >
-                      <div className="progressbar-count m-0">
-                        <strong>
-                          {todoListAssignedThisWeek}/{todoListThisWeek}
-                        </strong>
-                      </div>
-                      <div className="home-todocount-text Saved_money_Tagline">
-                        {t("Todo")} <br />
-                        {t("This-month")}
-                      </div>
-                    </CustomTextProgressbar>
+                      text={
+                        <>
+                          <div className="progressbar-count m-0">
+                            <strong>
+                              {todoListAssignedThisWeek}/{todoListThisWeek}
+                            </strong>
+                          </div>
+                          <div className="home-todocount-text Saved_money_Tagline">
+                            {t("Todo")} <br />
+                            {t("This-month")}
+                          </div>
+                        </>
+                      }
+                    ></CustomTextProgressbar>
                   )}
                 </div>
               </Col>

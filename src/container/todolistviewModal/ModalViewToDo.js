@@ -396,7 +396,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                             ) === Number(createrID)
                           ) {
                             return (
-                              <Col sm={6} md={6} lg={6}>
+                              <Col sm={12} md={12} lg={12}>
                                 <TodoAssgineeEmployeeCard
                                   employeeName={assgineeData.name}
                                   employeeDesignation={assgineeData.designation}
@@ -411,7 +411,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                               Number(assgineeData.pK_UID) === Number(createrID)
                             ) {
                               return (
-                                <Col sm={6} md={6} lg={6}>
+                                <Col sm={12} md={12} lg={12}>
                                   <TodoAssgineeEmployeeCard
                                     employeeName={assgineeData.name}
                                     employeeDesignation={
