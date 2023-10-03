@@ -63,16 +63,21 @@ const ParticipantsView = () => {
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12}>
-          <Table
-            column={ParticipantsViewColoumn}
-            scroll={{ y: "62vh" }}
-            pagination={false}
-            className="Polling_table"
-            rows={participantsViewRows}
-          />
+        <Col lg={12} md={12} sm={12} className={styles["FixedHeight"]}>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Table
+                column={ParticipantsViewColoumn}
+                scroll={{ y: "62vh" }}
+                pagination={false}
+                className="Polling_table"
+                rows={participantsViewRows}
+              />
+            </Col>
+          </Row>
         </Col>
       </Row>
+
       <Row className="mt-5">
         <Col
           lg={12}
