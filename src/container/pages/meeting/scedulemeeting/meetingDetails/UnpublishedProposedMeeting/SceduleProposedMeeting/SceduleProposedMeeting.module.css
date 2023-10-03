@@ -37,15 +37,6 @@
   line-height: 15px !important;
 }
 
-.custom-table td {
-  /* border-bottom: 1px solid #e1e1e1 !important; */
-  padding: 10px; /* Add padding to create spacing between columns */
-}
-
-.custom-table tr:first-child td {
-  padding: 20px; /* Add padding to create spacing between column headings */
-}
-
 .TotalVotes {
   font-size: 16px !important;
   font-family: "MontserratSemiBold" !important;
