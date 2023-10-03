@@ -1263,8 +1263,8 @@
   "Please-add-atleast-one-group-head": "Please add atleast one group head",
   "Advanced-permission-settings": "Advanced Permission Settings",
   "Show": "Show",
-  "Push-notification-when-group-is-active": "Push Notification When Group is Active",
-  "Email-when-group-is-active": "Email When Group is Active",
+  "Push-notification-when-group-is-active": "Push Notification When Group becomes Active",
+  "Email-when-group-is-active": "Email When Group becomes Active",
   "Email-when-committee-is-active": "Email When a Committee becomes Active",
   "Push-notification-when-committee-is-active": "Notify when Committee becomes Active",
   "Be-the-first-to-create-a-poll-and-spark-the-conversation": "Be the first to create a poll and spark the conversation!",
@@ -1517,5 +1517,7 @@
   "End-for-me": "End for Me",
   "Publish-the-meeting": "Publish the meeting",
   "Delete-meeting": "Delete Meeting",
-  "Schedule-proposed-meetings": "Schedule Proposed Meetings"
+  "Schedule-proposed-meetings": "Schedule Proposed Meetings",
+  "Create-another-minute-in-this-agenda": "Create another minute in this agenda",
+  "Create-another-minute-in-this-subagenda": "Create another minute in this sub agenda"
 }
