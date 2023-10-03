@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { TextField } from '../../../../../elements'
+import { TextField, Modal, Button } from '../../../../../elements'
 import { Container, Row, Col } from 'react-bootstrap'
 import './videoPanelBody.css'
 import { Spin } from 'antd'
@@ -16,6 +16,7 @@ import {
   ScrollRecentCalls,
   GetUserRecentCallsScroll,
   callRequestReceivedMQTT,
+  LeaveCall,
 } from '../../../../../../store/actions/VideoMain_actions'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -23,6 +24,8 @@ import {
 } from '../../../../../../commen/functions/date_formater'
 import {
   normalizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  maximizeVideoPanelFlag,
   videoChatPanel,
 } from '../../../../../../store/actions/VideoFeature_actions'
 import MissedRedIcon from '../../../../../../assets/images/Missed-Red-Icon.png'
@@ -43,11 +46,21 @@ const VideoPanelBodyRecent = () => {
 
   const { t } = useTranslation()
 
-  let currentOrganization = Number(localStorage.getItem('organizationID'))
-
   let currentUserName = localStorage.getItem('name')
 
+  let currentOrganization = Number(localStorage.getItem('organizationID'))
+
   let currentUserID = Number(localStorage.getItem('userID'))
+
+  let activeCall = JSON.parse(localStorage.getItem('activeCall'))
+
+  let initiateRoomID = localStorage.getItem('initiateCallRoomID')
+
+  let currentCallType = Number(localStorage.getItem('CallType'))
+
+  let callTypeID = Number(localStorage.getItem('callTypeID'))
+
+  let callerID = Number(localStorage.getItem('callerID'))
 
   //CURRENT DATE TIME UTC
   let currentDateTime = new Date()
@@ -75,6 +88,12 @@ const VideoPanelBodyRecent = () => {
 
   const [sRowsData, setSRowsData] = useState(0)
   const [totalRecords, setTotalRecords] = useState(0)
+
+  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false)
+
+  const [initiateVideoModalGroup, setInitiateVideoModalGroup] = useState(false)
+
+  const [recentCallRecipientData, setRecentCallRecipientData] = useState([])
 
   const searchChat = (e) => {
     setSearchChatValue(e)
@@ -118,8 +137,6 @@ const VideoPanelBodyRecent = () => {
     }
   }, [])
 
-  console.log('VideoMainReducer', VideoMainReducer)
-
   //Setting state data of all users
   useEffect(() => {
     if (
@@ -162,64 +179,186 @@ const VideoPanelBodyRecent = () => {
     }
   }
 
-  console.log(
-    'Lengths',
-    recentVideoCalls.length,
-    totalRecords,
-    recentVideoCalls.length <= totalRecords,
-  )
-
   const otoVideoCall = (data) => {
-    // dispatch(videoOutgoingCallFlag(true))
-    console.log('Video Called User Data', data)
-    if (data.callType.callTypeID === 1) {
-      console.log('Video Called OTO DATA', data)
-      let Data = {
-        RecipentIDs:
-          data.callerID === currentUserID
-            ? [data.recipients[0].userID]
-            : [data.callerID],
-        CallTypeID: 1,
-        OrganizationID: currentOrganization,
+    setRecentCallRecipientData(data)
+    if (activeCall === false) {
+      if (data.callType.callTypeID === 1) {
+        console.log('Video Called OTO DATA', data)
+        let Data = {
+          RecipentIDs:
+            data.callerID === currentUserID
+              ? [data.recipients[0].userID]
+              : [data.callerID],
+          CallTypeID: 1,
+          OrganizationID: currentOrganization,
+        }
+        localStorage.setItem('CallType', Data.CallTypeID)
+        dispatch(InitiateVideoCall(Data, navigate, t))
+        localStorage.setItem('callerID', currentUserID)
+        localStorage.setItem('activeCall', true)
+        dispatch(callRequestReceivedMQTT({}, ''))
+        dispatch(getVideoRecipentData(data))
+        dispatch(normalizeVideoPanelFlag(true))
+        dispatch(videoChatPanel(false))
+        console.log('Video Called OTO Request Data', Data)
+      } else if (data.callType.callTypeID === 2) {
+        console.log('Video Called Group DATA', data)
+        const recipientIds = data.recipients.map(
+          (recipient) => recipient.userID,
+        )
+        let Data = {
+          RecipentIDs: recipientIds,
+          CallTypeID: 2,
+          OrganizationID: currentOrganization,
+        }
+        localStorage.setItem('CallType', Data.CallTypeID)
+        dispatch(InitiateVideoCall(Data, navigate, t))
+        localStorage.setItem('callerID', currentUserID)
+        localStorage.setItem('activeCall', true)
+        dispatch(callRequestReceivedMQTT({}, ''))
+        dispatch(normalizeVideoPanelFlag(true))
+        dispatch(videoChatPanel(false))
+        console.log('Video Called Group Request Data', Data)
       }
-      localStorage.setItem('CallType', Data.CallTypeID)
-      dispatch(InitiateVideoCall(Data, navigate, t))
-      localStorage.setItem('callerID', currentUserID)
-      localStorage.setItem('activeCall', true)
-      dispatch(callRequestReceivedMQTT({}, ''))
-      dispatch(getVideoRecipentData(data))
-      dispatch(normalizeVideoPanelFlag(true))
-      dispatch(videoChatPanel(false))
-      console.log('Video Called OTO Request Data', Data)
-    } else if (data.callType.callTypeID === 2) {
-      console.log('Video Called Group DATA', data)
-      const recipientIds = data.recipients.map((recipient) => recipient.userID)
-      let Data = {
-        RecipentIDs: recipientIds,
-        CallTypeID: 2,
-        OrganizationID: currentOrganization,
+    } else {
+      if (data.callType.callTypeID === 1) {
+        setInitiateVideoModalOto(true)
+      } else if (data.callType.callTypeID === 2) {
+        setInitiateVideoModalGroup(true)
       }
-      localStorage.setItem('CallType', Data.CallTypeID)
-      dispatch(InitiateVideoCall(Data, navigate, t))
-      localStorage.setItem('callerID', currentUserID)
-      localStorage.setItem('activeCall', true)
-      dispatch(callRequestReceivedMQTT({}, ''))
-      // dispatch(groupCallRecipients(groupCallActiveUsers))
-      dispatch(normalizeVideoPanelFlag(true))
-      dispatch(videoChatPanel(false))
-      console.log('Video Called Group Request Data', Data)
     }
-    // let Data = {
-    //   RecipentIDs: [userData.userID],
-    //   CallTypeID: 1,
-    //   OrganizationID: currentOrganization,
-    // }
-    // localStorage.setItem('CallType', Data.CallTypeID)
-    // dispatch(InitiateVideoCall(Data, navigate, t))
-    // dispatch(getVideoRecipentData(userData))
-    // dispatch(normalizeVideoPanelFlag(true))
-    // dispatch(videoChatPanel(false))
-    // console.log('Video Called User Data', Data)
+  }
+
+  const leaveCallHostOto = () => {
+    let userCalledID = Number(localStorage.getItem('recipentCalledID'))
+    let Data = {
+      OrganizationID: currentOrganization,
+      RoomID: initiateRoomID,
+      IsCaller: true,
+      CallTypeID: currentCallType,
+    }
+    let Data2 = {
+      RecipentIDs:
+        recentCallRecipientData.callerID === currentUserID
+          ? [recentCallRecipientData.recipients[0].userID]
+          : [recentCallRecipientData.callerID],
+      CallTypeID: 1,
+      OrganizationID: currentOrganization,
+    }
+    dispatch(LeaveCall(Data, navigate, t))
+    dispatch(InitiateVideoCall(Data2, navigate, t))
+    const emptyArray = []
+    localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
+    dispatch(normalizeVideoPanelFlag(true))
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(false))
+    dispatch(leaveCallModal(false))
+    setInitiateVideoModalOto(false)
+    dispatch(participantPopup(false))
+    localStorage.setItem('CallType', Data2.CallTypeID)
+    localStorage.setItem('activeCall', true)
+    localStorage.setItem('callerID', currentUserID)
+    localStorage.setItem('recipentCalledID', userCalledID)
+    dispatch(callRequestReceivedMQTT({}, ''))
+    dispatch(videoChatPanel(false))
+  }
+
+  const leaveCallParticipantOto = () => {
+    let roomID = localStorage.getItem('acceptedRoomID')
+    let userCalledID = Number(localStorage.getItem('recipentCalledID'))
+    let Data = {
+      OrganizationID: currentOrganization,
+      RoomID: roomID,
+      IsCaller: false,
+      CallTypeID: callTypeID,
+    }
+    let Data2 = {
+      RecipentIDs:
+        recentCallRecipientData.callerID === currentUserID
+          ? [recentCallRecipientData.recipients[0].userID]
+          : [recentCallRecipientData.callerID],
+      CallTypeID: 1,
+      OrganizationID: currentOrganization,
+    }
+    dispatch(LeaveCall(Data, navigate, t))
+    dispatch(InitiateVideoCall(Data2, navigate, t))
+    const emptyArray = []
+    localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
+    dispatch(normalizeVideoPanelFlag(true))
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(false))
+    dispatch(leaveCallModal(false))
+    setInitiateVideoModalOto(false)
+    dispatch(participantPopup(false))
+    localStorage.setItem('CallType', Data2.CallTypeID)
+    localStorage.setItem('activeCall', true)
+    localStorage.setItem('recipentCalledID', userCalledID)
+    dispatch(callRequestReceivedMQTT({}, ''))
+    dispatch(videoChatPanel(false))
+  }
+
+  const leaveCallHostGroup = () => {
+    console.log('Video Called Group DATA', recentCallRecipientData)
+    const recipientIds = recentCallRecipientData.recipients.map(
+      (recipient) => recipient.userID,
+    )
+    let Data = {
+      RecipentIDs: recipientIds,
+      CallTypeID: 2,
+      OrganizationID: currentOrganization,
+    }
+    let Data2 = {
+      OrganizationID: currentOrganization,
+      RoomID: initiateRoomID,
+      IsCaller: true,
+      CallTypeID: currentCallType,
+    }
+    dispatch(LeaveCall(Data2, navigate, t))
+    dispatch(InitiateVideoCall(Data, navigate, t))
+    localStorage.setItem('CallType', Data.CallTypeID)
+    localStorage.setItem('callerID', currentUserID)
+    localStorage.setItem('activeCall', true)
+    dispatch(callRequestReceivedMQTT({}, ''))
+    dispatch(normalizeVideoPanelFlag(true))
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(false))
+    dispatch(leaveCallModal(false))
+    setInitiateVideoModalGroup(false)
+    dispatch(participantPopup(false))
+    dispatch(videoChatPanel(false))
+    console.log('Video Called Group Request Data', Data)
+  }
+
+  const leaveCallParticipantGroup = () => {
+    console.log('Video Called Group DATA', recentCallRecipientData)
+    const recipientIds = recentCallRecipientData.recipients.map(
+      (recipient) => recipient.userID,
+    )
+    let Data = {
+      RecipentIDs: recipientIds,
+      CallTypeID: 2,
+      OrganizationID: currentOrganization,
+    }
+    let roomID = localStorage.getItem('acceptedRoomID')
+    let Data2 = {
+      OrganizationID: currentOrganization,
+      RoomID: roomID,
+      IsCaller: false,
+      CallTypeID: callTypeID,
+    }
+    dispatch(LeaveCall(Data2, navigate, t))
+    dispatch(InitiateVideoCall(Data, navigate, t))
+    localStorage.setItem('CallType', Data.CallTypeID)
+    localStorage.setItem('activeCall', true)
+    dispatch(callRequestReceivedMQTT({}, ''))
+    dispatch(normalizeVideoPanelFlag(true))
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(false))
+    dispatch(leaveCallModal(false))
+    setInitiateVideoModalGroup(false)
+    dispatch(participantPopup(false))
+    dispatch(videoChatPanel(false))
+    console.log('Video Called Group Request Data', Data)
   }
 
   return (
@@ -365,6 +504,114 @@ const VideoPanelBodyRecent = () => {
           <EmptyRecentCalls />
         )}
       </Container>
+
+      <Modal
+        show={initiateVideoModalOto}
+        onHide={() => {
+          setInitiateVideoModalOto(false)
+        }}
+        setShow={setInitiateVideoModalOto}
+        modalFooterClassName="d-none"
+        centered
+        size={'sm'}
+        ModalBody={
+          <>
+            <Container>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <p> OTO Call Disconnection </p>
+                </Col>
+              </Row>
+              <Row className="mt-3 mb-4">
+                <Col
+                  lg={12}
+                  sm={12}
+                  md={12}
+                  className="d-flex justify-content-center gap-2"
+                >
+                  <Button
+                    text={
+                      callerID === currentUserID || callerID === 0
+                        ? t('End Host')
+                        : callerID !== currentUserID
+                        ? t('End Participant')
+                        : null
+                    }
+                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    onClick={
+                      callerID === currentUserID || callerID === 0
+                        ? leaveCallHostOto
+                        : callerID !== currentUserID
+                        ? leaveCallParticipantOto
+                        : null
+                    }
+                  />
+
+                  <Button
+                    text={t('Cancel')}
+                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    onClick={() => setInitiateVideoModalOto(false)}
+                  />
+                </Col>
+              </Row>
+            </Container>
+          </>
+        }
+      />
+
+      <Modal
+        show={initiateVideoModalGroup}
+        onHide={() => {
+          setInitiateVideoModalGroup(false)
+        }}
+        setShow={setInitiateVideoModalGroup}
+        modalFooterClassName="d-none"
+        centered
+        size={'sm'}
+        ModalBody={
+          <>
+            <Container>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <p> Group Call Disconnection </p>
+                </Col>
+              </Row>
+              <Row className="mt-3 mb-4">
+                <Col
+                  lg={12}
+                  sm={12}
+                  md={12}
+                  className="d-flex justify-content-center gap-2"
+                >
+                  <Button
+                    text={
+                      callerID === currentUserID || callerID === 0
+                        ? t('End Host')
+                        : callerID !== currentUserID
+                        ? t('End Participant')
+                        : null
+                    }
+                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    onClick={
+                      callerID === currentUserID || callerID === 0
+                        ? leaveCallHostGroup
+                        : callerID !== currentUserID
+                        ? leaveCallParticipantGroup
+                        : null
+                    }
+                  />
+
+                  <Button
+                    text={t('Cancel')}
+                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    onClick={() => setInitiateVideoModalGroup(false)}
+                  />
+                </Col>
+              </Row>
+            </Container>
+          </>
+        }
+      />
     </>
   )
 }
