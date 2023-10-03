@@ -46,11 +46,6 @@
   color: #6172d6;
 }
 
-.custom-table {
-  overflow-x: auto !important;
-  width: 100% !important;
-}
-
 .DateObject {
   width: auto !important;
   min-width: 121px !important;
@@ -89,9 +84,8 @@
 
 .OverAll_Padding {
   padding: 39px 20px !important;
+  overflow: hidden !important;
   overflow-x: scroll !important;
-  width: 100% !important;
-  min-width: 47vw !important;
 }
 
 .OuterBoxCheck {
@@ -99,9 +93,7 @@
   border: 3px solid #6172d6 !important;
   border-radius: 4px !important;
   min-height: 450px !important;
-  position: absolute !important;
-  top: 30px !important;
-  left: 215px !important;
+  z-index: 1 !important;
 }
 
 .UpperTopLine {
@@ -136,4 +128,7 @@
 
 .Sizing {
   padding: 10px 0px !important;
+}
+
+.InnerSecton {
 }
