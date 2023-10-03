@@ -1,3 +1,17 @@
+.DateClass {
+  font-family: "MontserratSemiBold";
+  font-size: 12px !important;
+  display: inline-block !important;
+  width: 80% !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+.FixedHeight {
+  height: 50vh !important;
+}
+
 .Cancel_Button_Polls_meeting {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -36,8 +50,4 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
-}
-
-.FixedHeigh {
-  height: 50vh !important;
 }

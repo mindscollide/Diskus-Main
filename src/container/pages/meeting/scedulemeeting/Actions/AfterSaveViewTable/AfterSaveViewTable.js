@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./AfterSaveViewTable.module.css";
-import { Table } from "../../../../../../components/elements";
+import { Button, Table } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -91,6 +91,23 @@ const AfterSaveViewTable = () => {
               />
             </Col>
           </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          <Button
+            text={t("Cancel")}
+            className={styles["Cancel_Button_Polls_meeting"]}
+          />
+          <Button
+            text={t("Next")}
+            className={styles["Save_Button_Polls_meeting"]}
+          />
         </Col>
       </Row>
     </section>
