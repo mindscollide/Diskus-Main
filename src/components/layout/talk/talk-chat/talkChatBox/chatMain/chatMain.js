@@ -98,6 +98,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
   //Current UserName
   let currentUserName = localStorage.getItem('name')
 
+  //active call status
+  let activeCall = JSON.parse(localStorage.getItem('activeCall'))
+
   //Translation
   const { t } = useTranslation()
 
@@ -589,7 +592,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
         undefined &&
       talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
         null &&
-      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !== []
+      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
+        .length !== 0
     ) {
       setAllUsersGroupsRooms(
         talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
@@ -3798,6 +3802,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData?.MqttMessageDeleteData])
 
+  useEffect(() => {}, [activeCall])
+
   return (
     <>
       <div className="positionRelative">
@@ -3833,6 +3839,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         {talkStateData.ActiveChatData.fullName}
                       </p>
                     </Col>
+                    {activeCall === true ? (
+                      <Col lg={1} md={1} sm={12}></Col>
+                    ) : null}
                     <Col lg={1} md={1} sm={12}>
                       {' '}
                       <div className="chat-box-icons">
@@ -3988,21 +3997,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         )}
                       </div>
                     </Col>
-                    <Col lg={1} md={1} sm={12}>
-                      {' '}
-                      <div className="chat-box-icons">
-                        <img draggable="false" src={VideoCallIcon} />
-                      </div>
-                    </Col>
+                    {activeCall === false ? (
+                      <Col lg={1} md={1} sm={12}>
+                        <div className="chat-box-icons">
+                          <img draggable="false" src={VideoCallIcon} />
+                        </div>
+                      </Col>
+                    ) : null}
                     <Col lg={1} md={1} sm={12}>
                       {' '}
                       <div className="chat-box-icons" onClick={closeChat}>
-                        <img
-                          draggable="false"
-                          src={CloseChatIcon}
-                          // className="img-cover"
-                          // style={{ width: "20px", marginTop: "16px" }}
-                        />
+                        <img draggable="false" src={CloseChatIcon} />
                       </div>
                     </Col>
                   </Row>

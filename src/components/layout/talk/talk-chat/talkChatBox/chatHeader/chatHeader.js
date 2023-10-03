@@ -26,6 +26,8 @@ const ChatHeader = () => {
 
   const { talkStateData, talkFeatureStates } = useSelector((state) => state)
 
+  let activeCall = JSON.parse(localStorage.getItem('activeCall'))
+
   //Dropdown state of chat menu (Dot wali)
   const [chatMenuActive, setChatMenuActive] = useState(false)
   const chatMenuRef = useRef(null)
@@ -162,6 +164,8 @@ const ChatHeader = () => {
     }
   }, [chatMenuActive])
 
+  console.log('activeCall', activeCall, typeof activeCall)
+
   return (
     <>
       <Row>
@@ -205,7 +209,11 @@ const ChatHeader = () => {
               <Col lg={1} md={1} sm={12}>
                 {' '}
                 <div className="chat-box-icons">
-                  <img draggable="false" onClick={showChatSearchHandler} src={SearchChatIcon} />
+                  <img
+                    draggable="false"
+                    onClick={showChatSearchHandler}
+                    src={SearchChatIcon}
+                  />
                 </div>
               </Col>
               <Col lg={1} md={1} sm={12}>
@@ -214,7 +222,11 @@ const ChatHeader = () => {
                   className="chat-box-icons positionRelative"
                   ref={chatMenuRef}
                 >
-                  <img draggable="false" src={MenuIcon} onClick={activateChatMenu} />
+                  <img
+                    draggable="false"
+                    src={MenuIcon}
+                    onClick={activateChatMenu}
+                  />
                   {chatMenuActive && (
                     <div className="dropdown-menus-chat">
                       {talkStateData?.ActiveChatData?.messageType === 'O' && (
@@ -322,20 +334,17 @@ const ChatHeader = () => {
                   )}
                 </div>
               </Col>
-              <Col lg={1} md={1} sm={12}>
-                {' '}
-                <div className="chat-box-icons">
-                  <img draggable="false" src={VideoCallIcon} />
-                </div>
-              </Col>
+              {activeCall === false ? (
+                <Col lg={1} md={1} sm={12}>
+                  <div className="chat-box-icons">
+                    <img draggable="false" src={VideoCallIcon} />
+                  </div>
+                </Col>
+              ) : null}
               <Col lg={1} md={1} sm={12}>
                 {' '}
                 <div className="chat-box-icons" onClick={closeChat}>
-                  <img draggable="false"
-                    src={CloseChatIcon}
-                    // className="img-cover"
-                    // style={{ width: "20px", marginTop: "16px" }}
-                  />
+                  <img draggable="false" src={CloseChatIcon} />
                 </div>
               </Col>
             </Row>
@@ -351,9 +360,9 @@ const ChatHeader = () => {
               </Col>
               <Col lg={5} md={5} sm={12} className="positionRelative">
                 <p className="level">{t('NIAP-+-PQC')}</p>
-
                 <span className="securityicon-box">
-                  <img draggable="false"
+                  <img
+                    draggable="false"
                     src={SecurityIconMessasgeBox}
                     style={{ width: '17px' }}
                   />
