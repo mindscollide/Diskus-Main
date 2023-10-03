@@ -339,7 +339,6 @@ const AgendaImport = () => {
                                                         <ReactQuill
                                                           ref={editorRef}
                                                           theme="snow"
-                                                          // value={data.name}
                                                           placeholder={t(
                                                             "Note-details"
                                                           )}

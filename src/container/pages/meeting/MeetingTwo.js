@@ -31,6 +31,7 @@ import {
 } from "../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import NewEndLeaveMeeting from "./NewEndLeaveMeeting/NewEndLeaveMeeting";
+import PublishedMeeting from "./scedulemeeting/meetingDetails/PublishedMeeting/PublishedMeeting";
 const NewMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const NewMeeting = () => {
   const [unPublishedMeeting, setUnPublishedMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
+  const [publishedMeeting, setpublishedMeeting] = useState(false);
   // data for rows for first table
   const data = [
     {
@@ -68,6 +70,7 @@ const NewMeeting = () => {
   };
 
   const EnableUnpublishedMeetingPage = () => {
+    setpublishedMeeting(false);
     setUnPublishedMeeting(true);
   };
 
@@ -78,6 +81,12 @@ const NewMeeting = () => {
   //Modal For End Meeting
   const EndForAllModal = () => {
     dispatch(showEndMeetingForAll(true));
+  };
+
+  //Published Meeting Page
+  const handlePublishedMeeting = () => {
+    setUnPublishedMeeting(false);
+    setpublishedMeeting(true);
   };
 
   useEffect(() => {
@@ -383,6 +392,7 @@ const NewMeeting = () => {
                     <Button
                       text={t("Published-meeting")}
                       className={styles["UnpublishedMeetingButton"]}
+                      onClick={handlePublishedMeeting}
                     />
                     <Button
                       text={t("Unpublished-proposed-meetings")}
@@ -393,6 +403,8 @@ const NewMeeting = () => {
                 </Row>
                 {unPublishedMeeting ? (
                   <UnpublishedProposedMeeting />
+                ) : publishedMeeting ? (
+                  <PublishedMeeting />
                 ) : (
                   <>
                     <Row className="mt-2">
