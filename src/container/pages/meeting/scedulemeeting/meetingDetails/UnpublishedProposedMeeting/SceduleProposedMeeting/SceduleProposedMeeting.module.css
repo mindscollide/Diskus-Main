@@ -51,3 +51,11 @@
   font-family: "MontserratSemiBold" !important;
   color: #6172d6;
 }
+
+.custom-table {
+  overflow-x: auto !important;
+  width: 100% !important;
+}
+
+.bottomLine {
+}

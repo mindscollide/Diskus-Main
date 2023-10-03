@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { Modal, Button } from "../../../../../../../components/elements";
+import { Modal, Button, Table } from "../../../../../../../components/elements";
 import { useSelector } from "react-redux";
 import { showSceduleProposedMeeting } from "../../../../../../../store/actions/NewMeetingActions";
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
@@ -44,9 +44,96 @@ const SceduleProposedmeeting = () => {
         },
       ],
 
+      Votes: [
+        {
+          amount: 0,
+        },
+        {
+          amount: 2,
+        },
+        {
+          amount: 3,
+        },
+      ],
+
       Selected: true,
     },
   ]);
+  const data = [
+    {
+      key: "1",
+      pollTitle: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <img src={BlueTick} width="20.7px" height="14.21px" />
+            </Col>
+          </Row>
+        </>
+      ),
+      Members: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["ParticipantName"]}>Mr Abdul Qadir</span>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["Designation"]}>CFO</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      key: "1",
+      pollTitle: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span>0</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      Members: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["Designation"]}>Total</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+  ];
+  const [tablerowsData, setTablerowsData] = useState(data);
+
+  const MeetingColoumns = [
+    {
+      dataIndex: "Members",
+      key: "Members",
+      width: "215px",
+    },
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Button
+                text={"27-05-23"}
+                className={styles["DateButtonSceduleProposedMeeting"]}
+              />
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "pollTitle",
+      key: "pollTitle",
+      width: "215px",
+    },
+  ];
   return (
     <section>
       <Modal
@@ -69,105 +156,13 @@ const SceduleProposedmeeting = () => {
             </Row>
             <Row className="mt-3">
               <Col lg={12} md={12} sm={12}>
-                {sceduleProposedmeetingData.length > 0
-                  ? sceduleProposedmeetingData.map((tableData, tableIndex) => {
-                      return (
-                        <>
-                          <table class={styles["custom-table"]}>
-                            <tr>
-                              <th></th>
-                              {tableData.date.map((dateData, dateIndex) => {
-                                return (
-                                  <>
-                                    <th>
-                                      <>
-                                        <Row>
-                                          <Col lg={12} md={12} sm={12}>
-                                            <Button
-                                              text={dateData.dataFormeeting}
-                                              className={
-                                                styles[
-                                                  "DateButtonSceduleProposedMeeting"
-                                                ]
-                                              }
-                                            />
-                                          </Col>
-                                        </Row>
-                                      </>
-                                    </th>
-                                  </>
-                                );
-                              })}
-                            </tr>
-                            {tableData.members.map(
-                              (membersData, membersIndex) => {
-                                return (
-                                  <>
-                                    <tr>
-                                      <td>
-                                        <>
-                                          <section
-                                            className={
-                                              styles["SectionLineHeight"]
-                                            }
-                                          >
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles["ParticipantName"]
-                                                  }
-                                                >
-                                                  {membersData.name}
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles["Designation"]
-                                                  }
-                                                >
-                                                  {membersData.designation}
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                          </section>
-                                        </>
-                                      </td>
-                                      <td>
-                                        <>
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="d-flex justify-content-center"
-                                            >
-                                              {membersData.isTick === true ? (
-                                                <>
-                                                  <img
-                                                    src={BlueTick}
-                                                    height="14.21px"
-                                                    width="20.7px"
-                                                  />
-                                                </>
-                                              ) : null}
-                                            </Col>
-                                          </Row>
-                                        </>
-                                      </td>
-                                    </tr>
-                                  </>
-                                );
-                              }
-                            )}
-                          </table>
-                        </>
-                      );
-                    })
-                  : null}
+                <Table
+                  column={MeetingColoumns}
+                  scroll={{ y: "62vh" }}
+                  pagination={false}
+                  className="Polling_table"
+                  rows={tablerowsData}
+                />
               </Col>
             </Row>
           </>
