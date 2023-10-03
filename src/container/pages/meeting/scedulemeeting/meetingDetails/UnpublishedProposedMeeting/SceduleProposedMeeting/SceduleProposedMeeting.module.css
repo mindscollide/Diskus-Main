@@ -25,16 +25,19 @@
   font-size: 16px !important;
   font-family: "MontserratSemiBold" !important;
   color: #505050;
+  white-space: nowrap;
+}
+
+.WidthOFSpan {
+  line-height: 15px !important;
+  display: flex;
+  flex-direction: column !important;
 }
 
 .Designation {
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
   color: #6172d6;
-}
-
-.SectionLineHeight {
-  line-height: 15px !important;
 }
 
 .TotalVotes {
@@ -48,5 +51,65 @@
   width: 100% !important;
 }
 
-.bottomLine {
+.DateObject {
+  width: auto !important;
+  min-width: 121px !important;
+  height: 29px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  padding: 3px 15px !important;
+}
+
+.forTick {
+  width: 121px !important;
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 8px !important;
+}
+
+.TotalCount {
+  width: 121px !important;
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 8px !important;
+  color: #6172d6;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.bottom_line {
+  display: flex !important;
+  width: auto !important ;
+  min-width: 103% !important ;
+  border: 1px solid #e1e1e1 !important;
+  margin-top: 10px !important;
+}
+
+.OverAll_Padding {
+  padding: 5px 20px !important;
+  overflow-x: scroll !important;
+  width: 51vw !important;
+}
+
+.UpperTopLine {
+  display: flex !important;
+  width: auto !important;
+  min-width: 100% !important;
+  border: 1px solid #5a5a5a !important;
+}
+
+.FixedHeight {
+  height: 30vh !important;
+}
+
+.TotalCount_HEading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #6172d6;
+}
+
+.Sizing {
+  padding: 10px 0px !important;
 }

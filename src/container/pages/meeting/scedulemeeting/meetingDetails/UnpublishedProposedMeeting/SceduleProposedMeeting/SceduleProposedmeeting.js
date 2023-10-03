@@ -59,81 +59,7 @@ const SceduleProposedmeeting = () => {
       Selected: true,
     },
   ]);
-  const data = [
-    {
-      key: "1",
-      pollTitle: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <img src={BlueTick} width="20.7px" height="14.21px" />
-            </Col>
-          </Row>
-        </>
-      ),
-      Members: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["ParticipantName"]}>Mr Abdul Qadir</span>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Designation"]}>CFO</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      key: "1",
-      pollTitle: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>0</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Members: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Designation"]}>Total</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
-  const [tablerowsData, setTablerowsData] = useState(data);
 
-  const MeetingColoumns = [
-    {
-      dataIndex: "Members",
-      key: "Members",
-      width: "215px",
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <Button
-                text={"27-05-23"}
-                className={styles["DateButtonSceduleProposedMeeting"]}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "pollTitle",
-      key: "pollTitle",
-      width: "215px",
-    },
-  ];
   return (
     <section>
       <Modal
@@ -144,7 +70,7 @@ const SceduleProposedmeeting = () => {
         onHide={() => {
           dispatch(showSceduleProposedMeeting(false));
         }}
-        size={"md"}
+        size={"lg"}
         ModalTitle={
           <>
             <Row>
@@ -154,17 +80,75 @@ const SceduleProposedmeeting = () => {
                 </span>
               </Col>
             </Row>
-            <Row className="mt-3">
-              <Col lg={12} md={12} sm={12}>
-                <Table
-                  column={MeetingColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={tablerowsData}
-                />
-              </Col>
-            </Row>
+          </>
+        }
+        ModalBody={
+          <>
+            <section className={styles["OverAll_Padding"]}>
+              <Row className="mt-3">
+                <Col lg={2} md={2} sm={2}></Col>
+                <Col lg={10} md={10} sm={10} className="d-flex gap-2">
+                  <span className={styles["DateObject"]}>29 Jun, 22</span>
+                  <span className={styles["DateObject"]}>29 Jun, 22</span>
+                  <span className={styles["DateObject"]}>29 Jun, 22</span>
+                  <span className={styles["DateObject"]}>29 Jun, 22</span>
+                  <span className={styles["DateObject"]}>29 Jun, 22</span>
+                  <span className={styles["DateObject"]}>29 Jun, 22</span>
+                  <span className={styles["DateObject"]}>29 Jun, 22</span>
+                  <span className={styles["DateObject"]}>29 Jun, 22</span>
+                  <span className={styles["DateObject"]}>29 Jun, 22</span>
+                  <span className={styles["DateObject"]}>29 Jun, 22</span>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={12} md={12} sm={12} className={styles["FixedHeight"]}>
+                  <Row className="mt-4">
+                    <Col lg={2} md={2} sm={2}>
+                      <span className={styles["WidthOFSpan"]}>
+                        <span className={styles["ParticipantName"]}>
+                          Mr Abdul Qadir
+                        </span>
+                        <span className={styles["Designation"]}>CFO</span>
+                      </span>
+                    </Col>
+                    <Col lg={10} md={10} sm={10}>
+                      <span className={styles["forTick"]}>
+                        <img src={BlueTick} width="20.7px" height="14.21px" />
+                      </span>
+                    </Col>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["bottom_line"]}></span>
+                      </Col>
+                    </Row>
+                  </Row>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["UpperTopLine"]}></span>
+                </Col>
+              </Row>
+              <Row className="m-0 p-0">
+                <Col lg={12} md={12} sm={12} className={styles["Sizing"]}>
+                  <Row>
+                    <Col lg={2} md={2} sm={2}>
+                      <span className={styles["TotalCount_HEading"]}>
+                        {t("Total")}
+                      </span>
+                    </Col>
+                    <Col lg={10} md={10} sm={10}>
+                      <span className={styles["TotalCount"]}>03</span>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["UpperTopLine"]}></span>
+                </Col>
+              </Row>
+            </section>
           </>
         }
       />
