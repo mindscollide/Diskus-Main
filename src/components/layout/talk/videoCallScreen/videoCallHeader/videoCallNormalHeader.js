@@ -114,7 +114,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     // dispatch(maximizeVideoPanelFlag(false))
     // dispatch(minimizeVideoPanelFlag(false))
     dispatch(leaveCallModal(true))
-    localStorage.setItem('activeCall', false)
+    // localStorage.setItem('activeCall', false)
   }
 
   const endCallParticipant = () => {

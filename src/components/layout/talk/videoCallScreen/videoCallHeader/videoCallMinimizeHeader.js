@@ -77,7 +77,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
 
   const openVideoPanel = () => {
     dispatch(leaveCallModal(true))
-    localStorage.setItem('activeCall', false)
+    // localStorage.setItem('activeCall', false)
   }
 
   // this handler is for close participant

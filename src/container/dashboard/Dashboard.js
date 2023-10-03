@@ -1412,6 +1412,7 @@ const Dashboard = () => {
             'callerStatusObject',
             JSON.stringify(existingData),
           )
+          localStorage.setItem('activeCall', false)
         }
       }
     }
