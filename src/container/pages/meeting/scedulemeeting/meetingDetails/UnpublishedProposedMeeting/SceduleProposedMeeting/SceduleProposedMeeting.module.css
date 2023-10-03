@@ -88,20 +88,44 @@
 }
 
 .OverAll_Padding {
-  padding: 9px 20px !important;
+  padding: 39px 20px !important;
   overflow-x: scroll !important;
-  width: 51vw !important;
+  width: 100% !important;
+  min-width: 47vw !important;
+}
+
+.OuterBoxCheck {
+  width: 160px !important;
+  border: 3px solid #6172d6 !important;
+  border-radius: 4px !important;
+  min-height: 450px !important;
+  position: absolute !important;
+  top: 30px !important;
+  left: 215px !important;
 }
 
 .UpperTopLine {
   display: flex !important;
   width: auto !important;
   min-width: 100% !important;
-  border: 1px solid #5a5a5a !important;
+  border: 1px solid #707070 !important;
 }
 
 .FixedHeight {
-  height: 30vh !important;
+  height: 40vh !important;
+  overflow-x: hidden !important;
+}
+
+.FixedHeight::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.FixedHeight::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
 
 .TotalCount_HEading {

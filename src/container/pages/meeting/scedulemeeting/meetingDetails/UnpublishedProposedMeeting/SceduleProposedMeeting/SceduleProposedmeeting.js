@@ -25,9 +25,6 @@ const SceduleProposedmeeting = () => {
         {
           dataFormeeting: "28-3-2023",
         },
-        {
-          dataFormeeting: "28-3-2023",
-        },
       ],
       members: [
         {
@@ -93,10 +90,10 @@ const SceduleProposedmeeting = () => {
                     <>
                       <section className={styles["OverAll_Padding"]}>
                         {/* Dates Mapping */}
-                        <Row className="d-flex flex-wrap">
+                        <Row>
                           <>
                             <Col lg={3} md={3} sm={3}></Col>
-                            <Col lg={9} md={9} sm={9} className="d-flex gap-2">
+                            <Col lg={9} md={9} sm={9} className="d-flex gap-5">
                               {data.Dates.length > 0
                                 ? data.Dates.map((dateData, dateIndex) => {
                                     return (
@@ -110,73 +107,88 @@ const SceduleProposedmeeting = () => {
                           </>
                         </Row>
                         {/* Members Mapping */}
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["FixedHeight"]}
-                          >
-                            <Row className="mt-3">
-                              {data.members.length > 0
-                                ? data.members.map(
-                                    (membersData, membersIndex) => {
-                                      return (
-                                        <>
-                                          <Row className="mt-2">
-                                            <Col lg={3} md={3} sm={3}>
-                                              <span
-                                                className={
-                                                  styles["WidthOFSpan"]
-                                                }
+                        <span className="position-relative">
+                          <Row className="mt-3">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["FixedHeight"]}
+                            >
+                              <Row className="mt-3">
+                                {data.members.length > 0
+                                  ? data.members.map(
+                                      (membersData, membersIndex) => {
+                                        return (
+                                          <>
+                                            <Row className="mt-2">
+                                              <Col
+                                                lg={3}
+                                                md={3}
+                                                sm={3}
+                                                className="mt-1"
                                               >
                                                 <span
                                                   className={
-                                                    styles["ParticipantName"]
+                                                    styles["WidthOFSpan"]
                                                   }
                                                 >
-                                                  {membersData.name}
+                                                  <span
+                                                    className={
+                                                      styles["ParticipantName"]
+                                                    }
+                                                  >
+                                                    {membersData.name}
+                                                  </span>
+                                                  <span
+                                                    className={
+                                                      styles["Designation"]
+                                                    }
+                                                  >
+                                                    {membersData.designation}
+                                                  </span>
                                                 </span>
-                                                <span
-                                                  className={
-                                                    styles["Designation"]
-                                                  }
-                                                >
-                                                  {membersData.designation}
-                                                </span>
-                                              </span>
-                                            </Col>
-                                            <Col lg={9} md={9} sm={9}>
-                                              <span
-                                                className={styles["forTick"]}
+                                              </Col>
+                                              <Col
+                                                lg={9}
+                                                md={9}
+                                                sm={9}
+                                                className="d-flex gap-5"
                                               >
-                                                <img
-                                                  src={BlueTick}
-                                                  width="20.7px"
-                                                  height="14.21px"
-                                                />
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row className="mt-2">
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles["bottom_line"]
-                                                }
-                                              ></span>
-                                            </Col>
-                                          </Row>
-                                        </>
-                                      );
-                                    }
-                                  )
-                                : null}
-                            </Row>
-                          </Col>
-                        </Row>
-
-                        <Row>
+                                                <span
+                                                  className={styles["forTick"]}
+                                                >
+                                                  <img
+                                                    src={BlueTick}
+                                                    width="20.7px"
+                                                    height="14.21px"
+                                                  />
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            {membersIndex <
+                                              data.members.length - 1 && ( // Check if it's not the last item
+                                              <Row className="mt-2">
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles["bottom_line"]
+                                                    }
+                                                  ></span>
+                                                </Col>
+                                              </Row>
+                                            )}
+                                          </>
+                                        );
+                                      }
+                                    )
+                                  : null}
+                              </Row>
+                            </Col>
+                          </Row>
+                        </span>
+                        <span className={styles["OuterBoxCheck"]}></span>
+                        <Row className="mt-4">
                           <Col lg={12} md={12} sm={12}>
                             <span className={styles["UpperTopLine"]}></span>
                           </Col>
@@ -195,7 +207,12 @@ const SceduleProposedmeeting = () => {
                                   {t("Total")}
                                 </span>
                               </Col>
-                              <Col lg={9} md={9} sm={9} className="d-flex">
+                              <Col
+                                lg={9}
+                                md={9}
+                                sm={9}
+                                className="d-flex gap-5"
+                              >
                                 {data.Votes.length > 0
                                   ? data.Votes.map((voteData, voteIndex) => {
                                       return (
