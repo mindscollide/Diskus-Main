@@ -1,15 +1,13 @@
-import React, { useState } from "react";
-import styles from "./MeetingActive.module.css";
+import React from "react";
+import styles from "./PublishedMeeting.module.css";
 import { Button } from "../../../../../../components/elements";
-import { useTranslation } from "react-i18next";
-import { Col, Row } from "react-bootstrap";
 import Messegeblue from "../../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../../assets/images/blue Camera.svg";
-import PublishedMeeting from "../PublishedMeeting/PublishedMeeting";
+import { Col, Row } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
-const MeetingActive = () => {
+const PublishedMeeting = () => {
   const { t } = useTranslation();
-
   return (
     <section>
       <Row className="mt-3">
@@ -87,6 +85,20 @@ const MeetingActive = () => {
                   </span>
                 </Col>
               </Row>
+              <Row className="mt-2">
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["Scedule_OnHeading"]}>
+                    {t("Scheduled-on")}
+                  </span>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["SceduledDateTime"]}>
+                    04:00pm - 05:00pm, 18th May, 2023
+                  </span>
+                </Col>
+              </Row>
             </Col>
             <Col lg={7} md={7} sm={7}>
               <Row>
@@ -103,14 +115,14 @@ const MeetingActive = () => {
                   </span>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["NOtes_heading"]}>{t("RSPV")}</span>
                 </Col>
               </Row>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <span className={styles["RspvClassDetails"]}>
+                  <span className={styles["SceduledDateTime"]}>
                     RSPV allowed and notify meeting organizer when members RSVP
                   </span>
                 </Col>
@@ -126,7 +138,7 @@ const MeetingActive = () => {
                   </Row>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
-                      <span className={styles["RspvClassDetails"]}>
+                      <span className={styles["SceduledDateTime"]}>
                         5, 15 and 30 minutes before reminder
                       </span>
                     </Col>
@@ -161,10 +173,6 @@ const MeetingActive = () => {
           className="d-flex justify-content-end gap-2"
         >
           <Button
-            text={t("Clone-meeting")}
-            className={styles["Cancel_Meeting_SaveMeeting"]}
-          />
-          <Button
             text={t("Cancel")}
             className={styles["Cancel_Meeting_SaveMeeting"]}
           />
@@ -178,4 +186,4 @@ const MeetingActive = () => {
   );
 };
 
-export default MeetingActive;
+export default PublishedMeeting;

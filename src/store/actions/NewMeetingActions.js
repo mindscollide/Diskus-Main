@@ -182,6 +182,27 @@ const showDeleteMeetingModal = (response) => {
   };
 };
 
+const showEndMeetingModal = (response) => {
+  return {
+    type: actions.END_MEETING_MODAL,
+    response: response,
+  };
+};
+
+const showEndMeetingForAll = (response) => {
+  return {
+    type: actions.END_MEETING_FOR_ALL,
+    response: response,
+  };
+};
+
+const showSceduleProposedMeeting = (response) => {
+  return {
+    type: actions.SCEDULE_PROPOSED_MEETING,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -209,4 +230,7 @@ export {
   showUnsavedPollsMeeting,
   showunsavedEditPollsMeetings,
   showDeleteMeetingModal,
+  showEndMeetingModal,
+  showEndMeetingForAll,
+  showSceduleProposedMeeting,
 };

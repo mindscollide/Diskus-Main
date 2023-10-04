@@ -175,19 +175,14 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
           <section>
             <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
-                {minutes || actionsPage || polls ? (
-                  <>
-                    <span className={styles["Scedule_newMeeting_Heading"]}>
-                      {t("IT-departmental-meeting")}
-                    </span>
-                  </>
-                ) : (
-                  <>
+                <span className={styles["Scedule_newMeeting_Heading"]}>
+                  {t("IT-departmental-meeting")}
+                </span>
+
+                {/*               
                     <span className={styles["Scedule_newMeeting_Heading"]}>
                       {t("Schedule-new-meeting")}
-                    </span>
-                  </>
-                )}
+                    </span> */}
               </Col>
             </Row>
             <Row>

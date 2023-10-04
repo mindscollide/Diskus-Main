@@ -61,14 +61,18 @@ const OrganizersViewPage = () => {
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12}>
-          <Table
-            column={NotifcatoinColoumns}
-            scroll={{ y: "62vh" }}
-            pagination={false}
-            className="Polling_table"
-            rows={notificationRows}
-          />
+        <Col lg={12} md={12} sm={12} className={styles["FixedHeight"]}>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Table
+                column={NotifcatoinColoumns}
+                scroll={{ y: "62vh" }}
+                pagination={false}
+                className="Polling_table"
+                rows={notificationRows}
+              />
+            </Col>
+          </Row>
         </Col>
       </Row>
 

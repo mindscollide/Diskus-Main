@@ -1,10 +1,14 @@
-.Grant_Access_Styles {
+.Cancel_Button_Polls_meeting {
+  padding: 12px 30px !important;
   font-size: 12px !important;
+  background: #fff;
+  border: 1px solid#E1E1E1;
+  color: #5a5a5a;
+  border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
-  color: #5a5a5a !important;
 }
 
-.Cancel_Button_Organizers_view {
+.Cancel_Button_Polls_meeting:is(:hover, :active, :focus, :focus-visible) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
@@ -14,17 +18,17 @@
   font-family: "MontserratSemiBold" !important;
 }
 
-.Cancel_Button_Organizers_view:is(:active, :hover, :focus, :focus-visible) {
+.Save_Button_Polls_meeting {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #fff !important;
-  border: 1px solid#E1E1E1 !important;
-  color: #5a5a5a !important;
+  background: #6172d6 !important;
+  border: none;
+  color: #fff;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }
 
-.Next_Button_Organizers_view {
+.Save_Button_Polls_meeting:is(:hover, :active, :focus, :focus-visible) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
@@ -34,16 +38,6 @@
   font-family: "MontserratSemiBold" !important;
 }
 
-.Next_Button_Organizers_view:is(:active, :hover, :focus, :focus-visible) {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  background: #6172d6 !important;
-  border: none !important;
-  color: #fff !important;
-  border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
-}
-
-.FixedHeight {
+.FixedHeigh {
   height: 50vh !important;
 }

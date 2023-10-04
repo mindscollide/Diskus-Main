@@ -1,0 +1,159 @@
+.Scedule_Proposed_meeting_heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6;
+}
+
+.DateButtonSceduleProposedMeeting {
+  font-size: 12px !important;
+  background: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+.DateButtonSceduleProposedMeeting:is(:hover, :active, :focus, :focus-visible) {
+  font-size: 12px !important;
+  background: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.ParticipantName {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #505050;
+  white-space: nowrap;
+}
+
+.WidthOFSpan {
+  line-height: 15px !important;
+  display: flex;
+  flex-direction: column !important;
+}
+
+.Designation {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6;
+}
+
+.TotalVotes {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6;
+}
+
+.DateObject {
+  width: auto !important;
+  min-width: 121px !important;
+  height: 29px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  padding: 3px 15px !important;
+}
+
+.ColoumnOuterBorderBox span {
+  color: #5a5a5a !important;
+}
+
+.forTick {
+  width: 121px !important;
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 8px !important;
+}
+
+.TotalCount {
+  width: 117px !important;
+  /* display: flex !important;
+  justify-content: center !important; */
+  margin-top: 8px !important;
+  color: #6172d6;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.bottom_line {
+  display: flex !important;
+  width: auto !important ;
+  min-width: 103% !important ;
+  border: 1px solid #e1e1e1 !important;
+  margin-top: 10px !important;
+}
+
+.OverAll_Padding {
+  /* max-width: 900px !important;
+  overflow-x: scroll !important; */
+}
+
+.OuterBoxCheck {
+  width: 160px !important;
+  border: 3px solid #6172d6 !important;
+  border-radius: 4px !important;
+  min-height: 450px !important;
+  z-index: 1 !important;
+}
+
+.UpperTopLine {
+  display: flex !important;
+  width: auto !important;
+  min-width: 100% !important;
+  border: 1px solid #707070 !important;
+}
+
+.FixedHeight {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+}
+
+.FixedHeight::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.FixedHeight::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.TotalCount_HEading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #6172d6;
+  /* padding-left: 17px !important; */
+}
+
+.Sizing {
+  padding: 10px 0px !important;
+}
+
+.TickIconClass {
+  margin-left: 30px !important;
+}
+
+.SceduleButton {
+  padding: 12px 30px !important;
+  background: #6172d6;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.SceduleButton:is(:hover, :active:focus, :focus-visible) {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}

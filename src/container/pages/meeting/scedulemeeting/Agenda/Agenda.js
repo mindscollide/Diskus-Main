@@ -20,12 +20,14 @@ import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
 import AgendaView from "./AgendaView/AgendaView";
 import ParentAgenda from "./ParentAgenda";
 import { onDragEnd } from "./drageFunction";
+import VotingPage from "./VotingPage/VotingPage";
 
 const Agenda = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { NewMeetingreducer } = useSelector((state) => state);
   const { Dragger } = Upload;
+  const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
 
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
@@ -215,6 +217,8 @@ const Agenda = () => {
         <SaveAgendaView />
       ) : agendaViewPage ? (
         <AgendaView />
+      ) : enableVotingPage ? (
+        <VotingPage />
       ) : (
         <>
           <section>
@@ -355,7 +359,9 @@ const Agenda = () => {
       {NewMeetingreducer.advancePermissionConfirmation && (
         <PermissionConfirmation />
       )}
-      {NewMeetingreducer.voteAgendaModal && <VoteModal />}
+      {NewMeetingreducer.voteAgendaModal && (
+        <VoteModal setenableVotingPage={setenableVotingPage} />
+      )}
       {NewMeetingreducer.voteConfirmationModal && <VoteModalConfirm />}
       {NewMeetingreducer.importPreviousAgendaModal && <ImportPrevious />}
     </>

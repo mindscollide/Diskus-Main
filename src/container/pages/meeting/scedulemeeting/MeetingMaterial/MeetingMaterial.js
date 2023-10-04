@@ -155,6 +155,14 @@ const MeetingMaterial = () => {
             className={styles["Cancel_Classname"]}
           />
           <Button text={t("Cancel")} className={styles["Cancel_Classname"]} />
+          <Button
+            text={t("Delete-meeting")}
+            className={styles["Cancel_Classname"]}
+          />
+          <Button
+            text={t("Publish-the-meeting")}
+            className={styles["Cancel_Classname"]}
+          />
           <Button text={t("Next")} className={styles["Save_Classname"]} />
         </Col>
       </Row>

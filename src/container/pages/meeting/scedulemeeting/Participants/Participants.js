@@ -297,22 +297,29 @@ const Participants = ({
             <Col lg={12} md={12} sm={12}>
               <section className={styles["Footer_Class"]}>
                 <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_Organization"]}
-                />
-                <Button
                   text={t("Propose-meeting-dates")}
                   className={styles["Cancel_Organization"]}
                   onClick={handleProposedmeetingDates}
                 />
+
                 <Button
-                  text={t("Publish")}
+                  text={t("Delete-meeting")}
+                  className={styles["Cancel_Organization"]}
+                />
+
+                <Button
+                  text={t("Publish-the-meeting")}
                   className={styles["Cancel_Organization"]}
                   onClick={EnableParticipantsViewPage}
                 />
 
                 <Button
-                  text={t("Next")}
+                  text={t("Cancel")}
+                  className={styles["Cancel_Organization"]}
+                />
+
+                <Button
+                  text={t("Save")}
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />

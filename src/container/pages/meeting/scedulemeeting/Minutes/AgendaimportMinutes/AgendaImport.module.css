@@ -156,6 +156,7 @@
 .Main_scroller_Agenda_minutes {
   height: 55vh !important;
   overflow-x: hidden !important;
+  padding: 0px 25px !important;
 }
 
 .Main_scroller_Agenda_minutes::-webkit-scrollbar {
@@ -189,4 +190,24 @@
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+
+.CreateAnotherAgendaButtonStyles {
+  border: 1px dashed #e1e1e1 !important;
+  color: #6172d6;
+  background: #fff !important;
+  border-radius: 4px !important;
+  width: 100% !important;
+  font-size: 12px;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.CreateAnotherAgendaButtonStyles:is(:hover, :active, :focus, :focus-visible) {
+  border: 1px dashed #e1e1e1 !important;
+  width: 100% !important;
+  color: #6172d6 !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  font-size: 12px;
+  font-family: "MontserratSemiBold" !important;
 }
