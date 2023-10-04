@@ -37,3 +37,7 @@
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }
+
+.FixedHeight {
+  height: 50vh !important;
+}

@@ -634,6 +634,11 @@ const EditAgenda = ({ AgendaData }) => {
           className="d-flex justify-content-end gap-2"
         >
           <Button
+            text={t("Clone-meeting")}
+            className={styles["Cancel_button_Edit_Agenda_Minutes"]}
+            onClick={handleEditButton}
+          />
+          <Button
             text={t("Cancel")}
             className={styles["Cancel_button_Edit_Agenda_Minutes"]}
             onClick={handleEditButton}

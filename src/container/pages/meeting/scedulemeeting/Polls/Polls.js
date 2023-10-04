@@ -14,6 +14,7 @@ import Createpolls from "./CreatePolls/Createpolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import { showUnsavedPollsMeeting } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
+import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 const Polls = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -22,6 +23,11 @@ const Polls = () => {
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
+  const [afterViewPolls, setafterViewPolls] = useState(false);
+
+  const enableAfterSavedViewPolls = () => {
+    setafterViewPolls(true);
+  };
 
   const handleCastVotePollMeeting = () => {
     setvotePolls(true);
@@ -144,93 +150,139 @@ const Polls = () => {
   };
 
   return (
-    <section>
-      {createpoll ? (
-        <Createpolls setCreatepoll={setCreatepoll} />
-      ) : votePolls ? (
-        <CastVotePollsMeeting setvotePolls={setvotePolls} />
-      ) : editPolls ? (
-        <EditPollsMeeting setEditPolls={setEditPolls} />
+    <>
+      {afterViewPolls ? (
+        <AfterViewPolls />
       ) : (
         <>
-          <Row className="mt-4">
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-end "
-            >
-              <Button
-                text={t("Create-polls")}
-                icon={<img draggable={false} src={addmore} alt="" />}
-                className={styles["Create_polls_Button"]}
-                onClick={handleCreatepolls}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              {pollsRows.length <= 0 ? (
-                <>
-                  <Row className="mt-3">
-                    <Col
-                      lg={12}
-                      ms={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <img
-                        draggable={false}
-                        src={emtystate}
-                        height="230px"
-                        width="293.93px"
-                        alt=""
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <span className={styles["EmptyState_heading"]}>
-                        {t("No-polls")}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <span className={styles["EmptyState_subHeading"]}>
-                        {t(
-                          "Be-the-first-to-create-a-poll-and-spark-the-conversation"
-                        )}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              ) : (
-                <>
-                  <Table
-                    column={PollsColoumn}
-                    scroll={{ y: "62vh" }}
-                    pagination={false}
-                    className="Polling_table"
-                    rows={pollsRows}
-                  />
-                </>
-              )}
-            </Col>
-          </Row>
+          <section>
+            {createpoll ? (
+              <Createpolls setCreatepoll={setCreatepoll} />
+            ) : votePolls ? (
+              <CastVotePollsMeeting setvotePolls={setvotePolls} />
+            ) : editPolls ? (
+              <EditPollsMeeting setEditPolls={setEditPolls} />
+            ) : (
+              <>
+                <Row className="mt-4">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end "
+                  >
+                    <Button
+                      text={t("Create-polls")}
+                      icon={<img draggable={false} src={addmore} alt="" />}
+                      className={styles["Create_polls_Button"]}
+                      onClick={handleCreatepolls}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    {pollsRows.length <= 0 ? (
+                      <>
+                        <Row className="mt-3">
+                          <Col
+                            lg={12}
+                            ms={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <img
+                              draggable={false}
+                              src={emtystate}
+                              height="230px"
+                              width="293.93px"
+                              alt=""
+                            />
+                          </Col>
+                        </Row>
+                        <Row className="mt-2">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["EmptyState_heading"]}>
+                              {t("No-polls")}
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["EmptyState_subHeading"]}>
+                              {t(
+                                "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                              )}
+                            </span>
+                          </Col>
+                        </Row>
+                      </>
+                    ) : (
+                      <>
+                        <section className={styles["MaintainingHeight"]}>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <Table
+                                column={PollsColoumn}
+                                scroll={{ y: "62vh" }}
+                                pagination={false}
+                                className="Polling_table"
+                                rows={pollsRows}
+                              />
+                            </Col>
+                          </Row>
+                        </section>
+                        <Row>
+                          <Col
+                            lg={!2}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-end gap-2"
+                          >
+                            <Button
+                              text={t("Clone-meeting")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                              onClick={enableAfterSavedViewPolls}
+                            />
+
+                            <Button
+                              text={t("Delete-meeting")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                            />
+
+                            <Button
+                              text={t("Publish-the-meeting")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                            />
+                            <Button
+                              text={t("Cancel")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                            />
+                            <Button
+                              text={t("Save")}
+                              className={styles["Save_Button_Polls_meeting"]}
+                            />
+                          </Col>
+                        </Row>
+                      </>
+                    )}
+                  </Col>
+                </Row>
+              </>
+            )}
+          </section>
         </>
       )}
-    </section>
+    </>
   );
 };
 

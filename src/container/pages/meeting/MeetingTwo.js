@@ -23,12 +23,24 @@ import { ChevronDown, Plus } from "react-bootstrap-icons";
 import moment from "moment";
 import SceduleMeeting from "./scedulemeeting/SceduleMeeting";
 import UnpublishedProposedMeeting from "./scedulemeeting/meetingDetails/UnpublishedProposedMeeting/UnpublishedProposedMeeting";
+import NewEndMeetingModal from "./NewEndMeetingModal/NewEndMeetingModal";
+import { useSelector } from "react-redux";
+import {
+  showEndMeetingForAll,
+  showEndMeetingModal,
+} from "../../../store/actions/NewMeetingActions";
+import { useDispatch } from "react-redux";
+import NewEndLeaveMeeting from "./NewEndLeaveMeeting/NewEndLeaveMeeting";
+import PublishedMeeting from "./scedulemeeting/meetingDetails/PublishedMeeting/PublishedMeeting";
 const NewMeeting = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [unPublishedMeeting, setUnPublishedMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
+  const [publishedMeeting, setpublishedMeeting] = useState(false);
   // data for rows for first table
   const data = [
     {
@@ -58,7 +70,23 @@ const NewMeeting = () => {
   };
 
   const EnableUnpublishedMeetingPage = () => {
+    setpublishedMeeting(false);
     setUnPublishedMeeting(true);
+  };
+
+  //Modal For LEave Meeting
+  const EndMeetingModal = () => {
+    dispatch(showEndMeetingModal(true));
+  };
+  //Modal For End Meeting
+  const EndForAllModal = () => {
+    dispatch(showEndMeetingForAll(true));
+  };
+
+  //Published Meeting Page
+  const handlePublishedMeeting = () => {
+    setUnPublishedMeeting(false);
+    setpublishedMeeting(true);
   };
 
   useEffect(() => {
@@ -180,22 +208,33 @@ const NewMeeting = () => {
                 />
               </Col>
             </Row> */}
-            <Row>
+            {/* <Row>
               <Col sm={12} md={12} lg={12}>
                 <Button
                   text={t("Start-meeting")}
                   className={styles["Start-Meeting"]}
                 />
               </Col>
-            </Row>
+            </Row> */}
             {/* <Row>
+              <Col sm={12} md={12} lg={12}>
+                <Button
+                  text={t("Leave-meeting")}
+                  className={styles["End-Meeting"]}
+                  onClick={EndMeetingModal}
+                />
+              </Col>
+            </Row> */}
+
+            <Row>
               <Col sm={12} md={12} lg={12}>
                 <Button
                   text={t("End-meeting")}
                   className={styles["End-Meeting"]}
+                  onClick={EndForAllModal}
                 />
               </Col>
-            </Row> */}
+            </Row>
           </>
         );
       },
@@ -353,6 +392,7 @@ const NewMeeting = () => {
                     <Button
                       text={t("Published-meeting")}
                       className={styles["UnpublishedMeetingButton"]}
+                      onClick={handlePublishedMeeting}
                     />
                     <Button
                       text={t("Unpublished-proposed-meetings")}
@@ -363,6 +403,8 @@ const NewMeeting = () => {
                 </Row>
                 {unPublishedMeeting ? (
                   <UnpublishedProposedMeeting />
+                ) : publishedMeeting ? (
+                  <PublishedMeeting />
                 ) : (
                   <>
                     <Row className="mt-2">
@@ -456,6 +498,8 @@ const NewMeeting = () => {
           </Row>
         </>
       )}
+      {NewMeetingreducer.endForAllMeeting && <NewEndLeaveMeeting />}
+      {NewMeetingreducer.endMeetingModal && <NewEndMeetingModal />}
     </section>
   );
 };

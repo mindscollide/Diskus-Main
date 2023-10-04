@@ -581,22 +581,21 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
             <Col lg={12} md={12} sm={12}>
               <section className={styles["Footer_Class"]}>
                 <Button
+                  text={t("Delete-meeting")}
+                  className={styles["Cancel_Organization"]}
+                  onClick={enableNotificatoinTable}
+                />
+                <Button
+                  text={t("Publish-the-meeting")}
+                  className={styles["Cancel_Organization"]}
+                />
+                <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Organization"]}
                   onClick={EnableViewAgendaContributors}
                 />
                 <Button
-                  text={t("Publish")}
-                  className={styles["Cancel_Organization"]}
-                  onClick={enableNotificatoinTable}
-                />
-                <Button
                   text={t("Save")}
-                  className={styles["Next_Organization"]}
-                  onClick={handleNextButton}
-                />
-                <Button
-                  text={t("Next")}
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />

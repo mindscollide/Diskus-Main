@@ -63,18 +63,22 @@ const AgendaContributorView = () => {
           </span>
         </Col>
       </Row>
-      <Row className="mt-2">
-        <Col lg={12} md={12} sm={12}>
-          <Table
-            column={AgendaContributorViewColoumns}
-            scroll={{ y: "62vh" }}
-            pagination={false}
-            className="Polling_table"
-            rows={agendaContributorsViewRows}
-          />
+      <Row>
+        <Col lg={12} md={12} sm={12} className={styles["FixedHeight"]}>
+          <Row className="mt-2">
+            <Col lg={12} md={12} sm={12}>
+              <Table
+                column={AgendaContributorViewColoumns}
+                scroll={{ y: "62vh" }}
+                pagination={false}
+                className="Polling_table"
+                rows={agendaContributorsViewRows}
+              />
+            </Col>
+          </Row>
         </Col>
       </Row>
-      <Row className="mt-5">
+      <Row>
         <Col
           lg={12}
           md={12}

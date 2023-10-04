@@ -465,16 +465,20 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
             <Col lg={12} md={12} sm={12}>
               <section className={styles["Footer_button"]}>
                 <Button
-                  text={t("Cancel")}
+                  text={t("Delete-meeting")}
                   className={styles["Cancel_Organization"]}
                 />
                 <Button
-                  text={t("Publish")}
+                  text={t("Publish-the-meeting")}
                   className={styles["publish_button_Organization"]}
                   onClick={EnableOrganizersView}
                 />
                 <Button
-                  text={t("Next")}
+                  text={t("Cancel")}
+                  className={styles["publish_button_Organization"]}
+                />
+                <Button
+                  text={t("Save")}
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
