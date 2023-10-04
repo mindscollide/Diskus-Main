@@ -192,7 +192,12 @@ const SceduleProposedmeeting = () => {
       title: (
         <>
           <Row>
-            <Col lg={12} md={12} sm={12}>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className={styles["ColoumnOuterBorderBox"]}
+            >
               <span className={styles["DateObject"]}>22-2-2023</span>
             </Col>
           </Row>
@@ -305,8 +310,9 @@ const SceduleProposedmeeting = () => {
                     column={MeetingColoumns}
                     scroll={{ x: "22vh", display: "none" }}
                     pagination={false}
-                    className="Polling_table"
+                    className="SceduleProposedMeeting"
                     rows={tablerowsData}
+                    // prefixClassName={"SceduleProposedTable"}
                   />
                 </Col>
               </Row>

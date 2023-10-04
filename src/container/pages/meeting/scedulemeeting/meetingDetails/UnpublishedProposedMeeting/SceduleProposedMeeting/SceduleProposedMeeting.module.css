@@ -58,6 +58,10 @@
   padding: 3px 15px !important;
 }
 
+.ColoumnOuterBorderBox span {
+  color: #5a5a5a !important;
+}
+
 .forTick {
   width: 121px !important;
   display: flex !important;
