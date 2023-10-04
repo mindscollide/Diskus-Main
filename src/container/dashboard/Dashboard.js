@@ -1334,9 +1334,9 @@ const Dashboard = () => {
       ) {
         let callerID = Number(localStorage.getItem('callerID'))
         let newCallerID = Number(localStorage.getItem('newCallerID'))
-        if (callerID === newCallerID) {
-          localStorage.setItem('activeCall', false)
-        }
+        // if (callerID === newCallerID) {
+        //   localStorage.setItem('activeCall', false)
+        // }
         localStorage.setItem('newCallerID', callerID)
         localStorage.setItem('initiateVideoCall', false)
 
