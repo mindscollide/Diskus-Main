@@ -316,21 +316,6 @@ const SceduleProposedmeeting = () => {
                   />
                 </Col>
               </Row>
-              {/* <Row className="mt-4">
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["UpperTopLine"]}></span>
-                </Col>
-              </Row>
-              <Row className="m-0 p-0">
-                <Col lg={12} md={12} sm={12} className={styles["Sizing"]}>
-               
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["UpperTopLine"]}></span>
-                </Col>
-              </Row> */}
             </section>
           </>
         }
