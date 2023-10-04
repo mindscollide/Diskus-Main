@@ -203,9 +203,23 @@ const SceduleProposedmeeting = () => {
           </Row>
         </>
       ),
+
+      className: styles["border-column"],
       dataIndex: "Tick",
       key: "Tick",
       width: "100px",
+      render: (text, record, rowIndex) => (
+        <div
+          className={`${
+            rowIndex === data.length - 1 ? " " + styles["last-row"] : ""
+          }`}
+        >
+          {text}
+        </div>
+      ),
+      onHeaderCell: (column) => ({
+        className: styles["border-title"], // Apply the custom class to the th element
+      }),
     },
     {
       title: (
@@ -308,7 +322,7 @@ const SceduleProposedmeeting = () => {
                 <Col lg={12} md={12} sm={12}>
                   <Table
                     column={MeetingColoumns}
-                    scroll={{ x: "22vh", display: "none" }}
+                    // scroll={{ x: "22vh", y: "20vh" }}
                     pagination={false}
                     className="SceduleProposedMeeting"
                     rows={tablerowsData}
