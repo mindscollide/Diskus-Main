@@ -1,16 +1,19 @@
 import React from "react";
-import { CircularProgressbar } from "react-circular-progressbar";
+import {
+  CircularProgressbar,
+  CircularProgressbarWithChildren,
+} from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./CircularProgressbar.css";
 const CustomTextProgressbar = (props) => {
-  const { children, value, text, maxValue } = props;
+  const { value, text, maxValue } = props;
 
   return (
     <div className="circular_progressbar_div">
       <div className="circular_progressbar">
-        <CircularProgressbar
+        <CircularProgressbarWithChildren
           value={value}
-          text={text}
+          // text={text}
           maxValue={maxValue}
           styles={{
             // Customize the root svg element
@@ -46,7 +49,9 @@ const CustomTextProgressbar = (props) => {
               // Text size
             },
           }}
-        />
+        >
+          {text}
+        </CircularProgressbarWithChildren>
       </div>
       <div className="dashboard_progress_bar">{props.children}</div>
     </div>
