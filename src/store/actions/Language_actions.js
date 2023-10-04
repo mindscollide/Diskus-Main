@@ -269,7 +269,7 @@ const getSelectedLanguage = (data, navigate, t) => {
                 )
             ) {
               await dispatch(getSelectedLanguageFail(t("No-records-found")));
-              localStorage.setItem("react-i18next", "en");
+              localStorage.setItem("i18nextLng", "en");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

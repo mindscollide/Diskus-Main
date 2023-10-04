@@ -409,6 +409,7 @@ const ViewMeeting = (
               if (no === 1) {
                 setViewFlag(true);
               } else if (no === 2) {
+                dispatch(GetAllReminders(navigate, t));
                 setEditFlag(true);
               } else if (no === 3) {
                 setCalendarViewModal(true);

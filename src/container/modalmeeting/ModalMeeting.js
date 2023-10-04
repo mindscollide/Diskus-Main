@@ -951,10 +951,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   // for list of all assignees
   useEffect(() => {
     try {
-      if (Object.keys(assignees.user).length > 0) {
-      } else {
-        dispatch(allAssignessList(navigate, t));
-      }
       if (show) {
         dispatch(GetAllReminders(navigate, t));
       } else {

@@ -1,24 +1,10 @@
 .circular_progressbar_div {
   position: relative;
-  max-width: 220px;
-  width: 220px;
-  height: 26vh;
-}
-@media only screen and (min-width: 900px) {
-  .circular_progressbar_div {
-    height: 26vh !important;
-  }
-}
-
-@media only screen and (min-width: 1400px) {
-  .circular_progressbar_div {
-    height: 20vh !important;
-  }
-}
-
-.circular_progressbar {
-  position: absolute;
-  transform: translate(0px, 10px);
+  width: 150px !important;
+  display: flex;
+  height: 25vh;
+  align-items: center;
+  justify-content: center;
 }
 
 .dashboard_progress_bar {
@@ -35,34 +21,13 @@
 body[dir="rtl"] .dashboard_progress_bar {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
-
-/* @media screen and (max-height: 600px) {
-    .circular_progressbar_div {
-        width: 120px;
-        height: 120px;
-    }
-    .circular_progressbar{
-        top: 15px;
-    }
-    .dashboard_progress_bar .fs-2 {
-        font-size: 1rem!important;
-    }
-    .dashboard_progress_bar {
-        width: 95% !important;
-    }
-} */
-
-@media screen and (max-width: 1100px) {
+@media screen and (min-width: 1600px) and (min-height: 900px) {
   .circular_progressbar_div {
-    width: 120px;
-    height: 120px;
-  }
-
-  .circular_progressbar {
-    top: 15px;
-  }
-
-  .dashboard_progress_bar .fs-2 {
-    font-size: 1rem !important;
+    position: relative;
+    width: 180px !important;
+    display: flex;
+    height: 25vh;
+    align-items: center;
+    justify-content: center;
   }
 }
