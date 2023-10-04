@@ -100,6 +100,7 @@ body[dir="rtl"] .chat-block {
   border: 1px solid #6172d6;
   border-radius: 4px;
   z-index: 9999999;
+  overflow: hidden;
 }
 
 .chat-messenger-head-video {
@@ -128,8 +129,8 @@ body[dir="rtl"] .chat-block {
   height: auto;
   display: flex;
   position: fixed;
-  bottom: 0;
-  width: 446px !important;
+  bottom: 2px;
+  width: 362px !important;
   background: #fff;
 }
 
@@ -438,7 +439,7 @@ body[dir="rtl"] .encryption-level-chat p.level-heading {
   position: fixed;
   bottom: 9px;
   width: 323px !important;
-  background: #fff
+  background: #fff;
 }
 
 .chat-input-section:has(.Ok-btn) {
@@ -969,7 +970,7 @@ body[dir="rtl"] span.securityicon-box {
 
 .upload-options {
   position: absolute;
-  top: -200px;
+  top: -155px;
   left: -22px;
 }
 
@@ -1618,7 +1619,7 @@ p.groupinfo-createdon {
 }
 
 .users-list-groupinfo {
-  height: 160px;
+  height: 130px;
   overflow: hidden auto;
 }
 
@@ -1689,7 +1690,7 @@ mark.YourHighlightClass {
 .chat-searchfield {
   position: absolute;
   width: 90%;
-  top: 75px;
+  top: 95px;
   z-index: 9999;
 }
 
@@ -1903,4 +1904,43 @@ textarea.chat-message-input.form-control::-webkit-scrollbar-thumb {
 .emptyRecentChats .ant-result-title {
   font-size: 14px;
   color: #5a5a5a;
+}
+
+.chat-box-security {
+  height: 100%;
+  width: 25px;
+  /* cursor: pointer; */
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  margin-top: 5px;
+  margin-left: -12px;
+  z-index: 9999999;
+  position: relative;
+}
+
+.chat-box-security img {
+  width: 18px;
+}
+
+.chat-box-icons.closechat img {
+  width: 14px !important;
+}
+
+.chat-searchfield input {
+  border: 1px solid #cdcdcd !important;
+  background: #f9f9f9;
+  height: 35px !important;
+}
+
+.chat-messenger-head-video .chat-searchfield {
+  top: 100px !important;
+}
+
+.chat-inner-content .row input {
+  border: 1px solid #cdcdcd !important;
+  background: #f9f9f9;
+  height: 35px !important;
+  margin-top: 10px;
 }

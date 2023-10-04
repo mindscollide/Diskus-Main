@@ -40,7 +40,23 @@ import {
   activeMessage,
   downloadChatEmptyObject,
 } from '../../../../../../store/actions/Talk_action'
-import { videoChatMessagesFlag } from '../../../../../../store/actions/VideoFeature_actions'
+import {
+  normalizeVideoPanelFlag,
+  videoChatPanel,
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  leaveCallModal,
+  participantPopup,
+  videoChatMessagesFlag,
+} from '../../../../../../store/actions/VideoFeature_actions'
+import {
+  GetAllVideoCallUsers,
+  InitiateVideoCall,
+  getVideoRecipentData,
+  groupCallRecipients,
+  callRequestReceivedMQTT,
+  LeaveCall,
+} from '../../../../../../store/actions/VideoMain_actions'
 import { resetCloseChatFlags } from '../../../../../../store/actions/Talk_Feature_actions'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -100,6 +116,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   //active call status
   let activeCall = JSON.parse(localStorage.getItem('activeCall'))
+
+  let activeChatType = localStorage.getItem('ActiveChatType')
 
   //Translation
   const { t } = useTranslation()
@@ -426,6 +444,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
         t,
       ),
     )
+    if (talkStateData.ActiveChatData.messageType === 'G') {
+      let Data = {
+        GroupID: talkStateData.ActiveChatData.id,
+        ChannelID: parseInt(currentOrganizationId),
+      }
+      dispatch(GetAllPrivateGroupMembers(navigate, Data, t))
+    }
   }, [])
 
   useEffect(() => {
@@ -528,7 +553,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     if (
       talkStateData.AllUsers.AllUsersData !== undefined &&
       talkStateData.AllUsers.AllUsersData !== null &&
-      talkStateData.AllUsers.AllUsersData !== []
+      talkStateData.AllUsers.AllUsersData.length !== 0
     ) {
       setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
     }
@@ -792,23 +817,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setReplyFeature(false)
     setShowChatSearch(false)
     setAllMessages([])
-    // let newData = {
-    //   messageType: '',
-    //   id: 0,
-    // }
-    // dispatch(activeChatID(newData))
     setMessageSendData({
       ...messageSendData,
       Body: '',
     })
     localStorage.setItem('activeChatID', null)
     localStorage.setItem('activeOtoChatID', 0)
-    // dispatch(chatBoxActiveFlag(false))
-    // dispatch(chatMessageSearchFlag(false))
-    // dispatch(saveFlag(false))
-    // dispatch(printFlag(false))
-    // dispatch(emailFlag(false))
-    // dispatch(fileUploadFlag(false))
   }
 
   //Search Chats
@@ -1457,11 +1471,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }
 
   const modalHandlerGroupInfo = () => {
-    let Data = {
-      GroupID: talkStateData.ActiveChatData.id,
-      ChannelID: currentOrganizationId,
-    }
-    dispatch(GetAllPrivateGroupMembers(navigate, Data, t))
     setShowGroupInfo(true)
     setMessageInfo(false)
     setShowGroupEdit(false)
@@ -3259,8 +3268,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
     // e.preventDefault()
     console.log('Message Sent Striked')
     if (
-      (messageSendData.Body !== '' && uploadFileTalk !== {}) ||
-      (messageSendData.Body === '' && uploadFileTalk !== {}) ||
+      (messageSendData.Body !== '' &&
+        Object.keys(uploadFileTalk).length !== 0) ||
+      (messageSendData.Body === '' &&
+        Object.keys(uploadFileTalk).length !== 0) ||
       messageSendData.Body !== ''
     ) {
       console.log('uniqueId', uniqueId)
@@ -3804,6 +3815,203 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   useEffect(() => {}, [activeCall])
 
+  const initiateOtoCall = () => {
+    console.log('InitiateOTOCall', talkStateData.ActiveChatData)
+    let recipientData = {
+      userID: talkStateData.ActiveChatData.id,
+      userName: talkStateData.ActiveChatData.fullName,
+      email: '',
+      designation: '',
+      organizationName: talkStateData.ActiveChatData.companyName,
+      profilePicture: {
+        profilePictureID: '',
+        displayProfilePictureName: '',
+        orignalProfilePictureName: '',
+        creationDate: '',
+        creationTime: '',
+      },
+      userRole: {
+        roleID: 1,
+        role: 'Board Member',
+      },
+      userStatus: {
+        statusID: 1,
+        status: 'Enabled',
+      },
+    }
+    dispatch(getVideoRecipentData(recipientData))
+    let Data = {
+      RecipentIDs: [talkStateData.ActiveChatData.id],
+      CallTypeID: 1,
+      OrganizationID: Number(currentOrganizationId),
+    }
+    localStorage.setItem('CallType', Data.CallTypeID)
+    dispatch(InitiateVideoCall(Data, navigate, t))
+    localStorage.setItem('activeCall', true)
+    localStorage.setItem('callerID', Number(currentUserId))
+    localStorage.setItem('recipentCalledID', talkStateData.ActiveChatData.id)
+    dispatch(callRequestReceivedMQTT({}, ''))
+    dispatch(normalizeVideoPanelFlag(true))
+    dispatch(videoChatPanel(false))
+    // dispatch(videoChatMessagesFlag(false))
+    dispatch(resetCloseChatFlags())
+    setChatOpen(false)
+    setSave(false)
+    setPrint(false)
+    setEmail(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+    setShowGroupInfo(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
+    setChatDateState({
+      ...chatDateState,
+      StartDate: '',
+      EndDate: '',
+    })
+    setEndDatedisable(true)
+    setDeleteChat(false)
+    setShowGroupEdit(false)
+    setShowEditGroupField(false)
+    setShowEditShoutField(false)
+    setEmojiActive(false)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
+    setGlobalSearchFilter(false)
+    setChatMenuActive(false)
+    setChatHeadMenuActive(false)
+    setChatFeatures(false)
+    setNoParticipant(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+    setShowGroupInfo(false)
+    setShowGroupEdit(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
+    setSenderCheckbox(false)
+    setShowCheckboxes(false)
+    setEndDatedisable(false)
+    setDeleteChat(false)
+    setUploadOptions(false)
+    setChatFeatureActive(0)
+    setReplyFeature(false)
+    setShowChatSearch(false)
+    setAllMessages([])
+    setMessageSendData({
+      ...messageSendData,
+      Body: '',
+    })
+    localStorage.setItem('activeChatID', null)
+    localStorage.setItem('activeOtoChatID', 0)
+  }
+
+  const initiateGroupCall = () => {
+    let newArray = []
+    let originalArray =
+      talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
+        .groupUsers
+    for (let i = 0; i < originalArray.length; i++) {
+      let newObj = {
+        userID: originalArray[i].userID,
+        userName: originalArray[i].userName,
+        email: originalArray[i].userEmail,
+        designation: '',
+        organizationName: originalArray[i].companyName,
+        profilePicture: {
+          profilePictureID: 0,
+          displayProfilePictureName: '',
+          orignalProfilePictureName: '',
+          creationDate: '',
+          creationTime: '',
+        },
+        userRole: {
+          roleID: 1,
+          role: 'Board Member',
+        },
+        userStatus: {
+          statusID: 1,
+          status: 'Enabled',
+        },
+      }
+      newArray.push(newObj)
+    }
+    const filteredArray = newArray.filter(
+      (item) => item.userID !== Number(currentUserId),
+    )
+
+    const recipientIDs = filteredArray.map((item) => item.userID)
+
+    let Data = {
+      RecipentIDs: recipientIDs,
+      CallTypeID: 2,
+      OrganizationID: Number(currentOrganizationId),
+    }
+    localStorage.setItem('CallType', Data.CallTypeID)
+    dispatch(InitiateVideoCall(Data, navigate, t))
+    localStorage.setItem('activeCall', true)
+    localStorage.setItem('callerID', Number(currentUserId))
+    dispatch(callRequestReceivedMQTT({}, ''))
+    dispatch(groupCallRecipients(filteredArray))
+    // dispatch(getVideoRecipentData(userData))
+    dispatch(normalizeVideoPanelFlag(true))
+    dispatch(videoChatPanel(false))
+    dispatch(resetCloseChatFlags())
+    setChatOpen(false)
+    setSave(false)
+    setPrint(false)
+    setEmail(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+    setShowGroupInfo(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
+    setChatDateState({
+      ...chatDateState,
+      StartDate: '',
+      EndDate: '',
+    })
+    setEndDatedisable(true)
+    setDeleteChat(false)
+    setShowGroupEdit(false)
+    setShowEditGroupField(false)
+    setShowEditShoutField(false)
+    setEmojiActive(false)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
+    setGlobalSearchFilter(false)
+    setChatMenuActive(false)
+    setChatHeadMenuActive(false)
+    setChatFeatures(false)
+    setNoParticipant(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+    setShowGroupInfo(false)
+    setShowGroupEdit(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
+    setSenderCheckbox(false)
+    setShowCheckboxes(false)
+    setEndDatedisable(false)
+    setDeleteChat(false)
+    setUploadOptions(false)
+    setChatFeatureActive(0)
+    setReplyFeature(false)
+    setShowChatSearch(false)
+    setAllMessages([])
+    setMessageSendData({
+      ...messageSendData,
+      Body: '',
+    })
+    localStorage.setItem('activeChatID', null)
+    localStorage.setItem('activeOtoChatID', 0)
+  }
+
   return (
     <>
       <div className="positionRelative">
@@ -3844,7 +4052,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     ) : null}
                     <Col lg={1} md={1} sm={12}>
                       {' '}
-                      <div className="chat-box-icons">
+                      <div className="chat-box-security">
                         <img draggable="false" src={SecurityIcon} />
                       </div>
                     </Col>
@@ -3861,14 +4069,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     <Col lg={1} md={1} sm={12}>
                       {' '}
                       <div
-                        className="chat-box-icons positionRelative"
+                        className="chat-box-icons cursor-pointer positionRelative"
                         ref={chatMenuRef}
+                        onClick={activateChatMenu}
                       >
-                        <img
-                          draggable="false"
-                          src={MenuIcon}
-                          onClick={activateChatMenu}
-                        />
+                        <img draggable="false" src={MenuIcon} />
                         {chatMenuActive && (
                           <div className="dropdown-menus-chat">
                             {talkStateData.ActiveChatData.messageType ===
@@ -4000,14 +4205,27 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     {activeCall === false ? (
                       <Col lg={1} md={1} sm={12}>
                         <div className="chat-box-icons">
-                          <img draggable="false" src={VideoCallIcon} />
+                          <img
+                            onClick={
+                              activeChatType === 'O'
+                                ? initiateOtoCall
+                                : activeChatType === 'G'
+                                ? initiateGroupCall
+                                : null
+                            }
+                            draggable="false"
+                            src={VideoCallIcon}
+                          />
                         </div>
                       </Col>
                     ) : null}
                     <Col lg={1} md={1} sm={12}>
                       {' '}
-                      <div className="chat-box-icons" onClick={closeChat}>
-                        <img draggable="false" src={CloseChatIcon} />
+                      <div
+                        className="chat-box-icons closechat"
+                        onClick={closeChat}
+                      >
+                        <img width={14} draggable="false" src={CloseChatIcon} />
                       </div>
                     </Col>
                   </Row>
@@ -5974,7 +6192,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 />
                                 {uploadOptions === true ? (
                                   <div className="upload-options">
-                                    <div className="file-upload-options">
+                                    {/* <div className="file-upload-options">
                                       <label
                                         className="image-upload"
                                         htmlFor="document-upload"
@@ -5998,7 +6216,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                         accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
                                         style={{ display: 'none' }}
                                       />
-                                    </div>
+                                    </div> */}
                                     <div className="file-upload-options">
                                       <label
                                         className="image-upload"
@@ -6358,6 +6576,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                   </Col>
                   <Col lg={4} md={4} sm={12} className="text-end">
                     <img
+                      className="cursor-pointer"
                       draggable="false"
                       onClick={handleCancel}
                       src={CloseChatIcon}
@@ -6461,6 +6680,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                   </Col>
                   <Col lg={4} md={4} sm={12} className="text-end">
                     <img
+                      className="cursor-pointer"
                       draggable="false"
                       onClick={handleCancel}
                       src={CloseChatIcon}
@@ -6485,7 +6705,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       <img
                         draggable="false"
                         onClick={editGroupTitle}
-                        className="Edit-Group-Title-Icon"
+                        className="Edit-Group-Title-Icon cursor-pointer"
                         src={EditIcon}
                         alt=""
                       />
@@ -6635,7 +6855,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       <img
                         draggable="false"
                         onClick={editShoutTitle}
-                        className="Edit-Group-Title-Icon"
+                        className="Edit-Group-Title-Icon cursor-pointer"
                         src={EditIcon}
                         alt=""
                       />
