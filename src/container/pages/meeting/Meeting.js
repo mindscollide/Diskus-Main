@@ -44,6 +44,7 @@ import {
   EndMeeting,
   GetAllReminders,
   clearResponseMessage,
+  allAssignessList,
 } from "../.../../../../store/actions/Get_List_Of_Assignees";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -114,10 +115,12 @@ const Meeting = () => {
   useEffect(() => {
     if (meetingpageRow !== null && meetingPageCurrent !== null) {
       dispatch(searchUserMeeting(navigate, searchData, t));
+      dispatch(allAssignessList(navigate, t));
     } else {
       localStorage.setItem("MeetingPageRows", 50);
       localStorage.setItem("MeetingPageCurrent", 1);
       dispatch(searchUserMeeting(navigate, searchData, t));
+      dispatch(allAssignessList(navigate, t));
     }
     return () => {
       localStorage.removeItem("MeetingPageRows");
@@ -185,8 +188,6 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => {}, [rows]);
-
   useEffect(() => {
     if (
       assignees.SearchMeetingData !== null &&
@@ -198,7 +199,27 @@ const Meeting = () => {
         assignees.SearchMeetingData.meetings !== undefined &&
         assignees.SearchMeetingData.meetings.length > 0
       ) {
-        setRow(assignees.SearchMeetingData.meetings);
+        let newRowData = [];
+        assignees.SearchMeetingData.meetings.map((data, index) => {
+          newRowData.push({
+            dateOfMeeting: data.dateOfMeeting,
+            host: data.host,
+            isAttachment: data.isAttachment,
+            isChat: data.isChat,
+            isVideoCall: data.isVideoCall,
+            meetingAgenda: data.meetingAgenda,
+            meetingAttendees: data.meetingAttendees,
+            meetingEndTime: data.meetingEndTime,
+            meetingStartTime: data.meetingStartTime,
+            meetingURL: data.meetingURL,
+            orignalProfilePictureName: data.orignalProfilePictureName,
+            pK_MDID: data.pK_MDID,
+            status: data.status,
+            title: data.title,
+            key: index,
+          });
+        });
+        setRow(newRowData);
       }
     } else {
       setRow([]);
@@ -288,7 +309,6 @@ const Meeting = () => {
     {
       title: t("Title"),
       dataIndex: "title",
-      key: "title",
       width: "200px",
       align: "left",
       sortDirections: ["descend", "ascend"],
@@ -308,7 +328,6 @@ const Meeting = () => {
       title: t("Status"),
       dataIndex: "status",
       align: "center",
-      key: "status",
       width: "10rem",
       filters: [
         {
@@ -418,7 +437,6 @@ const Meeting = () => {
     {
       title: t("Date-or-time"),
       dataIndex: "dateOfMeeting",
-      key: "dateOfMeeting",
       width: "13rem",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
@@ -441,7 +459,6 @@ const Meeting = () => {
     {
       title: "",
       dataIndex: "attach",
-      key: "attach",
       width: "7rem",
       render: (text, record) => {
         return (
@@ -505,7 +522,6 @@ const Meeting = () => {
     {
       title: "",
       dataIndex: "status",
-      key: "status",
       width: "10rem",
       render: (text, record) => {
         console.log("recordrecord", text, record);
@@ -547,7 +563,6 @@ const Meeting = () => {
     {
       title: "",
       dataIndex: "pK_MDID",
-      key: "pK_MDID",
       width: "4rem",
       render: (text, record) => {
         let check = checkForEdit(record);
@@ -1066,20 +1081,13 @@ const Meeting = () => {
                       // key={flag}
                       labelTitle={t("Meetings")}
                       expandable={{
+                        rowExpandable: (record) => true,
                         expandedRowRender: (record) => {
-                          return record.meetingAgenda.map((data, index) => (
-                            <p className="meeting-expanded-row" key={index}>
-                              {data.objMeetingAgenda.title}
+                          return (
+                            <p className="meeting-expanded-row">
+                              {record.meetingAgenda[0].objMeetingAgenda.title}
                             </p>
-                          ));
-                        },
-                        rowExpandable: (record) => {
-                          console.log(
-                            record,
-                            "rowExpandablerecordrecordrecordrecord"
                           );
-                          // Replace this condition with the one that suits your requirements
-                          return record.name !== ""; // Only allow expanding rows where status is 'Open'
                         },
                       }}
                     />

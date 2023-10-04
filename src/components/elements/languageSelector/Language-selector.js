@@ -35,9 +35,6 @@ const LanguageSelector = () => {
   const location = useLocation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [languageDropdown, setLanguageDropdown] = useState(false);
-  const [languageforView, setLanguageforView] = useState("");
-  const currentLocale = Cookies.get("i18next") || "en";
-  const [language, setLanguage] = useState(currentLocale);
   const { t, i18n } = useTranslation();
 
   const [languages, setLanguages] = useState([]);
@@ -69,7 +66,22 @@ const LanguageSelector = () => {
       LanguageReducer.AllLanguagesData !== undefined &&
       LanguageReducer.AllLanguagesData.length !== 0
     ) {
-      setLanguages(LanguageReducer?.AllLanguagesData);
+      let newValues = [];
+      LanguageReducer.AllLanguagesData.map((langValues, index) => {
+        newValues.push({
+          languageTitle:
+            langValues.systemSupportedLanguageID === 1
+              ? t("English")
+              : langValues.systemSupportedLanguageID === 2
+              ? t("Arabic")
+              : langValues.systemSupportedLanguageID === 3
+              ? t("French")
+              : "",
+          systemSupportedLanguageID: langValues.systemSupportedLanguageID,
+        });
+      });
+
+      setLanguages(newValues);
     }
   }, [LanguageReducer.AllLanguagesData]);
 
