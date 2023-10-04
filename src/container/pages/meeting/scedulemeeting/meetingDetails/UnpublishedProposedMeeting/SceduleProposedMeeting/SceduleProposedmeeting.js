@@ -79,7 +79,95 @@ const SceduleProposedmeeting = () => {
       ),
       Tick: (
         <>
-          <img src={BlueTick} width="20.7px" height="14.21px" />
+          <img
+            src={BlueTick}
+            className={styles["TickIconClass"]}
+            width="20.7px"
+            height="14.21px"
+          />
+        </>
+      ),
+    },
+    {
+      key: "1",
+      Title: (
+        <>
+          <span className={styles["WidthOFSpan"]}>
+            <span className={styles["ParticipantName"]}>
+              Mr Huzaeifa Jahangir
+            </span>
+            <span className={styles["Designation"]}>Team Lead</span>
+          </span>
+        </>
+      ),
+      Tick: (
+        <>
+          <img
+            src={BlueTick}
+            className={styles["TickIconClass"]}
+            width="20.7px"
+            height="14.21px"
+          />
+        </>
+      ),
+    },
+    {
+      key: "1",
+      Title: (
+        <>
+          <span className={styles["WidthOFSpan"]}>
+            <span className={styles["ParticipantName"]}>Mr Owais Wajid</span>
+            <span className={styles["Designation"]}>Sr Software Engineer</span>
+          </span>
+        </>
+      ),
+      Tick: (
+        <>
+          <img
+            src={BlueTick}
+            className={styles["TickIconClass"]}
+            width="20.7px"
+            height="14.21px"
+          />
+        </>
+      ),
+    },
+    {
+      key: "1",
+      Title: (
+        <>
+          <span className={styles["WidthOFSpan"]}>
+            <span className={styles["ParticipantName"]}>Mr Saif Ul Islam</span>
+            <span className={styles["Designation"]}>Software Engineer</span>
+          </span>
+        </>
+      ),
+      Tick: (
+        <>
+          <img
+            src={BlueTick}
+            className={styles["TickIconClass"]}
+            width="20.7px"
+            height="14.21px"
+          />
+        </>
+      ),
+    },
+    {
+      key: "1",
+      Title: (
+        <>
+          <span className={styles["TotalCount_HEading"]}>{t("Total")}</span>
+        </>
+      ),
+      Tick: (
+        <>
+          <Row>
+            <Col lg={3} md={3} sm={3}></Col>
+            <Col lg={9} md={9} sm={9} className="d-flex gap-4">
+              <span className={styles["TotalCount"]}>0</span>
+            </Col>
+          </Row>
         </>
       ),
     },
@@ -89,14 +177,13 @@ const SceduleProposedmeeting = () => {
     {
       dataIndex: "Title",
       key: "Title",
-      width: "215px",
+      width: "150px",
     },
     {
       title: (
         <>
           <Row>
-            <Col lg={2} md={2} sm={2}></Col>
-            <Col lg={10} md={10} sm={10}>
+            <Col lg={12} md={12} sm={12}>
               <span className={styles["DateObject"]}>22-2-2023</span>
             </Col>
           </Row>
@@ -104,7 +191,77 @@ const SceduleProposedmeeting = () => {
       ),
       dataIndex: "Tick",
       key: "Tick",
-      width: "215px",
+      width: "100px",
+    },
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["DateObject"]}>24-4-2023</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "Tick",
+      key: "Tick",
+      width: "100px",
+    },
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["DateObject"]}>26-6-2023</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "Tick",
+      key: "Tick",
+      width: "100px",
+    },
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["DateObject"]}>29-9-2023</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "Tick",
+      key: "Tick",
+      width: "100px",
+    },
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["DateObject"]}>29-9-2023</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "Tick",
+      key: "Tick",
+      width: "100px",
+    },
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["DateObject"]}>29-9-2023</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "Tick",
+      key: "Tick",
+      width: "100px",
     },
   ];
 
@@ -132,17 +289,34 @@ const SceduleProposedmeeting = () => {
         }
         ModalBody={
           <>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <Table
-                  column={MeetingColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={tablerowsData}
-                />
-              </Col>
-            </Row>
+            <section className={styles["OverAll_Padding"]}>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <Table
+                    column={MeetingColoumns}
+                    scroll={{ x: "22vh", display: "none" }}
+                    pagination={false}
+                    className="Polling_table"
+                    rows={tablerowsData}
+                  />
+                </Col>
+              </Row>
+              {/* <Row className="mt-4">
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["UpperTopLine"]}></span>
+                </Col>
+              </Row>
+              <Row className="m-0 p-0">
+                <Col lg={12} md={12} sm={12} className={styles["Sizing"]}>
+               
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["UpperTopLine"]}></span>
+                </Col>
+              </Row> */}
+            </section>
           </>
         }
       />

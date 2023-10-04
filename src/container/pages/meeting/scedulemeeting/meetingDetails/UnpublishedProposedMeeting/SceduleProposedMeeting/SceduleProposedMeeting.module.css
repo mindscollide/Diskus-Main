@@ -66,9 +66,9 @@
 }
 
 .TotalCount {
-  width: 121px !important;
-  display: flex !important;
-  justify-content: center !important;
+  width: 117px !important;
+  /* display: flex !important;
+  justify-content: center !important; */
   margin-top: 8px !important;
   color: #6172d6;
   font-family: "MontserratSemiBold" !important;
@@ -83,9 +83,8 @@
 }
 
 .OverAll_Padding {
-  padding: 39px 20px !important;
-  overflow: hidden !important;
-  overflow-x: scroll !important;
+  /* max-width: 900px !important;
+  overflow-x: scroll !important; */
 }
 
 .OuterBoxCheck {
@@ -124,11 +123,13 @@
   font-family: "MontserratSemiBold" !important;
   font-size: 16px !important;
   color: #6172d6;
+  /* padding-left: 17px !important; */
 }
 
 .Sizing {
   padding: 10px 0px !important;
 }
 
-.InnerSecton {
+.TickIconClass {
+  margin-left: 30px !important;
 }
