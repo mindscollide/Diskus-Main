@@ -6,7 +6,7 @@ const initialState = {
   SaveFilesResponse: null,
   UploadDocumentsResponse: [],
   SaveFolderResponse: null,
-  getAllDocumentandShareFolderResponse: [],
+  getAllDocumentandShareFolderResponse: null,
   getFolderDocumentResponse: null,
   createFolderResponse: null,
   shareFilesResponse: null,
@@ -28,8 +28,7 @@ const initialState = {
   folderUploadData: [],
   isFileExsist: null,
   SearchFilesAndFoldersResponse: [],
-  SearchFileListCount: 0
-
+  SearchFileListCount: 0,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -169,7 +168,7 @@ const DataRoomReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getAllDocumentandShareFolderResponse: [],
+        getAllDocumentandShareFolderResponse: null,
         ResponseMessage: action.message,
       };
     }

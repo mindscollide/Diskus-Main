@@ -22,8 +22,8 @@ import {
   videoChatPanel,
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
-  participantPopup,
   leaveCallModal,
+  participantPopup,
 } from "../../../../../../store/actions/VideoFeature_actions";
 import VideoPanelFooter from "../videoPanelFooter/videoPanelFooter";
 
