@@ -6104,7 +6104,3 @@ input[type="time"]::-webkit-clear-button {
 }
 
 /* Scedule Proposed meeting */
-
-.SceduleProposedMeeting th.ant-table-cell {
-  /* border: 2px solid #000 !important; */
-}
