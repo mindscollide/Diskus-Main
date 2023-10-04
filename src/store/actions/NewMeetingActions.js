@@ -203,6 +203,13 @@ const showSceduleProposedMeeting = (response) => {
   };
 };
 
+const showviewVotesAgenda = (response) => {
+  return {
+    type: actions.VIEW_VOTE_AGENDA,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -233,4 +240,5 @@ export {
   showEndMeetingModal,
   showEndMeetingForAll,
   showSceduleProposedMeeting,
+  showviewVotesAgenda,
 };

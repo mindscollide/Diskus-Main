@@ -6103,4 +6103,18 @@ input[type="time"]::-webkit-clear-button {
   display: none !important;
 }
 
+.VoteModalAgenda .ant-progress-text {
+  font-size: 10px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6 !important;
+}
+
 /* Scedule Proposed meeting */
+
+.border-column:last-child {
+  border-bottom: 1px solid #6172d6 !important;
+}
+
+.SceduleProposedMeeting tbody tr:last-child td:nth-child(2) {
+  border-bottom: 1px solid #6172d6;
+}

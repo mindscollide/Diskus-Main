@@ -322,7 +322,7 @@ const SceduleProposedmeeting = () => {
                 <Col lg={12} md={12} sm={12}>
                   <Table
                     column={MeetingColoumns}
-                    // scroll={{ x: "22vh", y: "20vh" }}
+                    scroll={{ x: "22vh" }}
                     pagination={false}
                     className="SceduleProposedMeeting"
                     rows={tablerowsData}

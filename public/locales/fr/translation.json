@@ -1046,5 +1046,9 @@
   "Schedule-proposed-meetings": "Schedule Proposed Meetings",
   "Create-another-minute-in-this-agenda": "Create another minute in this agenda",
   "Create-another-minute-in-this-subagenda": "Create another minute in this sub agenda",
-  "Start-voting": "Start Voting"
+  "Start-voting": "Start Voting",
+  "End-voting": "End Voting",
+  "Was-the-introduction-satisfactory": "Was the Introduction Satisfactory?",
+  "Bar-graph": "Bar Graph",
+  "Pie-graph": "Pie Graph"
 }

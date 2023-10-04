@@ -40,6 +40,28 @@
   font-family: "MontserratSemiBold" !important;
 }
 
+.EndVotingButton {
+  width: 114px !important;
+  height: 25 !important;
+  background: #f16b6b !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.EndVotingButton:is(:hover, :active, :focus, :focus-visible) {
+  width: 114px !important;
+  height: 25 !important;
+  background: #f16b6b !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
 .ViewVoteButton {
   width: 114px !important;
   height: 25 !important;

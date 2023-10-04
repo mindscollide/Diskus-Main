@@ -6,11 +6,19 @@ import dropmdownblack from "../../../../../../assets/images/whitedown.png";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import ViewVoteModal from "./ViewVoteModal/ViewVoteModal";
+import { useSelector } from "react-redux";
+import { showviewVotesAgenda } from "../../../../../../store/actions/NewMeetingActions";
 
 const VotingPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
+
+  const EnableViewVoteModal = () => {
+    dispatch(showviewVotesAgenda(true));
+  };
   return (
     <section>
       <Row>
@@ -32,6 +40,10 @@ const VotingPage = () => {
                     sm={3}
                     className="d-flex gap-2 align-items-center"
                   >
+                    {/* <Button
+                      text={t("End-voting")}
+                      className={styles["EndVotingButton"]}
+                    /> */}
                     <Button
                       text={t("Start-voting")}
                       className={styles["startVotingButton"]}
@@ -39,6 +51,7 @@ const VotingPage = () => {
                     <Button
                       text={t("View-votes")}
                       className={styles["ViewVoteButton"]}
+                      onClick={EnableViewVoteModal}
                     />
                     <img src={dropmdownblack} width="18.4px" height="9.2px" />
                   </Col>
@@ -59,6 +72,7 @@ const VotingPage = () => {
           <Button text={t("Next")} className={styles["Next_button"]} />
         </Col>
       </Row>
+      {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
     </section>
   );
 };
