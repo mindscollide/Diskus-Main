@@ -157,3 +157,21 @@
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
 }
+
+
+/* Add border styles to cells in the column */
+.border-column {
+  border-left: 1px solid #000; /* Add your border styles here */
+  border-right: 1px solid #000; /* Add your border styles here */
+  /* Additional styles as needed */
+}
+.last-row td {
+  border-bottom: 1px solid #000; /* Add your border styles here */
+}
+.border-title {
+  border-top: 1px solid #000; /* Add your border styles here */
+  border-top-right-radius: 4px solid #000; /* Add your border styles here */
+  border-top-left-radius: 4px solid #000; /* Add your border styles here */
+  padding: 8px;
+  text-align: center;
+}
