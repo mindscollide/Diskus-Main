@@ -100,7 +100,7 @@ const AddNewChat = () => {
     if (
       talkStateData.AllUsers.AllUsersData !== undefined &&
       talkStateData.AllUsers.AllUsersData !== null &&
-      talkStateData.AllUsers.AllUsersData !== []
+      talkStateData.AllUsers.AllUsersData.length !== 0
     ) {
       setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
     }

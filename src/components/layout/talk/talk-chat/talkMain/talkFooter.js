@@ -10,6 +10,7 @@ import {
   recentChatFlag,
   privateGroupChatFlag,
   shoutallChatFlag,
+  privateChatFlag,
 } from '../../../../../store/actions/Talk_Feature_actions'
 import { Row, Col, Container } from 'react-bootstrap'
 import AddChatIcon from '../../../../../assets/images/Add-Plus-Icon.png'
@@ -26,6 +27,15 @@ const TalkFooter = () => {
       dispatch(headerShowHideStatus(false))
       dispatch(footerShowHideStatus(false))
       dispatch(recentChatFlag(false))
+      dispatch(footerActionStatus(true))
+      dispatch(addNewChatScreen(true))
+    } else if (talkFeatureStates.PrivateChatsFlag === true) {
+      dispatch(createGroupScreen(false))
+      dispatch(createShoutAllScreen(false))
+      dispatch(headerShowHideStatus(false))
+      dispatch(footerShowHideStatus(false))
+      dispatch(recentChatFlag(false))
+      dispatch(privateChatFlag(false))
       dispatch(footerActionStatus(true))
       dispatch(addNewChatScreen(true))
     } else if (talkFeatureStates.PrivateGroupChatsFlag === true) {

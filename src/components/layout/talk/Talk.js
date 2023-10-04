@@ -37,6 +37,8 @@ const Talk = () => {
     (state) => state,
   )
 
+  let activeCall = JSON.parse(localStorage.getItem('activeCall'))
+
   //Current User ID
   let currentUserId = localStorage.getItem('userID')
 
@@ -232,6 +234,12 @@ const Talk = () => {
       document.removeEventListener('click', handleOutsideClick)
     }
   }, [activeVideoIcon])
+
+  useEffect(() => {
+    if (activeCall === true) {
+      setActiveChatBox(false)
+    }
+  }, [activeCall])
 
   return (
     <div ref={videoPanelRef} className={'talk_nav' + ' ' + currentLang}>

@@ -204,15 +204,26 @@ const VideoPanelBodyRecent = () => {
         dispatch(videoChatPanel(false))
         console.log('Video Called OTO Request Data', Data)
       } else if (data.callType.callTypeID === 2) {
-        console.log('Video Called Group DATA', data)
-        const recipientIds = data.recipients.map(
-          (recipient) => recipient.userID,
-        )
+        const recipientIds =
+          data.callerID !== currentUserID ? [data.callerID] : []
+
+        data.recipients.forEach((recipient) => {
+          recipientIds.push(recipient.userID)
+        })
+
+        const indexToRemove = recipientIds.indexOf(currentUserID)
+        if (indexToRemove !== -1) {
+          recipientIds.splice(indexToRemove, 1)
+        }
+
         let Data = {
           RecipentIDs: recipientIds,
           CallTypeID: 2,
           OrganizationID: currentOrganization,
         }
+
+        console.log('Group Recent Call Data', Data)
+
         localStorage.setItem('CallType', Data.CallTypeID)
         dispatch(InitiateVideoCall(Data, navigate, t))
         localStorage.setItem('callerID', currentUserID)
@@ -301,14 +312,27 @@ const VideoPanelBodyRecent = () => {
 
   const leaveCallHostGroup = () => {
     console.log('Video Called Group DATA', recentCallRecipientData)
-    const recipientIds = recentCallRecipientData.recipients.map(
-      (recipient) => recipient.userID,
-    )
+    const recipientIds =
+      recentCallRecipientData.callerID !== currentUserID
+        ? [recentCallRecipientData.callerID]
+        : []
+
+    recentCallRecipientData.recipients.forEach((recipient) => {
+      recipientIds.push(recipient.userID)
+    })
+
+    const indexToRemove = recipientIds.indexOf(currentUserID)
+    if (indexToRemove !== -1) {
+      recipientIds.splice(indexToRemove, 1)
+    }
+
     let Data = {
       RecipentIDs: recipientIds,
       CallTypeID: 2,
       OrganizationID: currentOrganization,
     }
+
+    console.log('Group Recent Call Data', Data)
     let Data2 = {
       OrganizationID: currentOrganization,
       RoomID: initiateRoomID,
@@ -333,14 +357,27 @@ const VideoPanelBodyRecent = () => {
 
   const leaveCallParticipantGroup = () => {
     console.log('Video Called Group DATA', recentCallRecipientData)
-    const recipientIds = recentCallRecipientData.recipients.map(
-      (recipient) => recipient.userID,
-    )
+    const recipientIds =
+      recentCallRecipientData.callerID !== currentUserID
+        ? [recentCallRecipientData.callerID]
+        : []
+
+    recentCallRecipientData.recipients.forEach((recipient) => {
+      recipientIds.push(recipient.userID)
+    })
+
+    const indexToRemove = recipientIds.indexOf(currentUserID)
+    if (indexToRemove !== -1) {
+      recipientIds.splice(indexToRemove, 1)
+    }
+
     let Data = {
       RecipentIDs: recipientIds,
       CallTypeID: 2,
       OrganizationID: currentOrganization,
     }
+
+    console.log('Group Recent Call Data', Data)
     let roomID = localStorage.getItem('acceptedRoomID')
     let Data2 = {
       OrganizationID: currentOrganization,

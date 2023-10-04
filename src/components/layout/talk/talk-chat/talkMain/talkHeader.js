@@ -114,7 +114,7 @@ const TalkHeader = () => {
             dispatch(starredMessageFlag(false))
             dispatch(blockedUsersFlag(false))
             dispatch(shoutallChatFlag(false))
-            dispatch(footerShowHideStatus(false))
+            dispatch(footerShowHideStatus(true))
             dispatch(privateChatFlag(true))
           } else if (value.label === t('Private-Group')) {
             dispatch(recentChatFlag(false))
@@ -189,7 +189,11 @@ const TalkHeader = () => {
           <Col lg={1} md={1} sm={12} className="p-0">
             <div className="chat-icons">
               <span style={{ cursor: 'pointer' }} onClick={securityDialogue}>
-                <img draggable="false" src={SecurityIcon} className="img-cover" />
+                <img
+                  draggable="false"
+                  src={SecurityIcon}
+                  className="img-cover"
+                />
               </span>
             </div>
           </Col>
@@ -200,7 +204,11 @@ const TalkHeader = () => {
           </Col>
           <Col lg={1} md={1} sm={12} className="p-0">
             <div className="chat-icons">
-              <img draggable="false" src={FullScreenIcon} className="img-cover" />
+              <img
+                draggable="false"
+                src={FullScreenIcon}
+                className="img-cover"
+              />
             </div>
           </Col>
         </Row>
