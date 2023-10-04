@@ -48,17 +48,17 @@ const CustomPagination = ({
         pageSize={pageSize}
         total={total}
         onChange={handleChange}
-        onShowSizeChange={handleSizeChange}
+        onShowSizeChange={handleChange}
         pageSizeOptions={pageSizeOptions}
         className={className}
         itemRender={itemRender}
-        showSizeChanger={true} // Show the page size dropdown
+        showSizeChanger={false} // Show the page size dropdown
         showQuickJumper={false} // Hide the quick jumper input
         locale={{ items_per_page: t("items_per_page") }}
       />
       <Select
         value={pageSize}
-        onChange={(size) => handleSizeChange(current, size)}
+        onChange={(current, size) => handleChange(current, size)}
         className="ml-2"
       >
         {renderPageSizeOptions()}

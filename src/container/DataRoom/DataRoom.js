@@ -926,9 +926,12 @@ const DataRoom = () => {
           } else {
             if (ext === "pdf") {
               return (
-                <section
-                  className="d-flex gap-2 cursor-pointer"
-                  onDoubleClick={() => UniversalLink(pdfDataJson)}
+                <Link
+                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    pdfDataJson
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <img
                     src={getIconSource(getFileExtension(data.name))}
@@ -941,7 +944,7 @@ const DataRoom = () => {
                       {text}
                     </span>
                   </abbr>
-                </section>
+                </Link>
               );
             } else {
               return (
@@ -981,9 +984,12 @@ const DataRoom = () => {
           } else {
             if (ext === "pdf") {
               return (
-                <section
-                  className="d-flex gap-2 cursor-pointer"
-                  onDoubleClick={() => UniversalLink(pdfDataJson)}
+                <Link
+                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    pdfDataJson
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <img
                     src={getIconSource(getFileExtension(data.name))}
@@ -996,7 +1002,7 @@ const DataRoom = () => {
                       {text}
                     </span>
                   </abbr>
-                </section>
+                </Link>
               );
             } else {
               return (
@@ -2428,6 +2434,15 @@ const DataRoom = () => {
                                     sortDirections={["descend", "ascend"]}
                                     column={MyDocumentsColumns}
                                     className={"DataRoom_Table"}
+                                    onRow={(record, rowIndex) => {
+                                      return {
+                                        onDoubleClick: (event) =>
+                                          console.log(
+                                            { event, record, rowIndex },
+                                            "onDoubleClickonDoubleClickonDoubleClick"
+                                          ),
+                                      };
+                                    }}
                                     rows={getAllData}
                                     pagination={false}
                                     onChange={handleSortMyDocuments}
