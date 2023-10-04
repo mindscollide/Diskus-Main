@@ -171,6 +171,15 @@ const SceduleProposedmeeting = () => {
         </>
       ),
     },
+    {
+      key: "1",
+      Title: <></>,
+      Tick: (
+        <>
+          <Button text={t("Scedule")} className={styles["SceduleButton"]} />
+        </>
+      ),
+    },
   ];
   const [tablerowsData, setTablerowsData] = useState(data);
   const MeetingColoumns = [

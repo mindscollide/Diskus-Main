@@ -133,3 +133,23 @@
 .TickIconClass {
   margin-left: 30px !important;
 }
+
+.SceduleButton {
+  padding: 12px 30px !important;
+  background: #6172d6;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.SceduleButton:is(:hover, :active:focus, :focus-visible) {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
