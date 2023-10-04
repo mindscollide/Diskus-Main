@@ -44,7 +44,7 @@ import {
   _justShowDay,
 } from "../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
-
+import CustomPagination from "../../commen/functions/customPagination/Paginations";
 const Notes = () => {
   const [editFlag, setEditFlag] = useState(false);
   //Test Accordian states start

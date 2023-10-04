@@ -46,6 +46,7 @@ import {
   newDateFormaterAsPerUTC,
   forSetstartDateTimeMeetingCalendar,
   forHomeCalendar,
+  utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
 import {
@@ -98,10 +99,8 @@ const Home = () => {
   const { t } = useTranslation();
   const [updateNotesModalHomePage, setUpdateNotesModalHomePage] =
     useState(false);
-  console.log(
-    updateNotesModalHomePage,
-    "updateNotesModalHomePageupdateNotesModalHomePage"
-  );
+  const [totalRecordTodo, setTotalRecordTodo] = useState(0);
+  console.log(totalRecordTodo, "totalRecordTodototalRecordTodo");
   // const [viewFlag, setViewFlag] = useState(false);
   const state = useSelector((state) => state);
   const {
@@ -424,21 +423,49 @@ const Home = () => {
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
-    if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
-      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
-    } else {
-      setRowToDo(toDoListReducer.AllTodolistData);
-    }
+    let dataToSort =
+      toDoListReducer.SocketTodoActivityData.length > 0
+        ? [
+            toDoListReducer.SocketTodoActivityData,
+            ...toDoListReducer.AllTodolistData,
+          ]
+        : [...toDoListReducer.AllTodolistData];
+
+    const sortedTasks = dataToSort.sort((taskA, taskB) => {
+      const deadlineA = taskA?.deadlineDateTime;
+      const deadlineB = taskB?.deadlineDateTime;
+
+      // Compare the deadlineDateTime values as numbers for sorting
+      return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+    });
+
+    setTotalRecordTodo(sortedTasks.length);
+    setRowToDo(sortedTasks.slice(0, 15));
   }, [toDoListReducer.SocketTodoActivityData]);
 
-  //get todolist reducer
   useEffect(() => {
-    if (Object.keys(toDoListReducer.AllTodolistData).length > 0) {
-      setRowToDo(toDoListReducer.AllTodolistData);
-    } else {
-      setRowToDo([]);
-    }
+    try {
+      if (
+        !toDoListReducer.AllTodolistData ||
+        !toDoListReducer.AllTodolistData.length
+      ) {
+        setRowToDo([]);
+        return;
+      }
+
+      const sortedTasks = [...toDoListReducer.AllTodolistData].sort(
+        (taskA, taskB) => {
+          const deadlineA = taskA?.deadlineDateTime;
+          const deadlineB = taskB?.deadlineDateTime;
+          return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+        }
+      );
+
+      setTotalRecordTodo(sortedTasks.length);
+      setRowToDo(sortedTasks.slice(0, 15));
+    } catch {}
   }, [toDoListReducer.AllTodolistData]);
+
   const viewTodoModal = (id) => {
     setTodoID(id);
     // setTodoListLoader(true);
@@ -474,6 +501,7 @@ const Home = () => {
       key: "deadlineDateTime",
       width: "40%",
       className: "deadlineDashboard",
+
       render: (text, record) => {
         return (
           <span
@@ -759,11 +787,6 @@ const Home = () => {
 
     return meetingIdReducer.UpcomingEventsData.map(
       (upcomingEventsData, index) => {
-        console.log(
-          "upcomingEvents index",
-          upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-            getCurrentDate
-        );
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
@@ -1109,7 +1132,28 @@ const Home = () => {
                     column={columnsToDo}
                     className="dashboard-todo"
                     rows={rowsToDo}
-                    labelTitle={t("Todo-list")}
+                    labelTitle={
+                      <>
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="d-flex justify-content-between"
+                          >
+                            <span>{t("Todo-list")}</span>
+                            {rowsToDo.length === 15 && (
+                              <span
+                                className="cursor-pointer"
+                                onClick={() => navigate("/DisKus/todolist")}
+                              >
+                                {t("View-more")}
+                              </span>
+                            )}
+                          </Col>
+                        </Row>
+                      </>
+                    }
                     scroll={{ y: "49vh" }}
                     pagination={false}
                     // onChange={handleChangeTodoTable}
