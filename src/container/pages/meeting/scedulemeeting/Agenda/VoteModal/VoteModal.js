@@ -24,7 +24,7 @@ import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
 import Plus from "../../../../../../assets/images/Meeting plus.png";
 import profile from "../../../../../../assets/images/newprofile.png";
 import { validateInput } from "../../../../../../commen/functions/regex";
-const VoteModal = () => {
+const VoteModal = ({ setenableVotingPage }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -375,7 +375,10 @@ const VoteModal = () => {
   };
 
   const handleVoteSaveModal = () => {
-    setError(true);
+    dispatch(showVoteAgendaModal(false));
+    setenableVotingPage(true);
+    // Enable Error state by Here
+    // setError(true);
   };
 
   const dropDownSelectOrganizers = (e) => {

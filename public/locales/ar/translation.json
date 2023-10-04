@@ -1487,5 +1487,6 @@
   "Delete-meeting": "Delete Meeting",
   "Schedule-proposed-meetings": "Schedule Proposed Meetings",
   "Create-another-minute-in-this-agenda": "Create another minute in this agenda",
-  "Create-another-minute-in-this-subagenda": "Create another minute in this sub agenda"
+  "Create-another-minute-in-this-subagenda": "Create another minute in this sub agenda",
+  "Start-voting": "Start Voting"
 }
