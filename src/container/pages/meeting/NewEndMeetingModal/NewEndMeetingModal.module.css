@@ -1,49 +1,45 @@
-.Grant_Access_Styles {
-  font-size: 12px !important;
+.EndMeetingTextStyles {
+  color: #6172d6 !important;
+  font-size: 16px !important;
   font-family: "MontserratSemiBold" !important;
-  color: #5a5a5a !important;
 }
 
-.Cancel_Button_Organizers_view {
+.No_unsave_File_Upload {
   padding: 12px 30px !important;
   font-size: 12px !important;
+  color: #5a5a5a !important;
   background: #fff !important;
-  border: 1px solid#E1E1E1 !important;
-  color: #5a5a5a !important;
   border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
   font-family: "MontserratSemiBold" !important;
 }
 
-.Cancel_Button_Organizers_view:is(:active, :hover, :focus, :focus-visible) {
+.No_unsave_File_Upload:is(:hover, :focus, :focus-visible, :active) {
   padding: 12px 30px !important;
   font-size: 12px !important;
+  color: #5a5a5a !important;
   background: #fff !important;
-  border: 1px solid#E1E1E1 !important;
-  color: #5a5a5a !important;
   border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
   font-family: "MontserratSemiBold" !important;
 }
 
-.Next_Button_Organizers_view {
+.Yes_unsave_File_Upload {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #6172d6 !important;
-  border: none !important;
+  background: #5f78d6 !important;
   color: #fff !important;
+  border: none !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }
 
-.Next_Button_Organizers_view:is(:active, :hover, :focus, :focus-visible) {
+.Yes_unsave_File_Upload:is(:hover, :focus, :focus-visible, :active) {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #6172d6 !important;
-  border: none !important;
+  background: #5f78d6 !important;
   color: #fff !important;
+  border: none !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
-}
-
-.FixedHeight {
-  height: 50vh !important;
 }

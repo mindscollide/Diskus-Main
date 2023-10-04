@@ -28,6 +28,9 @@ const initialState = {
   unsavedPollsMeeting: false,
   unsavedEditPollsMeeting: false,
   deleteMeetingModal: false,
+  endMeetingModal: false,
+  endForAllMeeting: false,
+  sceduleproposedMeeting: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -210,6 +213,27 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         deleteMeetingModal: action.response,
+      };
+    }
+
+    case actions.END_MEETING_MODAL: {
+      return {
+        ...state,
+        endMeetingModal: action.response,
+      };
+    }
+
+    case actions.END_MEETING_FOR_ALL: {
+      return {
+        ...state,
+        endForAllMeeting: action.response,
+      };
+    }
+
+    case actions.SCEDULE_PROPOSED_MEETING: {
+      return {
+        ...state,
+        sceduleproposedMeeting: action.response,
       };
     }
 

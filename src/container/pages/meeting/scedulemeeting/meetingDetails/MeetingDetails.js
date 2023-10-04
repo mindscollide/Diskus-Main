@@ -16,6 +16,7 @@ import {
   validateInput,
 } from "../../../../../commen/functions/regex";
 import MeetingActive from "./MeetingActivePage/MeetingActive";
+import PublishedMeeting from "./PublishedMeeting/PublishedMeeting";
 
 const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const { t } = useTranslation();
@@ -226,6 +227,14 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
       ) : (
         <>
           <Row>
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+              <Button
+                text={t("Start-meeting")}
+                className={styles["Published"]}
+              />
+            </Col>
+          </Row>
+          <Row>
             <Col
               lg={12}
               md={12}
@@ -266,7 +275,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Meeting_type_heading"]}>
                             {t("Meeting-type")}
-                            <span>*</span>
+                            <span className={styles["steric"]}>*</span>
                           </span>
                         </Col>
                       </Row>
@@ -300,7 +309,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Meeting_type_heading"]}>
                             {t("Location")}
-                            <span>*</span>
+                            <span className={styles["steric"]}>*</span>
                           </span>
                         </Col>
                       </Row>
@@ -422,7 +431,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Scedule_heading"]}>
                         {t("Scheduled-on")}
-                        <span>*</span>
+                        <span className={styles["steric"]}>*</span>
                       </span>
                     </Col>
                   </Row>
@@ -663,7 +672,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Frequency_heading"]}>
                           {t("Reminder-frequency")}
-                          <span>*</span>
+                          <span className={styles["steric"]}>*</span>
                         </span>
                       </Col>
                     </Row>
@@ -774,6 +783,16 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
               sm={12}
               className="d-flex gap-3 justify-content-end"
             >
+              <Button
+                text={t("Delete-meeting")}
+                className={styles["Published"]}
+                onClick={handlePublish}
+              />
+              <Button
+                text={t("Publish-the-meeting")}
+                className={styles["Published"]}
+                onClick={handlePublish}
+              />
               <Button
                 text={t("Publish")}
                 className={styles["Published"]}

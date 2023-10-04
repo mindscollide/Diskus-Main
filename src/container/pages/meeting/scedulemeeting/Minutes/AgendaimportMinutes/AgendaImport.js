@@ -28,6 +28,10 @@ const AgendaImport = () => {
   const [subAgendaMinuteRemove, setSubAgendaMinuteRemove] = useState(0);
   const [indexForMainEdit, setIndexForMainEdit] = useState(0);
   const [indexForSubAgendaEdit, setIndexForSubAgendaEdit] = useState(0);
+  const [createAnotherMinuteMainAgenda, setCreateAnotherMinuteMainAgenda] =
+    useState(false);
+  const [createAnotherMinutesSubAgenda, setCreateAnotherMinutesSubAgenda] =
+    useState(false);
   const [AgendaData, setAgendaData] = useState([
     {
       MainTitle: "Introduction",
@@ -165,6 +169,14 @@ const AgendaImport = () => {
     setsavedAgenda(true);
   };
 
+  const handleCreateAnotherMinuteMainAgenda = () => {
+    setCreateAnotherMinuteMainAgenda(true);
+  };
+
+  const handlecreateanotherMinutesSubagenda = () => {
+    setCreateAnotherMinutesSubAgenda(true);
+  };
+
   return (
     <section>
       {savedAgenda ? (
@@ -194,29 +206,48 @@ const AgendaImport = () => {
                                 </span>
                               </Col>
                             </Row>
-                            <Row className={styles["Add-note-QuillRow"]}>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                xs={12}
-                                className={styles["Arabic_font_Applied"]}
-                              >
-                                <ReactQuill
-                                  ref={editorRef}
-                                  theme="snow"
-                                  // value={data.name}
-                                  placeholder={t("Note-details")}
-                                  modules={modules}
-                                  className={styles["quill-height-addNote"]}
-                                />
-                                <img
-                                  draggable={false}
-                                  src={RedCroseeIcon}
-                                  className={styles["RedCrossForEdit"]}
+                            {/* Main Agenda Create Another Minutes */}
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <Button
+                                  text={t(
+                                    "Create-another-minute-in-this-agenda"
+                                  )}
+                                  className={
+                                    styles["CreateAnotherAgendaButtonStyles"]
+                                  }
+                                  onClick={handleCreateAnotherMinuteMainAgenda}
                                 />
                               </Col>
                             </Row>
+                            {createAnotherMinuteMainAgenda ? (
+                              <>
+                                <Row className={styles["Add-note-QuillRow"]}>
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    xs={12}
+                                    className={styles["Arabic_font_Applied"]}
+                                  >
+                                    <ReactQuill
+                                      ref={editorRef}
+                                      theme="snow"
+                                      // value={data.name}
+                                      placeholder={t("Note-details")}
+                                      modules={modules}
+                                      className={styles["quill-height-addNote"]}
+                                    />
+                                    <img
+                                      draggable={false}
+                                      src={RedCroseeIcon}
+                                      className={styles["RedCrossForEdit"]}
+                                    />
+                                  </Col>
+                                </Row>
+                              </>
+                            ) : null}
+
                             {/* subAgenda Mapping */}
                             <Row>
                               <Col
@@ -267,47 +298,70 @@ const AgendaImport = () => {
                                             <Row>
                                               <Col lg={1} md={1} sm={1}></Col>
                                               <Col lg={11} md={11} sm={11}>
-                                                <Row
-                                                  className={
-                                                    styles["Add-note-QuillRow"]
-                                                  }
-                                                >
-                                                  <Col
-                                                    lg={12}
-                                                    md={12}
-                                                    sm={12}
-                                                    xs={12}
-                                                    className={
-                                                      styles[
-                                                        "Arabic_font_Applied"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <ReactQuill
-                                                      ref={editorRef}
-                                                      theme="snow"
-                                                      // value={data.name}
-                                                      placeholder={t(
-                                                        "Note-details"
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <Button
+                                                      text={t(
+                                                        "Create-another-minute-in-this-subagenda"
                                                       )}
-                                                      modules={modules}
                                                       className={
                                                         styles[
-                                                          "quill-height-addNote"
+                                                          "CreateAnotherAgendaButtonStyles"
                                                         ]
                                                       }
-                                                    />
-                                                    <img
-                                                      draggable={false}
-                                                      src={RedCroseeIcon}
-                                                      className={
-                                                        styles[
-                                                          "RedCrossForEdit"
-                                                        ]
+                                                      onClick={
+                                                        handlecreateanotherMinutesSubagenda
                                                       }
                                                     />
                                                   </Col>
                                                 </Row>
+                                                {/* Create Minutes Sub Agenda */}
+                                                {createAnotherMinutesSubAgenda ? (
+                                                  <>
+                                                    <Row
+                                                      className={
+                                                        styles[
+                                                          "Add-note-QuillRow"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                        xs={12}
+                                                        className={
+                                                          styles[
+                                                            "Arabic_font_Applied"
+                                                          ]
+                                                        }
+                                                      >
+                                                        <ReactQuill
+                                                          ref={editorRef}
+                                                          theme="snow"
+                                                          placeholder={t(
+                                                            "Note-details"
+                                                          )}
+                                                          modules={modules}
+                                                          className={
+                                                            styles[
+                                                              "quill-height-addNote"
+                                                            ]
+                                                          }
+                                                        />
+                                                        <img
+                                                          draggable={false}
+                                                          src={RedCroseeIcon}
+                                                          className={
+                                                            styles[
+                                                              "RedCrossForEdit"
+                                                            ]
+                                                          }
+                                                        />
+                                                      </Col>
+                                                    </Row>
+                                                  </>
+                                                ) : null}
                                               </Col>
                                             </Row>
                                           </Col>

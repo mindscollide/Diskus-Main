@@ -155,88 +155,107 @@ const CreateFromScratch = () => {
           </Row>
         </>
       ) : null}
+      <Row>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className={styles["CreateFromScratchScroller"]}
+        >
+          <section className={styles["SaveCreateFromScratch"]}>
+            <Row className="mt-5">
+              {showScratchFiles.length > 0
+                ? showScratchFiles.map((data, index) => {
+                    console.log(data, "datadatadatadatadata");
+                    return (
+                      <>
+                        {editableIndex === index && editable ? (
+                          <>
+                            <Row className={styles["Add-note-QuillRow"]}>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                xs={12}
+                                className={styles["Arabic_font_Applied"]}
+                              >
+                                <ReactQuill
+                                  ref={editorRef}
+                                  theme="snow"
+                                  value={data.name}
+                                  placeholder={t("Note-details")}
+                                  modules={modules}
+                                  className={styles["quill-height-addNote"]}
+                                />
+                                <img
+                                  draggable={false}
+                                  src={RedCroseeIcon}
+                                  className={
+                                    styles["RedCrossForEdit_AfterSave"]
+                                  }
+                                />
+                              </Col>
+                            </Row>
+                            <Row className="mt-5">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-end gap-2"
+                              >
+                                <Button
+                                  text={t("Cancel")}
+                                  className={
+                                    styles["CancelButtonOnSaveAgendaImport"]
+                                  }
+                                  onClick={cancelEditFunctionality}
+                                />
+                                <Button
+                                  text={t("Save")}
+                                  className={
+                                    styles["SaveButtonOnSaveAgendaImport"]
+                                  }
+                                />
+                              </Col>
+                            </Row>
+                          </>
+                        ) : (
+                          <>
+                            {index <= 0 ? null : (
+                              <>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className={styles["Box_Minutes"]}
+                                >
+                                  <Row>
+                                    <Col lg={9} md={9} sm={9}>
+                                      <Row className="mt-3">
+                                        <Col lg={12} md={12} sm={12}>
+                                          <span
+                                            className={styles["Title_File"]}
+                                          >
+                                            {expanded ? (
+                                              <>
+                                                {data.name.substring(0, 190)}...
+                                              </>
+                                            ) : (
+                                              <>{data.name}</>
+                                            )}
 
-      <Row className="mt-5">
-        {showScratchFiles.length > 0
-          ? showScratchFiles.map((data, index) => {
-              console.log(data, "datadatadatadatadata");
-              return (
-                <>
-                  {editableIndex === index && editable ? (
-                    <>
-                      <Row className={styles["Add-note-QuillRow"]}>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          xs={12}
-                          className={styles["Arabic_font_Applied"]}
-                        >
-                          <ReactQuill
-                            ref={editorRef}
-                            theme="snow"
-                            value={data.name}
-                            placeholder={t("Note-details")}
-                            modules={modules}
-                            className={styles["quill-height-addNote"]}
-                          />
-                          <img
-                            draggable={false}
-                            src={RedCroseeIcon}
-                            className={styles["RedCrossForEdit_AfterSave"]}
-                          />
-                        </Col>
-                      </Row>
-                      <Row className="mt-5">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-end gap-2"
-                        >
-                          <Button
-                            text={t("Cancel")}
-                            className={styles["CancelButtonOnSaveAgendaImport"]}
-                            onClick={cancelEditFunctionality}
-                          />
-                          <Button
-                            text={t("Save")}
-                            className={styles["SaveButtonOnSaveAgendaImport"]}
-                          />
-                        </Col>
-                      </Row>
-                    </>
-                  ) : (
-                    <>
-                      {index <= 0 ? null : (
-                        <>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_Minutes"]}
-                          >
-                            <Row>
-                              <Col lg={9} md={9} sm={9}>
-                                <Row className="mt-3">
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span className={styles["Title_File"]}>
-                                      {expanded ? (
-                                        <>{data.name.substring(0, 190)}...</>
-                                      ) : (
-                                        <>{data.name}</>
-                                      )}
-
-                                      <span
-                                        className={styles["Show_more_Styles"]}
-                                        onClick={toggleExpansion}
-                                      >
-                                        {expanded
-                                          ? t("See-more")
-                                          : t("See-less")}
-                                      </span>
-                                    </span>
-                                    {/* <span className={styles["Title_File"]}>
+                                            <span
+                                              className={
+                                                styles["Show_more_Styles"]
+                                              }
+                                              onClick={toggleExpansion}
+                                            >
+                                              {expanded
+                                                ? t("See-more")
+                                                : t("See-less")}
+                                            </span>
+                                          </span>
+                                          {/* <span className={styles["Title_File"]}>
                                       {isHTML(data.name) && (
                                         <span
                                           dangerouslySetInnerHTML={{
@@ -254,93 +273,122 @@ const CreateFromScratch = () => {
                                           : t("See-less")}
                                       </span>
                                     </span> */}
-                                  </Col>
-                                </Row>
-                                <Row className="mt-1">
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span
-                                      className={
-                                        styles["Date_Minutes_And_time"]
-                                      }
-                                    >
-                                      4:00pm, 18th May, 2020
-                                    </span>
-                                  </Col>
-                                </Row>
-                              </Col>
-                              <Col lg={3} md={3} sm={3} className="mt-4">
-                                <Row className="d-flex justify-content-end">
-                                  <Col lg={2} md={2} sm={2}>
-                                    <img
-                                      draggable={false}
-                                      src={profile}
-                                      height="39px"
-                                      width="39px"
-                                      className={styles["Profile_minutes"]}
-                                    />
-                                  </Col>
-                                  <Col
-                                    lg={6}
-                                    md={6}
-                                    sm={6}
-                                    className={styles["Line_heigh"]}
-                                  >
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12}>
-                                        <span
-                                          className={styles["Uploaded_heading"]}
+                                        </Col>
+                                      </Row>
+                                      <Row className="mt-1">
+                                        <Col lg={12} md={12} sm={12}>
+                                          <span
+                                            className={
+                                              styles["Date_Minutes_And_time"]
+                                            }
+                                          >
+                                            4:00pm, 18th May, 2020
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                    <Col lg={3} md={3} sm={3} className="mt-4">
+                                      <Row className="d-flex justify-content-end">
+                                        <Col lg={2} md={2} sm={2}>
+                                          <img
+                                            draggable={false}
+                                            src={profile}
+                                            height="39px"
+                                            width="39px"
+                                            className={
+                                              styles["Profile_minutes"]
+                                            }
+                                          />
+                                        </Col>
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={6}
+                                          className={styles["Line_heigh"]}
                                         >
-                                          {t("Uploaded-by")}
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12}>
-                                        <span className={styles["Name"]}>
-                                          Mehtab Ahmed
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                  <Col
-                                    lg={3}
-                                    md={3}
-                                    sm={3}
-                                    className="d-flex justify-content-start align-items-center"
-                                  >
-                                    <img
-                                      draggable={false}
-                                      src={EditIcon}
-                                      height="21.55px"
-                                      width="21.55px"
-                                      className="cursor-pointer"
-                                      onClick={() => {
-                                        allowEditOptions(index);
-                                      }}
-                                    />
-                                  </Col>
-                                </Row>
-                              </Col>
-                            </Row>
-                            <img
-                              draggable={false}
-                              src={RedCroseeIcon}
-                              height="20.76px"
-                              width="20.76px"
-                              className={styles["RedCrossClass"]}
-                              onClick={() => {
-                                handleRemoveFiles(index);
-                              }}
-                            />
-                          </Col>
-                        </>
-                      )}
-                    </>
-                  )}
-                </>
-              );
-            })
-          : null}
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles["Uploaded_heading"]
+                                                }
+                                              >
+                                                {t("Uploaded-by")}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span className={styles["Name"]}>
+                                                Mehtab Ahmed
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                        <Col
+                                          lg={3}
+                                          md={3}
+                                          sm={3}
+                                          className="d-flex justify-content-start align-items-center"
+                                        >
+                                          <img
+                                            draggable={false}
+                                            src={EditIcon}
+                                            height="21.55px"
+                                            width="21.55px"
+                                            className="cursor-pointer"
+                                            onClick={() => {
+                                              allowEditOptions(index);
+                                            }}
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                  <img
+                                    draggable={false}
+                                    src={RedCroseeIcon}
+                                    height="20.76px"
+                                    width="20.76px"
+                                    className={styles["RedCrossClass"]}
+                                    onClick={() => {
+                                      handleRemoveFiles(index);
+                                    }}
+                                  />
+                                </Col>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </>
+                    );
+                  })
+                : null}
+            </Row>
+          </section>
+        </Col>
+      </Row>
+
+      <Row className="m-0 p-0 mt-3">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          <Button
+            text={t("Clone-meeting")}
+            className={styles["CancelButtonOnSaveAgendaImport"]}
+          />
+          <Button
+            text={t("Cancel")}
+            className={styles["CancelButtonOnSaveAgendaImport"]}
+          />
+          <Button
+            text={t("Save")}
+            className={styles["SaveButtonOnSaveAgendaImport"]}
+          />
+        </Col>
       </Row>
       {createFromSratch ? (
         <>

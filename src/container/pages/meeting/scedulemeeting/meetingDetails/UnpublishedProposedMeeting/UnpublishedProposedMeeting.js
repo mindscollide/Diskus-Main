@@ -13,9 +13,13 @@ import { Button, Table } from "../../../../../../components/elements";
 import rspvGreenIcon from "../../../../../../assets/images/rspvGreen.svg";
 import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
-import { showDeleteMeetingModal } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  showDeleteMeetingModal,
+  showSceduleProposedMeeting,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeeting";
 
 const UnpublishedProposedMeeting = () => {
   const dispatch = useDispatch();
@@ -26,6 +30,10 @@ const UnpublishedProposedMeeting = () => {
 
   const handleDeleteMeetingModal = () => {
     dispatch(showDeleteMeetingModal(true));
+  };
+
+  const enableScedulePrposedMeetingModal = () => {
+    dispatch(showSceduleProposedMeeting(true));
   };
 
   const data = [
@@ -143,6 +151,7 @@ const UnpublishedProposedMeeting = () => {
                     className="cursor-pointer"
                     width="14.02px"
                     height="16.03px"
+                    onClick={enableScedulePrposedMeetingModal}
                   />
                 </Tooltip>
                 <Tooltip placement="topLeft" title={t("Chat")}>
@@ -210,6 +219,7 @@ const UnpublishedProposedMeeting = () => {
           />
         </Col>
       </Row>
+      {NewMeetingreducer.sceduleproposedMeeting && <SceduleProposedmeeting />}
       {NewMeetingreducer.deleteMeetingModal && <DeleteMeetingModal />}
     </section>
   );

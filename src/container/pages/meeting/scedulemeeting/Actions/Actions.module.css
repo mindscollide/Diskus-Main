@@ -26,6 +26,54 @@
   color: #fff !important;
 }
 
+.CloneMeetingButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  border: none !important;
+  background: #fff;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.CloneMeetingButton:hover,
+.CloneMeetingButton:active,
+.CloneMeetingButton:focus,
+.CloneMeetingButton:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  border: none !important;
+  background: #fff;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+
+.SaveButtonActions {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  border: none !important;
+  background: #6172d6;
+  color: #fff !important;
+}
+
+.SaveButtonActions:hover,
+.SaveButtonActions:active,
+.SaveButtonActions:focus,
+.SaveButtonActions:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  border: none !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
 .ActionsClass {
   font-size: 12px !important;
   color: #2197d7 !important;
@@ -58,4 +106,8 @@
   font-family: "Montserrat" !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
+}
+
+.HeightDefined {
+  height: 49vh !important;
 }
