@@ -99,11 +99,19 @@ const CastVoteAgendaModal = () => {
                 </section>
               </Col>
             </Row>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
+            <Row className="mt-3">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
                 <Button
                   text={t("Cancel")}
                   className={styles["Cast_vote_CancelButton"]}
+                  onClick={() => {
+                    dispatch(showCastVoteAgendaModal(false));
+                  }}
                 />
                 <Button
                   text={t("Save")}

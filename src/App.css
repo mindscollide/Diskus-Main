@@ -5800,6 +5800,7 @@ abbr[title] {
   border-radius: 4px !important;
   box-shadow: 0px 0px 5px #ccc;
   width: 188px !important;
+  padding: 0px 7px;
 }
 
 /* .containerClassTimePicker span.rmdp-arrow-container.rmdp-up:hover {

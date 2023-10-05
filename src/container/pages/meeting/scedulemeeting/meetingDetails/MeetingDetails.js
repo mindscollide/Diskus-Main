@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "./MeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
 import MeetingVideoChatIcon from "../../../../../assets/images/ColoredVideo.svg";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import { DateObject } from "react-multi-date-picker";
+import InputIcon from "react-multi-date-picker/components/input_icon";
+import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+import whiteVideIcon from "../../../../../assets/images/whiteVideoIcon.png";
 import { Col, Row } from "react-bootstrap";
 import { Button, Switch, TextField } from "../../../../../components/elements";
 import desh from "../../../../../assets/images/desh.svg";
@@ -17,6 +24,7 @@ import {
 } from "../../../../../commen/functions/regex";
 import MeetingActive from "./MeetingActivePage/MeetingActive";
 import PublishedMeeting from "./PublishedMeeting/PublishedMeeting";
+import moment from "moment";
 
 const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const { t } = useTranslation();
@@ -24,7 +32,14 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const [rows, setRows] = useState([
     { selectedOption: "", startDate: "", endDate: "" },
   ]);
+
+  //For Custom language datepicker
+  const [meetingDate, setMeetingDate] = useState("");
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+  const calendRef = useRef();
   const [error, seterror] = useState(false);
+  const [activeVideo, setActiveVideo] = useState(false);
   const [saveMeeting, setSaveMeeting] = useState(false);
   const [meetingDetails, setMeetingDetails] = useState({
     MeetingTitle: "",
@@ -59,12 +74,18 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     setMeetingDetails({ ...meetingDetails, Location: selectedOption });
   };
 
-  const handleStartDateChange = (date) => {
-    setOptions({ ...options, startDate: date });
+  const handleStartDateChange = (index, date) => {
+    console.log(date, "datedatedatedatedate");
+    const updatedRows = [...rows];
+    updatedRows[index].startDate = date;
+    setRows(updatedRows);
   };
 
-  const handleEndDateChange = (date) => {
-    setOptions({ ...options, endDate: date });
+  // Function to update the endDate for a specific row
+  const handleEndDateChange = (index, date) => {
+    const updatedRows = [...rows];
+    updatedRows[index].endDate = date;
+    setRows(updatedRows);
   };
 
   const addRow = () => {
@@ -219,6 +240,20 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     { value: "Quaterly", label: t("Quaterly") },
     { value: "sixmonthly", label: t("Six-monthly") },
   ];
+
+  const handleVideoCameraButton = () => {
+    setActiveVideo(!activeVideo);
+  };
+
+  //Onchange Function For DatePicker inAdd datess First
+  const changeDateStartHandler = (date, index) => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let DateDate = new Date(date);
+    setMeetingDate(meetingDateValueFormat);
+    const updatedRows = [...rows];
+    updatedRows[index].selectedOption = DateDate;
+    setRows(updatedRows);
+  };
 
   return (
     <section>
@@ -390,13 +425,26 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                             icon={
                               <img
                                 draggable={false}
-                                src={MeetingVideoChatIcon}
+                                src={
+                                  activeVideo
+                                    ? whiteVideIcon
+                                    : MeetingVideoChatIcon
+                                }
                                 width="22.32px"
                                 height="14.75px"
-                                className={styles["Camera_icon"]}
+                                className={
+                                  activeVideo
+                                    ? styles["Camera_icon_active_IconStyles"]
+                                    : styles["Camera_icon"]
+                                }
                               />
                             }
-                            className={styles["Button_not_active"]}
+                            className={
+                              activeVideo
+                                ? styles["Camera_icon_Active"]
+                                : styles["Button_not_active"]
+                            }
+                            onClick={handleVideoCameraButton}
                           />
                         </Col>
                         <Col lg={11} md={11} sm={12}>
@@ -446,188 +494,135 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         ? rows.map((data, index) => {
                             return (
                               <>
-                                {index <= 1 ? (
-                                  <Row>
-                                    <Col lg={12} md={12} sm={12} key={index}>
-                                      <Row className="mt-2">
-                                        <Col lg={4} md={4} sm={12}>
-                                          <Select
-                                            value={rows.selectedOption}
-                                            onChange={handleSelectChange}
-                                            isSearchable={false}
-                                          />
-                                          <Row>
-                                            <Col>
-                                              <p
-                                                className={
-                                                  error &&
-                                                  data.selectedOption === ""
-                                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                                    : `${styles["errorMessage-inLogin_hidden"]}`
-                                                }
-                                              >
-                                                {t(
-                                                  "Please-select-data-and-time"
-                                                )}
-                                              </p>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={3}
-                                          md={3}
-                                          sm={3}
+                                <Row>
+                                  <Col lg={12} md={12} sm={12} key={index}>
+                                    <Row className="mt-2">
+                                      <Col lg={4} md={4} sm={12}>
+                                        <DatePicker
+                                          selected={rows.selectedOption}
+                                          format={"DD/MM/YYYY"}
+                                          minDate={moment().toDate()}
+                                          placeholder="DD/MM/YYYY"
+                                          render={
+                                            <InputIcon
+                                              placeholder="DD/MM/YYYY"
+                                              className="datepicker_input"
+                                            />
+                                          }
+                                          editable={false}
+                                          className="datePickerTodoCreate2"
+                                          onOpenPickNewDate={true}
+                                          inputMode=""
+                                          calendar={calendarValue}
+                                          locale={localValue}
+                                          ref={calendRef}
+                                          onChange={(value) =>
+                                            changeDateStartHandler(value, index)
+                                          }
+                                        />
+                                        <Row>
+                                          <Col>
+                                            <p
+                                              className={
+                                                error &&
+                                                data.selectedOption === ""
+                                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                                              }
+                                            >
+                                              {t("Please-select-data-and-time")}
+                                            </p>
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                      <Col
+                                        lg={3}
+                                        md={3}
+                                        sm={3}
+                                        className="timePicker"
+                                      >
+                                        <DatePicker
+                                          arrowClassName="arrowClass"
+                                          containerClassName="containerClassTimePicker"
                                           className="timePicker"
-                                        >
-                                          <DatePicker
-                                            arrowClassName="arrowClass"
-                                            containerClassName="containerClassTimePicker"
-                                            className="timePicker"
-                                            disableDayPicker
-                                            inputClass="inputTIme"
-                                            format="HH:mm A"
-                                            plugins={[
-                                              <TimePicker hideSeconds />,
-                                            ]}
-                                            selected={rows.startDate}
-                                            onChange={handleStartDateChange}
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={1}
-                                          md={1}
-                                          sm={12}
-                                          className="d-flex justify-content-end align-items-center"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={desh}
-                                            width="19.02px"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={3}
-                                          md={3}
-                                          sm={12}
-                                          // className="d-flex justify-content-end"
-                                        >
-                                          <DatePicker
-                                            arrowClassName="arrowClass"
-                                            containerClassName="containerClassTimePicker"
-                                            className="timePicker"
-                                            disableDayPicker
-                                            inputClass="inputTIme"
-                                            format="HH:mm A"
-                                            plugins={[
-                                              <TimePicker hideSeconds />,
-                                            ]}
-                                            selected={rows.endDate}
-                                            onChange={handleEndDateChange}
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={1}
-                                          md={1}
-                                          sm={12}
-                                          className="d-flex justify-content-end position-relative align-items-center"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={redcrossIcon}
-                                            width="23px"
-                                            height="23px"
-                                            className={
-                                              styles["Cross_icon_class"]
-                                            }
-                                            onClick={() => {
-                                              HandleCancelFunction(index);
-                                            }}
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                ) : (
-                                  <Row>
-                                    <Col lg={12} md={12} sm={12}>
-                                      <Row className="mt-2">
-                                        <Col lg={4} md={4} sm={12}>
-                                          <Select
-                                            value={data.value}
-                                            isSearchable={false}
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={3}
-                                          md={3}
-                                          sm={12}
+                                          disableDayPicker
+                                          inputClass="inputTImeMeeting"
+                                          format="HH:mm A"
+                                          selected={data.startDate}
+                                          plugins={[<TimePicker hideSeconds />]}
+                                          onChange={(date) =>
+                                            handleStartDateChange(index, date)
+                                          }
+                                        />
+                                      </Col>
+                                      <Col
+                                        lg={1}
+                                        md={1}
+                                        sm={12}
+                                        className="d-flex justify-content-end align-items-center"
+                                      >
+                                        <img
+                                          draggable={false}
+                                          src={desh}
+                                          width="19.02px"
+                                        />
+                                      </Col>
+                                      <Col
+                                        lg={3}
+                                        md={3}
+                                        sm={12}
+                                        // className="d-flex justify-content-end"
+                                      >
+                                        <DatePicker
+                                          arrowClassName="arrowClass"
+                                          containerClassName="containerClassTimePicker"
                                           className="timePicker"
-                                        >
-                                          <DatePicker
-                                            arrowClassName="arrowClass"
-                                            containerClassName="containerClassTimePicker"
-                                            className="timePicker"
-                                            disableDayPicker
-                                            inputClass="inputTIme"
-                                            format="HH:mm A"
-                                            plugins={[
-                                              <TimePicker hideSeconds />,
-                                            ]}
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={1}
-                                          md={1}
-                                          sm={12}
-                                          className="d-flex justify-content-end align-items-center"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={desh}
-                                            width="19.02px"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={3}
-                                          md={3}
-                                          sm={12}
-                                          className="d-flex justify-content-start"
-                                        >
-                                          <DatePicker
-                                            arrowClassName="arrowClass"
-                                            containerClassName="containerClassTimePicker"
-                                            className="timePicker"
-                                            disableDayPicker
-                                            inputClass="inputTIme"
-                                            format="HH:mm A"
-                                            plugins={[
-                                              <TimePicker hideSeconds />,
-                                            ]}
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={1}
-                                          md={1}
-                                          sm={12}
-                                          className="d-flex justify-content-end position-relative align-items-center"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={redcrossIcon}
-                                            width="23px"
-                                            height="23px"
-                                            className={
-                                              styles["Cross_icon_class"]
-                                            }
-                                            onClick={() => {
-                                              HandleCancelFunction(index);
-                                            }}
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                )}
+                                          disableDayPicker
+                                          inputClass="inputTImeMeeting"
+                                          format="HH:mm A"
+                                          selected={data.endDate}
+                                          plugins={[<TimePicker hideSeconds />]}
+                                          onChange={(date) =>
+                                            handleEndDateChange(index, date)
+                                          } // Update end date
+                                        />
+                                      </Col>
+                                      <Col
+                                        lg={1}
+                                        md={1}
+                                        sm={12}
+                                        className="d-flex justify-content-end position-relative align-items-center"
+                                      >
+                                        <img
+                                          draggable={false}
+                                          src={redcrossIcon}
+                                          width="23px"
+                                          height="23px"
+                                          className={styles["Cross_icon_class"]}
+                                          onClick={() => {
+                                            HandleCancelFunction(index);
+                                          }}
+                                        />
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col>
+                                    <p
+                                      className={
+                                        error &&
+                                        rows.selectedOption === "" &&
+                                        rows.startDate === "" &&
+                                        rows.endDate === ""
+                                          ? ` ${styles["errorMessage-inLogin"]} `
+                                          : `${styles["errorMessage-inLogin_hidden"]}`
+                                      }
+                                    >
+                                      {t("Please-select-data-and-time")}
+                                    </p>
+                                  </Col>
+                                </Row>
                               </>
                             );
                           })
