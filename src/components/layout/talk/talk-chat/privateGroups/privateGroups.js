@@ -12,6 +12,7 @@ import { chatBoxActiveFlag } from '../../../../../store/actions/Talk_Feature_act
 import {
   GetGroupMessages,
   activeChat,
+  mqttGroupCreated,
 } from '../../../../../store/actions/Talk_action'
 import GroupIcon from '../../../../../assets/images/Group-Icon.png'
 import DoubleTickIcon from '../../../../../assets/images/DoubleTick-Icon.png'
@@ -59,8 +60,6 @@ const PrivateGroups = () => {
         (data, index) => data.messageType === 'G',
       )
       setPrivateGroupsData(privateGroupsMessages)
-    } else {
-      setPrivateGroupsData([])
     }
   }, [talkStateData.AllUserChats.AllUserChatsData])
 
@@ -77,6 +76,41 @@ const PrivateGroups = () => {
     dispatch(GetGroupMessages(navigate, chatGroupData, t))
     dispatch(activeChat(record))
   }
+
+  console.log('PrivateGroupsData', privateGroupsData)
+
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketGroupCreation.groupCreatedData !== undefined &&
+      talkStateData.talkSocketGroupCreation.groupCreatedData !== null &&
+      talkStateData.talkSocketGroupCreation.groupCreatedData.length !== 0
+    ) {
+      let filterData =
+        talkStateData.talkSocketGroupCreation.groupCreatedData.data[0]
+      let newGroup = {
+        id: filterData.id,
+        fullName: filterData.fullName,
+        imgURL: filterData.imgURL,
+        messageBody: filterData.messageBody,
+        messageDate: currentDateTimeUtc,
+        notiCount: 0,
+        messageType: 'G',
+        isOnline: false,
+        isBlock: 0,
+        companyName: '',
+        sentDate: '',
+        receivedDate: '',
+        seenDate: '',
+        attachmentLocation: '',
+        senderID: 0,
+        admin: filterData.admin,
+      }
+      setPrivateGroupsData((prev) => [newGroup, ...prev])
+      dispatch(mqttGroupCreated([]))
+    }
+  }, [talkStateData.talkSocketGroupCreation.groupCreatedData])
+
+  console.log('TalkStateData PrivateGroupsData', { talkStateData })
 
   return (
     <>

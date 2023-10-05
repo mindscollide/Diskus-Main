@@ -238,7 +238,7 @@ const initialState = {
   },
 
   talkSocketGroupCreation: {
-    groupCreatedData: null,
+    groupCreatedData: [],
   },
 
   talkSocketGroupUpdation: {
@@ -1327,6 +1327,8 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_GROUP_CREATED: {
+      console.log('reciver check reducer', action.response)
+
       console.log('MQTT_GROUP_CREATED', action.response)
       return {
         ...state,

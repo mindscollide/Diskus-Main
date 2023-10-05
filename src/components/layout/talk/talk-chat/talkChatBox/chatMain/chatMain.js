@@ -872,6 +872,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setMessageInfo(false)
     setShowGroupInfo(false)
     setChatMenuActive(false)
+    setChatDateState({
+      ...chatDateState,
+      StartDate: '',
+      EndDate: '',
+    })
   }
 
   // for print chat
@@ -883,6 +888,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setMessageInfo(false)
     setShowGroupInfo(false)
     setChatMenuActive(false)
+    setChatDateState({
+      ...chatDateState,
+      StartDate: '',
+      EndDate: '',
+    })
   }
 
   // for email chat
@@ -894,6 +904,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setMessageInfo(false)
     setShowGroupInfo(false)
     setChatMenuActive(false)
+    setChatDateState({
+      ...chatDateState,
+      StartDate: '',
+      EndDate: '',
+    })
   }
 
   // on change checkbox today
@@ -967,6 +982,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(DownloadChat(Data, t, navigate))
     console.log('downloadChat', Data)
     setSave(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
   }
 
   const printChat = () => {
@@ -1012,6 +1030,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(DownloadChat(Data, t, navigate))
     console.log('downloadChat', Data)
     setPrint(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
   }
 
   const emailChat = () => {
@@ -1057,6 +1078,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(EmailChat(Data, t, navigate))
     console.log('downloadChat', Data)
     setEmail(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
   }
 
   // Cancel Modal

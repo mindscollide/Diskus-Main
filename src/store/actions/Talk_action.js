@@ -200,7 +200,8 @@ const mqttUnstarMessage = (response) => {
 
 //Group is created MQTT Response
 const mqttGroupCreated = (response) => {
-  console.log('responseresponseresponse', response)
+  console.log('reciver check action', response)
+
   return {
     type: actions.MQTT_GROUP_CREATED,
     response: response,

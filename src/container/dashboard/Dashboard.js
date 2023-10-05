@@ -796,6 +796,7 @@ const Dashboard = () => {
           message: `You have been added in Talk Group for ${data.payload.data[0].fullName}`,
         })
         dispatch(mqttGroupCreated(data.payload))
+        console.log('reciver check dashboard', data.payload)
         setNotificationID(id)
       } else if (
         data.payload.message.toLowerCase() === 'GROUP_MODIFIED'.toLowerCase()

@@ -90,9 +90,9 @@ const Talk = () => {
 
   const iconClick = () => {
     if (activeChatBox === false) {
-      dispatch(
-        GetAllUserChats(navigate, currentUserId, currentOrganizationId, t),
-      )
+      // dispatch(
+      //   GetAllUserChats(navigate, currentUserId, currentOrganizationId, t),
+      // )
       dispatch(createShoutAllScreen(false))
       dispatch(addNewChatScreen(false))
       dispatch(footerActionStatus(false))
