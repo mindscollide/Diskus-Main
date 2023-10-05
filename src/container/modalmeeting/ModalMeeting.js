@@ -1358,7 +1358,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             isPublishMeeting === true ? "d-none" : "modalMeetingCreateHeader"
           }
           centered
-          size={isPublishMeeting === true ? "sm" : "lg"}
+          size={isPublishMeeting === true ? null : "lg"}
           ModalBody={
             <>
               {isPublishMeeting === false ? (
@@ -2009,7 +2009,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                                       size={78}
                                                       {...defaultStyles.gif}
                                                     />
-                                                  ) : null}
+                                                  ) : (
+                                                    <FileIcon
+                                                      extension={ext}
+                                                      size={78}
+                                                      {...defaultStyles.ext}
+                                                    />
+                                                  )}
                                                   <p className="file-icon-modalmeeting-p">
                                                     {first}
                                                   </p>

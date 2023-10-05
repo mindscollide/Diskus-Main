@@ -36,6 +36,9 @@ body[dir="rtl"] .Create_Poll_Heading {
   margin: 0 !important;
   border-top-right-radius: 6px !important;
   border-top-left-radius: 6px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ModalRequestHeader_polling {

@@ -27,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 import getPaymentMethodApi from "../../../../store/actions/Admin_PaymentMethod";
 import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
 import { Spin } from "antd";
+import moment from "moment";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const { OrganizationBillingReducer, adminReducer, LanguageReducer } =
@@ -35,6 +36,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [paymentMethods, setPaymentMethods] = useState([]);
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  moment.locale(currentLanguage);
 
   // for payment history
   const [paymentHistoryModal, setPaymentHistoryModal] = useState(false);

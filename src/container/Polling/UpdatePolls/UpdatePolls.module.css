@@ -39,6 +39,9 @@ body[dir="rtl"] .Update_Poll_Heading {
   margin: 0 !important;
   border-top-right-radius: 6px !important;
   border-top-left-radius: 6px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ModalRequestHeader_polling_update_modal {
@@ -460,11 +463,10 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
 .scrollable-title {
   max-height: 100px;
   min-height: 39px !important; /* Set the maximum height you desire for the title */
-  overflow: hidden!important;
-  overflow-y: auto!important;
-  white-space: normal!important;
-  word-wrap: break-word!important; /* Enable vertical scrolling when text overflows */
-  
+  overflow: hidden !important;
+  overflow-y: auto !important;
+  white-space: normal !important;
+  word-wrap: break-word !important; /* Enable vertical scrolling when text overflows */
 }
 
 .scrollable-title::-webkit-scrollbar {
@@ -479,7 +481,7 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
   margin-left: -15px;
 }
 
-.OptionBodyMaxHeight{
+.OptionBodyMaxHeight {
   margin-top: 14px;
   max-height: 17vh; /* Set the maximum height you desire for the title */
   overflow: hidden;
@@ -487,6 +489,6 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
   margin-right: 0 !important;
 }
 
-.scrollable-title2{
-  min-height: 39px!important;
+.scrollable-title2 {
+  min-height: 39px !important;
 }
