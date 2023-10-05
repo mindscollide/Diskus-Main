@@ -50,6 +50,11 @@ nav.adminNavbar.navbar.navbar-expand-lg.navbar-light {
   width: auto;
   /* padding: 0 10px; */
 }
+body[dir="rtl"] .DiskusAdminNavBar > .dropdown-menu.show {
+  left: auto;
+  top: 20px !important;
+  /* right: -180px; */
+}
 
 .DiskusAdminNavBar > .dropdown-menu .dropdown-item.active {
   background: none;

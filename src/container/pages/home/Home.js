@@ -423,14 +423,18 @@ const Home = () => {
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
-    let dataToSort =
-      toDoListReducer.SocketTodoActivityData.length > 0
-        ? [
-            toDoListReducer.SocketTodoActivityData,
-            ...toDoListReducer.AllTodolistData,
-          ]
-        : [...toDoListReducer.AllTodolistData];
+    console.log(
+      toDoListReducer.SocketTodoActivityData,
+      { rowsToDo },
+      "SocketTodoActivityDataSocketTodoActivityDataSocketTodoActivityData"
+    );
 
+    let dataToSort =
+      toDoListReducer.SocketTodoActivityData !== null &&
+      toDoListReducer.SocketTodoActivityData !== undefined
+        ? [toDoListReducer.SocketTodoActivityData, ...rowsToDo]
+        : [...rowsToDo];
+    console.log({ dataToSort }, "dataToSortdataToSortdataToSort");
     const sortedTasks = dataToSort.sort((taskA, taskB) => {
       const deadlineA = taskA?.deadlineDateTime;
       const deadlineB = taskB?.deadlineDateTime;
@@ -438,7 +442,7 @@ const Home = () => {
       // Compare the deadlineDateTime values as numbers for sorting
       return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
     });
-
+    console.log({ sortedTasks }, "dataToSortdataToSortdataToSort");
     setTotalRecordTodo(sortedTasks.length);
     setRowToDo(sortedTasks.slice(0, 15));
   }, [toDoListReducer.SocketTodoActivityData]);
