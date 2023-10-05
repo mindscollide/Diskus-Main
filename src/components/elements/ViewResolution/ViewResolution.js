@@ -478,7 +478,13 @@ const ViewResolution = ({ setViewresolution }) => {
                                               size={78}
                                               {...defaultStyles.gif}
                                             />
-                                          ) : null}
+                                          ) : (
+                                            <FileIcon
+                                              extension={ext}
+                                              size={78}
+                                              {...defaultStyles.ext}
+                                            />
+                                          )}
                                           <span className="deleteBtn"></span>
                                           <p className="file-icon-modalmeeting-p text-center FontArabicRegular">
                                             {first}

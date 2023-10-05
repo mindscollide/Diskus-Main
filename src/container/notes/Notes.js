@@ -13,27 +13,14 @@ import hollowstar from "../../assets/images/Hollowstar.svg";
 import PlusExpand from "../../assets/images/Plus-notesExpand.svg";
 import MinusExpand from "../../assets/images/close-accordion.svg";
 import EditIconNote from "../../assets/images/EditIconNotes.svg";
-import { Collapse, Pagination } from "antd";
+import { Pagination } from "antd";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import {
-  ArrowLeft,
-  Plus,
-  Dash,
-  StarFill,
-  Paperclip,
-} from "react-bootstrap-icons";
-import {
-  Button,
-  Paper,
-  Loader,
-  TextField,
-  Notification,
-} from "../../components/elements";
-import { end, left } from "@popperjs/core";
+import { Plus } from "react-bootstrap-icons";
+import { Button, Loader, Notification } from "../../components/elements";
 import { Accordion, AccordionSummary } from "@material-ui/core";
-import { AccordionDetails, Typography } from "@mui/material";
+import { AccordionDetails } from "@mui/material";
 import {
   ClearNotesResponseMessage,
   GetNotes,
@@ -44,18 +31,13 @@ import {
   _justShowDay,
 } from "../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
-
+import CustomPagination from "../../commen/functions/customPagination/Paginations";
 const Notes = () => {
-  const [editFlag, setEditFlag] = useState(false);
   //Test Accordian states start
   const [updateNotesModal, setUpdateNotesModal] = useState(false);
-  const [selectedMarkerID, setSelectedMarkerID] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NotesReducer, LanguageReducer } = useSelector((state) => state);
-  const { Panel } = Collapse;
-  const [input, setInput] = useState("");
-  const [show, setShow] = useState(false);
   //Get Current User ID
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
@@ -256,10 +238,6 @@ const Notes = () => {
     setStarIcon(!showStarIcon);
   };
 
-  const handleChangeExpanded = (id) => (event, newExpanded) => {
-    setExpanded(newExpanded ? id : false);
-  };
-
   const toggleAcordion = (notesID) => {
     console.log(notesID, "notesIDnotesIDnotesID");
     // setExpanded((prev) => (prev === notesID ? true : false));
@@ -312,15 +290,9 @@ const Notes = () => {
     <>
       <div className={styles["notescontainer"]}>
         <Row className="mt-3">
-          <Col md={1} sm={12} lg={1}>
+          <Col lg={12} md={12} sm={12} className="d-flex gap-4 ">
             <h1 className={styles["notes-heading-size"]}>{t("Notes")}</h1>
-          </Col>
-          <Col
-            lg={11}
-            md={11}
-            sm={12}
-            className="d-flex justify-content-start mt-0 "
-          >
+
             <Button
               text={t("Create-new-note")}
               icon={<Plus width={20} height={20} fontWeight={800} />}
@@ -412,6 +384,7 @@ const Notes = () => {
                                     draggable="false"
                                     src={hollowstar}
                                     width="15.86px"
+                                    alt=""
                                     height="15.19px"
                                     className={
                                       styles["starIcon-In-Collapse-material"]
@@ -423,6 +396,7 @@ const Notes = () => {
                                     src={StarIcon}
                                     width="15.86px"
                                     height="15.19px"
+                                    alt=""
                                     className={
                                       styles["starIcon-In-Collapse-material"]
                                     }
@@ -433,6 +407,7 @@ const Notes = () => {
                                 <span>
                                   <img
                                     draggable="false"
+                                    alt=""
                                     src={ClipIcon}
                                     width="15.96px"
                                     height="14.68px"
@@ -443,7 +418,7 @@ const Notes = () => {
                                 </span>
                               ) : (
                                 <span>
-                                  <img draggable="false" width={15} />
+                                  <img draggable="false" width={15} alt="" />
                                 </span>
                               )}
 
@@ -618,7 +593,7 @@ const Notes = () => {
                   lg={12}
                   className={styles["emptyNotesState"]}
                 >
-                  <img draggable="false" src={NotesMainEmpty} />
+                  <img draggable="false" src={NotesMainEmpty} alt="" />
                   <p className={styles["emptystatetext"]}>
                     {t("Notes-you-add-appear-here")}
                   </p>

@@ -137,7 +137,16 @@ const TodoList = () => {
     ) {
       setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
       if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
-        setRowToDo(toDoListReducer.SearchTodolist.toDoLists);
+        let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
+        const sortedTasks = dataToSort.sort((taskA, taskB) => {
+          const deadlineA = taskA?.deadlineDateTime;
+          const deadlineB = taskB?.deadlineDateTime;
+
+          // Compare the deadlineDateTime values as numbers for sorting
+          return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+        });
+
+        setRowToDo(sortedTasks);
       } else {
         setRowToDo([]);
       }
@@ -149,8 +158,25 @@ const TodoList = () => {
   useEffect(() => {
     if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
       setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
+      let dataToSort = [toDoListReducer.SocketTodoActivityData, ...rowsToDo];
+      const sortedTasks = dataToSort.sort((taskA, taskB) => {
+        const deadlineA = taskA?.deadlineDateTime;
+        const deadlineB = taskB?.deadlineDateTime;
+
+        // Compare the deadlineDateTime values as numbers for sorting
+        return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+      });
+      setRowToDo(sortedTasks);
     } else {
-      setRowToDo(toDoListReducer.AllTodolistData);
+      let dataToSort = [...rowsToDo];
+      const sortedTasks = dataToSort.sort((taskA, taskB) => {
+        const deadlineA = taskA?.deadlineDateTime;
+        const deadlineB = taskB?.deadlineDateTime;
+
+        // Compare the deadlineDateTime values as numbers for sorting
+        return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+      });
+      setRowToDo(sortedTasks);
     }
   }, [toDoListReducer.SocketTodoActivityData]);
 

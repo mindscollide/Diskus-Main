@@ -15,8 +15,7 @@
 
 .modal-content:has(.modal-body .row.confirmationDialogue) {
   height: auto !important;
-  margin-left: -50px !important;
-  /* width   : 600% !important; */
+  width: 100% !important;
 }
 
 .confirmationDialogue-2 {

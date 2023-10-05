@@ -85,7 +85,7 @@
   font-weight: 700;
 } */
 .overlay-content img {
-  max-width: 500px;
+  max-width: 100%;
 }
 
 .loader-line {
