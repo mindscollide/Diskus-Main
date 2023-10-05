@@ -276,8 +276,8 @@ span.user-active-status.offline {
 .row.single-chat {
   margin-top: 10px;
   border-bottom: 1px solid #d6d6d6;
-  margin-left: 0px;
-  margin-right: 0px;
+  margin-left: -5px;
+  margin-right: -5px;
 }
 
 p.chat-username.m-0 {

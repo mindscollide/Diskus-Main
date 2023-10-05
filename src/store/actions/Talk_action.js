@@ -40,6 +40,7 @@ import {
   downloadChat,
   updateMessageAcknowledgement,
   getAllStarredMessages,
+  deleteMultipleGroupMessages,
 } from '../../commen/apis/Api_config'
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
@@ -200,7 +201,8 @@ const mqttUnstarMessage = (response) => {
 
 //Group is created MQTT Response
 const mqttGroupCreated = (response) => {
-  console.log('responseresponseresponse', response)
+  console.log('reciver check action', response)
+
   return {
     type: actions.MQTT_GROUP_CREATED,
     response: response,
@@ -4196,6 +4198,103 @@ const downloadChatEmptyObject = (response) => {
   }
 }
 
+//insert oto talk mqtt
+const mqttGroupLeft = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_GROUP_LEFT,
+    response: response,
+  }
+}
+
+const multipleMessagesDeletedInit = () => {
+  return {
+    type: actions.DELETE_MULTIPLE_MESSAGES_INIT,
+  }
+}
+
+const multipleMessagesDeletedSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_MULTIPLE_MESSAGES_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const multipleMessagesDeletedFail = (message) => {
+  return {
+    type: actions.DELETE_MULTIPLE_MESSAGES_FAIL,
+    message: message,
+  }
+}
+
+//Delete Multiple Messages
+const DeleteMultipleMessages = (object, t, navigate) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(multipleMessagesDeletedInit())
+    let form = new FormData()
+    form.append('RequestMethod', deleteMultipleGroupMessages.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(DeleteMultipleMessages(object, t, navigate))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_DeleteMultipleMessages_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                multipleMessagesDeletedSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Multiple-messages-deleted'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_DeleteMultipleMessages_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                multipleMessagesDeletedFail(t('Multiple-messages-not-deleted')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_DeleteMultipleMessages_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(multipleMessagesDeletedFail(t('Exception')))
+            }
+          } else {
+            await dispatch(multipleMessagesDeletedFail(t('Exception')))
+          }
+        } else {
+          await dispatch(multipleMessagesDeletedFail(t('Exception')))
+        }
+      })
+      .catch((response) => {
+        dispatch(multipleMessagesDeletedFail(t('Exception')))
+      })
+  }
+}
+
 export {
   activeChatID,
   activeMessageID,
@@ -4261,4 +4360,6 @@ export {
   GetAllStarredMessages,
   mqttMessageDeleted,
   downloadChatEmptyObject,
+  mqttGroupLeft,
+  DeleteMultipleMessages,
 }
