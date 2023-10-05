@@ -27,6 +27,8 @@ const AdvancePersmissionModal = () => {
   const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
   const [sidebarindex, setSidebarindex] = useState(0);
   const [subAgendaExpand, setsubAgendaExpand] = useState(false);
+  // Initialize state for members data
+  const [memberData, setMemberData] = useState([]);
   const [sidebarOptions, setsidebarOptions] = useState([
     {
       title: t("Introduction"),
@@ -108,6 +110,15 @@ const AdvancePersmissionModal = () => {
     setsubAgendaExpand(!subAgendaExpand);
   };
 
+  const handleSwitchChange = (index, field) => {
+    // Create a copy of the memberData array
+    const updatedMemberData = [...memberData];
+    // Update the specific field for the member at the given index
+    updatedMemberData[index][field] = !updatedMemberData[index][field];
+    // Update the state with the new data
+    setMemberData(updatedMemberData);
+  };
+
   return (
     <>
       <section>
@@ -183,6 +194,9 @@ const AdvancePersmissionModal = () => {
                       <Row className="mt-2">
                         {sidebarOptions.length > 0
                           ? sidebarOptions.map((data, index) => {
+                              const isLastItem =
+                                index === sidebarOptions.length - 1;
+
                               return (
                                 <>
                                   <Col lg={12} md={12} sm={12} className="mt-4">
@@ -278,11 +292,9 @@ const AdvancePersmissionModal = () => {
                                               >
                                                 12:15 PM
                                               </span>
-
                                               <span
                                                 className={styles["minus_sign"]}
                                               ></span>
-
                                               <span
                                                 className={
                                                   styles["Times_styles"]
@@ -388,7 +400,6 @@ const AdvancePersmissionModal = () => {
                                                           }
                                                         </span>
                                                       </span>
-
                                                       <img
                                                         src={
                                                           subAgendaExpand
@@ -472,7 +483,6 @@ const AdvancePersmissionModal = () => {
                                                               >
                                                                 12:15 PM
                                                               </span>
-
                                                               <span
                                                                 className={
                                                                   styles[
@@ -480,7 +490,6 @@ const AdvancePersmissionModal = () => {
                                                                   ]
                                                                 }
                                                               ></span>
-
                                                               <span
                                                                 className={
                                                                   styles[
@@ -502,10 +511,11 @@ const AdvancePersmissionModal = () => {
                                           }
                                         )}
                                       </Row>
-
-                                      <span
-                                        className={styles["Bottom_Line"]}
-                                      ></span>
+                                      {!isLastItem && (
+                                        <span
+                                          className={styles["Bottom_Line"]}
+                                        ></span>
+                                      )}
                                     </section>
                                   </Col>
                                 </>
@@ -551,6 +561,8 @@ const AdvancePersmissionModal = () => {
                       </Row>
                       <Row>
                         {members.map((data, index) => {
+                          const isLastItem = index === members.length - 1;
+
                           return (
                             <>
                               <Col lg={6} md={6} sm={6} className="mt-3">
@@ -575,6 +587,9 @@ const AdvancePersmissionModal = () => {
                                           "AdvancePermission_switches_View"
                                         ]
                                       }
+                                      onChange={() =>
+                                        handleSwitchChange(index, "switchView")
+                                      }
                                     />
                                   </Col>
                                 </Row>
@@ -586,17 +601,22 @@ const AdvancePersmissionModal = () => {
                                       className={
                                         styles["AdvancePermission_switches"]
                                       }
+                                      onChange={() =>
+                                        handleSwitchChange(index, "switch")
+                                      }
                                     />
                                   </Col>
                                 </Row>
                               </Col>
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={styles["Bottom_line_names"]}
-                                  ></span>
-                                </Col>
-                              </Row>
+                              {!isLastItem && (
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={styles["Bottom_line_names"]}
+                                    ></span>
+                                  </Col>
+                                </Row>
+                              )}
                             </>
                           );
                         })}
