@@ -1498,10 +1498,7 @@ const Dashboard = () => {
     setCurrentLanguage(i18nextLng)
     console.log('Current Language UseEffect', currentLanguage)
   }, [i18nextLng])
-  console.log(
-    assignees.meetingcreatedashboardLoader,
-    'meetingcreatedashboardLoadermeetingcreatedashboardLoader',
-  )
+
   return (
     <>
       <ConfigProvider locale={currentLanguage === 'en' ? en_US : ar_EG}>

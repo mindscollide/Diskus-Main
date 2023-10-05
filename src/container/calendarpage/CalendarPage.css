@@ -535,3 +535,6 @@ body[dir="rtl"] .heading_button {
 .rbc-day-bg:is(:focus, :hover, :focus-visible, :visited) {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
 }
+.rbc-show-more {
+  color: #000 !important;
+}

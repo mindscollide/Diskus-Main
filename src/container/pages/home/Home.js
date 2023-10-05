@@ -46,6 +46,7 @@ import {
   newDateFormaterAsPerUTC,
   forSetstartDateTimeMeetingCalendar,
   forHomeCalendar,
+  utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
 import {
@@ -98,10 +99,8 @@ const Home = () => {
   const { t } = useTranslation();
   const [updateNotesModalHomePage, setUpdateNotesModalHomePage] =
     useState(false);
-  console.log(
-    updateNotesModalHomePage,
-    "updateNotesModalHomePageupdateNotesModalHomePage"
-  );
+  const [totalRecordTodo, setTotalRecordTodo] = useState(0);
+  console.log(totalRecordTodo, "totalRecordTodototalRecordTodo");
   // const [viewFlag, setViewFlag] = useState(false);
   const state = useSelector((state) => state);
   const {
@@ -424,31 +423,56 @@ const Home = () => {
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
-    if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
-      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
-    } else {
-      setRowToDo(toDoListReducer.AllTodolistData);
-    }
+    let dataToSort =
+      toDoListReducer.SocketTodoActivityData.length > 0
+        ? [
+            toDoListReducer.SocketTodoActivityData,
+            ...toDoListReducer.AllTodolistData,
+          ]
+        : [...toDoListReducer.AllTodolistData];
+
+    const sortedTasks = dataToSort.sort((taskA, taskB) => {
+      const deadlineA = taskA?.deadlineDateTime;
+      const deadlineB = taskB?.deadlineDateTime;
+
+      // Compare the deadlineDateTime values as numbers for sorting
+      return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+    });
+
+    setTotalRecordTodo(sortedTasks.length);
+    setRowToDo(sortedTasks.slice(0, 15));
   }, [toDoListReducer.SocketTodoActivityData]);
 
-  //get todolist reducer
   useEffect(() => {
-    if (Object.keys(toDoListReducer.AllTodolistData).length > 0) {
-      setRowToDo(toDoListReducer.AllTodolistData);
-    } else {
-      setRowToDo([]);
-    }
+    try {
+      if (
+        !toDoListReducer.AllTodolistData ||
+        !toDoListReducer.AllTodolistData.length
+      ) {
+        setRowToDo([]);
+        return;
+      }
+
+      const sortedTasks = [...toDoListReducer.AllTodolistData].sort(
+        (taskA, taskB) => {
+          const deadlineA = taskA?.deadlineDateTime;
+          const deadlineB = taskB?.deadlineDateTime;
+          return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+        }
+      );
+
+      setTotalRecordTodo(sortedTasks.length);
+      setRowToDo(sortedTasks.slice(0, 15));
+    } catch {}
   }, [toDoListReducer.AllTodolistData]);
+
   const viewTodoModal = (id) => {
     setTodoID(id);
-    // setTodoListLoader(true);
-    // dispatch(getTodoListInit());
     let Data = { ToDoListID: id };
     dispatch(
       ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
     );
   };
-  console.log(rowsToDo, toDoListReducer.AllTodolistData, "rowsToDorowsToDo");
 
   const columnsToDo = [
     {
@@ -459,12 +483,7 @@ const Home = () => {
       className: "titleDashboard",
       ellipsis: true,
       render: (text, record) => (
-        <span
-          className="cursor-pointer"
-          onClick={() => viewTodoModal(record.pK_TID)}
-        >
-          {text}
-        </span>
+        <span className="w-100 cursor-pointer">{text}</span>
       ),
       // render: (text) => <span className="fw-bold">{text}</span>,
     },
@@ -474,14 +493,10 @@ const Home = () => {
       key: "deadlineDateTime",
       width: "40%",
       className: "deadlineDashboard",
+
       render: (text, record) => {
         return (
-          <span
-            className="cursor-pointer"
-            onClick={() => viewTodoModal(record.pK_TID)}
-          >
-            {_justShowDateformat(text)}
-          </span>
+          <span className="cursor-pointer">{_justShowDateformat(text)}</span>
         );
       },
     },
@@ -497,55 +512,37 @@ const Home = () => {
           if (index === 0) {
             if (text.pK_TSID === 1) {
               return (
-                <span
-                  className="MontserratSemiBold-600 InProgress cursor-pointer"
-                  onClick={() => viewTodoModal(record.pK_TID)}
-                >
+                <span className="MontserratSemiBold-600 InProgress cursor-pointer">
                   {text.status}
                 </span>
               );
             } else if (text.pK_TSID === 2) {
               return (
-                <span
-                  className="MontserratSemiBold-600 Pending cursor-pointer"
-                  onClick={() => viewTodoModal(record.pK_TID)}
-                >
+                <span className="MontserratSemiBold-600 Pending cursor-pointer">
                   {text.status}
                 </span>
               );
             } else if (text.pK_TSID === 3) {
               return (
-                <span
-                  className="MontserratSemiBold-600 Upcoming cursor-pointer"
-                  onClick={() => viewTodoModal(record.pK_TID)}
-                >
+                <span className="MontserratSemiBold-600 Upcoming cursor-pointer">
                   {text.status}
                 </span>
               );
             } else if (text.pK_TSID === 4) {
               return (
-                <span
-                  className="MontserratSemiBold-600 Cancelled cursor-pointer"
-                  onClick={() => viewTodoModal(record.pK_TID)}
-                >
+                <span className="MontserratSemiBold-600 Cancelled cursor-pointer">
                   {text.status}
                 </span>
               );
             } else if (text.pK_TSID === 5) {
               return (
-                <span
-                  className="MontserratSemiBold-600 Completed cursor-pointer"
-                  onClick={() => viewTodoModal(record.pK_TID)}
-                >
+                <span className="MontserratSemiBold-600 Completed cursor-pointer">
                   {text.status}
                 </span>
               );
             } else if (text.pK_TSID === 6) {
               return (
-                <span
-                  className="MontserratSemiBold-600 color-F68732 cursor-pointer"
-                  onClick={() => viewTodoModal(record.pK_TID)}
-                >
+                <span className="MontserratSemiBold-600 color-F68732 cursor-pointer">
                   {text.status}
                 </span>
               );
@@ -759,11 +756,6 @@ const Home = () => {
 
     return meetingIdReducer.UpcomingEventsData.map(
       (upcomingEventsData, index) => {
-        console.log(
-          "upcomingEvents index",
-          upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-            getCurrentDate
-        );
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
@@ -1109,7 +1101,35 @@ const Home = () => {
                     column={columnsToDo}
                     className="dashboard-todo"
                     rows={rowsToDo}
-                    labelTitle={t("Todo-list")}
+                    labelTitle={
+                      <>
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="d-flex justify-content-between"
+                          >
+                            <span>{t("Todo-list")}</span>
+                            {rowsToDo.length === 15 && (
+                              <span
+                                className="cursor-pointer"
+                                onClick={() => navigate("/DisKus/todolist")}
+                              >
+                                {t("View-more")}
+                              </span>
+                            )}
+                          </Col>
+                        </Row>
+                      </>
+                    }
+                    onRow={(record, rowIndex) => {
+                      return {
+                        onClick: (event) => {
+                          viewTodoModal(record.pK_TID);
+                        },
+                      };
+                    }}
                     scroll={{ y: "49vh" }}
                     pagination={false}
                     // onChange={handleChangeTodoTable}
