@@ -105,6 +105,7 @@ const UpdatePolls = () => {
 
   useEffect(() => {
     let pollsData = PollsReducer.gellAllCommittesandGroups;
+    console.log({ pollsData }, "pollsDatapollsDatapollsData");
     if (pollsData !== null && pollsData !== undefined) {
       let temp = [];
       if (Object.keys(pollsData).length > 0) {
@@ -1040,7 +1041,7 @@ const UpdatePolls = () => {
                                       <Row className={styles["Card_border2"]}>
                                         <Col sm={12} md={10} lg={10}>
                                           <img
-                                            src={`data:image/jpeg;base64,${data.profilePicture.displayProfilePictureName}`}
+                                            src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
                                             width="33px"
                                             height="33px"
                                             className="rounded-circle"
@@ -1062,7 +1063,7 @@ const UpdatePolls = () => {
                                               height="14px"
                                               onClick={cancellAnyUser}
                                               draggable="false"
-                                              style={{ cursor: 'pointer' }}
+                                              style={{ cursor: "pointer" }}
                                             />
                                           </Col>
                                         ) : (

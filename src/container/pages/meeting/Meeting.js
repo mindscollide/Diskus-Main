@@ -1085,7 +1085,10 @@ const Meeting = () => {
                         expandedRowRender: (record) => {
                           return (
                             <p className="meeting-expanded-row">
-                              {record.meetingAgenda[0].objMeetingAgenda.title}
+                              {
+                                record?.meetingAgenda[0]?.objMeetingAgenda
+                                  ?.title
+                              }
                             </p>
                           );
                         },

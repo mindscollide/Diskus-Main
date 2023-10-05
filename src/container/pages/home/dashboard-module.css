@@ -531,7 +531,9 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 .ant-table-wrapper.dashboard-todo .ant-table-tbody > tr > td {
   background: #fff !important;
 }
-
+.ant-table-wrapper.dashboard-todo .ant-table-tbody > tr {
+  cursor: pointer;
+}
 /* .ant-table-wrapper.dashboard-todo .ant-table-tbody>tr {
     border: 2px solid #ccc !important;
 } */
