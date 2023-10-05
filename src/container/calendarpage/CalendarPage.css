@@ -532,9 +532,12 @@ body[dir="rtl"] .heading_button {
   margin: 0 auto !important;
   height: 91vh;
 }
-.rbc-day-bg:is(:focus, :hover, :focus-visible, :visited) {
+.rbc-day-bg:is(:focus, :hover, :focus-visible, :visited)
+  > .rbc-show-more:hover {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #ffffff !important;
 }
+/* Change text color of .rbc-show-more when .rbc-day-bg is hovered */
 .rbc-show-more {
-  color: #000 !important;
+  color: #5a5a5a !important; /* Use !important to ensure the style is applied */
 }

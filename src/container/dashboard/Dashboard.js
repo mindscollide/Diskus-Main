@@ -1522,7 +1522,10 @@ const Dashboard = () => {
 
   return (
     <>
-      <ConfigProvider locale={currentLanguage === 'en' ? en_US : ar_EG}>
+      <ConfigProvider
+        direction={currentLanguage === "ar" ? ar_EG : en_US}
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {videoFeatureReducer.IncomingVideoCallFlag === true && (
           <div className="overlay-incoming-videocall" />
         )}

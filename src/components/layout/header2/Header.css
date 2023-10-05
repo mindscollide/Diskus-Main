@@ -424,8 +424,9 @@ body[dir="rtl"] .user-name {
 }
 
 body[dir="rtl"] .dropdown-menu.show {
-  left: auto;
-  right: -180px;
+  /* left: auto; */
+  top: 30px !important;
+  /* right: -180px; */
 }
 
 .Profile_dropdown_menu.dropdown-menu.show {

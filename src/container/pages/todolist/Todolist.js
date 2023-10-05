@@ -156,8 +156,11 @@ const TodoList = () => {
   }, [toDoListReducer.SearchTodolist]);
 
   useEffect(() => {
-    if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
-      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
+    if (
+      toDoListReducer.SocketTodoActivityData !== null &&
+      toDoListReducer.SocketTodoActivityData !== undefined
+    ) {
+      // setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
       let dataToSort = [toDoListReducer.SocketTodoActivityData, ...rowsToDo];
       const sortedTasks = dataToSort.sort((taskA, taskB) => {
         const deadlineA = taskA?.deadlineDateTime;

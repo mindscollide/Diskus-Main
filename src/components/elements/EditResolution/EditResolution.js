@@ -62,7 +62,7 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import TextFieldDateTime from "../input_field_date/Input_field";
-import { ArrowLeft } from "react-bootstrap-icons";
+import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import TextFieldTime from "../input_field_time/Input_field";
@@ -2401,7 +2401,13 @@ const EditResolution = ({ setCancelresolution }) => {
                                     className="d-flex justify-content-end gap-3"
                                   >
                                     <Button
-                                      text={<ArrowLeft size={30} />}
+                                      text={
+                                        currentLanguage === "ar" ? (
+                                          <ArrowRight size={30} color="#fff" />
+                                        ) : (
+                                          <ArrowLeft size={30} color="#fff" />
+                                        )
+                                      }
                                       onClick={() => {
                                         dispatch(updateResolutionModal(false));
                                       }}
