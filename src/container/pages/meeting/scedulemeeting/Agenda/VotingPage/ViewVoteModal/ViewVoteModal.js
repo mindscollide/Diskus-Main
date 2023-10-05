@@ -16,6 +16,7 @@ const ViewVoteModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [enablePieChart, setEnablePieChart] = useState(false);
 
   const data = [
     {
@@ -74,7 +75,111 @@ const ViewVoteModal = () => {
         </>
       ),
     },
+    {
+      key: "2",
+      Answer: (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <span className={styles["YesPercentage"]}>{t("NO")}</span>
+          </Col>
+        </Row>
+      ),
+      Percentage: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+              <img
+                src={profile}
+                height="22px"
+                width="22px"
+                className={styles["Image"]}
+              />
+              <img
+                src={profile}
+                height="22px"
+                width="22px"
+                className={styles["Image"]}
+              />
+              <img
+                src={profile}
+                height="22px"
+                width="22px"
+                className={styles["Image"]}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Progress
+                className="NOProgressViewModal"
+                percent={70}
+                size="small"
+              />
+            </Col>
+          </Row>
+        </>
+      ),
+      Vote: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["NoOfVotes"]}>03</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      key: "3",
+      Answer: (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <span className={styles["YesPercentage"]}>{t("Abstain")}</span>
+          </Col>
+        </Row>
+      ),
+      Percentage: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+              <img
+                src={profile}
+                height="22px"
+                width="22px"
+                className={styles["Image"]}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Progress
+                className="AbstainProgressViewModal"
+                percent={10}
+                size="small"
+              />
+            </Col>
+          </Row>
+        </>
+      ),
+      Vote: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["NoOfVotes"]}>0</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
   ];
+
+  const EnablePieChart = () => {
+    setEnablePieChart(true);
+  };
+
+  const DisablePieChart = () => {
+    setEnablePieChart(false);
+  };
   const [tablerowsData, setTablerowsData] = useState(data);
   const MeetingColoumns = [
     {
@@ -115,7 +220,7 @@ const ViewVoteModal = () => {
       ),
       dataIndex: "Percentage",
       key: "Percentage",
-      width: "200px",
+      width: "240px",
     },
     {
       title: (
@@ -164,63 +269,102 @@ const ViewVoteModal = () => {
                 <Button
                   text={t("Bar-graph")}
                   className={styles["BargraphButton"]}
+                  onClick={DisablePieChart}
                 />
                 <Button
                   text={t("Pie-graph")}
                   className={styles["BargraphButton"]}
+                  onClick={EnablePieChart}
                 />
               </Col>
             </Row>
-            <Row className="mt-4">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                <section className={styles["TranForm"]}>
-                  <Chart
-                    width={"600px"}
-                    height={"300px"}
-                    chartType="ColumnChart"
-                    loader={<div>Loading Chart</div>}
-                    data={[
-                      [
-                        "Category",
-                        "Votes",
-                        { role: "style" },
-                        { role: "annotation" },
-                      ],
-                      ["Yes", 50, "#4ADEDE", " "], // Empty string for annotation
-                      ["No", 30, "#6172D6", " "], // Empty string for annotation
-                      ["Abstain", 20, "#F16B6B", " "], // Empty string for annotation
-                    ]}
-                    options={{
-                      title: "Vote Distribution",
-                      hAxis: {
-                        title: "Category",
-                      },
-                      vAxis: {
-                        title: "Votes",
-                      },
-                      legend: { position: "none" },
-                      colors: ["#4ADEDE", "#6172D6", "#F16B6B"],
-                      annotations: {
-                        textStyle: {
-                          fontSize: 12, // Adjust the font size as needed
-                        },
-                      },
-                    }}
-                    rootProps={{ "data-testid": "1" }}
-                  />
-                </section>
-              </Col>
-            </Row>
+            {enablePieChart === true ? (
+              <>
+                <Row className="mt-4">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <section className={styles["BackGroundForDonutChart"]}>
+                      <Chart
+                        width={"600px"}
+                        height={"300px"}
+                        chartType="PieChart"
+                        loader={<div>Loading Chart</div>}
+                        data={[
+                          ["Category", "Votes"],
+                          ["Yes", 50],
+                          ["No", 30],
+                          ["Abstain", 20],
+                        ]}
+                        options={{
+                          title: "Vote Distribution",
+                          pieHole: 0.4, // Adjust the value to control the size of the hole (0 to 1)
+                          colors: ["#4ADEDE", "#6172D6", "#F16B6B"],
+                        }}
+                        rootProps={{ "data-testid": "1" }}
+                      />
+                    </section>
+                  </Col>
+                </Row>
+              </>
+            ) : (
+              <>
+                <Row className="mt-4">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <section className={styles["TranForm"]}>
+                      <Chart
+                        width={"600px"}
+                        height={"300px"}
+                        chartType="ColumnChart"
+                        loader={<div>Loading Chart</div>}
+                        data={[
+                          [
+                            "Category",
+                            "Votes",
+                            { role: "style" },
+                            { role: "annotation" },
+                          ],
+                          ["Yes", 50, "#4ADEDE", " "], // Empty string for annotation
+                          ["No", 30, "#6172D6", " "], // Empty string for annotation
+                          ["Abstain", 20, "#F16B6B", " "], // Empty string for annotation
+                        ]}
+                        options={{
+                          title: "Vote Distribution",
+                          hAxis: {
+                            title: "Category",
+                          },
+                          vAxis: {
+                            title: "Votes",
+                          },
+                          legend: { position: "none" },
+                          colors: ["#4ADEDE", "#6172D6", "#F16B6B"],
+                          annotations: {
+                            textStyle: {
+                              fontSize: 12, // Adjust the font size as needed
+                            },
+                          },
+                        }}
+                        rootProps={{ "data-testid": "1" }}
+                      />
+                    </section>
+                  </Col>
+                </Row>
+              </>
+            )}
+
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={MeetingColoumns}
-                  scroll={{ y: "62vh" }}
+                  scroll={{ y: "15vh" }}
                   pagination={false}
                   className="Polling_table"
                   rows={tablerowsData}

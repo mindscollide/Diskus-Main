@@ -6103,10 +6103,20 @@ input[type="time"]::-webkit-clear-button {
   display: none !important;
 }
 
+.VoteModalAgenda .ant-progress-success-bg,
+.ant-progress-bg {
+  background-color: #4adede !important;
+}
+
+.VoteModalAgenda .ant-progress-outer {
+  width: 88% !important;
+}
+
 .VoteModalAgenda .ant-progress-text {
-  font-size: 10px !important;
+  font-size: 20px !important;
   font-family: "MontserratSemiBold" !important;
   color: #6172d6 !important;
+  margin-top: -25px !important;
 }
 
 /* Scedule Proposed meeting */
@@ -6117,4 +6127,36 @@ input[type="time"]::-webkit-clear-button {
 
 .SceduleProposedMeeting tbody tr:last-child td:nth-child(2) {
   border-bottom: 1px solid #6172d6;
+}
+
+.AbstainProgressViewModal .ant-progress-success-bg,
+.ant-progress-bg {
+  background-color: #f16b6b !important;
+}
+
+.AbstainProgressViewModal .ant-progress-outer {
+  width: 88% !important;
+}
+
+.AbstainProgressViewModal .ant-progress-text {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6 !important;
+  margin-top: -25px !important;
+}
+
+.NOProgressViewModal .ant-progress-text {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6 !important;
+  margin-top: -25px !important;
+}
+
+.NOProgressViewModal .ant-progress-outer {
+  width: 88% !important;
+}
+
+.NOProgressViewModal .ant-progress-success-bg,
+.ant-progress-bg {
+  background-color: #6172d6 !important;
 }

@@ -8,7 +8,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ViewVoteModal from "./ViewVoteModal/ViewVoteModal";
 import { useSelector } from "react-redux";
-import { showviewVotesAgenda } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  showCastVoteAgendaModal,
+  showviewVotesAgenda,
+} from "../../../../../../store/actions/NewMeetingActions";
+import CastVoteAgendaModal from "./CastVoteAgendaModal/CastVoteAgendaModal";
 
 const VotingPage = () => {
   const { t } = useTranslation();
@@ -18,6 +22,10 @@ const VotingPage = () => {
 
   const EnableViewVoteModal = () => {
     dispatch(showviewVotesAgenda(true));
+  };
+
+  const EnableCastVoteModal = () => {
+    dispatch(showCastVoteAgendaModal(true));
   };
   return (
     <section>
@@ -44,10 +52,17 @@ const VotingPage = () => {
                       text={t("End-voting")}
                       className={styles["EndVotingButton"]}
                     /> */}
+
                     <Button
+                      text={t("Cast-your-vote")}
+                      className={styles["CastYourVoteButton"]}
+                      onClick={EnableCastVoteModal}
+                    />
+
+                    {/* <Button
                       text={t("Start-voting")}
                       className={styles["startVotingButton"]}
-                    />
+                    /> */}
                     <Button
                       text={t("View-votes")}
                       className={styles["ViewVoteButton"]}
@@ -73,6 +88,7 @@ const VotingPage = () => {
         </Col>
       </Row>
       {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
+      {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
     </section>
   );
 };

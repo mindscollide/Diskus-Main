@@ -32,6 +32,7 @@ const initialState = {
   endForAllMeeting: false,
   sceduleproposedMeeting: false,
   viewVotesAgenda: false,
+  castVoteAgendaPage: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -242,6 +243,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         viewVotesAgenda: action.response,
+      };
+    }
+
+    case actions.CAST_VOTE_AGENDA: {
+      return {
+        ...state,
+        castVoteAgendaPage: action.response,
       };
     }
 

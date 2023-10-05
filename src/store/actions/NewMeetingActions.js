@@ -210,6 +210,13 @@ const showviewVotesAgenda = (response) => {
   };
 };
 
+const showCastVoteAgendaModal = (response) => {
+  return {
+    type: actions.CAST_VOTE_AGENDA,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -241,4 +248,5 @@ export {
   showEndMeetingForAll,
   showSceduleProposedMeeting,
   showviewVotesAgenda,
+  showCastVoteAgendaModal,
 };

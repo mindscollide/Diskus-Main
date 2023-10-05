@@ -326,7 +326,6 @@ const SceduleProposedmeeting = () => {
                     pagination={false}
                     className="SceduleProposedMeeting"
                     rows={tablerowsData}
-                    // prefixClassName={"SceduleProposedTable"}
                   />
                 </Col>
               </Row>

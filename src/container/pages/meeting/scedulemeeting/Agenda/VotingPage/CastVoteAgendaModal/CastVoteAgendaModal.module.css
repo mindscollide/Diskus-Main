@@ -1,0 +1,25 @@
+.IntroHeading {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+}
+
+.MainHeading {
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6 !important;
+}
+
+.outerboxForOptions {
+  width: 100% !important;
+  height: 39px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 8px 12px !important;
+}
+
+.AnswerStyles {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+}
