@@ -26,9 +26,18 @@
 .Camera_icon {
   margin-left: -4px !important;
 }
+
+body[dir="rtl"] .Camera_icon {
+  margin-right: -7px !important;
+}
+
 .Camera_icon_active_IconStyles {
   margin-left: -2px !important;
   margin-top: 2px !important;
+}
+
+body[dir="rtl"] .Camera_icon_active_IconStyles {
+  margin-right: -7px !important;
 }
 
 .Camera_icon_Active {
