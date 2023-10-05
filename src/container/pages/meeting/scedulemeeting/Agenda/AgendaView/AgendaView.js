@@ -72,7 +72,6 @@ const AgendaView = () => {
           <Row className="mt-4">
             {viewDataAgenda.length > 0
               ? viewDataAgenda.map((MainAgendaData, MainAgendaIndex) => {
-                  console.log(MainAgendaData, "MainAgendaDataMainAgendaData");
                   return (
                     <>
                       <Col lg={12} md={12} sm={12} className="mt-2">
