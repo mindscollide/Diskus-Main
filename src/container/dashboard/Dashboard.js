@@ -42,6 +42,7 @@ import {
   UpdateMessageAcknowledgement,
   mqttMessageDeleted,
   GetAllUserChats,
+  mqttGroupLeft,
 } from '../../store/actions/Talk_action'
 import {
   incomingVideoCallMQTT,
@@ -845,6 +846,26 @@ const Dashboard = () => {
           message: `Message Deleted`,
         })
         setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'USER_LEFT_THE_GROUP'.toLowerCase()
+      ) {
+        if (data.senderID === Number(createrID)) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: 'You have left the group',
+          })
+          setNotificationID(id)
+          dispatch(mqttGroupLeft(data.payload))
+        } else {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: data.payload.data[0].notiMsg,
+          })
+          setNotificationID(id)
+        }
       }
     }
     if (data.action.toLowerCase() === 'Polls'.toLowerCase()) {

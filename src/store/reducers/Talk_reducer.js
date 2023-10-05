@@ -291,10 +291,17 @@ const initialState = {
 
   ActiveMessageData: [],
 
+  MqttGroupLeftData: [],
+
   AllStarMessagesData: {
     AllStarMessagesResponse: [],
     AllStarMessagesResponseMessage: '',
     Loading: false,
+  },
+
+  MultipleMessagesDeletedData: {
+    MultipleMessagesDeletedResponse: [],
+    MultipleMessagesDeletedResponseMessage: '',
   },
 }
 
@@ -1707,6 +1714,40 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         AllMessagesData: action.response,
         Loading: false,
+      }
+    }
+
+    case actions.MQTT_GROUP_LEFT: {
+      return {
+        ...state,
+        MqttGroupLeftData: action.response,
+      }
+    }
+
+    case actions.DELETE_MULTIPLE_MESSAGES_INIT: {
+      return {
+        ...state,
+        // Loading: true,
+      }
+    }
+
+    case actions.DELETE_MULTIPLE_MESSAGES_SUCCESS: {
+      return {
+        ...state,
+        MultipleMessagesDeletedData: {
+          MultipleMessagesDeletedResponse: action.response,
+          MultipleMessagesDeletedResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.DELETE_MULTIPLE_MESSAGES_FAIL: {
+      return {
+        ...state,
+        MultipleMessagesDeletedData: {
+          MultipleMessagesDeletedResponse: [],
+          MultipleMessagesDeletedResponseMessage: action.message,
+        },
       }
     }
 
