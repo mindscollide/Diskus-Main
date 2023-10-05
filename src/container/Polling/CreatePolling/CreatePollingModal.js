@@ -120,7 +120,7 @@ const CreatePolling = () => {
   }, [currentLanguage]);
 
   useEffect(() => {
-    if (currentLanguage != undefined) {
+    if (currentLanguage !== null) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -267,14 +267,14 @@ const CreatePolling = () => {
             let check1 = pollsData.groups.find(
               (data, index) => data.groupID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
                 groupUsers.map((gUser, index) => {
                   let check2 = members.find(
                     (data, index) => data.UserID === gUser.userID
                   );
-                  if (check2 != undefined) {
+                  if (check2 !== undefined) {
                   } else {
                     let newUser = {
                       userName: gUser.userName,
@@ -922,8 +922,8 @@ const CreatePolling = () => {
                                             height="14px"
                                             onClick={cancellAnyUser}
                                             draggable="false"
-                                            style={{ cursor: 'pointer' }}
-                                            />
+                                            style={{ cursor: "pointer" }}
+                                          />
                                         </Col>
                                       </Row>
                                     </Col>

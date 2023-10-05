@@ -168,11 +168,13 @@ body[dir="rtl"] .collapse-text-attached-material {
 }
 
 .MinusIcon {
-  margin-right: 30px !important;
+  margin-right: 40px !important;
   color: #6172d6 !important;
-  margin-bottom: 16px !important;
+  /* margin-bottom: 16px !important; */
 }
-
+body[dir="rtl"] .MinusIcon {
+  margin-right: 60px !important;
+}
 .PlusIcon {
   margin-right: 30px !important;
   color: #6172d6 !important;

@@ -435,13 +435,14 @@ const DataRoom = () => {
   const RecentTab = async () => {
     setSRowsData(0);
     localStorage.setItem("setTableView", 4);
+
     // await dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
-    // setGetAllData([]);
-    // localStorage.removeItem("folderID");
-    // setSharedwithmebtn(false);
-    // if (searchoptions) {
-    // setSearchoptions(false);
-    // }
+    setGetAllData([]);
+    localStorage.removeItem("folderID");
+    setSharedwithmebtn(false);
+    if (searchoptions) {
+      setSearchoptions(false);
+    }
   };
 
   const openFolderModal = () => {
@@ -2315,7 +2316,7 @@ const DataRoom = () => {
                                   pagination={false}
                                   locale={{
                                     emptyText: (
-                                      <span className="vh-100">
+                                      <span className="vh-100 text-center">
                                         <p>
                                           {/* <Icon type="like" /> */}
                                           No Recent Data Found
