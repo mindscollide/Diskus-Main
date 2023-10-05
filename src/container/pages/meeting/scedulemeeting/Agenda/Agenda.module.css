@@ -295,6 +295,10 @@
   margin-left: 50px !important;
 }
 
+body[dir="rtl"] .SectionInnerClass {
+  margin-right: 50px !important;
+}
+
 .BackGroundNewImplemented {
   background: #5f78d6;
   height: 100%;
@@ -304,6 +308,14 @@
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
   position: absolute !important;
+}
+
+body[dir="rtl"] .BackGroundNewImplemented {
+  right: 0;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
 }
 
 .Arrow {
@@ -321,6 +333,10 @@
   margin-left: 6px !important;
 }
 
+body[dir="rtl"] .SubAgendaArrow {
+  margin-right: 6px !important;
+}
+
 .Arrow_Expanded {
   cursor: pointer !important;
   display: flex !important;
@@ -334,6 +350,10 @@
   align-items: center !important;
   margin-top: 150px !important;
   margin-left: 6px !important;
+}
+
+body[dir="rtl"] .subAgendaArrowExpand {
+  margin-right: 6px !important;
 }
 
 .Meeting_title_heading {
@@ -373,6 +393,13 @@
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
 }
+body[dir="rtl"] .backGorund {
+  right: 0px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
 
 .Meeting_subAgenda {
   color: #5f78d6 !important;
@@ -391,6 +418,10 @@
   width: 96% !important;
   margin-left: 36px !important;
   z-index: 1;
+}
+
+body[dir="rtl"] .SubAgendaSection {
+  margin-right: 36px !important;
 }
 
 .Show_Details_Tag {
