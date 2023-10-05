@@ -183,6 +183,10 @@ const DataRoom = () => {
     open: false,
     message: "",
   });
+  // for anotantion opens in new tabb on doubble click
+  const [clicks, setClicks] = useState(0);
+  const [dataCheck, setDataCheck] = useState([]);
+
   let userID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   const [searchDataFields, setSearchDataFields] = useState({
@@ -466,7 +470,11 @@ const DataRoom = () => {
     if (data.value === 1) {
       let ext = record.name.split(".").pop();
       if (ext === "pdf") {
-        UniversalLink(pdfDataJson);
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
       }
     } else if (data.value === 3) {
       setShowRenameFile(true);
@@ -889,7 +897,34 @@ const DataRoom = () => {
     )}`;
     navigate(linkRef);
   };
+  const handleLinkClick = (e, data) => {
+    e.preventDefault();
 
+    if (clicks === 1) {
+      if (dataCheck === data) {
+        // Perform the action you want to happen on the double-click here
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        setDataCheck(data);
+      }
+
+      // Reset the click count
+      setClicks(0);
+    } else {
+      // Increment the click count
+      setClicks(clicks + 1);
+      setDataCheck(data);
+      // You can add a delay here to reset the click count after a certain time if needed
+      setTimeout(() => {
+        setClicks(0);
+        setDataCheck([]);
+      }, 300); // Reset after 300 milliseconds (adjust as needed)
+    }
+  };
   const MyDocumentsColumns = [
     {
       title: t("Name"),
@@ -927,13 +962,14 @@ const DataRoom = () => {
           } else {
             if (ext === "pdf") {
               return (
-                <Link
-                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                    pdfDataJson
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                // <Link
+                //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                //     pdfDataJson
+                //   )}`}
+                //   target="_blank"
+                //   rel="noopener noreferrer"
+                // >
+                <>
                   <img
                     src={getIconSource(getFileExtension(data.name))}
                     alt=""
@@ -941,11 +977,16 @@ const DataRoom = () => {
                     height={"25px"}
                   />
                   <abbr title={text}>
-                    <span className={styles["dataroom_table_heading"]}>
+                    <span
+                      onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                      className={styles["dataroom_table_heading"]}
+                    >
                       {text}
                     </span>
                   </abbr>
-                </Link>
+                </>
+
+                // </Link>
               );
             } else {
               return (
@@ -985,13 +1026,14 @@ const DataRoom = () => {
           } else {
             if (ext === "pdf") {
               return (
-                <Link
-                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                    pdfDataJson
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                // <Link
+                //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                //     pdfDataJson
+                //   )}`}
+                //   target="_blank"
+                //   rel="noopener noreferrer"
+                // >
+                <>
                   <img
                     src={getIconSource(getFileExtension(data.name))}
                     alt=""
@@ -999,11 +1041,16 @@ const DataRoom = () => {
                     height={"25px"}
                   />
                   <abbr title={text}>
-                    <span className={styles["dataroom_table_heading"]}>
+                    <span
+                      onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                      className={styles["dataroom_table_heading"]}
+                    >
                       {text}
                     </span>
                   </abbr>
-                </Link>
+                </>
+
+                // </Link>
               );
             } else {
               return (
