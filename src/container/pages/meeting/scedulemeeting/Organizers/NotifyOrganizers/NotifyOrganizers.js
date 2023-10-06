@@ -97,6 +97,10 @@ const NotifyOrganizers = () => {
     setMemberCheckboxes(updatedCheckboxes);
   };
 
+  const handleCancelButton = () => {
+    dispatch(showNotifyOrganizors(false));
+  };
+
   return (
     <section>
       <Modal
@@ -118,7 +122,7 @@ const NotifyOrganizers = () => {
                 <img
                   draggable={false}
                   src={BlackCrossIcon}
-                  className={styles["Cross_Icon_Styling"]}
+                  className="cursor-pointer"
                   width="16px"
                   height="16px"
                   onClick={handleCrossIcon}
@@ -241,6 +245,7 @@ const NotifyOrganizers = () => {
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_button_Notify"]}
+                  onClick={handleCancelButton}
                 />
                 <Button text={t("Send")} className={styles["Send_Notify"]} />
               </Col>

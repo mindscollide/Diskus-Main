@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./MeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
 import MeetingVideoChatIcon from "../../../../../assets/images/ColoredVideo.svg";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
-
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
 import { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -34,6 +35,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
 
   //For Custom language datepicker
   const [meetingDate, setMeetingDate] = useState("");
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
@@ -289,6 +291,18 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     { value: "1DayBeofre", label: t("1-day-before") },
     { value: "3DayBeofre", label: t("7-days-before") },
   ];
+
+  useEffect(() => {
+    if (currentLanguage !== undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
 
   return (
     <section>
