@@ -55,7 +55,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     AllowRSPV: false,
     NotifyMeetingOrganizer: false,
     RecurringOptions: 0,
-    Location: 0,
+    Location: "",
   });
 
   const handleSelectChange = (selectedOption) => {
@@ -350,17 +350,19 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       </Row>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
-                          <Select
-                            value={rows.Location}
-                            onChange={handleMeetingLocationChange}
-                            isSearchable={false}
-                            options={SelectLocations}
+                          <TextField
+                            placeholder={t("Location")}
+                            applyClass={"meetinInnerSearch"}
+                            name={"Location"}
+                            labelClass="d-none"
+                            change={HandleChange}
+                            value={meetingDetails.Location}
                           />
                           <Row>
                             <Col>
                               <p
                                 className={
-                                  error && meetingDetails.Location === 0
+                                  error && meetingDetails.Location === ""
                                     ? ` ${styles["errorMessage-inLogin"]} `
                                     : `${styles["errorMessage-inLogin_hidden"]}`
                                 }
