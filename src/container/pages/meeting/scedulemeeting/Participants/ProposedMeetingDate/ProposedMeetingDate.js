@@ -135,6 +135,10 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
     dispatch(showPrposedMeetingUnsavedModal(true));
   };
 
+  const handlebackButtonFunctionality = () => {
+    setProposedMeetingDates(false);
+  };
+
   return (
     <section>
       <Row className="mt-2">
@@ -150,6 +154,7 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
             width="20.5px"
             height="18.13px"
             className="cursor-pointer"
+            onClick={handlebackButtonFunctionality}
           />
           <span className={styles["Prposed_Meeting_heading"]}>
             {t("Propose-meeting-date")}
