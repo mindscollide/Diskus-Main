@@ -116,6 +116,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequency: e.value,
+      ReminderFrequencyTwo: 0, // Reset the second dropdown when changing the first one
+      ReminderFrequencyThree: 0, // Reset the third dropdown when changing the first one
     });
   };
 
@@ -123,6 +125,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyTwo: e.value,
+      ReminderFrequencyThree: 0, // Reset the third dropdown when changing the second one
     });
   };
 
@@ -132,7 +135,6 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
       ReminderFrequencyThree: e.value,
     });
   };
-
   const HandleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -257,6 +259,36 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     updatedRows[index].selectedOption = DateDate;
     setRows(updatedRows);
   };
+
+  const FirstReminder = [
+    { value: "OnStartingOfMeeting", label: t("On-starting-of-meeting") },
+    { value: "10minBefore", label: t("10-minutes-before") },
+    { value: "30minBefore", label: t("30-minutes-before") },
+    { value: "1HourBefore", label: t("1-hour-before") },
+    { value: "5HourBefore", label: t("5-hours-before") },
+    { value: "1DayBeofre", label: t("1-day-before") },
+    { value: "3DayBeofre", label: t("7-days-before") },
+  ];
+
+  const SecondReminder = [
+    { value: "OnStartingOfMeeting", label: t("On-starting-of-meeting") },
+    { value: "10minBefore", label: t("10-minutes-before") },
+    { value: "30minBefore", label: t("30-minutes-before") },
+    { value: "1HourBefore", label: t("1-hour-before") },
+    { value: "5HourBefore", label: t("5-hours-before") },
+    { value: "1DayBeofre", label: t("1-day-before") },
+    { value: "3DayBeofre", label: t("7-days-before") },
+  ];
+
+  const ThirdReminder = [
+    { value: "OnStartingOfMeeting", label: t("On-starting-of-meeting") },
+    { value: "10minBefore", label: t("10-minutes-before") },
+    { value: "30minBefore", label: t("30-minutes-before") },
+    { value: "1HourBefore", label: t("1-hour-before") },
+    { value: "5HourBefore", label: t("5-hours-before") },
+    { value: "1DayBeofre", label: t("1-day-before") },
+    { value: "3DayBeofre", label: t("7-days-before") },
+  ];
 
   return (
     <section>
@@ -681,13 +713,38 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       </Col>
                     </Row>
                     <Col lg={4} md={4} sm={12}>
-                      <Select onChange={handleReminderFrequency} />
+                      <Select
+                        onChange={handleReminderFrequency}
+                        options={FirstReminder}
+                        value={FirstReminder.find(
+                          (option) =>
+                            option.value === meetingDetails.ReminderFrequency
+                        )}
+                        isDisabled={false} // First dropdown should always be enabled
+                      />
                     </Col>
                     <Col lg={4} md={4} sm={12}>
-                      <Select onChange={handleReminderFrequencyTwo} />
+                      <Select
+                        onChange={handleReminderFrequencyTwo}
+                        options={SecondReminder}
+                        value={SecondReminder.find(
+                          (option) =>
+                            option.value === meetingDetails.ReminderFrequencyTwo
+                        )}
+                        isDisabled={meetingDetails.ReminderFrequency === 0} // Disable if first dropdown is not selected
+                      />
                     </Col>
                     <Col lg={4} md={4} sm={12}>
-                      <Select onChange={handleReminderFrequencyThree} />
+                      <Select
+                        onChange={handleReminderFrequencyThree}
+                        options={ThirdReminder}
+                        value={ThirdReminder.find(
+                          (option) =>
+                            option.value ===
+                            meetingDetails.ReminderFrequencyThree
+                        )}
+                        isDisabled={meetingDetails.ReminderFrequencyTwo === 0} // Disable if second dropdown is not selected
+                      />
                     </Col>
                     <Row>
                       <Col>

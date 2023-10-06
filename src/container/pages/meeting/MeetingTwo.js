@@ -48,6 +48,9 @@ const NewMeeting = () => {
   const [unPublishedMeeting, setUnPublishedMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
+  //For Search Field Only
+  const [searchText, setSearchText] = useState("");
+  const [entereventIcon, setentereventIcon] = useState(false);
   const [publishedMeeting, setpublishedMeeting] = useState(false);
   // data for rows for first table
   const data = [
@@ -283,6 +286,26 @@ const NewMeeting = () => {
     },
   ];
 
+  //For searching Filed Only
+
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+  };
+
+  const handleClearSearch = () => {
+    setSearchText("");
+    setentereventIcon(false);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && searchText !== "") {
+      // Perform your search or filter operation here
+      // For example, you can console.log the search text for demonstration:
+      console.log("Search Text:", searchText);
+      setentereventIcon(true);
+    }
+  };
+
   // Time Picker of the Search
   // const changeDateStartHandler = (date) => {
   //   let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
@@ -330,12 +353,31 @@ const NewMeeting = () => {
                   applyClass={"meetingSearch"}
                   name={"SearchVal"}
                   labelClass="d-none"
-                  clickIcon={HandleShowSearch}
+                  value={searchText}
+                  change={handleSearchChange}
+                  onKeyDown={handleKeyPress}
                   inputicon={
-                    <img
-                      src={searchicon}
-                      className={styles["Search_Bar_icon_class"]}
-                    />
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        {entereventIcon === true ? (
+                          <img
+                            src={BlackCrossIcon}
+                            className="cursor-pointer"
+                            onClick={handleClearSearch}
+                          />
+                        ) : null}
+                        <img
+                          src={searchicon}
+                          className={styles["Search_Bar_icon_class"]}
+                          onClick={HandleShowSearch} // Add click functionality here
+                        />
+                      </Col>
+                    </Row>
                   }
                   iconClassName={styles["polling_searchinput"]}
                 />
