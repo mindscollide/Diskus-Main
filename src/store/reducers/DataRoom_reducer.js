@@ -29,6 +29,7 @@ const initialState = {
   isFileExsist: null,
   SearchFilesAndFoldersResponse: [],
   SearchFileListCount: 0,
+  RecentDocuments: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -433,6 +434,28 @@ const DataRoomReducer = (state = initialState, action) => {
       return {
         ...state,
         isFileExsist: action.response,
+      };
+    }
+    case actions.GET_RECENT_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_RECENT_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        RecentDocuments: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_RECENT_DOCUMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        RecentDocuments: null,
+        ResponseMessage: action.message,
       };
     }
     default:

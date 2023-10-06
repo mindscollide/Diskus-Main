@@ -1046,5 +1046,7 @@
   "Schedule-proposed-meetings": "Schedule Proposed Meetings",
   "Create-another-minute-in-this-agenda": "Create another minute in this agenda",
   "Create-another-minute-in-this-subagenda": "Create another minute in this sub agenda",
-  "Start-voting": "Start Voting"
+  "Start-voting": "Start Voting",
+  "Any-one-with-link": "Any One With link",
+  "Restricted": "Restricted"
 }

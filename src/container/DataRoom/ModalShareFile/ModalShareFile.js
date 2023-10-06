@@ -29,7 +29,6 @@ import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { shareFilesApi } from "../../../store/actions/DataRoom_actions";
 import { useNavigate } from "react-router-dom";
-
 const ModalShareFile = ({
   ModalTitle,
   shareFile,
@@ -63,9 +62,11 @@ const ModalShareFile = ({
   const [accessupdate, setAccessupdate] = useState(false);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
+  const { t } = useTranslation();
+
   const [permissionID, setPermissionID] = useState({
-    label: "",
-    value: 0,
+    label: t("Editor"),
+    value: 1,
   });
   const [generalAccess, setGeneralAccess] = useState({
     label: "",
@@ -115,14 +116,14 @@ const ModalShareFile = ({
     setLinkedcopied(true);
   };
   const options = [
-    { value: 1, label: "Viewer" },
-    { value: 2, label: "Editor" },
+    { value: 1, label: t("Viewer") },
+    { value: 2, label: t("Editor") },
     // { value: 3, label: "Add Expiration" },
   ];
   const optionsgeneralAccess = [
-    { value: 1, label: "Restricted" },
+    { value: 1, label: t("Restricted") },
     { value: 2, label: organizationName },
-    { value: 3, label: "Any One With link" },
+    { value: 3, label: t("Any-one-with-link") },
   ];
   const [onclickFlag, setOnclickFlag] = useState(false);
   const onSearch = (name, id) => {
@@ -241,11 +242,6 @@ const ModalShareFile = ({
   };
 
   const handleAddMember = () => {
-    console.log(taskAssignedName, "taskAssignedNametaskAssignedName");
-    console.log(
-      fileData.Files,
-      "handleAddMemberhandleAddMemberhandleAddMemberhandleAddMember"
-    );
     let findIndexData = fileData.Files.findIndex(
       (listData, index) => listData.FK_UserID === taskAssignedTo
     );
@@ -269,7 +265,29 @@ const ModalShareFile = ({
           setFileData((prev) => {
             return { ...prev, Files: [...prev.Files, Data] };
           });
+          setTaskAssignedToInput("");
+          setTaskAssignedTo(0);
+          setTaskAssignedName("");
+          setPermissionID({
+            label: t("Editor"),
+            value: 1,
+          });
+          setGeneralAccess({
+            label: "",
+            value: 0,
+          });
         } else {
+          setTaskAssignedToInput("");
+          setTaskAssignedTo(0);
+          setTaskAssignedName("");
+          setPermissionID({
+            label: t("Editor"),
+            value: 1,
+          });
+          setGeneralAccess({
+            label: "",
+            value: 0,
+          });
           setOpen({
             flag: true,
             message: t("User-is-already-exist"),
@@ -287,21 +305,8 @@ const ModalShareFile = ({
         message: t("All-options-must-be-selected"),
       });
     }
-
-    setTaskAssignedToInput("");
-    setTaskAssignedTo(0);
-    setTaskAssignedName("");
-    setPermissionID({
-      label: "",
-      value: 0,
-    });
-    setGeneralAccess({
-      label: "",
-      value: 0,
-    });
   };
 
-  const { t } = useTranslation();
   const closebtn = async () => {
     setShareFile(false);
   };
@@ -319,8 +324,6 @@ const ModalShareFile = ({
     let findIndexfromViewData = isMembers.findIndex(
       (data, index) => data.pK_UID === memberData.pK_UID
     );
-    console.log(findIndexfromViewData, "findIndexfromsendData");
-    console.log(findIndexfromsendData, "findIndexfromsendData");
     fileData.Files.splice(findIndexfromsendData, 1);
     isMembers.splice(findIndexfromViewData, 1);
     setMembers([...isMembers]);
@@ -380,6 +383,7 @@ const ModalShareFile = ({
                             draggable="false"
                             src={clock}
                             height="14.66px"
+                            alt=""
                             width="14.97px"
                           />
                           <span
@@ -398,6 +402,7 @@ const ModalShareFile = ({
                                 draggable="false"
                                 src={EditIconNote}
                                 height="11.11px"
+                                alt=""
                                 width="11.54px"
                                 onClick={showcalender}
                               />
@@ -405,6 +410,7 @@ const ModalShareFile = ({
                                 draggable="false"
                                 src={DeleteiCon}
                                 width="9.47px"
+                                alt=""
                                 height="11.75px"
                               />
                             </Col>

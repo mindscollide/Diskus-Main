@@ -39,6 +39,14 @@
   background: #fff;
   border: 1px solid #e1e1e1;
 }
+.Copy_Link_btn:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+}
 
 .send_btn {
   padding: 12px 30px !important;

@@ -1254,7 +1254,7 @@ const Resolution = () => {
                     lg={5}
                     md={5}
                     sm={12}
-                    className=" d-flex justify-content-end  align-items-center  Search-filed-resolution"
+                    className=" d-flex justify-content-end  align-items-center  position-relative Search-filed-resolution"
                   >
                     <span className={styles["search_input"]}>
                       <TextField
@@ -1274,96 +1274,99 @@ const Resolution = () => {
                         clickIcon={openSearchBox}
                       />
                       {/* <SearchInputSuggestion /> */}
-                    </span>
-                  </Col>
-
-                  {searchIcon ? (
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["Search_Box_Main_Resolution_page"]}
-                        >
+                      {searchIcon ? (
+                        <>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-end"
+                              className={
+                                styles["Search_Box_Main_Resolution_page"]
+                              }
                             >
-                              <span>
-                                <img
-                                  draggable="false"
-                                  src={Cross}
-                                  height="16px"
-                                  alt=""
-                                  width="16px"
-                                  onClick={closeSeachBar}
-                                />
-                              </span>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-end"
+                                >
+                                  <span>
+                                    <img
+                                      draggable="false"
+                                      src={Cross}
+                                      height="16px"
+                                      alt=""
+                                      width="16px"
+                                      onClick={closeSeachBar}
+                                    />
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row className="mt-3 d-flex justify-content-start align-items-start ">
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  className="CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular "
+                                >
+                                  <TextField
+                                    label={
+                                      resolutionView === 2
+                                        ? t("Decision-date")
+                                        : t("Circulation-date")
+                                    }
+                                    type="date"
+                                    name="circulationDate"
+                                    change={changeSearchDateHandler}
+                                  />
+                                </Col>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  className="CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular"
+                                >
+                                  <TextField
+                                    label={t("Voting-deadline")}
+                                    type="date"
+                                    name="votingDate"
+                                    change={changeSearchDateHandler}
+                                  />
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-end gap-3"
+                                >
+                                  <Button
+                                    text={t("Reset")}
+                                    className={
+                                      styles["ResetButton_SearchBar_Resolution"]
+                                    }
+                                    onClick={hideSearchOptions}
+                                  />
+                                  <Button
+                                    text={t("Search")}
+                                    className={
+                                      styles[
+                                        "SearchButton_SearchBar_Resolution"
+                                      ]
+                                    }
+                                    onClick={showSearchOptions}
+                                  />
+                                </Col>
+                              </Row>
                             </Col>
                           </Row>
-                          <Row className="mt-3 d-flex justify-content-start align-items-start ">
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={6}
-                              className="CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular "
-                            >
-                              <TextField
-                                label={
-                                  resolutionView === 2
-                                    ? t("Decision-date")
-                                    : t("Circulation-date")
-                                }
-                                type="date"
-                                name="circulationDate"
-                                change={changeSearchDateHandler}
-                              />
-                            </Col>
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={6}
-                              className="CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular"
-                            >
-                              <TextField
-                                label={t("Voting-deadline")}
-                                type="date"
-                                name="votingDate"
-                                change={changeSearchDateHandler}
-                              />
-                            </Col>
-                          </Row>
-                          <Row className="mt-3">
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="d-flex justify-content-end gap-3"
-                            >
-                              <Button
-                                text={t("Reset")}
-                                className={
-                                  styles["ResetButton_SearchBar_Resolution"]
-                                }
-                                onClick={hideSearchOptions}
-                              />
-                              <Button
-                                text={t("Search")}
-                                className={
-                                  styles["SearchButton_SearchBar_Resolution"]
-                                }
-                                onClick={showSearchOptions}
-                              />
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </>
-                  ) : null}
+                        </>
+                      ) : null}
+                    </span>
+                  </Col>
                 </Row>
               </Col>
             </Row>

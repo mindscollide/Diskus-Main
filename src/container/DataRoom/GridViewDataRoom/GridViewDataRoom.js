@@ -37,14 +37,6 @@ const GridViewDataRoom = ({
   filter_Value,
   setSearchTabOpen,
 }) => {
-  console.log(totalRecords, "totalRecordstotalRecords");
-  console.log(filter_Value, "ValueValueValue");
-  console.log(
-    optionsforFolder,
-    optionsforFile,
-    "optionsforFileoptionsforFileoptionsforFile"
-  );
-  const { DataRoomReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -52,6 +44,9 @@ const GridViewDataRoom = ({
   const currentView = Number(localStorage.getItem("setTableView"));
   const [showrenameFile, setShowRenameFile] = useState(false);
   const [shareFileModal, setShareFileModal] = useState(false);
+  // for anotantion opens in new tabb on doubble click
+  const [clicks, setClicks] = useState(0);
+  const [dataCheck, setDataCheck] = useState([]);
   const [sortIon, setSortIcon] = useState(false);
   const [showrenameFolder, setShowreanmeFolder] = useState(false);
   const [folderId, setFolderId] = useState(0);
@@ -145,8 +140,34 @@ const GridViewDataRoom = ({
   };
 
   const handleClickforFile = (dataId, record) => {
+    // let ext = record.name.split(".").pop();
+    // const pdfData = {
+    //   taskId: record.id,
+    //   commingFrom: 4,
+    //   fileName: record.name,
+    //   attachmentID: record.id,
+    // };
+    // const pdfDataJson = JSON.stringify(pdfData);
+    console.log(dataId, record, "dataIddataIddataIddataIddataId");
     setFolderId(dataId.value);
-    if (dataId.value === 3) {
+    if (dataId.value === 1) {
+      let ext = record.name.split(".").pop();
+      if (ext === "pdf") {
+        const pdfData = {
+          taskId: record.id,
+          commingFrom: 4,
+          fileName: record.name,
+          attachmentID: record.id,
+        };
+        const pdfDataJson = JSON.stringify(pdfData);
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+      }
+    } else if (dataId.value === 3) {
       setShowRenameFile(true);
       setRenameFolderData(record);
     } else if (dataId.value === 2) {
@@ -156,6 +177,49 @@ const GridViewDataRoom = ({
       dispatch(deleteFileDataroom(navigate, record.id, t));
     }
     console.log(dataId);
+  };
+
+  const handleClickFile = (e, data) => {
+    e.preventDefault();
+    let ext = data.name.split(".").pop();
+    if (ext === "pdf") {
+      const pdfData = {
+        taskId: data.id,
+        commingFrom: 4,
+        fileName: data.name,
+        attachmentID: data.id,
+      };
+      const pdfDataJson = JSON.stringify(pdfData);
+      handleLinkClick(pdfDataJson);
+    }
+  };
+
+  const handleLinkClick = (data) => {
+    // e.preventDefault();
+    if (clicks === 1) {
+      if (dataCheck === data) {
+        // Perform the action you want to happen on the double-click here
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        setDataCheck(data);
+      }
+
+      // Reset the click count
+      setClicks(0);
+    } else {
+      // Increment the click count
+      setClicks(clicks + 1);
+      setDataCheck(data);
+      // You can add a delay here to reset the click count after a certain time if needed
+      setTimeout(() => {
+        setClicks(0);
+        setDataCheck([]);
+      }, 300); // Reset after 300 milliseconds (adjust as needed)
+    }
   };
 
   useEffect(() => {
@@ -368,7 +432,12 @@ const GridViewDataRoom = ({
                               </Col>
                               <Col sm={12} md={12} lg={12}>
                                 <div className={styles["gridViewFile__name"]}>
-                                  <span className={styles["folderFile__text"]}>
+                                  <span
+                                    className={styles["folderFile__text"]}
+                                    onClick={(e) =>
+                                      handleClickFile(e, fileData)
+                                    }
+                                  >
                                     <img
                                       src={getIconSource(
                                         getFileExtension(fileData.name)

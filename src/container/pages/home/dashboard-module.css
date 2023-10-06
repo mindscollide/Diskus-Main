@@ -17,10 +17,24 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
+  height: auto !important;
+  max-height: 350px !important;
+}
+.home-meetingcount-spin {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
   height: 25vh !important;
 }
 
 .home-todolistcount {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: auto !important;
+  max-height: 350px !important;
+}
+.home-todolistcount-spin {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;

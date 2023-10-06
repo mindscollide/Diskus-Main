@@ -644,7 +644,14 @@ const Meeting = () => {
       dispatch(clearResponseMessage());
     }
   }, [meetingIdReducer.ResponseMessage, assignees.ResponseMessage]);
-
+  console.log(
+    meetingIdReducer.ResponseMessage,
+    "ResponseMessageResponseMessageResponseMessage"
+  );
+  console.log(
+    assignees.ResponseMessage,
+    "ResponseMessageResponseMessageResponseMessage"
+  );
   useEffect(() => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&

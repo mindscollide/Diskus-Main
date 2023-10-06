@@ -51,6 +51,7 @@ import {
   getDocumentsAndFolderApi,
   getDocumentsAndFolderApiScrollbehaviour,
   getFolderDocumentsApi,
+  getRecentDocumentsApi,
   isFolder,
   uploadDocumentsApi,
 } from "../../store/actions/DataRoom_actions";
@@ -134,24 +135,16 @@ const DataRoom = () => {
   const [isRenameFolderData, setRenameFolderData] = useState(null);
   const [isRenameFileData, setRenameFileData] = useState(null);
   const [remainingTime, setRemainingTime] = useState(0);
-  const [data, setData] = useState([]);
-  const [filesSend, setFilesSend] = useState([]);
   const [folderId, setFolderId] = useState(0);
   const [fileName, setFileName] = useState("");
   const [folderName, setFolderName] = useState("");
   const [filterVal, setFilterVal] = useState("");
-  const [lengthValue, setLengthValue] = useState(0);
   const navigate = useNavigate();
-  const [threeDotOptions, setThreeDotOptions] = useState(0);
-  const [folderID, setFolderID] = useState([]);
   const [filterValue, setFilterValue] = useState(0);
-  const [sortByValue, setSortByValue] = useState(true);
-  const [rows, setRow] = useState([]);
-  const [uploadDocumentAgain, setUploadDocumentAgain] = useState(null);
   const [getAllData, setGetAllData] = useState([]);
-  const [showsubmenu, setShowsubmenu] = useState(false);
-  const [searchDocumentTypeValue, setSearchDocumentTypeValue] = useState(0);
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
+  const [cancelToken, setCancelToken] = useState(axios.CancelToken.source());
+
   const [currentSort, setCurrentSort] = useState("descend"); // Initial sort order
   const [currentFilter, setCurrentFilter] = useState(t("Last-modified"));
   const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
@@ -160,6 +153,10 @@ const DataRoom = () => {
   const [directoryNames, setDirectoryNames] = useState("");
   // this state contain UploadingFolders Data
   const [detaUplodingForFOlder, setDetaUplodingForFOlder] = useState([]);
+  console.log(
+    detaUplodingForFOlder,
+    "detaUplodingForFOlderdetaUplodingForFOlderdetaUplodingForFOlder"
+  );
   // this is the state of existing modal option select
   const [folderUploadOptions, setFolderUploadOptions] = useState(1);
   // we are setting search tab for all view in different tab
@@ -361,6 +358,24 @@ const DataRoom = () => {
     } catch {}
   }, [DataRoomReducer.getFolderDocumentResponse]);
   // for internet
+
+  useEffect(() => {
+    try {
+      console.log(
+        DataRoomReducer.RecentDocuments,
+        "RecentDocumentsRecentDocumentsRecentDocumentsRecentDocuments"
+      );
+      if (
+        DataRoomReducer.RecentDocuments !== null &&
+        DataRoomReducer.RecentDocuments !== undefined
+      ) {
+        if (DataRoomReducer.RecentDocuments.data.length > 0) {
+          let RecentData = DataRoomReducer.RecentDocuments.data;
+          setGetAllData(RecentData);
+        }
+      }
+    } catch {}
+  }, [DataRoomReducer.RecentDocuments]);
   useEffect(() => {
     if (!isOnline) {
       // CanceUpload();
@@ -439,8 +454,11 @@ const DataRoom = () => {
   const RecentTab = async () => {
     setSRowsData(0);
     localStorage.setItem("setTableView", 4);
-
-    // await dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
+    let Data = {
+      UserID: Number(userID),
+      OrganizationID: Number(organizationID),
+    };
+    await dispatch(getRecentDocumentsApi(navigate, t, Data));
     setGetAllData([]);
     localStorage.removeItem("folderID");
     setSharedwithmebtn(false);
@@ -925,6 +943,7 @@ const DataRoom = () => {
       }, 300); // Reset after 300 milliseconds (adjust as needed)
     }
   };
+
   const MyDocumentsColumns = [
     {
       title: t("Name"),
@@ -1381,28 +1400,29 @@ const DataRoom = () => {
           );
         } else {
           if (ext === "pdf") {
-            <Link
-              to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                pdfDataJson
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className={`${styles["dataFolderRow"]}`}>
-                <img
-                  src={getIconSource(getFileExtension(record.name))}
-                  alt=""
-                  width={"25px"}
-                  height={"25px"}
-                />
-                <span
-                  className={styles["dataroom_table_heading"]}
-                  // onClick={() => getFolderDocuments(data.id)}
-                >
-                  {text} <img src={sharedIcon} alt="" draggable="false" />
-                </span>
-              </div>
-            </Link>;
+            // <Link
+            //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+            //     pdfDataJson
+            //   )}`}
+            //   target="_blank"
+            //   rel="noopener noreferrer"
+            // >
+            <div className={`${styles["dataFolderRow"]}`}>
+              <img
+                src={getIconSource(getFileExtension(record.name))}
+                alt=""
+                width={"25px"}
+                height={"25px"}
+              />
+              <span
+                className={styles["dataroom_table_heading"]}
+                onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                // onClick={() => getFolderDocuments(data.id)}
+              >
+                {text} <img src={sharedIcon} alt="" draggable="false" />
+              </span>
+            </div>;
+            // </Link>;
           } else {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
@@ -1587,6 +1607,8 @@ const DataRoom = () => {
 
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
+    console.log(directoryName, "handleChangeFolderUpload");
+
     try {
       console.log("handleChangeFolderUpload");
       let newJsonCreate = {
@@ -1610,6 +1632,7 @@ const DataRoom = () => {
           UploadCancel: newJsonCreate.UploadCancel,
           UploadedAttachments: newJsonCreate.UploadedAttachments,
           NetDisconnect: false,
+          // axiosCancelToken: axiosCancelSource,
         };
 
         setDirectoryNames(directoryName);
@@ -1680,6 +1703,7 @@ const DataRoom = () => {
 
   // this function call for current files which is in the folder
   const processArraySequentially = async (folder) => {
+    console.log(folder, "folderfolderfolderfolderprocessArraySequentially");
     let isOnline = navigator.onLine;
     if (folder.UploadCancel || folder.NetDisconnect) {
       // Skip the upload for this folder if it's canceled or there's a network disconnect
@@ -1703,6 +1727,7 @@ const DataRoom = () => {
                   folder.FolderID,
                   t,
                   folder.NetDisconnect
+                  // cancelToken
                 )
               );
               // Perform other actions with the result
@@ -1810,6 +1835,10 @@ const DataRoom = () => {
   // this is used for canle all uploadind
   const CanceUpload = () => {
     const dataArray = Object.values(tasksAttachments);
+    console.log(
+      { detaUplodingForFOlder },
+      "dataArraydataArraydataArraydataArray"
+    );
     const combinedArray = [...detaUplodingForFOlder, ...dataArray];
     const isUploading = combinedArray.some((obj) => obj.Uploading === true);
     if (isUploading) {
@@ -1822,12 +1851,17 @@ const DataRoom = () => {
     }
   };
 
-  const CanceUploadinFromModalTrue = () => {
+  const CanceUploadinFromModalTrue = (data) => {
+    // cancelToken.cancel("API call canceled by user");
     setDetaUplodingForFOlder([]);
     setTasksAttachments([]);
     setShowbarupload(false);
     dispatch(CreateFolder_success([]));
     setCanselingDetaUplodingForFOlder(false);
+    // if (data.axiosCancelToken) {
+    //   data.axiosCancelToken.cancel("Upload canceled");
+    //   console.log("cancelFileUpload", data);
+    // }
   };
 
   const handleOutsideClick = (event) => {
@@ -2359,7 +2393,7 @@ const DataRoom = () => {
                                   sortDirections={["descend", "ascend"]}
                                   column={MyRecentTab}
                                   className={"DataRoom_Table"}
-                                  // rows={getAllData}
+                                  rows={getAllData}
                                   pagination={false}
                                   locale={{
                                     emptyText: (

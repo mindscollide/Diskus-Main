@@ -32,3 +32,7 @@ body[dir="rtl"] .dashboard_progress_bar {
     justify-content: center;
   }
 } */
+.circular_progress_counter {
+  width: 180px;
+  height: 100%;
+}

@@ -264,9 +264,9 @@
   margin-left: -15px;
 }
 
-body[dir="rtl"] .Drop_Down_searchBar {
+/* body[dir="rtl"] .Drop_Down_searchBar {
   right: 49.2% !important;
-}
+} */
 
 .DropDown_name {
   font-size: 12px !important;

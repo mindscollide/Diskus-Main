@@ -2,7 +2,7 @@ import React from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useStyles } from "./NotificationStyle";
-import { useSelector } from "react-redux";
+
 const Message = {
   success: "success",
   error: "error",
@@ -14,7 +14,6 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 const Notification = ({ setOpen, open, message }) => {
-  const state = useSelector((state) => state);
   const classes = useStyles();
   const vertical = "top";
   const horizontal = "right";
@@ -30,7 +29,7 @@ const Notification = ({ setOpen, open, message }) => {
   };
   return (
     <>
-      {message != "" ? (
+      {message !== "" ? (
         <div className={classes.root}>
           <Snackbar
             autoHideDuration={3000}
