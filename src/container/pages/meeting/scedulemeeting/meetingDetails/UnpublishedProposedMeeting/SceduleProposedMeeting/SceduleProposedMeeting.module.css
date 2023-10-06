@@ -158,20 +158,26 @@
   font-family: "MontserratSemiBold" !important;
 }
 
-
-/* Add border styles to cells in the column */
 .border-column {
-  border-left: 1px solid #000; /* Add your border styles here */
-  border-right: 1px solid #000; /* Add your border styles here */
-  /* Additional styles as needed */
+  border-left: 1px solid #6172d6;
+  border-right: 1px solid #6172d6;
 }
+
+.SceduleProposedMeeting tbody tr:last-child td {
+  border-bottom: 1px solid #6172d6 !important;
+}
+
 .last-row td {
-  border-bottom: 1px solid #000; /* Add your border styles here */
+  border-bottom: 1px solid #000;
 }
 .border-title {
-  border-top: 1px solid #000; /* Add your border styles here */
-  border-top-right-radius: 4px solid #000; /* Add your border styles here */
-  border-top-left-radius: 4px solid #000; /* Add your border styles here */
+  border-top: 1px solid #6172d6;
+  border-top-right-radius: 8px solid #6172d6;
+  border-top-left-radius: 8px solid #6172d6;
   padding: 8px;
   text-align: center;
+}
+
+.bottom-border {
+  border-bottom: 1px solid #000; /* Add your border styles here */
 }

@@ -376,18 +376,14 @@ const CreateFromScratch = () => {
           sm={12}
           className="d-flex justify-content-end gap-2"
         >
-          <Button
-            text={t("Clone-meeting")}
-            className={styles["CancelButtonOnSaveAgendaImport"]}
-          />
-          <Button
+          {/* <Button
             text={t("Cancel")}
             className={styles["CancelButtonOnSaveAgendaImport"]}
           />
           <Button
             text={t("Save")}
             className={styles["SaveButtonOnSaveAgendaImport"]}
-          />
+          /> */}
         </Col>
       </Row>
       {createFromSratch ? (
@@ -399,6 +395,11 @@ const CreateFromScratch = () => {
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
+              <Button
+                text={t("Clone-meeting")}
+                className={styles["CancelButtonOnSaveAgendaImport"]}
+              />
+
               <Button
                 text={t("Cancel")}
                 className={styles["CancelButtonOnSaveAgendaImport"]}

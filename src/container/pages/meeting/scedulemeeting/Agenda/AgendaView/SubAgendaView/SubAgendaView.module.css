@@ -29,10 +29,22 @@
   position: absolute !important;
 }
 
+body[dir="rtl"] .subAgendaExpandableSideStyles {
+  right: 0px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+
 .subagendaArrow {
   cursor: pointer !important;
   margin-top: 35px !important;
   margin-left: -10px !important;
+}
+
+body[dir="rtl"] .subagendaArrow {
+  margin-right: -9px !important;
 }
 
 .SubagendaTitle {
@@ -89,6 +101,10 @@
   align-items: center !important;
   margin-top: 105px !important;
   margin-left: -10px !important;
+}
+
+body[dir="rtl"] .subagendaArrow_Expand {
+  margin-right: -10px !important;
 }
 
 .Attachments_Heading {
