@@ -27,7 +27,9 @@ const NotifyOrganizers = () => {
     Messege: "",
     allOrganizersAccept: false,
   });
+
   const [membersHide, setMembersHide] = useState(false);
+  const [allOrganizersAccept, setAllOrganizersAccept] = useState(false);
   const [members, setMembers] = useState([
     {
       name: "saif",
@@ -80,10 +82,9 @@ const NotifyOrganizers = () => {
   };
 
   const handleAllowOrganizerCheck = () => {
-    setNotifyOrganizerData({
-      ...notifyOrganizerData,
-      allOrganizersAccept: !notifyOrganizerData.allOrganizersAccept,
-    });
+    const updatedCheckboxes = members.map(() => !allOrganizersAccept);
+    setAllOrganizersAccept(!allOrganizersAccept);
+    setMemberCheckboxes(updatedCheckboxes);
   };
 
   const handleHideItems = () => {
@@ -147,7 +148,7 @@ const NotifyOrganizers = () => {
                 className="d-flex align-items-center gap-2"
               >
                 <Checkbox
-                  checked={notifyOrganizerData.allOrganizersAccept}
+                  checked={allOrganizersAccept}
                   onChange={handleAllowOrganizerCheck}
                 />
                 <p className={styles["Check_box_title"]}>
