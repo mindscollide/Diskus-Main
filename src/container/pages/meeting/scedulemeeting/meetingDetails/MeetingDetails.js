@@ -4,12 +4,10 @@ import { useTranslation } from "react-i18next";
 import MeetingVideoChatIcon from "../../../../../assets/images/ColoredVideo.svg";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
+
 import { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
@@ -25,6 +23,7 @@ import {
 import MeetingActive from "./MeetingActivePage/MeetingActive";
 import PublishedMeeting from "./PublishedMeeting/PublishedMeeting";
 import moment from "moment";
+import TextFieldTime from "../../../../../components/elements/input_field_time/Input_field";
 
 const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const { t } = useTranslation();
@@ -70,26 +69,30 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     setMeetingDetails({ ...meetingDetails, RecurringOptions: selectedOption });
   };
 
-  const handleMeetingLocationChange = (selectedOption) => {
-    setMeetingDetails({ ...meetingDetails, Location: selectedOption });
-  };
-
-  const handleStartDateChange = (index, date) => {
-    console.log(date, "datedatedatedatedate");
+  const handleStartDateChange = (index, value) => {
     const updatedRows = [...rows];
-    updatedRows[index].startDate = date;
+    updatedRows[index].startDate = value;
     setRows(updatedRows);
   };
 
-  // Function to update the endDate for a specific row
-  const handleEndDateChange = (index, date) => {
+  const handleEndDateChange = (index, value) => {
+    console.log(value, "valuevaluevalue");
     const updatedRows = [...rows];
-    updatedRows[index].endDate = date;
+    updatedRows[index].endDate = value;
     setRows(updatedRows);
   };
 
   const addRow = () => {
-    setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+    const lastRow = rows[rows.length - 1];
+    if (isValidRow(lastRow)) {
+      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+    }
+  };
+
+  const isValidRow = (row) => {
+    return (
+      row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
+    );
   };
 
   const HandleCancelFunction = (index) => {
@@ -451,6 +454,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         </Col>
                         <Col lg={11} md={11} sm={12}>
                           <TextField
+                            disable={true}
                             placeholder={
                               t("Paste-microsoft-team-zoom-link") + "*"
                             }
@@ -543,17 +547,18 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                         sm={3}
                                         className="timePicker"
                                       >
-                                        <DatePicker
-                                          arrowClassName="arrowClass"
-                                          containerClassName="containerClassTimePicker"
-                                          className="timePicker"
-                                          disableDayPicker
-                                          inputClass="inputTImeMeeting"
-                                          format="HH:mm A"
-                                          selected={data.startDate}
-                                          plugins={[<TimePicker hideSeconds />]}
-                                          onChange={(date) =>
-                                            handleStartDateChange(index, date)
+                                        <TextFieldTime
+                                          type="time"
+                                          labelClass="d-none"
+                                          name="circulation"
+                                          value={data.startDate}
+                                          onKeyDown={(e) => e.preventDefault()}
+                                          applyClass={"search_voterInput"}
+                                          change={(e) =>
+                                            handleStartDateChange(
+                                              index,
+                                              e.target.value
+                                            )
                                           }
                                         />
                                       </Col>
@@ -575,18 +580,19 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                         sm={12}
                                         // className="d-flex justify-content-end"
                                       >
-                                        <DatePicker
-                                          arrowClassName="arrowClass"
-                                          containerClassName="containerClassTimePicker"
-                                          className="timePicker"
-                                          disableDayPicker
-                                          inputClass="inputTImeMeeting"
-                                          format="HH:mm A"
-                                          selected={data.endDate}
-                                          plugins={[<TimePicker hideSeconds />]}
-                                          onChange={(date) =>
-                                            handleEndDateChange(index, date)
-                                          } // Update end date
+                                        <TextFieldTime
+                                          type="time"
+                                          labelClass="d-none"
+                                          name="circulation"
+                                          value={data.endDate}
+                                          onKeyDown={(e) => e.preventDefault()}
+                                          applyClass={"search_voterInput"}
+                                          change={(e) =>
+                                            handleEndDateChange(
+                                              index,
+                                              e.target.value
+                                            )
+                                          }
                                         />
                                       </Col>
                                       <Col
@@ -658,6 +664,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         }
                         className={styles["Add_Dates_Btn_Class"]}
                         onClick={addRow}
+                        disabled={!isValidRow(rows[rows.length - 1])}
                       />
                     </Col>
                   </Row>
