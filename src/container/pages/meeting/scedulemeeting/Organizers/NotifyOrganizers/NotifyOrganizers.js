@@ -52,6 +52,10 @@ const NotifyOrganizers = () => {
     },
   ]);
 
+  const [memberCheckboxes, setMemberCheckboxes] = useState(
+    members.map(() => false)
+  );
+
   const handleCrossIcon = () => {
     dispatch(showNotifyOrganizors(false));
   };
@@ -84,6 +88,12 @@ const NotifyOrganizers = () => {
 
   const handleHideItems = () => {
     setMembersHide(!membersHide);
+  };
+
+  const handleCheckboxChange = (index, isChecked) => {
+    const updatedCheckboxes = [...memberCheckboxes];
+    updatedCheckboxes[index] = isChecked;
+    setMemberCheckboxes(updatedCheckboxes);
   };
 
   return (
@@ -170,41 +180,47 @@ const NotifyOrganizers = () => {
                     className={styles["Scroller_notify"]}
                   >
                     <Row>
-                      {members.map((data, index) => {
-                        return (
-                          <Col lg={6} md={6} sm={12} className="mt-2">
-                            <Row className="m-0 p-0">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className={styles["Box_for_Assignee"]}
-                              >
-                                <Row>
-                                  <Col
-                                    lg={10}
-                                    md={10}
-                                    sm={12}
-                                    className="d-flex gap-2 align-items-center"
-                                  >
-                                    <img
-                                      draggable={false}
-                                      src={profile}
-                                      width="33px"
-                                      height="33px"
-                                      className={styles["ProfilePic"]}
-                                    />
-                                    <span>{data.name}</span>
-                                  </Col>
-                                  <Col lg={2} md={2} sm={12}>
-                                    <Checkbox />
-                                  </Col>
-                                </Row>
-                              </Col>
-                            </Row>
-                          </Col>
-                        );
-                      })}
+                      {members.map((data, index) => (
+                        <Col lg={6} md={6} sm={12} className="mt-2" key={index}>
+                          <Row className="m-0 p-0">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Box_for_Assignee"]}
+                            >
+                              <Row>
+                                <Col
+                                  lg={10}
+                                  md={10}
+                                  sm={12}
+                                  className="d-flex gap-2 align-items-center"
+                                >
+                                  <img
+                                    draggable={false}
+                                    src={profile}
+                                    width="33px"
+                                    height="33px"
+                                    className={styles["ProfilePic"]}
+                                  />
+                                  <span>{data.name}</span>
+                                </Col>
+                                <Col lg={2} md={2} sm={12}>
+                                  <Checkbox
+                                    checked={memberCheckboxes[index]}
+                                    onChange={(e) =>
+                                      handleCheckboxChange(
+                                        index,
+                                        e.target.checked
+                                      )
+                                    }
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        </Col>
+                      ))}
                     </Row>
                   </Col>
                 </Row>

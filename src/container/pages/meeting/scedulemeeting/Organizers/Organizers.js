@@ -34,6 +34,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
   const navigate = useNavigate();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [viewOrganizers, setviewOrganizers] = useState(false);
+  const [editState, setEditState] = useState(false);
   const { NewMeetingreducer } = useSelector((state) => state);
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
@@ -44,14 +45,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
   const data = [
     {
       key: "1",
-      Name: (
-        <label
-          className={styles["Title_desc"]}
-          onClick={openNotifyOrganizorModal}
-        >
-          Muahmmad Saif
-        </label>
-      ),
+      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
       Email: (
         <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
       ),
@@ -95,7 +89,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
           <Row>
             <Col lg={12} md={12} sm={12}>
               <TextField
-                disable={true}
+                disable={editState === true ? true : false}
                 placeholder={t("Content-title")}
                 labelClass={"d-none"}
                 applyClass={"Organizer_table"}
@@ -113,7 +107,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
               sm={12}
               className="d-flex gap-3 align-items-center"
             >
-              <Switch />
+              <Switch disabled={editState === true ? true : false} />
               <label className="column-boldness">Primary</label>
             </Col>
           </Row>
@@ -123,13 +117,17 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <img
-                draggable={false}
-                src={redcrossIcon}
-                width="21.79px"
-                height="21.79px"
-                onClick={openCrossIconModal}
-              />
+              {editState === true ? (
+                <>
+                  <img
+                    draggable={false}
+                    src={redcrossIcon}
+                    width="21.79px"
+                    height="21.79px"
+                    onClick={openCrossIconModal}
+                  />
+                </>
+              ) : null}
             </Col>
           </Row>
         </>
@@ -177,19 +175,19 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
       title: t("RSPV"),
       dataIndex: "rspv",
       key: "rspv",
-      width: "200px",
+      width: "120px",
     },
 
     {
       title: t("Notification"),
       dataIndex: "Notification",
       key: "Notification",
-      width: "200px",
+      width: "180px",
     },
     {
       dataIndex: "Close",
       key: "Close",
-      width: "200px",
+      width: "50px",
     },
   ];
 
@@ -206,6 +204,18 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
     setviewOrganizers(!viewOrganizers);
   };
 
+  const enableEditButton = () => {
+    setEditState(!editState);
+  };
+
+  const handleEditDone = () => {
+    setEditState(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditState(false);
+  };
+
   return (
     <>
       {viewOrganizers ? (
@@ -218,38 +228,72 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
+                className="d-flex justify-content-end gap-4"
               >
-                <Button
-                  text={t("Notification1")}
-                  className={styles["Notification_button"]}
-                  icon={
-                    <img
-                      draggable={false}
-                      src={mail}
-                      width="17.18px"
-                      height="12.08px"
+                {editState ? (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex align-items-center gap-2"
+                      >
+                        <img
+                          src={redcrossIcon}
+                          width="21.79px"
+                          height="21.79px"
+                          className="cursor-pointer"
+                          onClick={handleCancelEdit}
+                        />
+                        <img
+                          src={rspvGreenIcon}
+                          width="21.79px"
+                          height="21.79px"
+                          className="cursor-pointer"
+                          onClick={handleEditDone}
+                        />
+                      </Col>
+                    </Row>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      text={t("Notification1")}
+                      className={styles["Notification_button"]}
+                      icon={
+                        <img
+                          draggable={false}
+                          src={mail}
+                          width="17.18px"
+                          height="12.08px"
+                        />
+                      }
+                      onClick={openNotifyOrganizorModal}
                     />
-                  }
-                />
-                <Button
-                  text={t("Edit")}
-                  className={styles["Edit_Button_Organizers"]}
-                  icon={
-                    <img
-                      draggable={false}
-                      src={EditIcon}
-                      width="11.75px"
-                      height="11.75px"
+
+                    <Button
+                      text={t("Edit")}
+                      className={styles["Edit_Button_Organizers"]}
+                      icon={
+                        <img
+                          draggable={false}
+                          src={EditIcon}
+                          width="11.75px"
+                          height="11.75px"
+                        />
+                      }
+                      onClick={enableEditButton}
                     />
-                  }
-                />
-                <Button
-                  text={t("Add-more")}
-                  icon={<img draggable={false} src={addmore} />}
-                  className={styles["AddMoreBtn"]}
-                  onClick={openAddUserModal}
-                />
+
+                    <Button
+                      text={t("Add-more")}
+                      icon={<img draggable={false} src={addmore} />}
+                      className={styles["AddMoreBtn"]}
+                      onClick={openAddUserModal}
+                    />
+                  </>
+                )}
               </Col>
             </Row>
             <Row>
