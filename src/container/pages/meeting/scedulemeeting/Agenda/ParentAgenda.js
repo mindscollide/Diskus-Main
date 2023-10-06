@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 import { useDispatch } from "react-redux";
 import {
   showAdvancePermissionModal,
@@ -41,6 +45,8 @@ const ParentAgenda = ({
   setSubajendaRemoval,
 }) => {
   const { t } = useTranslation();
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);
@@ -49,6 +55,10 @@ const ParentAgenda = ({
   const [subexpandIndex, setsubexpandIndex] = useState(-1);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
+  //Timepicker
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+
   const options = [
     {
       value: "chocolate",
@@ -203,6 +213,18 @@ const ParentAgenda = ({
     setRows(updatedRows);
   };
 
+  useEffect(() => {
+    if (currentLanguage !== undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
+
   return (
     <Draggable key={data.ID} draggableId={data.ID} index={index}>
       {(provided, snapshot) => (
@@ -329,6 +351,8 @@ const ParentAgenda = ({
                                 className="timePicker"
                                 disableDayPicker
                                 inputClass="inputTImeMeeting"
+                                calendar={calendarValue}
+                                locale={localValue}
                                 format="HH:mm A"
                                 selected={data.startDate}
                                 plugins={[<TimePicker hideSeconds />]}
@@ -369,6 +393,8 @@ const ParentAgenda = ({
                                 disableDayPicker
                                 inputClass="inputTImeMeeting"
                                 format="HH:mm A"
+                                calendar={calendarValue}
+                                locale={localValue}
                                 selected={data.endDate}
                                 plugins={[<TimePicker hideSeconds />]}
                                 onChange={(date) =>
