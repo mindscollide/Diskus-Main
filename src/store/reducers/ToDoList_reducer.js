@@ -10,7 +10,7 @@ const initialState = {
   AllAssigneesData: [],
   AllTodolistData: [],
   TodoActivityData: [],
-  SocketTodoActivityData: [],
+  SocketTodoActivityData: null,
   socketTodoStatusData: null,
   TotalTodoCountThisWeek: 0,
   TotalNumberOfUpcommingTodoInWeek: 0,

@@ -4711,6 +4711,7 @@ body[dir="rtl"] .ql-snow.ql-toolbar button,
 
 .TestAccordian .MuiAccordionSummary-content {
   display: block !important;
+  cursor: default !important;
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
@@ -5441,7 +5442,7 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 span.package-icon-style {
   position: absolute;
   top: -11px;
-  left: 20px;
+  left: auto;
   font-size: 65px;
 }
 

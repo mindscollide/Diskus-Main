@@ -18,6 +18,8 @@ import {
   DeleteShout,
   LeaveGroup,
   GetAllUserChats,
+  mqttGroupCreated,
+  mqttGroupLeft,
 } from '../../../../../store/actions/Talk_action'
 import { Spin } from 'antd'
 import { TextField, ResultMessage } from '../../../../elements'
@@ -53,6 +55,8 @@ const RecentChats = () => {
     'YYYYMMDDHHmmss',
   )
   let currentUtcDate = currentDateTimeUtc.slice(0, 8)
+
+  console.log('Current UTC Data', currentDateTimeUtc)
   //YESTERDAY'S DATE
   let yesterdayDate = new Date()
   yesterdayDate.setDate(yesterdayDate.getDate() - 1) // Subtract 1 day
@@ -64,6 +68,8 @@ const RecentChats = () => {
 
   //Dropdown state of chat head menu (Dropdown icon wali)
   const [chatHeadMenuActive, setChatHeadMenuActive] = useState(false)
+
+  const [newGroupData, setNewGroupData] = useState([])
 
   useEffect(() => {
     dispatch(GetAllUserChats(navigate, currentUserId, currentOrganizationId, t))
@@ -498,9 +504,97 @@ const RecentChats = () => {
     }
   }, [talkStateData?.talkSocketUnreadMessageCount?.unreadMessageData])
 
-  console.log('talk State Data', talkStateData)
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketGroupCreation.groupCreatedData !== undefined &&
+      talkStateData.talkSocketGroupCreation.groupCreatedData !== null &&
+      talkStateData.talkSocketGroupCreation.groupCreatedData.length !== 0
+    ) {
+      let filterData =
+        talkStateData.talkSocketGroupCreation.groupCreatedData.data[0]
+      let newGroup = {
+        id: filterData.id,
+        fullName: filterData.fullName,
+        imgURL: filterData.imgURL,
+        messageBody: filterData.messageBody,
+        messageDate: currentDateTimeUtc,
+        notiCount: 0,
+        messageType: 'G',
+        isOnline: false,
+        isBlock: 0,
+        companyName: '',
+        sentDate: '',
+        receivedDate: '',
+        seenDate: '',
+        attachmentLocation: '',
+        senderID: 0,
+        admin: filterData.admin,
+      }
+      let updatedArray = allChatData.map((obj) => {
+        if (obj.id === newGroup.id) {
+          return newGroup
+        } else {
+          return obj
+        }
+      })
+      updatedArray = [
+        newGroup,
+        ...updatedArray.filter((obj) => obj.id !== newGroup.id),
+      ]
+      console.log('reciver check resent chat ', updatedArray)
+      setAllChatData(updatedArray)
+      dispatch(mqttGroupCreated([]))
+    }
+  }, [talkStateData.talkSocketGroupCreation.groupCreatedData])
 
-  console.log('All User Chats', allChatData)
+  useEffect(() => {
+    if (
+      talkStateData.MqttGroupLeftData !== undefined &&
+      talkStateData.MqttGroupLeftData !== null &&
+      talkStateData.MqttGroupLeftData.length !== 0
+    ) {
+      let leaveGroupData = talkStateData.MqttGroupLeftData.data[0]
+      const indexToRemove = allChatData.findIndex(
+        (item) => item.id === leaveGroupData.groupID,
+      )
+      // Check if the object was found
+      if (indexToRemove !== -1) {
+        // Remove the object from allChatData
+        allChatData.splice(indexToRemove, 1)
+      }
+    }
+    // dispatch(mqttGroupLeft([]))
+  }, [talkStateData.MqttGroupLeftData])
+
+  useEffect(() => {
+    if (
+      talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse !==
+        null &&
+      talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse !==
+        undefined &&
+      talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse
+        .length !== 0
+    ) {
+      if (
+        talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse.data
+          .length !== 0
+      ) {
+        let latestMessageStatus =
+          talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse
+            .data[0]
+        // Iterate through allChatData
+        for (let i = 0; i < allChatData.length; i++) {
+          if (allChatData[i].id === latestMessageStatus.receiverID) {
+            // Update the relevant properties with values from latestMessageStatus
+            allChatData[i].sentDate = latestMessageStatus.sentDate
+            allChatData[i].receivedDate = latestMessageStatus.receivedDate
+            allChatData[i].seenDate = latestMessageStatus.seenDate
+          }
+        }
+        setAllChatData(allChatData)
+      }
+    }
+  }, [talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse])
 
   return (
     <>
@@ -521,7 +615,7 @@ const RecentChats = () => {
           </Col>
         </Row>
       ) : null}{' '}
-      {talkStateData.AllUserChats.Loading === true &&
+      {talkStateData.AllUserChats.Loading === true ||
       allChatData.length === 0 ? (
         <>
           <Spin className="talk-overallchat-spinner" />
@@ -565,45 +659,47 @@ const RecentChats = () => {
                     onClick={() => chatClick(dataItem)}
                     className="chat-message m-0"
                   >
-                    <span className="chat-tick-icon">
-                      {dataItem.senderID === parseInt(currentUserId) &&
-                      dataItem.sentDate === '' &&
-                      dataItem.receivedDate === '' &&
-                      dataItem.seenDate === '' ? (
-                        <img
-                          draggable="false"
-                          src={TimerIcon}
-                          className="img-cover"
-                        />
-                      ) : dataItem.senderID === parseInt(currentUserId) &&
-                        dataItem.sentDate !== '' &&
+                    {dataItem.messageType === 'O' ? (
+                      <span className="chat-tick-icon">
+                        {dataItem.senderID === parseInt(currentUserId) &&
+                        dataItem.sentDate === '' &&
                         dataItem.receivedDate === '' &&
                         dataItem.seenDate === '' ? (
-                        <img
-                          draggable="false"
-                          src={SingleTickIcon}
-                          className="img-cover"
-                        />
-                      ) : dataItem.senderID === parseInt(currentUserId) &&
-                        dataItem.sentDate !== '' &&
-                        dataItem.receivedDate !== '' &&
-                        dataItem.seenDate === '' ? (
-                        <img
-                          draggable="false"
-                          src={DoubleTickDeliveredIcon}
-                          className="img-cover"
-                        />
-                      ) : dataItem.senderID === parseInt(currentUserId) &&
-                        dataItem.sentDate !== '' &&
-                        dataItem.receivedDate !== '' &&
-                        dataItem.seenDate !== '' ? (
-                        <img
-                          draggable="false"
-                          src={DoubleTickIcon}
-                          className="img-cover"
-                        />
-                      ) : null}
-                    </span>
+                          <img
+                            draggable="false"
+                            src={TimerIcon}
+                            className="img-cover"
+                          />
+                        ) : dataItem.senderID === parseInt(currentUserId) &&
+                          dataItem.sentDate !== '' &&
+                          dataItem.receivedDate === '' &&
+                          dataItem.seenDate === '' ? (
+                          <img
+                            draggable="false"
+                            src={SingleTickIcon}
+                            className="img-cover"
+                          />
+                        ) : dataItem.senderID === parseInt(currentUserId) &&
+                          dataItem.sentDate !== '' &&
+                          dataItem.receivedDate !== '' &&
+                          dataItem.seenDate === '' ? (
+                          <img
+                            draggable="false"
+                            src={DoubleTickDeliveredIcon}
+                            className="img-cover"
+                          />
+                        ) : dataItem.senderID === parseInt(currentUserId) &&
+                          dataItem.sentDate !== '' &&
+                          dataItem.receivedDate !== '' &&
+                          dataItem.seenDate !== '' ? (
+                          <img
+                            draggable="false"
+                            src={DoubleTickIcon}
+                            className="img-cover"
+                          />
+                        ) : null}
+                      </span>
+                    ) : null}
 
                     {dataItem.messageBody === '' &&
                     dataItem.attachmentLocation !== '' ? (

@@ -39,6 +39,7 @@ import {
   pushChatData,
   activeMessage,
   downloadChatEmptyObject,
+  DeleteMultipleMessages,
 } from '../../../../../../store/actions/Talk_action'
 import {
   normalizeVideoPanelFlag,
@@ -67,7 +68,12 @@ import {
   DateDisplayFormat,
   DateSendingFormat,
 } from '../../../../../../commen/functions/date_formater'
-import { TextField, InputDatePicker, Button } from '../../../../../elements'
+import {
+  TextField,
+  InputDatePicker,
+  Button,
+  NotificationBar,
+} from '../../../../../elements'
 import SecurityIcon from '../../../../../../assets/images/Security-Icon.png'
 import DoubleTickIcon from '../../../../../../assets/images/DoubleTick-Icon.png'
 import DoubleTickDeliveredIcon from '../../../../../../assets/images/DoubleTickDelivered-Icon.png'
@@ -344,6 +350,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
   //Shout Users Check Uncheck
   const [editShoutUsersChecked, setEditShoutUsersChecked] = useState([])
 
+  //Forward MEssages Flag
+  const [forwardFlag, setForwardFlag] = useState(false)
+
+  //Delete MEssages Flag
+  const [deleteFlag, setDeleteFlag] = useState(false)
+
   //Message info data
   const [messageInfoData, setMessageInfoData] = useState({
     sentDate: '',
@@ -410,6 +422,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
   })
 
   const [notificationID, setNotificationID] = useState(0)
+
+  const closeNotification = () => {
+    setNotification({
+      notificationShow: false,
+      message: '',
+    })
+  }
 
   const autoResize = (event) => {
     const textarea = event.target
@@ -810,6 +829,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setCustomCheckState(false)
     setSenderCheckbox(false)
     setShowCheckboxes(false)
+    setDeleteFlag(false)
+    setForwardFlag(false)
     setEndDatedisable(false)
     setDeleteChat(false)
     setUploadOptions(false)
@@ -872,6 +893,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setMessageInfo(false)
     setShowGroupInfo(false)
     setChatMenuActive(false)
+    setChatDateState({
+      ...chatDateState,
+      StartDate: '',
+      EndDate: '',
+    })
   }
 
   // for print chat
@@ -883,6 +909,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setMessageInfo(false)
     setShowGroupInfo(false)
     setChatMenuActive(false)
+    setChatDateState({
+      ...chatDateState,
+      StartDate: '',
+      EndDate: '',
+    })
   }
 
   // for email chat
@@ -894,6 +925,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setMessageInfo(false)
     setShowGroupInfo(false)
     setChatMenuActive(false)
+    setChatDateState({
+      ...chatDateState,
+      StartDate: '',
+      EndDate: '',
+    })
   }
 
   // on change checkbox today
@@ -967,6 +1003,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(DownloadChat(Data, t, navigate))
     console.log('downloadChat', Data)
     setSave(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
   }
 
   const printChat = () => {
@@ -1012,6 +1051,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(DownloadChat(Data, t, navigate))
     console.log('downloadChat', Data)
     setPrint(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
   }
 
   const emailChat = () => {
@@ -1057,6 +1099,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(EmailChat(Data, t, navigate))
     console.log('downloadChat', Data)
     setEmail(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
   }
 
   // Cancel Modal
@@ -1098,6 +1143,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setCustomCheckState(false)
     setSenderCheckbox(false)
     setShowCheckboxes(false)
+    setDeleteFlag(false)
+    setForwardFlag(false)
     setEndDatedisable(false)
     setDeleteChat(false)
     setUploadOptions(false)
@@ -1118,6 +1165,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const cancelForwardSection = () => {
     setForwardMessageUsersSection(false)
     setShowCheckboxes(false)
+    setDeleteFlag(false)
+    setForwardFlag(false)
     setForwardUsersChecked([])
     setGroupUsersChecked([])
     setMessagesChecked([])
@@ -1269,8 +1318,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const forwardFeatureHandler = () => {
     if (showCheckboxes === false) {
       setShowCheckboxes(true)
+      setForwardFlag(true)
     } else {
       setShowCheckboxes(false)
+      setForwardFlag(false)
     }
   }
 
@@ -1416,6 +1467,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const submitForwardMessages = () => {
     setForwardMessageUsersSection(false)
     setShowCheckboxes(false)
+    setForwardFlag(false)
     forwardUsersChecked?.map((user) => {
       let { id, type } = user
       console.log('Forward Messages', id, type, user)
@@ -1475,6 +1527,45 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setMessageInfo(false)
     setShowGroupEdit(false)
     setChatMenuActive(false)
+  }
+
+  const deleteMultipleMessages = () => {
+    setShowCheckboxes(true)
+    setDeleteFlag(true)
+    setChatMenuActive(false)
+  }
+
+  const deleteMultipleMessagesButton = () => {
+    const messageIDs = messagesChecked.map((obj) => obj.messageID)
+    const messageDeleteIDs = messageIDs.join('$')
+    console.log('Messages Checked For Deletion', messageDeleteIDs)
+    let Data = {
+      TalkRequest: {
+        UserID: Number(currentUserId),
+        Message: {
+          MessageType: 'G',
+          MessageIds: messageDeleteIDs,
+        },
+      },
+    }
+    dispatch(DeleteMultipleMessages(Data, t, navigate))
+    const filteredMessages = allMessages.filter((message1) => {
+      return !messagesChecked.some(
+        (message2) => message2.messageID === message1.messageID,
+      )
+    })
+
+    setAllMessages(filteredMessages)
+
+    setNotification({
+      notificationShow: true,
+      message: 'Messages Deleted',
+    })
+    setNotificationID(id)
+
+    setDeleteFlag(false)
+    setShowCheckboxes(false)
+    console.log('Messages Checked For Deletion', Data)
   }
 
   const modalHandlerGroupEdit = () => {
@@ -3268,10 +3359,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     // e.preventDefault()
     console.log('Message Sent Striked')
     if (
-      (messageSendData.Body !== '' &&
-        Object.keys(uploadFileTalk).length !== 0) ||
-      (messageSendData.Body === '' &&
-        Object.keys(uploadFileTalk).length !== 0) ||
+      (messageSendData.Body !== '' && uploadFileTalk !== {}) ||
+      (messageSendData.Body === '' && uploadFileTalk !== {}) ||
       messageSendData.Body !== ''
     ) {
       console.log('uniqueId', uniqueId)
@@ -3661,6 +3750,61 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
     dispatch(LeaveGroup(navigate, data, t))
     setChatMenuActive(false)
+    dispatch(videoChatMessagesFlag(false))
+    dispatch(resetCloseChatFlags())
+    setChatOpen(false)
+    setSave(false)
+    setPrint(false)
+    setEmail(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+    setShowGroupInfo(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
+    setChatDateState({
+      ...chatDateState,
+      StartDate: '',
+      EndDate: '',
+    })
+    setEndDatedisable(true)
+    setDeleteChat(false)
+    setShowGroupEdit(false)
+    setShowEditGroupField(false)
+    setShowEditShoutField(false)
+    setEmojiActive(false)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
+    setGlobalSearchFilter(false)
+    setChatMenuActive(false)
+    setChatHeadMenuActive(false)
+    setChatFeatures(false)
+    setNoParticipant(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+    setShowGroupInfo(false)
+    setShowGroupEdit(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
+    setSenderCheckbox(false)
+    setShowCheckboxes(false)
+    setDeleteFlag(false)
+    setForwardFlag(false)
+    setEndDatedisable(false)
+    setDeleteChat(false)
+    setUploadOptions(false)
+    setChatFeatureActive(0)
+    setReplyFeature(false)
+    setShowChatSearch(false)
+    setAllMessages([])
+    setMessageSendData({
+      ...messageSendData,
+      Body: '',
+    })
+    localStorage.setItem('activeChatID', null)
+    localStorage.setItem('activeOtoChatID', 0)
   }
 
   //Group Left
@@ -3893,6 +4037,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setCustomCheckState(false)
     setSenderCheckbox(false)
     setShowCheckboxes(false)
+    setDeleteFlag(false)
+    setForwardFlag(false)
     setEndDatedisable(false)
     setDeleteChat(false)
     setUploadOptions(false)
@@ -3997,6 +4143,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setCustomCheckState(false)
     setSenderCheckbox(false)
     setShowCheckboxes(false)
+    setDeleteFlag(false)
+    setForwardFlag(false)
     setEndDatedisable(false)
     setDeleteChat(false)
     setUploadOptions(false)
@@ -4011,6 +4159,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
     localStorage.setItem('activeChatID', null)
     localStorage.setItem('activeOtoChatID', 0)
   }
+
+  // useEffect(() => {
+  //   const updatedMessages = allMessages.map((message) => ({
+  //     ...message,
+  //     messageStatus: 'Seen',
+  //   }))
+
+  //   setAllMessages(updatedMessages)
+  // }, [])
+
+  console.log('LeaveGroup talkStateData', talkStateData)
 
   return (
     <>
@@ -4142,7 +4301,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 <span onClick={modalHandlerGroupInfo}>
                                   {t('Group-Info')}
                                 </span>
-                                <span>{t('Delete-Group')}</span>
+                                <span onClick={deleteMultipleMessages}>
+                                  {t('Delete-messages')}
+                                </span>
                                 <span
                                   onClick={() =>
                                     leaveGroupHandlerChat(
@@ -6344,7 +6505,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             />
                           </div>
                         </>
-                      ) : (
+                      ) : forwardFlag === true ? (
                         <Button
                           className="MontserratSemiBold Ok-btn"
                           text="Forward"
@@ -6355,7 +6516,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           }
                           disableBtn={messagesChecked.length > 0 ? false : true}
                         />
-                      )}
+                      ) : deleteFlag === true ? (
+                        <Button
+                          className="MontserratSemiBold Ok-btn"
+                          text="Delete"
+                          onClick={deleteMultipleMessagesButton}
+                          disableBtn={messagesChecked.length > 0 ? false : true}
+                        />
+                      ) : null}
                     </div>
                   </Col>
                 </Row>
@@ -6965,6 +7133,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
           </Container>
         </div>
       </div>
+
+      <NotificationBar
+        iconName={<img draggable="false" src={SecurityIcon} />}
+        notificationMessage={notification.message}
+        notificationState={notification.notificationShow}
+        setNotification={setNotification}
+        handleClose={closeNotification}
+        id={notificationID}
+      />
     </>
   )
 }

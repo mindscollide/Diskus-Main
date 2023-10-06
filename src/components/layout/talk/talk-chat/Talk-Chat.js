@@ -1294,12 +1294,8 @@ const TalkChat = () => {
     }
 
     setActiveCreateShoutAll(false)
-    //setShoutNameValue('')
-    //setSearchShoutAllUserValue('')
-    //setGroupUsersChecked([])
   }
 
-  //Search Users
   const searchChatUsers = (e) => {
     setSearchChatUserValue(e)
     try {

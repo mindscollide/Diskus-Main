@@ -13,25 +13,18 @@ import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import { useDispatch, useSelector } from "react-redux";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
 import { viewResolutionModal } from "../../../store/actions/Resolution_actions";
-import { ArrowLeft } from "react-bootstrap-icons";
+import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
+  const currentLanguage = localStorage.getItem("i18nextLng");
   const { ResolutionReducer } = useSelector((state) => state);
-  console.log(
-    "ResolutionReduceResolutionReduceResolutionReduce",
-    ResolutionReducer
-  );
   const dispatch = useDispatch();
   const [voterVeiwResolution, setVoterVeiwResolution] = useState(true);
   const [nonVoterVeiwResolution, setNonVoterViewResolution] = useState(false);
-  const [attachments, setAttachments] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [resolutionData, setResolutionData] = useState(null);
-  console.log(
-    resolutionData,
-    "resolutionDataresolutionDataresolutionDataresolutionData"
-  );
+
   const voterButtonForViewResolution = () => {
     setVoterVeiwResolution(true);
     setNonVoterViewResolution(false);
@@ -529,8 +522,15 @@ const ViewResolution = ({ setViewresolution }) => {
                     sm={12}
                     className="d-flex justify-content-end"
                   >
+                    {/* ArrowRight */}
                     <Button
-                      text={<ArrowLeft size={30} color="#fff" />}
+                      text={
+                        currentLanguage === "ar" ? (
+                          <ArrowRight size={30} color="#fff" />
+                        ) : (
+                          <ArrowLeft size={30} color="#fff" />
+                        )
+                      }
                       className={styles["CloseButton_ViewResolution"]}
                       onClick={() => dispatch(viewResolutionModal(false))}
                     />

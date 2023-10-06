@@ -360,6 +360,7 @@ const Notes = () => {
                                 }
                               >
                                 <span
+                                  className="cursor-pointer"
                                   onClick={() =>
                                     viewNotesModal(data?.pK_NotesID)
                                   }

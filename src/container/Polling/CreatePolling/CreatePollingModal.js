@@ -549,7 +549,7 @@ const CreatePolling = () => {
                       sm={12}
                       className={styles["Back_Ground_strip_Create_Poll_modal"]}
                     >
-                      <Row className="mt-2">
+                      <Row>
                         <Col
                           lg={12}
                           md={12}

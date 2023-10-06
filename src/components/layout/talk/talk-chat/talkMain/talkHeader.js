@@ -100,14 +100,14 @@ const TalkHeader = () => {
             dispatch(shoutallChatFlag(false))
             dispatch(footerShowHideStatus(true))
             dispatch(recentChatFlag(true))
-            dispatch(
-              GetAllUserChats(
-                navigate,
-                currentUserId,
-                currentOrganizationId,
-                t,
-              ),
-            )
+            // dispatch(
+            //   GetAllUserChats(
+            //     navigate,
+            //     currentUserId,
+            //     currentOrganizationId,
+            //     t,
+            //   ),
+            // )
           } else if (value.label === t('Private-Message')) {
             dispatch(recentChatFlag(false))
             dispatch(privateGroupChatFlag(false))
