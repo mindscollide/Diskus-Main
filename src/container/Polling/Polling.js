@@ -61,6 +61,7 @@ const Polling = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { PollsReducer, LanguageReducer } = useSelector((state) => state);
+  const [enterpressed, setEnterpressed] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
@@ -565,11 +566,12 @@ const Polling = () => {
   };
 
   const handleKeyDownSearch = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && pollsState.searchValue !== "") {
       setPollsState({
         ...pollsState,
         searchValue: "",
       });
+      setEnterpressed(true);
       let data = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
@@ -699,6 +701,14 @@ const Polling = () => {
     });
   };
 
+  const handleResettingPage = () => {
+    setSearchpoll(false);
+    setPollsState({
+      ...pollsState,
+      searchValue: "",
+    });
+  };
+
   return (
     <>
       <section className={styles["Poll_Container"]}>
@@ -739,11 +749,32 @@ const Polling = () => {
                 labelClass="d-none"
                 clickIcon={HandleShowSearch}
                 inputicon={
-                  <img
-                    src={searchicon}
-                    className={styles["Search_Bar_icon_class"]}
-                    draggable="false"
-                  />
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        {pollsState.searchValue && enterpressed ? (
+                          <>
+                            <img
+                              src={BlackCrossIcon}
+                              className="cursor-pointer"
+                              draggable="false"
+                              onClick={handleResettingPage}
+                            />
+                          </>
+                        ) : null}
+                        <img
+                          src={searchicon}
+                          className={styles["Search_Bar_icon_class"]}
+                          draggable="false"
+                        />
+                      </Col>
+                    </Row>
+                  </>
                 }
                 iconClassName={styles["polling_searchinput"]}
               />

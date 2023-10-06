@@ -27,6 +27,39 @@
   margin-left: -4px !important;
 }
 
+body[dir="rtl"] .Camera_icon {
+  margin-right: -7px !important;
+}
+
+.Camera_icon_active_IconStyles {
+  margin-left: -2px !important;
+  margin-top: 2px !important;
+}
+
+body[dir="rtl"] .Camera_icon_active_IconStyles {
+  margin-right: -7px !important;
+}
+
+.Camera_icon_Active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  height: 39px !important;
+  width: 39px !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+body[rtl] .Camera_icon_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+.Camera_icon_Active:is(:hover, :active, :focus, :focus-visible) {
+  background: #6172d6;
+  height: 39px !important;
+  width: 39px !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
 .Create_group_chat_heading {
   font-size: 12px !important;
   color: #5a5a5a;

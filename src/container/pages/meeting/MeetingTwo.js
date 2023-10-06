@@ -6,7 +6,9 @@ import ClipIcon from "../../../assets/images/ClipIcon.png";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
 import member from "../../../assets/images/member.svg";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
+import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useTranslation } from "react-i18next";
 import { Pagination, Tooltip } from "antd";
 import Select from "react-select";
@@ -21,6 +23,10 @@ import { Paper } from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import moment from "moment";
+import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 import SceduleMeeting from "./scedulemeeting/SceduleMeeting";
 import UnpublishedProposedMeeting from "./scedulemeeting/meetingDetails/UnpublishedProposedMeeting/UnpublishedProposedMeeting";
 import NewEndMeetingModal from "./NewEndMeetingModal/NewEndMeetingModal";
@@ -32,14 +38,19 @@ import {
 import { useDispatch } from "react-redux";
 import NewEndLeaveMeeting from "./NewEndLeaveMeeting/NewEndLeaveMeeting";
 import PublishedMeeting from "./scedulemeeting/meetingDetails/PublishedMeeting/PublishedMeeting";
+import { useRef } from "react";
 const NewMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [meetingDate, setMeetingDate] = useState("");
   const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [unPublishedMeeting, setUnPublishedMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
+  //For Search Field Only
+  const [searchText, setSearchText] = useState("");
+  const [entereventIcon, setentereventIcon] = useState(false);
   const [publishedMeeting, setpublishedMeeting] = useState(false);
   // data for rows for first table
   const data = [
@@ -56,6 +67,12 @@ const NewMeeting = () => {
       Date: <label className="column-boldness"> 3:30pm - 17th May, 2020</label>,
     },
   ];
+
+  //For Custom language datepicker
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+  const calendRef = useRef();
+
   const [tablerowsData, setTablerowsData] = useState(data);
   console.log(tablerowsData, "rowsDatarowsDatarowsData");
   const HandleShowSearch = () => {
@@ -269,6 +286,37 @@ const NewMeeting = () => {
     },
   ];
 
+  //For searching Filed Only
+
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+  };
+
+  const handleClearSearch = () => {
+    setSearchText("");
+    setentereventIcon(false);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && searchText !== "") {
+      // Perform your search or filter operation here
+      // For example, you can console.log the search text for demonstration:
+      console.log("Search Text:", searchText);
+      setentereventIcon(true);
+    }
+  };
+
+  // Time Picker of the Search
+  // const changeDateStartHandler = (date) => {
+  //   let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+  //   let DateDate = new Date(date);
+  //   setMeetingDate(meetingDateValueFormat);
+  //   setPollsData({
+  //     ...pollsData,
+  //     date: DateDate,
+  //   });
+  // };
+
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
@@ -305,12 +353,31 @@ const NewMeeting = () => {
                   applyClass={"meetingSearch"}
                   name={"SearchVal"}
                   labelClass="d-none"
-                  clickIcon={HandleShowSearch}
+                  value={searchText}
+                  change={handleSearchChange}
+                  onKeyDown={handleKeyPress}
                   inputicon={
-                    <img
-                      src={searchicon}
-                      className={styles["Search_Bar_icon_class"]}
-                    />
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-2 align-items-center"
+                      >
+                        {entereventIcon === true ? (
+                          <img
+                            src={BlackCrossIcon}
+                            className="cursor-pointer"
+                            onClick={handleClearSearch}
+                          />
+                        ) : null}
+                        <img
+                          src={searchicon}
+                          className={styles["Search_Bar_icon_class"]}
+                          onClick={HandleShowSearch} // Add click functionality here
+                        />
+                      </Col>
+                    </Row>
                   }
                   iconClassName={styles["polling_searchinput"]}
                 />
@@ -350,7 +417,28 @@ const NewMeeting = () => {
                         </Row>
                         <Row className="mt-3">
                           <Col lg={6} md={6} sm={12}>
-                            <Select />
+                            <DatePicker
+                              value={meetingDate}
+                              format={"DD/MM/YYYY"}
+                              minDate={moment().toDate()}
+                              placeholder="DD/MM/YYYY"
+                              render={
+                                <InputIcon
+                                  placeholder="DD/MM/YYYY"
+                                  className="datepicker_input"
+                                />
+                              }
+                              editable={false}
+                              className="datePickerTodoCreate2"
+                              onOpenPickNewDate={true}
+                              inputMode=""
+                              calendar={calendarValue}
+                              locale={localValue}
+                              ref={calendRef}
+                              // onChange={(value) =>
+                              //   changeDateStartHandler(value)
+                              // }
+                            />
                           </Col>
                           <Col lg={6} md={6} sm={12}>
                             <TextField

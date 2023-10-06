@@ -33,9 +33,8 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const [notifcationTable, setNotifcationTable] = useState(false);
   const [viewOrganizers, setviewOrganizers] = useState(false);
-  const [rspvtable, setrspvtable] = useState(false);
+  const [editState, setEditState] = useState(false);
   const { NewMeetingreducer } = useSelector((state) => state);
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
@@ -46,18 +45,37 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
   const data = [
     {
       key: "1",
-      Name: (
-        <label
-          className={styles["Title_desc"]}
-          onClick={openNotifyOrganizorModal}
-        >
-          Muahmmad Saif
-        </label>
-      ),
+      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
       Email: (
         <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
       ),
       OrganizerTitle: <label className="column-boldness">Organizer</label>,
+      rspv: (
+        <>
+          <img
+            draggable={false}
+            src={rspvGreenIcon}
+            height="30px"
+            width="30px"
+          />
+          {/* <img draggable = {false} src={rspvAbstainIcon} height="30px" width="30px" /> */}
+        </>
+      ),
+      Notification: (
+        <>
+          <Row>
+            <Col lg={7} md={7} sm={7} className="d-flex justify-content-center">
+              <img
+                draggable={false}
+                src={greenMailIcon}
+                height="17.64px"
+                width="12.4px"
+              />
+              {/* <img draggable = {false} src={redMailIcon} height="17.64px" width="12.4px" /> */}
+            </Col>
+          </Row>
+        </>
+      ),
       Primary: <label className="column-boldness">Primary</label>,
     },
     {
@@ -71,7 +89,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
           <Row>
             <Col lg={12} md={12} sm={12}>
               <TextField
-                disable={true}
+                disable={editState === true ? true : false}
                 placeholder={t("Content-title")}
                 labelClass={"d-none"}
                 applyClass={"Organizer_table"}
@@ -89,7 +107,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
               sm={12}
               className="d-flex gap-3 align-items-center"
             >
-              <Switch />
+              <Switch disabled={editState === true ? true : false} />
               <label className="column-boldness">Primary</label>
             </Col>
           </Row>
@@ -99,13 +117,17 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <img
-                draggable={false}
-                src={redcrossIcon}
-                width="21.79px"
-                height="21.79px"
-                onClick={openCrossIconModal}
-              />
+              {editState === true ? (
+                <>
+                  <img
+                    draggable={false}
+                    src={redcrossIcon}
+                    width="21.79px"
+                    height="21.79px"
+                    onClick={openCrossIconModal}
+                  />
+                </>
+              ) : null}
             </Col>
           </Row>
         </>
@@ -148,211 +170,24 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
       dataIndex: "Primary",
       key: "Primary",
       width: "200px",
-      //   render: (text, record) => {
-      //     return (
-      //       <>
-      //         <Row>
-      //           <Col
-      //             sm={12}
-      //             md={12}
-      //             lg={12}
-      //             className="d-flex justify-content-end"
-      //           >
-      //             <Tooltip placement="topRight" title={t("Edit")}>
-      //               <img draggable = {false}
-      //                 // src={EditIcon}
-      //                 className="cursor-pointer"
-      //                 width="17.11px"
-      //                 height="17.11px"
-      //               />
-      //             </Tooltip>
-      //           </Col>
-      //         </Row>
-      //       </>
-      //     );
-      //   },
     },
-
-    {
-      dataIndex: "Close",
-      key: "Close",
-      width: "200px",
-    },
-  ];
-
-  const notificationData = [
-    {
-      key: "1",
-      Name: (
-        <label
-          className={styles["Title_desc"]}
-          onClick={openNotifyOrganizorModal}
-        >
-          Muahmmad Saif
-        </label>
-      ),
-      Email: (
-        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-      ),
-      OrganizerTitle: <label className="column-boldness">Organizer</label>,
-      Notification: (
-        <>
-          <Row>
-            <Col lg={7} md={7} sm={7} className="d-flex justify-content-center">
-              <img
-                draggable={false}
-                src={greenMailIcon}
-                height="17.64px"
-                width="12.4px"
-              />
-              {/* <img draggable = {false} src={redMailIcon} height="17.64px" width="12.4px" /> */}
-            </Col>
-          </Row>
-        </>
-      ),
-      Primary: <label className="column-boldness">Primary</label>,
-    },
-  ];
-
-  const [notificationRows, setnotificationRows] = useState(notificationData);
-
-  const NotifcatoinColoumns = [
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Name",
-      key: "Name",
-      width: "300px",
-    },
-
-    {
-      title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      width: "400px",
-    },
-    {
-      title: t("Organizer-title"),
-      dataIndex: "OrganizerTitle",
-      key: "OrganizerTitle",
-      width: "300px",
-    },
-
-    {
-      title: t("Notification"),
-      dataIndex: "Notification",
-      key: "Notification",
-      width: "200px",
-    },
-
-    {
-      dataIndex: "Primary",
-      key: "Primary",
-      width: "200px",
-    },
-  ];
-
-  const rspvData = [
-    {
-      key: "1",
-      Name: (
-        <label
-          className={styles["Title_desc"]}
-          onClick={openNotifyOrganizorModal}
-        >
-          Muahmmad Saif
-        </label>
-      ),
-      Email: (
-        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-      ),
-      OrganizerTitle: <label className="column-boldness">Organizer</label>,
-      Notification: (
-        <>
-          <Row>
-            <Col lg={7} md={7} sm={7} className="d-flex justify-content-center">
-              <img
-                draggable={false}
-                src={greenMailIcon}
-                height="17.64px"
-                width="12.4px"
-              />
-              {/* <img draggable = {false} src={redMailIcon} height="17.64px" width="12.4px" /> */}
-            </Col>
-          </Row>
-        </>
-      ),
-      rspv: (
-        <>
-          <img
-            draggable={false}
-            src={rspvGreenIcon}
-            height="30px"
-            width="30px"
-          />
-          {/* <img draggable = {false} src={rspvAbstainIcon} height="30px" width="30px" /> */}
-        </>
-      ),
-      Primary: <label className="column-boldness">Primary</label>,
-    },
-  ];
-
-  const [rspvRows, setRspvRows] = useState(rspvData);
-
-  const rspvColoumns = [
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Name",
-      key: "Name",
-      width: "300px",
-    },
-
-    {
-      title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      width: "400px",
-    },
-    {
-      title: t("Organizer-title"),
-      dataIndex: "OrganizerTitle",
-      key: "OrganizerTitle",
-      width: "300px",
-    },
-
-    {
-      title: t("Notification"),
-      dataIndex: "Notification",
-      key: "Notification",
-      width: "200px",
-    },
-
     {
       title: t("RSPV"),
       dataIndex: "rspv",
       key: "rspv",
-      width: "200px",
+      width: "120px",
     },
 
     {
-      dataIndex: "Primary",
-      key: "Primary",
-      width: "200px",
+      title: t("Notification"),
+      dataIndex: "Notification",
+      key: "Notification",
+      width: "180px",
+    },
+    {
+      dataIndex: "Close",
+      key: "Close",
+      width: "50px",
     },
   ];
 
@@ -365,16 +200,20 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
     setAgendaContributors(true);
   };
 
-  const enableNotificationTable = () => {
-    setNotifcationTable(!notifcationTable);
-  };
-
-  const enableRspvTable = () => {
-    setrspvtable(!rspvtable);
-  };
-
   const EnableOrganizersView = () => {
     setviewOrganizers(!viewOrganizers);
+  };
+
+  const enableEditButton = () => {
+    setEditState(!editState);
+  };
+
+  const handleEditDone = () => {
+    setEditState(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditState(false);
   };
 
   return (
@@ -389,75 +228,83 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
+                className="d-flex justify-content-end gap-4"
               >
-                <Button
-                  text={t("Notification1")}
-                  className={styles["Notification_button"]}
-                  icon={
-                    <img
-                      draggable={false}
-                      src={mail}
-                      width="17.18px"
-                      height="12.08px"
+                {editState ? (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex align-items-center gap-2"
+                      >
+                        <img
+                          src={redcrossIcon}
+                          width="21.79px"
+                          height="21.79px"
+                          className="cursor-pointer"
+                          onClick={handleCancelEdit}
+                        />
+                        <img
+                          src={rspvGreenIcon}
+                          width="21.79px"
+                          height="21.79px"
+                          className="cursor-pointer"
+                          onClick={handleEditDone}
+                        />
+                      </Col>
+                    </Row>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      text={t("Notification1")}
+                      className={styles["Notification_button"]}
+                      icon={
+                        <img
+                          draggable={false}
+                          src={mail}
+                          width="17.18px"
+                          height="12.08px"
+                        />
+                      }
+                      onClick={openNotifyOrganizorModal}
                     />
-                  }
-                  onClick={enableNotificationTable}
-                />
-                <Button
-                  text={t("Edit")}
-                  className={styles["Edit_Button_Organizers"]}
-                  icon={
-                    <img
-                      draggable={false}
-                      src={EditIcon}
-                      width="11.75px"
-                      height="11.75px"
+
+                    <Button
+                      text={t("Edit")}
+                      className={styles["Edit_Button_Organizers"]}
+                      icon={
+                        <img
+                          draggable={false}
+                          src={EditIcon}
+                          width="11.75px"
+                          height="11.75px"
+                        />
+                      }
+                      onClick={enableEditButton}
                     />
-                  }
-                  onClick={enableRspvTable}
-                />
-                <Button
-                  text={t("Add-more")}
-                  icon={<img draggable={false} src={addmore} />}
-                  className={styles["AddMoreBtn"]}
-                  onClick={openAddUserModal}
-                />
+
+                    <Button
+                      text={t("Add-more")}
+                      icon={<img draggable={false} src={addmore} />}
+                      className={styles["AddMoreBtn"]}
+                      onClick={openAddUserModal}
+                    />
+                  </>
+                )}
               </Col>
             </Row>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                {notifcationTable ? (
-                  <>
-                    <Table
-                      column={NotifcatoinColoumns}
-                      scroll={{ y: "92vh" }}
-                      pagination={false}
-                      className="Polling_table"
-                      rows={notificationRows}
-                    />
-                  </>
-                ) : rspvtable ? (
-                  <>
-                    <Table
-                      column={rspvColoumns}
-                      scroll={{ y: "62vh" }}
-                      pagination={false}
-                      className="Polling_table"
-                      rows={rspvRows}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Table
-                      column={MeetingColoumns}
-                      scroll={{ y: "62vh" }}
-                      pagination={false}
-                      className="Polling_table"
-                      rows={rowsData}
-                    />
-                  </>
-                )}
+                <Table
+                  column={MeetingColoumns}
+                  scroll={{ y: "62vh" }}
+                  pagination={false}
+                  className="Polling_table"
+                  rows={rowsData}
+                />
               </Col>
             </Row>
           </section>

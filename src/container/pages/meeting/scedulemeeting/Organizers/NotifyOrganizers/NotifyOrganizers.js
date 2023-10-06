@@ -27,7 +27,9 @@ const NotifyOrganizers = () => {
     Messege: "",
     allOrganizersAccept: false,
   });
+
   const [membersHide, setMembersHide] = useState(false);
+  const [allOrganizersAccept, setAllOrganizersAccept] = useState(false);
   const [members, setMembers] = useState([
     {
       name: "saif",
@@ -51,6 +53,10 @@ const NotifyOrganizers = () => {
       name: "saroush",
     },
   ]);
+
+  const [memberCheckboxes, setMemberCheckboxes] = useState(
+    members.map(() => false)
+  );
 
   const handleCrossIcon = () => {
     dispatch(showNotifyOrganizors(false));
@@ -76,14 +82,23 @@ const NotifyOrganizers = () => {
   };
 
   const handleAllowOrganizerCheck = () => {
-    setNotifyOrganizerData({
-      ...notifyOrganizerData,
-      allOrganizersAccept: !notifyOrganizerData.allOrganizersAccept,
-    });
+    const updatedCheckboxes = members.map(() => !allOrganizersAccept);
+    setAllOrganizersAccept(!allOrganizersAccept);
+    setMemberCheckboxes(updatedCheckboxes);
   };
 
   const handleHideItems = () => {
     setMembersHide(!membersHide);
+  };
+
+  const handleCheckboxChange = (index, isChecked) => {
+    const updatedCheckboxes = [...memberCheckboxes];
+    updatedCheckboxes[index] = isChecked;
+    setMemberCheckboxes(updatedCheckboxes);
+  };
+
+  const handleCancelButton = () => {
+    dispatch(showNotifyOrganizors(false));
   };
 
   return (
@@ -107,7 +122,7 @@ const NotifyOrganizers = () => {
                 <img
                   draggable={false}
                   src={BlackCrossIcon}
-                  className={styles["Cross_Icon_Styling"]}
+                  className="cursor-pointer"
                   width="16px"
                   height="16px"
                   onClick={handleCrossIcon}
@@ -137,7 +152,7 @@ const NotifyOrganizers = () => {
                 className="d-flex align-items-center gap-2"
               >
                 <Checkbox
-                  checked={notifyOrganizerData.allOrganizersAccept}
+                  checked={allOrganizersAccept}
                   onChange={handleAllowOrganizerCheck}
                 />
                 <p className={styles["Check_box_title"]}>
@@ -170,41 +185,47 @@ const NotifyOrganizers = () => {
                     className={styles["Scroller_notify"]}
                   >
                     <Row>
-                      {members.map((data, index) => {
-                        return (
-                          <Col lg={6} md={6} sm={12} className="mt-2">
-                            <Row className="m-0 p-0">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className={styles["Box_for_Assignee"]}
-                              >
-                                <Row>
-                                  <Col
-                                    lg={10}
-                                    md={10}
-                                    sm={12}
-                                    className="d-flex gap-2 align-items-center"
-                                  >
-                                    <img
-                                      draggable={false}
-                                      src={profile}
-                                      width="33px"
-                                      height="33px"
-                                      className={styles["ProfilePic"]}
-                                    />
-                                    <span>{data.name}</span>
-                                  </Col>
-                                  <Col lg={2} md={2} sm={12}>
-                                    <Checkbox />
-                                  </Col>
-                                </Row>
-                              </Col>
-                            </Row>
-                          </Col>
-                        );
-                      })}
+                      {members.map((data, index) => (
+                        <Col lg={6} md={6} sm={12} className="mt-2" key={index}>
+                          <Row className="m-0 p-0">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Box_for_Assignee"]}
+                            >
+                              <Row>
+                                <Col
+                                  lg={10}
+                                  md={10}
+                                  sm={12}
+                                  className="d-flex gap-2 align-items-center"
+                                >
+                                  <img
+                                    draggable={false}
+                                    src={profile}
+                                    width="33px"
+                                    height="33px"
+                                    className={styles["ProfilePic"]}
+                                  />
+                                  <span>{data.name}</span>
+                                </Col>
+                                <Col lg={2} md={2} sm={12}>
+                                  <Checkbox
+                                    checked={memberCheckboxes[index]}
+                                    onChange={(e) =>
+                                      handleCheckboxChange(
+                                        index,
+                                        e.target.checked
+                                      )
+                                    }
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        </Col>
+                      ))}
                     </Row>
                   </Col>
                 </Row>
@@ -224,6 +245,7 @@ const NotifyOrganizers = () => {
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_button_Notify"]}
+                  onClick={handleCancelButton}
                 />
                 <Button text={t("Send")} className={styles["Send_Notify"]} />
               </Col>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
@@ -13,6 +13,10 @@ import desh from "../../../../../assets/images/desh.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import { Radio } from "antd";
 import Key from "../../../../../assets/images/KEY.svg";
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 import closedLocked from "../../../../../assets/images/CloseLocked.svg";
 import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import Lock from "../../../../../assets/images/LOCK.svg";
@@ -47,7 +51,10 @@ const SubAgendaMappingDragging = ({
   openVoteMOdal,
 }) => {
   const { t } = useTranslation();
-
+  //Timepicker
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
   const dispatch = useDispatch();
   const { Dragger } = Upload;
 
@@ -235,6 +242,18 @@ const SubAgendaMappingDragging = ({
 
     setSubLockArray(cloneSubLockArry);
   };
+
+  useEffect(() => {
+    if (currentLanguage !== undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
 
   return (
     <>
@@ -435,6 +454,8 @@ const SubAgendaMappingDragging = ({
                                                   arrowClassName="arrowClass"
                                                   containerClassName="containerClassTimePicker"
                                                   className="timePicker"
+                                                  calendar={calendarValue}
+                                                  locale={localValue}
                                                   disableDayPicker
                                                   inputClass="inputTImeMeeting"
                                                   disabled={
@@ -494,6 +515,8 @@ const SubAgendaMappingDragging = ({
                                                   arrowClassName="arrowClass"
                                                   containerClassName="containerClassTimePicker"
                                                   className="timePicker"
+                                                  calendar={calendarValue}
+                                                  locale={localValue}
                                                   disableDayPicker
                                                   inputClass="inputTImeMeeting"
                                                   disabled={

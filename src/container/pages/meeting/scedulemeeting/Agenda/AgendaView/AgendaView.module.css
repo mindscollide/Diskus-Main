@@ -29,6 +29,14 @@
   position: absolute !important;
 }
 
+body[dir="rtl"] .Expand_Class_ViewAgenda {
+  right: 0px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+
 .Arrow {
   cursor: pointer !important;
   display: flex !important;

@@ -1290,7 +1290,7 @@
   "Please-select-meeting-type": "Please select meeting type*",
   "Please-enter-meeting-description": "Please enter meeting description*",
   "Please-enter-meeting-link": "Please enter meeting Link*",
-  "Please-select-data-and-time": "Please select data and time*",
+  "Please-select-data-and-time": "Please select date and time*",
   "Please-select-reminder-frequency": "Please select Reminder Frequency*",
   "Import": "Import",
   "Show-names": "Show Names",
@@ -1522,5 +1522,11 @@
   "Create-another-minute-in-this-subagenda": "Create another minute in this sub agenda",
   "Start-voting": "Start Voting",
   "Any-one-with-link": "Any One With link",
-  "Restricted": "Restricted"
+  "Restricted": "Restricted",
+  "End-voting": "End Voting",
+  "Was-the-introduction-satisfactory": "Was the Introduction Satisfactory?",
+  "Bar-graph": "Bar Graph",
+  "Pie-graph": "Pie Graph",
+  "Cast-your-vote": "Cast Your Vote",
+  "On-starting-of-meeting": "On Starting of Meeting"
 }
