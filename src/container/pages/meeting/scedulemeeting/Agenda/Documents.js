@@ -4,14 +4,20 @@ import { Col, Row } from "react-bootstrap";
 import styles from "./Agenda.module.css";
 import PdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../DataRoom/SearchFunctionality/option";
 
 const Documents = ({ data, index, setRows, rows, parentId }) => {
   const [files, setfiles] = useState([]);
 
-  const CrossDocument = (index) => {
-    let optionscross = [...files];
-    optionscross.splice(index, 1);
-    setfiles(optionscross);
+  const CrossDocument = (fileIndex) => {
+    let optionscross = [...rows];
+    optionscross[index].files.splice(fileIndex, 1);
+    console.log("optionscrossoptionscross", optionscross);
+    // setfiles(optionscross);
+    setRows(optionscross);
   };
   return (
     <>
@@ -42,7 +48,12 @@ const Documents = ({ data, index, setRows, rows, parentId }) => {
                                     sm={12}
                                     className="d-flex gap-2"
                                   >
-                                    <img draggable={false} src={PdfIcon} />
+                                    <img
+                                      draggable={false}
+                                      src={getIconSource(
+                                        getFileExtension(filesData.name)
+                                      )}
+                                    />
                                     <span className={styles["TitleFile"]}>
                                       {filesData.name}
                                     </span>
@@ -58,6 +69,7 @@ const Documents = ({ data, index, setRows, rows, parentId }) => {
                                       src={redcrossIcon}
                                       width="15px"
                                       height="15px"
+                                      className="cursor-pointer"
                                       onClick={() => {
                                         CrossDocument(index);
                                       }}

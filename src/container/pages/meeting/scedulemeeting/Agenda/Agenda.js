@@ -19,7 +19,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
 import AgendaView from "./AgendaView/AgendaView";
 import ParentAgenda from "./ParentAgenda";
-import { onDragEnd } from "./drageFunction";
+import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 
 const Agenda = () => {
@@ -37,118 +37,33 @@ const Agenda = () => {
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
   const [rows, setRows] = useState([
     {
-      ID: "0",
+      ID: getRandomUniqueNumber().toString(),
       title: "",
       selectedOption: null,
       startDate: null,
       endDate: null,
-      selectedRadio: "0",
+      selectedRadio: "1",
       urlFieldMain: "",
       requestContributorURl: "",
       MainNote: "",
-      files: [
-        {
-          FileID: "0",
-          name: "MeetingAgendas",
-        },
-        {
-          FileID: "1",
-          name: "Saif Meeting",
-        },
-        {
-          FileID: "2",
-          name: "Owais Meeting",
-        },
-        {
-          FileID: "3",
-          name: "Tresmark",
-        },
-        {
-          FileID: "4",
-          name: "Minds Collide",
-        },
-        {
-          FileID: "5",
-          name: "Aun File",
-        },
-        {
-          FileID: "6",
-          name: "Ali Raza Mamdani",
-        },
-        {
-          FileID: "7",
-          name: "Talha",
-        },
-        {
-          FileID: "8",
-          name: "Jawad Faisal",
-        },
-        {
-          FileID: "9",
-          name: "Fahad Hassan",
-        },
-        {
-          FileID: "10",
-          name: "Saroush Yahyas",
-        },
-      ],
+      files: [],
       subAgenda: [
         {
-          SubAgendaID: "0",
+          SubAgendaID: getRandomUniqueNumber().toString(),
           SubTitle: "",
           selectedOption: null,
           startDate: null,
           endDate: null,
-          subSelectRadio: "0",
+          subSelectRadio: "1",
           SubAgendaUrlFieldRadio: "",
           subAgendarequestContributorUrl: "",
           subAgendarequestContributorEnterNotes: "",
-          Subfiles: [
-            {
-              name: "MeetingAgendas",
-              FileID: "91",
-            },
-            {
-              name: "DiskusMeetings",
-              FileID: "92",
-            },
-            {
-              name: "AxisMeetings",
-              FileID: "93",
-            },
-            {
-              name: "Bahria Auditoriom Meetings to be published",
-              FileID: "94",
-            },
-            {
-              name: "MeetingAgendas",
-              FileID: "95",
-            },
-            {
-              name: "MeetingAgendas",
-              FileID: "91",
-            },
-            {
-              name: "MeetingAgendas",
-              FileID: "96",
-            },
-            {
-              name: "MeetingAgendas",
-              FileID: "97",
-            },
-            {
-              name: "MeetingAgendas",
-              FileID: "98",
-            },
-            {
-              name: "MeetingAgendas",
-              FileID: "100",
-            },
-          ],
+          Subfiles: [],
         },
       ],
     },
   ]);
+  console.log("result Dropped files",  rows);
 
   //Function For Adding Main Agendas
   const addRow = () => {
@@ -156,39 +71,28 @@ const Agenda = () => {
     const nextID = updatedRows.length.toString();
     console.log("addrow", (nextID + 1).toString());
     const newMainAgenda = {
-      ID: nextID,
+      ID: getRandomUniqueNumber().toString(),
       title: "",
       selectedOption: null,
       startDate: null,
       endDate: null,
-      selectedRadio: "0",
+      selectedRadio: "1",
       urlFieldMain: "",
       requestContributorURl: "",
       MainNote: "",
-      files: [
-        {
-          name: "MeetingAgendas",
-          FileID: "113",
-        },
-      ],
+      files: [],
       subAgenda: [
         {
-          SubAgendaID: (nextID + 1).toString(),
+          SubAgendaID: getRandomUniqueNumber().toString(),
           SubTitle: "",
           selectedOption: null,
           startDate: null,
           endDate: null,
-          subSelectRadio: "0",
+          subSelectRadio: "1",
           SubAgendaUrlFieldRadio: "",
           subAgendarequestContributorUrl: "",
           subAgendarequestContributorEnterNotes: "",
-          Subfiles: [
-            {
-              name: "MeetingAgendas",
-              FileID: "111",
-            },
-            // ... (other file objects)
-          ],
+          Subfiles: [],
         },
       ],
     };
@@ -344,13 +248,17 @@ const Agenda = () => {
       {NewMeetingreducer.agendaItemRemoved && (
         <AgenItemremovedModal
           setRows={setRows}
+          rows={rows}
           setSubajendaRemoval={setSubajendaRemoval}
+          subajendaRemoval={subajendaRemoval}
+          setAgendaItemRemovedIndex={setAgendaItemRemovedIndex}
           agendaItemRemovedIndex={agendaItemRemovedIndex}
         />
       )}
       {NewMeetingreducer.mainAgendaItemRemoved && (
         <MainAjendaItemRemoved
           mainAgendaRemovalIndex={mainAgendaRemovalIndex}
+          setMainAgendaRemovalIndex={setMainAgendaRemovalIndex}
           rows={rows}
           setRows={setRows}
         />
