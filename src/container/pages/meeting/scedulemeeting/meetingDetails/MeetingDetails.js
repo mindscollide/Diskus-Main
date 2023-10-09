@@ -31,28 +31,30 @@ import {
   GetAllMeetingRecurringApiNew,
   GetAllMeetingRemindersApiFrequencyNew,
   GetAllMeetingTypesNewFunction,
+  SaveMeetingDetialsNewApiFunction,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {
+  convertGMTDateintoUTC,
+  convertGMTDateintoUTC2,
+  formatDateToUTC,
+  removeColFromTime,
+} from "../../../../../commen/functions/date_formater";
 
 const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  console.log(
-    NewMeetingreducer.getALlMeetingTypes.meetingTypes,
-    "statestatestate"
-  );
+
   const [options, setOptions] = useState([]);
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
   const [reminderFrequencyTwo, setReminderFrequencyTwo] = useState([]);
   const [reminderFrequencyThree, setReminderFrequencyThree] = useState([]);
   const [recurringDropDown, setRecurringDropDown] = useState([]);
-  const [reminderFrequencyDropdown, setReminderFrequencyDropdown] = useState(
-    []
-  );
+
   const [rows, setRows] = useState([
     { selectedOption: "", startDate: "", endDate: "" },
   ]);
@@ -71,7 +73,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     MeetingType: 0,
     Location: "",
     Description: "",
-    Link: "",
+    Link: "https://portal.letsdiskus.com/Video?RoomID=5682AD",
     ReminderFrequency: 0,
     ReminderFrequencyTwo: 0,
     ReminderFrequencyThree: 0,
@@ -81,6 +83,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     NotifyMeetingOrganizer: false,
     RecurringOptions: 0,
     Location: "",
+    IsVideoCall: false,
   });
 
   const handleSelectChange = (selectedOption) => {
@@ -88,25 +91,73 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   };
 
   const handleMeetingSelectChange = (selectedOption) => {
-    setMeetingDetails({ ...meetingDetails, selectedOption });
+    setMeetingDetails({
+      ...meetingDetails,
+      MeetingType: {
+        PK_MTID: selectedOption.value,
+        Type: selectedOption.label,
+      },
+    });
   };
 
   const handleRecurringSelectoptions = (selectedOption) => {
-    setMeetingDetails({ ...meetingDetails, RecurringOptions: selectedOption });
+    setMeetingDetails({
+      ...meetingDetails,
+      RecurringOptions: selectedOption.value,
+    });
   };
 
   const handleStartDateChange = (index, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].startDate = date;
-    setRows(updatedRows);
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const updatedRows = [...rows];
+      updatedRows[index].startDate = formattedTime;
+      setRows(updatedRows);
+      // You can use 'formattedTime' as needed.
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
   };
 
   const handleEndDateChange = (index, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].endDate = date;
-    setRows(updatedRows);
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+
+      const updatedRows = [...rows];
+      updatedRows[index].endDate = formattedTime;
+      setRows(updatedRows);
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
   };
 
+  //Onchange Function For DatePicker inAdd datess First
+  const changeDateStartHandler = (date, index) => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let DateDate = convertGMTDateintoUTC(date);
+    console.log(DateDate, "DateDateDateDateDateDate");
+    setMeetingDate(meetingDateValueFormat);
+    const updatedRows = [...rows];
+    updatedRows[index].selectedOption = DateDate.slice(0, 8);
+    setRows(updatedRows);
+  };
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
     if (isValidRow(lastRow)) {
@@ -129,20 +180,90 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const handleUpdateNext = () => {
     setorganizers(true);
     setmeetingDetails(false);
+    let newArr = [];
+    let newReminderData = [];
+    newReminderData.push(
+      meetingDetails.ReminderFrequency,
+      meetingDetails.ReminderFrequencyTwo,
+      meetingDetails.ReminderFrequencyThree
+    );
+    rows.map((data, index) => {
+      newArr.push({
+        MeetingDate: data.selectedOption,
+        StartTime: data.startDate,
+        EndTime: data.endDate,
+      });
+    });
+
+    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let data = {
+      MeetingDetails: {
+        MeetingTitle: meetingDetails.MeetingTitle,
+        MeetingType: meetingDetails.MeetingType,
+        Location: meetingDetails.Location,
+        Description: meetingDetails.Description,
+        IsVideoChat: meetingDetails.IsVideoCall,
+        IsTalkGroup: meetingDetails.groupChat,
+        OrganizationId: organizationID,
+        MeetingDates: newArr,
+        MeetingReminders: newReminderData,
+        Notes: meetingDetails.Notes,
+        AllowRSVP: meetingDetails.AllowRSPV,
+        NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
+        ReucurringMeetingID: meetingDetails.RecurringOptions,
+        VideoURL: meetingDetails.Link,
+        MeetingStatusID: 2,
+      },
+    };
+    console.log(data, "datadatadatadata");
   };
 
   const handlePublish = () => {
     //Enable the Error Handling From here
     // seterror(true);
-    setSaveMeeting(!saveMeeting);
+    // setSaveMeeting(!saveMeeting);
+    let newArr = [];
+    let newReminderData = [];
+    newReminderData.push(
+      meetingDetails.ReminderFrequency,
+      meetingDetails.ReminderFrequencyTwo,
+      meetingDetails.ReminderFrequencyThree
+    );
+    rows.map((data, index) => {
+      newArr.push({
+        MeetingDate: data.selectedOption,
+        StartTime: data.startDate,
+        EndTime: data.endDate,
+      });
+    });
+
+    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let data = {
+      MeetingDetails: {
+        MeetingTitle: meetingDetails.MeetingTitle,
+        MeetingType: meetingDetails.MeetingType,
+        Location: meetingDetails.Location,
+        Description: meetingDetails.Description,
+        IsVideoChat: meetingDetails.IsVideoCall,
+        IsTalkGroup: meetingDetails.groupChat,
+        OrganizationId: organizationID,
+        MeetingDates: newArr,
+        MeetingReminders: newReminderData,
+        Notes: meetingDetails.Notes,
+        AllowRSVP: meetingDetails.AllowRSPV,
+        NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
+        ReucurringMeetingID: meetingDetails.RecurringOptions,
+        VideoURL: meetingDetails.Link,
+        MeetingStatusID: 1,
+      },
+    };
+    dispatch(SaveMeetingDetialsNewApiFunction(navigate, t, data));
   };
 
   const handleReminderFrequency = (e) => {
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequency: e.value,
-      ReminderFrequencyTwo: 0, // Reset the second dropdown when changing the first one
-      ReminderFrequencyThree: 0, // Reset the third dropdown when changing the first one
     });
   };
 
@@ -150,7 +271,6 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyTwo: e.value,
-      ReminderFrequencyThree: 0, // Reset the third dropdown when changing the second one
     });
   };
 
@@ -207,6 +327,20 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
         });
       }
     }
+    if (name === "Notes") {
+      let valueCheck = regexOnlyCharacters(value);
+      if (valueCheck !== "") {
+        setMeetingDetails({
+          ...meetingDetails,
+          Notes: valueCheck,
+        });
+      } else {
+        setMeetingDetails({
+          ...meetingDetails,
+          Notes: "",
+        });
+      }
+    }
     if (name === "Link" && value !== "") {
       if (urlPatternValidation(value)) {
         setMeetingDetails({
@@ -243,36 +377,12 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     });
   };
 
-  const SelectLocations = [
-    { value: "ConferenceRoom", label: t("Conference-room") },
-    { value: "MeetingRoom", label: t("Meeting-room") },
-    { value: "BoardRoom", label: t("Board-room") },
-    { value: "LoungeArea", label: t("Lounge-area") },
-  ];
-
-  //Handle Recurring DropDown options
-  const selectRecurringOptions = [
-    { value: "nonRecurring", label: t("Non-recurring") },
-    { value: "weekly", label: t("Weekly") },
-    { value: "biWeekly", label: t("Bi-weekly") },
-    { value: "Monthly", label: t("Monthly") },
-    { value: "Quaterly", label: t("Quaterly") },
-    { value: "sixmonthly", label: t("Six-monthly") },
-  ];
-
   //Handle Video Call Option
   const handleVideoCameraButton = () => {
-    setActiveVideo(!activeVideo);
-  };
-
-  //Onchange Function For DatePicker inAdd datess First
-  const changeDateStartHandler = (date, index) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new Date(date);
-    setMeetingDate(meetingDateValueFormat);
-    const updatedRows = [...rows];
-    updatedRows[index].selectedOption = DateDate;
-    setRows(updatedRows);
+    setMeetingDetails({
+      ...meetingDetails,
+      IsVideoCall: !meetingDetails.IsVideoCall,
+    });
   };
 
   //Meeting Type Drop Down API
@@ -327,8 +437,6 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
           }
         );
         setReminderFrequencyOne(Newdata);
-        setReminderFrequencyTwo(Newdata);
-        setReminderFrequencyThree(Newdata);
       }
     } catch (error) {}
   }, [NewMeetingreducer.getAllReminderFrequency.meetingReminders]);
@@ -539,21 +647,21 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                               <img
                                 draggable={false}
                                 src={
-                                  activeVideo
+                                  meetingDetails.IsVideoCall
                                     ? whiteVideIcon
                                     : MeetingVideoChatIcon
                                 }
                                 width="22.32px"
                                 height="14.75px"
                                 className={
-                                  activeVideo
+                                  meetingDetails.IsVideoCall
                                     ? styles["Camera_icon_active_IconStyles"]
                                     : styles["Camera_icon"]
                                 }
                               />
                             }
                             className={
-                              activeVideo
+                              meetingDetails.IsVideoCall
                                 ? styles["Camera_icon_Active"]
                                 : styles["Button_not_active"]
                             }
@@ -570,7 +678,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                             labelClass="d-none"
                             name={"Link"}
                             change={HandleChange}
-                            value={meetingDetails.Link}
+                            value={
+                              meetingDetails.IsVideoCall
+                                ? meetingDetails.Link
+                                : ""
+                            }
                           />
                           <Row>
                             <Col>
@@ -804,8 +916,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                     <Col lg={4} md={4} sm={12}>
                       <Select
                         onChange={handleReminderFrequencyTwo}
-                        options={reminderFrequencyTwo}
-                        value={reminderFrequencyTwo.find(
+                        options={reminderFrequencyOne}
+                        value={reminderFrequencyOne.find(
                           (option) =>
                             option.value === meetingDetails.ReminderFrequencyTwo
                         )}
@@ -815,13 +927,13 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                     <Col lg={4} md={4} sm={12}>
                       <Select
                         onChange={handleReminderFrequencyThree}
-                        options={reminderFrequencyThree}
-                        value={reminderFrequencyThree.find(
+                        options={reminderFrequencyOne}
+                        value={reminderFrequencyOne.find(
                           (option) =>
                             option.value ===
                             meetingDetails.ReminderFrequencyThree
                         )}
-                        isDisabled={meetingDetails.ReminderFrequencyTwo === 0} // Disable if second dropdown is not selected
+                        isDisabled={meetingDetails.ReminderFrequency === 0} // Disable if second dropdown is not selected
                       />
                     </Col>
                     <Row>
@@ -848,6 +960,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         type="text"
                         as={"textarea"}
                         rows="6"
+                        name={"Notes"}
+                        change={HandleChange}
                         placeholder={t("Note-for-this-meeting") + "*"}
                         required={true}
                         maxLength={500}
@@ -925,12 +1039,12 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
               <Button
                 text={t("Delete-meeting")}
                 className={styles["Published"]}
-                onClick={handlePublish}
+                // onClick={handlePublish}
               />
               <Button
                 text={t("Publish-the-meeting")}
                 className={styles["Published"]}
-                onClick={handlePublish}
+                // onClick={handlePublish}
               />
               <Button
                 text={t("Publish")}

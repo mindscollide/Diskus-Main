@@ -338,13 +338,14 @@ const handleSaveMeetingFailed = (message) => {
   };
 };
 
-const SaveMeetingDetialsNewApiFunction = (navigate, Data, t) => {
+//Function For Save Meeting Api Function
+const SaveMeetingDetialsNewApiFunction = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(handleSaveMeetingInit());
     let form = new FormData();
     form.append("RequestMethod", saveMeetingDetials.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
       url: meetingApi,
@@ -356,7 +357,7 @@ const SaveMeetingDetialsNewApiFunction = (navigate, Data, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveMeetingDetialsNewApiFunction(navigate, Data, t));
+          dispatch(SaveMeetingDetialsNewApiFunction(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
