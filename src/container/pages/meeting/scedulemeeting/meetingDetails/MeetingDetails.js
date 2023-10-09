@@ -1,98 +1,98 @@
-import React, { useEffect, useRef, useState } from "react";
-import styles from "./MeetingDetails.module.css";
-import { useTranslation } from "react-i18next";
-import MeetingVideoChatIcon from "../../../../../assets/images/ColoredVideo.svg";
-import Select from "react-select";
-import DatePicker from "react-multi-date-picker";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
-import { DateObject } from "react-multi-date-picker";
-import InputIcon from "react-multi-date-picker/components/input_icon";
-import gregorian from "react-date-object/calendars/gregorian";
-import gregorian_en from "react-date-object/locales/gregorian_en";
-import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
-import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-import whiteVideIcon from "../../../../../assets/images/whiteVideoIcon.png";
-import { Col, Row } from "react-bootstrap";
+import React, { useEffect, useRef, useState } from 'react'
+import styles from './MeetingDetails.module.css'
+import { useTranslation } from 'react-i18next'
+import MeetingVideoChatIcon from '../../../../../assets/images/ColoredVideo.svg'
+import Select from 'react-select'
+import DatePicker from 'react-multi-date-picker'
+import TimePicker from 'react-multi-date-picker/plugins/time_picker'
+import arabic from 'react-date-object/calendars/arabic'
+import arabic_ar from 'react-date-object/locales/arabic_ar'
+import { DateObject } from 'react-multi-date-picker'
+import InputIcon from 'react-multi-date-picker/components/input_icon'
+import gregorian from 'react-date-object/calendars/gregorian'
+import gregorian_en from 'react-date-object/locales/gregorian_en'
+import plusFaddes from '../../../../../assets/images/PlusFadded.svg'
+import redcrossIcon from '../../../../../assets/images/Artboard 9.png'
+import whiteVideIcon from '../../../../../assets/images/whiteVideoIcon.png'
+import { Col, Row } from 'react-bootstrap'
 import {
   Button,
   Switch,
   TextField,
   Loader,
-} from "../../../../../components/elements";
-import desh from "../../../../../assets/images/desh.svg";
+} from '../../../../../components/elements'
+import desh from '../../../../../assets/images/desh.svg'
 import {
   regexOnlyCharacters,
   urlPatternValidation,
   validateInput,
-} from "../../../../../commen/functions/regex";
-import MeetingActive from "./MeetingActivePage/MeetingActive";
-import PublishedMeeting from "./PublishedMeeting/PublishedMeeting";
-import moment from "moment";
-import TextFieldTime from "../../../../../components/elements/input_field_time/Input_field";
-import { useDispatch } from "react-redux";
+} from '../../../../../commen/functions/regex'
+import MeetingActive from './MeetingActivePage/MeetingActive'
+import PublishedMeeting from './PublishedMeeting/PublishedMeeting'
+import moment from 'moment'
+import TextFieldTime from '../../../../../components/elements/input_field_time/Input_field'
+import { useDispatch } from 'react-redux'
 import {
   GetAllMeetingRecurringApiNew,
   GetAllMeetingRemindersApiFrequencyNew,
   GetAllMeetingTypesNewFunction,
   SaveMeetingDetialsNewApiFunction,
-} from "../../../../../store/actions/NewMeetingActions";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { convertGMTDateintoUTC } from "../../../../../commen/functions/date_formater";
+} from '../../../../../store/actions/NewMeetingActions'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { convertGMTDateintoUTC } from '../../../../../commen/functions/date_formater'
 
 const MeetingDetails = ({
   setorganizers,
   setmeetingDetails,
   setSceduleMeeting,
 }) => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { NewMeetingreducer } = useSelector((state) => state)
 
-  const [options, setOptions] = useState([]);
-  const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
-  const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
-  const [reminderFrequencyTwo, setReminderFrequencyTwo] = useState([]);
-  const [reminderFrequencyThree, setReminderFrequencyThree] = useState([]);
-  const [recurringDropDown, setRecurringDropDown] = useState([]);
+  const [options, setOptions] = useState([])
+  const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([])
+  const [reminderFrequencyOne, setReminderFrequencyOne] = useState([])
+  const [reminderFrequencyTwo, setReminderFrequencyTwo] = useState([])
+  const [reminderFrequencyThree, setReminderFrequencyThree] = useState([])
+  const [recurringDropDown, setRecurringDropDown] = useState([])
 
   const [rows, setRows] = useState([
-    { selectedOption: "", startDate: "", endDate: "" },
-  ]);
+    { selectedOption: '', startDate: '', endDate: '' },
+  ])
 
   //For Custom language datepicker
-  const [meetingDate, setMeetingDate] = useState("");
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
-  const calendRef = useRef();
-  const [error, seterror] = useState(false);
-  const [activeVideo, setActiveVideo] = useState(false);
-  const [saveMeeting, setSaveMeeting] = useState(false);
+  const [meetingDate, setMeetingDate] = useState('')
+  let currentLanguage = localStorage.getItem('i18nextLng')
+  const [calendarValue, setCalendarValue] = useState(gregorian)
+  const [localValue, setLocalValue] = useState(gregorian_en)
+  const calendRef = useRef()
+  const [error, seterror] = useState(false)
+  const [activeVideo, setActiveVideo] = useState(false)
+  const [saveMeeting, setSaveMeeting] = useState(false)
   const [meetingDetails, setMeetingDetails] = useState({
-    MeetingTitle: "",
+    MeetingTitle: '',
     MeetingType: 0,
-    Location: "",
-    Description: "",
-    Link: "https://portal.letsdiskus.com/Video?RoomID=5682AD",
+    Location: '',
+    Description: '',
+    Link: 'https://portal.letsdiskus.com/Video?RoomID=5682AD',
     ReminderFrequency: 0,
     ReminderFrequencyTwo: 0,
     ReminderFrequencyThree: 0,
-    Notes: "",
+    Notes: '',
     groupChat: false,
     AllowRSPV: false,
     NotifyMeetingOrganizer: false,
     RecurringOptions: 0,
-    Location: "",
+    Location: '',
     IsVideoCall: false,
-  });
+  })
 
   const handleSelectChange = (selectedOption) => {
-    setOptions({ ...options, selectedOption });
-  };
+    setOptions({ ...options, selectedOption })
+  }
 
   const handleMeetingSelectChange = (selectedOption) => {
     setMeetingDetails({
@@ -101,119 +101,123 @@ const MeetingDetails = ({
         PK_MTID: selectedOption.value,
         Type: selectedOption.label,
       },
-    });
-  };
+    })
+  }
 
   const handleRecurringSelectoptions = (selectedOption) => {
     setMeetingDetails({
       ...meetingDetails,
       RecurringOptions: selectedOption.value,
-    });
-  };
+    })
+  }
 
   const handleStartDateChange = (index, date) => {
-    let newDate = new Date(date);
+    let newDate = new Date(date)
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const hours = ('0' + newDate.getUTCHours()).slice(-2)
+      const minutes = ('0' + newDate.getUTCMinutes()).slice(-2)
+      const seconds = ('0' + newDate.getUTCSeconds()).slice(-2)
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+      const formattedTime = `${hours
         .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
-      const updatedRows = [...rows];
-      updatedRows[index].startDate = formattedTime;
-      setRows(updatedRows);
+        .padStart(2, '0')}${minutes
+        .toString()
+        .padStart(2, '0')}${seconds.toString().padStart(2, '0')}`
+      console.log(formattedTime, 'formattedTimeformattedTimeformattedTime')
+      const updatedRows = [...rows]
+      updatedRows[index].startDate = formattedTime
+      setRows(updatedRows)
       // You can use 'formattedTime' as needed.
     } else {
-      console.error("Invalid date and time object:", date);
+      console.error('Invalid date and time object:', date)
     }
-  };
+  }
 
   const handleEndDateChange = (index, date) => {
-    let newDate = new Date(date);
+    let newDate = new Date(date)
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const hours = ('0' + newDate.getUTCHours()).slice(-2)
+      const minutes = ('0' + newDate.getUTCMinutes()).slice(-2)
+      const seconds = ('0' + newDate.getUTCSeconds()).slice(-2)
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+      const formattedTime = `${hours
         .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+        .padStart(2, '0')}${minutes
+        .toString()
+        .padStart(2, '0')}${seconds.toString().padStart(2, '0')}`
 
-      const updatedRows = [...rows];
-      updatedRows[index].endDate = formattedTime;
-      setRows(updatedRows);
+      const updatedRows = [...rows]
+      updatedRows[index].endDate = formattedTime
+      setRows(updatedRows)
     } else {
-      console.error("Invalid date and time object:", date);
+      console.error('Invalid date and time object:', date)
     }
-  };
+  }
 
   //Onchange Function For DatePicker inAdd datess First
   const changeDateStartHandler = (date, index) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = convertGMTDateintoUTC(date);
-    console.log(DateDate, "DateDateDateDateDateDate");
-    setMeetingDate(meetingDateValueFormat);
-    const updatedRows = [...rows];
-    updatedRows[index].selectedOption = DateDate.slice(0, 8);
-    setRows(updatedRows);
-  };
+    let meetingDateValueFormat = new DateObject(date).format('DD/MM/YYYY')
+    let DateDate = convertGMTDateintoUTC(date)
+    console.log(DateDate, 'DateDateDateDateDateDate')
+    setMeetingDate(meetingDateValueFormat)
+    const updatedRows = [...rows]
+    updatedRows[index].selectedOption = DateDate.slice(0, 8)
+    setRows(updatedRows)
+  }
 
   const addRow = () => {
-    const lastRow = rows[rows.length - 1];
+    const lastRow = rows[rows.length - 1]
     if (isValidRow(lastRow)) {
-      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+      setRows([...rows, { selectedOption: '', startDate: '', endDate: '' }])
     }
-  };
+  }
 
   const isValidRow = (row) => {
     return (
-      row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
-    );
-  };
+      row.selectedOption !== '' && row.startDate !== '' && row.endDate !== ''
+    )
+  }
 
   const HandleCancelFunction = (index) => {
-    let optionscross = [...rows];
-    optionscross.splice(index, 1);
-    setRows(optionscross);
-  };
+    let optionscross = [...rows]
+    optionscross.splice(index, 1)
+    setRows(optionscross)
+  }
 
   const handleUpdateNext = () => {
     // setorganizers(true);
     // setmeetingDetails(false);
     //Enable the Error Handling From here
     // setSaveMeeting(!saveMeeting);
-    let newArr = [];
-    let newReminderData = [];
+    let newArr = []
+    let newReminderData = []
     newReminderData.push(
       meetingDetails.ReminderFrequency,
       meetingDetails.ReminderFrequencyTwo,
-      meetingDetails.ReminderFrequencyThree
-    );
+      meetingDetails.ReminderFrequencyThree,
+    )
     rows.map((data, index) => {
       newArr.push({
         MeetingDate: data.selectedOption,
         StartTime: data.startDate,
         EndTime: data.endDate,
-      });
-    });
+      })
+    })
 
-    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let organizationID = JSON.parse(localStorage.getItem('organizationID'))
     if (
-      meetingDetails.MeetingTitle !== "" &&
+      meetingDetails.MeetingTitle !== '' &&
       meetingDetails.MeetingType !== 0 &&
-      meetingDetails.Location !== "" &&
-      meetingDetails.Description !== "" &&
+      meetingDetails.Location !== '' &&
+      meetingDetails.Description !== '' &&
       newArr.length > 0 &&
       newReminderData.length > 0 &&
-      meetingDetails.Notes !== "" &&
-      meetingDetails.Link !== ""
+      meetingDetails.Notes !== '' &&
+      meetingDetails.Link !== ''
     ) {
-      console.log("test");
+      console.log('test')
       let data = {
         MeetingDetails: {
           MeetingTitle: meetingDetails.MeetingTitle,
@@ -232,8 +236,8 @@ const MeetingDetails = ({
           VideoURL: meetingDetails.Link,
           MeetingStatusID: 11,
         },
-      };
-      console.log("test", data);
+      }
+      console.log('test', data)
 
       dispatch(
         SaveMeetingDetialsNewApiFunction(
@@ -243,44 +247,44 @@ const MeetingDetails = ({
           setSceduleMeeting,
           setorganizers,
           setmeetingDetails,
-          3
-        )
-      );
+          3,
+        ),
+      )
     } else {
-      seterror(true);
+      seterror(true)
     }
-  };
+  }
 
   const handlePublish = () => {
     //Enable the Error Handling From here
     // setSaveMeeting(!saveMeeting);
-    let newArr = [];
-    let newReminderData = [];
+    let newArr = []
+    let newReminderData = []
     newReminderData.push(
       meetingDetails.ReminderFrequency,
       meetingDetails.ReminderFrequencyTwo,
-      meetingDetails.ReminderFrequencyThree
-    );
+      meetingDetails.ReminderFrequencyThree,
+    )
     rows.map((data, index) => {
       newArr.push({
         MeetingDate: data.selectedOption,
         StartTime: data.startDate,
         EndTime: data.endDate,
-      });
-    });
+      })
+    })
 
-    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let organizationID = JSON.parse(localStorage.getItem('organizationID'))
     if (
-      meetingDetails.MeetingTitle !== "" &&
+      meetingDetails.MeetingTitle !== '' &&
       meetingDetails.MeetingType !== 0 &&
-      meetingDetails.Location !== "" &&
-      meetingDetails.Description !== "" &&
+      meetingDetails.Location !== '' &&
+      meetingDetails.Description !== '' &&
       newArr.length > 0 &&
       newReminderData.length > 0 &&
-      meetingDetails.Notes !== "" &&
-      meetingDetails.Link !== ""
+      meetingDetails.Notes !== '' &&
+      meetingDetails.Link !== ''
     ) {
-      console.log("test");
+      console.log('test')
       let data = {
         MeetingDetails: {
           MeetingTitle: meetingDetails.MeetingTitle,
@@ -299,8 +303,8 @@ const MeetingDetails = ({
           VideoURL: meetingDetails.Link,
           MeetingStatusID: 1,
         },
-      };
-      console.log("test", data);
+      }
+      console.log('test', data)
 
       dispatch(
         SaveMeetingDetialsNewApiFunction(
@@ -310,43 +314,43 @@ const MeetingDetails = ({
           setSceduleMeeting,
           setorganizers,
           setmeetingDetails,
-          1
-        )
-      );
+          1,
+        ),
+      )
     } else {
-      seterror(true);
+      seterror(true)
     }
-  };
+  }
 
   const SaveMeeting = () => {
     //Enable the Error Handling From here
     // seterror(true);
     // setSaveMeeting(!saveMeeting);
-    let newArr = [];
-    let newReminderData = [];
+    let newArr = []
+    let newReminderData = []
     newReminderData.push(
       meetingDetails.ReminderFrequency,
       meetingDetails.ReminderFrequencyTwo,
-      meetingDetails.ReminderFrequencyThree
-    );
+      meetingDetails.ReminderFrequencyThree,
+    )
     rows.map((data, index) => {
       newArr.push({
         MeetingDate: data.selectedOption,
         StartTime: data.startDate,
         EndTime: data.endDate,
-      });
-    });
+      })
+    })
     if (
-      meetingDetails.MeetingTitle !== "" &&
+      meetingDetails.MeetingTitle !== '' &&
       meetingDetails.MeetingType !== 0 &&
-      meetingDetails.Location !== "" &&
-      meetingDetails.Description !== "" &&
+      meetingDetails.Location !== '' &&
+      meetingDetails.Description !== '' &&
       newArr.length > 0 &&
       newReminderData.length > 0 &&
-      meetingDetails.Notes !== "" &&
-      meetingDetails.Link != ""
+      meetingDetails.Notes !== '' &&
+      meetingDetails.Link != ''
     ) {
-      let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let organizationID = JSON.parse(localStorage.getItem('organizationID'))
       let data = {
         MeetingDetails: {
           MeetingTitle: meetingDetails.MeetingTitle,
@@ -365,7 +369,7 @@ const MeetingDetails = ({
           VideoURL: meetingDetails.Link,
           MeetingStatusID: 11,
         },
-      };
+      }
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
@@ -374,153 +378,153 @@ const MeetingDetails = ({
           setSceduleMeeting,
           setorganizers,
           setmeetingDetails,
-          2
-        )
-      );
+          2,
+        ),
+      )
     } else {
-      seterror(true);
+      seterror(true)
     }
-  };
+  }
 
   const handleReminderFrequency = (e) => {
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequency: e.value,
-    });
-  };
+    })
+  }
 
   const handleReminderFrequencyTwo = (e) => {
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyTwo: e.value,
-    });
-  };
+    })
+  }
 
   const handleReminderFrequencyThree = (e) => {
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyThree: e.value,
-    });
-  };
+    })
+  }
 
   const HandleChange = (e, index) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "Meetingtitle") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
+    let name = e.target.name
+    let value = e.target.value
+    if (name === 'Meetingtitle') {
+      let valueCheck = validateInput(value)
+      if (valueCheck !== '') {
         setMeetingDetails({
           ...meetingDetails,
           MeetingTitle: valueCheck,
-        });
+        })
       } else {
         setMeetingDetails({
           ...meetingDetails,
-          MeetingTitle: "",
-        });
+          MeetingTitle: '',
+        })
       }
     }
 
-    if (name === "Location") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
+    if (name === 'Location') {
+      let valueCheck = validateInput(value)
+      if (valueCheck !== '') {
         setMeetingDetails({
           ...meetingDetails,
           Location: valueCheck,
-        });
+        })
       } else {
         setMeetingDetails({
           ...meetingDetails,
-          Location: "",
-        });
+          Location: '',
+        })
       }
     }
-    if (name === "Description") {
-      let valueCheck = regexOnlyCharacters(value);
-      if (valueCheck !== "") {
+    if (name === 'Description') {
+      let valueCheck = regexOnlyCharacters(value)
+      if (valueCheck !== '') {
         setMeetingDetails({
           ...meetingDetails,
           Description: valueCheck,
-        });
+        })
       } else {
         setMeetingDetails({
           ...meetingDetails,
-          Description: "",
-        });
+          Description: '',
+        })
       }
     }
-    if (name === "Notes") {
-      let valueCheck = regexOnlyCharacters(value);
-      if (valueCheck !== "") {
+    if (name === 'Notes') {
+      let valueCheck = regexOnlyCharacters(value)
+      if (valueCheck !== '') {
         setMeetingDetails({
           ...meetingDetails,
           Notes: valueCheck,
-        });
+        })
       } else {
         setMeetingDetails({
           ...meetingDetails,
-          Notes: "",
-        });
+          Notes: '',
+        })
       }
     }
-    if (name === "Link" && value !== "") {
+    if (name === 'Link' && value !== '') {
       if (urlPatternValidation(value)) {
         setMeetingDetails({
           ...meetingDetails,
           Link: value,
-        });
+        })
       } else {
         setMeetingDetails({
           ...meetingDetails,
-          Link: "",
-        });
+          Link: '',
+        })
       }
     }
-  };
+  }
 
   const handleGroupChat = () => {
     setMeetingDetails({
       ...meetingDetails,
       groupChat: !meetingDetails.groupChat,
-    });
-  };
+    })
+  }
 
   const handleRSPV = () => {
     setMeetingDetails({
       ...meetingDetails,
       AllowRSPV: !meetingDetails.AllowRSPV,
-    });
-  };
+    })
+  }
 
   const handleNotifyOrganizers = () => {
     setMeetingDetails({
       ...meetingDetails,
       NotifyMeetingOrganizer: !meetingDetails.NotifyMeetingOrganizer,
-    });
-  };
+    })
+  }
 
   //Handle Video Call Option
   const handleVideoCameraButton = () => {
     setMeetingDetails({
       ...meetingDetails,
       IsVideoCall: !meetingDetails.IsVideoCall,
-    });
-  };
+    })
+  }
 
   //Meeting Type Drop Down API
   useEffect(() => {
-    dispatch(GetAllMeetingTypesNewFunction(navigate, t));
-  }, []);
+    dispatch(GetAllMeetingTypesNewFunction(navigate, t))
+  }, [])
 
   //Reminder Frequency Drop Down API
   useEffect(() => {
-    dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-  }, []);
+    dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t))
+  }, [])
 
   //Recurring Drop Down API
   useEffect(() => {
-    dispatch(GetAllMeetingRecurringApiNew(navigate, t));
-  }, []);
+    dispatch(GetAllMeetingRecurringApiNew(navigate, t))
+  }, [])
 
   //Meeting Type Drop Down Data
   useEffect(() => {
@@ -529,17 +533,17 @@ const MeetingDetails = ({
         NewMeetingreducer.getALlMeetingTypes.meetingTypes !== null &&
         NewMeetingreducer.getALlMeetingTypes.meetingTypes !== undefined
       ) {
-        let Newdata = [];
+        let Newdata = []
         NewMeetingreducer.getALlMeetingTypes.meetingTypes.map((data, index) => {
           Newdata.push({
             value: data.pK_MTID,
             label: data.type,
-          });
-        });
-        setmeetingTypeDropdown(Newdata);
+          })
+        })
+        setmeetingTypeDropdown(Newdata)
       }
     } catch (error) {}
-  }, [NewMeetingreducer.getALlMeetingTypes.meetingTypes]);
+  }, [NewMeetingreducer.getALlMeetingTypes.meetingTypes])
 
   //Reminder Frequency Drop Down Data
   useEffect(() => {
@@ -548,20 +552,20 @@ const MeetingDetails = ({
         NewMeetingreducer.getAllReminderFrequency.meetingReminders !== null &&
         NewMeetingreducer.getAllReminderFrequency.meetingReminders !== undefined
       ) {
-        let Newdata = [];
+        let Newdata = []
         NewMeetingreducer.getAllReminderFrequency.meetingReminders.map(
           (data, index) => {
-            console.log(data, "datadatadatas");
+            console.log(data, 'datadatadatas')
             Newdata.push({
               value: data.pK_MRID,
               label: data.description,
-            });
-          }
-        );
-        setReminderFrequencyOne(Newdata);
+            })
+          },
+        )
+        setReminderFrequencyOne(Newdata)
       }
     } catch (error) {}
-  }, [NewMeetingreducer.getAllReminderFrequency.meetingReminders]);
+  }, [NewMeetingreducer.getAllReminderFrequency.meetingReminders])
 
   //Recurring Drop Down Data
   useEffect(() => {
@@ -570,31 +574,31 @@ const MeetingDetails = ({
         NewMeetingreducer.recurring.meetingRecurrances !== null &&
         NewMeetingreducer.recurring.meetingRecurrances !== undefined
       ) {
-        let Newdata = [];
+        let Newdata = []
         NewMeetingreducer.recurring.meetingRecurrances.map((data, index) => {
-          console.log(data, "datadatadatas");
+          console.log(data, 'datadatadatas')
           Newdata.push({
             value: data.recurranceID,
             label: data.recurrance,
-          });
-        });
-        setRecurringDropDown(Newdata);
+          })
+        })
+        setRecurringDropDown(Newdata)
       }
     } catch (error) {}
-  }, [NewMeetingreducer.recurring.meetingRecurrances]);
+  }, [NewMeetingreducer.recurring.meetingRecurrances])
 
   //language UseEffect
   useEffect(() => {
     if (currentLanguage !== undefined) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+      if (currentLanguage === 'en') {
+        setCalendarValue(gregorian)
+        setLocalValue(gregorian_en)
+      } else if (currentLanguage === 'ar') {
+        setCalendarValue(arabic)
+        setLocalValue(arabic_ar)
       }
     }
-  }, [currentLanguage]);
+  }, [currentLanguage])
 
   return (
     <section>
@@ -605,8 +609,8 @@ const MeetingDetails = ({
           <Row>
             <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <Button
-                text={t("Start-meeting")}
-                className={styles["Published"]}
+                text={t('Start-meeting')}
+                className={styles['Published']}
               />
             </Col>
           </Row>
@@ -615,7 +619,7 @@ const MeetingDetails = ({
               lg={12}
               md={12}
               sm={12}
-              className={styles["Scroller_meeting_detials"]}
+              className={styles['Scroller_meeting_detials']}
             >
               <Row>
                 {/* First Half */}
@@ -623,9 +627,9 @@ const MeetingDetails = ({
                   <Row className="mt-5">
                     <Col lg={12} md={12} sm={12}>
                       <TextField
-                        placeholder={t("Meeting-title")}
-                        applyClass={"meetinInnerSearch"}
-                        name={"Meetingtitle"}
+                        placeholder={t('Meeting-title')}
+                        applyClass={'meetinInnerSearch'}
+                        name={'Meetingtitle'}
                         labelClass="d-none"
                         change={HandleChange}
                         value={meetingDetails.MeetingTitle}
@@ -634,12 +638,12 @@ const MeetingDetails = ({
                         <Col>
                           <p
                             className={
-                              error && meetingDetails.MeetingTitle === ""
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
+                              error && meetingDetails.MeetingTitle === ''
+                                ? ` ${styles['errorMessage-inLogin']} `
+                                : `${styles['errorMessage-inLogin_hidden']}`
                             }
                           >
-                            {t("Please-enter-meeting-title")}
+                            {t('Please-enter-meeting-title')}
                           </p>
                         </Col>
                       </Row>
@@ -649,9 +653,9 @@ const MeetingDetails = ({
                     <Col lg={6} md={6} sm={12}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Meeting_type_heading"]}>
-                            {t("Meeting-type")}
-                            <span className={styles["steric"]}>*</span>
+                          <span className={styles['Meeting_type_heading']}>
+                            {t('Meeting-type')}
+                            <span className={styles['steric']}>*</span>
                           </span>
                         </Col>
                       </Row>
@@ -659,7 +663,7 @@ const MeetingDetails = ({
                         <Col lg={12} md={12} sm={12}>
                           <Select
                             options={meetingTypeDropdown}
-                            placeholder={t("Meeting-type")}
+                            placeholder={t('Meeting-type')}
                             onChange={handleMeetingSelectChange}
                             isSearchable={false}
                           />
@@ -669,11 +673,11 @@ const MeetingDetails = ({
                               <p
                                 className={
                                   error && meetingDetails.MeetingType === 0
-                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                    ? ` ${styles['errorMessage-inLogin']} `
+                                    : `${styles['errorMessage-inLogin_hidden']}`
                                 }
                               >
-                                {t("Please-select-meeting-type")}
+                                {t('Please-select-meeting-type')}
                               </p>
                             </Col>
                           </Row>
@@ -683,18 +687,18 @@ const MeetingDetails = ({
                     <Col lg={6} md={6} sm={12}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Meeting_type_heading"]}>
-                            {t("Location")}
-                            <span className={styles["steric"]}>*</span>
+                          <span className={styles['Meeting_type_heading']}>
+                            {t('Location')}
+                            <span className={styles['steric']}>*</span>
                           </span>
                         </Col>
                       </Row>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <TextField
-                            placeholder={t("Location")}
-                            applyClass={"meetinInnerSearch"}
-                            name={"Location"}
+                            placeholder={t('Location')}
+                            applyClass={'meetinInnerSearch'}
+                            name={'Location'}
                             labelClass="d-none"
                             change={HandleChange}
                             value={meetingDetails.Location}
@@ -703,12 +707,12 @@ const MeetingDetails = ({
                             <Col>
                               <p
                                 className={
-                                  error && meetingDetails.Location === ""
-                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                  error && meetingDetails.Location === ''
+                                    ? ` ${styles['errorMessage-inLogin']} `
+                                    : `${styles['errorMessage-inLogin_hidden']}`
                                 }
                               >
-                                {t("Please-select-location")}
+                                {t('Please-select-location')}
                               </p>
                             </Col>
                           </Row>
@@ -721,11 +725,11 @@ const MeetingDetails = ({
                       <TextField
                         applyClass="text-area-create-resolution"
                         type="text"
-                        as={"textarea"}
+                        as={'textarea'}
                         rows="4"
-                        placeholder={t("Description") + "*"}
+                        placeholder={t('Description') + '*'}
                         required={true}
-                        name={"Description"}
+                        name={'Description'}
                         change={HandleChange}
                         value={meetingDetails.Description}
                         maxLength={500}
@@ -734,12 +738,12 @@ const MeetingDetails = ({
                         <Col>
                           <p
                             className={
-                              error && meetingDetails.Description === ""
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
+                              error && meetingDetails.Description === ''
+                                ? ` ${styles['errorMessage-inLogin']} `
+                                : `${styles['errorMessage-inLogin_hidden']}`
                             }
                           >
-                            {t("Please-enter-meeting-description")}
+                            {t('Please-enter-meeting-description')}
                           </p>
                         </Col>
                       </Row>
@@ -750,8 +754,8 @@ const MeetingDetails = ({
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12} className="d-flex gap-3">
                           <Switch onChange={handleGroupChat} />
-                          <span className={styles["Create_group_chat_heading"]}>
-                            {t("Create-group-chat")}
+                          <span className={styles['Create_group_chat_heading']}>
+                            {t('Create-group-chat')}
                           </span>
                         </Col>
                       </Row>
@@ -777,15 +781,15 @@ const MeetingDetails = ({
                                 height="14.75px"
                                 className={
                                   meetingDetails.IsVideoCall
-                                    ? styles["Camera_icon_active_IconStyles"]
-                                    : styles["Camera_icon"]
+                                    ? styles['Camera_icon_active_IconStyles']
+                                    : styles['Camera_icon']
                                 }
                               />
                             }
                             className={
                               meetingDetails.IsVideoCall
-                                ? styles["Camera_icon_Active"]
-                                : styles["Button_not_active"]
+                                ? styles['Camera_icon_Active']
+                                : styles['Button_not_active']
                             }
                             onClick={handleVideoCameraButton}
                           />
@@ -794,28 +798,28 @@ const MeetingDetails = ({
                           <TextField
                             disable={true}
                             placeholder={
-                              t("Paste-microsoft-team-zoom-link") + "*"
+                              t('Paste-microsoft-team-zoom-link') + '*'
                             }
-                            applyClass={"meetinInnerSearch"}
+                            applyClass={'meetinInnerSearch'}
                             labelClass="d-none"
-                            name={"Link"}
+                            name={'Link'}
                             change={HandleChange}
                             value={
                               meetingDetails.IsVideoCall
                                 ? meetingDetails.Link
-                                : ""
+                                : ''
                             }
                           />
                           <Row>
                             <Col>
                               <p
                                 className={
-                                  error && meetingDetails.Link === ""
-                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                  error && meetingDetails.Link === ''
+                                    ? ` ${styles['errorMessage-inLogin']} `
+                                    : `${styles['errorMessage-inLogin_hidden']}`
                                 }
                               >
-                                {t("Please-enter-meeting-link")}
+                                {t('Please-enter-meeting-link')}
                               </p>
                             </Col>
                           </Row>
@@ -825,9 +829,9 @@ const MeetingDetails = ({
                   </Row>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
-                      <span className={styles["Scedule_heading"]}>
-                        {t("Scheduled-on")}
-                        <span className={styles["steric"]}>*</span>
+                      <span className={styles['Scedule_heading']}>
+                        {t('Scheduled-on')}
+                        <span className={styles['steric']}>*</span>
                       </span>
                     </Col>
                   </Row>
@@ -836,7 +840,7 @@ const MeetingDetails = ({
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Scroller_meeting"]}
+                      className={styles['Scroller_meeting']}
                     >
                       {rows.length > 0
                         ? rows.map((data, index) => {
@@ -848,7 +852,7 @@ const MeetingDetails = ({
                                       <Col lg={4} md={4} sm={12}>
                                         <DatePicker
                                           selected={rows.selectedOption}
-                                          format={"DD/MM/YYYY"}
+                                          format={'DD/MM/YYYY'}
                                           minDate={moment().toDate()}
                                           placeholder="DD/MM/YYYY"
                                           render={
@@ -873,12 +877,12 @@ const MeetingDetails = ({
                                             <p
                                               className={
                                                 error &&
-                                                data.selectedOption === ""
-                                                  ? ` ${styles["errorMessage-inLogin"]} `
-                                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                                                data.selectedOption === ''
+                                                  ? ` ${styles['errorMessage-inLogin']} `
+                                                  : `${styles['errorMessage-inLogin_hidden']}`
                                               }
                                             >
-                                              {t("Please-select-data-and-time")}
+                                              {t('Please-select-data-and-time')}
                                             </p>
                                           </Col>
                                         </Row>
@@ -950,9 +954,9 @@ const MeetingDetails = ({
                                           src={redcrossIcon}
                                           width="23px"
                                           height="23px"
-                                          className={styles["Cross_icon_class"]}
+                                          className={styles['Cross_icon_class']}
                                           onClick={() => {
-                                            HandleCancelFunction(index);
+                                            HandleCancelFunction(index)
                                           }}
                                         />
                                       </Col>
@@ -964,19 +968,19 @@ const MeetingDetails = ({
                                     <p
                                       className={
                                         error &&
-                                        rows.selectedOption === "" &&
-                                        rows.startDate === "" &&
-                                        rows.endDate === ""
-                                          ? ` ${styles["errorMessage-inLogin"]} `
-                                          : `${styles["errorMessage-inLogin_hidden"]}`
+                                        rows.selectedOption === '' &&
+                                        rows.startDate === '' &&
+                                        rows.endDate === ''
+                                          ? ` ${styles['errorMessage-inLogin']} `
+                                          : `${styles['errorMessage-inLogin_hidden']}`
                                       }
                                     >
-                                      {t("Please-select-data-and-time")}
+                                      {t('Please-select-data-and-time')}
                                     </p>
                                   </Col>
                                 </Row>
                               </>
-                            );
+                            )
                           })
                         : null}
                     </Col>
@@ -999,14 +1003,14 @@ const MeetingDetails = ({
                                   width="15.87px"
                                   height="15.87px"
                                 />
-                                <span className={styles["Add_dates_label"]}>
-                                  {t("Add-dates")}
+                                <span className={styles['Add_dates_label']}>
+                                  {t('Add-dates')}
                                 </span>
                               </Col>
                             </Row>
                           </>
                         }
-                        className={styles["Add_Dates_Btn_Class"]}
+                        className={styles['Add_Dates_Btn_Class']}
                         onClick={addRow}
                         disabled={!isValidRow(rows[rows.length - 1])}
                       />
@@ -1018,9 +1022,9 @@ const MeetingDetails = ({
                   <Row className="mt-4">
                     <Row className="mt-1">
                       <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Frequency_heading"]}>
-                          {t("Reminder-frequency")}
-                          <span className={styles["steric"]}>*</span>
+                        <span className={styles['Frequency_heading']}>
+                          {t('Reminder-frequency')}
+                          <span className={styles['steric']}>*</span>
                         </span>
                       </Col>
                     </Row>
@@ -1030,7 +1034,7 @@ const MeetingDetails = ({
                         options={reminderFrequencyOne}
                         value={reminderFrequencyOne.find(
                           (option) =>
-                            option.value === meetingDetails.ReminderFrequency
+                            option.value === meetingDetails.ReminderFrequency,
                         )}
                         isDisabled={false} // First dropdown should always be enabled
                       />
@@ -1041,7 +1045,8 @@ const MeetingDetails = ({
                         options={reminderFrequencyOne}
                         value={reminderFrequencyOne.find(
                           (option) =>
-                            option.value === meetingDetails.ReminderFrequencyTwo
+                            option.value ===
+                            meetingDetails.ReminderFrequencyTwo,
                         )}
                         isDisabled={
                           meetingDetails.ReminderFrequency === 0 ? true : false
@@ -1055,7 +1060,7 @@ const MeetingDetails = ({
                         value={reminderFrequencyOne.find(
                           (option) =>
                             option.value ===
-                            meetingDetails.ReminderFrequencyThree
+                            meetingDetails.ReminderFrequencyThree,
                         )}
                         isDisabled={
                           meetingDetails.ReminderFrequencyTwo === 0
@@ -1072,11 +1077,11 @@ const MeetingDetails = ({
                             meetingDetails.ReminderFrequency === 0 &&
                             meetingDetails.ReminderFrequencyTwo === 0 &&
                             meetingDetails.ReminderFrequencyThree === 0
-                              ? ` ${styles["errorMessage-inLogin"]} `
-                              : `${styles["errorMessage-inLogin_hidden"]}`
+                              ? ` ${styles['errorMessage-inLogin']} `
+                              : `${styles['errorMessage-inLogin_hidden']}`
                           }
                         >
-                          {t("Please-select-reminder-frequency")}
+                          {t('Please-select-reminder-frequency')}
                         </p>
                       </Col>
                     </Row>
@@ -1086,11 +1091,11 @@ const MeetingDetails = ({
                       <TextField
                         applyClass="text-area-create-meeting"
                         type="text"
-                        as={"textarea"}
+                        as={'textarea'}
                         rows="6"
-                        name={"Notes"}
+                        name={'Notes'}
                         change={HandleChange}
-                        placeholder={t("Note-for-this-meeting") + "*"}
+                        placeholder={t('Note-for-this-meeting') + '*'}
                         required={true}
                         maxLength={500}
                         value={meetingDetails.Notes}
@@ -1100,11 +1105,11 @@ const MeetingDetails = ({
                           <p
                             className={
                               error && meetingDetails.Notes === 0
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
+                                ? ` ${styles['errorMessage-inLogin']} `
+                                : `${styles['errorMessage-inLogin_hidden']}`
                             }
                           >
-                            {t("Please-select-reminder-frequency")}
+                            {t('Please-select-reminder-frequency')}
                           </p>
                         </Col>
                       </Row>
@@ -1115,8 +1120,8 @@ const MeetingDetails = ({
                       <Row>
                         <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                           <Switch onChange={handleRSPV} />
-                          <span className={styles["Notify_heading"]}>
-                            {t("Allow-rspv")}
+                          <span className={styles['Notify_heading']}>
+                            {t('Allow-rsvp')}
                           </span>
                         </Col>
                       </Row>
@@ -1130,8 +1135,8 @@ const MeetingDetails = ({
                           className="d-flex gap-2 justify-content-start"
                         >
                           <Switch onChange={handleNotifyOrganizers} />
-                          <span className={styles["Notify_heading"]}>
-                            {t("Notify-meeting-organizer-when-members-rspv")}
+                          <span className={styles['Notify_heading']}>
+                            {t('Notify-meeting-organizer-when-members-rsvp')}
                           </span>
                         </Col>
                       </Row>
@@ -1139,8 +1144,8 @@ const MeetingDetails = ({
                   </Row>
                   <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
-                      <span className={styles["reccurring_heading"]}>
-                        {t("Recurring")}
+                      <span className={styles['reccurring_heading']}>
+                        {t('Recurring')}
                       </span>
                     </Col>
                   </Row>
@@ -1165,23 +1170,23 @@ const MeetingDetails = ({
               className="d-flex gap-3 justify-content-end"
             >
               <Button
-                text={t("Delete-meeting")}
-                className={styles["Published"]}
+                text={t('Delete-meeting')}
+                className={styles['Published']}
                 // onClick={handlePublish}
               />
               <Button
-                text={t("Publish-the-meeting")}
-                className={styles["Published"]}
+                text={t('Publish-the-meeting')}
+                className={styles['Published']}
                 onClick={handlePublish}
               />
               <Button
-                text={t("Save")}
-                className={styles["Published"]}
+                text={t('Save')}
+                className={styles['Published']}
                 onClick={SaveMeeting}
               />
               <Button
-                text={t("Update-and-next")}
-                className={styles["Update_Next"]}
+                text={t('Update-and-next')}
+                className={styles['Update_Next']}
                 onClick={handleUpdateNext}
               />
             </Col>
@@ -1190,7 +1195,7 @@ const MeetingDetails = ({
       )}
       {/* {NewMeetingreducer.Loading ? <Loader /> : null} */}
     </section>
-  );
-};
+  )
+}
 
-export default MeetingDetails;
+export default MeetingDetails

@@ -1,53 +1,53 @@
-import React, { useState } from "react";
-import styles from "./AgendaContributors.module.css";
-import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-import addmore from "../../../../../assets/images/addmore.png";
-import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
-import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-import NotificationIcon from "../../../../../assets/images/greenmail.svg";
-import redMailIcon from "../../../../../assets/images/redmail.svg";
-import RspvIcon from "../../../../../assets/images/rspvGreen.svg";
-import RspcAbstainIcon from "../../../../../assets/images/rspvAbstain.svg";
-import Select from "react-select";
-import { Col, Row } from "react-bootstrap";
-import { Button, Table, TextField } from "../../../../../components/elements";
-import { useTranslation } from "react-i18next";
-import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributorsModal";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+import styles from './AgendaContributors.module.css'
+import EditIcon from '../../../../../assets/images/Edit-Icon.png'
+import addmore from '../../../../../assets/images/addmore.png'
+import emptyContributorState from '../../../../../assets/images/emptyStateContributor.svg'
+import redcrossIcon from '../../../../../assets/images/Artboard 9.png'
+import NotificationIcon from '../../../../../assets/images/greenmail.svg'
+import redMailIcon from '../../../../../assets/images/redmail.svg'
+import RspvIcon from '../../../../../assets/images/rspvGreen.svg'
+import RspcAbstainIcon from '../../../../../assets/images/rspvAbstain.svg'
+import Select from 'react-select'
+import { Col, Row } from 'react-bootstrap'
+import { Button, Table, TextField } from '../../../../../components/elements'
+import { useTranslation } from 'react-i18next'
+import AgendaContributorsModal from './AgdendaContributorsModal/AgendaContributorsModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import {
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showCrossConfirmationModal,
-} from "../../../../../store/actions/NewMeetingActions";
-import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
-import tick from "../../../../../assets/images/PNG tick.png";
-import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
-import { notification } from "antd";
-import AgendaContributorView from "./AgendaContributorsView/AgendaContributorView";
+} from '../../../../../store/actions/NewMeetingActions'
+import ModalCrossIcon from '../Organizers/ModalCrossIconClick/ModalCrossIcon'
+import tick from '../../../../../assets/images/PNG tick.png'
+import NotifyAgendaModal from './NotifyAgendaContributors/NotifyAgendaModal'
+import { notification } from 'antd'
+import AgendaContributorView from './AgendaContributorsView/AgendaContributorView'
 const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
-  const [notificationTable, setNotificationTable] = useState(false);
-  const [rspvTable, setrspvTable] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [viewAgendaContributors, setViewAgendaContributors] = useState(false);
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { NewMeetingreducer } = useSelector((state) => state)
+  const [notificationTable, setNotificationTable] = useState(false)
+  const [rspvTable, setrspvTable] = useState(false)
+  const [selectedOption, setSelectedOption] = useState(null)
+  const [viewAgendaContributors, setViewAgendaContributors] = useState(false)
   const shownotifyAgendaContrubutors = () => {
-    dispatch(showAgendaContributorsModals(true));
-  };
+    dispatch(showAgendaContributorsModals(true))
+  }
 
   const openCrossIconModal = () => {
-    dispatch(showCrossConfirmationModal(true));
-  };
+    dispatch(showCrossConfirmationModal(true))
+  }
 
   const data = [
     {
-      key: "1",
+      key: '1',
       Name: (
         <label
-          className={styles["Title_desc"]}
+          className={styles['Title_desc']}
           onClick={shownotifyAgendaContrubutors}
         >
           Muahmmad Saif
@@ -64,10 +64,10 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
               <Col lg={12} md={12} sm={12}>
                 <TextField
                   disable={true}
-                  width={"283px"}
-                  placeholder={t("Content-title")}
-                  labelClass={"d-none"}
-                  applyClass={"Organizer_table"}
+                  width={'283px'}
+                  placeholder={t('Content-title')}
+                  labelClass={'d-none'}
+                  applyClass={'Organizer_table'}
                 />
               </Col>
             </Row>
@@ -90,28 +90,28 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
         </>
       ),
     },
-  ];
-  const [rowsData, setRowsData] = useState(data);
+  ]
+  const [rowsData, setRowsData] = useState(data)
 
   const AgendaColoumns = [
     {
-      title: t("Name"),
-      dataIndex: "Name",
-      key: "Name",
-      width: "300px",
+      title: t('Name'),
+      dataIndex: 'Name',
+      key: 'Name',
+      width: '300px',
     },
     {
-      title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      width: "300px",
+      title: t('Email'),
+      dataIndex: 'Email',
+      key: 'Email',
+      width: '300px',
     },
 
     {
-      title: t("contributor-title"),
-      dataIndex: "Primary",
-      key: "Primary",
-      width: "400px",
+      title: t('contributor-title'),
+      dataIndex: 'Primary',
+      key: 'Primary',
+      width: '400px',
       //   render: (text, record) => {
       //     return (
       //       <>
@@ -137,16 +137,16 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
       //   },
     },
     {
-      dataIndex: "Close",
-      key: "Close",
-      width: "200px",
+      dataIndex: 'Close',
+      key: 'Close',
+      width: '200px',
     },
-  ];
+  ]
 
   const notificationData = [
     {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
+      key: '1',
+      Name: <label className={styles['Title_desc']}>Muahmmad Saif</label>,
       Email: (
         <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
       ),
@@ -173,10 +173,10 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
               <Col lg={12} md={12} sm={12}>
                 <TextField
                   disable={true}
-                  width={"283px"}
-                  placeholder={t("Content-title")}
-                  labelClass={"d-none"}
-                  applyClass={"Organizer_table"}
+                  width={'283px'}
+                  placeholder={t('Content-title')}
+                  labelClass={'d-none'}
+                  applyClass={'Organizer_table'}
                 />
               </Col>
             </Row>
@@ -184,42 +184,42 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
         </label>
       ),
     },
-  ];
+  ]
 
-  const [notificationRows, setNotificationRows] = useState(notificationData);
+  const [notificationRows, setNotificationRows] = useState(notificationData)
 
   const notificationColoumn = [
     {
-      title: t("Name"),
-      dataIndex: "Name",
-      key: "Name",
-      width: "300px",
+      title: t('Name'),
+      dataIndex: 'Name',
+      key: 'Name',
+      width: '300px',
     },
     {
-      title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      width: "300px",
+      title: t('Email'),
+      dataIndex: 'Email',
+      key: 'Email',
+      width: '300px',
     },
 
     {
-      title: t("contributor-title"),
-      dataIndex: "Primary",
-      key: "Primary",
-      width: "400px",
+      title: t('contributor-title'),
+      dataIndex: 'Primary',
+      key: 'Primary',
+      width: '400px',
     },
     {
-      title: t("Notification1"),
-      dataIndex: "Notification",
-      key: "Notification",
-      width: "200px",
+      title: t('Notification1'),
+      dataIndex: 'Notification',
+      key: 'Notification',
+      width: '200px',
     },
-  ];
+  ]
 
   const rspvData = [
     {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
+      key: '1',
+      Name: <label className={styles['Title_desc']}>Muahmmad Saif</label>,
       Email: (
         <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
       ),
@@ -239,63 +239,63 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
           </Row>
         </>
       ),
-      rspv: (
+      rsvp: (
         <>
           <img draggable={false} src={RspvIcon} height="30px" width="30px" />
           {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
         </>
       ),
     },
-  ];
-  const [rspvRows, setrspvRows] = useState(rspvData);
+  ]
+  const [rspvRows, setrspvRows] = useState(rspvData)
 
   const rspvColoumn = [
     {
-      title: t("Name"),
-      dataIndex: "Name",
-      key: "Name",
-      width: "300px",
+      title: t('Name'),
+      dataIndex: 'Name',
+      key: 'Name',
+      width: '300px',
     },
     {
-      title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      width: "300px",
+      title: t('Email'),
+      dataIndex: 'Email',
+      key: 'Email',
+      width: '300px',
     },
 
     {
-      title: t("contributor-title"),
-      dataIndex: "Primary",
-      key: "Primary",
-      width: "400px",
+      title: t('contributor-title'),
+      dataIndex: 'Primary',
+      key: 'Primary',
+      width: '400px',
     },
     {
-      title: t("Notification"),
-      dataIndex: "Notification",
-      key: "Notification",
-      width: "400px",
+      title: t('Notification'),
+      dataIndex: 'Notification',
+      key: 'Notification',
+      width: '400px',
     },
     {
-      title: t("RSPV"),
-      dataIndex: "rspv",
-      key: "rspv",
-      width: "400px",
+      title: t('RSVP'),
+      dataIndex: 'rsvp',
+      key: 'rsvp',
+      width: '400px',
     },
-  ];
+  ]
 
   const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-  };
+    setSelectedOption(option)
+  }
 
   // React select tick option handled
   const CustomOption = ({ innerProps, label, isSelected }) => (
-    <div {...innerProps} className={styles["option"]}>
-      {console.log(label, "labellabellabel")}
+    <div {...innerProps} className={styles['option']}>
+      {console.log(label, 'labellabellabel')}
       <Row>
-        <Col lg={12} md={12} sm={12} className={styles["OverAll_padding"]}>
+        <Col lg={12} md={12} sm={12} className={styles['OverAll_padding']}>
           <Row className="mt-2">
             <Col lg={11} md={11} sm={11}>
-              <span className={styles["label_Styles"]}>{label}</span>
+              <span className={styles['label_Styles']}>{label}</span>
             </Col>
             <Col lg={1} md={1} sm={1}>
               {isSelected && <img draggable={false} src={tick} />}
@@ -304,17 +304,17 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
         </Col>
       </Row>
     </div>
-  );
+  )
 
   const options = [
     {
-      value: "chocolate",
+      value: 'chocolate',
       label: (
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className={styles["Options_classs_contributors"]}>
-                {t("Grant-access-to-all-agenda-items-and-files")}
+              <span className={styles['Options_classs_contributors']}>
+                {t('Grant-access-to-all-agenda-items-and-files')}
               </span>
             </Col>
           </Row>
@@ -322,42 +322,42 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
       ),
     },
     {
-      value: "strawberry",
+      value: 'strawberry',
       label: (
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className={styles["Options_classs_contributors"]}>
-                {t("Grant-access-to-their-own-agenda-items-and-files-only")}
+              <span className={styles['Options_classs_contributors']}>
+                {t('Grant-access-to-their-own-agenda-items-and-files-only')}
               </span>
             </Col>
           </Row>
         </>
       ),
     },
-  ];
+  ]
 
   const handleNextButton = () => {
-    setAgendaContributors(false);
-    setParticipants(true);
-  };
+    setAgendaContributors(false)
+    setParticipants(true)
+  }
 
   const openAddAgendaModal = () => {
-    dispatch(showAddAgendaContributor(true));
-  };
+    dispatch(showAddAgendaContributor(true))
+  }
 
   const enableNotificatoinTable = () => {
-    setNotificationTable(!notificationTable);
-  };
+    setNotificationTable(!notificationTable)
+  }
 
   //You Can Enable Rspv Table From Here
   const anableRspvTable = () => {
-    setrspvTable(!rspvTable);
-  };
+    setrspvTable(!rspvTable)
+  }
 
   const EnableViewAgendaContributors = () => {
-    setViewAgendaContributors(!viewAgendaContributors);
-  };
+    setViewAgendaContributors(!viewAgendaContributors)
+  }
 
   return (
     <>
@@ -385,15 +385,15 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                 className="d-flex justify-content-end gap-3"
               >
                 <Button
-                  text={t("Add-more")}
+                  text={t('Add-more')}
                   icon={<img draggable={false} src={addmore} />}
-                  className={styles["AddMoreBtn"]}
+                  className={styles['AddMoreBtn']}
                   onClick={openAddAgendaModal}
                 />
                 {selectedOption !== null ? (
                   <>
-                    <Button text={"Save"} />
-                    <Button text={"Cancel"} />
+                    <Button text={'Save'} />
+                    <Button text={'Cancel'} />
                   </>
                 ) : (
                   <></>
@@ -406,7 +406,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                   <>
                     <Table
                       column={notificationColoumn}
-                      scroll={{ y: "62vh" }}
+                      scroll={{ y: '62vh' }}
                       pagination={false}
                       className="Polling_table"
                       locale={{
@@ -434,8 +434,8 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                                 sm={12}
                                 className="d-flex justify-content-center"
                               >
-                                <span className={styles["Empty_state_heading"]}>
-                                  {t("No-agenda-contributor")}
+                                <span className={styles['Empty_state_heading']}>
+                                  {t('No-agenda-contributor')}
                                 </span>
                               </Col>
                             </Row>
@@ -447,9 +447,9 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                                 className="d-flex justify-content-center"
                               >
                                 <span
-                                  className={styles["Empty_state_Subheading"]}
+                                  className={styles['Empty_state_Subheading']}
                                 >
-                                  {t("There-are-no-agenda-contributors")}
+                                  {t('There-are-no-agenda-contributors')}
                                 </span>
                               </Col>
                             </Row>
@@ -463,7 +463,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                   <>
                     <Table
                       column={rspvColoumn}
-                      scroll={{ y: "62vh" }}
+                      scroll={{ y: '62vh' }}
                       pagination={false}
                       className="Polling_table"
                       locale={{
@@ -491,8 +491,8 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                                 sm={12}
                                 className="d-flex justify-content-center"
                               >
-                                <span className={styles["Empty_state_heading"]}>
-                                  {t("No-agenda-contributor")}
+                                <span className={styles['Empty_state_heading']}>
+                                  {t('No-agenda-contributor')}
                                 </span>
                               </Col>
                             </Row>
@@ -504,9 +504,9 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                                 className="d-flex justify-content-center"
                               >
                                 <span
-                                  className={styles["Empty_state_Subheading"]}
+                                  className={styles['Empty_state_Subheading']}
                                 >
-                                  {t("There-are-no-agenda-contributors")}
+                                  {t('There-are-no-agenda-contributors')}
                                 </span>
                               </Col>
                             </Row>
@@ -520,7 +520,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                   <>
                     <Table
                       column={AgendaColoumns}
-                      scroll={{ y: "62vh" }}
+                      scroll={{ y: '62vh' }}
                       pagination={false}
                       locale={{
                         emptyText: (
@@ -547,8 +547,8 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                                 sm={12}
                                 className="d-flex justify-content-center"
                               >
-                                <span className={styles["Empty_state_heading"]}>
-                                  {t("No-agenda-contributor")}
+                                <span className={styles['Empty_state_heading']}>
+                                  {t('No-agenda-contributor')}
                                 </span>
                               </Col>
                             </Row>
@@ -560,9 +560,9 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                                 className="d-flex justify-content-center"
                               >
                                 <span
-                                  className={styles["Empty_state_Subheading"]}
+                                  className={styles['Empty_state_Subheading']}
                                 >
-                                  {t("There-are-no-agenda-contributors")}
+                                  {t('There-are-no-agenda-contributors')}
                                 </span>
                               </Col>
                             </Row>
@@ -579,24 +579,24 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
           </section>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <section className={styles["Footer_Class"]}>
+              <section className={styles['Footer_Class']}>
                 <Button
-                  text={t("Delete-meeting")}
-                  className={styles["Cancel_Organization"]}
+                  text={t('Delete-meeting')}
+                  className={styles['Cancel_Organization']}
                   onClick={enableNotificatoinTable}
                 />
                 <Button
-                  text={t("Publish-the-meeting")}
-                  className={styles["Cancel_Organization"]}
+                  text={t('Publish-the-meeting')}
+                  className={styles['Cancel_Organization']}
                 />
                 <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_Organization"]}
+                  text={t('Cancel')}
+                  className={styles['Cancel_Organization']}
                   onClick={EnableViewAgendaContributors}
                 />
                 <Button
-                  text={t("Save")}
-                  className={styles["Next_Organization"]}
+                  text={t('Save')}
+                  className={styles['Next_Organization']}
                   onClick={handleNextButton}
                 />
               </section>
@@ -609,7 +609,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.notifyAgendaContributors && <NotifyAgendaModal />}
     </>
-  );
-};
+  )
+}
 
-export default AgendaContributers;
+export default AgendaContributers

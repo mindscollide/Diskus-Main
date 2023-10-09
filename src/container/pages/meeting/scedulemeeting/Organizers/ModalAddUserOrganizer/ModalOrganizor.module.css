@@ -125,3 +125,24 @@
 .Padding_Class {
   padding-right: 20px !important;
 }
+
+.ADD_Btn_CreatePool_Modal {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff;
+  border: none;
+  border-radius: 4px !important;
+}
+
+.ADD_Btn_CreatePool_Modal:hover,
+.ADD_Btn_CreatePool_Modal:active,
+.ADD_Btn_CreatePool_Modal:focus,
+.ADD_Btn_CreatePool_Modal:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+}

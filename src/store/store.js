@@ -24,6 +24,7 @@ import {
   ResolutionReducer,
   RealtimeNotificationReducer,
   OrganizationBillingReducer,
+  MeetingOrganizersReducer,
   DataRoomReducer,
   PollsReducer,
   NewMeetingReducer,
@@ -82,6 +83,7 @@ const AppReducer = combineReducers({
   LanguageReducer: LanguageReducer,
   VideoMainReducer: VideoMainReducer,
   webViewer: webViewerReducer,
+  MeetingOrganizersReducer: MeetingOrganizersReducer,
 })
 
 const rootReducer = (state, action) => {
