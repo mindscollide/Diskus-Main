@@ -122,11 +122,15 @@ const UnpublishedProposedMeeting = () => {
       ),
       dataIndex: "Date",
       key: "Date",
-      width: "140px",
+      width: "160px",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
-          return newTimeFormaterAsPerUTCFullDate(
-            record.dateOfMeeting + record.meetingStartTime
+          return (
+            <span className={styles["meeting_date"]}>
+              {newTimeFormaterAsPerUTCFullDate(
+                record.dateOfMeeting + record.meetingStartTime
+              )}
+            </span>
           );
         }
       },
@@ -374,7 +378,7 @@ const UnpublishedProposedMeeting = () => {
         <Col lg={12} md={12} sm={12}>
           <Table
             column={MeetingColoumns}
-            scroll={{ y: "62vh" }}
+            scroll={{ y: "62vh", x: true }}
             pagination={false}
             className="newMeetingTable"
             rows={rows}

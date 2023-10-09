@@ -322,18 +322,26 @@ const NewMeeting = () => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
       render: (text, record) => {
-        return <span className="d-flex justify-content-center">{text}</span>;
+        return (
+          <span className="d-flex justify-content-center text-center">
+            {text}
+          </span>
+        );
       },
     },
     {
       title: t("Date-time"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
-      width: "87px",
+      width: "115px",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
-          return newTimeFormaterAsPerUTCFullDate(
-            record.dateOfMeeting + record.meetingStartTime
+          return (
+            <span className="d-flex justify-content-center">
+              {newTimeFormaterAsPerUTCFullDate(
+                record.dateOfMeeting + record.meetingStartTime
+              )}
+            </span>
           );
         }
       },
@@ -898,7 +906,7 @@ const NewMeeting = () => {
                           <>
                             <Table
                               column={MeetingColoumns}
-                              scroll={{ y: "62vh", x: "auto" }}
+                              scroll={{ y: "62vh", x: true }}
                               pagination={false}
                               className="newMeetingTable"
                               rows={rows}
