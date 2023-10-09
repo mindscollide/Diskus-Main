@@ -906,6 +906,10 @@ const GetAllRecurringNewMeeting = {
   RequestMethod: 'ServiceManager.GetAllRecurringFactor',
 }
 
+const meetingStatusUpdate = {
+  RequestMethod: 'ServiceManager.MeetingStatusUpdate',
+}
+
 export {
   getRecentDocumentsRM,
   updateProfilePictureRM,
@@ -1150,4 +1154,5 @@ export {
   saveMeetingDetials,
   GetMeetingNewFrequencyReminder,
   GetAllRecurringNewMeeting,
+  meetingStatusUpdate,
 }

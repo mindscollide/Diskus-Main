@@ -4,6 +4,7 @@ import { RefreshToken } from './Auth_action'
 import {
   getAllGroupsUsersAndCommitteesByOrganizaitonID,
   saveMeetingOrganizers,
+  meetingStatusUpdate,
 } from '../../commen/apis/Api_config'
 import { meetingApi } from '../../commen/apis/Api_ends_points'
 
@@ -213,6 +214,108 @@ const SaveMeetingOrganizers = (navigate, Data, t) => {
   }
 }
 
+// save meeting organizers Init
+const updateOrganizerMeetingStatus_init = () => {
+  return {
+    type: actions.UPDATE_ORGANIZERSMEETING_INIT,
+  }
+}
+
+// save meeting organizers success
+const updateOrganizerMeetingStatus_success = (response, message) => {
+  return {
+    type: actions.UPDATE_ORGANIZERSMEETING_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+// save meeting organizers fail
+const updateOrganizerMeetingStatus_fail = (message) => {
+  return {
+    type: actions.UPDATE_ORGANIZERSMEETING_FAIL,
+    message: message,
+  }
+}
+
+// Save Meeting Organizers Api
+const UpdateOrganizersMeeting = (navigate, Data, t, setSceduleMeeting) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return async (dispatch) => {
+    dispatch(updateOrganizerMeetingStatus_init())
+    let form = new FormData()
+    form.append('RequestData', JSON.stringify(Data))
+    form.append('RequestMethod', meetingStatusUpdate.RequestMethod)
+    await axios({
+      method: 'post',
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(
+            UpdateOrganizersMeeting(navigate, Data, t, setSceduleMeeting),
+          )
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Meeting_MeetingServiceManager_MeetingStatusUpdate_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                updateOrganizerMeetingStatus_success(
+                  response.data.responseResult,
+                  t('Record-updated'),
+                ),
+              )
+              setSceduleMeeting(false)
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Meeting_MeetingServiceManager_MeetingStatusUpdate_02'.toLowerCase(),
+                )
+            ) {
+              dispatch(
+                updateOrganizerMeetingStatus_fail(t('Record-not-updated')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Meeting_MeetingServiceManager_MeetingStatusUpdate_03'.toLowerCase(),
+                )
+            ) {
+              dispatch(
+                updateOrganizerMeetingStatus_fail(t('Something-went-wrong')),
+              )
+            } else {
+              dispatch(
+                updateOrganizerMeetingStatus_fail(t('Something-went-wrong')),
+              )
+            }
+          } else {
+            dispatch(
+              updateOrganizerMeetingStatus_fail(t('Something-went-wrong')),
+            )
+          }
+        } else {
+          dispatch(updateOrganizerMeetingStatus_fail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(updateOrganizerMeetingStatus_fail(t('Something-went-wrong')))
+      })
+  }
+}
+
 const clearResponseMessage = (message) => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_MO,
@@ -226,4 +329,5 @@ export {
   selectedMeetingOrganizers,
   SaveMeetingOrganizers,
   clearResponseMessage,
+  UpdateOrganizersMeeting,
 }

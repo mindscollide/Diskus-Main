@@ -35,6 +35,8 @@ const ModalOrganizor = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  let currentMeetingID = Number(localStorage.getItem('meetingID'))
+
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state,
   )
@@ -51,7 +53,7 @@ const ModalOrganizor = () => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: 1424,
+      MeetingID: currentMeetingID,
     }
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t))
   }, [])

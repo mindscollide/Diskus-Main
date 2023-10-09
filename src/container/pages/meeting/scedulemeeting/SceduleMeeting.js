@@ -1,168 +1,168 @@
-import React, { useState } from "react";
-import styles from "./SceduleMeeting.module.css";
-import { Col, Row } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
+import React, { useState } from 'react'
+import styles from './SceduleMeeting.module.css'
+import { Col, Row } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { Paper } from '@material-ui/core'
 import {
   Button,
   TextField,
   Loader,
   Notification,
-} from "../../../../components/elements";
-import MeetingDetails from "./meetingDetails/MeetingDetails";
-import Organizers from "./Organizers/Organizers";
-import AgendaContributers from "./AgendaContributors/AgendaContributers";
-import Participants from "./Participants/Participants";
-import Agenda from "./Agenda/Agenda";
-import MeetingMaterial from "./MeetingMaterial/MeetingMaterial";
-import Minutes from "./Minutes/Minutes";
-import ProposedMeetingDate from "./Participants/ProposedMeetingDate/ProposedMeetingDate";
-import Actions from "./Actions/Actions";
-import Polls from "./Polls/Polls";
-import Attendence from "./Attendence/Attendence";
+} from '../../../../components/elements'
+import MeetingDetails from './meetingDetails/MeetingDetails'
+import Organizers from './Organizers/Organizers'
+import AgendaContributers from './AgendaContributors/AgendaContributers'
+import Participants from './Participants/Participants'
+import Agenda from './Agenda/Agenda'
+import MeetingMaterial from './MeetingMaterial/MeetingMaterial'
+import Minutes from './Minutes/Minutes'
+import ProposedMeetingDate from './Participants/ProposedMeetingDate/ProposedMeetingDate'
+import Actions from './Actions/Actions'
+import Polls from './Polls/Polls'
+import Attendence from './Attendence/Attendence'
 const SceduleMeeting = ({ setSceduleMeeting }) => {
-  const { t } = useTranslation();
-  const [meetingDetails, setmeetingDetails] = useState(true);
-  const [organizers, setorganizers] = useState(false);
-  const [agendaContributors, setAgendaContributors] = useState(false);
-  const [participants, setParticipants] = useState(false);
-  const [agenda, setAgenda] = useState(false);
-  const [meetingMaterial, setMeetingMaterial] = useState(false);
-  const [minutes, setMinutes] = useState(false);
-  const [proposedMeetingDates, setProposedMeetingDates] = useState(false);
-  const [actionsPage, setactionsPage] = useState(false);
-  const [polls, setPolls] = useState(false);
-  const [attendance, setAttendance] = useState(false);
+  const { t } = useTranslation()
+  const [meetingDetails, setmeetingDetails] = useState(true)
+  const [organizers, setorganizers] = useState(false)
+  const [agendaContributors, setAgendaContributors] = useState(false)
+  const [participants, setParticipants] = useState(false)
+  const [agenda, setAgenda] = useState(false)
+  const [meetingMaterial, setMeetingMaterial] = useState(false)
+  const [minutes, setMinutes] = useState(false)
+  const [proposedMeetingDates, setProposedMeetingDates] = useState(false)
+  const [actionsPage, setactionsPage] = useState(false)
+  const [polls, setPolls] = useState(false)
+  const [attendance, setAttendance] = useState(false)
 
   const showMeetingDeitals = () => {
-    setmeetingDetails(true);
-    setorganizers(false);
-    setAgendaContributors(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-  };
+    setmeetingDetails(true)
+    setorganizers(false)
+    setAgendaContributors(false)
+    setParticipants(false)
+    setAgenda(false)
+    setMinutes(false)
+    setactionsPage(false)
+    setAttendance(false)
+    setPolls(false)
+    setMeetingMaterial(false)
+  }
 
   const showOrganizers = () => {
-    setorganizers(true);
-    setmeetingDetails(false);
-    setAgendaContributors(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-  };
+    setorganizers(true)
+    setmeetingDetails(false)
+    setAgendaContributors(false)
+    setParticipants(false)
+    setAgenda(false)
+    setMinutes(false)
+    setactionsPage(false)
+    setAttendance(false)
+    setPolls(false)
+    setMeetingMaterial(false)
+  }
 
   const showAgendaContributers = () => {
-    setAgendaContributors(true);
-    setmeetingDetails(false);
-    setorganizers(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-  };
+    setAgendaContributors(true)
+    setmeetingDetails(false)
+    setorganizers(false)
+    setParticipants(false)
+    setAgenda(false)
+    setMinutes(false)
+    setactionsPage(false)
+    setAttendance(false)
+    setPolls(false)
+    setMeetingMaterial(false)
+  }
 
   const showParticipants = () => {
-    setParticipants(true);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setmeetingDetails(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-  };
+    setParticipants(true)
+    setAgendaContributors(false)
+    setorganizers(false)
+    setmeetingDetails(false)
+    setAgenda(false)
+    setMinutes(false)
+    setactionsPage(false)
+    setAttendance(false)
+    setPolls(false)
+    setMeetingMaterial(false)
+  }
 
   const showAgenda = () => {
-    setAgenda(true);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setmeetingDetails(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-  };
+    setAgenda(true)
+    setParticipants(false)
+    setAgendaContributors(false)
+    setorganizers(false)
+    setmeetingDetails(false)
+    setMinutes(false)
+    setactionsPage(false)
+    setAttendance(false)
+    setPolls(false)
+    setMeetingMaterial(false)
+  }
 
   const showMeetingMaterial = () => {
-    setMeetingMaterial(true);
-    setAgenda(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setmeetingDetails(false);
-  };
+    setMeetingMaterial(true)
+    setAgenda(false)
+    setParticipants(false)
+    setAgendaContributors(false)
+    setorganizers(false)
+    setMinutes(false)
+    setactionsPage(false)
+    setAttendance(false)
+    setPolls(false)
+    setmeetingDetails(false)
+  }
 
   const showMinutes = () => {
-    setMinutes(true);
-    setMeetingMaterial(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setmeetingDetails(false);
-    setorganizers(false);
-    setAgenda(false);
-    setAttendance(false);
-    setPolls(false);
-    setactionsPage(false);
-  };
+    setMinutes(true)
+    setMeetingMaterial(false)
+    setParticipants(false)
+    setAgendaContributors(false)
+    setmeetingDetails(false)
+    setorganizers(false)
+    setAgenda(false)
+    setAttendance(false)
+    setPolls(false)
+    setactionsPage(false)
+  }
 
   const showActions = () => {
-    setactionsPage(true);
-    setMinutes(false);
-    setMeetingMaterial(false);
-    setAgenda(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setAttendance(false);
-    setPolls(false);
-    setmeetingDetails(false);
-  };
+    setactionsPage(true)
+    setMinutes(false)
+    setMeetingMaterial(false)
+    setAgenda(false)
+    setParticipants(false)
+    setAgendaContributors(false)
+    setorganizers(false)
+    setAttendance(false)
+    setPolls(false)
+    setmeetingDetails(false)
+  }
 
   const ShowPolls = () => {
-    setPolls(true);
-    setactionsPage(false);
-    setMinutes(false);
-    setMeetingMaterial(false);
-    setAgenda(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setAttendance(false);
-    setmeetingDetails(false);
-  };
+    setPolls(true)
+    setactionsPage(false)
+    setMinutes(false)
+    setMeetingMaterial(false)
+    setAgenda(false)
+    setParticipants(false)
+    setAgendaContributors(false)
+    setorganizers(false)
+    setAttendance(false)
+    setmeetingDetails(false)
+  }
 
   const showAttendance = () => {
-    setAttendance(true);
-    setactionsPage(false);
-    setMinutes(false);
-    setMeetingMaterial(false);
-    setAgenda(false);
-    setParticipants(false);
-    setAgendaContributors(false);
-    setorganizers(false);
-    setmeetingDetails(false);
-    setPolls(false);
-  };
+    setAttendance(true)
+    setactionsPage(false)
+    setMinutes(false)
+    setMeetingMaterial(false)
+    setAgenda(false)
+    setParticipants(false)
+    setAgendaContributors(false)
+    setorganizers(false)
+    setmeetingDetails(false)
+    setPolls(false)
+  }
 
   return (
     <>
@@ -175,8 +175,8 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
           <section>
             <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
-                <span className={styles["Scedule_newMeeting_Heading"]}>
-                  {t("IT-departmental-meeting")}
+                <span className={styles['Scedule_newMeeting_Heading']}>
+                  {t('IT-departmental-meeting')}
                 </span>
 
                 {/*               
@@ -187,7 +187,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
             </Row>
             <Row>
               <Col lg={12} md={12} sm={12} className="mb-4">
-                <Paper className={styles["Scedule_meeting_paper"]}>
+                <Paper className={styles['Scedule_meeting_paper']}>
                   <Row>
                     <Col
                       lg={12}
@@ -196,92 +196,92 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                       className="d-flex gap-2 flex-wrap"
                     >
                       <Button
-                        text={t("Meeting-details")}
+                        text={t('Meeting-details')}
                         className={
                           meetingDetails === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                            ? styles['Schedule_meetings_options_active']
+                            : styles['Schedule_meetings_options']
                         }
                         onClick={showMeetingDeitals}
                       />
                       <Button
-                        text={t("Organizers")}
+                        text={t('Organizers')}
                         className={
                           organizers === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                            ? styles['Schedule_meetings_options_active']
+                            : styles['Schedule_meetings_options']
                         }
                         onClick={showOrganizers}
                       />
                       <Button
-                        text={t("Agenda-contributors")}
+                        text={t('Agenda-contributors')}
                         className={
                           agendaContributors === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                            ? styles['Schedule_meetings_options_active']
+                            : styles['Schedule_meetings_options']
                         }
                         onClick={showAgendaContributers}
                       />
                       <Button
-                        text={t("Participants")}
+                        text={t('Participants')}
                         className={
                           participants === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                            ? styles['Schedule_meetings_options_active']
+                            : styles['Schedule_meetings_options']
                         }
                         onClick={showParticipants}
                       />
                       <Button
-                        text={t("Agenda")}
+                        text={t('Agenda')}
                         className={
                           agenda === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                            ? styles['Schedule_meetings_options_active']
+                            : styles['Schedule_meetings_options']
                         }
                         onClick={showAgenda}
                       />
                       <Button
-                        text={t("Meeting-material")}
+                        text={t('Meeting-material')}
                         className={
                           meetingMaterial === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                            ? styles['Schedule_meetings_options_active']
+                            : styles['Schedule_meetings_options']
                         }
                         onClick={showMeetingMaterial}
                       />
                       <Button
-                        text={t("Minutes")}
+                        text={t('Minutes')}
                         className={
                           minutes === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                            ? styles['Schedule_meetings_options_active']
+                            : styles['Schedule_meetings_options']
                         }
                         onClick={showMinutes}
                       />
                       <Button
-                        text={t("Actions")}
+                        text={t('Actions')}
                         className={
                           actionsPage === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                            ? styles['Schedule_meetings_options_active']
+                            : styles['Schedule_meetings_options']
                         }
                         onClick={showActions}
                       />
                       <Button
-                        text={t("Polls")}
+                        text={t('Polls')}
                         className={
                           polls === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                            ? styles['Schedule_meetings_options_active']
+                            : styles['Schedule_meetings_options']
                         }
                         onClick={ShowPolls}
                       />
                       <Button
-                        text={t("Attendence")}
+                        text={t('Attendence')}
                         className={
                           attendance === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
+                            ? styles['Schedule_meetings_options_active']
+                            : styles['Schedule_meetings_options']
                         }
                         onClick={showAttendance}
                       />
@@ -299,6 +299,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                     <Organizers
                       setAgendaContributors={setAgendaContributors}
                       setorganizers={setorganizers}
+                      setSceduleMeeting={setSceduleMeeting}
                     />
                   )}
                   {agendaContributors && (
@@ -328,7 +329,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default SceduleMeeting;
+export default SceduleMeeting

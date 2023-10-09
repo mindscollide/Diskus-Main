@@ -34,9 +34,14 @@ import OrganizersViewPage from './OrganizerViewPage/OrganizersViewPage'
 import {
   SaveMeetingOrganizers,
   clearResponseMessage,
+  UpdateOrganizersMeeting,
 } from '../../../../../store/actions/MeetingOrganizers_action'
 
-const Organizers = ({ setAgendaContributors, setorganizers }) => {
+const Organizers = ({
+  setAgendaContributors,
+  setorganizers,
+  setSceduleMeeting,
+}) => {
   const { t } = useTranslation()
 
   const dispatch = useDispatch()
@@ -44,6 +49,8 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
   const navigate = useNavigate()
 
   let currentLanguage = localStorage.getItem('i18nextLng')
+
+  let currentMeetingID = Number(localStorage.getItem('meetingID'))
 
   const [viewOrganizers, setviewOrganizers] = useState(false)
 
@@ -390,7 +397,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
   useEffect(() => {
     // Perform the data transformation here
     const transformedMeetingOrganizers = rowsData.map((item) => ({
-      MeetingID: 1424, // You can set the MeetingID as needed
+      MeetingID: currentMeetingID, // You can set the MeetingID as needed
       IsPrimaryOrganizer: item.IsPrimaryOrganizer,
       IsOrganizerNotified: item.IsOrganizerNotified,
       Title: item.Title,
@@ -412,10 +419,14 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
     dispatch(SaveMeetingOrganizers(navigate, transformedData, t))
     setorganizers(false)
     setAgendaContributors(true)
+    setRowsData([])
   }
 
-  const EnableOrganizersView = () => {
-    setviewOrganizers(!viewOrganizers)
+  const publishMeeting = () => {
+    // setviewOrganizers(!viewOrganizers)
+    let Data = { MeetingID: currentMeetingID, StatusID: 1 }
+    dispatch(UpdateOrganizersMeeting(navigate, Data, t, setSceduleMeeting))
+    setRowsData([])
   }
 
   const enableEditButton = () => {
@@ -557,7 +568,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
                 <Button
                   text={t('Publish-the-meeting')}
                   className={styles['publish_button_Organization']}
-                  onClick={EnableOrganizersView}
+                  onClick={publishMeeting}
                 />
                 <Button
                   text={t('Cancel')}
@@ -578,8 +589,6 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
           </Row>
         </>
       )}
-
-      {MeetingOrganizersReducer.LoadingMeetingOrganizer ? <Loader /> : null}
 
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 

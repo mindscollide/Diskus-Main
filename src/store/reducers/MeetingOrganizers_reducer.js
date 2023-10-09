@@ -8,6 +8,7 @@ const initialState = {
   MeetingOrganizersData: [],
   SelectedMeetingOrganizersData: [],
   LoadingMeetingOrganizer: false,
+  MeetingStatusUpdateData: [],
 }
 
 const MeetingOrganizersReducer = (state = initialState, action) => {
@@ -15,13 +16,13 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
     case actions.GETALLCOMMITTEESUSERSANDGROUPS_INIT: {
       return {
         ...state,
-        Loading: true,
+        // Loading: true,
       }
     }
     case actions.GETALLCOMMITTEESUSERSANDGROUPS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         AllUserCommitteesGroupsData: action.response,
         ResponseMessage: action.message,
       }
@@ -29,7 +30,7 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
     case actions.GETALLCOMMITTEESUSERSANDGROUPS_FAIL: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         AllUserCommitteesGroupsData: [],
         ResponseMessage: action.message,
       }
@@ -75,6 +76,29 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
     case actions.CLEAR_RESPONSEMESSAGE_MO: {
       return {
         ...state,
+        ResponseMessage: action.message,
+      }
+    }
+
+    case actions.UPDATE_ORGANIZERSMEETING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      }
+    }
+    case actions.UPDATE_ORGANIZERSMEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        MeetingStatusUpdateData: action.response,
+        ResponseMessage: action.message,
+      }
+    }
+    case actions.UPDATE_ORGANIZERSMEETING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        MeetingStatusUpdateData: [],
         ResponseMessage: action.message,
       }
     }
