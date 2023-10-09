@@ -1,4 +1,8 @@
+import axios from "axios";
+import { searchUserMeetings } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
+import { meetingApi } from "../../commen/apis/Api_ends_points";
+import { RefreshToken } from "./Auth_action";
 
 const showAddUserModal = (response) => {
   return {
@@ -217,6 +221,100 @@ const showCastVoteAgendaModal = (response) => {
   };
 };
 
+// Search Meeting Init
+const SearchMeeting_Init = () => {
+  return {
+    type: actions.GET_SEARCH_NEW_MEETINGS_INIT,
+  };
+};
+// Search Meeting Init
+const SearchMeeting_Success = (response, message) => {
+  return {
+    type: actions.GET_SEARCH_NEW_MEETINGS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+// Search Meeting Init
+const SearchMeeting_Fail = (message) => {
+  return {
+    type: actions.GET_SEARCH_NEW_MEETINGS_FAIL,
+    message: message,
+  };
+};
+const searchNewUserMeeting = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(SearchMeeting_Init());
+    let form = new FormData();
+    form.append("RequestMethod", searchUserMeetings.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "responseresponseresponse");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(searchNewUserMeeting(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                SearchMeeting_Success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase()
+                )
+            ) {
+              dispatch(SearchMeeting_Fail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_03".toLowerCase()
+                )
+            ) {
+              dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
+            } else {
+              dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const clearMeetingState = () => {
+  return {
+    type: actions.CLEAR_NEWMEETINGSTATE,
+  };
+};
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -249,4 +347,6 @@ export {
   showSceduleProposedMeeting,
   showviewVotesAgenda,
   showCastVoteAgendaModal,
+  searchNewUserMeeting,
+  clearMeetingState,
 };
