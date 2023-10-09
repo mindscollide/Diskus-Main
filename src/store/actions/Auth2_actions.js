@@ -502,6 +502,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 response.data.responseResult.authToken.name,
               )
               localStorage.setItem(
+                'userEmail',
+                response.data.responseResult.authToken.userName,
+              )
+              localStorage.setItem(
                 'token',
                 JSON.stringify(response.data.responseResult.authToken.token),
               )
@@ -1521,6 +1525,10 @@ const createPasswordAction = (value, navigate, t) => {
                 response.data.responseResult.authToken.name,
               )
               localStorage.setItem(
+                'userEmail',
+                response.data.responseResult.authToken.userName,
+              )
+              localStorage.setItem(
                 'token',
                 JSON.stringify(response.data.responseResult.authToken.token),
               )
@@ -1759,6 +1767,10 @@ const createPasswordAction = (value, navigate, t) => {
                   response.data.responseResult.authToken.name,
                 )
                 localStorage.setItem(
+                  'userEmail',
+                  response.data.responseResult.authToken.userName,
+                )
+                localStorage.setItem(
                   'token',
                   JSON.stringify(response.data.responseResult.authToken.token),
                 )
@@ -1923,6 +1935,10 @@ const createPasswordAction = (value, navigate, t) => {
                   response.data.responseResult.authToken.name,
                 )
                 localStorage.setItem(
+                  'userEmail',
+                  response.data.responseResult.authToken.userName,
+                )
+                localStorage.setItem(
                   'token',
                   JSON.stringify(response.data.responseResult.authToken.token),
                 )
@@ -2012,6 +2028,10 @@ const createPasswordAction = (value, navigate, t) => {
                   localStorage.setItem(
                     'name',
                     response.data.responseResult.authToken.name,
+                  )
+                  localStorage.setItem(
+                    'userEmail',
+                    response.data.responseResult.authToken.userName,
                   )
                   localStorage.setItem(
                     'token',
@@ -2218,6 +2238,10 @@ const createPasswordAction = (value, navigate, t) => {
                     response.data.responseResult.authToken.name,
                   )
                   localStorage.setItem(
+                    'userEmail',
+                    response.data.responseResult.authToken.userName,
+                  )
+                  localStorage.setItem(
                     'token',
                     JSON.stringify(
                       response.data.responseResult.authToken.token,
@@ -2261,6 +2285,10 @@ const createPasswordAction = (value, navigate, t) => {
                     response.data.responseResult.authToken.name,
                   )
                   localStorage.setItem(
+                    'userEmail',
+                    response.data.responseResult.authToken.userName,
+                  )
+                  localStorage.setItem(
                     'token',
                     JSON.stringify(
                       response.data.responseResult.authToken.token,
@@ -2302,6 +2330,10 @@ const createPasswordAction = (value, navigate, t) => {
                   localStorage.setItem(
                     'name',
                     response.data.responseResult.authToken.name,
+                  )
+                  localStorage.setItem(
+                    'userEmail',
+                    response.data.responseResult.authToken.userName,
                   )
                   localStorage.setItem(
                     'token',
@@ -2353,6 +2385,10 @@ const createPasswordAction = (value, navigate, t) => {
                     response.data.responseResult.authToken.name,
                   )
                   localStorage.setItem(
+                    'userEmail',
+                    response.data.responseResult.authToken.userName,
+                  )
+                  localStorage.setItem(
                     'token',
                     JSON.stringify(
                       response.data.responseResult.authToken.token,
@@ -2396,6 +2432,10 @@ const createPasswordAction = (value, navigate, t) => {
                     response.data.responseResult.authToken.name,
                   )
                   localStorage.setItem(
+                    'userEmail',
+                    response.data.responseResult.authToken.userName,
+                  )
+                  localStorage.setItem(
                     'token',
                     JSON.stringify(
                       response.data.responseResult.authToken.token,
@@ -2437,6 +2477,10 @@ const createPasswordAction = (value, navigate, t) => {
                   localStorage.setItem(
                     'name',
                     response.data.responseResult.authToken.name,
+                  )
+                  localStorage.setItem(
+                    'userEmail',
+                    response.data.responseResult.authToken.userName,
                   )
                   localStorage.setItem(
                     'token',
@@ -2488,6 +2532,10 @@ const createPasswordAction = (value, navigate, t) => {
                     response.data.responseResult.authToken.name,
                   )
                   localStorage.setItem(
+                    'userEmail',
+                    response.data.responseResult.authToken.userName,
+                  )
+                  localStorage.setItem(
                     'token',
                     JSON.stringify(
                       response.data.responseResult.authToken.token,
@@ -2531,6 +2579,10 @@ const createPasswordAction = (value, navigate, t) => {
                     response.data.responseResult.authToken.name,
                   )
                   localStorage.setItem(
+                    'userEmail',
+                    response.data.responseResult.authToken.userName,
+                  )
+                  localStorage.setItem(
                     'token',
                     JSON.stringify(
                       response.data.responseResult.authToken.token,
@@ -2572,6 +2624,10 @@ const createPasswordAction = (value, navigate, t) => {
                   localStorage.setItem(
                     'name',
                     response.data.responseResult.authToken.name,
+                  )
+                  localStorage.setItem(
+                    'userEmail',
+                    response.data.responseResult.authToken.userName,
                   )
                   localStorage.setItem(
                     'token',

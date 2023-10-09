@@ -1,122 +1,122 @@
-import React, { useEffect, useRef, useState } from "react";
-import styles from "./MeetingDetails.module.css";
-import { useTranslation } from "react-i18next";
-import MeetingVideoChatIcon from "../../../../../assets/images/ColoredVideo.svg";
-import Select from "react-select";
-import DatePicker from "react-multi-date-picker";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
-import { DateObject } from "react-multi-date-picker";
-import InputIcon from "react-multi-date-picker/components/input_icon";
-import gregorian from "react-date-object/calendars/gregorian";
-import gregorian_en from "react-date-object/locales/gregorian_en";
-import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
-import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-import whiteVideIcon from "../../../../../assets/images/whiteVideoIcon.png";
-import { Col, Row } from "react-bootstrap";
-import { Button, Switch, TextField } from "../../../../../components/elements";
-import desh from "../../../../../assets/images/desh.svg";
+import React, { useEffect, useRef, useState } from 'react'
+import styles from './MeetingDetails.module.css'
+import { useTranslation } from 'react-i18next'
+import MeetingVideoChatIcon from '../../../../../assets/images/ColoredVideo.svg'
+import Select from 'react-select'
+import DatePicker from 'react-multi-date-picker'
+import TimePicker from 'react-multi-date-picker/plugins/time_picker'
+import arabic from 'react-date-object/calendars/arabic'
+import arabic_ar from 'react-date-object/locales/arabic_ar'
+import { DateObject } from 'react-multi-date-picker'
+import InputIcon from 'react-multi-date-picker/components/input_icon'
+import gregorian from 'react-date-object/calendars/gregorian'
+import gregorian_en from 'react-date-object/locales/gregorian_en'
+import plusFaddes from '../../../../../assets/images/PlusFadded.svg'
+import redcrossIcon from '../../../../../assets/images/Artboard 9.png'
+import whiteVideIcon from '../../../../../assets/images/whiteVideoIcon.png'
+import { Col, Row } from 'react-bootstrap'
+import { Button, Switch, TextField } from '../../../../../components/elements'
+import desh from '../../../../../assets/images/desh.svg'
 import {
   regexOnlyCharacters,
   urlPatternValidation,
   validateInput,
-} from "../../../../../commen/functions/regex";
-import MeetingActive from "./MeetingActivePage/MeetingActive";
-import PublishedMeeting from "./PublishedMeeting/PublishedMeeting";
-import moment from "moment";
-import TextFieldTime from "../../../../../components/elements/input_field_time/Input_field";
+} from '../../../../../commen/functions/regex'
+import MeetingActive from './MeetingActivePage/MeetingActive'
+import PublishedMeeting from './PublishedMeeting/PublishedMeeting'
+import moment from 'moment'
+import TextFieldTime from '../../../../../components/elements/input_field_time/Input_field'
 
 const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
-  const { t } = useTranslation();
-  const [options, setOptions] = useState([]);
+  const { t } = useTranslation()
+  const [options, setOptions] = useState([])
   const [rows, setRows] = useState([
-    { selectedOption: "", startDate: "", endDate: "" },
-  ]);
+    { selectedOption: '', startDate: '', endDate: '' },
+  ])
 
-  console.log(rows[0].selectedOption, "selectedOptionselectedOption");
-  console.log(rows[0].startDate, "selectedOptionselectedOption");
-  console.log(rows[0].endDate, "selectedOptionselectedOption");
+  console.log(rows[0].selectedOption, 'selectedOptionselectedOption')
+  console.log(rows[0].startDate, 'selectedOptionselectedOption')
+  console.log(rows[0].endDate, 'selectedOptionselectedOption')
 
   //For Custom language datepicker
-  const [meetingDate, setMeetingDate] = useState("");
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
-  const calendRef = useRef();
-  const [error, seterror] = useState(false);
-  const [activeVideo, setActiveVideo] = useState(false);
-  const [saveMeeting, setSaveMeeting] = useState(false);
+  const [meetingDate, setMeetingDate] = useState('')
+  let currentLanguage = localStorage.getItem('i18nextLng')
+  const [calendarValue, setCalendarValue] = useState(gregorian)
+  const [localValue, setLocalValue] = useState(gregorian_en)
+  const calendRef = useRef()
+  const [error, seterror] = useState(false)
+  const [activeVideo, setActiveVideo] = useState(false)
+  const [saveMeeting, setSaveMeeting] = useState(false)
   const [meetingDetails, setMeetingDetails] = useState({
-    MeetingTitle: "",
-    MeetingType: "",
-    Location: "",
-    Description: "",
-    Link: "",
+    MeetingTitle: '',
+    MeetingType: '',
+    Location: '',
+    Description: '',
+    Link: '',
     ReminderFrequency: 0,
     ReminderFrequencyTwo: 0,
     ReminderFrequencyThree: 0,
-    Notes: "",
+    Notes: '',
     groupChat: false,
     AllowRSPV: false,
     NotifyMeetingOrganizer: false,
     RecurringOptions: 0,
-    Location: "",
-  });
+    Location: '',
+  })
 
   const handleSelectChange = (selectedOption) => {
-    setOptions({ ...options, selectedOption });
-  };
+    setOptions({ ...options, selectedOption })
+  }
 
   const handleMeetingSelectChange = (selectedOption) => {
-    setOptions({ ...options, selectedOption });
-  };
+    setOptions({ ...options, selectedOption })
+  }
 
   const handleRecurringSelectoptions = (selectedOption) => {
-    setMeetingDetails({ ...meetingDetails, RecurringOptions: selectedOption });
-  };
+    setMeetingDetails({ ...meetingDetails, RecurringOptions: selectedOption })
+  }
 
   const handleStartDateChange = (index, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].startDate = date;
-    setRows(updatedRows);
-  };
+    const updatedRows = [...rows]
+    updatedRows[index].startDate = date
+    setRows(updatedRows)
+  }
 
   const handleEndDateChange = (index, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].endDate = date;
-    setRows(updatedRows);
-  };
+    const updatedRows = [...rows]
+    updatedRows[index].endDate = date
+    setRows(updatedRows)
+  }
 
   const addRow = () => {
-    const lastRow = rows[rows.length - 1];
+    const lastRow = rows[rows.length - 1]
     if (isValidRow(lastRow)) {
-      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+      setRows([...rows, { selectedOption: '', startDate: '', endDate: '' }])
     }
-  };
+  }
 
   const isValidRow = (row) => {
     return (
-      row.selectedOption !== "" && row.startDate !== "" && row.endDate !== ""
-    );
-  };
+      row.selectedOption !== '' && row.startDate !== '' && row.endDate !== ''
+    )
+  }
 
   const HandleCancelFunction = (index) => {
-    let optionscross = [...rows];
-    optionscross.splice(index, 1);
-    setRows(optionscross);
-  };
+    let optionscross = [...rows]
+    optionscross.splice(index, 1)
+    setRows(optionscross)
+  }
 
   const handleUpdateNext = () => {
-    setorganizers(true);
-    setmeetingDetails(false);
-  };
+    setorganizers(true)
+    setmeetingDetails(false)
+  }
 
   const handlePublish = () => {
     //Enable the Error Handling From here
     // seterror(true);
-    setSaveMeeting(!saveMeeting);
-  };
+    setSaveMeeting(!saveMeeting)
+  }
 
   const handleReminderFrequency = (e) => {
     setMeetingDetails({
@@ -124,189 +124,189 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
       ReminderFrequency: e.value,
       ReminderFrequencyTwo: 0, // Reset the second dropdown when changing the first one
       ReminderFrequencyThree: 0, // Reset the third dropdown when changing the first one
-    });
-  };
+    })
+  }
 
   const handleReminderFrequencyTwo = (e) => {
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyTwo: e.value,
       ReminderFrequencyThree: 0, // Reset the third dropdown when changing the second one
-    });
-  };
+    })
+  }
 
   const handleReminderFrequencyThree = (e) => {
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyThree: e.value,
-    });
-  };
+    })
+  }
   const HandleChange = (e, index) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "Meetingtitle") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
+    let name = e.target.name
+    let value = e.target.value
+    if (name === 'Meetingtitle') {
+      let valueCheck = validateInput(value)
+      if (valueCheck !== '') {
         setMeetingDetails({
           ...meetingDetails,
           MeetingTitle: valueCheck,
-        });
+        })
       } else {
         setMeetingDetails({
           ...meetingDetails,
-          MeetingTitle: "",
-        });
+          MeetingTitle: '',
+        })
       }
     }
-    if (name === "MeetingType") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
+    if (name === 'MeetingType') {
+      let valueCheck = validateInput(value)
+      if (valueCheck !== '') {
         setMeetingDetails({
           ...meetingDetails,
           MeetingType: valueCheck,
-        });
+        })
       } else {
         setMeetingDetails({
           ...meetingDetails,
-          MeetingType: "",
-        });
+          MeetingType: '',
+        })
       }
     }
-    if (name === "Location") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
+    if (name === 'Location') {
+      let valueCheck = validateInput(value)
+      if (valueCheck !== '') {
         setMeetingDetails({
           ...meetingDetails,
           Location: valueCheck,
-        });
+        })
       } else {
         setMeetingDetails({
           ...meetingDetails,
-          Location: "",
-        });
+          Location: '',
+        })
       }
     }
-    if (name === "Description") {
-      let valueCheck = regexOnlyCharacters(value);
-      if (valueCheck !== "") {
+    if (name === 'Description') {
+      let valueCheck = regexOnlyCharacters(value)
+      if (valueCheck !== '') {
         setMeetingDetails({
           ...meetingDetails,
           Description: valueCheck,
-        });
+        })
       } else {
         setMeetingDetails({
           ...meetingDetails,
-          Description: "",
-        });
+          Description: '',
+        })
       }
     }
-    if (name === "Link" && value !== "") {
+    if (name === 'Link' && value !== '') {
       if (urlPatternValidation(value)) {
         setMeetingDetails({
           ...meetingDetails,
           Link: value,
-        });
+        })
       } else {
         setMeetingDetails({
           ...meetingDetails,
-          Link: "",
-        });
+          Link: '',
+        })
       }
     }
-  };
+  }
 
   const handleGroupChat = () => {
     setMeetingDetails({
       ...meetingDetails,
       groupChat: !meetingDetails.groupChat,
-    });
-  };
+    })
+  }
 
   const handleRSPV = () => {
     setMeetingDetails({
       ...meetingDetails,
       AllowRSPV: !meetingDetails.AllowRSPV,
-    });
-  };
+    })
+  }
 
   const handleNotifyOrganizers = () => {
     setMeetingDetails({
       ...meetingDetails,
       NotifyMeetingOrganizer: !meetingDetails.NotifyMeetingOrganizer,
-    });
-  };
+    })
+  }
 
   const SelectLocations = [
-    { value: "ConferenceRoom", label: t("Conference-room") },
-    { value: "MeetingRoom", label: t("Meeting-room") },
-    { value: "BoardRoom", label: t("Board-room") },
-    { value: "LoungeArea", label: t("Lounge-area") },
-  ];
+    { value: 'ConferenceRoom', label: t('Conference-room') },
+    { value: 'MeetingRoom', label: t('Meeting-room') },
+    { value: 'BoardRoom', label: t('Board-room') },
+    { value: 'LoungeArea', label: t('Lounge-area') },
+  ]
 
   const selectRecurringOptions = [
-    { value: "nonRecurring", label: t("Non-recurring") },
-    { value: "weekly", label: t("Weekly") },
-    { value: "biWeekly", label: t("Bi-weekly") },
-    { value: "Monthly", label: t("Monthly") },
-    { value: "Quaterly", label: t("Quaterly") },
-    { value: "sixmonthly", label: t("Six-monthly") },
-  ];
+    { value: 'nonRecurring', label: t('Non-recurring') },
+    { value: 'weekly', label: t('Weekly') },
+    { value: 'biWeekly', label: t('Bi-weekly') },
+    { value: 'Monthly', label: t('Monthly') },
+    { value: 'Quaterly', label: t('Quaterly') },
+    { value: 'sixmonthly', label: t('Six-monthly') },
+  ]
 
   const handleVideoCameraButton = () => {
-    setActiveVideo(!activeVideo);
-  };
+    setActiveVideo(!activeVideo)
+  }
 
   //Onchange Function For DatePicker inAdd datess First
   const changeDateStartHandler = (date, index) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new Date(date);
-    setMeetingDate(meetingDateValueFormat);
-    const updatedRows = [...rows];
-    updatedRows[index].selectedOption = DateDate;
-    setRows(updatedRows);
-  };
+    let meetingDateValueFormat = new DateObject(date).format('DD/MM/YYYY')
+    let DateDate = new Date(date)
+    setMeetingDate(meetingDateValueFormat)
+    const updatedRows = [...rows]
+    updatedRows[index].selectedOption = DateDate
+    setRows(updatedRows)
+  }
 
   const FirstReminder = [
-    { value: "OnStartingOfMeeting", label: t("On-starting-of-meeting") },
-    { value: "10minBefore", label: t("10-minutes-before") },
-    { value: "30minBefore", label: t("30-minutes-before") },
-    { value: "1HourBefore", label: t("1-hour-before") },
-    { value: "5HourBefore", label: t("5-hours-before") },
-    { value: "1DayBeofre", label: t("1-day-before") },
-    { value: "3DayBeofre", label: t("7-days-before") },
-  ];
+    { value: 'OnStartingOfMeeting', label: t('On-starting-of-meeting') },
+    { value: '10minBefore', label: t('10-minutes-before') },
+    { value: '30minBefore', label: t('30-minutes-before') },
+    { value: '1HourBefore', label: t('1-hour-before') },
+    { value: '5HourBefore', label: t('5-hours-before') },
+    { value: '1DayBeofre', label: t('1-day-before') },
+    { value: '3DayBeofre', label: t('7-days-before') },
+  ]
 
   const SecondReminder = [
-    { value: "OnStartingOfMeeting", label: t("On-starting-of-meeting") },
-    { value: "10minBefore", label: t("10-minutes-before") },
-    { value: "30minBefore", label: t("30-minutes-before") },
-    { value: "1HourBefore", label: t("1-hour-before") },
-    { value: "5HourBefore", label: t("5-hours-before") },
-    { value: "1DayBeofre", label: t("1-day-before") },
-    { value: "3DayBeofre", label: t("7-days-before") },
-  ];
+    { value: 'OnStartingOfMeeting', label: t('On-starting-of-meeting') },
+    { value: '10minBefore', label: t('10-minutes-before') },
+    { value: '30minBefore', label: t('30-minutes-before') },
+    { value: '1HourBefore', label: t('1-hour-before') },
+    { value: '5HourBefore', label: t('5-hours-before') },
+    { value: '1DayBeofre', label: t('1-day-before') },
+    { value: '3DayBeofre', label: t('7-days-before') },
+  ]
 
   const ThirdReminder = [
-    { value: "OnStartingOfMeeting", label: t("On-starting-of-meeting") },
-    { value: "10minBefore", label: t("10-minutes-before") },
-    { value: "30minBefore", label: t("30-minutes-before") },
-    { value: "1HourBefore", label: t("1-hour-before") },
-    { value: "5HourBefore", label: t("5-hours-before") },
-    { value: "1DayBeofre", label: t("1-day-before") },
-    { value: "3DayBeofre", label: t("7-days-before") },
-  ];
+    { value: 'OnStartingOfMeeting', label: t('On-starting-of-meeting') },
+    { value: '10minBefore', label: t('10-minutes-before') },
+    { value: '30minBefore', label: t('30-minutes-before') },
+    { value: '1HourBefore', label: t('1-hour-before') },
+    { value: '5HourBefore', label: t('5-hours-before') },
+    { value: '1DayBeofre', label: t('1-day-before') },
+    { value: '3DayBeofre', label: t('7-days-before') },
+  ]
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+      if (currentLanguage === 'en') {
+        setCalendarValue(gregorian)
+        setLocalValue(gregorian_en)
+      } else if (currentLanguage === 'ar') {
+        setCalendarValue(arabic)
+        setLocalValue(arabic_ar)
       }
     }
-  }, [currentLanguage]);
+  }, [currentLanguage])
 
   return (
     <section>
@@ -317,8 +317,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
           <Row>
             <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <Button
-                text={t("Start-meeting")}
-                className={styles["Published"]}
+                text={t('Start-meeting')}
+                className={styles['Published']}
               />
             </Col>
           </Row>
@@ -327,7 +327,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
               lg={12}
               md={12}
               sm={12}
-              className={styles["Scroller_meeting_detials"]}
+              className={styles['Scroller_meeting_detials']}
             >
               <Row>
                 {/* First Half */}
@@ -335,9 +335,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                   <Row className="mt-5">
                     <Col lg={12} md={12} sm={12}>
                       <TextField
-                        placeholder={t("Meeting-title")}
-                        applyClass={"meetinInnerSearch"}
-                        name={"Meetingtitle"}
+                        placeholder={t('Meeting-title')}
+                        applyClass={'meetinInnerSearch'}
+                        name={'Meetingtitle'}
                         labelClass="d-none"
                         change={HandleChange}
                         value={meetingDetails.MeetingTitle}
@@ -346,12 +346,12 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         <Col>
                           <p
                             className={
-                              error && meetingDetails.MeetingTitle === ""
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
+                              error && meetingDetails.MeetingTitle === ''
+                                ? ` ${styles['errorMessage-inLogin']} `
+                                : `${styles['errorMessage-inLogin_hidden']}`
                             }
                           >
-                            {t("Please-enter-meeting-title")}
+                            {t('Please-enter-meeting-title')}
                           </p>
                         </Col>
                       </Row>
@@ -361,9 +361,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                     <Col lg={6} md={6} sm={12}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Meeting_type_heading"]}>
-                            {t("Meeting-type")}
-                            <span className={styles["steric"]}>*</span>
+                          <span className={styles['Meeting_type_heading']}>
+                            {t('Meeting-type')}
+                            <span className={styles['steric']}>*</span>
                           </span>
                         </Col>
                       </Row>
@@ -380,12 +380,12 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                             <Col>
                               <p
                                 className={
-                                  error && meetingDetails.MeetingType === ""
-                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                  error && meetingDetails.MeetingType === ''
+                                    ? ` ${styles['errorMessage-inLogin']} `
+                                    : `${styles['errorMessage-inLogin_hidden']}`
                                 }
                               >
-                                {t("Please-select-meeting-type")}
+                                {t('Please-select-meeting-type')}
                               </p>
                             </Col>
                           </Row>
@@ -395,18 +395,18 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                     <Col lg={6} md={6} sm={12}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Meeting_type_heading"]}>
-                            {t("Location")}
-                            <span className={styles["steric"]}>*</span>
+                          <span className={styles['Meeting_type_heading']}>
+                            {t('Location')}
+                            <span className={styles['steric']}>*</span>
                           </span>
                         </Col>
                       </Row>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <TextField
-                            placeholder={t("Location")}
-                            applyClass={"meetinInnerSearch"}
-                            name={"Location"}
+                            placeholder={t('Location')}
+                            applyClass={'meetinInnerSearch'}
+                            name={'Location'}
                             labelClass="d-none"
                             change={HandleChange}
                             value={meetingDetails.Location}
@@ -415,12 +415,12 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                             <Col>
                               <p
                                 className={
-                                  error && meetingDetails.Location === ""
-                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                  error && meetingDetails.Location === ''
+                                    ? ` ${styles['errorMessage-inLogin']} `
+                                    : `${styles['errorMessage-inLogin_hidden']}`
                                 }
                               >
-                                {t("Please-select-location")}
+                                {t('Please-select-location')}
                               </p>
                             </Col>
                           </Row>
@@ -433,11 +433,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       <TextField
                         applyClass="text-area-create-resolution"
                         type="text"
-                        as={"textarea"}
+                        as={'textarea'}
                         rows="4"
-                        placeholder={t("Description") + "*"}
+                        placeholder={t('Description') + '*'}
                         required={true}
-                        name={"Description"}
+                        name={'Description'}
                         change={HandleChange}
                         value={meetingDetails.Description}
                         maxLength={500}
@@ -446,12 +446,12 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         <Col>
                           <p
                             className={
-                              error && meetingDetails.Description === ""
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
+                              error && meetingDetails.Description === ''
+                                ? ` ${styles['errorMessage-inLogin']} `
+                                : `${styles['errorMessage-inLogin_hidden']}`
                             }
                           >
-                            {t("Please-enter-meeting-description")}
+                            {t('Please-enter-meeting-description')}
                           </p>
                         </Col>
                       </Row>
@@ -462,8 +462,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12} className="d-flex gap-3">
                           <Switch onChange={handleGroupChat} />
-                          <span className={styles["Create_group_chat_heading"]}>
-                            {t("Create-group-chat")}
+                          <span className={styles['Create_group_chat_heading']}>
+                            {t('Create-group-chat')}
                           </span>
                         </Col>
                       </Row>
@@ -489,15 +489,15 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                 height="14.75px"
                                 className={
                                   activeVideo
-                                    ? styles["Camera_icon_active_IconStyles"]
-                                    : styles["Camera_icon"]
+                                    ? styles['Camera_icon_active_IconStyles']
+                                    : styles['Camera_icon']
                                 }
                               />
                             }
                             className={
                               activeVideo
-                                ? styles["Camera_icon_Active"]
-                                : styles["Button_not_active"]
+                                ? styles['Camera_icon_Active']
+                                : styles['Button_not_active']
                             }
                             onClick={handleVideoCameraButton}
                           />
@@ -506,11 +506,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                           <TextField
                             disable={true}
                             placeholder={
-                              t("Paste-microsoft-team-zoom-link") + "*"
+                              t('Paste-microsoft-team-zoom-link') + '*'
                             }
-                            applyClass={"meetinInnerSearch"}
+                            applyClass={'meetinInnerSearch'}
                             labelClass="d-none"
-                            name={"Link"}
+                            name={'Link'}
                             change={HandleChange}
                             value={meetingDetails.Link}
                           />
@@ -518,12 +518,12 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                             <Col>
                               <p
                                 className={
-                                  error && meetingDetails.Link === ""
-                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                    : `${styles["errorMessage-inLogin_hidden"]}`
+                                  error && meetingDetails.Link === ''
+                                    ? ` ${styles['errorMessage-inLogin']} `
+                                    : `${styles['errorMessage-inLogin_hidden']}`
                                 }
                               >
-                                {t("Please-enter-meeting-link")}
+                                {t('Please-enter-meeting-link')}
                               </p>
                             </Col>
                           </Row>
@@ -533,9 +533,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                   </Row>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
-                      <span className={styles["Scedule_heading"]}>
-                        {t("Scheduled-on")}
-                        <span className={styles["steric"]}>*</span>
+                      <span className={styles['Scedule_heading']}>
+                        {t('Scheduled-on')}
+                        <span className={styles['steric']}>*</span>
                       </span>
                     </Col>
                   </Row>
@@ -544,7 +544,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Scroller_meeting"]}
+                      className={styles['Scroller_meeting']}
                     >
                       {rows.length > 0
                         ? rows.map((data, index) => {
@@ -556,7 +556,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                       <Col lg={4} md={4} sm={12}>
                                         <DatePicker
                                           selected={rows.selectedOption}
-                                          format={"DD/MM/YYYY"}
+                                          format={'DD/MM/YYYY'}
                                           minDate={moment().toDate()}
                                           placeholder="DD/MM/YYYY"
                                           render={
@@ -581,12 +581,12 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                             <p
                                               className={
                                                 error &&
-                                                data.selectedOption === ""
-                                                  ? ` ${styles["errorMessage-inLogin"]} `
-                                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                                                data.selectedOption === ''
+                                                  ? ` ${styles['errorMessage-inLogin']} `
+                                                  : `${styles['errorMessage-inLogin_hidden']}`
                                               }
                                             >
-                                              {t("Please-select-data-and-time")}
+                                              {t('Please-select-data-and-time')}
                                             </p>
                                           </Col>
                                         </Row>
@@ -658,9 +658,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                           src={redcrossIcon}
                                           width="23px"
                                           height="23px"
-                                          className={styles["Cross_icon_class"]}
+                                          className={styles['Cross_icon_class']}
                                           onClick={() => {
-                                            HandleCancelFunction(index);
+                                            HandleCancelFunction(index)
                                           }}
                                         />
                                       </Col>
@@ -672,19 +672,19 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                     <p
                                       className={
                                         error &&
-                                        rows.selectedOption === "" &&
-                                        rows.startDate === "" &&
-                                        rows.endDate === ""
-                                          ? ` ${styles["errorMessage-inLogin"]} `
-                                          : `${styles["errorMessage-inLogin_hidden"]}`
+                                        rows.selectedOption === '' &&
+                                        rows.startDate === '' &&
+                                        rows.endDate === ''
+                                          ? ` ${styles['errorMessage-inLogin']} `
+                                          : `${styles['errorMessage-inLogin_hidden']}`
                                       }
                                     >
-                                      {t("Please-select-data-and-time")}
+                                      {t('Please-select-data-and-time')}
                                     </p>
                                   </Col>
                                 </Row>
                               </>
-                            );
+                            )
                           })
                         : null}
                     </Col>
@@ -707,14 +707,14 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                   width="15.87px"
                                   height="15.87px"
                                 />
-                                <span className={styles["Add_dates_label"]}>
-                                  {t("Add-dates")}
+                                <span className={styles['Add_dates_label']}>
+                                  {t('Add-dates')}
                                 </span>
                               </Col>
                             </Row>
                           </>
                         }
-                        className={styles["Add_Dates_Btn_Class"]}
+                        className={styles['Add_Dates_Btn_Class']}
                         onClick={addRow}
                         disabled={!isValidRow(rows[rows.length - 1])}
                       />
@@ -726,9 +726,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                   <Row className="mt-4">
                     <Row className="mt-1">
                       <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Frequency_heading"]}>
-                          {t("Reminder-frequency")}
-                          <span className={styles["steric"]}>*</span>
+                        <span className={styles['Frequency_heading']}>
+                          {t('Reminder-frequency')}
+                          <span className={styles['steric']}>*</span>
                         </span>
                       </Col>
                     </Row>
@@ -738,7 +738,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         options={FirstReminder}
                         value={FirstReminder.find(
                           (option) =>
-                            option.value === meetingDetails.ReminderFrequency
+                            option.value === meetingDetails.ReminderFrequency,
                         )}
                         isDisabled={false} // First dropdown should always be enabled
                       />
@@ -749,7 +749,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         options={SecondReminder}
                         value={SecondReminder.find(
                           (option) =>
-                            option.value === meetingDetails.ReminderFrequencyTwo
+                            option.value ===
+                            meetingDetails.ReminderFrequencyTwo,
                         )}
                         isDisabled={meetingDetails.ReminderFrequency === 0} // Disable if first dropdown is not selected
                       />
@@ -761,7 +762,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                         value={ThirdReminder.find(
                           (option) =>
                             option.value ===
-                            meetingDetails.ReminderFrequencyThree
+                            meetingDetails.ReminderFrequencyThree,
                         )}
                         isDisabled={meetingDetails.ReminderFrequencyTwo === 0} // Disable if second dropdown is not selected
                       />
@@ -774,11 +775,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                             meetingDetails.ReminderFrequency === 0 &&
                             meetingDetails.ReminderFrequencyTwo === 0 &&
                             meetingDetails.ReminderFrequencyThree === 0
-                              ? ` ${styles["errorMessage-inLogin"]} `
-                              : `${styles["errorMessage-inLogin_hidden"]}`
+                              ? ` ${styles['errorMessage-inLogin']} `
+                              : `${styles['errorMessage-inLogin_hidden']}`
                           }
                         >
-                          {t("Please-select-reminder-frequency")}
+                          {t('Please-select-reminder-frequency')}
                         </p>
                       </Col>
                     </Row>
@@ -788,9 +789,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       <TextField
                         applyClass="text-area-create-meeting"
                         type="text"
-                        as={"textarea"}
+                        as={'textarea'}
                         rows="6"
-                        placeholder={t("Note-for-this-meeting") + "*"}
+                        placeholder={t('Note-for-this-meeting') + '*'}
                         required={true}
                         maxLength={500}
                         value={meetingDetails.Notes}
@@ -800,11 +801,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                           <p
                             className={
                               error && meetingDetails.Notes === 0
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
+                                ? ` ${styles['errorMessage-inLogin']} `
+                                : `${styles['errorMessage-inLogin_hidden']}`
                             }
                           >
-                            {t("Please-select-reminder-frequency")}
+                            {t('Please-select-reminder-frequency')}
                           </p>
                         </Col>
                       </Row>
@@ -815,8 +816,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       <Row>
                         <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                           <Switch onChange={handleRSPV} />
-                          <span className={styles["Notify_heading"]}>
-                            {t("Allow-rspv")}
+                          <span className={styles['Notify_heading']}>
+                            {t('Allow-rsvp')}
                           </span>
                         </Col>
                       </Row>
@@ -830,8 +831,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                           className="d-flex gap-2 justify-content-start"
                         >
                           <Switch onChange={handleNotifyOrganizers} />
-                          <span className={styles["Notify_heading"]}>
-                            {t("Notify-meeting-organizer-when-members-rspv")}
+                          <span className={styles['Notify_heading']}>
+                            {t('Notify-meeting-organizer-when-members-rsvp')}
                           </span>
                         </Col>
                       </Row>
@@ -839,8 +840,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                   </Row>
                   <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
-                      <span className={styles["reccurring_heading"]}>
-                        {t("Recurring")}
+                      <span className={styles['reccurring_heading']}>
+                        {t('Recurring')}
                       </span>
                     </Col>
                   </Row>
@@ -865,23 +866,23 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
               className="d-flex gap-3 justify-content-end"
             >
               <Button
-                text={t("Delete-meeting")}
-                className={styles["Published"]}
+                text={t('Delete-meeting')}
+                className={styles['Published']}
                 onClick={handlePublish}
               />
               <Button
-                text={t("Publish-the-meeting")}
-                className={styles["Published"]}
+                text={t('Publish-the-meeting')}
+                className={styles['Published']}
                 onClick={handlePublish}
               />
               <Button
-                text={t("Publish")}
-                className={styles["Published"]}
+                text={t('Publish')}
+                className={styles['Published']}
                 onClick={handlePublish}
               />
               <Button
-                text={t("Update-and-next")}
-                className={styles["Update_Next"]}
+                text={t('Update-and-next')}
+                className={styles['Update_Next']}
                 onClick={handleUpdateNext}
               />
             </Col>
@@ -889,7 +890,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
         </>
       )}
     </section>
-  );
-};
+  )
+}
 
-export default MeetingDetails;
+export default MeetingDetails

@@ -1,121 +1,157 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react'
 import {
   Modal,
   Button,
   TextField,
   Checkbox,
-} from "../../../../../../components/elements";
-import { useTranslation } from "react-i18next";
-import styles from "./NotifyOrganizors.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
-import { useNavigate } from "react-router-dom";
-import profile from "../../../../../../assets/images/newprofile.png";
-import { showNotifyOrganizors } from "../../../../../../store/actions/NewMeetingActions";
-import UpperArrow from "../../../../../../assets/images/UpperArrow.svg";
-import { Col, Row } from "react-bootstrap";
-import { style } from "@mui/system";
-import { validateInput } from "../../../../../../commen/functions/regex";
-import downdirect from "../../../../../../assets/images/downDirect.png";
+} from '../../../../../../components/elements'
+import { useTranslation } from 'react-i18next'
+import styles from './NotifyOrganizors.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import BlackCrossIcon from '../../../../../../assets/images/BlackCrossIconModals.svg'
+import { selectedMeetingOrganizers } from '../../../../../../store/actions/MeetingOrganizers_action'
+import { useNavigate } from 'react-router-dom'
+import profile from '../../../../../../assets/images/newprofile.png'
+import { showNotifyOrganizors } from '../../../../../../store/actions/NewMeetingActions'
+import UpperArrow from '../../../../../../assets/images/UpperArrow.svg'
+import { Col, Row } from 'react-bootstrap'
+import { style } from '@mui/system'
+import { validateInput } from '../../../../../../commen/functions/regex'
+import downdirect from '../../../../../../assets/images/downDirect.png'
 
 const NotifyOrganizers = () => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
+    (state) => state,
+  )
   const [notifyOrganizerData, setNotifyOrganizerData] = useState({
-    Messege: "",
+    Messege: '',
     allOrganizersAccept: false,
-  });
+  })
 
-  const [membersHide, setMembersHide] = useState(false);
-  const [allOrganizersAccept, setAllOrganizersAccept] = useState(false);
-  const [members, setMembers] = useState([
-    {
-      name: "saif",
-    },
-    {
-      name: "owais wAJID",
-    },
-    {
-      name: "ALI RAZA",
-    },
-    {
-      name: "huzeifa",
-    },
-    {
-      name: "mamdani",
-    },
-    {
-      name: "aun",
-    },
-    {
-      name: "saroush",
-    },
-  ]);
+  const [membersHide, setMembersHide] = useState(false)
+  const [allOrganizersAccept, setAllOrganizersAccept] = useState(false)
+  // const [members, setMembers] = useState([
+  //   {
+  //     name: 'saif',
+  //   },
+  //   {
+  //     name: 'owais wAJID',
+  //   },
+  //   {
+  //     name: 'ALI RAZA',
+  //   },
+  //   {
+  //     name: 'huzeifa',
+  //   },
+  //   {
+  //     name: 'mamdani',
+  //   },
+  //   {
+  //     name: 'aun',
+  //   },
+  //   {
+  //     name: 'saroush',
+  //   },
+  // ])
+
+  const [membersOrganizers, setMembersOrganizers] = useState([])
 
   const [memberCheckboxes, setMemberCheckboxes] = useState(
-    members.map(() => false)
-  );
+    membersOrganizers.map(() => false),
+  )
 
   const handleCrossIcon = () => {
-    dispatch(showNotifyOrganizors(false));
-  };
+    dispatch(showNotifyOrganizors(false))
+  }
 
   const HandleChange = (e, index) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "Message") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
+    let name = e.target.name
+    let value = e.target.value
+    if (name === 'Message') {
+      let valueCheck = validateInput(value)
+      if (valueCheck !== '') {
         setNotifyOrganizerData({
           ...notifyOrganizerData,
           Messege: valueCheck,
-        });
+        })
       } else {
         setNotifyOrganizerData({
           ...notifyOrganizerData,
-          Messege: "",
-        });
+          Messege: '',
+        })
       }
     }
-  };
+  }
 
   const handleAllowOrganizerCheck = () => {
-    const updatedCheckboxes = members.map(() => !allOrganizersAccept);
-    setAllOrganizersAccept(!allOrganizersAccept);
-    setMemberCheckboxes(updatedCheckboxes);
-  };
+    const updatedCheckboxes = membersOrganizers.map(() => !allOrganizersAccept)
+    const updatedMembers = membersOrganizers.map((member) => ({
+      ...member,
+      IsOrganizerNotified: !allOrganizersAccept,
+    }))
+
+    setAllOrganizersAccept(!allOrganizersAccept)
+    setMemberCheckboxes(updatedCheckboxes)
+    setMembersOrganizers(updatedMembers)
+  }
 
   const handleHideItems = () => {
-    setMembersHide(!membersHide);
-  };
+    setMembersHide(!membersHide)
+  }
 
-  const handleCheckboxChange = (index, isChecked) => {
-    const updatedCheckboxes = [...memberCheckboxes];
-    updatedCheckboxes[index] = isChecked;
-    setMemberCheckboxes(updatedCheckboxes);
-  };
+  const handleCheckboxChange = (index, isChecked, data) => {
+    const updatedCheckboxes = [...memberCheckboxes]
+    updatedCheckboxes[index] = isChecked
+
+    const updatedMembers = [...membersOrganizers]
+    updatedMembers[index].IsOrganizerNotified = isChecked
+
+    setMemberCheckboxes(updatedCheckboxes)
+    setMembersOrganizers(updatedMembers)
+  }
+
+  const sendNotification = () => {
+    dispatch(showNotifyOrganizors(false))
+    dispatch(selectedMeetingOrganizers(membersOrganizers))
+  }
 
   const handleCancelButton = () => {
-    dispatch(showNotifyOrganizors(false));
-  };
+    dispatch(showNotifyOrganizors(false))
+    dispatch(selectedMeetingOrganizers([]))
+  }
+
+  console.log('MeetingOrganizersReducer', MeetingOrganizersReducer)
+
+  useEffect(() => {
+    if (
+      MeetingOrganizersReducer.MeetingOrganizersData !== undefined &&
+      MeetingOrganizersReducer.MeetingOrganizersData !== null &&
+      MeetingOrganizersReducer.MeetingOrganizersData.length !== 0
+    ) {
+      setMembersOrganizers(MeetingOrganizersReducer.MeetingOrganizersData)
+    }
+  }, [MeetingOrganizersReducer.MeetingOrganizersData])
+
+  console.log('Checkboxes state check', memberCheckboxes, membersOrganizers)
 
   return (
     <section>
       <Modal
         show={NewMeetingreducer.notifyOrganizors}
         setShow={dispatch(showNotifyOrganizors)}
-        modalFooterClassName={"d-block"}
+        modalFooterClassName={'d-block'}
         onHide={() => {
-          dispatch(showNotifyOrganizors(false));
+          dispatch(showNotifyOrganizors(false))
         }}
         ModalBody={
           <>
             <Row>
               <Col lg={5} md={5} sm={12}>
-                <span className={styles["Notify_organisors"]}>
-                  {t("Notify-organizers")}
+                <span className={styles['Notify_organisors']}>
+                  {t('Notify-organizers')}
                 </span>
               </Col>
               <Col lg={7} md={7} sm={12} className="d-flex justify-content-end">
@@ -134,12 +170,13 @@ const NotifyOrganizers = () => {
                 <TextField
                   applyClass="text-area-create-Notify-organizors"
                   type="text"
-                  as={"textarea"}
+                  as={'textarea'}
                   rows="4"
-                  placeholder={t("Message")}
+                  placeholder={t('Message')}
                   change={HandleChange}
                   value={notifyOrganizerData.Messege}
                   required={true}
+                  name="Message"
                   maxLength={500}
                 />
               </Col>
@@ -155,8 +192,8 @@ const NotifyOrganizers = () => {
                   checked={allOrganizersAccept}
                   onChange={handleAllowOrganizerCheck}
                 />
-                <p className={styles["Check_box_title"]}>
-                  {t("All-organizer-except-me")}
+                <p className={styles['Check_box_title']}>
+                  {t('All-organizer-except-me')}
                 </p>
               </Col>
               <Col
@@ -170,7 +207,7 @@ const NotifyOrganizers = () => {
                   src={membersHide ? downdirect : UpperArrow}
                   width="18.4px"
                   height="9.2px"
-                  className={styles["UparrowClasss"]}
+                  className={styles['UparrowClasss']}
                   onClick={handleHideItems}
                 />
               </Col>
@@ -182,17 +219,17 @@ const NotifyOrganizers = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_notify"]}
+                    className={styles['Scroller_notify']}
                   >
                     <Row>
-                      {members.map((data, index) => (
+                      {membersOrganizers.map((data, index) => (
                         <Col lg={6} md={6} sm={12} className="mt-2" key={index}>
                           <Row className="m-0 p-0">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["Box_for_Assignee"]}
+                              className={styles['Box_for_Assignee']}
                             >
                               <Row>
                                 <Col
@@ -203,12 +240,12 @@ const NotifyOrganizers = () => {
                                 >
                                   <img
                                     draggable={false}
-                                    src={profile}
+                                    src={`data:image/jpeg;base64,${data.displayPicture}`}
                                     width="33px"
                                     height="33px"
-                                    className={styles["ProfilePic"]}
+                                    className={styles['ProfilePic']}
                                   />
-                                  <span>{data.name}</span>
+                                  <span>{data.userName}</span>
                                 </Col>
                                 <Col lg={2} md={2} sm={12}>
                                   <Checkbox
@@ -216,7 +253,8 @@ const NotifyOrganizers = () => {
                                     onChange={(e) =>
                                       handleCheckboxChange(
                                         index,
-                                        e.target.checked
+                                        e.target.checked,
+                                        data,
                                       )
                                     }
                                   />
@@ -243,18 +281,22 @@ const NotifyOrganizers = () => {
                 className="d-flex justify-content-end gap-2"
               >
                 <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_button_Notify"]}
+                  text={t('Cancel')}
+                  className={styles['Cancel_button_Notify']}
                   onClick={handleCancelButton}
                 />
-                <Button text={t("Send")} className={styles["Send_Notify"]} />
+                <Button
+                  text={t('Send')}
+                  onClick={sendNotification}
+                  className={styles['Send_Notify']}
+                />
               </Col>
             </Row>
           </>
         }
       />
     </section>
-  );
-};
+  )
+}
 
-export default NotifyOrganizers;
+export default NotifyOrganizers

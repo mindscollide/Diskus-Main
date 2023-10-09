@@ -54,7 +54,7 @@
 }
 
 .Cancel_Organization {
-  padding: 12px 30px !important ;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -67,7 +67,7 @@
 .Cancel_Organization:active,
 .Cancel_Organization:focus,
 .Cancel_Organization:focus-visible {
-  padding: 12px 30px !important ;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -77,7 +77,7 @@
 }
 
 .publish_button_Organization {
-  padding: 12px 30px !important ;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -90,7 +90,7 @@
 .publish_button_Organization:active,
 .publish_button_Organization:focus,
 .publish_button_Organization:focus-visible {
-  padding: 12px 30px !important ;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -108,6 +108,7 @@
   color: #fff;
   font-family: "MontserratSemiBold" !important;
 }
+
 .Next_Organization:hover,
 .Next_Organization:active,
 .Next_Organization:focus,
@@ -152,7 +153,5 @@
   display: flex !important;
   gap: 10px !important;
   justify-content: flex-end;
-  position: absolute !important;
-  right: 120px !important;
-  bottom: 0px !important;
+  margin-top: 30px;
 }
