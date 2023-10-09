@@ -54,6 +54,7 @@ import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import TextFieldTime from "../../components/elements/input_field_time/Input_field";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+// import ClockIcon from "react-multi-date-picker/icons";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { UPDATE_RESOLUTION_BY_RESOLUTION_ID_FAIL } from "../../store/action_types";
 
@@ -1354,6 +1355,17 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
   console.log(createMeeting, "createMeetingcreateMeetingcreateMeeting");
+
+  function CustomInput({ onFocus, value, onChange }) {
+    return (
+      <input
+        onFocus={onFocus}
+        value={value}
+        onChange={onChange}
+        className="input-with-icon"
+      />
+    );
+  }
   return (
     <>
       <Container>
@@ -1460,9 +1472,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         locale={localValue}
                         format="HH:mm A"
                         selected={selectedTime}
+                        render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
                         onChange={handleTimeChange}
                       />
+
                       {/* <TextFieldTime
                         type="time"
                         labelClass="d-none"

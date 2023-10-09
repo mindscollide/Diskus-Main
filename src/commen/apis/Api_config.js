@@ -882,6 +882,10 @@ const getRecentDocumentsRM = {
   RequestMethod: "ServiceManager.GetRecentDocuments",
 };
 
+const getallMeetingType = {
+  RequestMethod: "ServiceManager.GetAllMeetingTypes",
+};
+
 export {
   getRecentDocumentsRM,
   updateProfilePictureRM,
@@ -1120,4 +1124,5 @@ export {
   addAnnotationOnDataroomAttachment,
   getAnnotationOfDataroomAttachment,
   deleteMultipleGroupMessages,
+  getallMeetingType,
 };
