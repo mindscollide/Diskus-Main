@@ -246,13 +246,22 @@ const DataRoom = () => {
       });
     } catch {}
     if (currentView !== null) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
+      if (currentView === 4) {
+        let Data = {
+          UserID: Number(userID),
+          OrganizationID: Number(organizationID),
+        };
+        dispatch(getRecentDocumentsApi(navigate, t, Data));
+      } else {
+        dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
+      }
     } else {
       localStorage.setItem("setTableView", 3);
       dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
     }
     return () => {
       localStorage.removeItem("folderID");
+      localStorage.removeItem("setTableView");
     };
   }, []);
 
@@ -582,369 +591,6 @@ const DataRoom = () => {
   };
 
   const MyRecentTab = [
-    {
-      title: t("Name"),
-      dataIndex: "name",
-      key: "name",
-      width: "200px",
-
-      render: (text, data) => {
-        if (data.isShared) {
-          if (data.isFolder) {
-            return (
-              <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" draggable="false" />
-                <abbr title={text}>
-                  <span
-                    className={`${
-                      styles["dataroom_table_heading"]
-                    } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}
-                  >
-                    {text} <img src={sharedIcon} alt="" draggable="false" />
-                  </span>
-                </abbr>
-              </div>
-            );
-          } else {
-            return (
-              <>
-                <section className="d-flex gap-2">
-                  <img
-                    src={getIconSource(getFileExtension(data.name))}
-                    alt=""
-                    width={"25px"}
-                    height={"25px"}
-                  />
-                  <abbr title={text}>
-                    <span className={styles["dataroom_table_heading"]}>
-                      {text} <img src={sharedIcon} alt="" draggable="false" />
-                    </span>
-                  </abbr>
-                </section>
-              </>
-            );
-          }
-        } else {
-          if (data.isFolder) {
-            return (
-              <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" draggable="false" />
-                <abbr title={text}>
-                  <span
-                    className={`${
-                      styles["dataroom_table_heading"]
-                    } ${"cursor-pointer"}`}
-                    onClick={() => getFolderDocuments(data.id)}
-                  >
-                    {text}{" "}
-                  </span>
-                </abbr>
-              </div>
-            );
-          } else {
-            return (
-              <>
-                <section className="d-flex gap-2">
-                  <img
-                    src={getIconSource(getFileExtension(data.name))}
-                    alt=""
-                    width={"25px"}
-                    height={"25px"}
-                  />
-                  <abbr title={text}>
-                    <span className={styles["dataroom_table_heading"]}>
-                      {text}
-                    </span>
-                  </abbr>
-                </section>
-              </>
-            );
-          }
-        }
-      },
-    },
-    {
-      title: t("Owner"),
-      dataIndex: "owner",
-      key: "owner",
-      width: "90px",
-      sortDirections: ["descend", "ascend"],
-      render: (text, record) => {
-        return <span className={styles["ownerName"]}>{text}</span>;
-      },
-    },
-    {
-      title: currentFilter,
-      dataIndex: "modifiedDate",
-      key: "modifiedDate",
-      width: "110px",
-      align: "center",
-
-      render: (text, data) => {
-        return (
-          <span className={styles["dataroom_table_heading"]}>
-            {_justShowDateformat(text)}
-          </span>
-        );
-      },
-    },
-    {
-      title: t("File-size"),
-      dataIndex: "fileSize",
-      key: "fileSize",
-      width: "90px",
-      render: (text, record) => {
-        return <span className={styles["ownerName"]}>{text}</span>;
-      },
-    },
-    {
-      title: (
-        <span className={styles["dataroom_location"]}>{t("Location")}</span>
-      ),
-      dataIndex: "location",
-      key: "location",
-      width: "90px",
-      render: (text, record) => {
-        return (
-          <span className={styles["Dataroom__mydocument_location"]}>
-            {text}
-          </span>
-        );
-      },
-    },
-    {
-      dataIndex: "OtherStuff",
-      key: "OtherStuff",
-      width: "180px",
-      render: (text, record) => {
-        return (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end gap-2 position-relative otherstuff"
-              >
-                <div className="tablerowFeatures">
-                  <Tooltip placement="topRight" title={t("Share")}>
-                    <span className={styles["share__Icon"]}>
-                      <svg
-                        className={styles["share__Icon_img"]}
-                        onClick={() => {
-                          if (record.isFolder) {
-                            showShareFolderModal(record.id, record.name);
-                          } else {
-                            showShareFileModal(record.id, record.name);
-                          }
-                        }}
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16.022"
-                        height="11.71"
-                        viewBox="0 0 16.022 11.71"
-                      >
-                        <path
-                          id="Icon_material-group-add"
-                          data-name="Icon material-group-add"
-                          d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                          transform="translate(0.5 -7)"
-                          fill="none"
-                          stroke="#5a5a5a"
-                        />
-                      </svg>
-                    </span>
-                  </Tooltip>
-                  <Tooltip placement="topRight" title={t("Download")}>
-                    <span className={styles["download__Icon"]}>
-                      <img
-                        src={download}
-                        alt=""
-                        height="10.71px"
-                        width="15.02px"
-                        className={styles["download__Icon_img"]}
-                        onClick={showRequestingAccessModal}
-                      />
-                    </span>
-                  </Tooltip>
-                  {record.isShared === true && record.permissionID === 1 ? (
-                    <Tooltip placement="topRight" title={t("Delete")}>
-                      <span className={styles["delete__Icon"]}>
-                        <img
-                          src={hoverdelete}
-                          height="10.71px"
-                          alt=""
-                          width="15.02px"
-                          className={styles["delete__Icon_img_hover"]}
-                          onClick={() => {
-                            if (record.isFolder) {
-                              dispatch(deleteFolder(navigate, record.id, t));
-                            } else {
-                              dispatch(
-                                deleteFileDataroom(navigate, record.id, t)
-                              );
-                            }
-                          }}
-                        />
-                        <img
-                          src={del}
-                          height="12.17px"
-                          alt=""
-                          width="9.47px"
-                          className={styles["delete__Icon_img"]}
-                          onClick={() => {
-                            if (record.isFolder) {
-                              dispatch(deleteFolder(navigate, record.id, t));
-                            } else {
-                              dispatch(
-                                deleteFileDataroom(navigate, record.id, t)
-                              );
-                            }
-                          }}
-                        />
-                      </span>
-                    </Tooltip>
-                  ) : record.isShared === false ? (
-                    <Tooltip placement="topRight" title={t("Delete")}>
-                      <span className={styles["delete__Icon"]}>
-                        <img
-                          src={hoverdelete}
-                          height="10.71px"
-                          alt=""
-                          width="15.02px"
-                          className={styles["delete__Icon_img_hover"]}
-                          onClick={() => {
-                            if (record.isFolder) {
-                              dispatch(deleteFolder(navigate, record.id, t));
-                            } else {
-                              dispatch(
-                                deleteFileDataroom(navigate, record.id, t)
-                              );
-                            }
-                          }}
-                        />
-                        <img
-                          src={del}
-                          height="12.17px"
-                          alt=""
-                          width="9.47px"
-                          className={styles["delete__Icon_img"]}
-                          onClick={() => {
-                            if (record.isFolder) {
-                              dispatch(deleteFolder(navigate, record.id, t));
-                            } else {
-                              dispatch(
-                                deleteFileDataroom(navigate, record.id, t)
-                              );
-                            }
-                          }}
-                        />
-                      </span>
-                    </Tooltip>
-                  ) : null}
-                </div>
-
-                <span className={styles["threeDot__Icon"]}>
-                  {record.isFolder ? (
-                    <Dropdown
-                      className={`${
-                        styles["options_dropdown"]
-                      } ${"dataroom_options"}`}
-                    >
-                      <Dropdown.Toggle id="dropdown-autoclose-true">
-                        <img
-                          src={dot}
-                          alt=""
-                          width="15.02px"
-                          height="10.71px"
-                        />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {optionsforFolder(t).map((data, index) => {
-                          return (
-                            <Dropdown.Item
-                              key={index}
-                              onClick={() => folderOptionsSelect(data, record)}
-                            >
-                              {data.label}
-                            </Dropdown.Item>
-                          );
-                        })}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  ) : (
-                    <Dropdown
-                      className={`${
-                        styles["options_dropdown"]
-                      } ${"dataroom_options"}`}
-                    >
-                      <Dropdown.Toggle id="dropdown-autoclose-true">
-                        <img
-                          src={dot}
-                          alt=""
-                          width="15.02px"
-                          height="10.71px"
-                        />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {optionsforFile(t).map((data, index) => {
-                          return (
-                            <Dropdown.Item
-                              key={index}
-                              onClick={() => fileOptionsSelect(data, record)}
-                            >
-                              {data.label}
-                            </Dropdown.Item>
-                          );
-                        })}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )}
-                </span>
-              </Col>
-            </Row>
-          </>
-        );
-      },
-    },
-  ];
-
-  const UniversalLink = (pdfJSON) => {
-    let linkRef = `/DisKus/documentViewer?pdfData=${encodeURIComponent(
-      pdfJSON
-    )}`;
-    navigate(linkRef);
-  };
-  const handleLinkClick = (e, data) => {
-    e.preventDefault();
-
-    if (clicks === 1) {
-      if (dataCheck === data) {
-        // Perform the action you want to happen on the double-click here
-        window.open(
-          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      } else {
-        setDataCheck(data);
-      }
-
-      // Reset the click count
-      setClicks(0);
-    } else {
-      // Increment the click count
-      setClicks(clicks + 1);
-      setDataCheck(data);
-      // You can add a delay here to reset the click count after a certain time if needed
-      setTimeout(() => {
-        setClicks(0);
-        setDataCheck([]);
-      }, 300); // Reset after 300 milliseconds (adjust as needed)
-    }
-  };
-
-  const MyDocumentsColumns = [
     {
       title: t("Name"),
       dataIndex: "name",
@@ -1371,6 +1017,453 @@ const DataRoom = () => {
     },
   ];
 
+  const handleLinkClick = (e, data) => {
+    e.preventDefault();
+
+    if (clicks === 1) {
+      if (dataCheck === data) {
+        // Perform the action you want to happen on the double-click here
+        window.open(
+          `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        setDataCheck(data);
+      }
+
+      // Reset the click count
+      setClicks(0);
+    } else {
+      // Increment the click count
+      setClicks(clicks + 1);
+      setDataCheck(data);
+      // You can add a delay here to reset the click count after a certain time if needed
+      setTimeout(() => {
+        setClicks(0);
+        setDataCheck([]);
+      }, 300); // Reset after 300 milliseconds (adjust as needed)
+    }
+  };
+
+  const MyDocumentsColumns = [
+    {
+      title: t("Name"),
+      dataIndex: "name",
+      key: "name",
+      width: "200px",
+      sortDirections: ["descend", "ascend"],
+
+      render: (text, data) => {
+        let ext = data.name.split(".").pop();
+        const pdfData = {
+          taskId: data.id,
+          commingFrom: 4,
+          fileName: data.name,
+          attachmentID: data.id,
+        };
+        const pdfDataJson = JSON.stringify(pdfData);
+        if (data.isShared) {
+          if (data.isFolder) {
+            return (
+              <div className={`${styles["dataFolderRow"]}`}>
+                <img src={folderColor} alt="" draggable="false" />
+                <abbr title={text}>
+                  <span
+                    className={`${
+                      styles["dataroom_table_heading"]
+                    } ${"cursor-pointer"}`}
+                    onClick={() => getFolderDocuments(data.id)}
+                  >
+                    {text} <img src={sharedIcon} alt="" draggable="false" />
+                  </span>
+                </abbr>
+              </div>
+            );
+          } else {
+            if (ext === "pdf") {
+              return (
+                <>
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=""
+                    width={"25px"}
+                    height={"25px"}
+                  />
+                  <abbr title={text}>
+                    <span
+                      onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                      className={styles["dataroom_table_heading"]}
+                    >
+                      {text} <img src={sharedIcon} alt="" draggable="false" />
+                    </span>
+                  </abbr>
+                </>
+              );
+            } else {
+              return (
+                <section className="d-flex gap-2">
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=""
+                    width={"25px"}
+                    height={"25px"}
+                  />
+                  <abbr title={text}>
+                    <span className={styles["dataroom_table_heading"]}>
+                      {text} <img src={sharedIcon} alt="" draggable="false" />
+                    </span>
+                  </abbr>
+                </section>
+              );
+            }
+          }
+        } else {
+          if (data.isFolder) {
+            return (
+              <div className={`${styles["dataFolderRow"]}`}>
+                <img src={folderColor} alt="" draggable="false" />
+                <abbr title={text}>
+                  <span
+                    className={`${
+                      styles["dataroom_table_heading"]
+                    } ${"cursor-pointer"}`}
+                    onClick={() => getFolderDocuments(data.id)}
+                  >
+                    {text}{" "}
+                  </span>
+                </abbr>
+              </div>
+            );
+          } else {
+            if (ext === "pdf") {
+              return (
+                // <Link
+                //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                //     pdfDataJson
+                //   )}`}
+                //   target="_blank"
+                //   rel="noopener noreferrer"
+                // >
+                <>
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=""
+                    width={"25px"}
+                    height={"25px"}
+                  />
+                  <abbr title={text}>
+                    <span
+                      onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                      className={styles["dataroom_table_heading"]}
+                    >
+                      {text}
+                    </span>
+                  </abbr>
+                </>
+
+                // </Link>
+              );
+            } else {
+              return (
+                <section className="d-flex gap-2">
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=""
+                    width={"25px"}
+                    height={"25px"}
+                  />
+                  <abbr title={text}>
+                    <span className={styles["dataroom_table_heading"]}>
+                      {text}
+                    </span>
+                  </abbr>
+                </section>
+              );
+            }
+          }
+        }
+      },
+      sorter: (a, b) => a.name.toLowerCase() < b.name.toLowerCase(),
+    },
+    {
+      title: t("Owner"),
+      dataIndex: "owner",
+      key: "owner",
+      width: "90px",
+      sortDirections: ["descend", "ascend"],
+      sorter: (a, b) => a.owner.toLowerCase() < b.owner.toLowerCase(),
+      render: (text, record) => {
+        return <span className={styles["ownerName"]}>{text}</span>;
+      },
+    },
+    {
+      title: currentFilter,
+      dataIndex: "modifiedDate",
+      key: "modifiedDate",
+      width: "110px",
+      align: "center",
+      sorter: true,
+      sortOrder: true,
+      filters: [
+        {
+          text: t("Last-modified"),
+          value: 2,
+        },
+        {
+          text: t("Last-modified-by-me"),
+          value: 3,
+        },
+        {
+          text: t("Last-open-by-me"),
+          value: 4,
+        },
+        // ... other filters ...
+      ],
+      filterIcon: (filtered) => (
+        <DownOutlined className="filter-chevron-icon-todolist" />
+      ),
+      sortDirections: ["descend", "ascend"],
+      render: (text, data) => {
+        return (
+          <span className={styles["dataroom_table_heading"]}>
+            {_justShowDateformat(text)}
+          </span>
+        );
+      },
+    },
+    {
+      title: t("File-size"),
+      dataIndex: "fileSize",
+      key: "fileSize",
+      width: "90px",
+      sortDirections: ["descend", "ascend"],
+      render: (text, record) => {
+        return <span className={styles["ownerName"]}>{text}</span>;
+      },
+    },
+    {
+      title: (
+        <span className={styles["dataroom_location"]}>{t("Location")}</span>
+      ),
+      dataIndex: "location",
+      key: "location",
+      width: "90px",
+      sortDirections: ["descend", "ascend"],
+      render: (text, record) => {
+        return (
+          <span className={styles["Dataroom__mydocument_location"]}>
+            {text}
+          </span>
+        );
+      },
+    },
+    {
+      dataIndex: "OtherStuff",
+      key: "OtherStuff",
+      width: "180px",
+      sortDirections: ["descend", "ascend"],
+      render: (text, record) => {
+        const pdfData = {
+          taskId: record.id,
+          commingFrom: 4,
+          fileName: record.name,
+          attachmentID: record.id,
+        };
+        const pdfDataJson = JSON.stringify(pdfData);
+        return (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2 position-relative otherstuff"
+              >
+                <div className="tablerowFeatures">
+                  <Tooltip placement="topRight" title={t("Share")}>
+                    <span className={styles["share__Icon"]}>
+                      <svg
+                        className={styles["share__Icon_img"]}
+                        onClick={() => {
+                          if (record.isFolder) {
+                            showShareFolderModal(record.id, record.name);
+                          } else {
+                            showShareFileModal(record.id, record.name);
+                          }
+                        }}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16.022"
+                        height="11.71"
+                        viewBox="0 0 16.022 11.71"
+                      >
+                        <path
+                          id="Icon_material-group-add"
+                          data-name="Icon material-group-add"
+                          d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
+                          transform="translate(0.5 -7)"
+                          fill="none"
+                          stroke="#5a5a5a"
+                        />
+                      </svg>
+                    </span>
+                  </Tooltip>
+                  <Tooltip placement="topRight" title={t("Download")}>
+                    <span className={styles["download__Icon"]}>
+                      <img
+                        src={download}
+                        alt=""
+                        height="10.71px"
+                        width="15.02px"
+                        className={styles["download__Icon_img"]}
+                        onClick={showRequestingAccessModal}
+                      />
+                    </span>
+                  </Tooltip>
+                  {record.isShared === true && record.permissionID === 1 ? (
+                    <Tooltip placement="topRight" title={t("Delete")}>
+                      <span className={styles["delete__Icon"]}>
+                        <img
+                          src={hoverdelete}
+                          height="10.71px"
+                          alt=""
+                          width="15.02px"
+                          className={styles["delete__Icon_img_hover"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              dispatch(deleteFolder(navigate, record.id, t));
+                            } else {
+                              dispatch(
+                                deleteFileDataroom(navigate, record.id, t)
+                              );
+                            }
+                          }}
+                        />
+                        <img
+                          src={del}
+                          height="12.17px"
+                          alt=""
+                          width="9.47px"
+                          className={styles["delete__Icon_img"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              dispatch(deleteFolder(navigate, record.id, t));
+                            } else {
+                              dispatch(
+                                deleteFileDataroom(navigate, record.id, t)
+                              );
+                            }
+                          }}
+                        />
+                      </span>
+                    </Tooltip>
+                  ) : record.isShared === false ? (
+                    <Tooltip placement="topRight" title={t("Delete")}>
+                      <span className={styles["delete__Icon"]}>
+                        <img
+                          src={hoverdelete}
+                          height="10.71px"
+                          alt=""
+                          width="15.02px"
+                          className={styles["delete__Icon_img_hover"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              dispatch(deleteFolder(navigate, record.id, t));
+                            } else {
+                              dispatch(
+                                deleteFileDataroom(navigate, record.id, t)
+                              );
+                            }
+                          }}
+                        />
+                        <img
+                          src={del}
+                          height="12.17px"
+                          alt=""
+                          width="9.47px"
+                          className={styles["delete__Icon_img"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              dispatch(deleteFolder(navigate, record.id, t));
+                            } else {
+                              dispatch(
+                                deleteFileDataroom(navigate, record.id, t)
+                              );
+                            }
+                          }}
+                        />
+                      </span>
+                    </Tooltip>
+                  ) : null}
+                </div>
+
+                <span className={styles["threeDot__Icon"]}>
+                  {record.isFolder ? (
+                    <Dropdown
+                      className={`${
+                        styles["options_dropdown"]
+                      } ${"dataroom_options"}`}
+                    >
+                      <Dropdown.Toggle id="dropdown-autoclose-true">
+                        <img
+                          src={dot}
+                          alt=""
+                          width="15.02px"
+                          height="10.71px"
+                        />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {optionsforFolder(t).map((data, index) => {
+                          return (
+                            <Dropdown.Item
+                              key={index}
+                              onClick={() => folderOptionsSelect(data, record)}
+                            >
+                              {data.label}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  ) : (
+                    <Dropdown
+                      className={`${
+                        styles["options_dropdown"]
+                      } ${"dataroom_options"}`}
+                    >
+                      <Dropdown.Toggle id="dropdown-autoclose-true">
+                        <img
+                          src={dot}
+                          alt=""
+                          width="15.02px"
+                          height="10.71px"
+                        />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {optionsforFile(t).map((data, index) => {
+                          return (
+                            <Dropdown.Item
+                              key={index}
+                              onClick={() =>
+                                fileOptionsSelect(data, record, pdfDataJson)
+                              }
+                            >
+                              {data.label}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  )}
+                </span>
+              </Col>
+            </Row>
+          </>
+        );
+      },
+    },
+  ];
+
   const shareWithmeColoumns = [
     {
       title: t("Name"),
@@ -1378,6 +1471,7 @@ const DataRoom = () => {
       key: "name",
       width: "250px",
       render: (text, record) => {
+        console.log(record, "namenamenamenamenamename");
         let ext = record.name.split(".").pop();
         const pdfData = {
           taskId: record.id,
@@ -1400,29 +1494,24 @@ const DataRoom = () => {
           );
         } else {
           if (ext === "pdf") {
-            // <Link
-            //   to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
-            //     pdfDataJson
-            //   )}`}
-            //   target="_blank"
-            //   rel="noopener noreferrer"
-            // >
-            <div className={`${styles["dataFolderRow"]}`}>
-              <img
-                src={getIconSource(getFileExtension(record.name))}
-                alt=""
-                width={"25px"}
-                height={"25px"}
-              />
-              <span
-                className={styles["dataroom_table_heading"]}
-                onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                // onClick={() => getFolderDocuments(data.id)}
-              >
-                {text} <img src={sharedIcon} alt="" draggable="false" />
-              </span>
-            </div>;
-            // </Link>;
+            return (
+              <div className={`${styles["dataFolderRow"]}`}>
+                <img
+                  src={getIconSource(getFileExtension(record.name))}
+                  alt=""
+                  width={"25px"}
+                  height={"25px"}
+                />
+                <span
+                  className={styles["dataroom_table_heading"]}
+                  onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                  // onClick={() => getFolderDocuments(data.id)}
+                >
+                  {record.name}{" "}
+                  <img src={sharedIcon} alt="" draggable="false" />
+                </span>
+              </div>
+            );
           } else {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
@@ -1436,7 +1525,8 @@ const DataRoom = () => {
                   className={styles["dataroom_table_heading"]}
                   // onClick={() => getFolderDocuments(data.id)}
                 >
-                  {text} <img src={sharedIcon} alt="" draggable="false" />
+                  {record.name}{" "}
+                  <img src={sharedIcon} alt="" draggable="false" />
                 </span>
               </div>
             );
@@ -2380,7 +2470,7 @@ const DataRoom = () => {
                               {gridbtnactive ? (
                                 <>
                                   <GridViewDataRoom
-                                    data={[]}
+                                    data={getAllData}
                                     optionsforFolder={optionsforFolder(t)}
                                     optionsforFile={optionsforFile(t)}
                                     sRowsData={sRowsData}
