@@ -184,7 +184,7 @@
 }
 
 .Scroller_document {
-  height: 30vh !important;
+  height: 18vh !important;
   overflow-x: hidden !important;
 }
 
@@ -279,12 +279,12 @@ body[dir="rtl"] .RedCross_Icon_class_Main_agenda {
 /* card */
 
 .card {
-  width: 89.6%;
+  width: 221px;
   max-width: 100%;
   display: flex;
   justify-content: space-between;
   border: 1px solid #e1e1e1;
-  padding: 15px 10px;
+  padding: 10px 10px;
   border-radius: 4px;
   gap: 10px;
 }
@@ -404,6 +404,7 @@ body[dir="rtl"] .subAgendaArrowExpand {
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
 }
+
 body[dir="rtl"] .backGorund {
   right: 0px !important;
   border-top-right-radius: 4px !important;

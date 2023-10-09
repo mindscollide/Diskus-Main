@@ -33,6 +33,7 @@ import Lock from "../../../../../assets/images/LOCK.svg";
 import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import Key from "../../../../../assets/images/KEY.svg";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
+import { getRandomUniqueNumber } from "./drageFunction";
 
 const ParentAgenda = ({
   data,
@@ -97,29 +98,16 @@ const ParentAgenda = ({
     const updatedRows = [...rows];
     const nextSubAgendaID = updatedRows[0].subAgenda.length.toString();
     const newSubAgenda = {
-      SubAgendaID: (nextSubAgendaID + 1).toString(),
+      SubAgendaID: getRandomUniqueNumber().toString(),
       SubTitle: "",
       selectedOption: null,
       startDate: null,
       endDate: null,
-      subSelectRadio: "0",
+      subSelectRadio: "1",
       SubAgendaUrlFieldRadio: "",
       subAgendarequestContributorUrl: "",
       subAgendarequestContributorEnterNotes: "",
-      Subfiles: [
-        {
-          name: "MeetingAgendas",
-          FileID: "1112",
-        },
-        {
-          name: "DiskusMeetings",
-          FileID: "1113",
-        },
-        {
-          name: "AxisMeetings",
-          FileID: "1114",
-        },
-      ],
+      Subfiles: [],
     };
     updatedRows[rowAgendaIndex].subAgenda.push(newSubAgenda);
     setRows(updatedRows);
@@ -430,7 +418,7 @@ const ParentAgenda = ({
                               handleExpandedBtn(index);
                             }}
                           >
-                            {expand === true
+                            {expandIndex === index && expand
                               ? t("Hide-details")
                               : t("Show-details")}
                           </span>
@@ -537,13 +525,30 @@ const ParentAgenda = ({
                                 ref={provided.innerRef}
                               >
                                 {data.selectedRadio === "1" ? (
-                                  <Documents
-                                    data={data}
-                                    index={index}
-                                    setRows={setRows}
-                                    rows={rows}
-                                    parentId={`parent-${data.ID}`}
-                                  />
+                                  <>
+                                    {data.files.length > 0 ? (
+                                      <>
+                                        <Documents
+                                          data={data}
+                                          index={index}
+                                          setRows={setRows}
+                                          rows={rows}
+                                          parentId={`parent-${data.ID}`}
+                                        />
+                                        <DefaultDragger
+                                          setRows={setRows}
+                                          rows={rows}
+                                          index={index}
+                                        />
+                                      </>
+                                    ) : (
+                                      <DefaultDragger
+                                        setRows={setRows}
+                                        rows={rows}
+                                        index={index}
+                                      />
+                                    )}
+                                  </>
                                 ) : data.selectedRadio === "2" ? (
                                   <Urls
                                     data={data}
@@ -559,7 +564,8 @@ const ParentAgenda = ({
                                     rows={rows}
                                   />
                                 ) : (
-                                  <DefaultDragger index={index} />
+                                  <></>
+                                  //
                                 )}
                               </div>
                             )}

@@ -585,7 +585,9 @@ const SubAgendaMappingDragging = ({
                                                   );
                                               }}
                                             >
-                                              {subExpand
+                                              {subexpandIndex === index &&
+                                              expandSubIndex === subIndex &&
+                                              subExpand
                                                 ? t("Hide-details")
                                                 : t("Show-more")}
                                             </span>
@@ -770,12 +772,40 @@ const SubAgendaMappingDragging = ({
                                                   >
                                                     {subAgendaData.subSelectRadio ===
                                                     "1" ? (
-                                                      <SubDocumnets
-                                                        subAgendaData={
-                                                          subAgendaData
-                                                        }
-                                                        parentId={`parent-${data.ID}`}
-                                                      />
+                                                      <>
+                                                        {subAgendaData.Subfiles
+                                                          .length > 0 ? (
+                                                          <>
+                                                            <SubDocumnets
+                                                              subAgendaData={
+                                                                subAgendaData
+                                                              }
+                                                              setRows={setRows}
+                                                              rows={rows}
+                                                              index={index}
+                                                              subIndex={
+                                                                subIndex
+                                                              }
+                                                              parentId={`parent-${data.ID}`}
+                                                            />
+                                                            <SubDedaultDragger
+                                                              setRows={setRows}
+                                                              rows={rows}
+                                                              index={index}
+                                                              subIndex={
+                                                                subIndex
+                                                              }
+                                                            />
+                                                          </>
+                                                        ) : (
+                                                          <SubDedaultDragger
+                                                            setRows={setRows}
+                                                            rows={rows}
+                                                            index={index}
+                                                            subIndex={subIndex}
+                                                          />
+                                                        )}
+                                                      </>
                                                     ) : subAgendaData.subSelectRadio ===
                                                       "2" ? (
                                                       <SubUrls
@@ -799,7 +829,7 @@ const SubAgendaMappingDragging = ({
                                                         subIndex={subIndex}
                                                       />
                                                     ) : (
-                                                      <SubDedaultDragger />
+                                                      <></>
                                                     )}
                                                   </div>
                                                 )}

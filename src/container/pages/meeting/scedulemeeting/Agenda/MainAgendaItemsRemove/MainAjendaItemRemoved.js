@@ -11,18 +11,17 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-const MainAjendaItemRemoved = ({ setRows, rows, mainAgendaRemovalIndex }) => {
+const MainAjendaItemRemoved = ({ setRows, rows, mainAgendaRemovalIndex,setMainAgendaRemovalIndex }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
-  const handleProceesBtn = (mainAgendaRemovalIndex) => {
-    setRows((prevRows) => {
-      const updatedRows = [...prevRows];
-      updatedRows.splice(mainAgendaRemovalIndex, 1);
-      return updatedRows;
-    });
+  const handleProceesBtn = () => {
+    let mainRemoveAgenda=[...rows]
+    mainRemoveAgenda.splice(mainAgendaRemovalIndex, 1);
+    setRows(mainRemoveAgenda);
+    setMainAgendaRemovalIndex(0)
     dispatch(showMainAgendaItemRemovedModal(false));
   };
   return (
@@ -82,7 +81,7 @@ const MainAjendaItemRemoved = ({ setRows, rows, mainAgendaRemovalIndex }) => {
                   text={t("Proceed")}
                   className={styles["Proceed_Btn_Agendaremovel"]}
                   onClick={() => {
-                    handleProceesBtn(mainAgendaRemovalIndex);
+                    handleProceesBtn();
                   }}
                 />
               </Col>
