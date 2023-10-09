@@ -9,6 +9,7 @@ import {
 } from "../../commen/functions/date_formater";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
@@ -53,6 +54,7 @@ import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import TextFieldTime from "../../components/elements/input_field_time/Input_field";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+// import ClockIcon from "react-multi-date-picker/icons";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { UPDATE_RESOLUTION_BY_RESOLUTION_ID_FAIL } from "../../store/action_types";
 
@@ -127,6 +129,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [createMeetingTime, setCreateMeetingTime] = useState("");
+  console.log(
+    createMeetingTime,
+    "createMeetingTimecreateMeetingTimecreateMeetingTime"
+  );
   // for Participant options
   const participantOptions = [t("Organizer"), t("Participant")];
   const currentDate = new Date();
@@ -352,6 +358,32 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       MeetingEndTime: RemoveTimeDashes(getcurrentTime),
     });
     setCreateMeetingTime(getcurrentTime);
+  };
+
+  const handleEndDateChange = (date) => {
+    const updatedRows = [...createMeeting];
+    updatedRows.MeetingStartTime = date;
+    setCreateMeeting(updatedRows);
+  };
+
+  const [selectedTime, setSelectedTime] = useState(null);
+
+  const handleTimeChange = (newTime) => {
+    let newDate = new Date(newTime);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      setCreateMeeting({
+        ...createMeeting,
+        ["MeetingStartTime"]: formattedTime,
+        ["MeetingEndTime"]: formattedTime,
+      });
+      setCreateMeetingTime(newTime);
+    }
   };
 
   // for all details handler
@@ -1341,6 +1373,17 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
   console.log(createMeeting, "createMeetingcreateMeetingcreateMeeting");
+
+  function CustomInput({ onFocus, value, onChange }) {
+    return (
+      <input
+        onFocus={onFocus}
+        value={value}
+        onChange={onChange}
+        className="input-with-icon"
+      />
+    );
+  }
   return (
     <>
       <Container>
@@ -1436,20 +1479,25 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       xs={12}
                       className="CreateMeetingTime"
                     >
-                      <TextFieldTime
-                        type="time"
-                        labelClass="d-none"
+                      <DatePicker
+                        arrowClassName="arrowClass"
                         value={createMeetingTime}
-                        name="MeetingStartTime"
-                        onKeyDown={(e) => e.preventDefault()}
-                        applyClass={"quick_meeting_time"}
-                        change={detailsHandler}
-                        placeholder={"00:00"}
-                        onClick={handleFocusMeetingTime}
+                        containerClassName="containerClassTimePicker"
+                        className="timePicker"
+                        disableDayPicker
+                        inputClass="inputTImeMeeting"
+                        calendar={calendarValue}
+                        locale={localValue}
+                        format="HH:mm A"
+                        selected={createMeetingTime}
+                        render={<CustomInput />}
+                        plugins={[<TimePicker hideSeconds />]}
+                        onChange={handleTimeChange}
                       />
+
                       <div className="height-10">
                         {modalField === true &&
-                        createMeeting.MeetingStartTime === "" ? (
+                        createMeeting.MeetingStartTime === null ? (
                           <ErrorBar errorText={t("Select-time")} />
                         ) : null}
                       </div>

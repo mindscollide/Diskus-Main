@@ -4,8 +4,10 @@ import { Col, Row } from "react-bootstrap";
 import styles from "./Agenda.module.css";
 import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 import { useTranslation } from "react-i18next";
+import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+import { getRandomUniqueNumber } from "./drageFunction";
 
-const SubDedaultDragger = () => {
+const SubDedaultDragger = ({ setRows, rows, index, subIndex }) => {
   const { t } = useTranslation();
   //Uploader Props For SubAgendas
   const Subprops = {
@@ -15,8 +17,25 @@ const SubDedaultDragger = () => {
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
+      let newRows = [...rows];
+      let fileData = {
+        name: data.file.originFileObj.name,
+        FileID: getRandomUniqueNumber().toString(),
+      };
+      newRows[index].subAgenda[subIndex].Subfiles.push(fileData);
+      setRows(newRows);
     },
     onDrop(e) {
+      let list = e.dataTransfer.files;
+      let newRows = [...rows];
+      list.map((fileDatas, fileindex) => {
+        let fileData = {
+          name: fileDatas.file.originFileObj.name,
+          FileID: getRandomUniqueNumber().toString(),
+        };
+        newRows[index].subAgenda[subIndex].Subfiles.push(fileData);
+      });
+      setRows(newRows);
       console.log("Dropped files", e.dataTransfer.files);
     },
     customRequest() {},

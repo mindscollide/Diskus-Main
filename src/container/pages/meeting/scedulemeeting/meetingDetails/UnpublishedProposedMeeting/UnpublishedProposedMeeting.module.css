@@ -10,3 +10,16 @@
   font-family: "MontserratSemiBold" !important;
   font-size: 12px !important;
 }
+.meetingTitle {
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6;
+  font-size: 12px !important;
+}
+/* .newMeetingProgressbar {
+  background: #6172d6 !important;
+  margin: 3px !important;
+  border-radius: 5px !important;
+} */
+.meeting_date {
+  white-space: nowrap;
+}

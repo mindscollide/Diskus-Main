@@ -1,17 +1,17 @@
-export const onDragEnd = (result,rows, setRows) => {
- // Dropped nowhere
- if (!result.destination) {
+export const onDragEnd = (result, rows, setRows) => {
+  console.log("result", result);
+  // Dropped nowhere
+  if (!result.destination) {
     return;
   }
   if (result.type === "PARENT") {
+    console.log("result", result);
     const reorderedRows = [...rows];
     const [movedRow] = reorderedRows.splice(result.source.index, 1);
     reorderedRows.splice(result.destination.index, 0, movedRow);
     setRows(reorderedRows);
   } else if (result.type === "SUB_AGENDA") {
-    const sourceParentIndex = parseInt(
-      result.source.droppableId.split("-")[2]
-    );
+    const sourceParentIndex = parseInt(result.source.droppableId.split("-")[2]);
     const destinationParentIndex = parseInt(
       result.destination.droppableId.split("-")[2]
     );
@@ -39,14 +39,17 @@ export const onDragEnd = (result,rows, setRows) => {
   } else if (result.type === "attachment") {
     // Handle attachment drag-and-drop
     const sourceParentType = result.source.droppableId.split("-")[0];
-    const destinationParentType =
-      result.destination.droppableId.split("-")[0];
+    const destinationParentType = result.destination.droppableId.split("-")[0];
     if (sourceParentType === "parent" && destinationParentType === "parent") {
-      const sourceParentIndex = parseInt(
-        result.source.droppableId.split("-")[1]
+      const sourceParentID = parseInt(result.source.droppableId.split("-")[1]);
+      const sourceParentIndex = rows.findIndex(
+        (obj) => obj.ID === sourceParentID.toString()
       );
-      const destinationParentIndex = parseInt(
+      const destinationParentID = parseInt(
         result.destination.droppableId.split("-")[1]
+      );
+      const destinationParentIndex = rows.findIndex(
+        (obj) => obj.ID === destinationParentID.toString()
       );
       // Attachment is moved between different parent agendas
       const sourceIndex = result.source.index;
@@ -189,15 +192,13 @@ export const onDragEnd = (result,rows, setRows) => {
       const findSourceSubAgendaIndex = sourceParent.subAgenda.findIndex(
         (obj) => obj.SubAgendaID === sourceSubAgendaID
       );
-      const sourceSubAgenda =
-        sourceParent.subAgenda[findSourceSubAgendaIndex];
+      const sourceSubAgenda = sourceParent.subAgenda[findSourceSubAgendaIndex];
 
       // for destination
       const destination = result.destination.droppableId;
       const destinationParts = destination.split("-");
       // destination Parent ID Index in responce
-      const destinationParentAgendaIDIndex =
-        destinationParts.indexOf("parent");
+      const destinationParentAgendaIDIndex = destinationParts.indexOf("parent");
       //  sub agend destination index in responce
       const destinationSubAgendaIDIndex =
         destinationParts.indexOf("subAgendaID");
@@ -230,11 +231,36 @@ export const onDragEnd = (result,rows, setRows) => {
         0,
         movedAttachment
       );
-       // Update the rows data with the modified source and destination parent agendas
-       const updatedRows = [...rows];
-       updatedRows[findSourcePrentIndex] = sourceParent;
-       updatedRows[findDestinationParentIDIndex] = destinationParent;
-       setRows(updatedRows);
+      // Update the rows data with the modified source and destination parent agendas
+      const updatedRows = [...rows];
+      updatedRows[findSourcePrentIndex] = sourceParent;
+      updatedRows[findDestinationParentIDIndex] = destinationParent;
+      setRows(updatedRows);
     }
   }
-}
+};
+
+export const getRandomUniqueNumber = () => {
+  if (
+    !getRandomUniqueNumber.uniqueNumbers ||
+    getRandomUniqueNumber.uniqueNumbers.length === 0
+  ) {
+    // If the array of unique numbers is not initialized or empty, create and shuffle it
+    getRandomUniqueNumber.uniqueNumbers = Array.from(
+      { length: 1000 },
+      (_, i) => i + 1
+    );
+    for (let i = getRandomUniqueNumber.uniqueNumbers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [
+        getRandomUniqueNumber.uniqueNumbers[i],
+        getRandomUniqueNumber.uniqueNumbers[j],
+      ] = [
+        getRandomUniqueNumber.uniqueNumbers[j],
+        getRandomUniqueNumber.uniqueNumbers[i],
+      ];
+    }
+  }
+  // Pop and return a unique number from the shuffled array
+  return getRandomUniqueNumber.uniqueNumbers.pop();
+};

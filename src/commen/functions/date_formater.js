@@ -603,3 +603,6 @@ export const utcConvertintoGMT = (date) => {
   let _dateTime = new Date(fullDateyear);
   return _dateTime;
 };
+export const convertDateinGMT = (date) => {
+  return moment(date, "YYYYMMDD").format("Do-MMM-YYYY");
+};

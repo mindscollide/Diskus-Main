@@ -4,8 +4,9 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import styles from "./Agenda.module.css";
 import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
+import { getRandomUniqueNumber } from "./drageFunction";
 
-const DefaultDragger = ({ index }) => {
+const DefaultDragger = ({ index, setRows, rows }) => {
   const { t } = useTranslation();
   //Uploader For Main Agendas File
   const props = {
@@ -15,8 +16,26 @@ const DefaultDragger = ({ index }) => {
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
+      console.log("Dropped files", data.file);
+      let newRows = [...rows];
+      let fileData = {
+        name: data.file.originFileObj.name,
+        FileID: getRandomUniqueNumber().toString(),
+      };
+      newRows[index].files.push(fileData);
+      setRows(newRows);
     },
     onDrop(e) {
+      let list = e.dataTransfer.files;
+      let newRows = [...rows];
+      list.map((fileDatas, fileindex) => {
+        let fileData = {
+          name: fileDatas.file.originFileObj.name,
+          FileID: getRandomUniqueNumber().toString(),
+        };
+        newRows[index].files.push(fileData);
+      });
+      setRows(newRows);
       console.log("Dropped files", e.dataTransfer.files);
     },
     customRequest() {},

@@ -671,8 +671,7 @@ const CalendarPage = () => {
           />
         </Row>
       </div>
-      {assignees.Loading ||
-      calendarReducer.Loading ||
+      {calendarReducer.Loading ||
       toDoListReducer.Loading ||
       LanguageReducer.Loading ? (
         <Loader />

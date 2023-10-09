@@ -7,7 +7,7 @@
 .NewMeetinHeading {
   color: #5f78d6 !important;
   font-size: 30px !important;
-  font-family: "Montserrat";
+  font-family: "MontserratSemiBold" !important;
 }
 
 .Newmeeting_Scehedule_meet {
@@ -200,7 +200,7 @@ body[dir="rtl"] .polling_searchinput {
   box-shadow: 0px 0px 5px #ccc !important;
   border-radius: 4px !important;
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
 }
 
 body[dir="rtl"] .PaginationStyle-Committee {
@@ -208,7 +208,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
   padding: 12px 10px !important;
 }
 
-.PaginationStyle-Committee {
+/* .PaginationStyle-Committee {
   margin-top: 5px !important;
   background-color: #fff !important;
   width: auto !important;
@@ -218,9 +218,8 @@ body[dir="rtl"] .PaginationStyle-Committee {
   height: 54px !important;
   box-shadow: 0px 0px 5px #ccc !important;
   border-radius: 4px !important;
-  position: fixed !important;
-  bottom: 10px !important;
-}
+  position: absolute !important;
+} */
 
 body[dir="rtl"] .PaginationStyle-Committee {
   width: auto !important;
@@ -244,6 +243,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
   width: 100% !important;
   min-height: 78vh !important;
   height: auto !important;
+  position: relative;
   padding: 20px 20px !important;
 }
 
@@ -255,12 +255,44 @@ body[dir="rtl"] .PaginationStyle-Committee {
   background: #fff !important;
   color: #5a5a5a !important;
 }
-
-.UnpublishedMeetingButton:is(:hover, :active, :focus, :focus-visible) {
+.publishedMeetingButton {
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+.publishedMeetingButton-active {
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   background: #6172d6 !important;
   color: #fff !important;
+}
+.UnpublishedMeetingButton-active {
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+.UnpublishedMeetingButton:is(:hover, :active, :focus, :focus-visible) {
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+.meetingTitle {
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6;
+  font-size: 12px !important;
+  cursor: pointer;
+}
+.width-10 {
+  width: 10px !important;
 }
