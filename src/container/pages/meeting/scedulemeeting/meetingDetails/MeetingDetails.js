@@ -40,14 +40,13 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  convertGMTDateintoUTC,
-  convertGMTDateintoUTC2,
-  formatDateToUTC,
-  removeColFromTime,
-} from "../../../../../commen/functions/date_formater";
+import { convertGMTDateintoUTC } from "../../../../../commen/functions/date_formater";
 
-const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
+const MeetingDetails = ({
+  setorganizers,
+  setmeetingDetails,
+  setSceduleMeeting,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -183,49 +182,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   };
 
   const handleUpdateNext = () => {
-    setorganizers(true);
-    setmeetingDetails(false);
-    let newArr = [];
-    let newReminderData = [];
-    newReminderData.push(
-      meetingDetails.ReminderFrequency,
-      meetingDetails.ReminderFrequencyTwo,
-      meetingDetails.ReminderFrequencyThree
-    );
-    rows.map((data, index) => {
-      newArr.push({
-        MeetingDate: data.selectedOption,
-        StartTime: data.startDate,
-        EndTime: data.endDate,
-      });
-    });
-
-    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let data = {
-      MeetingDetails: {
-        MeetingTitle: meetingDetails.MeetingTitle,
-        MeetingType: meetingDetails.MeetingType,
-        Location: meetingDetails.Location,
-        Description: meetingDetails.Description,
-        IsVideoChat: meetingDetails.IsVideoCall,
-        IsTalkGroup: meetingDetails.groupChat,
-        OrganizationId: organizationID,
-        MeetingDates: newArr,
-        MeetingReminders: newReminderData,
-        Notes: meetingDetails.Notes,
-        AllowRSVP: meetingDetails.AllowRSPV,
-        NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
-        ReucurringMeetingID: meetingDetails.RecurringOptions,
-        VideoURL: meetingDetails.Link,
-        MeetingStatusID: 2,
-      },
-    };
-    console.log(data, "datadatadatadata");
-  };
-
-  const handlePublish = () => {
+    // setorganizers(true);
+    // setmeetingDetails(false);
     //Enable the Error Handling From here
-    // seterror(true);
     // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
@@ -243,26 +202,183 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     });
 
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let data = {
-      MeetingDetails: {
-        MeetingTitle: meetingDetails.MeetingTitle,
-        MeetingType: meetingDetails.MeetingType,
-        Location: meetingDetails.Location,
-        Description: meetingDetails.Description,
-        IsVideoChat: meetingDetails.IsVideoCall,
-        IsTalkGroup: meetingDetails.groupChat,
-        OrganizationId: organizationID,
-        MeetingDates: newArr,
-        MeetingReminders: newReminderData,
-        Notes: meetingDetails.Notes,
-        AllowRSVP: meetingDetails.AllowRSPV,
-        NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
-        ReucurringMeetingID: meetingDetails.RecurringOptions,
-        VideoURL: meetingDetails.Link,
-        MeetingStatusID: 1,
-      },
-    };
-    dispatch(SaveMeetingDetialsNewApiFunction(navigate, t, data));
+    if (
+      meetingDetails.MeetingTitle !== "" &&
+      meetingDetails.MeetingType !== 0 &&
+      meetingDetails.Location !== "" &&
+      meetingDetails.Description !== "" &&
+      newArr.length > 0 &&
+      newReminderData.length > 0 &&
+      meetingDetails.Notes !== "" &&
+      meetingDetails.Link !== ""
+    ) {
+      console.log("test");
+      let data = {
+        MeetingDetails: {
+          MeetingTitle: meetingDetails.MeetingTitle,
+          MeetingType: meetingDetails.MeetingType,
+          Location: meetingDetails.Location,
+          Description: meetingDetails.Description,
+          IsVideoChat: meetingDetails.IsVideoCall,
+          IsTalkGroup: meetingDetails.groupChat,
+          OrganizationId: organizationID,
+          MeetingDates: newArr,
+          MeetingReminders: newReminderData,
+          Notes: meetingDetails.Notes,
+          AllowRSVP: meetingDetails.AllowRSPV,
+          NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
+          ReucurringMeetingID: meetingDetails.RecurringOptions,
+          VideoURL: meetingDetails.Link,
+          MeetingStatusID: 11,
+        },
+      };
+      console.log("test", data);
+
+      dispatch(
+        SaveMeetingDetialsNewApiFunction(
+          navigate,
+          t,
+          data,
+          setSceduleMeeting,
+          setorganizers,
+          setmeetingDetails,
+          3
+        )
+      );
+    } else {
+      seterror(true);
+    }
+  };
+
+  const handlePublish = () => {
+    //Enable the Error Handling From here
+    // setSaveMeeting(!saveMeeting);
+    let newArr = [];
+    let newReminderData = [];
+    newReminderData.push(
+      meetingDetails.ReminderFrequency,
+      meetingDetails.ReminderFrequencyTwo,
+      meetingDetails.ReminderFrequencyThree
+    );
+    rows.map((data, index) => {
+      newArr.push({
+        MeetingDate: data.selectedOption,
+        StartTime: data.startDate,
+        EndTime: data.endDate,
+      });
+    });
+
+    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    if (
+      meetingDetails.MeetingTitle !== "" &&
+      meetingDetails.MeetingType !== 0 &&
+      meetingDetails.Location !== "" &&
+      meetingDetails.Description !== "" &&
+      newArr.length > 0 &&
+      newReminderData.length > 0 &&
+      meetingDetails.Notes !== "" &&
+      meetingDetails.Link !== ""
+    ) {
+      console.log("test");
+      let data = {
+        MeetingDetails: {
+          MeetingTitle: meetingDetails.MeetingTitle,
+          MeetingType: meetingDetails.MeetingType,
+          Location: meetingDetails.Location,
+          Description: meetingDetails.Description,
+          IsVideoChat: meetingDetails.IsVideoCall,
+          IsTalkGroup: meetingDetails.groupChat,
+          OrganizationId: organizationID,
+          MeetingDates: newArr,
+          MeetingReminders: newReminderData,
+          Notes: meetingDetails.Notes,
+          AllowRSVP: meetingDetails.AllowRSPV,
+          NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
+          ReucurringMeetingID: meetingDetails.RecurringOptions,
+          VideoURL: meetingDetails.Link,
+          MeetingStatusID: 1,
+        },
+      };
+      console.log("test", data);
+
+      dispatch(
+        SaveMeetingDetialsNewApiFunction(
+          navigate,
+          t,
+          data,
+          setSceduleMeeting,
+          setorganizers,
+          setmeetingDetails,
+          1
+        )
+      );
+    } else {
+      seterror(true);
+    }
+  };
+
+  const SaveMeeting = () => {
+    //Enable the Error Handling From here
+    // seterror(true);
+    // setSaveMeeting(!saveMeeting);
+    let newArr = [];
+    let newReminderData = [];
+    newReminderData.push(
+      meetingDetails.ReminderFrequency,
+      meetingDetails.ReminderFrequencyTwo,
+      meetingDetails.ReminderFrequencyThree
+    );
+    rows.map((data, index) => {
+      newArr.push({
+        MeetingDate: data.selectedOption,
+        StartTime: data.startDate,
+        EndTime: data.endDate,
+      });
+    });
+    if (
+      meetingDetails.MeetingTitle !== "" &&
+      meetingDetails.MeetingType !== 0 &&
+      meetingDetails.Location !== "" &&
+      meetingDetails.Description !== "" &&
+      newArr.length > 0 &&
+      newReminderData.length > 0 &&
+      meetingDetails.Notes !== "" &&
+      meetingDetails.Link != ""
+    ) {
+      let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let data = {
+        MeetingDetails: {
+          MeetingTitle: meetingDetails.MeetingTitle,
+          MeetingType: meetingDetails.MeetingType,
+          Location: meetingDetails.Location,
+          Description: meetingDetails.Description,
+          IsVideoChat: meetingDetails.IsVideoCall,
+          IsTalkGroup: meetingDetails.groupChat,
+          OrganizationId: organizationID,
+          MeetingDates: newArr,
+          MeetingReminders: newReminderData,
+          Notes: meetingDetails.Notes,
+          AllowRSVP: meetingDetails.AllowRSPV,
+          NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
+          ReucurringMeetingID: meetingDetails.RecurringOptions,
+          VideoURL: meetingDetails.Link,
+          MeetingStatusID: 11,
+        },
+      };
+      dispatch(
+        SaveMeetingDetialsNewApiFunction(
+          navigate,
+          t,
+          data,
+          setSceduleMeeting,
+          setorganizers,
+          setmeetingDetails,
+          2
+        )
+      );
+    } else {
+      seterror(true);
+    }
   };
 
   const handleReminderFrequency = (e) => {
@@ -1055,12 +1171,12 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
               <Button
                 text={t("Publish-the-meeting")}
                 className={styles["Published"]}
-                // onClick={handlePublish}
+                onClick={handlePublish}
               />
               <Button
-                text={t("Publish")}
+                text={t("Save")}
                 className={styles["Published"]}
-                onClick={handlePublish}
+                onClick={SaveMeeting}
               />
               <Button
                 text={t("Update-and-next")}

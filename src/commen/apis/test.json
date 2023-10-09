@@ -1,22 +1,23 @@
 {
-  "MeetingTitle": "",
-  "MeetingTypeID": 0,
-  "Location": "",
-  "Description": "",
-  "IsVideoChat": false,
-  "IsTalkGroup": false,
-  "OrganizationId": 417,
-  "MeetingDates": [
-    {
-      "MeetingDate": "2023-10-12T16:11:59.985Z",
-      "StartTime": 1696867919607,
-      "EndTime": 1696867921874
-    }
-  ],
-  "MeetingReminders": 2,
-  "Notes": "",
-  "AllowRSVP": false,
-  "NotifyOrganizerOnRSVP": false,
-  "ReucurringMeetingID": 0,
-  "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD"
+  "MeetingDetails": {
+    "MeetingTitle": "Saif Testing Meeting After Task Completion",
+    "MeetingType": { "PK_MTID": 4, "Type": "Board Meetings" },
+    "Location": "karachi",
+    "Description": "Task Completed  ",
+    "IsVideoChat": true,
+    "IsTalkGroup": true,
+    "OrganizationId": 417,
+    "MeetingDates": [
+      { "MeetingDate": "20231009", "StartTime": "192443", "EndTime": "192443" },
+      { "MeetingDate": "20231023", "StartTime": "192459", "EndTime": "192500" },
+      { "MeetingDate": "", "StartTime": "", "EndTime": "" }
+    ],
+    "MeetingReminders": [2, 2, 2],
+    "Notes": "sai notes ",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 5,
+    "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
+    "MeetingStatusID": 1
+  }
 }

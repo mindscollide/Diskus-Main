@@ -339,7 +339,15 @@ const handleSaveMeetingFailed = (message) => {
 };
 
 //Function For Save Meeting Api Function
-const SaveMeetingDetialsNewApiFunction = (navigate, t, data) => {
+const SaveMeetingDetialsNewApiFunction = (
+  navigate,
+  t,
+  data,
+  setSceduleMeeting,
+  setorganizers,
+  setmeetingDetails,
+  viewValue
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(handleSaveMeetingInit());
@@ -373,6 +381,17 @@ const SaveMeetingDetialsNewApiFunction = (navigate, t, data) => {
                   t("Record-found")
                 )
               );
+              console.log(
+                data.MeetingDetails.MeetingStatusID,
+                "MeetingStatusIDMeetingStatusIDMeetingStatusID"
+              );
+              if (viewValue === 1) {
+                setSceduleMeeting(false);
+              } else if (viewValue === 2) {
+              } else if (viewValue === 3) {
+                setorganizers(true);
+                setmeetingDetails(false);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
