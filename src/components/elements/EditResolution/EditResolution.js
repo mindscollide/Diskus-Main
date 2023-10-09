@@ -2133,7 +2133,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                     styles["edit_resolution_attachments"]
                                   }
                                 >
-                                  {tasksAttachments.length > 0 && (
+                                  {attachments.length > 0 && (
                                     <Col
                                       className={styles["attachments_height"]}
                                       sm={12}

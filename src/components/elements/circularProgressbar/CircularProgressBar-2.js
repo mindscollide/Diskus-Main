@@ -12,6 +12,7 @@ const CustomTextProgressbar = (props) => {
     <div className="circular_progressbar_div">
       <CircularProgressbarWithChildren
         value={value}
+        className="circular_progress_counter"
         // text={text}
         maxValue={maxValue}
         styles={{

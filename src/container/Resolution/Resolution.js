@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import styles from "./Resolution.module.css";
 import {
   Button,
@@ -52,6 +52,14 @@ import CrossResolution from "../../assets/images/resolutions/cross_icon_resoluti
 import { updateResolutionModal } from "../../store/actions/Resolution_actions";
 import { viewResolutionModal } from "../../store/actions/Resolution_actions";
 import { validateInput } from "../../commen/functions/regex";
+
+import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+
+import InputIcon from "react-multi-date-picker/components/input_icon";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -63,6 +71,10 @@ const Resolution = () => {
   const [resolutionIDForCancel, setResolutionIDForCancel] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
   moment.locale(currentLanguage);
+  //For Custom language datepicker
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+  const calendRef = useRef();
   const [resultresolution, setResultresolution] = useState(false);
   const [voteresolution, setVoteresolution] = useState(false);
   const [voterID, setVoterID] = useState(0);
@@ -114,6 +126,18 @@ const Resolution = () => {
       dispatch(viewResolutionModal(false));
     };
   }, []);
+
+  useEffect(() => {
+    if (currentLanguage !== undefined && currentLanguage !== null) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
 
   const [searchModalDates, setSearchModalDates] = useState({
     circulationDate: "",
@@ -330,12 +354,20 @@ const Resolution = () => {
     setCancelResolutionModal(true);
   };
 
-  const changeSearchDateHandler = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
+  const changeCirculateDateHandler = (e) => {
+    let toDoDateSaveFormat = new DateObject(e).format("YYYY-MM-DD");
+    console.log(toDoDateSaveFormat, "toDoDateSaveFormat");
     setSearchModalDates({
       ...searchModalDates,
-      [name]: value,
+      circulationDate: toDoDateSaveFormat,
+    });
+  };
+
+  const changeSearchDateHandler = (e) => {
+    let toDoDateSaveFormat = new DateObject(e).format("YYYY-MM-DD");
+    setSearchModalDates({
+      ...searchModalDates,
+      votingDate: toDoDateSaveFormat,
     });
   };
 
@@ -1254,7 +1286,7 @@ const Resolution = () => {
                     lg={5}
                     md={5}
                     sm={12}
-                    className=" d-flex justify-content-end  align-items-center  Search-filed-resolution"
+                    className=" d-flex justify-content-end  align-items-center  position-relative Search-filed-resolution"
                   >
                     <span className={styles["search_input"]}>
                       <TextField
@@ -1274,96 +1306,149 @@ const Resolution = () => {
                         clickIcon={openSearchBox}
                       />
                       {/* <SearchInputSuggestion /> */}
-                    </span>
-                  </Col>
-
-                  {searchIcon ? (
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["Search_Box_Main_Resolution_page"]}
-                        >
+                      {searchIcon ? (
+                        <>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-end"
+                              className={
+                                styles["Search_Box_Main_Resolution_page"]
+                              }
                             >
-                              <span>
-                                <img
-                                  draggable="false"
-                                  src={Cross}
-                                  height="16px"
-                                  alt=""
-                                  width="16px"
-                                  onClick={closeSeachBar}
-                                />
-                              </span>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-end"
+                                >
+                                  <span>
+                                    <img
+                                      draggable="false"
+                                      src={Cross}
+                                      height="16px"
+                                      alt=""
+                                      width="16px"
+                                      onClick={closeSeachBar}
+                                    />
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row className="mt-3 d-flex justify-content-start align-items-start ">
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  className="CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular "
+                                >
+                                  <span>
+                                    {resolutionView === 2
+                                      ? t("Decision-date")
+                                      : t("Circulation-date")}
+                                  </span>
+                                  <DatePicker
+                                    onChange={changeCirculateDateHandler}
+                                    // inputClass="datepicker_input"
+                                    format={"DD/MM/YYYY"}
+                                    // value={toDoDate}
+                                    minDate={moment().toDate()}
+                                    placeholder="DD/MM/YYYY"
+                                    render={
+                                      <InputIcon
+                                        placeholder="DD/MM/YYYY"
+                                        className="datepicker_input"
+                                      />
+                                    }
+                                    editable={false}
+                                    className="datePickerTodoCreate2"
+                                    // disabled={disabled}
+                                    // name={name}
+                                    onOpenPickNewDate={false}
+                                    inputMode=""
+                                    // value={value}
+                                    calendar={calendarValue}
+                                    locale={localValue}
+                                    ref={calendRef}
+                                  />
+
+                                  {/* <TextField
+                                    label={
+                                      resolutionView === 2
+                                        ? t("Decision-date")
+                                        : t("Circulation-date")
+                                    }
+                                    type="date"
+                                    name="circulationDate"
+                                    change={changeSearchDateHandler}
+                                  /> */}
+                                </Col>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  className="CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular"
+                                >
+                                  <span>{t("Voting-deadline")}</span>
+                                  <DatePicker
+                                    onChange={changeSearchDateHandler}
+                                    format={"DD/MM/YYYY"}
+                                    minDate={moment().toDate()}
+                                    placeholder="DD/MM/YYYY"
+                                    render={
+                                      <InputIcon
+                                        placeholder="DD/MM/YYYY"
+                                        className="datepicker_input"
+                                      />
+                                    }
+                                    editable={false}
+                                    className="datePickerTodoCreate2"
+                                    onOpenPickNewDate={false}
+                                    inputMode=""
+                                    calendar={calendarValue}
+                                    locale={localValue}
+                                    ref={calendRef}
+                                  />
+                                  {/* <TextField
+                                    label={t("Voting-deadline")}
+                                    type="date"
+                                    name="votingDate"
+                                    change={changeSearchDateHandler}
+                                  /> */}
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-end gap-3"
+                                >
+                                  <Button
+                                    text={t("Reset")}
+                                    className={
+                                      styles["ResetButton_SearchBar_Resolution"]
+                                    }
+                                    onClick={hideSearchOptions}
+                                  />
+                                  <Button
+                                    text={t("Search")}
+                                    className={
+                                      styles[
+                                        "SearchButton_SearchBar_Resolution"
+                                      ]
+                                    }
+                                    onClick={showSearchOptions}
+                                  />
+                                </Col>
+                              </Row>
                             </Col>
                           </Row>
-                          <Row className="mt-3 d-flex justify-content-start align-items-start ">
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={6}
-                              className="CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular "
-                            >
-                              <TextField
-                                label={
-                                  resolutionView === 2
-                                    ? t("Decision-date")
-                                    : t("Circulation-date")
-                                }
-                                type="date"
-                                name="circulationDate"
-                                change={changeSearchDateHandler}
-                              />
-                            </Col>
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={6}
-                              className="CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular"
-                            >
-                              <TextField
-                                label={t("Voting-deadline")}
-                                type="date"
-                                name="votingDate"
-                                change={changeSearchDateHandler}
-                              />
-                            </Col>
-                          </Row>
-                          <Row className="mt-3">
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="d-flex justify-content-end gap-3"
-                            >
-                              <Button
-                                text={t("Reset")}
-                                className={
-                                  styles["ResetButton_SearchBar_Resolution"]
-                                }
-                                onClick={hideSearchOptions}
-                              />
-                              <Button
-                                text={t("Search")}
-                                className={
-                                  styles["SearchButton_SearchBar_Resolution"]
-                                }
-                                onClick={showSearchOptions}
-                              />
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </>
-                  ) : null}
+                        </>
+                      ) : null}
+                    </span>
+                  </Col>
                 </Row>
               </Col>
             </Row>

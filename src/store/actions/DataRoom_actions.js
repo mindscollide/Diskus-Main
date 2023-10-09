@@ -16,6 +16,7 @@ import {
   renameFolderRequestMethod,
   renameFileRequestMethod,
   searchDocumentsFoldersAPI,
+  getRecentDocumentsRM,
 } from "../../commen/apis/Api_config";
 import { dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -2246,6 +2247,93 @@ const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
       });
   };
 };
+
+const recentDocuments_init = () => {
+  return {
+    type: actions.GET_RECENT_DOCUMENTS_INIT,
+  };
+};
+const recentDocuments_success = (response, message) => {
+  return {
+    type: actions.GET_RECENT_DOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const recentDocuments_fail = (message) => {
+  return {
+    type: actions.GET_RECENT_DOCUMENTS_FAIL,
+  };
+};
+
+const getRecentDocumentsApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(recentDocuments_init());
+    let form = new FormData();
+    form.append("RequestMethod", getRecentDocumentsRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log({ response }, "responseresponseresponseresponse");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getRecentDocumentsApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetRecentDocuments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                recentDocuments_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetRecentDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(recentDocuments_fail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetRecentDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(recentDocuments_fail(t("No-record-found")));
+            } else {
+              dispatch(recentDocuments_fail(t("No-record-found")));
+            }
+          } else {
+            dispatch(recentDocuments_fail(t("No-record-found")));
+          }
+        } else {
+          dispatch(recentDocuments_fail(t("No-record-found")));
+        }
+      })
+      .catch((error) => {
+        dispatch(recentDocuments_fail(t("No-record-found")));
+      });
+  };
+};
+
 export {
   saveFilesApi,
   FileisExist,
@@ -2269,4 +2357,5 @@ export {
   isFolder,
   searchDocumentsAndFoldersApi,
   IsFileisExist,
+  getRecentDocumentsApi,
 };

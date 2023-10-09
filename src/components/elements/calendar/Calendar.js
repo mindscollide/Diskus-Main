@@ -40,7 +40,9 @@ const lang = {
     today: `Aujourd'hui`,
     agenda: "Ordre du jour",
 
-    showMore: (total) => `+${total} plus`,
+    showMore: (total) => (
+      <span className={styles["calendarsowMore"]}>{`+${total} plus`}</span>
+    ),
   },
   ar: {
     week: "أسبوع",
@@ -51,8 +53,9 @@ const lang = {
     next: "التالي",
     today: "اليوم",
     agenda: "جدول أعمال",
-
-    showMore: (total) => `+${total} إضافي`,
+    showMore: (total) => (
+      <span className={styles["calendarsowMore"]}>{`+${total} إضافي`}</span>
+    ),
   },
   hijri: {
     week: "أسبوع",
@@ -63,8 +66,9 @@ const lang = {
     next: "التالي",
     today: "اليوم",
     agenda: "جدول أعمال",
-
-    showMore: (total) => `+${total} إضافي`,
+    showMore: (total) => (
+      <span className={styles["calendarsowMore"]}>{`+${total} إضافي`}</span>
+    ),
   },
 };
 

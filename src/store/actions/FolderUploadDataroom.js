@@ -598,7 +598,14 @@ const createFolder = (
   };
 };
 // Upload Documents API
-const uploadFile = (navigate, file, folderID, t, netDisconnect) => {
+const uploadFile = (
+  navigate,
+  file,
+  folderID,
+  t,
+  netDisconnect
+  // axiosCancelToken
+) => {
   console.log("detaUplodingForFOlder", netDisconnect);
   let token = JSON.parse(localStorage.getItem("token"));
   if (!netDisconnect) {
@@ -614,6 +621,7 @@ const uploadFile = (navigate, file, folderID, t, netDisconnect) => {
         headers: {
           _token: token,
         },
+        // cancelToken: axiosCancelToken.token,
       })
         .then(async (response) => {
           if (response.data.responseCode === 417) {

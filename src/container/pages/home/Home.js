@@ -112,6 +112,7 @@ const Home = () => {
     Authreducer,
     NotesReducer,
     LanguageReducer,
+    assignees,
   } = state;
   const { RecentActivityData, SocketRecentActivityData } = settingReducer;
   const [notes, setNotes] = useState([]);
@@ -175,6 +176,7 @@ const Home = () => {
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
   const [events, setEvents] = useState([]);
+  console.log({ events }, "eventseventseventsevents");
   const userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let CalenderMonthsSpan =
@@ -193,29 +195,7 @@ const Home = () => {
     }
   }, [todoViewModal]);
   // Add CalenderMonthsSpan months and set the day to the last day of the month
-  let startDate =
-    CalenderMonthsSpan &&
-    new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() -
-        parseInt(
-          parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
-        ),
-      1
-    );
 
-  // Subtract CalenderMonthsSpan months and set the day to the 1st
-
-  let endDate =
-    CalenderMonthsSpan &&
-    new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() +
-        parseInt(
-          parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
-        ),
-      0
-    );
   useEffect(() => {
     if (lang === "ar") {
       moment.locale(lang);
@@ -399,7 +379,20 @@ const Home = () => {
   const handleClickNoteModal = () => {
     setModalNote(true);
   };
-
+  useEffect(() => {
+    try {
+      if (
+        meetingIdReducer.MQTTUpcomingEvents !== null &&
+        meetingIdReducer.MQTTUpcomingEvents !== undefined
+      ) {
+        let meetingDates =
+          meetingIdReducer.MQTTUpcomingEvents.meetingEvent.meetingDate;
+        let formattedDate =
+          meetingDates && new DateObject(forHomeCalendar(meetingDates));
+        setDates((prev) => [...prev, formattedDate]);
+      }
+    } catch {}
+  }, [meetingIdReducer.MQTTUpcomingEvents]);
   // render Notes Data
   useEffect(() => {
     try {
@@ -584,7 +577,12 @@ const Home = () => {
     dispatch(HideNotificationUserNotificationData());
     dispatch(HideNotificationMeetings());
     dispatch(HideNotification());
-  }, [auth.ResponseMessage]);
+  }, [
+    auth.ResponseMessage,
+    meetingIdReducer.ResponseMessage,
+    assignees.ResponseMessage,
+    Authreducer.ResponseMessage,
+  ]);
 
   useEffect(() => {
     if (
@@ -952,7 +950,13 @@ const Home = () => {
                   xs={false}
                   className="text-center mt-2 MontserratSemiBold-600 color-5a5a5a  "
                 >
-                  <div className="whiteBackground home-meetingcount border">
+                  <div
+                    className={
+                      meetingIdReducer.Spinner === true
+                        ? "whiteBackground home-meetingcount-spin border"
+                        : "whiteBackground home-meetingcount border"
+                    }
+                  >
                     {meetingIdReducer.Spinner === true ? (
                       <Spin />
                     ) : (
@@ -1059,7 +1063,13 @@ const Home = () => {
                 sm={false}
                 className="text-center mt-2 color-5a5a5a  MontserratSemiBold-600  "
               >
-                <div className="whiteBackground home-todolistcount border">
+                <div
+                  className={
+                    toDoListReducer.Spinner === true
+                      ? "whiteBackground home-todolistcount-spin border"
+                      : "whiteBackground home-todolistcount border"
+                  }
+                >
                   {toDoListReducer.Spinner === true ? (
                     <Spin />
                   ) : (

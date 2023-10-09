@@ -20,6 +20,7 @@ import UserProfile from "../../../container/authentication/User_Profile/UserProf
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
 import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
 import { Button, Modal } from "../../elements";
+import { getRecentDocumentsApi } from "../../../store/actions/DataRoom_actions";
 
 const Header2 = () => {
   const location = useLocation();
@@ -36,7 +37,8 @@ const Header2 = () => {
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activateBlur, setActivateBlur] = useState(false);
-
+  let userID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
   // for userProfile
   const [userProfileModal, setUserProfileModal] = useState(false);
   //for userprofile edit modal
@@ -115,9 +117,15 @@ const Header2 = () => {
     setCreateMeetingModal(true);
   };
 
-  const RecentFilesTab = () => {
-    navigate("/DisKus/dataroom");
+  const RecentFilesTab = async () => {
+    // let Data = {
+    //   UserID: Number(userID),
+    //   OrganizationID: Number(organizationID),
+    // };
+    // await dispatch(getRecentDocumentsApi(navigate, t, Data));
     localStorage.setItem("setTableView", 4);
+
+    navigate("/DisKus/dataroom");
   };
 
   return (
@@ -338,35 +346,38 @@ const Header2 = () => {
               <LanguageSelector />
               <Nav.Link className="me-2">
                 <div className="dropdown-btn_dotted">
-                  <DropdownButton
-                    id="dropdown-btn_dotted"
-                    className="dropdown-btn_dotted"
-                    title={
-                      <img
-                        src={DiskusNotificationIcon}
-                        alt=""
-                        width={28}
-                        draggable="false"
-                      />
-                    }
-                    onClick={dropDownMenuFunction}
-                  >
-                    <Dropdown.Item
-                      className="d-flex title-className"
-                      onClick={openMeetingModal}
+                  {location.pathname.includes("/Diskus/Admin") ||
+                  location.pathname.includes("/DisKus/Admin") ? null : (
+                    <DropdownButton
+                      id="dropdown-btn_dotted"
+                      className="dropdown-btn_dotted"
+                      title={
+                        <img
+                          src={DiskusNotificationIcon}
+                          alt=""
+                          width={28}
+                          draggable="false"
+                        />
+                      }
+                      onClick={dropDownMenuFunction}
                     >
-                      {t("Quick-meeting")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="d-flex title-className">
-                      {t("Upload-document")}
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      className="d-flex title-className"
-                      onClick={RecentFilesTab}
-                    >
-                      {t("Recently-added-files")}
-                    </Dropdown.Item>
-                  </DropdownButton>
+                      <Dropdown.Item
+                        className="d-flex title-className"
+                        onClick={openMeetingModal}
+                      >
+                        {t("Quick-meeting")}
+                      </Dropdown.Item>
+                      <Dropdown.Item className="d-flex title-className">
+                        {t("Upload-document")}
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="d-flex title-className"
+                        onClick={RecentFilesTab}
+                      >
+                        {t("Recently-added-files")}
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  )}
                 </div>
               </Nav.Link>
               <Dropdown className="profilebtn-dropdown">

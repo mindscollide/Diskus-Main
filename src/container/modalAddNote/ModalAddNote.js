@@ -36,6 +36,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const navigate = useNavigate();
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   let OrganizationID = localStorage.getItem("organizationID");
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const [isAddNote, setIsAddNote] = useState(true);
   const [isCreateNote, setIsCreateNote] = useState(false);
   const [fileSize, setFileSize] = useState(0);
@@ -558,6 +559,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         onChange={onTextChange}
                         modules={modules}
                         className={styles["quill-height-addNote"]}
+                        style={{
+                          direction: currentLanguage === "ar" ? "rtl" : "ltr",
+                        }}
                       />
 
                       <Row className="mt-2">

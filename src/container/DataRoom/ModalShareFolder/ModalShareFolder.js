@@ -41,6 +41,7 @@ const ModalShareFolder = ({
   folderId,
   folderName,
 }) => {
+  const { t } = useTranslation();
   const [showaccessrequest, setShowaccessrequest] = useState(false);
   const { assignees } = useSelector((state) => state);
   const [showrequestsend, setShowrequestsend] = useState(false);
@@ -68,8 +69,8 @@ const ModalShareFolder = ({
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [permissionID, setPermissionID] = useState({
-    label: "",
-    value: 0,
+    label: t("Editor"),
+    value: 1,
   });
   const [generalAccess, setGeneralAccess] = useState({
     label: "",
@@ -121,14 +122,14 @@ const ModalShareFolder = ({
     setLinkedcopied(true);
   };
   const options = [
-    { value: 1, label: "Viewer" },
-    { value: 2, label: "Editor" },
+    { value: 1, label: t("Viewer") },
+    { value: 2, label: t("Editor") },
     // { value: 3, label: "Add Expiration" },
   ];
   const optionsgeneralAccess = [
-    { value: 1, label: "Restricted" },
+    { value: 1, label: t("Restricted") },
     { value: 2, label: organizationName },
-    { value: 3, label: "Any One With link" },
+    { value: 3, label: t("Any-one-with-link") },
   ];
 
   useEffect(() => {
@@ -188,7 +189,7 @@ const ModalShareFolder = ({
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     setOnclickFlag(false);
-    if (e.target.value.trimStart() != "") {
+    if (e.target.value.trimStart() !== "") {
       setTaskAssignedToInput(e.target.value.trimStart());
     } else {
       setTaskAssignedToInput("");
@@ -240,10 +241,32 @@ const ModalShareFolder = ({
           setFolderData((prev) => {
             return { ...prev, Folders: [...prev.Folders, Data] };
           });
+          setTaskAssignedToInput("");
+          setTaskAssignedTo(0);
+          setTaskAssignedName("");
+          setPermissionID({
+            label: t("Editor"),
+            value: 1,
+          });
+          setGeneralAccess({
+            label: "",
+            value: 0,
+          });
         } else {
           setOpen({
             flag: true,
             message: t("User-is-already-exist"),
+          });
+          setTaskAssignedToInput("");
+          setTaskAssignedTo(0);
+          setTaskAssignedName("");
+          setPermissionID({
+            label: t("Editor"),
+            value: 1,
+          });
+          setGeneralAccess({
+            label: "",
+            value: 0,
           });
         }
       } else {
@@ -272,7 +295,6 @@ const ModalShareFolder = ({
     });
   };
 
-  const { t } = useTranslation();
   const closebtn = async () => {
     setSharefolder(false);
   };
