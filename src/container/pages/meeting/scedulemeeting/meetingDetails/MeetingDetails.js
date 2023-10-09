@@ -34,10 +34,6 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     { selectedOption: "", startDate: "", endDate: "" },
   ]);
 
-  console.log(rows[0].selectedOption, "selectedOptionselectedOption");
-  console.log(rows[0].startDate, "selectedOptionselectedOption");
-  console.log(rows[0].endDate, "selectedOptionselectedOption");
-
   //For Custom language datepicker
   const [meetingDate, setMeetingDate] = useState("");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -243,6 +239,13 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     { value: "LoungeArea", label: t("Lounge-area") },
   ];
 
+  const meetingTypeOptions = [
+    { value: "DepartmentalMeeting", label: t("Departmental-meeting") },
+    { value: "staffMeeting", label: t("Staff-meeting") },
+    { value: "TeamMeeting", label: t("Team-meeting") },
+    { value: "ProjectMeeting", label: t("Project-meeting") },
+  ];
+
   const selectRecurringOptions = [
     { value: "nonRecurring", label: t("Non-recurring") },
     { value: "weekly", label: t("Weekly") },
@@ -273,7 +276,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     { value: "1HourBefore", label: t("1-hour-before") },
     { value: "5HourBefore", label: t("5-hours-before") },
     { value: "1DayBeofre", label: t("1-day-before") },
-    { value: "3DayBeofre", label: t("7-days-before") },
+    { value: "7DayBeofre", label: t("7-days-before") },
+    { value: "14DayBeofre", label: t("14-days-before") },
+    { value: "21DayBeofre", label: t("21-days-before") },
   ];
 
   const SecondReminder = [
@@ -283,7 +288,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     { value: "1HourBefore", label: t("1-hour-before") },
     { value: "5HourBefore", label: t("5-hours-before") },
     { value: "1DayBeofre", label: t("1-day-before") },
-    { value: "3DayBeofre", label: t("7-days-before") },
+    { value: "7DayBeofre", label: t("7-days-before") },
+    { value: "14DayBeofre", label: t("14-days-before") },
+    { value: "21DayBeofre", label: t("21-days-before") },
   ];
 
   const ThirdReminder = [
@@ -293,7 +300,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     { value: "1HourBefore", label: t("1-hour-before") },
     { value: "5HourBefore", label: t("5-hours-before") },
     { value: "1DayBeofre", label: t("1-day-before") },
-    { value: "3DayBeofre", label: t("7-days-before") },
+    { value: "7DayBeofre", label: t("7-days-before") },
+    { value: "14DayBeofre", label: t("14-days-before") },
+    { value: "21DayBeofre", label: t("21-days-before") },
   ];
 
   useEffect(() => {
@@ -369,10 +378,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       </Row>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
-                          {/* TO BE CHANGED */}
                           <Select
                             value={rows.MeetingType}
+                            placeholder={t("Meeting-type")}
                             onChange={handleMeetingSelectChange}
+                            options={meetingTypeOptions}
                             isSearchable={false}
                           />
 

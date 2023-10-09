@@ -9,6 +9,7 @@ import {
 } from "../../commen/functions/date_formater";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
@@ -352,6 +353,18 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       MeetingEndTime: RemoveTimeDashes(getcurrentTime),
     });
     setCreateMeetingTime(getcurrentTime);
+  };
+
+  const handleEndDateChange = (date) => {
+    const updatedRows = [...createMeeting];
+    updatedRows.MeetingStartTime = date;
+    setCreateMeeting(updatedRows);
+  };
+
+  const [selectedTime, setSelectedTime] = useState(null);
+
+  const handleTimeChange = (newTime) => {
+    setSelectedTime(newTime);
   };
 
   // for all details handler
@@ -1436,7 +1449,21 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       xs={12}
                       className="CreateMeetingTime"
                     >
-                      <TextFieldTime
+                      <DatePicker
+                        arrowClassName="arrowClass"
+                        value={createMeeting.MeetingStartTime}
+                        containerClassName="containerClassTimePicker"
+                        className="timePicker"
+                        disableDayPicker
+                        inputClass="inputTImeMeeting"
+                        calendar={calendarValue}
+                        locale={localValue}
+                        format="HH:mm A"
+                        selected={selectedTime}
+                        plugins={[<TimePicker hideSeconds />]}
+                        onChange={handleTimeChange}
+                      />
+                      {/* <TextFieldTime
                         type="time"
                         labelClass="d-none"
                         value={createMeetingTime}
@@ -1446,10 +1473,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         change={detailsHandler}
                         placeholder={"00:00"}
                         onClick={handleFocusMeetingTime}
-                      />
+                      /> */}
                       <div className="height-10">
                         {modalField === true &&
-                        createMeeting.MeetingStartTime === "" ? (
+                        createMeeting.MeetingStartTime === null ? (
                           <ErrorBar errorText={t("Select-time")} />
                         ) : null}
                       </div>
