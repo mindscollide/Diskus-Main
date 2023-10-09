@@ -1572,7 +1572,7 @@ const Dashboard = () => {
             ) : null}
             {activateBlur === false ? <Talk /> : null}
 
-            {NewMeetingreducer.Loading && <Loader />}
+            {NewMeetingreducer.Loading || assignees.Loading ? <Loader /> : null}
           </Layout>
           {/* </Content> */}
         </Layout>

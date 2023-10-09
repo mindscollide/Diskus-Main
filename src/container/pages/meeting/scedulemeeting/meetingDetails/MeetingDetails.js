@@ -162,6 +162,7 @@ const MeetingDetails = ({
     updatedRows[index].selectedOption = DateDate.slice(0, 8);
     setRows(updatedRows);
   };
+
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
     if (isValidRow(lastRow)) {
@@ -1187,7 +1188,7 @@ const MeetingDetails = ({
           </Row>
         </>
       )}
-      {NewMeetingreducer.Loading ? <Loader /> : null}
+      {/* {NewMeetingreducer.Loading ? <Loader /> : null} */}
     </section>
   );
 };

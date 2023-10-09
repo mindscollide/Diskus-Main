@@ -129,6 +129,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [createMeetingTime, setCreateMeetingTime] = useState("");
+  console.log(
+    createMeetingTime,
+    "createMeetingTimecreateMeetingTimecreateMeetingTime"
+  );
   // for Participant options
   const participantOptions = [t("Organizer"), t("Participant")];
   const currentDate = new Date();
@@ -365,7 +369,21 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   const [selectedTime, setSelectedTime] = useState(null);
 
   const handleTimeChange = (newTime) => {
-    setSelectedTime(newTime);
+    let newDate = new Date(newTime);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      setCreateMeeting({
+        ...createMeeting,
+        ["MeetingStartTime"]: formattedTime,
+        ["MeetingEndTime"]: formattedTime,
+      });
+      setCreateMeetingTime(newTime);
+    }
   };
 
   // for all details handler
@@ -1463,7 +1481,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     >
                       <DatePicker
                         arrowClassName="arrowClass"
-                        value={createMeeting.MeetingStartTime}
+                        value={createMeetingTime}
                         containerClassName="containerClassTimePicker"
                         className="timePicker"
                         disableDayPicker
@@ -1471,23 +1489,12 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         calendar={calendarValue}
                         locale={localValue}
                         format="HH:mm A"
-                        selected={selectedTime}
+                        selected={createMeetingTime}
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
                         onChange={handleTimeChange}
                       />
 
-                      {/* <TextFieldTime
-                        type="time"
-                        labelClass="d-none"
-                        value={createMeetingTime}
-                        name="MeetingStartTime"
-                        onKeyDown={(e) => e.preventDefault()}
-                        applyClass={"quick_meeting_time"}
-                        change={detailsHandler}
-                        placeholder={"00:00"}
-                        onClick={handleFocusMeetingTime}
-                      /> */}
                       <div className="height-10">
                         {modalField === true &&
                         createMeeting.MeetingStartTime === null ? (

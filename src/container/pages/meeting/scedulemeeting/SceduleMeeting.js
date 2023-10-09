@@ -293,7 +293,6 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                       setorganizers={setorganizers}
                       setmeetingDetails={setmeetingDetails}
                       setSceduleMeeting={setSceduleMeeting}
-                      setorganizers={setorganizers}
                     />
                   )}
                   {organizers && (

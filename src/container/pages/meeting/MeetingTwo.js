@@ -44,20 +44,26 @@ import NewEndLeaveMeeting from "./NewEndLeaveMeeting/NewEndLeaveMeeting";
 import PublishedMeeting from "./scedulemeeting/meetingDetails/PublishedMeeting/PublishedMeeting";
 import { useRef } from "react";
 
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import {
+  ViewMeeting,
+  allAssignessList,
+} from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import { StatusValue } from "./statusJson";
+import ModalMeeting from "../../modalmeeting/ModalMeeting";
+import ModalUpdate from "../../modalUpdate/ModalUpdate";
+import ModalView from "../../modalView/ModalView";
 const NewMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
-
+  const [quickMeeting, setQuickMeeting] = useState(false);
   // const [unPublishedMeeting, setUnPublishedMeeting] = useState(false);
   // const [allPublishedMeetings, setAllPublishedMeetings] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
@@ -65,7 +71,8 @@ const NewMeeting = () => {
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
   const [entereventIcon, setentereventIcon] = useState(false);
-
+  const [editFlag, setEditFlag] = useState(false);
+  const [viewFlag, setViewFlag] = useState(false);
   const [publishedMeeting, setpublishedMeeting] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -216,19 +223,7 @@ const NewMeeting = () => {
   };
 
   const EnableUnpublishedMeetingPage = async () => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingpageRow !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings: false,
-    };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
-    localStorage.setItem("MeetingCurrentView", 2);
-    // setpublishedMeeting(false);
-    // setUnPublishedMeeting(true);
+    setQuickMeeting(true);
   };
 
   //Modal For LEave Meeting
@@ -255,6 +250,38 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingCurrentView", 1);
   };
 
+  const [calendarViewModal, setCalendarViewModal] = useState(false);
+
+  const handleViewMeeting = async (id) => {
+    let Data = { MeetingID: id };
+    await dispatch(
+      ViewMeeting(
+        navigate,
+        Data,
+        t,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        1
+      )
+    );
+  };
+  const handleEditMeeting = async (id, isQuick) => {
+    let Data = { MeetingID: id };
+    if (isQuick) {
+      await dispatch(
+        ViewMeeting(
+          navigate,
+          Data,
+          t,
+          setViewFlag,
+          setEditFlag,
+          setCalendarViewModal,
+          2
+        )
+      );
+    }
+  };
   useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
       if (currentLanguage === "en") {
@@ -274,7 +301,16 @@ const NewMeeting = () => {
       key: "title",
       width: "185px",
       render: (text, record) => {
-        return <span className={styles["meetingTitle"]}>{text}</span>;
+        return (
+          <span
+            className={styles["meetingTitle"]}
+            onClick={() =>
+              handleViewMeeting(record.pK_MDID, record.isQuickMeeting)
+            }
+          >
+            {text}
+          </span>
+        );
       },
       sorter: (a, b) => {
         return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
@@ -574,6 +610,9 @@ const NewMeeting = () => {
                     width="17.11px"
                     height="17.11px"
                     alt=""
+                    onClick={() =>
+                      handleEditMeeting(record.pK_MDID, record.isQuickMeeting)
+                    }
                   />
                 </Tooltip>
               </Col>
@@ -892,6 +931,11 @@ const NewMeeting = () => {
                       }
                       onClick={EnableUnpublishedMeetingPage}
                     />
+                    <Button
+                      text={t("Quick-meeting")}
+                      className={styles["UnpublishedMeetingButton"]}
+                      onClick={EnableUnpublishedMeetingPage}
+                    />
                   </Col>
                 </Row>
                 {Number(currentView) === 2 ? (
@@ -985,6 +1029,15 @@ const NewMeeting = () => {
       )}
       {NewMeetingreducer.endForAllMeeting && <NewEndLeaveMeeting />}
       {NewMeetingreducer.endMeetingModal && <NewEndMeetingModal />}
+      {quickMeeting && (
+        <ModalMeeting setShow={setQuickMeeting} show={quickMeeting} />
+      )}
+      {viewFlag ? (
+        <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
+      ) : null}
+      {editFlag ? (
+        <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
+      ) : null}
     </section>
   );
 };

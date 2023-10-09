@@ -188,6 +188,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
   console.log("createMeetingcreateMeetingcreateMeeting", createMeeting);
   const [minutesOfMeeting, setMinutesOfMeeting] = useState([]);
   const [createMeetingTime, setCreateMeetingTime] = useState("");
+  console.log(
+    createMeetingTime,
+    "createMeetingTimecreateMeetingTimecreateMeetingTime"
+  );
   function validateEmail(email) {
     const re =
       /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/;
@@ -1297,14 +1301,21 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
             )
           ).format("DD/MM/YYYY")
         );
-        setCreateMeetingTime(
-          moment(
-            EditmeetingDateFormat(
-              viewData.meetingEvent.meetingDate +
-                viewData.meetingEvent.startTime
-            )
-          ).format("HH:mm")
+        let cangeDate = new Date(viewData.meetingEvent.startTime);
+        console.log(
+          "cangeDate",
+          EditmeetingDateFormat(
+            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
+          )
         );
+        console.log("cangeDate", cangeDate);
+        console.log("cangeDate", cangeDate);
+        let newDate = new Date(
+          EditmeetingDateFormat(
+            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
+          )
+        );
+        setCreateMeetingTime(newDate);
         setCreateMeeting({
           MeetingID: viewData.meetingDetails.pK_MDID,
           MeetingTitle: viewData.meetingDetails.title,
@@ -1313,12 +1324,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
           MeetingDate: viewData.meetingEvent.meetingDate,
           IsChat: viewData.meetingDetails.isChat,
           IsVideoCall: viewData.meetingDetails.isVideoCall,
-          MeetingStartTime: moment(
-            EditmeetingDateFormat(
-              viewData.meetingEvent.meetingDate +
-                viewData.meetingEvent.startTime
-            )
-          ).format("HH:mm"),
+          MeetingStartTime: EditmeetingDateFormat(
+            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
+          ),
           MeetingEndTime: viewData.meetingEvent.endTime,
           MeetingLocation: viewData.meetingEvent.location,
           MeetingReminderID: reminder,
@@ -1350,7 +1358,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
       ["MeetingAgendaAttachments"]: datarecord.MeetingAgendaAttachments,
     });
   };
+
   console.log("editGrid 12", meetingAgendaAttachments, objMeetingAgenda);
+  console.log("createMeetingTimecreateMeetingTime", createMeetingTime);
 
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
@@ -1371,7 +1381,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
-      allAssignees !== []
+      allAssignees.length > 0
     ) {
       return allAssignees
         .filter((item) => {
@@ -1890,6 +1900,22 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
   const [selectedTime, setSelectedTime] = useState(null);
 
   const handleTimeChange = (newTime) => {
+    console.log(newTime, "newTimenewTimenewTime");
+    let newDate = new Date(newTime);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      setCreateMeeting({
+        ...createMeeting,
+        ["MeetingStartTime"]: formattedTime,
+        ["MeetingEndTime"]: formattedTime,
+      });
+      setCreateMeetingTime(newTime);
+    }
     setSelectedTime(newTime);
   };
 

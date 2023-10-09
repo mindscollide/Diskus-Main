@@ -615,7 +615,11 @@ const GetAllMeetingRecurringApiNew = (navigate, t) => {
   };
 };
 // Search Meeting Init
-const SearchMeeting_Init = () => {};
+const SearchMeeting_Init = () => {
+  return {
+    type: actions.GET_SEARCH_NEW_MEETINGS_INIT,
+  };
+};
 // Search Meeting Init
 const SearchMeeting_Success = (response, message) => {
   return {
