@@ -26,10 +26,33 @@ import MeetingActive from "./MeetingActivePage/MeetingActive";
 import PublishedMeeting from "./PublishedMeeting/PublishedMeeting";
 import moment from "moment";
 import TextFieldTime from "../../../../../components/elements/input_field_time/Input_field";
+import { useDispatch } from "react-redux";
+import {
+  GetAllMeetingRecurringApiNew,
+  GetAllMeetingRemindersApiFrequencyNew,
+  GetAllMeetingTypesNewFunction,
+} from "../../../../../store/actions/NewMeetingActions";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
+  console.log(
+    NewMeetingreducer.getALlMeetingTypes.meetingTypes,
+    "statestatestate"
+  );
   const [options, setOptions] = useState([]);
+  const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
+  const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
+  const [reminderFrequencyTwo, setReminderFrequencyTwo] = useState([]);
+  const [reminderFrequencyThree, setReminderFrequencyThree] = useState([]);
+  const [recurringDropDown, setRecurringDropDown] = useState([]);
+  const [reminderFrequencyDropdown, setReminderFrequencyDropdown] = useState(
+    []
+  );
   const [rows, setRows] = useState([
     { selectedOption: "", startDate: "", endDate: "" },
   ]);
@@ -45,7 +68,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const [saveMeeting, setSaveMeeting] = useState(false);
   const [meetingDetails, setMeetingDetails] = useState({
     MeetingTitle: "",
-    MeetingType: "",
+    MeetingType: 0,
     Location: "",
     Description: "",
     Link: "",
@@ -65,7 +88,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   };
 
   const handleMeetingSelectChange = (selectedOption) => {
-    setOptions({ ...options, selectedOption });
+    setMeetingDetails({ ...meetingDetails, selectedOption });
   };
 
   const handleRecurringSelectoptions = (selectedOption) => {
@@ -137,6 +160,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
       ReminderFrequencyThree: e.value,
     });
   };
+
   const HandleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -154,20 +178,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
         });
       }
     }
-    if (name === "MeetingType") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
-        setMeetingDetails({
-          ...meetingDetails,
-          MeetingType: valueCheck,
-        });
-      } else {
-        setMeetingDetails({
-          ...meetingDetails,
-          MeetingType: "",
-        });
-      }
-    }
+
     if (name === "Location") {
       let valueCheck = validateInput(value);
       if (valueCheck !== "") {
@@ -239,13 +250,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     { value: "LoungeArea", label: t("Lounge-area") },
   ];
 
-  const meetingTypeOptions = [
-    { value: "DepartmentalMeeting", label: t("Departmental-meeting") },
-    { value: "staffMeeting", label: t("Staff-meeting") },
-    { value: "TeamMeeting", label: t("Team-meeting") },
-    { value: "ProjectMeeting", label: t("Project-meeting") },
-  ];
-
+  //Handle Recurring DropDown options
   const selectRecurringOptions = [
     { value: "nonRecurring", label: t("Non-recurring") },
     { value: "weekly", label: t("Weekly") },
@@ -255,6 +260,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     { value: "sixmonthly", label: t("Six-monthly") },
   ];
 
+  //Handle Video Call Option
   const handleVideoCameraButton = () => {
     setActiveVideo(!activeVideo);
   };
@@ -269,42 +275,85 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     setRows(updatedRows);
   };
 
-  const FirstReminder = [
-    { value: "OnStartingOfMeeting", label: t("On-starting-of-meeting") },
-    { value: "10minBefore", label: t("10-minutes-before") },
-    { value: "30minBefore", label: t("30-minutes-before") },
-    { value: "1HourBefore", label: t("1-hour-before") },
-    { value: "5HourBefore", label: t("5-hours-before") },
-    { value: "1DayBeofre", label: t("1-day-before") },
-    { value: "7DayBeofre", label: t("7-days-before") },
-    { value: "14DayBeofre", label: t("14-days-before") },
-    { value: "21DayBeofre", label: t("21-days-before") },
-  ];
+  //Meeting Type Drop Down API
+  useEffect(() => {
+    dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+  }, []);
 
-  const SecondReminder = [
-    { value: "OnStartingOfMeeting", label: t("On-starting-of-meeting") },
-    { value: "10minBefore", label: t("10-minutes-before") },
-    { value: "30minBefore", label: t("30-minutes-before") },
-    { value: "1HourBefore", label: t("1-hour-before") },
-    { value: "5HourBefore", label: t("5-hours-before") },
-    { value: "1DayBeofre", label: t("1-day-before") },
-    { value: "7DayBeofre", label: t("7-days-before") },
-    { value: "14DayBeofre", label: t("14-days-before") },
-    { value: "21DayBeofre", label: t("21-days-before") },
-  ];
+  //Reminder Frequency Drop Down API
+  useEffect(() => {
+    dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+  }, []);
 
-  const ThirdReminder = [
-    { value: "OnStartingOfMeeting", label: t("On-starting-of-meeting") },
-    { value: "10minBefore", label: t("10-minutes-before") },
-    { value: "30minBefore", label: t("30-minutes-before") },
-    { value: "1HourBefore", label: t("1-hour-before") },
-    { value: "5HourBefore", label: t("5-hours-before") },
-    { value: "1DayBeofre", label: t("1-day-before") },
-    { value: "7DayBeofre", label: t("7-days-before") },
-    { value: "14DayBeofre", label: t("14-days-before") },
-    { value: "21DayBeofre", label: t("21-days-before") },
-  ];
+  //Recurring Drop Down API
+  useEffect(() => {
+    dispatch(GetAllMeetingRecurringApiNew(navigate, t));
+  }, []);
 
+  //Meeting Type Drop Down Data
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getALlMeetingTypes.meetingTypes !== null &&
+        NewMeetingreducer.getALlMeetingTypes.meetingTypes !== undefined
+      ) {
+        let Newdata = [];
+        NewMeetingreducer.getALlMeetingTypes.meetingTypes.map((data, index) => {
+          Newdata.push({
+            value: data.pK_MTID,
+            label: data.type,
+          });
+        });
+        setmeetingTypeDropdown(Newdata);
+      }
+    } catch (error) {}
+  }, [NewMeetingreducer.getALlMeetingTypes.meetingTypes]);
+
+  //Reminder Frequency Drop Down Data
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllReminderFrequency.meetingReminders !== null &&
+        NewMeetingreducer.getAllReminderFrequency.meetingReminders !== undefined
+      ) {
+        let Newdata = [];
+        NewMeetingreducer.getAllReminderFrequency.meetingReminders.map(
+          (data, index) => {
+            console.log(data, "datadatadatas");
+            Newdata.push({
+              value: data.pK_MRID,
+              label: data.description,
+            });
+          }
+        );
+        setReminderFrequencyOne(Newdata);
+        setReminderFrequencyTwo(Newdata);
+        setReminderFrequencyThree(Newdata);
+      }
+    } catch (error) {}
+  }, [NewMeetingreducer.getAllReminderFrequency.meetingReminders]);
+
+  //Recurring Drop Down Data
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.recurring.meetingRecurrances !== null &&
+        NewMeetingreducer.recurring.meetingRecurrances !== undefined
+      ) {
+        let Newdata = [];
+        NewMeetingreducer.recurring.meetingRecurrances.map((data, index) => {
+          console.log(data, "datadatadatas");
+          Newdata.push({
+            value: data.recurranceID,
+            label: data.recurrance,
+          });
+        });
+        setRecurringDropDown(Newdata);
+      }
+    } catch (error) {}
+  }, [NewMeetingreducer.recurring.meetingRecurrances]);
+
+  //language UseEffect
   useEffect(() => {
     if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
@@ -379,10 +428,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <Select
-                            value={rows.MeetingType}
+                            options={meetingTypeDropdown}
                             placeholder={t("Meeting-type")}
                             onChange={handleMeetingSelectChange}
-                            options={meetingTypeOptions}
                             isSearchable={false}
                           />
 
@@ -390,7 +438,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                             <Col>
                               <p
                                 className={
-                                  error && meetingDetails.MeetingType === ""
+                                  error && meetingDetails.MeetingType === 0
                                     ? ` ${styles["errorMessage-inLogin"]} `
                                     : `${styles["errorMessage-inLogin_hidden"]}`
                                 }
@@ -745,8 +793,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                     <Col lg={4} md={4} sm={12}>
                       <Select
                         onChange={handleReminderFrequency}
-                        options={FirstReminder}
-                        value={FirstReminder.find(
+                        options={reminderFrequencyOne}
+                        value={reminderFrequencyOne.find(
                           (option) =>
                             option.value === meetingDetails.ReminderFrequency
                         )}
@@ -756,8 +804,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                     <Col lg={4} md={4} sm={12}>
                       <Select
                         onChange={handleReminderFrequencyTwo}
-                        options={SecondReminder}
-                        value={SecondReminder.find(
+                        options={reminderFrequencyTwo}
+                        value={reminderFrequencyTwo.find(
                           (option) =>
                             option.value === meetingDetails.ReminderFrequencyTwo
                         )}
@@ -767,8 +815,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                     <Col lg={4} md={4} sm={12}>
                       <Select
                         onChange={handleReminderFrequencyThree}
-                        options={ThirdReminder}
-                        value={ThirdReminder.find(
+                        options={reminderFrequencyThree}
+                        value={reminderFrequencyThree.find(
                           (option) =>
                             option.value ===
                             meetingDetails.ReminderFrequencyThree
@@ -859,7 +907,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                       <Select
                         value={rows.RecurringOptions}
                         onChange={handleRecurringSelectoptions}
-                        options={selectRecurringOptions}
+                        options={recurringDropDown}
                       />
                     </Col>
                   </Row>

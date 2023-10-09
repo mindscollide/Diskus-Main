@@ -1,7 +1,8 @@
 import * as actions from "../action_types";
 
 const initialState = {
-  Loader: false,
+  Loading: false,
+  ResponseMessage: "",
   adduserModal: false,
   crossConfirmation: false,
   notifyOrganizors: false,
@@ -33,6 +34,10 @@ const initialState = {
   sceduleproposedMeeting: false,
   viewVotesAgenda: false,
   castVoteAgendaPage: false,
+  getALlMeetingTypes: [],
+  meetingDetails: [],
+  getAllReminderFrequency: [],
+  recurring: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -250,6 +255,101 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         castVoteAgendaPage: action.response,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_TYPES_NEW_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_TYPES_NEW_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getALlMeetingTypes: action.response,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_TYPES_NEW_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_MEETING_DETAILS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_MEETING_DETAILS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        meetingDetails: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_MEETING_DETAILS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_REMINDER_FREQUENCY_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_REMINDER_FREQUENCY_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllReminderFrequency: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_REMINDER_FREQUENCY_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_RECURRING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_RECURRING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        recurring: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_RECURRING_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
       };
     }
 
