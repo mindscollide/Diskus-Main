@@ -2,9 +2,20 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import PdfIcon from "../../../../../assets/images/pdf_icon.svg";
+import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../DataRoom/SearchFunctionality/option";
 import styles from "./Agenda.module.css";
 
-const SubDocumnets = ({ subAgendaData, parentId }) => {
+const SubDocumnets = ({ subAgendaData, parentId,setRows,rows,index,subIndex }) => {
+  const handlesubAgendaCrossFiles = (subAgendaFilesIndex) => {
+    let optionscross = [...rows];
+    optionscross[index].subAgenda[subIndex].Subfiles.splice(subAgendaFilesIndex, 1);
+    setRows(optionscross)
+  };
   return (
     <Row>
       <Col lg={12} md={12} sm={12} className={styles["SubAgendaDocScroller"]}>
@@ -36,17 +47,19 @@ const SubDocumnets = ({ subAgendaData, parentId }) => {
                                 <section className={styles["cardSubAgenda"]}>
                                   <Row
                                     key={subAgendaFilesIndex}
-                                    className="mt-2"
+                                    className="d-flex mt-2"
                                   >
                                     <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
+                                      lg={10}
+                                      md={10}
+                                      sm={10}
                                       className="d-flex gap-2 align-items-center"
                                     >
                                       <img
                                         draggable={false}
-                                        src={PdfIcon}
+                                        src={getIconSource(
+                                          getFileExtension(subAgendaFiles.name)
+                                        )}
                                         height="25.57px"
                                         width="25.57px"
                                       />
@@ -55,6 +68,15 @@ const SubDocumnets = ({ subAgendaData, parentId }) => {
                                       >
                                         {subAgendaFiles.name}
                                       </span>
+                                    </Col>
+                                    <Col lg={2} md={2} sm={2}>
+                                      <img
+                                        src={redcrossIcon}
+                                        height="19px"
+                                        width="19px"
+                                        className="cursor-pointer"
+                                        onClick={()=>handlesubAgendaCrossFiles(subAgendaFilesIndex)}
+                                      />
                                     </Col>
                                   </Row>
                                 </section>

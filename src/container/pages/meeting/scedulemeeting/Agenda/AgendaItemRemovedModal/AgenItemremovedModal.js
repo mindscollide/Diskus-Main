@@ -8,23 +8,23 @@ import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 const AgenItemremovedModal = ({
   setRows,
-  agendaItemRemovedIndex,
+  rows,
   setSubajendaRemoval,
+  subajendaRemoval,
+  setAgendaItemRemovedIndex,
+  agendaItemRemovedIndex,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
-  const handleYesButton = (agendaItemRemovedIndex, setSubajendaRemoval) => {
-    setRows((prevRows) => {
-      const updatedRows = [...prevRows];
-      updatedRows[agendaItemRemovedIndex].subAgenda.splice(
-        setSubajendaRemoval,
-        1
-      );
-      return updatedRows;
-    });
+  const handleYesButton = () => {
+    let subRows=[...rows]
+    subRows[agendaItemRemovedIndex].subAgenda.splice(subajendaRemoval, 1);
+    setRows(subRows);
+    setAgendaItemRemovedIndex(0)
+    setSubajendaRemoval(0)
     dispatch(showAgenItemsRemovedModal(false));
   };
   console.log(handleYesButton, "handleYesButtonhandleYesButton");
@@ -85,7 +85,7 @@ const AgenItemremovedModal = ({
                   text={t("Proceed")}
                   className={styles["Proceed_Btn_Agendaremovel"]}
                   onClick={() => {
-                    handleYesButton(agendaItemRemovedIndex);
+                    handleYesButton();
                   }}
                 />
               </Col>

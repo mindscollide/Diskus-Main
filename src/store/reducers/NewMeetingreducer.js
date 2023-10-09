@@ -38,6 +38,7 @@ const initialState = {
   meetingDetails: [],
   getAllReminderFrequency: [],
   recurring: [],
+  searchMeetings: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -255,6 +256,35 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         castVoteAgendaPage: action.response,
+      };
+    }
+    // searchMeetings
+    case actions.GET_SEARCH_NEW_MEETINGS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_SEARCH_NEW_MEETINGS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        searchMeetings: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_SEARCH_NEW_MEETINGS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        searchMeetings: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CLEAR_NEWMEETINGSTATE: {
+      return {
+        ...state,
+        searchMeetings: null,
       };
     }
 

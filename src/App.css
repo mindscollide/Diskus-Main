@@ -6180,3 +6180,27 @@ input[type="time"]::-webkit-clear-button {
 .input-with-icon:focus-visible {
   border-color: #e1e1e1 !important; /* Set the border color when focused to match the default color */
 }
+.ant-table-row-expand-icon-cell {
+  width: 20px !important;
+  text-align: left !important;
+}
+
+.ant-table-wrapper.newMeetingTable .ant-table-tbody tr td {
+  padding: 6px 4px !important;
+}
+.ant-table-wrapper.newMeetingTable .ant-table-thead tr th:nth-child(1) {
+  text-align: left !important;
+  padding: 6px 4px !important;
+}
+.ant-table-expand-icon-col {
+  width: 15px !important;
+}
+.newMeetingProgressbar .progress-bar {
+  background: #6172d6 !important;
+  margin: 2px !important;
+  border-radius: 5px !important;
+}
+.custom-progress .progress-bar {
+  background-color: #81db86 !important;
+  /* Add any other custom styles you want */
+}

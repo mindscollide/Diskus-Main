@@ -6,7 +6,7 @@ import BlueCamera from "../../../../../../assets/images/blue Camera.svg";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-const PublishedMeeting = () => {
+const PublishedMeeting = (props) => {
   const { t } = useTranslation();
   return (
     <section>
