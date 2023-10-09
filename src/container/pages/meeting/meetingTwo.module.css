@@ -291,6 +291,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
   font-family: "MontserratSemiBold" !important;
   color: #6172d6;
   font-size: 12px !important;
+  cursor: pointer;
 }
 .width-10 {
   width: 10px !important;

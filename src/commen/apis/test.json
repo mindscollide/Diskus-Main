@@ -1,47 +1,23 @@
 {
-  "MeetingTitle": "asd",
-  "MeetingDescription": "asd",
-  "MeetingTypeID": 0,
-  "MeetingDate": "20230922",
-  "OrganizationId": 302,
-  "MeetingStartTime": "110600",
-  "MeetingEndTime": "110600",
-  "MeetingLocation": "a",
-  "IsVideoCall": false,
-  "IsChat": false,
-  "MeetingReminderID": [2],
-  "MeetingAgendas": [
-    {
-      "ObjMeetingAgenda": {
-        "Title": "s",
-        "PresenterName": "",
-        "URLs": "",
-        "FK_MDID": 0
-      },
-      "MeetingAgendaAttachments": []
-    }
-  ],
-  "MeetingAttendees": [
-    {
-      "User": { "PK_UID": 780 },
-      "MeetingAttendeeRole": { "PK_MARID": 3 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    },
-    {
-      "User": { "PK_UID": 779 },
-      "MeetingAttendeeRole": { "PK_MARID": 2 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    },
-    {
-      "User": { "PK_UID": 822 },
-      "MeetingAttendeeRole": { "PK_MARID": 2 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    },
-    {
-      "User": { "PK_UID": 801 },
-      "MeetingAttendeeRole": { "PK_MARID": 1 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    }
-  ],
-  "ExternalMeetingAttendees": []
+  "MeetingDetails": {
+    "MeetingTitle": "Saif Testing Meeting After Task Completion",
+    "MeetingType": { "PK_MTID": 4, "Type": "Board Meetings" },
+    "Location": "karachi",
+    "Description": "Task Completed  ",
+    "IsVideoChat": true,
+    "IsTalkGroup": true,
+    "OrganizationId": 417,
+    "MeetingDates": [
+      { "MeetingDate": "20231009", "StartTime": "192443", "EndTime": "192443" },
+      { "MeetingDate": "20231023", "StartTime": "192459", "EndTime": "192500" },
+      { "MeetingDate": "", "StartTime": "", "EndTime": "" }
+    ],
+    "MeetingReminders": [2, 2, 2],
+    "Notes": "sai notes ",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 5,
+    "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
+    "MeetingStatusID": 1
+  }
 }

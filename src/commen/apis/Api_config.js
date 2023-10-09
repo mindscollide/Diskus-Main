@@ -882,6 +882,22 @@ const getRecentDocumentsRM = {
   RequestMethod: "ServiceManager.GetRecentDocuments",
 };
 
+const getallMeetingType = {
+  RequestMethod: "ServiceManager.GetAllMeetingTypes",
+};
+
+const saveMeetingDetials = {
+  RequestMethod: "ServiceManager.SaveMeetingDetails",
+};
+
+const GetMeetingNewFrequencyReminder = {
+  RequestMethod: "ServiceManager.GetMeetingReminders",
+};
+
+const GetAllRecurringNewMeeting = {
+  RequestMethod: "ServiceManager.GetAllRecurringFactor",
+};
+
 export {
   getRecentDocumentsRM,
   updateProfilePictureRM,
@@ -1120,4 +1136,8 @@ export {
   addAnnotationOnDataroomAttachment,
   getAnnotationOfDataroomAttachment,
   deleteMultipleGroupMessages,
+  getallMeetingType,
+  saveMeetingDetials,
+  GetMeetingNewFrequencyReminder,
+  GetAllRecurringNewMeeting,
 };

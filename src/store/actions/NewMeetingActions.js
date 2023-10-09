@@ -1,8 +1,14 @@
-import axios from "axios";
-import { searchUserMeetings } from "../../commen/apis/Api_config";
-import * as actions from "../action_types";
+import {
+  GetAllRecurringNewMeeting,
+  GetMeetingNewFrequencyReminder,
+  getallMeetingType,
+  saveMeetingDetials,
+  searchUserMeetings,
+} from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
+import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
+import axios from "axios";
 
 const showAddUserModal = (response) => {
   return {
@@ -221,6 +227,393 @@ const showCastVoteAgendaModal = (response) => {
   };
 };
 
+const handlegetAllMeetingTypesInit = () => {
+  return {
+    type: actions.GET_ALL_MEETING_TYPES_NEW_INIT,
+  };
+};
+
+const handlegetAllMeetingTypesSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_MEETING_TYPES_NEW_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const handlegetAllMeetingTypesFailed = (message) => {
+  return {
+    type: actions.GET_ALL_MEETING_TYPES_NEW_FAILED,
+    message: message,
+  };
+};
+
+const GetAllMeetingTypesNewFunction = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(handlegetAllMeetingTypesInit());
+    let form = new FormData();
+    form.append("RequestMethod", getallMeetingType.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingTypes_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handlegetAllMeetingTypesSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingTypes_02".toLowerCase()
+                )
+            ) {
+              dispatch(handlegetAllMeetingTypesFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingTypes_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handlegetAllMeetingTypesFailed(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                handlegetAllMeetingTypesFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+const handleSaveMeetingInit = () => {
+  return {
+    type: actions.SAVE_MEETING_DETAILS_INIT,
+  };
+};
+
+const handleSaveMeetingSuccess = (response, message) => {
+  return {
+    type: actions.SAVE_MEETING_DETAILS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const handleSaveMeetingFailed = (message) => {
+  return {
+    type: actions.SAVE_MEETING_DETAILS_FAILED,
+    message: message,
+  };
+};
+
+//Function For Save Meeting Api Function
+const SaveMeetingDetialsNewApiFunction = (
+  navigate,
+  t,
+  data,
+  setSceduleMeeting,
+  setorganizers,
+  setmeetingDetails,
+  viewValue
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(handleSaveMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", saveMeetingDetials.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveMeetingDetialsNewApiFunction(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+              console.log(
+                data.MeetingDetails.MeetingStatusID,
+                "MeetingStatusIDMeetingStatusIDMeetingStatusID"
+              );
+              if (viewValue === 1) {
+                setSceduleMeeting(false);
+              } else if (viewValue === 2) {
+              } else if (viewValue === 3) {
+                setorganizers(true);
+                setmeetingDetails(false);
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_02".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(handleSaveMeetingFailed(t("No-record-found", data)));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_03".toLowerCase()
+                )
+            ) {
+              dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+            } else {
+              dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+const handlegetallReminderFrequencyInit = () => {
+  return {
+    type: actions.GET_ALL_REMINDER_FREQUENCY_INIT,
+  };
+};
+
+const handlegetallReminderFrequencySuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_REMINDER_FREQUENCY_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const handlegetallReminderFrequencyFailed = (message) => {
+  return {
+    type: actions.GET_ALL_REMINDER_FREQUENCY_FAILED,
+    message: message,
+  };
+};
+
+//Functions Get All Meeting Reminder Frequency API
+const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(handlegetallReminderFrequencyInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetMeetingNewFrequencyReminder.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingReminders_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handlegetallReminderFrequencySuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingReminders_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handlegetallReminderFrequencyFailed(t("No-record-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingReminders_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
+          );
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(
+          handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+const handleReucrringInit = () => {
+  return {
+    type: actions.GET_ALL_RECURRING_INIT,
+  };
+};
+
+const handleReucrringSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_RECURRING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const handleReucrringFailed = (message) => {
+  return {
+    type: actions.GET_ALL_RECURRING_FAILED,
+    message: message,
+  };
+};
+
+//Functions Get All Meeting Reminder Frequency API
+const GetAllMeetingRecurringApiNew = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(handleReucrringInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllRecurringNewMeeting.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllMeetingRecurringApiNew(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllRecurringFactor_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleReucrringSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllRecurringFactor_02".toLowerCase()
+                )
+            ) {
+              dispatch(handleReucrringFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllRecurringFactor_03".toLowerCase()
+                )
+            ) {
+              dispatch(handleReucrringFailed(t("Something-went-wrong")));
+            } else {
+              dispatch(handleReucrringFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(handleReucrringFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(handleReucrringFailed(t("Something-went-wrong")));
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(handleReucrringFailed(t("Something-went-wrong")));
+      });
+  };
+};
 // Search Meeting Init
 const SearchMeeting_Init = () => {
   return {
@@ -347,6 +740,13 @@ export {
   showSceduleProposedMeeting,
   showviewVotesAgenda,
   showCastVoteAgendaModal,
+  handlegetAllMeetingTypesInit,
+  handlegetAllMeetingTypesSuccess,
+  handlegetAllMeetingTypesFailed,
+  GetAllMeetingTypesNewFunction,
+  SaveMeetingDetialsNewApiFunction,
+  GetAllMeetingRemindersApiFrequencyNew,
+  GetAllMeetingRecurringApiNew,
   searchNewUserMeeting,
   clearMeetingState,
 };

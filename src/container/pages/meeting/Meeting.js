@@ -1188,7 +1188,6 @@ const Meeting = () => {
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
       {meetingIdReducer.Loading ||
-      assignees.Loading ||
       uploadReducer.Loading ||
       minuteofMeetingReducer.Loading ||
       LanguageReducer.Loading ? (

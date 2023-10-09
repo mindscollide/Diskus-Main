@@ -20,7 +20,7 @@ import ProposedMeetingDate from "./Participants/ProposedMeetingDate/ProposedMeet
 import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
-const SceduleMeeting = ({ setProposeMeetingDate }) => {
+const SceduleMeeting = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
@@ -292,6 +292,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
                     <MeetingDetails
                       setorganizers={setorganizers}
                       setmeetingDetails={setmeetingDetails}
+                      setSceduleMeeting={setSceduleMeeting}
                     />
                   )}
                   {organizers && (

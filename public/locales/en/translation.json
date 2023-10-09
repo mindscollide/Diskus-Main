@@ -1528,5 +1528,11 @@
   "Bar-graph": "Bar Graph",
   "Pie-graph": "Pie Graph",
   "Cast-your-vote": "Cast Your Vote",
-  "On-starting-of-meeting": "On Starting of Meeting"
+  "On-starting-of-meeting": "On Starting of Meeting",
+  "14-days-before": "14 days before",
+  "21-days-before": "21 days before",
+  "Departmental-meeting": "Departmental Meeting",
+  "Staff-meeting": "Staff Meeting",
+  "Team-meeting": "Team Meeting",
+  "Project-meeting": "Project Meeting"
 }
