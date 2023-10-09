@@ -538,6 +538,7 @@ const searchUserMeeting = (navigate, searchData, t) => {
       });
   };
 };
+
 const HideNotificationMeetings = () => {
   return {
     type: actions.HIDE,

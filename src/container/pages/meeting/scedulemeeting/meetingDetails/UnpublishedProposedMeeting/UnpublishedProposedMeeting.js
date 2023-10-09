@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import styles from "./UnpublishedProposedMeeting.module.css";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ClipIcon from "../../../../../../assets/images/ClipIcon.png";
 import CommentIcon from "../../../../../../assets/images/Comment-Icon.png";
 import member from "../../../../../../assets/images/member.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
+import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
+
 import { Tooltip } from "antd";
+import successfullPolls from "../../../../../../assets/images/successfull-polls.svg";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import { Progress } from "antd";
-import { Button, Table } from "../../../../../../components/elements";
+import {
+  Button,
+  ResultMessage,
+  Table,
+} from "../../../../../../components/elements";
 import rspvGreenIcon from "../../../../../../assets/images/rspvGreen.svg";
+import VideoIcon from "../../../../../../assets/images/Video-Icon.png";
+
 import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
 import {
@@ -20,12 +29,21 @@ import {
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeeting";
+import { useEffect } from "react";
+import { StatusValue } from "../../../statusJson";
+import {
+  _justShowDateformat,
+  convertDateinGMT,
+  newTimeFormaterAsPerUTCFullDate,
+} from "../../../../../../commen/functions/date_formater";
 
 const UnpublishedProposedMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [rows, setRow] = useState([]);
+  const [totalRecords, setTotalRecords] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   const handleDeleteMeetingModal = () => {
@@ -35,150 +53,245 @@ const UnpublishedProposedMeeting = () => {
   const enableScedulePrposedMeetingModal = () => {
     dispatch(showSceduleProposedMeeting(true));
   };
+  // Empty text data
+  const emptyText = () => {
+    return (
+      <ResultMessage
+        icon={<img src={NoMeetingsIcon} alt="" className="nodata-table-icon" />}
+        title={t("No-new-meetings")}
+        subTitle={t("Anything-important-thats-needs-discussion")}
+      />
+    );
+  };
 
-  const data = [
-    {
-      key: "1",
-      pollTitle: (
-        <label className={styles["Title_desc"]}>
-          Board Member Executive Meeting from Boss's exe Board Member Executive
-          Meeting from Boss's exe
-        </label>
-      ),
-      status: <label className="column-boldness">Proposed</label>,
-      Organizer: <label className="column-boldness">Mr. Abdul Qadir</label>,
-      Date: <label className="column-boldness"> 3:30pm - 17th May, 2020</label>,
-      MeetingPoll: (
-        <>
-          <Row>
-            <Col
-              lg={8}
-              md={8}
-              sm={12}
-              className="d-flex justify-content-center"
-            >
-              <span className={styles["RatioClass"]}>3/8</span>
-              {/* <img src={rspvGreenIcon} height="17.06px" width="17.06px" /> */}
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <Progress
-                className="ProgressUNpublishedMeeting"
-                percent={30}
-                size="small"
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-      sendResponseby: <label> 17th May, 2020</label>,
-    },
-  ];
-  const [tablerowsData, setTablerowsData] = useState(data);
   const MeetingColoumns = [
     {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Title")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "pollTitle",
-      key: "pollTitle",
+      title: <span>{t("Title")}</span>,
+      dataIndex: "title",
+      key: "title",
       width: "215px",
+      render: (text, record) => {
+        return <span className={styles["meetingTitle"]}>{text}</span>;
+      },
+      sorter: (a, b) => {
+        return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
+      },
     },
     {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "55px",
+      width: "120px",
       filters: [
         {
           text: t("Proposed"),
-          value: "Proposed",
-          className: currentLanguage,
+          value: "12",
         },
         {
           text: t("Unpublished"),
-          value: "Unpublished",
+          value: "11",
         },
       ],
-      defaultFilteredValue: ["Published", "Unpublished"],
+      defaultFilteredValue: ["11", "12"],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
+      onFilter: (value, record) =>
+        record.status.toLowerCase().includes(value.toLowerCase()),
+      render: (text, record) => {
+        return StatusValue(t, record.status);
+      },
     },
     {
       title: t("Organizer"),
-      dataIndex: "Organizer",
-      key: "Organizer",
+      dataIndex: "host",
+      key: "host",
       width: "90px",
+      sorter: (a, b) => {
+        return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
+      },
+      render: (text, record) => {
+        return <span className="d-flex justify-content-center">{text}</span>;
+      },
     },
     {
-      title: t("Date-time"),
+      title: (
+        <span className="text-center d-flex justify-content-center">
+          {t("Date-time")}
+        </span>
+      ),
       dataIndex: "Date",
       key: "Date",
-      width: "120px",
+      width: "140px",
+      render: (text, record) => {
+        if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
+          return newTimeFormaterAsPerUTCFullDate(
+            record.dateOfMeeting + record.meetingStartTime
+          );
+        }
+      },
     },
     {
       title: t("Meeting-poll"),
       dataIndex: "MeetingPoll",
       key: "MeetingPoll",
       width: "100px",
+      render: (text, record) => {
+        let maxValue = record.meetingPoll?.totalNoOfDirectors;
+        let value = +record.meetingPoll?.totalNoOfDirectorsVoted;
+        return (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                {value === maxValue ? (
+                  <img
+                    src={rspvGreenIcon}
+                    height="17.06px"
+                    width="17.06px"
+                    alt=""
+                  />
+                ) : (
+                  <span className={styles["RatioClass"]}>
+                    {record.meetingPoll?.totalNoOfDirectorsVoted}/
+                    {record.meetingPoll?.totalNoOfDirectors}
+                  </span>
+                )}
+
+                {/* <img src={rspvGreenIcon} height="17.06px" width="17.06px" /> */}
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12} className={"newMeetingProgressbar"}>
+                {value === maxValue ? (
+                  <ProgressBar
+                    variant=""
+                    className="custom-progress"
+                    now={100}
+                  />
+                ) : (
+                  <ProgressBar
+                    now={value}
+                    max={maxValue}
+                    className={"newMeetingProgressbar"}
+                  />
+                )}
+              </Col>
+            </Row>
+          </>
+        );
+      },
     },
     {
       title: t("Send-reponse-by"),
-      dataIndex: "sendResponseby",
-      key: "sendResponseby",
+      dataIndex: "responseDeadLine",
+      key: "responseDeadLine",
       width: "100px",
+      render: (text, record) => {
+        return (
+          <span className="d-flex justify-content-center">
+            {convertDateinGMT(text)}
+          </span>
+        );
+      },
     },
     {
-      dataIndex: "Chat",
-      key: "Chat",
-      width: "55px",
+      dataIndex: "",
+      key: "",
+      width: "125px",
       render: (text, record) => {
         return (
           <>
             <Row>
-              <Col sm={12} md={12} lg={12} className="d-flex gap-3">
-                <Tooltip placement="topRight" title={t("ClipIcon")}>
-                  <img
-                    src={ClipIcon}
-                    className="cursor-pointer"
-                    width="14.02px"
-                    height="16.03px"
-                    onClick={enableScedulePrposedMeetingModal}
-                  />
-                </Tooltip>
-                <Tooltip placement="topLeft" title={t("Chat")}>
-                  <img
-                    src={CommentIcon}
-                    className="cursor-pointer"
-                    width="20.06px"
-                    height="15.95px"
-                  />
-                </Tooltip>
-                <Tooltip placement="topLeft" title={t("member")}>
-                  <img
-                    src={member}
-                    className="cursor-pointer"
-                    width="17.1px"
-                    height="16.72px"
-                  />
-                </Tooltip>
-                <Tooltip placement="topRight" title={t("Edit")}>
-                  <img
-                    src={EditIcon}
-                    className="cursor-pointer"
-                    width="17.11px"
-                    height="17.11px"
-                    onClick={handleDeleteMeetingModal}
-                  />
-                </Tooltip>
+              <Col sm={12} md={12} lg={12} className="d-flex gap-2">
+                {record.isAttachment ? (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-10"
+                        : "margin-right-10"
+                    }
+                  >
+                    <Tooltip placement="topRight" title={t("ClipIcon")}>
+                      <img
+                        src={ClipIcon}
+                        className="cursor-pointer"
+                        width="17.03px"
+                        height="17.03px"
+                        alt=""
+                      />
+                    </Tooltip>
+                  </span>
+                ) : (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-20"
+                        : "margin-right-20"
+                    }
+                  ></span>
+                )}
+                {record.isChat ? (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-10"
+                        : "margin-right-10"
+                    }
+                  >
+                    <Tooltip placement="topLeft" title={t("Chat")}>
+                      <img
+                        src={CommentIcon}
+                        className="cursor-pointer"
+                        width="20.06px"
+                        height="15.95px"
+                        alt=""
+                      />
+                    </Tooltip>
+                  </span>
+                ) : (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-20"
+                        : "margin-right-20"
+                    }
+                  ></span>
+                )}
+                {record.isVideoCall ? (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-10"
+                        : "margin-right-10"
+                    }
+                  >
+                    <img src={VideoIcon} alt="" />
+                  </span>
+                ) : (
+                  <span
+                    className={
+                      currentLanguage === "ar"
+                        ? "margin-left-20"
+                        : "margin-right-20"
+                    }
+                  ></span>
+                )}
+                {record.status === "9" && (
+                  <Tooltip placement="topLeft" title={t("member")}>
+                    <img
+                      src={member}
+                      className="cursor-pointer"
+                      width="17.03px"
+                      height="17.03px"
+                      alt=""
+                    />
+                  </Tooltip>
+                )}
               </Col>
             </Row>
           </>
@@ -199,13 +312,62 @@ const UnpublishedProposedMeeting = () => {
                 md={12}
                 lg={12}
                 className="d-flex justify-content-end"
-              ></Col>
+              >
+                <img src={EditIcon} width="17.03px" height="17.03px" alt="" />
+              </Col>
             </Row>
           </>
         );
       },
     },
   ];
+
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.searchMeetings !== null &&
+        NewMeetingreducer.searchMeetings !== undefined
+      ) {
+        setTotalRecords(NewMeetingreducer.searchMeetings.totalRecords);
+        if (
+          NewMeetingreducer.searchMeetings.meetings !== null &&
+          NewMeetingreducer.searchMeetings.meetings !== undefined &&
+          NewMeetingreducer.searchMeetings.meetings.length > 0
+        ) {
+          let newRowData = [];
+          NewMeetingreducer.searchMeetings.meetings.map((data, index) => {
+            newRowData.push({
+              dateOfMeeting: data.dateOfMeeting,
+              host: data.host,
+              isAttachment: data.isAttachment,
+              isChat: data.isChat,
+              isVideoCall: data.isVideoCall,
+              isQuickMeeting: data.isQuickMeeting,
+              meetingAgenda: data.meetingAgenda,
+              meetingAttendees: data.meetingAttendees,
+              meetingEndTime: data.meetingEndTime,
+              meetingStartTime: data.meetingStartTime,
+              meetingURL: data.meetingURL,
+              orignalProfilePictureName: data.orignalProfilePictureName,
+              pK_MDID: data.pK_MDID,
+              meetingPoll: {
+                totalNoOfDirectors: data.meetingPoll.totalNoOfDirectors,
+                totalNoOfDirectorsVoted:
+                  data.meetingPoll.totalNoOfDirectorsVoted,
+              },
+              responseDeadLine: data.responseDeadLine,
+              status: data.status,
+              title: data.title,
+              key: index,
+            });
+          });
+          setRow(newRowData);
+        }
+      } else {
+        setRow([]);
+      }
+    } catch {}
+  }, [NewMeetingreducer.searchMeetings]);
   return (
     <section>
       <Row>
@@ -214,8 +376,22 @@ const UnpublishedProposedMeeting = () => {
             column={MeetingColoumns}
             scroll={{ y: "62vh" }}
             pagination={false}
-            className="Polling_table"
-            rows={tablerowsData}
+            className="newMeetingTable"
+            rows={rows}
+            locale={{
+              emptyText: emptyText(), // Set your custom empty text here
+            }}
+            expandable={{
+              expandedRowRender: (record) => {
+                return record.meetingAgenda.map((data) => (
+                  <p className="meeting-expanded-row">
+                    {data.objMeetingAgenda.title}
+                  </p>
+                ));
+              },
+              rowExpandable: (record) =>
+                record.meetingAgenda.length > 0 ? true : false,
+            }}
           />
         </Col>
       </Row>

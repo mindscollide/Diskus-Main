@@ -88,13 +88,13 @@ const Sidebar = () => {
                 <Nav.Link
                   // as={Link}
                   disabled={true}
-                  to="meeting"
+                  to="Meeting2"
                   eventKey="link-2"
                   data-tut="meeting-iconSidebar"
                   // className="m-0 p-0 iconSidebar"
                   className={
-                    location.pathname === "/DisKus/meeting" ||
-                    location.pathname === "/Diskus/meeting"
+                    location.pathname === "/DisKus/Meeting2" ||
+                    location.pathname === "/Diskus/Meeting2"
                       ? "m-0 p-0 iconSidebar-active-sidebar"
                       : "m-0 p-0 iconSidebar"
                   }
@@ -505,9 +505,11 @@ const Sidebar = () => {
 
                 <Nav.Link
                   as={Link}
-                  to="meeting"
+                  to="Meeting2"
                   eventKey="link-2"
                   className={
+                    location.pathname === "/DisKus/Meeting2" ||
+                    location.pathname === "/Diskus/Meeting2" ||
                     location.pathname === "/DisKus/meeting" ||
                     location.pathname === "/Diskus/meeting"
                       ? "m-0 p-0 iconSidebar-active-sidebar"
@@ -531,6 +533,8 @@ const Sidebar = () => {
                     </svg>
                     <span
                       className={
+                        location.pathname === "/DisKus/Meeting2" ||
+                        location.pathname === "/Diskus/Meeting2" ||
                         location.pathname === "/DisKus/meeting" ||
                         location.pathname === "/Diskus/meeting"
                           ? "Meeting_Side_bar_Tag_active"
