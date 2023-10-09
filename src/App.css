@@ -6174,3 +6174,9 @@ input[type="time"]::-webkit-clear-button {
   border-radius: 4px !important;
   padding: 0px 5px !important;
 }
+
+.input-with-icon:focus,
+.input-with-icon:active,
+.input-with-icon:focus-visible {
+  border-color: #e1e1e1 !important; /* Set the border color when focused to match the default color */
+}

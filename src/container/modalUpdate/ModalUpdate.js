@@ -6,6 +6,7 @@ import {
   EditmeetingDateFormat,
   RemoveTimeDashes,
 } from "../../commen/functions/date_formater";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
 import {
   TextField,
@@ -1886,6 +1887,23 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
 
+  const [selectedTime, setSelectedTime] = useState(null);
+
+  const handleTimeChange = (newTime) => {
+    setSelectedTime(newTime);
+  };
+
+  function CustomInput({ onFocus, value, onChange }) {
+    return (
+      <input
+        onFocus={onFocus}
+        value={value}
+        onChange={onChange}
+        className="input-with-icon"
+      />
+    );
+  }
+
   return (
     <>
       <Container>
@@ -2002,7 +2020,22 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                       xs={12}
                       className="CreateMeetingTime"
                     >
-                      <TextFieldTime
+                      <DatePicker
+                        arrowClassName="arrowClass"
+                        value={createMeetingTime}
+                        containerClassName="containerClassTimePicker"
+                        className="timePicker"
+                        disableDayPicker
+                        inputClass="inputTImeMeeting"
+                        calendar={calendarValue}
+                        locale={localValue}
+                        format="HH:mm A"
+                        selected={selectedTime}
+                        render={<CustomInput />}
+                        plugins={[<TimePicker hideSeconds />]}
+                        onChange={handleTimeChange}
+                      />
+                      {/* <TextFieldTime
                         type="time"
                         labelClass="d-none"
                         value={createMeetingTime}
@@ -2011,7 +2044,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                         applyClass={"quick_meeting_time"}
                         change={detailsHandler}
                         placeholder={"00:00"}
-                      />
+                      /> */}
                       {/* <TimePickers
                         disable={endMeetingStatus}
                         change={detailsHandler}
