@@ -15,7 +15,12 @@ import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import whiteVideIcon from "../../../../../assets/images/whiteVideoIcon.png";
 import { Col, Row } from "react-bootstrap";
-import { Button, Switch, TextField } from "../../../../../components/elements";
+import {
+  Button,
+  Switch,
+  TextField,
+  Loader,
+} from "../../../../../components/elements";
 import desh from "../../../../../assets/images/desh.svg";
 import {
   regexOnlyCharacters,
@@ -921,7 +926,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                           (option) =>
                             option.value === meetingDetails.ReminderFrequencyTwo
                         )}
-                        isDisabled={meetingDetails.ReminderFrequency === 0} // Disable if first dropdown is not selected
+                        isDisabled={
+                          meetingDetails.ReminderFrequency === 0 ? true : false
+                        } // Disable if first dropdown is not selected
                       />
                     </Col>
                     <Col lg={4} md={4} sm={12}>
@@ -933,7 +940,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                             option.value ===
                             meetingDetails.ReminderFrequencyThree
                         )}
-                        isDisabled={meetingDetails.ReminderFrequency === 0} // Disable if second dropdown is not selected
+                        isDisabled={
+                          meetingDetails.ReminderFrequencyTwo === 0
+                            ? true
+                            : false
+                        } // Disable if second dropdown is not selected
                       />
                     </Col>
                     <Row>
@@ -1060,6 +1071,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
           </Row>
         </>
       )}
+      {NewMeetingreducer.Loading ? <Loader /> : null}
     </section>
   );
 };
