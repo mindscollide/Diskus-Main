@@ -40,6 +40,9 @@ const initialState = {
   recurring: [],
   searchMeetings: null,
   cancelModalMeetingDetails: false,
+  cancelModalOrganizer: false,
+  cancelAgendaContributor: false,
+  cancelPartipants: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -388,6 +391,27 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         cancelModalMeetingDetails: action.response,
+      };
+    }
+
+    case actions.CANCEL_BUTTON_MODAL_ORGANIZER: {
+      return {
+        ...state,
+        cancelModalOrganizer: action.response,
+      };
+    }
+
+    case actions.CANCEL_AGENDA_CONTRIBUTOR: {
+      return {
+        ...state,
+        cancelAgendaContributor: action.response,
+      };
+    }
+
+    case actions.CANCEL_PARTICIPANTS: {
+      return {
+        ...state,
+        cancelPartipants: action.response,
       };
     }
 

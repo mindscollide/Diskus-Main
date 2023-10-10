@@ -1168,18 +1168,21 @@ const MeetingDetails = ({
                 className={styles["Published"]}
                 onClick={handleCancelMeetingButton}
               />
-              <Button
-                text={t("Publish-the-meeting")}
-                className={styles["Published"]}
-                onClick={handlePublish}
-              />
+
               <Button
                 text={t("Save")}
                 className={styles["Published"]}
                 onClick={SaveMeeting}
               />
+
               <Button
-                text={t("Update-and-next")}
+                text={t("Save-and-publish")}
+                className={styles["Published"]}
+                onClick={handlePublish}
+              />
+
+              <Button
+                text={t("Save-and-next")}
                 className={styles["Update_Next"]}
                 onClick={handleUpdateNext}
               />

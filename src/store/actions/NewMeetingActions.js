@@ -722,6 +722,27 @@ const showCancelModalmeetingDeitals = (response) => {
   };
 };
 
+const showCancelModalOrganizers = (response) => {
+  return {
+    type: actions.CANCEL_BUTTON_MODAL_ORGANIZER,
+    response: response,
+  };
+};
+
+const showCancelModalAgendaContributor = (response) => {
+  return {
+    type: actions.CANCEL_AGENDA_CONTRIBUTOR,
+    response: response,
+  };
+};
+
+const showCancelModalPartipants = (response) => {
+  return {
+    type: actions.CANCEL_PARTICIPANTS,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -764,4 +785,7 @@ export {
   searchNewUserMeeting,
   clearMeetingState,
   showCancelModalmeetingDeitals,
+  showCancelModalOrganizers,
+  showCancelModalAgendaContributor,
+  showCancelModalPartipants,
 };
