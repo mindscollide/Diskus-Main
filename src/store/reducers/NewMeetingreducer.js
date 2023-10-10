@@ -47,6 +47,7 @@ const initialState = {
   cancelMeetingMaterial: false,
   cancelActions: false,
   cancelPolls: false,
+  getAllCommitteeAndGroupPartcipants: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -444,6 +445,30 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         cancelPolls: action.response,
+      };
+    }
+
+    case actions.ADD_MORE_PARTICIPANTS_MODAL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.ADD_MORE_PARTICIPANTS_MODAL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllCommitteeAndGroupPartcipants: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.ADD_MORE_PARTICIPANTS_MODAL_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
       };
     }
 

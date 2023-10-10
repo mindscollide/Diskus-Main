@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AddParticipant.module.css";
 import {
   Modal,
@@ -9,6 +9,7 @@ import {
   Notification,
 } from "../../../../../../components/elements";
 import {
+  GetAllCommitteesUsersandGroupsParticipants,
   showAddParticipantsModal,
   showAddUserModal,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -30,6 +31,8 @@ const AddParticipantModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+
   const [membersParticipants, setMembersParticipants] = useState([
     {
       name: "SAIF UL ISLAM",
@@ -75,6 +78,14 @@ const AddParticipantModal = () => {
   const handleCrossIcon = () => {
     dispatch(showAddParticipantsModal(false));
   };
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(GetAllCommitteesUsersandGroupsParticipants(Data, navigate, t));
+  }, []);
+
   return (
     <section>
       <Modal
