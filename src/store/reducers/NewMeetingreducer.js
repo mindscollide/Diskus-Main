@@ -39,6 +39,7 @@ const initialState = {
   getAllReminderFrequency: [],
   recurring: [],
   searchMeetings: null,
+  cancelModalMeetingDetails: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -380,6 +381,13 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CANCEL_BUTTON_MODAL_MEETING_DETIALS_TAB: {
+      return {
+        ...state,
+        cancelModalMeetingDetails: action.response,
       };
     }
 
