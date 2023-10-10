@@ -128,12 +128,21 @@ const AddParticipantModal = () => {
                   </Col>
                 </Row>
                 <Row className="mt-5">
-                  <Col lg={12} md={12} sm={12}>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="group-fields d-flex align-items-center gap-2"
+                  >
                     <Select
                       closeMenuOnSelect={false}
                       classNamePrefix={"ModalOrganizerSelect"}
                       components={animatedComponents}
                       isMulti
+                    />
+                    <Button
+                      text={t("ADD")}
+                      className={styles["ADD_Btn_CreatePool_Modal"]}
                     />
                   </Col>
                 </Row>
