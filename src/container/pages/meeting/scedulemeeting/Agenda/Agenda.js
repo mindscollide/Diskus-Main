@@ -8,7 +8,10 @@ import { Upload } from "antd";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import line from "../../../../../assets/images/LineAgenda.svg";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
-import { showImportPreviousAgendaModal } from "../../../../../store/actions/NewMeetingActions";
+import {
+  showCancelModalAgenda,
+  showImportPreviousAgendaModal,
+} from "../../../../../store/actions/NewMeetingActions";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
@@ -21,8 +24,9 @@ import AgendaView from "./AgendaView/AgendaView";
 import ParentAgenda from "./ParentAgenda";
 import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
+import CancelAgenda from "./CancelAgenda/CancelAgenda";
 
-const Agenda = () => {
+const Agenda = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { NewMeetingreducer } = useSelector((state) => state);
@@ -63,7 +67,7 @@ const Agenda = () => {
       ],
     },
   ]);
-  console.log("result Dropped files",  rows);
+  console.log("result Dropped files", rows);
 
   //Function For Adding Main Agendas
   const addRow = () => {
@@ -112,7 +116,9 @@ const Agenda = () => {
   };
 
   const EnableAgendaView = () => {
-    setagendaViewPage(true);
+    // Enable View page From it
+    // setagendaViewPage(true);
+    dispatch(showCancelModalAgenda(true));
   };
 
   return (
@@ -234,8 +240,15 @@ const Agenda = () => {
                   className={styles["Agenda_Buttons"]}
                   onClick={EnableAgendaView}
                 />
+                <Button text={t("Save")} className={styles["Agenda_Buttons"]} />
+
                 <Button
-                  text={t("Save-and-Next")}
+                  text={t("Save-and-publish")}
+                  className={styles["Agenda_Buttons"]}
+                />
+
+                <Button
+                  text={t("Save-and-next")}
                   className={styles["Save_Agenda_btn"]}
                   onClick={handleSavedViewAgenda}
                 />
@@ -272,6 +285,9 @@ const Agenda = () => {
       )}
       {NewMeetingreducer.voteConfirmationModal && <VoteModalConfirm />}
       {NewMeetingreducer.importPreviousAgendaModal && <ImportPrevious />}
+      {NewMeetingreducer.cancelAgenda && (
+        <CancelAgenda setSceduleMeeting={setSceduleMeeting} />
+      )}
     </>
   );
 };

@@ -743,6 +743,34 @@ const showCancelModalPartipants = (response) => {
   };
 };
 
+const showCancelModalAgenda = (response) => {
+  return {
+    type: actions.CANCEL_AGENDA,
+    response: response,
+  };
+};
+
+const showCancelMeetingMaterial = (response) => {
+  return {
+    type: actions.CANCEL_MEETING_MATERIAL,
+    response: response,
+  };
+};
+
+const showCancelActions = (response) => {
+  return {
+    type: actions.CANCEL_ACTIONS,
+    response: response,
+  };
+};
+
+const showCancelPolls = (response) => {
+  return {
+    type: actions.CANCEL_POLLS,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -788,4 +816,8 @@ export {
   showCancelModalOrganizers,
   showCancelModalAgendaContributor,
   showCancelModalPartipants,
+  showCancelModalAgenda,
+  showCancelMeetingMaterial,
+  showCancelActions,
+  showCancelPolls,
 };

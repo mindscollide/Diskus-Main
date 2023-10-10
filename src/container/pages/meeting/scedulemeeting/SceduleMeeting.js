@@ -318,11 +318,29 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                     />
                   )}
 
-                  {agenda && <Agenda />}
-                  {meetingMaterial && <MeetingMaterial />}
+                  {agenda && <Agenda setSceduleMeeting={setSceduleMeeting} />}
+                  {meetingMaterial && (
+                    <MeetingMaterial
+                      setSceduleMeeting={setSceduleMeeting}
+                      setMeetingMaterial={setMeetingMaterial}
+                      setMinutes={setMinutes}
+                    />
+                  )}
                   {minutes && <Minutes setMinutes={setMinutes} />}
-                  {actionsPage && <Actions />}
-                  {polls && <Polls />}
+                  {actionsPage && (
+                    <Actions
+                      setSceduleMeeting={setSceduleMeeting}
+                      setPolls={setPolls}
+                      setactionsPage={setactionsPage}
+                    />
+                  )}
+                  {polls && (
+                    <Polls
+                      setSceduleMeeting={setSceduleMeeting}
+                      setPolls={setPolls}
+                      setAttendance={setAttendance}
+                    />
+                  )}
                   {attendance && <Attendence />}
                 </Paper>
               </Col>

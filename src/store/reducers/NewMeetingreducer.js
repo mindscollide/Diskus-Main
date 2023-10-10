@@ -43,6 +43,10 @@ const initialState = {
   cancelModalOrganizer: false,
   cancelAgendaContributor: false,
   cancelPartipants: false,
+  cancelAgenda: false,
+  cancelMeetingMaterial: false,
+  cancelActions: false,
+  cancelPolls: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -412,6 +416,34 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         cancelPartipants: action.response,
+      };
+    }
+
+    case actions.CANCEL_AGENDA: {
+      return {
+        ...state,
+        cancelAgenda: action.response,
+      };
+    }
+
+    case actions.CANCEL_MEETING_MATERIAL: {
+      return {
+        ...state,
+        cancelMeetingMaterial: action.response,
+      };
+    }
+
+    case actions.CANCEL_ACTIONS: {
+      return {
+        ...state,
+        cancelActions: action.response,
+      };
+    }
+
+    case actions.CANCEL_POLLS: {
+      return {
+        ...state,
+        cancelPolls: action.response,
       };
     }
 

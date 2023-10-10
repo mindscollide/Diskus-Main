@@ -1,35 +1,36 @@
 import React from "react";
-import styles from "./CancelPartipants.module.css";
+import styles from "./CancelPolls.module.css";
+import { showCancelPolls } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button, Modal } from "../../../../../../components/elements";
-import { showCancelModalPartipants } from "../../../../../../store/actions/NewMeetingActions";
-import { Col, Row } from "react-bootstrap";
+import { Modal } from "../../../../../../components/elements";
+import { Button, Col, Row } from "react-bootstrap";
 
-export const CancelParticipants = ({ setSceduleMeeting }) => {
+const CancelPolls = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleNOFunctionality = () => {
-    dispatch(showCancelModalPartipants(false));
+    dispatch(showCancelPolls(false));
   };
 
   const handleYesFunctionality = () => {
     setSceduleMeeting(false);
   };
+
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelPartipants}
-        setShow={dispatch(showCancelModalPartipants)}
+        show={NewMeetingreducer.cancelPolls}
+        setShow={dispatch(showCancelPolls)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showCancelModalPartipants(false));
+          dispatch(showCancelPolls(false));
         }}
         ModalBody={
           <>
@@ -86,3 +87,5 @@ export const CancelParticipants = ({ setSceduleMeeting }) => {
     </section>
   );
 };
+
+export default CancelPolls;
