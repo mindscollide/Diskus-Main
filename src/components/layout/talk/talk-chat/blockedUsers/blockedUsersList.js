@@ -55,6 +55,27 @@ const BlockedUsersList = () => {
     }
   }, [talkStateData?.BlockedUsers?.BlockedUsersData])
 
+  console.log('Get Blocked Users', blockedUsersData)
+
+  useEffect(() => {
+    // Check if the userID in mqttUnblockedResponse matches any id in allChatData
+    if (
+      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !==
+        undefined &&
+      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !== null &&
+      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.length !==
+        0
+    ) {
+      let mqttUnblockedResponse =
+        talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.data[0]
+
+      const updatedBlockedUsersData = blockedUsersData.filter(
+        (user) => user.id !== mqttUnblockedResponse.blockUserID,
+      )
+      setBlockedUsersData(updatedBlockedUsersData)
+    }
+  }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser])
+
   return (
     <>
       {talkStateData.BlockedUsers.Loading === true &&

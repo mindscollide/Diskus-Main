@@ -12,6 +12,8 @@ const initialState = {
   AllMessagesData: [],
   Loading: false,
 
+  ChatSpinner: false,
+
   activeChatIdData: {
     id: 0,
     messageType: '',
@@ -423,6 +425,7 @@ const talkReducer = (state = initialState, action) => {
             UserOTOMessagesData: action.response,
             Loading: true,
           },
+          ChatSpinner: true,
         }
       }
     }
@@ -435,6 +438,7 @@ const talkReducer = (state = initialState, action) => {
             UserOTOMessagesData: action.response,
             Loading: false,
           },
+          ChatSpinner: false,
         }
       }
     }
@@ -447,6 +451,7 @@ const talkReducer = (state = initialState, action) => {
             UserOTOMessagesData: [],
             Loading: false,
           },
+          ChatSpinner: false,
         }
       }
     }
@@ -490,6 +495,7 @@ const talkReducer = (state = initialState, action) => {
           GroupMessagesData: [],
           Loading: true,
         },
+        ChatSpinner: true,
       }
     }
 
@@ -501,6 +507,7 @@ const talkReducer = (state = initialState, action) => {
           GroupMessagesData: action.response,
           Loading: false,
         },
+        ChatSpinner: false,
       }
     }
 
@@ -512,6 +519,7 @@ const talkReducer = (state = initialState, action) => {
           GroupMessagesData: [],
           Loading: false,
         },
+        ChatSpinner: false,
       }
     }
 
@@ -523,6 +531,7 @@ const talkReducer = (state = initialState, action) => {
           BroadcastMessagesData: [],
           Loading: true,
         },
+        ChatSpinner: true,
       }
     }
 
@@ -534,6 +543,7 @@ const talkReducer = (state = initialState, action) => {
           BroadcastMessagesData: action.response,
           Loading: false,
         },
+        ChatSpinner: false,
       }
     }
 
@@ -545,6 +555,7 @@ const talkReducer = (state = initialState, action) => {
           BroadcastMessagesData: [],
           Loading: false,
         },
+        ChatSpinner: false,
       }
     }
 

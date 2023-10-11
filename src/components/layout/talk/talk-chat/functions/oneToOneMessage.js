@@ -40,40 +40,50 @@ export const oneToOneMessages = (setAllOtoMessages, allotomessages) => {
         sourceMessageId: messagesData.sourceMessageId,
       })
     })
+  } else {
+    allMessagesArr = []
   }
   return setAllOtoMessages([...allMessagesArr])
 }
 
 export const groupMessages = (allGroupMessagesReducer, setAllGroupMessages) => {
   let allGroupMessagesArr = []
-  allGroupMessagesReducer.map((messagesData) => {
-    if (
-      messagesData.frMessages !== 'Direct Message' &&
-      messagesData.frMessages.length > 0 &&
-      messagesData.frMessages !== undefined &&
-      typeof messagesData.frMessages !== 'object'
-    ) {
-      messagesData.frMessages = messagesData.frMessages.split('|')
-    }
-    allGroupMessagesArr.push({
-      attachmentLocation: messagesData.attachmentLocation,
-      currDate: messagesData.currDate,
-      fileGeneratedName: messagesData.fileGeneratedName,
-      fileName: messagesData.fileName,
-      frMessages: messagesData.frMessages,
-      isFlag: messagesData.isFlag,
-      messageBody: messagesData.messageBody,
-      messageCount: messagesData.messageCount,
-      messageID: messagesData.messageID,
-      receiverID: messagesData.receiverID,
-      senderID: messagesData.senderID,
-      senderName: messagesData.senderName,
-      sentDate: messagesData.sentDate,
-      shoutAll: messagesData.shoutAll,
-      sourceMessageBody: messagesData.sourceMessageBody,
-      sourceMessageId: messagesData.sourceMessageId,
+  if (
+    allGroupMessagesReducer !== undefined &&
+    allGroupMessagesReducer !== null &&
+    allGroupMessagesReducer.length !== 0
+  ) {
+    allGroupMessagesReducer.map((messagesData) => {
+      if (
+        messagesData.frMessages !== 'Direct Message' &&
+        messagesData.frMessages.length > 0 &&
+        messagesData.frMessages !== undefined &&
+        typeof messagesData.frMessages !== 'object'
+      ) {
+        messagesData.frMessages = messagesData.frMessages.split('|')
+      }
+      allGroupMessagesArr.push({
+        attachmentLocation: messagesData.attachmentLocation,
+        currDate: messagesData.currDate,
+        fileGeneratedName: messagesData.fileGeneratedName,
+        fileName: messagesData.fileName,
+        frMessages: messagesData.frMessages,
+        isFlag: messagesData.isFlag,
+        messageBody: messagesData.messageBody,
+        messageCount: messagesData.messageCount,
+        messageID: messagesData.messageID,
+        receiverID: messagesData.receiverID,
+        senderID: messagesData.senderID,
+        senderName: messagesData.senderName,
+        sentDate: messagesData.sentDate,
+        shoutAll: messagesData.shoutAll,
+        sourceMessageBody: messagesData.sourceMessageBody,
+        sourceMessageId: messagesData.sourceMessageId,
+      })
     })
-  })
+  } else {
+    allGroupMessagesArr = []
+  }
   return setAllGroupMessages([...allGroupMessagesArr])
 }
 

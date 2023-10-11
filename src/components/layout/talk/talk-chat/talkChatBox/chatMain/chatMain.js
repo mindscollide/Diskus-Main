@@ -40,6 +40,7 @@ import {
   activeMessage,
   downloadChatEmptyObject,
   DeleteMultipleMessages,
+  activeChat,
 } from '../../../../../../store/actions/Talk_action'
 import {
   normalizeVideoPanelFlag,
@@ -135,7 +136,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const dispatch = useDispatch()
 
   //Getting api result from the reducer
-  const { talkStateData } = useSelector((state) => state)
+  const { talkFeatureStates, talkStateData } = useSelector((state) => state)
 
   //Current Date Time in variable
   var currentDateToday = moment().format('YYYYMMDD')
@@ -447,22 +448,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   //Calling API
   useEffect(() => {
-    dispatch(
-      GetAllUsers(
-        navigate,
-        parseInt(currentUserId),
-        parseInt(currentOrganizationId),
-        t,
-      ),
-    )
-    dispatch(
-      GetAllUsersGroupsRoomsList(
-        navigate,
-        parseInt(currentUserId),
-        parseInt(currentOrganizationId),
-        t,
-      ),
-    )
     if (talkStateData.ActiveChatData.messageType === 'G') {
       let Data = {
         GroupID: talkStateData.ActiveChatData.id,
@@ -1723,47 +1708,55 @@ const ChatMainBody = ({ chatMessageClass }) => {
     if (
       allChatMessages !== undefined &&
       allChatMessages !== null &&
-      allChatMessages.length !== 0 &&
+      // allChatMessages.length !== 0 &&
       talkStateData.ActiveChatData.messageType === 'O'
     ) {
       oneToOneMessages(setAllMessages, allChatMessages.oneToOneMessages)
     } else if (
       allChatMessages !== undefined &&
       allChatMessages !== null &&
-      allChatMessages.length !== 0 &&
+      // allChatMessages.length !== 0 &&
       talkStateData.ActiveChatData.messageType === 'G'
     ) {
       groupMessages(allChatMessages.groupMessages, setAllMessages)
     } else if (
       allChatMessages !== undefined &&
       allChatMessages !== null &&
-      allChatMessages.length !== 0 &&
+      // allChatMessages.length !== 0 &&
       talkStateData.ActiveChatData.messageType === 'B'
     ) {
       let allBroadcastMessagesArr = []
-      allChatMessages.broadcastMessages.map((messagesData) => {
-        if (messagesData.frMessages !== 'Direct Message') {
-          messagesData.frMessages = messagesData.frMessages.split('|')
-        }
-        allBroadcastMessagesArr.push({
-          messageID: messagesData.messageID,
-          senderID: messagesData.senderID,
-          receiverID: messagesData.receiverID,
-          messageBody: messagesData.messageBody,
-          senderName: messagesData.senderName,
-          isFlag: messagesData.isFlag,
-          sentDate: messagesData.sentDate,
-          currDate: messagesData.currDate,
-          fileGeneratedName: messagesData.fileGeneratedName,
-          fileName: messagesData.fileName,
-          frMessages: messagesData.frMessages,
-          broadcastName: messagesData.broadcastName,
-          messageCount: messagesData.messageCount,
-          attachmentLocation: messagesData.attachmentLocation,
-          sourceMessageBody: messagesData.sourceMessageBody,
-          sourceMessageId: messagesData.sourceMessageId,
+      if (
+        allChatMessages.broadcastMessages !== undefined &&
+        allChatMessages.broadcastMessages !== null &&
+        allChatMessages.broadcastMessages.length !== 0
+      ) {
+        allChatMessages.broadcastMessages.map((messagesData) => {
+          if (messagesData.frMessages !== 'Direct Message') {
+            messagesData.frMessages = messagesData.frMessages.split('|')
+          }
+          allBroadcastMessagesArr.push({
+            messageID: messagesData.messageID,
+            senderID: messagesData.senderID,
+            receiverID: messagesData.receiverID,
+            messageBody: messagesData.messageBody,
+            senderName: messagesData.senderName,
+            isFlag: messagesData.isFlag,
+            sentDate: messagesData.sentDate,
+            currDate: messagesData.currDate,
+            fileGeneratedName: messagesData.fileGeneratedName,
+            fileName: messagesData.fileName,
+            frMessages: messagesData.frMessages,
+            broadcastName: messagesData.broadcastName,
+            messageCount: messagesData.messageCount,
+            attachmentLocation: messagesData.attachmentLocation,
+            sourceMessageBody: messagesData.sourceMessageBody,
+            sourceMessageId: messagesData.sourceMessageId,
+          })
         })
-      })
+      } else {
+        allBroadcastMessagesArr = []
+      }
       setAllMessages([...allBroadcastMessagesArr])
     }
   }, [talkStateData.AllMessagesData])
@@ -3122,30 +3115,51 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       let mqttBlockedUserData =
         talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser.data[0]
-      let blockedUsersDataForMqtt = {
-        fullName: '',
-        id: mqttBlockedUserData.blockUserID,
-        imgURL: 'null',
+      let activeChatData = {
+        id: talkStateData.ActiveChatData.id,
+        fullName: talkStateData.ActiveChatData.fullName,
+        imgURL: talkStateData.ActiveChatData.imgURL,
+        messageBody: talkStateData.ActiveChatData.messageBody,
+        messageDate: talkStateData.ActiveChatData.messageDate,
+        notiCount: talkStateData.ActiveChatData.notiCount,
+        messageType: talkStateData.ActiveChatData.messageType,
+        isOnline: talkStateData.ActiveChatData.isOnline,
+        companyName: talkStateData.ActiveChatData.companyName,
+        sentDate: talkStateData.ActiveChatData.sentDate,
+        receivedDate: talkStateData.ActiveChatData.receivedDate,
+        seenDate: talkStateData.ActiveChatData.seenDate,
+        attachmentLocation: talkStateData.ActiveChatData.attachmentLocation,
+        senderID: talkStateData.ActiveChatData.senderID,
+        admin: talkStateData.ActiveChatData.admin,
+        isBlock: 1,
       }
-      if (Object.keys(blockedUsersDataForMqtt) !== null) {
-        setChatFilter({
-          ...chatFilter,
-          value: 8,
-          label: 'Blocked User',
-        })
-        setChatFilterName('Blocked User')
-        blockedUsersData.push(blockedUsersDataForMqtt)
-        setBlockedUsersData([...blockedUsersData])
-      } else {
-        setBlockedUsersData(
-          talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
-        )
+      if (talkStateData.ActiveChatData.id === mqttBlockedUserData.blockUserID) {
+        dispatch(activeChat(activeChatData))
       }
+      // let blockedUsersDataForMqtt = {
+      //   fullName: '',
+      //   id: mqttBlockedUserData.blockUserID,
+      //   imgURL: 'null',
+      // }
+      // if (Object.keys(blockedUsersDataForMqtt) !== null) {
+      //   setChatFilter({
+      //     ...chatFilter,
+      //     value: 8,
+      //     label: 'Blocked User',
+      //   })
+      //   setChatFilterName('Blocked User')
+      //   blockedUsersData.push(blockedUsersDataForMqtt)
+      //   setBlockedUsersData([...blockedUsersData])
+      // }
+      // else {
+      //   setBlockedUsersData(
+      //     talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+      //   )
+      // }
     }
-  }, [
-    talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
-    talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser,
-  ])
+  }, [talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser])
+
+  useEffect(() => {}, [talkStateData.ActiveChatData])
 
   //Unblocking a User MQTT
   useEffect(() => {
@@ -3156,30 +3170,53 @@ const ChatMainBody = ({ chatMessageClass }) => {
       talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.length !==
         0
     ) {
-      let mqttBlockedUserData =
+      let mqttUnblockedUserData =
         talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.data[0]
-      let blockedUsersDataForMqtt = {
-        fullName: '',
-        id: mqttBlockedUserData.blockUserID,
-        imgURL: 'null',
+      let activeChatData = {
+        id: talkStateData.ActiveChatData.id,
+        fullName: talkStateData.ActiveChatData.fullName,
+        imgURL: talkStateData.ActiveChatData.imgURL,
+        messageBody: talkStateData.ActiveChatData.messageBody,
+        messageDate: talkStateData.ActiveChatData.messageDate,
+        notiCount: talkStateData.ActiveChatData.notiCount,
+        messageType: talkStateData.ActiveChatData.messageType,
+        isOnline: talkStateData.ActiveChatData.isOnline,
+        companyName: talkStateData.ActiveChatData.companyName,
+        sentDate: talkStateData.ActiveChatData.sentDate,
+        receivedDate: talkStateData.ActiveChatData.receivedDate,
+        seenDate: talkStateData.ActiveChatData.seenDate,
+        attachmentLocation: talkStateData.ActiveChatData.attachmentLocation,
+        senderID: talkStateData.ActiveChatData.senderID,
+        admin: talkStateData.ActiveChatData.admin,
+        isBlock: 0,
       }
-      if (Object.keys(blockedUsersDataForMqtt) !== null) {
-        setBlockedUsersData(
-          blockedUsersData.filter(
-            (item) => item.id !== blockedUsersDataForMqtt.id,
-          ),
-        )
-        // blockedUsersData.push(blockedUsersDataForMqtt)
-        // setBlockedUsersData([...blockedUsersData])
-      } else {
-        setBlockedUsersData(
-          talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
-        )
+      if (
+        talkStateData.ActiveChatData.id === mqttUnblockedUserData.blockUserID
+      ) {
+        dispatch(activeChat(activeChatData))
       }
+      // let blockedUsersDataForMqtt = {
+      //   fullName: '',
+      //   id: mqttBlockedUserData.blockUserID,
+      //   imgURL: 'null',
+      // }
+      // if (Object.keys(blockedUsersDataForMqtt) !== null) {
+      //   setBlockedUsersData(
+      //     blockedUsersData.filter(
+      //       (item) => item.id !== blockedUsersDataForMqtt.id,
+      //     ),
+      //   )
+      //   // blockedUsersData.push(blockedUsersDataForMqtt)
+      //   // setBlockedUsersData([...blockedUsersData])
+      // } else {
+      //   setBlockedUsersData(
+      //     talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+      //   )
+      // }
     }
   }, [
-    talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
-    talkStateData?.talkSocketDataUserBlockUnblock?.socketUnblockUser,
+    // talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+    talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser,
   ])
 
   //Marking a message as Starred
@@ -3612,15 +3649,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }
 
   //Set Timer For Loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 5000)
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsLoading(false)
+  //   }, 5000)
 
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [])
+  //   return () => {
+  //     clearTimeout(timer)
+  //   }
+  // }, [])
 
   console.log('Talk State Data', talkStateData)
 
@@ -3902,11 +3939,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
     chatMessages.current?.scrollIntoView({ behavior: 'auto' })
   }
 
-  console.log('All OTO Messages', allMessages)
+  console.log('All Messages State', allMessages)
 
-  console.log('All Group Messages', allMessages)
+  // console.log('All Group Messages', allMessages)
 
-  console.log('All Broadcast messages', allMessages)
+  // console.log('All Broadcast messages', allMessages)
 
   useEffect(() => {
     // Check the condition to trigger the link
@@ -4169,7 +4206,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   //   setAllMessages(updatedMessages)
   // }, [])
 
-  console.log('LeaveGroup talkStateData', talkStateData)
+  // console.log('LeaveGroup talkStateData', talkStateData)
 
   return (
     <>
@@ -4211,9 +4248,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     ) : null}
                     <Col lg={1} md={1} sm={12}>
                       {' '}
-                      <div className="chat-box-security">
+                      {/* <div className="chat-box-security">
                         <img draggable="false" src={SecurityIcon} />
-                      </div>
+                      </div> */}
                     </Col>
                     <Col lg={1} md={1} sm={12}>
                       {' '}
@@ -4386,7 +4423,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         className="chat-box-icons closechat"
                         onClick={closeChat}
                       >
-                        <img width={14} draggable="false" src={CloseChatIcon} />
+                        <img
+                          width={14}
+                          draggable="false"
+                          src={CloseChatIcon}
+                          className="cursor-pointer"
+                        />
                       </div>
                     </Col>
                   </Row>
@@ -4438,8 +4480,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             {messageInfo === false &&
             forwardMessageUsersSection === false &&
             showGroupInfo === false &&
-            showGroupEdit === false &&
-            showShoutEdit === false ? (
+            showGroupEdit === false ? (
               <>
                 <Row>
                   <Col className="p-0">
@@ -4457,7 +4498,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         {file === '' ? (
                           <div className="chat-messages-section">
                             {allMessages.length > 0 &&
-                            talkStateData.ActiveChatData.messageType === 'O' ? (
+                            talkStateData.ActiveChatData.messageType === 'O' &&
+                            talkStateData.ChatSpinner === false ? (
                               // allMessages.length === 0 &&
                               // allMessages.length === 0
                               allMessages.map((messageData, index) => {
@@ -4526,7 +4568,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                       )
                                                     }
                                                   >
-                                                    {t('Delete')}
+                                                    {t('Delete for me')}
                                                   </span>
                                                   <span
                                                     onClick={() =>
@@ -4913,7 +4955,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   )
                                                 }
                                               >
-                                                {t('Delete')}
+                                                {t('Delete for me')}
                                               </span>
                                               <span
                                                 onClick={() =>
@@ -5090,7 +5132,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               })
                             ) : allMessages.length > 0 &&
                               talkStateData.ActiveChatData.messageType ===
-                                'G' ? (
+                                'G' &&
+                              talkStateData.ChatSpinner === false ? (
                               // allMessages.length === 0 &&
                               // allMessages.length > 0
                               allMessages.map((messageData, index) => {
@@ -5151,7 +5194,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   )
                                                 }
                                               >
-                                                {t('Delete')}
+                                                {t('Delete for me')}
                                               </span>
                                               <span
                                                 onClick={() =>
@@ -5439,7 +5482,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   )
                                                 }
                                               >
-                                                {t('Delete')}
+                                                {t('Delete for me')}
                                               </span>
                                               <span
                                                 onClick={() =>
@@ -5558,7 +5601,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
                               })
                             ) : allMessages.length > 0 &&
                               talkStateData.ActiveChatData.messageType ===
-                                'B' ? (
+                                'B' &&
+                              talkStateData.ChatSpinner === false ? (
                               allMessages.map((messageData, index) => {
                                 console.log(
                                   'All Broadcast Messages',
@@ -5621,7 +5665,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                     )
                                                   }
                                                 >
-                                                  {t('Delete')}
+                                                  {t('Delete for me')}
                                                 </span>
                                                 <span
                                                   onClick={() =>
@@ -5852,14 +5896,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   )
                                 }
                               })
-                            ) : (
+                            ) : talkStateData.ChatSpinner === true ? (
                               <>
-                                {isLoading ? (
-                                  <Spin className="talk-overallchat-spinner" />
-                                ) : // <p>{'No-Chat-Messages'}</p>
-                                null}
+                                <Spin className="talk-overallchat-spinner" />
                               </>
-                            )}
+                            ) : null}
                             <div ref={chatMessages} />
                           </div>
                         ) : (
@@ -6531,8 +6572,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ) : messageInfo === true &&
               forwardMessageUsersSection === false &&
               showGroupInfo === false &&
-              showGroupEdit === false &&
-              showShoutEdit === false ? (
+              showGroupEdit === false ? (
               <div className="talk-screen-innerwrapper">
                 <div className="message-body talk-screen-content">
                   <div className="message-heading d-flex mb-2">
@@ -6544,6 +6584,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         src={CloseChatIcon}
                         alt=""
                         width={10}
+                        className="cursor-pointer"
                       />
                     </span>
                   </div>
@@ -6610,8 +6651,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ) : messageInfo === false &&
               forwardMessageUsersSection === true &&
               showGroupInfo === false &&
-              showGroupEdit === false &&
-              showShoutEdit === false ? (
+              showGroupEdit === false ? (
               <>
                 <Row className="mt-1">
                   <Col lg={6} md={6} sm={12}>
@@ -6623,6 +6663,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       onClick={cancelForwardSection}
                       src={CloseChatIcon}
                       width={10}
+                      className="cursor-pointer"
                     />
                   </Col>
                 </Row>
@@ -6727,8 +6768,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ) : messageInfo === false &&
               forwardMessageUsersSection === false &&
               showGroupInfo === true &&
-              showGroupEdit === false &&
-              showShoutEdit === false ? (
+              showGroupEdit === false ? (
               <>
                 <Row className="mt-1">
                   <Col lg={4} md={4} sm={12}></Col>
@@ -6831,8 +6871,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ) : messageInfo === false &&
               forwardMessageUsersSection === false &&
               showGroupInfo === false &&
-              showGroupEdit === true &&
-              showShoutEdit === false ? (
+              showGroupEdit === true ? (
               <>
                 <Row className="mt-1">
                   <Col lg={4} md={4} sm={12}></Col>
@@ -6982,8 +7021,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             ) : messageInfo === false &&
               forwardMessageUsersSection === false &&
               showGroupInfo === false &&
-              showGroupEdit === false &&
-              showShoutEdit === true ? (
+              showGroupEdit === false ? (
               <>
                 <Row className="mt-1">
                   <Col lg={4} md={4} sm={12}></Col>
@@ -7003,6 +7041,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       onClick={handleCancel}
                       src={CloseChatIcon}
                       width={10}
+                      className="cursor-pointer"
                     />
                   </Col>
                 </Row>
