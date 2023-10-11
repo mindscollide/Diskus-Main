@@ -39,6 +39,15 @@ const initialState = {
   getAllReminderFrequency: [],
   recurring: [],
   searchMeetings: null,
+  cancelModalMeetingDetails: false,
+  cancelModalOrganizer: false,
+  cancelAgendaContributor: false,
+  cancelPartipants: false,
+  cancelAgenda: false,
+  cancelMeetingMaterial: false,
+  cancelActions: false,
+  cancelPolls: false,
+  getAllCommitteeAndGroupPartcipants: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -376,6 +385,86 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_RECURRING_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CANCEL_BUTTON_MODAL_MEETING_DETIALS_TAB: {
+      return {
+        ...state,
+        cancelModalMeetingDetails: action.response,
+      };
+    }
+
+    case actions.CANCEL_BUTTON_MODAL_ORGANIZER: {
+      return {
+        ...state,
+        cancelModalOrganizer: action.response,
+      };
+    }
+
+    case actions.CANCEL_AGENDA_CONTRIBUTOR: {
+      return {
+        ...state,
+        cancelAgendaContributor: action.response,
+      };
+    }
+
+    case actions.CANCEL_PARTICIPANTS: {
+      return {
+        ...state,
+        cancelPartipants: action.response,
+      };
+    }
+
+    case actions.CANCEL_AGENDA: {
+      return {
+        ...state,
+        cancelAgenda: action.response,
+      };
+    }
+
+    case actions.CANCEL_MEETING_MATERIAL: {
+      return {
+        ...state,
+        cancelMeetingMaterial: action.response,
+      };
+    }
+
+    case actions.CANCEL_ACTIONS: {
+      return {
+        ...state,
+        cancelActions: action.response,
+      };
+    }
+
+    case actions.CANCEL_POLLS: {
+      return {
+        ...state,
+        cancelPolls: action.response,
+      };
+    }
+
+    case actions.ADD_MORE_PARTICIPANTS_MODAL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.ADD_MORE_PARTICIPANTS_MODAL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllCommitteeAndGroupPartcipants: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.ADD_MORE_PARTICIPANTS_MODAL_FAILED: {
       return {
         ...state,
         Loading: false,
