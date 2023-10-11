@@ -176,6 +176,7 @@ const RecentChats = () => {
       opponentUserId: record.id,
     }
     dispatch(BlockUnblockUser(navigate, Data, t))
+    setChatHeadMenuActive(false)
   }
 
   const leaveGroupHandler = (record) => {
@@ -595,6 +596,63 @@ const RecentChats = () => {
       }
     }
   }, [talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse])
+
+  useEffect(() => {
+    // Check if the userID in mqttUnblockedResponse matches any id in allChatData
+    if (
+      talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !==
+        undefined &&
+      talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !== null &&
+      talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser.length !== 0
+    ) {
+      let mqttUnblockedResponse =
+        talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser.data[0]
+      console.log('mqttUnblockedResponse', mqttUnblockedResponse)
+      const updatedAllChatData = allChatData.map((chatItem) => {
+        console.log('mqttUnblockedResponse chatItem', chatItem)
+        console.log('mqttUnblockedResponse', mqttUnblockedResponse)
+        if (chatItem.id === mqttUnblockedResponse.blockUserID) {
+          // If there's a match, update the isBlock property
+          console.log('Going in Block Check')
+          return { ...chatItem, isBlock: mqttUnblockedResponse.isBlock }
+        }
+        return chatItem // Keep other chat items unchanged
+      })
+
+      // Update the state with the modified allChatData
+      setAllChatData(updatedAllChatData)
+    }
+  }, [talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser])
+
+  useEffect(() => {
+    // Check if the userID in mqttUnblockedResponse matches any id in allChatData
+    if (
+      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !==
+        undefined &&
+      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !== null &&
+      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.length !==
+        0
+    ) {
+      let mqttUnblockedResponse =
+        talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.data[0]
+
+      const updatedAllChatData = allChatData.map((chatItem) => {
+        console.log('mqttUnblockedResponse chatItem', chatItem)
+        console.log('mqttUnblockedResponse', mqttUnblockedResponse)
+        if (chatItem.id === mqttUnblockedResponse.blockUserID) {
+          console.log('Going in Unblock Check')
+          // If there's a match, update the isBlock property
+          return { ...chatItem, isBlock: mqttUnblockedResponse.isBlock }
+        }
+        return chatItem // Keep other chat items unchanged
+      })
+
+      // Update the state with the modified allChatData
+      setAllChatData(updatedAllChatData)
+    }
+  }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser])
+
+  console.log('RecentChat TalkStates', talkStateData)
 
   return (
     <>
