@@ -542,6 +542,10 @@ const DataRoom = () => {
   };
 
   const handleSortMyDocuments = (pagination, filters, sorter) => {
+    console.log(
+      { pagination, filters, sorter },
+      "handleSortMyDocumentshandleSortMyDocuments"
+    );
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
         dispatch(
@@ -582,6 +586,8 @@ const DataRoom = () => {
           true
         )
       );
+    }
+    if (sorter.field === "owner") {
     }
   };
 
@@ -1625,11 +1631,6 @@ const DataRoom = () => {
   // cancel file upload
   const cancelFileUpload = (data) => {
     console.log("cancelFileUpload", data);
-    if (data.axiosCancelToken) {
-      data.axiosCancelToken.cancel("Upload canceled");
-      console.log("cancelFileUpload", data);
-    }
-    console.log("cancelFileUpload", data);
     setTasksAttachments((prevTasks) => ({
       ...prevTasks,
       [data.TaskId]: {
@@ -1640,6 +1641,12 @@ const DataRoom = () => {
         Progress: 0,
       },
     }));
+    if (data.axiosCancelToken) {
+      data.axiosCancelToken.cancel("Upload canceled");
+      console.log("cancelFileUpload", data);
+    }
+    console.log("cancelFileUpload", data);
+
     // Optionally, you can also cancel the Axios request associated with this task here.
   };
   // const isOnline = navigator.onLine;
@@ -1925,10 +1932,6 @@ const DataRoom = () => {
   // this is used for canle all uploadind
   const CanceUpload = () => {
     const dataArray = Object.values(tasksAttachments);
-    console.log(
-      { detaUplodingForFOlder },
-      "dataArraydataArraydataArraydataArray"
-    );
     const combinedArray = [...detaUplodingForFOlder, ...dataArray];
     const isUploading = combinedArray.some((obj) => obj.Uploading === true);
     if (isUploading) {
@@ -1941,7 +1944,14 @@ const DataRoom = () => {
     }
   };
 
-  const CanceUploadinFromModalTrue = (data) => {
+  const CanceUploadinFromModalTrue = async (data) => {
+    const dataArray = Object.values(tasksAttachments);
+    await dataArray.map((data, index) => {
+      data.axiosCancelToken.cancel("Upload canceled");
+    });
+    detaUplodingForFOlder.map((data, index) => {
+      console.log("datadatadatadatadatadata", data);
+    });
     // cancelToken.cancel("API call canceled by user");
     setDetaUplodingForFOlder([]);
     setTasksAttachments([]);

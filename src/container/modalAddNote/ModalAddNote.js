@@ -805,12 +805,12 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       <Button
                         onClick={() => setIsAddNote(true)}
                         className={styles["cancel-Add-notes-Modal"]}
-                        text={"Cancel"}
+                        text={t("Cancel")}
                       />
                       <Button
                         onClick={() => setAddNewModal(false)}
                         className={styles["close-Add-notes-Modal"]}
-                        text={"Close"}
+                        text={t("Close")}
                       />
                     </Col>
                   </Row>

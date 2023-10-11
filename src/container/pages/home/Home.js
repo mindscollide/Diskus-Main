@@ -935,6 +935,7 @@ const Home = () => {
       }
     }
   };
+  console.log(process.env.COUNTER_TEXT, "processprocessprocess");
   // const handleChangeTodoTable = () => {};
   return (
     <>

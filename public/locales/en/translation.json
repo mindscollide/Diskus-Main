@@ -836,7 +836,7 @@
   "Replace-existing-file": "Replace existing file",
   "Keep-both-files": "Keep Both files",
   "Keep-both-folders": "Keep Both folders",
-  "Your-upload-is-not-complete-would-you-like-to-cancel-the-upload": "Your upload is not complete. Would you like to cancel the upload",
+  "Your-upload-is-not-complete-would-you-like-to-cancel-the-upload": "Your upload is not complete. Would you like to cancel the upload?",
   "Continue-upload": "Continue Upload",
   "Cancel-upload": "Cancel Upload",
   "Access-expires-on": "Access Expires on",
@@ -1535,5 +1535,6 @@
   "Departmental-meeting": "Departmental Meeting",
   "Staff-meeting": "Staff Meeting",
   "Team-meeting": "Team Meeting",
-  "Project-meeting": "Project Meeting"
+  "Project-meeting": "Project Meeting",
+  "User-required-must-for-share": "User required must for share"
 }

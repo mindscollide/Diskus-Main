@@ -47,6 +47,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const [fileForSend, setFileForSend] = useState([]);
   const [attachments, setAttachments] = useState([]);
   console.log(attachments, "attachmentsattachmentsattachments");
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const deleteNoteModalHandler = async () => {
@@ -664,6 +666,9 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         onChange={onTextChange}
                         modules={modules}
                         className={styles["quill-update-height"]}
+                        style={{
+                          direction: currentLanguage === "ar" ? "rtl" : "ltr",
+                        }}
                       />
                     </Col>
                   </Row>

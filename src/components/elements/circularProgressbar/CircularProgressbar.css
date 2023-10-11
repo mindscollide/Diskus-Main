@@ -33,6 +33,6 @@ body[dir="rtl"] .dashboard_progress_bar {
   }
 } */
 .circular_progress_counter {
-  width: 180px;
+  width: 100% !important;
   height: 100%;
 }
