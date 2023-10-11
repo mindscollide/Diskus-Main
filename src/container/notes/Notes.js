@@ -13,7 +13,9 @@ import hollowstar from "../../assets/images/Hollowstar.svg";
 import PlusExpand from "../../assets/images/Plus-notesExpand.svg";
 import MinusExpand from "../../assets/images/close-accordion.svg";
 import EditIconNote from "../../assets/images/EditIconNotes.svg";
-import { Pagination } from "antd";
+import { Pagination, ConfigProvider } from "antd";
+import ar_EG from "antd/es/locale/ar_EG";
+import en_US from "antd/es/locale/en_US";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -286,6 +288,14 @@ const Notes = () => {
     }
   }, [NotesReducer.ResponseMessage]);
 
+  // Function to convert Arabic numerals to Arabic text
+  const convertToArabicText = (number) => {
+    const arabicNumbers = "٠١٢٣٤٥٦٧٨٩";
+    const arabicText = number
+      .toString()
+      .replace(/\d/g, (d) => arabicNumbers[d]);
+    return arabicText;
+  };
   return (
     <>
       <div className={styles["notescontainer"]}>
@@ -609,21 +619,25 @@ const Notes = () => {
             className="d-flex justify-content-center my-3 pagination-groups-table"
           >
             {notes !== null && notes !== undefined && notes.length > 0 ? (
-              <Pagination
-                current={
-                  notesPage !== null && notesPage !== undefined ? notesPage : 1
-                }
-                locale={{
-                  items_per_page: t("items_per_page"),
-                  page: t("page"),
-                }}
-                onChange={handelChangeNotesPagination}
-                showSizeChanger
-                total={totalRecords}
-                pageSizeOptions={["30", "50", "100", "200"]}
-                pageSize={notesPagesize !== null ? notesPagesize : 50}
-                className={styles["PaginationStyle-Notes"]}
-              />
+              <>
+                <Pagination
+                  current={
+                    notesPage !== null && notesPage !== undefined
+                      ? notesPage
+                      : 1
+                  }
+                  locale={{
+                    items_per_page: t("items_per_page"),
+                    page: t("page"),
+                  }}
+                  onChange={handelChangeNotesPagination}
+                  showSizeChanger
+                  total={totalRecords}
+                  pageSizeOptions={["30", "50", "100", "200"]}
+                  pageSize={notesPagesize !== null ? notesPagesize : 50}
+                  className={styles["PaginationStyle-Notes"]}
+                />
+              </>
             ) : null}
           </Col>
         </Row>

@@ -36,7 +36,7 @@ const uploadReducer = (state = initialState, action) => {
       };
 
     case actions.UPLOAD_DOCUMNET_FILE_SUCCESS:
-      console.log(action, "actionasad")
+      console.log(action, "actionasad");
       return {
         ...state,
         Loading: false,
@@ -47,7 +47,7 @@ const uploadReducer = (state = initialState, action) => {
       };
 
     case actions.UPLOAD_DOCUMNET_FILE_FAIL:
-      console.log(action, "actionasad")
+      console.log(action, "actionasad");
       return { ...state, Loading: false, ResponseMessage: action.message };
 
     case actions.RESET_ALL_FILES_UPLOAD:

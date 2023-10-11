@@ -19,8 +19,11 @@ import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirty
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
 import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
-import { Button, Modal } from "../../elements";
-import { getRecentDocumentsApi } from "../../../store/actions/DataRoom_actions";
+import { Button, Modal, UploadTextField } from "../../elements";
+import {
+  getRecentDocumentsApi,
+  uploadDocumentFromDashboard,
+} from "../../../store/actions/DataRoom_actions";
 
 const Header2 = () => {
   const location = useLocation();
@@ -116,7 +119,11 @@ const Header2 = () => {
     console.log("openMeetingModal");
     setCreateMeetingModal(true);
   };
-
+  const handleUploadFile = async ({ file }) => {
+    console.log(file, "handleUploadFilehandleUploadFile");
+    // await dispatch(uploadDocumentFromDashboard(file));
+    navigate("/Diskus/dataroom", { state: file });
+  };
   const RecentFilesTab = async () => {
     // let Data = {
     //   UserID: Number(userID),
@@ -368,7 +375,13 @@ const Header2 = () => {
                         {t("Quick-meeting")}
                       </Dropdown.Item>
                       <Dropdown.Item className="d-flex title-className">
-                        {t("Upload-document")}
+                        {/* {t("Upload-document")} */}
+                        <UploadTextField
+                          title={t("Upload-document")}
+                          handleFileUploadRequest={handleUploadFile}
+                          // setProgress={setProgress}
+                        />
+                        {/* <input type="file" /> */}
                       </Dropdown.Item>
                       <Dropdown.Item
                         className="d-flex title-className"

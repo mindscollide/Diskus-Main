@@ -168,7 +168,6 @@ const Home = () => {
   const [getNoteID, setGetNoteID] = useState(0);
   const [getTodoID, setTodoID] = useState(0);
   const [todolistLoader, setTodoListLoader] = useState(false);
-  console.log(todolistLoader, todoViewModal, "todolistLoadertodolistLoader");
   let valueMeeting = meetingCountThisWeek - upcomingMeetingCountThisWeek;
   let toDoValue = todoListThisWeek - todoListAssignedThisWeek;
   const [show, setShow] = useState(false);
@@ -176,7 +175,6 @@ const Home = () => {
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
   const [events, setEvents] = useState([]);
-  console.log({ events }, "eventseventseventsevents");
   const userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let CalenderMonthsSpan =
@@ -185,15 +183,15 @@ const Home = () => {
       ? localStorage.getItem("calenderMonthsSpan")
       : 1;
   let currentDate = new Date(); // Get the current date
+
   useEffect(() => {
     if (todoViewModal) {
       setTodoID(0);
-      setTodoListLoader(false);
     } else if (todoViewModal === false) {
       setTodoID(0);
-      setTodoListLoader(false);
     }
   }, [todoViewModal]);
+
   // Add CalenderMonthsSpan months and set the day to the last day of the month
 
   useEffect(() => {
@@ -227,8 +225,6 @@ const Home = () => {
     dispatch(getusernotificationinit());
     dispatch(getCalendarDataInit(true));
     dispatch(getNotes_Init());
-    // console.log("getUserSettinggetUserSetting")
-    // await dispatch(getUserSetting(navigate, t));
     let Data = {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
@@ -290,14 +286,10 @@ const Home = () => {
         EndDate:
           endDates !== null && newDateFormaterAsPerUTC(endDates) + "000000",
       };
-      console.log("newListnewListnewList12", startDates);
-      console.log("newListnewListnewList12", endDates);
-      console.log("newListnewListnewList12", calendarData);
 
       setStartDataUpdate(newDateFormaterAsPerUTC(startDates));
       setEndDataUpdate(newDateFormaterAsPerUTC(endDates));
       if (startDates !== null && endDates !== null) {
-        console.log("getCalendarDataResponse");
         dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
       }
     } catch {
@@ -373,12 +365,10 @@ const Home = () => {
     }
   }, [SocketRecentActivityData]);
 
-  // for view modal  handler
-  const viewModalHandler = (id) => {};
-
   const handleClickNoteModal = () => {
     setModalNote(true);
   };
+
   useEffect(() => {
     try {
       if (
@@ -393,6 +383,7 @@ const Home = () => {
       }
     } catch {}
   }, [meetingIdReducer.MQTTUpcomingEvents]);
+
   // render Notes Data
   useEffect(() => {
     try {
@@ -721,7 +712,6 @@ const Home = () => {
     if (!dates.includes(value)) {
       setDates([...dates, value]);
     }
-    // await setShow(true);
   };
 
   const closeModal = () => {
@@ -910,7 +900,6 @@ const Home = () => {
     }
   };
 
-  // console.log(dateFocused, dateClicked.toDate().getDate(), "onFocusedDateChangeonFocusedDateChangeonFocusedDateChange")
   const handleClickonDate = (dateObject, dateSelect) => {
     let selectDate = dateSelect.toString().split("/").join("");
     if (
@@ -935,8 +924,6 @@ const Home = () => {
       }
     }
   };
-  console.log(process.env.COUNTER_TEXT, "processprocessprocess");
-  // const handleChangeTodoTable = () => {};
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">

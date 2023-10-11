@@ -1536,5 +1536,6 @@
   "Staff-meeting": "Staff Meeting",
   "Team-meeting": "Team Meeting",
   "Project-meeting": "Project Meeting",
-  "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document."
+  "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document.",
+  "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder."
 }
