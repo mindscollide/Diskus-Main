@@ -12,10 +12,14 @@ import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "./CreatePolls/Createpolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
-import { showUnsavedPollsMeeting } from "../../../../../store/actions/NewMeetingActions";
+import {
+  showCancelPolls,
+  showUnsavedPollsMeeting,
+} from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
-const Polls = () => {
+import CancelPolls from "./CancelPolls/CancelPolls";
+const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,6 +39,15 @@ const Polls = () => {
 
   const handleEditPollsMeeting = () => {
     setEditPolls(true);
+  };
+
+  const handleCacnelbutton = () => {
+    dispatch(showCancelPolls(true));
+  };
+
+  const handleSaveAndnext = () => {
+    setPolls(false);
+    setAttendance(true);
   };
 
   const PollsData = [
@@ -255,21 +268,25 @@ const Polls = () => {
                             />
 
                             <Button
-                              text={t("Delete-meeting")}
+                              text={t("Cancel")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                              onClick={handleCacnelbutton}
+                            />
+
+                            <Button
+                              text={t("Save")}
                               className={styles["Cancel_Button_Polls_meeting"]}
                             />
 
                             <Button
-                              text={t("Publish-the-meeting")}
+                              text={t("Save-and-publish")}
                               className={styles["Cancel_Button_Polls_meeting"]}
                             />
+
                             <Button
-                              text={t("Cancel")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-                            <Button
-                              text={t("Save")}
+                              text={t("Save-and-next")}
                               className={styles["Save_Button_Polls_meeting"]}
+                              onClick={handleSaveAndnext}
                             />
                           </Col>
                         </Row>
@@ -278,6 +295,9 @@ const Polls = () => {
                   </Col>
                 </Row>
               </>
+            )}
+            {NewMeetingreducer.cancelPolls && (
+              <CancelPolls setSceduleMeeting={setSceduleMeeting} />
             )}
           </section>
         </>

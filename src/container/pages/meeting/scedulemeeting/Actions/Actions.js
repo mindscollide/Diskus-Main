@@ -12,10 +12,14 @@ import { useState } from "react";
 import EmptyStates from "../../../../../assets/images/EmptystateAction.svg";
 import CreateTask from "./CreateTask/CreateTask";
 import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
-import { showRemovedTableModal } from "../../../../../store/actions/NewMeetingActions";
+import {
+  showCancelActions,
+  showRemovedTableModal,
+} from "../../../../../store/actions/NewMeetingActions";
 import AfterSaveViewTable from "./AfterSaveViewTable/AfterSaveViewTable";
+import CancelActions from "./CancelActions/CancelActions";
 
-const Actions = () => {
+const Actions = ({ setSceduleMeeting, setactionsPage, setPolls }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -113,6 +117,15 @@ const Actions = () => {
 
   const handleCreateTaskButton = () => {
     setCreateaTask(true);
+  };
+
+  const handleCancelActions = () => {
+    dispatch(showCancelActions(true));
+  };
+
+  const handleSaveAndnext = () => {
+    setactionsPage(false);
+    setPolls(true);
   };
 
   return (
@@ -214,20 +227,25 @@ const Actions = () => {
                             onClick={handleAfterViewActions}
                           />
                           <Button
-                            text={t("Delete-meeting")}
-                            className={styles["CloneMeetingButton"]}
-                          />
-                          <Button
-                            text={t("Publish-the-meeting")}
-                            className={styles["CloneMeetingButton"]}
-                          />
-                          <Button
                             text={t("Cancel")}
                             className={styles["CloneMeetingButton"]}
+                            onClick={handleCancelActions}
                           />
+
                           <Button
                             text={t("Save")}
+                            className={styles["CloneMeetingButton"]}
+                          />
+
+                          <Button
+                            text={t("Save-and-publish")}
+                            className={styles["CloneMeetingButton"]}
+                          />
+
+                          <Button
+                            text={t("Save-and-next")}
                             className={styles["SaveButtonActions"]}
+                            onClick={handleSaveAndnext}
                           />
                         </Col>
                       </Row>
@@ -241,6 +259,9 @@ const Actions = () => {
       )}
 
       {NewMeetingreducer.removeTableModal && <RemoveTableModal />}
+      {NewMeetingreducer.cancelActions && (
+        <CancelActions setSceduleMeeting={setSceduleMeeting} />
+      )}
     </section>
   );
 };

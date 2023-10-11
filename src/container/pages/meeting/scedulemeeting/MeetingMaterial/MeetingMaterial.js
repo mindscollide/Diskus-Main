@@ -8,11 +8,19 @@ import backDownArrow from "../../../../../assets/images/downDirect.png";
 import upArrow from "../../../../../assets/images/UpperArrow.svg";
 import PDFIcon from "../../../../../assets/images/pdf_icon.svg";
 import { Button } from "../../../../../components/elements";
+import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
+import { useSelector } from "react-redux";
+import { showCancelMeetingMaterial } from "../../../../../store/actions/NewMeetingActions";
 
-const MeetingMaterial = () => {
+const MeetingMaterial = ({
+  setSceduleMeeting,
+  setMeetingMaterial,
+  setMinutes,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
   const [introductionFiles, setIntroductionFiles] = useState(false);
   const [expandIndex, setexpandIndex] = useState(0);
   const [files, setFiles] = useState([
@@ -52,9 +60,19 @@ const MeetingMaterial = () => {
       name: "Closing Report",
     },
   ]);
+
   const handleIntroductionExpand = (index) => {
     setexpandIndex(index);
     setIntroductionFiles(!introductionFiles);
+  };
+
+  const handleCancelButton = () => {
+    dispatch(showCancelMeetingMaterial(true));
+  };
+
+  const handleSaveAndNext = () => {
+    setMeetingMaterial(false);
+    setMinutes(true);
   };
 
   return (
@@ -154,18 +172,26 @@ const MeetingMaterial = () => {
             text={t("Clone-meeting")}
             className={styles["Cancel_Classname"]}
           />
-          <Button text={t("Cancel")} className={styles["Cancel_Classname"]} />
           <Button
-            text={t("Delete-meeting")}
+            text={t("Cancel")}
+            className={styles["Cancel_Classname"]}
+            onClick={handleCancelButton}
+          />
+          <Button text={t("Save")} className={styles["Cancel_Classname"]} />
+          <Button
+            text={t("Save-and-publish")}
             className={styles["Cancel_Classname"]}
           />
           <Button
-            text={t("Publish-the-meeting")}
-            className={styles["Cancel_Classname"]}
+            text={t("Save-and-next")}
+            className={styles["Save_Classname"]}
+            onClick={handleSaveAndNext}
           />
-          <Button text={t("Next")} className={styles["Save_Classname"]} />
         </Col>
       </Row>
+      {NewMeetingreducer.cancelMeetingMaterial && (
+        <CancelMeetingMaterial setSceduleMeeting={setSceduleMeeting} />
+      )}
     </section>
   );
 };

@@ -1,65 +1,68 @@
-import React, { useState } from 'react'
-import styles from './Participants.module.css'
-import redcrossIcon from '../../../../../assets/images/Artboard 9.png'
-import addmore from '../../../../../assets/images/addmore.png'
-import EditIcon from '../../../../../assets/images/Edit-Icon.png'
-import rspvGreenIcon from '../../../../../assets/images/rspvGreen.svg'
-import rspvAbstainIcon from '../../../../../assets/images/rspvAbstain.svg'
-import { Col, Row, Tab } from 'react-bootstrap'
+import React, { useState } from "react";
+import styles from "./Participants.module.css";
+import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+import addmore from "../../../../../assets/images/addmore.png";
+import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
+import rspvAbstainIcon from "../../../../../assets/images/rspvAbstain.svg";
+import { Col, Row, Tab } from "react-bootstrap";
 import {
   Button,
   Table,
   TextField,
   Loader,
   Notification,
-} from '../../../../../components/elements'
-import { useDispatch, useSelector } from 'react-redux'
-import Select from 'react-select'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import ModalCrossIcon from '../Organizers/ModalCrossIconClick/ModalCrossIcon'
+} from "../../../../../components/elements";
+import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import {
   showAddParticipantsModal,
+  showCancelModalPartipants,
   showCrossConfirmationModal,
-} from '../../../../../store/actions/NewMeetingActions'
-import AddParticipantModal from './AddParticipantModal/AddParticipantModal'
-import ParticipantsView from './ParticpantsView/ParticipantsView'
+} from "../../../../../store/actions/NewMeetingActions";
+import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
+import ParticipantsView from "./ParticpantsView/ParticipantsView";
+import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 
 const Participants = ({
   setParticipants,
   setAgenda,
   setProposedMeetingDates,
+  setSceduleMeeting,
 }) => {
-  const [proposeMeeting, setPropseMeeting] = useState(false)
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { NewMeetingreducer } = useSelector((state) => state)
-  const [rspvTable, setrspvTable] = useState(false)
-  const [particiapntsView, setParticiapntsView] = useState(false)
+  const [proposeMeeting, setPropseMeeting] = useState(false);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
+  const [rspvTable, setrspvTable] = useState(false);
+  const [particiapntsView, setParticiapntsView] = useState(false);
   const openCrossIconModal = () => {
-    dispatch(showCrossConfirmationModal(true))
-  }
+    dispatch(showCrossConfirmationModal(true));
+  };
 
   const openAddPartcipantModal = () => {
-    dispatch(showAddParticipantsModal(true))
-  }
+    dispatch(showAddParticipantsModal(true));
+  };
 
   const handleNextButton = () => {
-    setParticipants(false)
-    setAgenda(true)
-  }
+    setParticipants(false);
+    setAgenda(true);
+  };
 
   const options = [
-    { value: 'Particpants', label: t('Particpants') },
-    { value: 'Chairperson', label: t('Chairperson') },
-    { value: 'Secretary', label: t('Secretary') },
-  ]
+    { value: "Particpants", label: t("Particpants") },
+    { value: "Chairperson", label: t("Chairperson") },
+    { value: "Secretary", label: t("Secretary") },
+  ];
 
   const data = [
     {
-      key: '1',
-      Name: <label className={styles['Title_desc']}>Muahmmad Saif</label>,
+      key: "1",
+      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
       Email: (
         <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
       ),
@@ -69,9 +72,9 @@ const Participants = ({
             <Col lg={12} md={12} sm={12}>
               <TextField
                 disable={true}
-                placeholder={t('Content-title')}
-                labelClass={'d-none'}
-                applyClass={'Organizer_table'}
+                placeholder={t("Content-title")}
+                labelClass={"d-none"}
+                applyClass={"Organizer_table"}
               />
             </Col>
           </Row>
@@ -102,56 +105,56 @@ const Participants = ({
         </>
       ),
     },
-  ]
+  ];
 
-  const [rowsData, setRowsData] = useState(data)
+  const [rowsData, setRowsData] = useState(data);
   const ParticipantsColoumn = [
     {
       title: (
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span>{t('Name')}</span>
+              <span>{t("Name")}</span>
             </Col>
           </Row>
         </>
       ),
-      dataIndex: 'Name',
-      key: 'Name',
-      width: '260px',
+      dataIndex: "Name",
+      key: "Name",
+      width: "260px",
     },
 
     {
-      title: t('Email'),
-      dataIndex: 'Email',
-      key: 'Email',
-      width: '280px',
+      title: t("Email"),
+      dataIndex: "Email",
+      key: "Email",
+      width: "280px",
     },
     {
-      title: t('Participant-title'),
-      dataIndex: 'Participanttitle',
-      key: 'Participanttitle',
-      width: '300px',
+      title: t("Participant-title"),
+      dataIndex: "Participanttitle",
+      key: "Participanttitle",
+      width: "300px",
     },
 
     {
-      title: t('Role'),
-      dataIndex: 'Role',
-      key: 'Role',
-      width: '249px',
+      title: t("Role"),
+      dataIndex: "Role",
+      key: "Role",
+      width: "249px",
     },
 
     {
-      dataIndex: 'Close',
-      key: 'Close',
-      width: '20px',
+      dataIndex: "Close",
+      key: "Close",
+      width: "20px",
     },
-  ]
+  ];
 
   const rspvData = [
     {
-      key: '1',
-      Name: <label className={styles['Title_desc']}>Muahmmad Saif</label>,
+      key: "1",
+      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
       Email: (
         <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
       ),
@@ -170,9 +173,9 @@ const Participants = ({
         </>
       ),
     },
-  ]
+  ];
 
-  const [rspvRows, setrspvRows] = useState(rspvData)
+  const [rspvRows, setrspvRows] = useState(rspvData);
 
   const rspvColoumns = [
     {
@@ -180,56 +183,60 @@ const Participants = ({
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span>{t('Name')}</span>
+              <span>{t("Name")}</span>
             </Col>
           </Row>
         </>
       ),
-      dataIndex: 'Name',
-      key: 'Name',
-      width: '260px',
+      dataIndex: "Name",
+      key: "Name",
+      width: "260px",
     },
 
     {
-      title: t('Email'),
-      dataIndex: 'Email',
-      key: 'Email',
-      width: '280px',
+      title: t("Email"),
+      dataIndex: "Email",
+      key: "Email",
+      width: "280px",
     },
     {
-      title: t('Participant-title'),
-      dataIndex: 'Participanttitle',
-      key: 'Participanttitle',
-      width: '300px',
+      title: t("Participant-title"),
+      dataIndex: "Participanttitle",
+      key: "Participanttitle",
+      width: "300px",
     },
 
     {
-      title: t('Role'),
-      dataIndex: 'Role',
-      key: 'Role',
-      width: '349px',
+      title: t("Role"),
+      dataIndex: "Role",
+      key: "Role",
+      width: "349px",
     },
 
     {
-      title: t('RSVP'),
-      dataIndex: 'rsvp',
-      key: 'rsvp',
-      width: '249px',
+      title: t("RSVP"),
+      dataIndex: "rsvp",
+      key: "rsvp",
+      width: "249px",
     },
-  ]
+  ];
 
   const enableRspvTable = () => {
-    setrspvTable(!rspvTable)
-  }
+    setrspvTable(!rspvTable);
+  };
 
   const handleProposedmeetingDates = () => {
-    setParticipants(false)
-    setProposedMeetingDates(true)
-  }
+    setParticipants(false);
+    setProposedMeetingDates(true);
+  };
 
   const EnableParticipantsViewPage = () => {
-    setParticiapntsView(true)
-  }
+    setParticiapntsView(true);
+  };
+
+  const handleCancelParticipants = () => {
+    dispatch(showCancelModalPartipants(true));
+  };
 
   return (
     <>
@@ -246,8 +253,8 @@ const Participants = ({
                 className="d-flex justify-content-end gap-2"
               >
                 <Button
-                  text={t('Edit')}
-                  className={styles['Edit_Button_Organizers']}
+                  text={t("Edit")}
+                  className={styles["Edit_Button_Organizers"]}
                   icon={
                     <img
                       draggable={false}
@@ -260,9 +267,9 @@ const Participants = ({
                 />
 
                 <Button
-                  text={t('Add-more')}
+                  text={t("Add-more")}
                   icon={<img draggable={false} src={addmore} />}
-                  className={styles['AddMoreBtn']}
+                  className={styles["AddMoreBtn"]}
                   onClick={openAddPartcipantModal}
                 />
               </Col>
@@ -273,7 +280,7 @@ const Participants = ({
                   <>
                     <Table
                       column={rspvColoumns}
-                      scroll={{ y: '62vh' }}
+                      scroll={{ y: "62vh" }}
                       pagination={false}
                       className="Polling_table"
                       rows={rspvRows}
@@ -283,7 +290,7 @@ const Participants = ({
                   <>
                     <Table
                       column={ParticipantsColoumn}
-                      scroll={{ y: '62vh' }}
+                      scroll={{ y: "62vh" }}
                       pagination={false}
                       className="Polling_table"
                       rows={rowsData}
@@ -295,32 +302,33 @@ const Participants = ({
           </section>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <section className={styles['Footer_Class']}>
+              <section className={styles["Footer_Class"]}>
                 <Button
-                  text={t('Propose-meeting-dates')}
-                  className={styles['Cancel_Organization']}
+                  text={t("Propose-meeting-dates")}
+                  className={styles["Cancel_Organization"]}
                   onClick={handleProposedmeetingDates}
                 />
 
                 <Button
-                  text={t('Delete-meeting')}
-                  className={styles['Cancel_Organization']}
+                  text={t("Cancel")}
+                  className={styles["Cancel_Organization"]}
+                  onClick={handleCancelParticipants}
                 />
 
                 <Button
-                  text={t('Publish-the-meeting')}
-                  className={styles['Cancel_Organization']}
+                  text={t("Save")}
+                  className={styles["Cancel_Organization"]}
                   onClick={EnableParticipantsViewPage}
                 />
 
                 <Button
-                  text={t('Cancel')}
-                  className={styles['Cancel_Organization']}
+                  text={t("Save-and-publish")}
+                  className={styles["Cancel_Organization"]}
                 />
 
                 <Button
-                  text={t('Save')}
-                  className={styles['Next_Organization']}
+                  text={t("Save-and-next")}
+                  className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
               </section>
@@ -331,9 +339,12 @@ const Participants = ({
 
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.participantModal && <AddParticipantModal />}
+      {NewMeetingreducer.cancelPartipants && (
+        <CancelParticipants setSceduleMeeting={setSceduleMeeting} />
+      )}
       {/* {proposeMeeting && } */}
     </>
-  )
-}
+  );
+};
 
-export default Participants
+export default Participants;
