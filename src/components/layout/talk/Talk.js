@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './Talk.css'
 import { Triangle } from 'react-bootstrap-icons'
-import { GetAllUserChats } from '../../../store/actions/Talk_action'
+import {
+  GetAllUsers,
+  GetAllUsersGroupsRoomsList,
+} from '../../../store/actions/Talk_action'
 import {
   recentChatFlag,
   headerShowHideStatus,
@@ -99,6 +102,22 @@ const Talk = () => {
       dispatch(createGroupScreen(false))
       dispatch(chatBoxActiveFlag(false))
       dispatch(recentChatFlag(true))
+      dispatch(
+        GetAllUsers(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t,
+        ),
+      )
+      dispatch(
+        GetAllUsersGroupsRoomsList(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t,
+        ),
+      )
       dispatch(headerShowHideStatus(true))
       dispatch(footerShowHideStatus(true))
       setActiveChatBox(true)
