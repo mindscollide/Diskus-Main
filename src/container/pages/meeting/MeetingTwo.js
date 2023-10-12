@@ -22,7 +22,7 @@ import {
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
 
-import { Col, Row } from "react-bootstrap";
+import { Col, Dropdown, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -235,6 +235,8 @@ const NewMeeting = () => {
     dispatch(showEndMeetingForAll(true));
   };
 
+  const eventClickHandler = () => {};
+
   //Published Meeting Page
   const handlePublishedMeeting = () => {
     let searchData = {
@@ -314,7 +316,7 @@ const NewMeeting = () => {
       title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
-      width: "185px",
+      width: "115px",
       render: (text, record) => {
         return (
           <span
@@ -335,7 +337,7 @@ const NewMeeting = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "40px",
+      width: "30px",
       filters: [
         {
           text: t("Active"),
@@ -373,11 +375,7 @@ const NewMeeting = () => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
       render: (text, record) => {
-        return (
-          <span className="d-flex justify-content-center text-center">
-            {text}
-          </span>
-        );
+        return <span>{text}</span>;
       },
     },
     {
@@ -388,7 +386,7 @@ const NewMeeting = () => {
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className="d-flex justify-content-center">
+            <span>
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -409,17 +407,12 @@ const NewMeeting = () => {
     {
       dataIndex: "Chat",
       key: "Chat",
-      width: "46px",
+      width: "36px",
       render: (text, record) => {
         return (
           <>
             <Row>
-              <Col
-                sm={12}
-                md={12}
-                lg={12}
-                className="d-flex justify-content-center"
-              >
+              <Col sm={12} md={12} lg={12}>
                 {record.isAttachment ? (
                   <span
                     className={
@@ -612,12 +605,7 @@ const NewMeeting = () => {
         return (
           <>
             <Row>
-              <Col
-                sm={12}
-                md={12}
-                lg={12}
-                className="d-flex justify-content-center"
-              >
+              <Col sm={12} md={12} lg={12}>
                 <Tooltip placement="topRight" title={t("Edit")}>
                   <img
                     src={EditIcon}
@@ -770,21 +758,49 @@ const NewMeeting = () => {
       ) : (
         <>
           <Row className="mt-2">
-            <Col
-              sm={12}
-              md={6}
-              lg={6}
-              className="d-flex gap-3 align-items-center"
-            >
+            <Col sm={12} md={6} lg={6} className="d-flex gap-5">
               <span className={styles["NewMeetinHeading"]}>
                 {t("Meetings")}
               </span>
-              <Button
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <Dropdown
+                    className="Calendar_CreateBtn"
+                    onClick={eventClickHandler}
+                    align={"start"}
+                  >
+                    <Dropdown.Toggle title={t("Create")}>
+                      <Row>
+                        <Col lg={12} md={12} sm={12} className="heading_button">
+                          <Plus width={20} height={20} fontWeight={800} />
+                          <span>{t("Create")}</span>
+                        </Col>
+                      </Row>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={openSceduleMeetingPage}
+                      >
+                        {t("Schedule-a-meeting")}
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={CreateQuickMeeting}
+                      >
+                        {t("Quick-meeting")}
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Col>
+              </Row>
+              {/* <Button
                 text={t("Schedule-a-meeting")}
                 className={styles["Newmeeting_Scehedule_meet"]}
                 icon={<Plus width={20} height={20} fontWeight={800} />}
                 onClick={openSceduleMeetingPage}
-              />
+              /> */}
             </Col>
             <Col
               sm={12}
@@ -946,11 +962,11 @@ const NewMeeting = () => {
                       }
                       onClick={handleUnPublishedMeeting}
                     />
-                    <Button
+                    {/* <Button
                       text={t("Quick-meeting")}
                       className={styles["UnpublishedMeetingButton"]}
                       onClick={CreateQuickMeeting}
-                    />
+                    /> */}
                   </Col>
                 </Row>
                 {Number(currentView) === 2 ? (
