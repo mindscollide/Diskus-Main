@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import {
+  GetAllParticipantsRoleNew,
   showAddParticipantsModal,
   showCancelModalPartipants,
   showCrossConfirmationModal,
@@ -26,6 +27,7 @@ import {
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import ParticipantsView from "./ParticpantsView/ParticipantsView";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
+import { useEffect } from "react";
 
 const Participants = ({
   setParticipants,
@@ -38,8 +40,13 @@ const Participants = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  console.log(
+    NewMeetingreducer.getAllPartiicpantsRoles,
+    "NewMeetingreducer.participantRoles"
+  );
   const [rspvTable, setrspvTable] = useState(false);
   const [particiapntsView, setParticiapntsView] = useState(false);
+  const [particpantsRole, setParticpantsRole] = useState([]);
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
   };
@@ -237,6 +244,30 @@ const Participants = ({
   const handleCancelParticipants = () => {
     dispatch(showCancelModalPartipants(true));
   };
+
+  useEffect(() => {
+    dispatch(GetAllParticipantsRoleNew(navigate, t));
+  }, []);
+
+  //Roles Drop Down Data
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.participantRoles !== null &&
+        NewMeetingreducer.participantRoles !== undefined
+      ) {
+        let Newdata = [];
+        NewMeetingreducer.participantRoles.map((data, index) => {
+          console.log(data, "datadatadatas");
+          Newdata.push({
+            value: data.participantRoleID,
+            label: data.participantRole,
+          });
+        });
+        setParticpantsRole(Newdata);
+      }
+    } catch (error) {}
+  }, [NewMeetingreducer.participantRoles]);
 
   return (
     <>
