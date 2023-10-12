@@ -40,10 +40,6 @@ const Participants = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  console.log(
-    NewMeetingreducer.getAllPartiicpantsRoles,
-    "NewMeetingreducer.participantRoles"
-  );
   const [rspvTable, setrspvTable] = useState(false);
   const [particiapntsView, setParticiapntsView] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
@@ -126,21 +122,21 @@ const Participants = ({
           </Row>
         </>
       ),
-      dataIndex: "Name",
-      key: "Name",
+      dataIndex: "userName",
+      key: "userName",
       width: "260px",
     },
 
     {
       title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
+      dataIndex: "email",
+      key: "email",
       width: "280px",
     },
     {
       title: t("Participant-title"),
-      dataIndex: "Participanttitle",
-      key: "Participanttitle",
+      dataIndex: "Title",
+      key: "Title",
       width: "300px",
     },
 
@@ -182,8 +178,7 @@ const Participants = ({
     },
   ];
 
-  const [rspvRows, setrspvRows] = useState(rspvData);
-
+  const [rspvRows, setrspvRows] = useState([]);
   const rspvColoumns = [
     {
       title: (
@@ -195,21 +190,21 @@ const Participants = ({
           </Row>
         </>
       ),
-      dataIndex: "Name",
-      key: "Name",
+      dataIndex: "userName",
+      key: "userName",
       width: "260px",
     },
 
     {
       title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
+      dataIndex: "email",
+      key: "email",
       width: "280px",
     },
     {
       title: t("Participant-title"),
-      dataIndex: "Participanttitle",
-      key: "Participanttitle",
+      dataIndex: "Title",
+      key: "Title",
       width: "300px",
     },
 
@@ -222,8 +217,8 @@ const Participants = ({
 
     {
       title: t("RSVP"),
-      dataIndex: "rsvp",
-      key: "rsvp",
+      dataIndex: "isRSVP",
+      key: "isRSVP",
       width: "249px",
     },
   ];
@@ -275,7 +270,7 @@ const Participants = ({
         <ParticipantsView />
       ) : (
         <>
-          <section className="position-relative">
+          <section className={styles["defined_Height"]}>
             <Row className="mt-3">
               <Col
                 lg={12}
@@ -321,55 +316,60 @@ const Participants = ({
                   <>
                     <Table
                       column={ParticipantsColoumn}
-                      scroll={{ y: "62vh" }}
+                      scroll={{ y: "42vh" }}
                       pagination={false}
                       className="Polling_table"
-                      rows={rowsData}
+                      rows={rspvRows}
                     />
                   </>
                 )}
               </Col>
             </Row>
           </section>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <section className={styles["Footer_Class"]}>
-                <Button
-                  text={t("Propose-meeting-dates")}
-                  className={styles["Cancel_Organization"]}
-                  onClick={handleProposedmeetingDates}
-                />
+          <Row className="mt-3">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end gap-2"
+            >
+              <Button
+                text={t("Propose-meeting-dates")}
+                className={styles["Cancel_Organization"]}
+                onClick={handleProposedmeetingDates}
+              />
 
-                <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_Organization"]}
-                  onClick={handleCancelParticipants}
-                />
+              <Button
+                text={t("Cancel")}
+                className={styles["Cancel_Organization"]}
+                onClick={handleCancelParticipants}
+              />
 
-                <Button
-                  text={t("Save")}
-                  className={styles["Cancel_Organization"]}
-                  onClick={EnableParticipantsViewPage}
-                />
+              <Button
+                text={t("Save")}
+                className={styles["Cancel_Organization"]}
+                onClick={EnableParticipantsViewPage}
+              />
 
-                <Button
-                  text={t("Save-and-publish")}
-                  className={styles["Cancel_Organization"]}
-                />
+              <Button
+                text={t("Save-and-publish")}
+                className={styles["Cancel_Organization"]}
+              />
 
-                <Button
-                  text={t("Save-and-next")}
-                  className={styles["Next_Organization"]}
-                  onClick={handleNextButton}
-                />
-              </section>
+              <Button
+                text={t("Save-and-next")}
+                className={styles["Next_Organization"]}
+                onClick={handleNextButton}
+              />
             </Col>
           </Row>
         </>
       )}
 
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
-      {NewMeetingreducer.participantModal && <AddParticipantModal />}
+      {NewMeetingreducer.participantModal && (
+        <AddParticipantModal setrspvRows={setrspvRows} rspvRows={rspvRows} />
+      )}
       {NewMeetingreducer.cancelPartipants && (
         <CancelParticipants setSceduleMeeting={setSceduleMeeting} />
       )}
