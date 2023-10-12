@@ -236,7 +236,7 @@ const ModalShareFile = ({
     } else {
       setOpen({
         flag: true,
-        message: t("User-required-must-for-share"),
+        message: t("Atleast-one-user-should-be-selected-to-share-the-document"),
       });
     }
   };

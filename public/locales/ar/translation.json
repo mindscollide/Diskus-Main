@@ -1134,7 +1134,7 @@
   "The-following-file-formats-are": "The Following File Formats are supported: .pdf,.doc,",
   "Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png": ".docx , .ppt , .pptx , .xls , .xlsx , .jpeg , .jpg , and .png.",
   "Import-previous-agenda": "Import Previous Agenda",
-  "Save-and-next": "Save and Next",
+  "Save-and-Next": "Save and Next",
   "Add-sub-agenda": "Add Sub Agenda",
   "The-poll-due-date-has-been-passed": "The Poll Due Date Has Been Passed",
   "The-poll-is-not-published": "The Poll is Not Published",
@@ -1503,5 +1503,7 @@
   "Departmental-meeting": "Departmental Meeting",
   "Staff-meeting": "Staff Meeting",
   "Team-meeting": "Team Meeting",
-  "Project-meeting": "Project Meeting"
+  "Project-meeting": "Project Meeting",
+  "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document.",
+  "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder."
 }

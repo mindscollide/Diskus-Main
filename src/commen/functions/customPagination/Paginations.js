@@ -4,7 +4,7 @@ import { Pagination, Select } from "antd";
 import { convertToArabicNumber } from "./utils"; // Import the function to convert to Arabic number
 
 const CustomPagination = ({
-  current,
+  currentValue,
   pageSize,
   total,
   onChange,
@@ -44,7 +44,7 @@ const CustomPagination = ({
   return (
     <>
       <Pagination
-        current={current}
+        current={currentValue}
         pageSize={pageSize}
         total={total}
         onChange={handleChange}
@@ -54,7 +54,7 @@ const CustomPagination = ({
         itemRender={itemRender}
         showSizeChanger={false} // Show the page size dropdown
         showQuickJumper={false} // Hide the quick jumper input
-        locale={{ items_per_page: t("items_per_page") }}
+        locale={{ items_per_page: t("items_per_page"), page: t("page") }}
       />
       <Select
         value={pageSize}

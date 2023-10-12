@@ -4883,6 +4883,11 @@ span.css-1u9des2-indicatorSeparator {
 
 body[dir="rtl"] .ql-editor.ql-blank::before {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+  text-align: right;
+}
+body[dir="rtl"] .ql-editor.ql-blank {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  text-align: right;
 }
 
 .form-control:focus {

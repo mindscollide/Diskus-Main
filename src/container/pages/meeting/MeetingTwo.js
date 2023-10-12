@@ -222,7 +222,7 @@ const NewMeeting = () => {
     setSceduleMeeting(true);
   };
 
-  const EnableUnpublishedMeetingPage = async () => {
+  const CreateQuickMeeting = async () => {
     setQuickMeeting(true);
   };
 
@@ -248,6 +248,21 @@ const NewMeeting = () => {
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
+  };
+
+  //UnPublished Meeting Page
+  const handleUnPublishedMeeting = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingpageRow !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings: false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.setItem("MeetingCurrentView", 2);
   };
 
   const [calendarViewModal, setCalendarViewModal] = useState(false);
@@ -929,12 +944,12 @@ const NewMeeting = () => {
                           ? styles["UnpublishedMeetingButton-active"]
                           : styles["UnpublishedMeetingButton"]
                       }
-                      onClick={EnableUnpublishedMeetingPage}
+                      onClick={handleUnPublishedMeeting}
                     />
                     <Button
                       text={t("Quick-meeting")}
                       className={styles["UnpublishedMeetingButton"]}
-                      onClick={EnableUnpublishedMeetingPage}
+                      onClick={CreateQuickMeeting}
                     />
                   </Col>
                 </Row>

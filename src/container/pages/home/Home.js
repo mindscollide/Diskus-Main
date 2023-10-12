@@ -379,6 +379,7 @@ const Home = () => {
   const handleClickNoteModal = () => {
     setModalNote(true);
   };
+
   useEffect(() => {
     try {
       if (
@@ -393,6 +394,7 @@ const Home = () => {
       }
     } catch {}
   }, [meetingIdReducer.MQTTUpcomingEvents]);
+
   // render Notes Data
   useEffect(() => {
     try {
@@ -721,7 +723,6 @@ const Home = () => {
     if (!dates.includes(value)) {
       setDates([...dates, value]);
     }
-    // await setShow(true);
   };
 
   const closeModal = () => {
@@ -910,7 +911,6 @@ const Home = () => {
     }
   };
 
-  // console.log(dateFocused, dateClicked.toDate().getDate(), "onFocusedDateChangeonFocusedDateChangeonFocusedDateChange")
   const handleClickonDate = (dateObject, dateSelect) => {
     let selectDate = dateSelect.toString().split("/").join("");
     if (
@@ -935,7 +935,6 @@ const Home = () => {
       }
     }
   };
-  // const handleChangeTodoTable = () => {};
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">

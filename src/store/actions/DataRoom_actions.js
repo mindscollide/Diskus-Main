@@ -125,9 +125,17 @@ const saveFilesApi = (
                     getFolderDocumentsApi(navigate, Number(viewFolderID), t)
                   );
                 } else {
-                  dispatch(
-                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
-                  );
+                  if (Number(currentView) === 4) {
+                    let Data = {
+                      UserID: Number(createrID),
+                      OrganizationID: Number(OrganizationID),
+                    };
+                    dispatch(getRecentDocumentsApi(navigate, t, Data));
+                  } else {
+                    dispatch(
+                      getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                    );
+                  }
                 }
               } else if (
                 response.data.responseResult.responseMessage
@@ -709,10 +717,18 @@ const createFolderApi = (
               if (folderID !== null && folderID !== undefined) {
                 dispatch(getFolderDocumentsApi(navigate, folderID, t));
               } else {
+                if (Number(currentView) === 4) {
+                  let Data = {
+                    UserID: Number(createrID),
+                    OrganizationID: Number(OrganizationID),
+                  };
+                  dispatch(getRecentDocumentsApi(navigate, t, Data));
+                } else {
+                  dispatch(
+                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                  );
+                }
                 // dispatch(dataBehaviour(true))
-                dispatch(
-                  getDocumentsAndFolderApi(navigate, Number(currentView), t)
-                );
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -768,15 +784,7 @@ const getDocumentsAndFolders_fail = (message) => {
 };
 
 // Get Documents And Folder API
-const getDocumentsAndFolderApi = (
-  navigate,
-  statusID,
-  t,
-  no,
-  order,
-  sort,
-  flag
-) => {
+const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -791,13 +799,7 @@ const getDocumentsAndFolderApi = (
   };
   return (dispatch) => {
     console.log("asdasdasdasdasdasd", no);
-    // console.log("asdasdasdasdasdasd", flag);
-    // if (flag == true) {
-    //   console.log("asdasdasdasdasdasd", flag);
-    // } else {
-    //   console.log("asdasdasdasdasdasd", flag);
-    //   dispatch(getDocumentsAndFolders_init());
-    // }
+
     if (no === 1) {
       dispatch(getDocumentsAndFolders_init());
     }
@@ -819,15 +821,7 @@ const getDocumentsAndFolderApi = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            getDocumentsAndFolderApi(
-              navigate,
-              statusID,
-              t,
-              no,
-              order,
-              sort,
-              flag
-            )
+            getDocumentsAndFolderApi(navigate, statusID, t, no, order, sort)
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1218,6 +1212,9 @@ const shareFoldersApi = (navigate, FolderData, t, setSharefolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let currentView = localStorage.getItem("setTableView");
+
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
   return (dispatch) => {
     dispatch(shareFolders_init());
     let form = new FormData();
@@ -1254,10 +1251,17 @@ const shareFoldersApi = (navigate, FolderData, t, setSharefolder) => {
               if (folderID !== null && folderID !== undefined) {
                 dispatch(getFolderDocumentsApi(navigate, folderID, t));
               } else {
-                // dispatch(dataBehaviour(true))
-                dispatch(
-                  getDocumentsAndFolderApi(navigate, Number(currentView), t)
-                );
+                if (Number(currentView) === 4) {
+                  let Data = {
+                    UserID: Number(createrID),
+                    OrganizationID: Number(OrganizationID),
+                  };
+                  dispatch(getRecentDocumentsApi(navigate, t, Data));
+                } else {
+                  dispatch(
+                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                  );
+                }
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1318,6 +1322,9 @@ const deleteFileDataroom_fail = (message) => {
 const deleteFileDataroom = (navigate, id, t, setSorted) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("setTableView");
+
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
   let data = [];
   data.push(id);
   let Data = { FileID: data };
@@ -1348,10 +1355,17 @@ const deleteFileDataroom = (navigate, id, t, setSorted) => {
                 )
             ) {
               console.log("hello");
-              // dispatch(dataBehaviour(true))
-              dispatch(
-                getDocumentsAndFolderApi(navigate, Number(currentView), t)
-              );
+              if (Number(currentView) === 4) {
+                let Data = {
+                  UserID: Number(createrID),
+                  OrganizationID: Number(OrganizationID),
+                };
+                dispatch(getRecentDocumentsApi(navigate, t, Data));
+              } else {
+                dispatch(
+                  getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                );
+              }
               dispatch(
                 deleteFileDataroom_success(
                   response.data.responseResult,
@@ -1470,6 +1484,7 @@ const FileisExist = (
                   "DataRoom_DataRoomServiceManager_FileExist_01".toLowerCase()
                 )
             ) {
+              localStorage.setItem("fileName", newJsonCreateFile.FileName);
               dispatch(FileisExist_fail(t("File-already-exist")));
               await dispatch(IsFileisExist(true));
             } else if (
@@ -1677,7 +1692,8 @@ const deleteFolder_fail = (message) => {
 const deleteFolder = (navigate, id, t, setSorted) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("setTableView");
-
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
   let data = [];
   data.push(id);
   let Data = { FolderID: data };
@@ -1708,11 +1724,17 @@ const deleteFolder = (navigate, id, t, setSorted) => {
                 )
             ) {
               console.log("hello");
-              // setSorted(true)
-              // dispatch(dataBehaviour(true))
-              dispatch(
-                getDocumentsAndFolderApi(navigate, Number(currentView), t)
-              );
+              if (Number(currentView) === 4) {
+                let Data = {
+                  UserID: Number(createrID),
+                  OrganizationID: Number(OrganizationID),
+                };
+                dispatch(getRecentDocumentsApi(navigate, t, Data));
+              } else {
+                dispatch(
+                  getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                );
+              }
               dispatch(
                 deleteFolder_success(
                   response.data.responseResult,
@@ -1879,6 +1901,10 @@ const renameFolder_fail = (message) => {
 const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("setTableView");
+
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+
   let Data = {
     FolderName: folderData.FolderName,
     FolderID: folderData.folderId,
@@ -1909,10 +1935,17 @@ const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
                   "DataRoom_DataRoomServiceManager_RenameFolder_01".toLowerCase()
                 )
             ) {
-              // dispatch(dataBehaviour(true))
-              dispatch(
-                getDocumentsAndFolderApi(navigate, Number(currentView), t)
-              );
+              if (Number(currentView) === 4) {
+                let Data = {
+                  UserID: Number(createrID),
+                  OrganizationID: Number(OrganizationID),
+                };
+                dispatch(getRecentDocumentsApi(navigate, t, Data));
+              } else {
+                dispatch(
+                  getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                );
+              }
               setRenamefolder(false);
             } else if (
               response.data.responseResult.responseMessage
@@ -2049,6 +2082,9 @@ const renameFile_fail = (message) => {
 const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("setTableView");
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+
   let Data = {
     FileName: filedata.FileName,
     FileID: filedata.FileId,
@@ -2080,10 +2116,17 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
                 )
             ) {
               setShowRenameFile(false);
-              // dispatch(dataBehaviour(true))
-              dispatch(
-                getDocumentsAndFolderApi(navigate, Number(currentView), t)
-              );
+              if (Number(currentView) === 4) {
+                let Data = {
+                  UserID: Number(createrID),
+                  OrganizationID: Number(OrganizationID),
+                };
+                dispatch(getRecentDocumentsApi(navigate, t, Data));
+              } else {
+                dispatch(
+                  getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -59,7 +59,7 @@ import sharedIcon from "../../assets/images/shared_icon.svg";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
 import { _justShowDateformat } from "../../commen/functions/date_formater";
 import GridViewDataRoom from "./GridViewDataRoom/GridViewDataRoom";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import DeleteNotificationBox from "./DeleteNotification/deleteNotification";
 import FileRemoveBox from "./FileRemoved/FileRemoveBox";
 import ShowRenameNotification from "./ShowRenameNotification/ShowRenameNotification";
@@ -92,6 +92,8 @@ import axios from "axios";
 const DataRoom = () => {
   // tooltip
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const { t } = useTranslation();
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [showbarupload, setShowbarupload] = useState(false);
@@ -102,6 +104,7 @@ const DataRoom = () => {
   const { uploadReducer, DataRoomReducer, LanguageReducer } = useSelector(
     (state) => state
   );
+  console.log("uploadReducer", uploadReducer);
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -254,10 +257,12 @@ const DataRoom = () => {
         dispatch(getRecentDocumentsApi(navigate, t, Data));
       } else {
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
+        localStorage.removeItem("folderID");
       }
     } else {
       localStorage.setItem("setTableView", 3);
       dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
+      localStorage.removeItem("folderID");
     }
     return () => {
       localStorage.removeItem("folderID");
@@ -484,7 +489,7 @@ const DataRoom = () => {
     localStorage.setItem("folderID", folderid);
     await dispatch(getFolderDocumentsApi(navigate, folderid, t));
     setSearchTabOpen(false);
-    localStorage.setItem("setTableView", 3);
+    // localStorage.setItem("setTableView", 3);
   };
 
   const fileOptionsSelect = (data, record, pdfDataJson) => {
@@ -542,6 +547,10 @@ const DataRoom = () => {
   };
 
   const handleSortMyDocuments = (pagination, filters, sorter) => {
+    console.log(
+      { pagination, filters, sorter },
+      "handleSortMyDocumentshandleSortMyDocuments"
+    );
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
         dispatch(
@@ -550,38 +559,54 @@ const DataRoom = () => {
             Number(currentView),
             t,
             1,
-            2,
+            1,
             false
           )
         );
       } else {
         dispatch(
-          getDocumentsAndFolderApi(navigate, Number(currentView), t, 1, 2, true)
+          getDocumentsAndFolderApi(navigate, Number(currentView), t, 1, 1, true)
         );
       }
     }
-    if (filters.modifiedDate !== null) {
-      let getFilterValue = filters.modifiedDate[0];
-      if (getFilterValue === 2) {
-        setCurrentFilter(t("Last-modified"));
-        setFilterValue(2);
-      } else if (getFilterValue === 3) {
-        setCurrentFilter(t("Last-modified-by-me"));
-        setFilterValue(3);
-      } else if (getFilterValue === 4) {
-        setFilterValue(4);
-        setCurrentFilter(t("Last-open-by-me"));
+    if (sorter.field === "modifiedDate") {
+      if (filters.modifiedDate !== null) {
+        let getFilterValue = filters.modifiedDate[0];
+        if (getFilterValue === 2) {
+          setCurrentFilter(t("Last-modified"));
+          setFilterValue(2);
+        } else if (getFilterValue === 3) {
+          setCurrentFilter(t("Last-modified-by-me"));
+          setFilterValue(3);
+        } else if (getFilterValue === 4) {
+          setFilterValue(4);
+          setCurrentFilter(t("Last-open-by-me"));
+        }
+        dispatch(
+          getDocumentsAndFolderApi(
+            navigate,
+            Number(currentView),
+            t,
+            1,
+            Number(getFilterValue),
+            true
+          )
+        );
+      } else {
+        dispatch(
+          getDocumentsAndFolderApi(
+            navigate,
+            Number(currentView),
+            t,
+            1,
+            Number(2),
+            true
+          )
+        );
       }
-      dispatch(
-        getDocumentsAndFolderApi(
-          navigate,
-          Number(currentView),
-          t,
-          1,
-          Number(getFilterValue),
-          true
-        )
-      );
+    }
+
+    if (sorter.field === "owner") {
     }
   };
 
@@ -1564,8 +1589,15 @@ const DataRoom = () => {
     },
   ];
 
-  // this is file Upload
-  const handleUploadFile = async ({ file }) => {
+  useEffect(() => {
+    if (location.state !== null) {
+      let fileObj = location.state;
+      handleUploadFilefromDashbard(fileObj);
+    }
+  }, [location.state]);
+
+  const handleUploadFilefromDashbard = async (file) => {
+    console.log("filefilefilefile", file);
     const taskId = Math.floor(Math.random() * 1000000);
     const axiosCancelSource = axios.CancelToken.source();
     let newJsonCreateFile = {
@@ -1611,7 +1643,55 @@ const DataRoom = () => {
       );
     }
   };
-  console.log("tasksAttachments", tasksAttachments);
+
+  // this is file Upload
+  const handleUploadFile = async ({ file }) => {
+    console.log("filefilefilefile", file);
+    const taskId = Math.floor(Math.random() * 1000000);
+    const axiosCancelSource = axios.CancelToken.source();
+    let newJsonCreateFile = {
+      TaskId: taskId,
+      FileName: "",
+      File: {},
+      Uploaded: false,
+      Uploading: false,
+      UploadCancel: false,
+      Progress: 0,
+      UploadingError: false,
+      NetDisconnect: false,
+      axiosCancelToken: axiosCancelSource,
+    };
+    if (file.name && Object.keys(file).length > 0) {
+      newJsonCreateFile = {
+        TaskId: newJsonCreateFile.TaskId,
+        FileName: file.name,
+        File: file,
+        Uploaded: newJsonCreateFile.Uploaded,
+        Uploading: newJsonCreateFile.Uploading,
+        UploadCancel: newJsonCreateFile.UploadCancel,
+        Progress: newJsonCreateFile.Progress,
+        UploadingError: newJsonCreateFile.UploadingError,
+        NetDisconnect: false,
+        axiosCancelToken: axiosCancelSource,
+      };
+      setTasksAttachmentsID(newJsonCreateFile.TaskId);
+      setTasksAttachments((prevTasks) => ({
+        ...prevTasks,
+        [taskId]: newJsonCreateFile,
+      }));
+      dispatch(
+        FileisExist(
+          navigate,
+          t,
+          newJsonCreateFile,
+          setTasksAttachments,
+          tasksAttachments,
+          setShowbarupload,
+          showbarupload
+        )
+      );
+    }
+  };
 
   // this is for file check
   useEffect(() => {
@@ -1625,11 +1705,6 @@ const DataRoom = () => {
   // cancel file upload
   const cancelFileUpload = (data) => {
     console.log("cancelFileUpload", data);
-    if (data.axiosCancelToken) {
-      data.axiosCancelToken.cancel("Upload canceled");
-      console.log("cancelFileUpload", data);
-    }
-    console.log("cancelFileUpload", data);
     setTasksAttachments((prevTasks) => ({
       ...prevTasks,
       [data.TaskId]: {
@@ -1640,6 +1715,12 @@ const DataRoom = () => {
         Progress: 0,
       },
     }));
+    if (data.axiosCancelToken) {
+      data.axiosCancelToken.cancel("Upload canceled");
+      console.log("cancelFileUpload", data);
+    }
+    console.log("cancelFileUpload", data);
+
     // Optionally, you can also cancel the Axios request associated with this task here.
   };
   // const isOnline = navigator.onLine;
@@ -1698,6 +1779,7 @@ const DataRoom = () => {
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
     console.log(directoryName, "handleChangeFolderUpload");
+    const axiosCancelSource = axios.CancelToken.source();
 
     try {
       console.log("handleChangeFolderUpload");
@@ -1722,7 +1804,7 @@ const DataRoom = () => {
           UploadCancel: newJsonCreate.UploadCancel,
           UploadedAttachments: newJsonCreate.UploadedAttachments,
           NetDisconnect: false,
-          // axiosCancelToken: axiosCancelSource,
+          axiosCancelToken: axiosCancelSource,
         };
 
         setDirectoryNames(directoryName);
@@ -1893,14 +1975,22 @@ const DataRoom = () => {
                     getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1)
                   );
                 } else {
-                  dispatch(
-                    getDocumentsAndFolderApi(
-                      navigate,
-                      Number(currentView),
-                      t,
-                      2
-                    )
-                  );
+                  if (Number(currentView) === 4) {
+                    let Data = {
+                      UserID: Number(userID),
+                      OrganizationID: Number(organizationID),
+                    };
+                    dispatch(getRecentDocumentsApi(navigate, t, Data));
+                  } else {
+                    dispatch(
+                      getDocumentsAndFolderApi(
+                        navigate,
+                        Number(currentView),
+                        t,
+                        2
+                      )
+                    );
+                  }
                 }
                 processArraySequentially(detaUplodingForFOlder[existingIndex]);
               } catch (error) {
@@ -1925,10 +2015,6 @@ const DataRoom = () => {
   // this is used for canle all uploadind
   const CanceUpload = () => {
     const dataArray = Object.values(tasksAttachments);
-    console.log(
-      { detaUplodingForFOlder },
-      "dataArraydataArraydataArraydataArray"
-    );
     const combinedArray = [...detaUplodingForFOlder, ...dataArray];
     const isUploading = combinedArray.some((obj) => obj.Uploading === true);
     if (isUploading) {
@@ -1941,12 +2027,24 @@ const DataRoom = () => {
     }
   };
 
-  const CanceUploadinFromModalTrue = (data) => {
+  const CanceUploadinFromModalTrue = async (data) => {
+    const dataArray = Object.values(tasksAttachments);
+    await dataArray.map((data, index) => {
+      data.axiosCancelToken.cancel("Upload canceled");
+    });
+    detaUplodingForFOlder.map((data, index) => {
+      console.log("datadatadatadatadatadata", data);
+      data.UploadCancel = true;
+      data.Uploading = false;
+      return data;
+    });
+    dispatch(CreateFolder_success([]));
+
+    // setDetaUplodingForFOlder(newFolderData);
     // cancelToken.cancel("API call canceled by user");
     setDetaUplodingForFOlder([]);
     setTasksAttachments([]);
     setShowbarupload(false);
-    dispatch(CreateFolder_success([]));
     setCanselingDetaUplodingForFOlder(false);
     // if (data.axiosCancelToken) {
     //   data.axiosCancelToken.cancel("Upload canceled");
