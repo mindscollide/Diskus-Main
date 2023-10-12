@@ -48,6 +48,7 @@ const initialState = {
   cancelActions: false,
   cancelPolls: false,
   getAllCommitteeAndGroupPartcipants: [],
+  getAllPartiicpantsRoles: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -465,6 +466,30 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.ADD_MORE_PARTICIPANTS_MODAL_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_ROLES_PARTICIPANTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_ROLES_PARTICIPANTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllPartiicpantsRoles: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_ROLES_PARTICIPANTS_FAILED: {
       return {
         ...state,
         Loading: false,

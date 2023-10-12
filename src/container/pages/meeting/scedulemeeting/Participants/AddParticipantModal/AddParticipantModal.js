@@ -17,6 +17,7 @@ import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals
 import committeicon from "../../../../../../assets/images/Group 2584.png";
 import { useDispatch, useSelector } from "react-redux";
 import GroupIcon from "../../../../../../assets/images/Path 636.png";
+import committeeicon from "../../../../../../assets/images/committeedropdown.svg";
 import profile from "../../../../../../assets/images/newprofile.png";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -31,39 +32,12 @@ const AddParticipantModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  console.log(NewMeetingreducer, "statestatestate");
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  const [addParticipantDropdown, setAddParticipantDropdown] = useState([]);
+  const [selectedsearch, setSelectedsearch] = useState([]);
 
-  const [membersParticipants, setMembersParticipants] = useState([
-    {
-      name: "SAIF UL ISLAM",
-    },
-
-    {
-      name: "HUZEIFA JAHANGIR",
-    },
-    {
-      name: "OWAIS KHAN",
-    },
-    {
-      name: "ALI MAMDANI",
-    },
-    {
-      name: "ALI MAMDANI",
-    },
-    {
-      name: "ALI MAMDANI",
-    },
-    {
-      name: "ALI MAMDANI",
-    },
-    {
-      name: "ALI MAMDANI",
-    },
-
-    {
-      name: "ALI MAMDANI",
-    },
-  ]);
+  const [membersParticipants, setMembersParticipants] = useState([]);
 
   const RemovedParticipant = (index) => {
     const updatedPartipants = [...membersParticipants];
@@ -79,12 +53,246 @@ const AddParticipantModal = () => {
     dispatch(showAddParticipantsModal(false));
   };
 
+  const handleAddUsers = () => {
+    let newOrganizersData =
+      NewMeetingreducer.getAllCommitteeAndGroupPartcipants;
+    let tem = [...membersParticipants];
+    if (Object.keys(selectedsearch).length > 0) {
+      try {
+        selectedsearch.map((seledtedData, index) => {
+          console.log(
+            seledtedData,
+            "seledtedDataseledtedDataseledtedDataseledtedData"
+          );
+          if (seledtedData.type === 1) {
+            let check1 = newOrganizersData.groups.find(
+              (data, index) => data.groupID === seledtedData.value
+            );
+            if (check1 !== undefined) {
+              let groupUsers = check1.groupUsers;
+              if (Object.keys(groupUsers).length > 0) {
+                groupUsers.map((gUser, index) => {
+                  let check2 = membersParticipants.find(
+                    (data, index) => data.UserID === gUser.userID
+                  );
+                  if (check2 !== undefined) {
+                  } else {
+                    let newUser = {
+                      userName: gUser.userName,
+                      userID: gUser.userID,
+                      displayPicture:
+                        gUser.profilePicture.displayProfilePictureName,
+                      email: gUser.emailAddress,
+                      IsPrimaryOrganizer: false,
+                      IsOrganizerNotified: false,
+                      Title: "",
+                      isRSVP: false,
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 2) {
+            console.log("membersOrganizers check");
+            let check1 = newOrganizersData.committees.find(
+              (data, index) => data.committeeID === seledtedData.value
+            );
+            if (check1 != undefined) {
+              let committeesUsers = check1.committeeUsers;
+              if (Object.keys(committeesUsers).length > 0) {
+                committeesUsers.map((cUser, index) => {
+                  let check2 = membersParticipants.find(
+                    (data, index) => data.UserID === cUser.userID
+                  );
+                  if (check2 != undefined) {
+                  } else {
+                    let newUser = {
+                      userName: cUser.userName,
+                      userID: cUser.userID,
+                      displayPicture:
+                        cUser.profilePicture.displayProfilePictureName,
+                      email: cUser.emailAddress,
+                      IsPrimaryOrganizer: false,
+                      IsOrganizerNotified: false,
+                      Title: "",
+                      isRSVP: false,
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 3) {
+            let check1 = membersParticipants.find(
+              (data, index) => data.UserID === seledtedData.value
+            );
+            if (check1 != undefined) {
+            } else {
+              let check2 = newOrganizersData.organizationUsers.find(
+                (data, index) => data.userID === seledtedData.value
+              );
+              console.log(check2, "check2check2check2");
+              if (check2 !== undefined) {
+                let newUser = {
+                  userName: check2.userName,
+                  userID: check2.userID,
+                  displayPicture:
+                    check2.profilePicture.displayProfilePictureName,
+                  email: check2.emailAddress,
+                  IsPrimaryOrganizer: false,
+                  IsOrganizerNotified: false,
+                  Title: "",
+                  isRSVP: false,
+                };
+                tem.push(newUser);
+              }
+            }
+          } else {
+          }
+        });
+      } catch {
+        console.log("error in add");
+      }
+      console.log("membersOrganizers check", tem);
+      const uniqueData = new Set(tem.map(JSON.stringify));
+
+      // Convert the Set back to an array of objects
+      const result = Array.from(uniqueData).map(JSON.parse);
+      setMembersParticipants(result);
+      setSelectedsearch([]);
+      console.log("Add Button output", membersParticipants);
+    } else {
+      // setopen notionation work here
+    }
+  };
+
+  // for selection of data
+  const handleSelectValue = (value) => {
+    setSelectedsearch(value);
+  };
+
   useEffect(() => {
     let Data = {
       MeetingID: currentMeetingID,
     };
     dispatch(GetAllCommitteesUsersandGroupsParticipants(Data, navigate, t));
   }, []);
+
+  useEffect(() => {
+    let newOrganizersData =
+      NewMeetingreducer.getAllCommitteeAndGroupPartcipants;
+    if (newOrganizersData !== null && newOrganizersData !== undefined) {
+      let temp = [];
+      if (Object.keys(newOrganizersData).length > 0) {
+        if (Object.keys(newOrganizersData.groups).length > 0) {
+          newOrganizersData.groups.map((a, index) => {
+            let newData = {
+              value: a.groupID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={GroupIcon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.groupName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 1,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(newOrganizersData.committees).length > 0) {
+          newOrganizersData.committees.map((a, index) => {
+            let newData = {
+              value: a.committeeID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={committeeicon}
+                        width="21.71px"
+                        height="18.61px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 2,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
+          console.log(
+            newOrganizersData.organizationUsers,
+            "organizationUsersorganizationUsersorganizationUsers"
+          );
+          newOrganizersData.organizationUsers.map((a, index) => {
+            let newData = {
+              value: a.userID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        // src={}
+                        alt=""
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 3,
+            };
+            temp.push(newData);
+          });
+        }
+        setAddParticipantDropdown(temp);
+      } else {
+        setAddParticipantDropdown([]);
+      }
+    }
+  }, [NewMeetingreducer.getAllCommitteeAndGroupPartcipants]);
+
+  console.log(addParticipantDropdown, "addParticipantDropdown");
 
   return (
     <section>
@@ -136,13 +344,23 @@ const AddParticipantModal = () => {
                   >
                     <Select
                       closeMenuOnSelect={false}
+                      onChange={handleSelectValue}
+                      value={selectedsearch}
                       classNamePrefix={"ModalOrganizerSelect"}
+                      isDisabled={
+                        NewMeetingreducer.getAllCommitteeAndGroupPartcipants
+                          .length === 0
+                          ? true
+                          : false
+                      }
                       components={animatedComponents}
+                      options={addParticipantDropdown}
                       isMulti
                     />
                     <Button
                       text={t("ADD")}
                       className={styles["ADD_Btn_CreatePool_Modal"]}
+                      onClick={handleAddUsers}
                     />
                   </Col>
                 </Row>
@@ -172,7 +390,7 @@ const AddParticipantModal = () => {
                                           <span
                                             className={styles["Name_cards"]}
                                           >
-                                            {data.name}
+                                            {data.userName}
                                           </span>
                                         </Col>
                                         <Col sm={12} md={2} lg={2}>
