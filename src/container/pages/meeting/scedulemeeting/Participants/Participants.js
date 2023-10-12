@@ -135,13 +135,20 @@ const Participants = ({
       dataIndex: "Role",
       key: "Role",
       width: "249px",
-      render: (text, record) => (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <Select options={particpantsRole} />
-          </Col>
-        </Row>
-      ),
+      render: (text, record) => {
+        console.log("recordrecordrecord", { record });
+        return (
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Select
+                options={particpantsRole}
+                value={inputValues[record.userID] || ""}
+                // onChange={}
+              />
+            </Col>
+          </Row>
+        );
+      },
     },
 
     {
