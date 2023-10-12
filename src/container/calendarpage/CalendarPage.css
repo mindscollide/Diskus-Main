@@ -528,7 +528,7 @@ body[dir="rtl"] .SceduleMeetingButton button {
 
 .SceduleMeetingButton .dropdown-menu.show {
   padding: 0 !important;
-  width: 187px;
+  width: 220px;
   padding: 0 10px !important;
   margin: 0 !important;
   transform: translate(0px, 45px);
@@ -539,7 +539,7 @@ body[dir="rtl"] .SceduleMeetingButton button {
 
 body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show {
   padding: 0 !important;
-  width: 160px;
+  width: 220px;
   padding: 0 10px !important;
   margin: 0 !important;
   transform: translateY(0px, 45px) !important;
@@ -549,7 +549,7 @@ body[dir="rtl"] .SceduleMeetingButton .dropdown-menu.show {
 }
 
 .SceduleMeetingButton .dropdown-menu.show .dropdown-item {
-  padding: 10px 10px;
+  padding: 10px 0px;
   font-family: "MontserratSemiBold-600" !important;
   text-align: center;
   font-size: 11px !important;

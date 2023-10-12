@@ -62,55 +62,6 @@ const Participants = ({
     { value: "Secretary", label: t("Secretary") },
   ];
 
-  const data = [
-    {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
-      Email: (
-        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-      ),
-      Participanttitle: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <TextField
-                disable={true}
-                placeholder={t("Content-title")}
-                labelClass={"d-none"}
-                applyClass={"Organizer_table"}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-      Role: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <Select options={options} />
-            </Col>
-          </Row>
-        </>
-      ),
-      Close: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-              <img
-                draggable={false}
-                src={redcrossIcon}
-                width="21.79px"
-                height="21.79px"
-                onClick={openCrossIconModal}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
-
-  const [rowsData, setRowsData] = useState(data);
   const ParticipantsColoumn = [
     {
       title: (
@@ -138,6 +89,17 @@ const Participants = ({
       dataIndex: "Title",
       key: "Title",
       width: "300px",
+      render: (text, record) => (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <TextField
+              placeholder={t("Participant-title")}
+              labelClass={"d-none"}
+              applyClass={"Organizer_table"}
+            />
+          </Col>
+        </Row>
+      ),
     },
 
     {
@@ -145,6 +107,13 @@ const Participants = ({
       dataIndex: "Role",
       key: "Role",
       width: "249px",
+      render: (text, record) => (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <Select options={options} />
+          </Col>
+        </Row>
+      ),
     },
 
     {
@@ -309,7 +278,7 @@ const Participants = ({
                       scroll={{ y: "62vh" }}
                       pagination={false}
                       className="Polling_table"
-                      rows={rspvRows}
+                      // rows={rspvRows}
                     />
                   </>
                 ) : (
@@ -371,7 +340,10 @@ const Participants = ({
         <AddParticipantModal setrspvRows={setrspvRows} rspvRows={rspvRows} />
       )}
       {NewMeetingreducer.cancelPartipants && (
-        <CancelParticipants setSceduleMeeting={setSceduleMeeting} />
+        <CancelParticipants
+          setSceduleMeeting={setSceduleMeeting}
+          setrspvRows={setrspvRows}
+        />
       )}
       {/* {proposeMeeting && } */}
     </>
