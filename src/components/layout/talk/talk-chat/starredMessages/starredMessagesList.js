@@ -56,6 +56,22 @@ const StarredMessagesList = () => {
     }
   }, [talkStateData.AllStarMessagesData.AllStarMessagesResponse])
 
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !== null &&
+      talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !==
+        undefined &&
+      talkStateData.talkSocketDataStarUnstar.socketUnstarMessage.length !== 0
+    ) {
+      let unstarredMessage =
+        talkStateData.talkSocketDataStarUnstar.socketUnstarMessage
+      const updatedData = allStarredMessagesData.filter(
+        (message) => message.messageID !== unstarredMessage.messageID,
+      )
+      setAllStarredMessagesData(updatedData)
+    }
+  }, [talkStateData.talkSocketDataStarUnstar.socketUnstarMessage])
+
   console.log('Talk state Data', talkStateData, allStarredMessagesData)
 
   return (

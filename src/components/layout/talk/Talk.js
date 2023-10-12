@@ -121,16 +121,21 @@ const Talk = () => {
       dispatch(headerShowHideStatus(true))
       dispatch(footerShowHideStatus(true))
       setActiveChatBox(true)
-    } else if (activeVideoIcon === false) {
-      dispatch(recentVideoFlag(false))
-      dispatch(contactVideoFlag(true))
-      dispatch(videoChatPanel(true))
-      setActiveVideoIcon(true)
-      dispatch(videoChatSearchFlag(false))
-    } else {
-      setActiveChatBox(false)
-      setActiveVideoIcon(false)
+    }
+    // else if (activeVideoIcon === false) {
+    //   dispatch(recentVideoFlag(false))
+    //   dispatch(contactVideoFlag(true))
+    //   dispatch(videoChatPanel(true))
+    //   setActiveVideoIcon(true)
+    //   dispatch(videoChatSearchFlag(false))
+    // }
+    else {
       dispatch(videoChatPanel(false))
+      setActiveVideoIcon(false)
+      setActiveChatBox(false)
+      dispatch(contactVideoFlag(false))
+      dispatch(recentVideoFlag(false))
+      dispatch(videoChatSearchFlag(false))
     }
   }
 

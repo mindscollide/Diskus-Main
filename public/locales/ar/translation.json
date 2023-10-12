@@ -1064,7 +1064,7 @@
   "Are-you-sure-you-want-to-continue?": "Are you sure you want to continue?",
   "Payment-procced": "Payment Procced",
   "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes",
-  "Meeting-title": "Meeting Title",
+  "Meeting-title": "Meeting Title*",
   "Organizer-name": "Organizer Name",
   "Date-time": "Date/Time",
   "Join-meeting": "Join Meeting",
@@ -1507,5 +1507,8 @@
   "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document.",
   "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder.",
   "Already-exists-in-this-location-folder": "already exists in this location",
-  "Advanced-meeting": "Advanced meeting"
+  "Advanced-meeting": "Advanced meeting",
+  "Reminder*": "Reminder*",
+  "Save-and-next": "Save and Next",
+  "No-row-inserted": "No Row Inserted"
 }

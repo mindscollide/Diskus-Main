@@ -8,13 +8,14 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import { DateObject } from "react-multi-date-picker";
+import BackArrow from "../../../../../assets/images/Back Arrow.svg";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import whiteVideIcon from "../../../../../assets/images/whiteVideoIcon.png";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import {
   Button,
   Switch,
@@ -33,6 +34,7 @@ import moment from "moment";
 import TextFieldTime from "../../../../../components/elements/input_field_time/Input_field";
 import { useDispatch } from "react-redux";
 import {
+  FetchMeetingURLApi,
   GetAllMeetingRecurringApiNew,
   GetAllMeetingRemindersApiFrequencyNew,
   GetAllMeetingTypesNewFunction,
@@ -53,7 +55,7 @@ const MeetingDetails = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-
+  console.log(NewMeetingreducer.getmeetingURL, "getmeetingURL");
   const [options, setOptions] = useState([]);
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
@@ -79,7 +81,7 @@ const MeetingDetails = ({
     MeetingType: 0,
     Location: "",
     Description: "",
-    Link: "https://portal.letsdiskus.com/Video?RoomID=5682AD",
+    Link: "",
     ReminderFrequency: 0,
     ReminderFrequencyTwo: 0,
     ReminderFrequencyThree: 0,
@@ -91,6 +93,8 @@ const MeetingDetails = ({
     Location: "",
     IsVideoCall: false,
   });
+
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
   const handleSelectChange = (selectedOption) => {
     setOptions({ ...options, selectedOption });
@@ -507,7 +511,24 @@ const MeetingDetails = ({
       ...meetingDetails,
       IsVideoCall: !meetingDetails.IsVideoCall,
     });
+
+    let Data = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(FetchMeetingURLApi(Data, navigate, t));
   };
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.getmeetingURL !== null &&
+      NewMeetingreducer.getmeetingURL !== undefined
+    ) {
+      setMeetingDetails({
+        ...meetingDetails,
+        Link: NewMeetingreducer.getmeetingURL.videoURL,
+      });
+    }
+  }, [NewMeetingreducer.getmeetingURL]);
 
   //funciton cancel button
   const handleCancelMeetingButton = () => {
@@ -619,7 +640,7 @@ const MeetingDetails = ({
               <Row>
                 {/* First Half */}
                 <Col lg={7} md={7} sm={12} className="mt-3">
-                  <Row className="mt-4">
+                  <Row>
                     <Col lg={12} md={12} sm={12}>
                       <TextField
                         placeholder={t("Meeting-title")}
@@ -765,21 +786,33 @@ const MeetingDetails = ({
                         >
                           <Button
                             icon={
-                              <img
-                                draggable={false}
-                                src={
-                                  meetingDetails.IsVideoCall
-                                    ? whiteVideIcon
-                                    : MeetingVideoChatIcon
-                                }
-                                width="22.32px"
-                                height="14.75px"
-                                className={
-                                  meetingDetails.IsVideoCall
-                                    ? styles["Camera_icon_active_IconStyles"]
-                                    : styles["Camera_icon"]
-                                }
-                              />
+                              NewMeetingreducer.Loading ? (
+                                <>
+                                  <Spinner
+                                    className={styles["checkEmailSpinner"]}
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  <img
+                                    draggable={false}
+                                    src={
+                                      meetingDetails.IsVideoCall
+                                        ? whiteVideIcon
+                                        : MeetingVideoChatIcon
+                                    }
+                                    width="22.32px"
+                                    height="14.75px"
+                                    className={
+                                      meetingDetails.IsVideoCall
+                                        ? styles[
+                                            "Camera_icon_active_IconStyles"
+                                          ]
+                                        : styles["Camera_icon"]
+                                    }
+                                  />
+                                </>
+                              )
                             }
                             className={
                               meetingDetails.IsVideoCall
@@ -1020,17 +1053,10 @@ const MeetingDetails = ({
                 </Col>
                 {/* Second Half */}
                 <Col lg={5} md={5} sm={12} className="mt-3">
-                  <Row className="mt-1">
-                    <Row className="mt-1">
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Frequency_heading"]}>
-                          {t("Reminder-frequency")}
-                          <span className={styles["steric"]}>*</span>
-                        </span>
-                      </Col>
-                    </Row>
+                  <Row>
                     <Col lg={4} md={4} sm={12}>
                       <Select
+                        placeholder={t("Reminder*")}
                         onChange={handleReminderFrequency}
                         options={reminderFrequencyOne}
                         value={reminderFrequencyOne.find(
@@ -1042,6 +1068,7 @@ const MeetingDetails = ({
                     </Col>
                     <Col lg={4} md={4} sm={12}>
                       <Select
+                        placeholder={t("Reminder")}
                         onChange={handleReminderFrequencyTwo}
                         options={reminderFrequencyOne}
                         value={reminderFrequencyOne.find(
@@ -1055,6 +1082,7 @@ const MeetingDetails = ({
                     </Col>
                     <Col lg={4} md={4} sm={12}>
                       <Select
+                        placeholder={t("Reminder")}
                         onChange={handleReminderFrequencyThree}
                         options={reminderFrequencyOne}
                         value={reminderFrequencyOne.find(

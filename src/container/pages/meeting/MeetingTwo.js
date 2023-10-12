@@ -758,16 +758,20 @@ const NewMeeting = () => {
       ) : (
         <>
           <Row className="mt-2">
-            <Col sm={12} md={6} lg={6} className="d-flex gap-5">
+            <Col
+              sm={12}
+              md={8}
+              lg={8}
+              className="d-flex gap-3 align-items-center"
+            >
               <span className={styles["NewMeetinHeading"]}>
                 {t("Meetings")}
               </span>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Dropdown
-                    className="Calendar_CreateBtn"
+                    className="SceduleMeetingButton"
                     onClick={eventClickHandler}
-                    align={"start"}
                   >
                     <Dropdown.Toggle title={t("Create")}>
                       <Row>
@@ -778,7 +782,7 @@ const NewMeeting = () => {
                           className={styles["schedule_button"]}
                         >
                           <Plus width={20} height={20} fontWeight={800} />
-                          <span>{t("Schedule-meeting")}</span>
+                          <span> {t("Schedule-a-meeting")}</span>
                         </Col>
                       </Row>
                     </Dropdown.Toggle>
@@ -788,7 +792,7 @@ const NewMeeting = () => {
                         className="dropdown-item"
                         onClick={openSceduleMeetingPage}
                       >
-                        {t("Advanced-meeting")}
+                        {t("Advance-meeting")}
                       </Dropdown.Item>
                       <Dropdown.Item
                         className="dropdown-item"
@@ -809,8 +813,8 @@ const NewMeeting = () => {
             </Col>
             <Col
               sm={12}
-              md={6}
-              lg={6}
+              md={4}
+              lg={4}
               className="d-flex justify-content-end align-items-center"
             >
               <span className="position-relative">

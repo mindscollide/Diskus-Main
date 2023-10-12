@@ -78,7 +78,7 @@
   "Attendees": "Attendees",
   "Reminder": "Reminder",
   "Location": "Location",
-  "Meeting-title": "Meeting title",
+  "Meeting-title": "Meeting title*",
   "Description": "Description",
   "Group-chat": "Group chat",
   "Agenda-title": "Agenda title",
@@ -1539,5 +1539,8 @@
   "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document.",
   "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder.",
   "Already-exists-in-this-location-folder": "already exists in this location",
-  "Advanced-meeting": "Advanced meeting"
+  "Advanced-meeting": "Advanced meeting",
+  "Reminder*": "Reminder*",
+  "Save-and-next": "Save and Next",
+  "No-row-inserted": "No Row Inserted"
 }
