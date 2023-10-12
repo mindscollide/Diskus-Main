@@ -56,11 +56,29 @@ const Participants = ({
     setAgenda(true);
   };
 
-  const options = [
-    { value: "Particpants", label: t("Particpants") },
-    { value: "Chairperson", label: t("Chairperson") },
-    { value: "Secretary", label: t("Secretary") },
-  ];
+  useEffect(() => {
+    dispatch(GetAllParticipantsRoleNew(navigate, t));
+  }, []);
+
+  //Roles Drop Down Data
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.participantRoles !== null &&
+        NewMeetingreducer.participantRoles !== undefined
+      ) {
+        let Newdata = [];
+        NewMeetingreducer.participantRoles.map((data, index) => {
+          console.log(data, "datadatadatas");
+          Newdata.push({
+            value: data.participantRoleID,
+            label: data.participantRole,
+          });
+        });
+        setParticpantsRole(Newdata);
+      }
+    } catch (error) {}
+  }, [NewMeetingreducer.participantRoles]);
 
   const ParticipantsColoumn = [
     {
@@ -110,7 +128,7 @@ const Participants = ({
       render: (text, record) => (
         <Row>
           <Col lg={12} md={12} sm={12}>
-            <Select options={options} />
+            <Select options={particpantsRole} />
           </Col>
         </Row>
       ),
@@ -209,29 +227,9 @@ const Participants = ({
     dispatch(showCancelModalPartipants(true));
   };
 
-  useEffect(() => {
-    dispatch(GetAllParticipantsRoleNew(navigate, t));
-  }, []);
-
-  //Roles Drop Down Data
-  useEffect(() => {
-    try {
-      if (
-        NewMeetingreducer.participantRoles !== null &&
-        NewMeetingreducer.participantRoles !== undefined
-      ) {
-        let Newdata = [];
-        NewMeetingreducer.participantRoles.map((data, index) => {
-          console.log(data, "datadatadatas");
-          Newdata.push({
-            value: data.participantRoleID,
-            label: data.participantRole,
-          });
-        });
-        setParticpantsRole(Newdata);
-      }
-    } catch (error) {}
-  }, [NewMeetingreducer.participantRoles]);
+  const handleCancelButtonForClearingParticipants = () => {
+    setrspvRows([]);
+  };
 
   return (
     <>
@@ -247,26 +245,47 @@ const Participants = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                <Button
-                  text={t("Edit")}
-                  className={styles["Edit_Button_Organizers"]}
-                  icon={
-                    <img
-                      draggable={false}
-                      src={EditIcon}
-                      width="11.75px"
-                      height="11.75px"
+                {rspvRows.length === 0 ? (
+                  <>
+                    <Button
+                      text={t("Edit")}
+                      className={styles["Edit_Button_Organizers"]}
+                      icon={
+                        <img
+                          draggable={false}
+                          src={EditIcon}
+                          width="11.75px"
+                          height="11.75px"
+                        />
+                      }
+                      onClick={enableRspvTable}
                     />
-                  }
-                  onClick={enableRspvTable}
-                />
 
-                <Button
-                  text={t("Add-more")}
-                  icon={<img draggable={false} src={addmore} />}
-                  className={styles["AddMoreBtn"]}
-                  onClick={openAddPartcipantModal}
-                />
+                    <Button
+                      text={t("Add-more")}
+                      icon={<img draggable={false} src={addmore} />}
+                      className={styles["AddMoreBtn"]}
+                      onClick={openAddPartcipantModal}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                        <Button
+                          text={t("Cancel")}
+                          className={styles["Cancel_Organization"]}
+                          onClick={handleCancelButtonForClearingParticipants}
+                        />
+
+                        <Button
+                          text={t("Save")}
+                          className={styles["Next_Organization"]}
+                        />
+                      </Col>
+                    </Row>
+                  </>
+                )}
               </Col>
             </Row>
             <Row>
@@ -302,34 +321,38 @@ const Participants = ({
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
-              <Button
-                text={t("Propose-meeting-dates")}
-                className={styles["Cancel_Organization"]}
-                onClick={handleProposedmeetingDates}
-              />
+              {rspvRows.length === 0 ? (
+                <>
+                  <Button
+                    text={t("Propose-meeting-dates")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={handleProposedmeetingDates}
+                  />
 
-              <Button
-                text={t("Cancel")}
-                className={styles["Cancel_Organization"]}
-                onClick={handleCancelParticipants}
-              />
+                  <Button
+                    text={t("Cancel")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={handleCancelParticipants}
+                  />
 
-              <Button
-                text={t("Save")}
-                className={styles["Cancel_Organization"]}
-                onClick={EnableParticipantsViewPage}
-              />
+                  <Button
+                    text={t("Save")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={EnableParticipantsViewPage}
+                  />
 
-              <Button
-                text={t("Save-and-publish")}
-                className={styles["Cancel_Organization"]}
-              />
+                  <Button
+                    text={t("Save-and-publish")}
+                    className={styles["Next_Organization"]}
+                  />
 
-              <Button
-                text={t("Save-and-next")}
-                className={styles["Next_Organization"]}
-                onClick={handleNextButton}
-              />
+                  <Button
+                    text={t("Save-and-next")}
+                    className={styles["Next_Organization"]}
+                    onClick={handleNextButton}
+                  />
+                </>
+              ) : null}
             </Col>
           </Row>
         </>
