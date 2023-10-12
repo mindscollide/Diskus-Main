@@ -541,3 +541,9 @@ body[dir="rtl"] .heading_button {
 .rbc-show-more {
   color: #5a5a5a !important; /* Use !important to ensure the style is applied */
 }
+
+.rbc-row-content:hover
+  .rbc-row:nth-child(3)
+  .rbc-row-segment:nth-child(2):has(.rbc-show-more) {
+  color: #fff !important;
+}

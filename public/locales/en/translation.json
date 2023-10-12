@@ -1051,8 +1051,8 @@
   "Microsoft-calender-color": "Microsoft Calender Color",
   "Diskus-color-theme": "Diskus Color Theme",
   "Non-approved": "Non Approved",
-  "This-user-already-exist-in-voter-list": "This user already exist in voter-list",
-  "This-voter-already-exist": "this Voter already Exist",
+  "This-user-already-exist-in-voter-list": "This user already exist in voter list",
+  "This-voter-already-exist": "This voter already Exist",
   "No-events-available-on-this-date": "No Events Available on this date",
   "Token-updated-and-calender-list-saved-successful": "Token Updated and Calender List Saved Successful",
   "Token-updated-but-failed-to-save-calender": "Token Updated but failed to Save Calender",
@@ -1537,5 +1537,6 @@
   "Team-meeting": "Team Meeting",
   "Project-meeting": "Project Meeting",
   "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document.",
-  "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder."
+  "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder.",
+  "Already-exists-in-this-location-folder": "already exists in this location"
 }

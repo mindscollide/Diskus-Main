@@ -408,7 +408,11 @@ const CreateFolder_success = (response) => {
     response: response,
   };
 };
-
+const CreateFolderEmpty = () => {
+  return {
+    type: actions.CREATE_FOLDER_EMPTY,
+  };
+};
 // Folder Exist API
 const CheckFolderisExist = (navigate, folderName, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -573,7 +577,8 @@ const createFolder = (
                   "DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase()
                 )
             ) {
-              await dispatch(CreateFolder_success(0));
+              await dispatch(CreateFolderEmpty());
+
               dispatch(createFolder_fail(t("Failed-to-create-folder")));
             } else if (
               response.data.responseResult.responseMessage
@@ -582,7 +587,7 @@ const createFolder = (
                   "DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase()
                 )
             ) {
-              await dispatch(CreateFolder_success(0));
+              await dispatch(CreateFolderEmpty());
               dispatch(createFolder_fail(t("Something-went-wrong")));
             }
           } else {
@@ -812,4 +817,5 @@ export {
   CreateFolder_success,
   folderUploadData,
   removeFolderUploadData,
+  CreateFolderEmpty,
 };

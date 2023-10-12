@@ -91,6 +91,14 @@ function CustomCalendar({
   const [rightToLeft, setRightToLeft] = useState(false);
   const [prevCheck, setPrevCheck] = useState(false);
   const [nextCheck, setNextCheck] = useState(false);
+  const [hoveredEvent, setHoveredEvent] = useState(null);
+  const handleEventMouseEnter = (event) => {
+    setHoveredEvent(event);
+  };
+
+  const handleEventMouseLeave = () => {
+    setHoveredEvent(null);
+  };
   const [popupOffset, setPopupOffset] = useState({ x: 0, y: 0 });
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { t } = useTranslation();
@@ -297,6 +305,31 @@ function CustomCalendar({
     }),
     [culture]
   );
+  const eventStyleGetter = (event, start, end, isSelected, isHovered) => {
+    let backgroundColor = isSelected ? "green" : "blue"; // Default and hover background color
+    let textColor = isSelected ? "black" : isHovered ? "white" : "black"; // Default and hover text color
+    let border = "none"; // Default border style
+
+    if (event) {
+      backgroundColor = event.backgroundColor || backgroundColor; // Use event's background color if defined
+      textColor = event.textColor || textColor; // Use event's text color if defined
+      border = event.border || border; // Use event's border if defined
+    }
+    if (isSelected) {
+      textColor = "#fff";
+    }
+    if (isHovered) {
+      textColor = "#fff";
+      backgroundColor = "#000";
+    }
+    return {
+      style: {
+        backgroundColor,
+        color: textColor,
+        border,
+      },
+    };
+  };
 
   const eventPropGetter = (event, start, end, isSelected) => {
     // const isPastEvent = event.start < currentDate;
@@ -338,9 +371,20 @@ function CustomCalendar({
             toolbar: customToolbar,
             // header: customTimeSlotHeader,
             month: false,
+            // event: (eventProps) => {
+            //   console.log(eventProps.event, "eventPropseventProps");
+            //   return (
+            //     <div
+            //       onMouseEnter={() => handleEventMouseEnter(eventProps.event)}
+            //       onMouseLeave={handleEventMouseLeave}
+            //     >
+            //       {eventProps.event}
+            //     </div>
+            //   );
+            // },
           }}
           // dayPropGetter={dayPropGetter}
-          eventPropGetter={eventPropGetter}
+          eventPropGetter={eventStyleGetter}
           onNavigate={onNavigate}
           step={15}
           timeslots={15}
