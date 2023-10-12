@@ -64,6 +64,7 @@ import {
   newTimeFormaterAsPerUTCTalkTime,
   newTimeFormaterAsPerUTCTalkDate,
   newTimeFormaterAsPerUTCTalkDateTime,
+  newTimeFormaterMIAsPerUTCTalkDateTime,
 } from '../../../../../../commen/functions/date_formater'
 import {
   DateDisplayFormat,
@@ -189,7 +190,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const inputRef = useRef(null)
 
   //search chat states
-  const [searchChatValue, setSearchChatValue] = useState('')
+  const [searchUserValue, setSearchUserValue] = useState('')
   const [allChatData, setAllChatData] = useState([])
 
   //File Thumbnail States
@@ -832,32 +833,37 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }
 
   //Search Chats
-  const searchChat = (e) => {
-    setSearchChatValue(e)
+  const searchUsers = (e) => {
+    setSearchUserValue(e)
     try {
       if (
-        talkStateData.AllUserChats.AllUserChatsData !== undefined &&
-        talkStateData.AllUserChats.AllUserChatsData !== null &&
-        talkStateData.AllUserChats.AllUserChatsData.length !== 0
+        talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
+          undefined &&
+        talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
+          null &&
+        talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
+          .length !== 0
       ) {
         if (e !== '') {
-          let filteredData = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
+          let filteredData = talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData.userInformation.filter(
             (value) => {
-              return value.fullName.toLowerCase().includes(e.toLowerCase())
+              return value.name.toLowerCase().includes(e.toLowerCase())
             },
           )
-
           if (filteredData.length === 0) {
-            setAllChatData(
-              talkStateData.AllUserChats.AllUserChatsData.allMessages,
+            setAllUsersGroupsRooms(
+              talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
+                .userInformation,
             )
           } else {
-            setAllChatData(filteredData)
+            setAllUsersGroupsRooms(filteredData)
           }
         } else if (e === '' || e === null) {
-          let data = talkStateData.AllUserChats.AllUserChatsData.allMessages
-          setSearchChatValue('')
-          setAllChatData(data)
+          let data =
+            talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
+              .userInformation
+          setSearchUserValue('')
+          setAllUsersGroupsRooms(data)
         }
       }
     } catch {}
@@ -1505,6 +1511,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
       }
     })
     setForwardUsersChecked([])
+  }
+
+  const cancelMessagesCheck = () => {
+    setForwardFlag(false)
+    setShowCheckboxes(false)
+    setDeleteFlag(false)
   }
 
   const modalHandlerGroupInfo = () => {
@@ -4500,8 +4512,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
                             {allMessages.length > 0 &&
                             talkStateData.ActiveChatData.messageType === 'O' &&
                             talkStateData.ChatSpinner === false ? (
-                              // allMessages.length === 0 &&
-                              // allMessages.length === 0
                               allMessages.map((messageData, index) => {
                                 var ext = messageData.attachmentLocation
                                   .split('.')
@@ -4510,11 +4520,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   messageData.senderID ===
                                   parseInt(currentUserId)
                                 ) {
+                                  const isLastMessage =
+                                    index === allMessages.length - 1
                                   return (
                                     <>
                                       <div
                                         key={index}
-                                        className="direct-chat-msg text-right mb-2 "
+                                        className={`direct-chat-msg text-right mb-2 ${
+                                          isLastMessage ? 'last-message' : ''
+                                        }`}
                                       >
                                         <div className="direct-chat-text message-outbox message-box text-start">
                                           <div
@@ -4889,8 +4903,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   messageData.senderID !==
                                   parseInt(currentUserId)
                                 ) {
+                                  const isLastMessage =
+                                    index === allMessages.length - 1
                                   return (
-                                    <div className="direct-chat-msg text-left mb-2 ">
+                                    <div
+                                      className={`direct-chat-msg text-left mb-2 ${
+                                        isLastMessage ? 'last-message' : ''
+                                      }`}
+                                    >
                                       {showCheckboxes === true ? (
                                         <Checkbox
                                           checked={
@@ -5144,8 +5164,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   messageData.senderID ===
                                   parseInt(currentUserId)
                                 ) {
+                                  const isLastMessage =
+                                    index === allMessages.length - 1
                                   return (
-                                    <div className="direct-chat-msg text-right mb-2 ">
+                                    <div
+                                      className={`direct-chat-msg text-right mb-2 ${
+                                        isLastMessage ? 'last-message' : ''
+                                      }`}
+                                    >
                                       <div className="direct-chat-text message-outbox message-box text-start">
                                         <p className="group-sender-name">
                                           {messageData.senderName}
@@ -5416,8 +5442,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                     </div>
                                   )
                                 } else {
+                                  const isLastMessage =
+                                    index === allMessages.length - 1
                                   return (
-                                    <div className="direct-chat-msg text-left mb-2 ">
+                                    <div
+                                      className={`direct-chat-msg text-left mb-2 ${
+                                        isLastMessage ? 'last-message' : ''
+                                      }`}
+                                    >
                                       {showCheckboxes === true ? (
                                         <Checkbox
                                           checked={
@@ -5615,9 +5647,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   messageData.senderID ===
                                   parseInt(currentUserId)
                                 ) {
+                                  const isLastMessage =
+                                    index === allMessages.length - 1
                                   return (
                                     <>
-                                      <div className="direct-chat-msg text-right mb-2 ">
+                                      <div
+                                        className={`direct-chat-msg text-right mb-2 ${
+                                          isLastMessage ? 'last-message' : ''
+                                        }`}
+                                      >
                                         <div className="direct-chat-text message-outbox message-box text-start">
                                           <div
                                             className="chatmessage-box-icons"
@@ -6547,23 +6585,41 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           </div>
                         </>
                       ) : forwardFlag === true ? (
-                        <Button
-                          className="MontserratSemiBold Ok-btn"
-                          text="Forward"
-                          onClick={
-                            forwardMessageUsersSection === true
-                              ? submitForwardMessages
-                              : () => setForwardMessageUsersSection(true)
-                          }
-                          disableBtn={messagesChecked.length > 0 ? false : true}
-                        />
+                        <>
+                          <Button
+                            className="MontserratSemiBold White-btn"
+                            text="Cancel"
+                            onClick={cancelMessagesCheck}
+                          />
+                          <Button
+                            className="MontserratSemiBold Ok-btn"
+                            text="Forward"
+                            onClick={
+                              forwardMessageUsersSection === true
+                                ? submitForwardMessages
+                                : () => setForwardMessageUsersSection(true)
+                            }
+                            disableBtn={
+                              messagesChecked.length > 0 ? false : true
+                            }
+                          />
+                        </>
                       ) : deleteFlag === true ? (
-                        <Button
-                          className="MontserratSemiBold Ok-btn"
-                          text="Delete"
-                          onClick={deleteMultipleMessagesButton}
-                          disableBtn={messagesChecked.length > 0 ? false : true}
-                        />
+                        <>
+                          <Button
+                            className="MontserratSemiBold White-btn"
+                            text="Cancel"
+                            onClick={cancelMessagesCheck}
+                          />
+                          <Button
+                            className="MontserratSemiBold Ok-btn"
+                            text="Delete"
+                            onClick={deleteMultipleMessagesButton}
+                            disableBtn={
+                              messagesChecked.length > 0 ? false : true
+                            }
+                          />
+                        </>
                       ) : null}
                     </div>
                   </Col>
@@ -6600,7 +6656,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         // moment(messageInfoData.sentDate.slice(0, 8)).format(
                         //   'DD-MMM-YYYY',
                         // )
-                        newTimeFormaterAsPerUTCTalkDate(
+                        newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.sentDate,
                         )
                       )}
@@ -6622,7 +6678,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         // moment(
                         //   messageInfoData.receivedDate.slice(0, 8),
                         // ).format('DD-MMM-YYYY')
-                        newTimeFormaterAsPerUTCTalkDate(
+                        newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.receivedDate,
                         )
                       )}
@@ -6640,7 +6696,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         // moment(messageInfoData.seenDate.slice(0, 8)).format(
                         //   'DD-MMM-YYYY',
                         // )
-                        newTimeFormaterAsPerUTCTalkDate(
+                        newTimeFormaterMIAsPerUTCTalkDateTime(
                           messageInfoData.seenDate,
                         )
                       )}
@@ -6674,9 +6730,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                       applyClass="form-control2"
                       name="Name"
                       change={(e) => {
-                        searchChat(e.target.value)
+                        searchUsers(e.target.value)
                       }}
-                      value={searchChatValue}
+                      value={searchUserValue}
                       placeholder="Search Users"
                       labelClass={'d-none'}
                     />
