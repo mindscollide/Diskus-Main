@@ -449,14 +449,28 @@ body[dir="rtl"] .encryption-level-chat p.level-heading {
 }
 
 .chat-input-section .Ok-btn {
-  width: 108px !important;
-  height: 30px !important;
-  border: 1px solid #6172d6 !important;
-  border-radius: 4px;
-  background-color: #6172d6 !important;
+  width: 100px !important;
+  height: 35px !important;
+  border: 1px solid #5F78D6 !important;
+  border-radius: 2px;
+  background-color: #5F78D6 !important;
   color: #fff !important;
-  font-size: 8px;
-  margin-top: 0px;
+  margin-top: 8px;
+  margin-bottom: 6px;
+  font-size: 10px;
+}
+
+.chat-input-section .White-btn {
+  border: 1px solid #e1e1e1 !important;
+  background-color: #fff !important;
+  color: #232323 !important;
+  width: 100px !important;
+  height: 35px !important;
+  border-radius: 2px;
+  margin-top: 8px;
+  margin-bottom: 6px;
+  font-size: 10px;
+  margin-right: 10px;
 }
 
 .add-chat.height {
@@ -753,14 +767,15 @@ body[dir="rtl"] svg.pointer-chat-icon {
 }
 
 .Ok-btn {
-  width: 108px !important;
+  width: 100px !important;
   height: 30px !important;
-  border: 1px solid #6172d6 !important;
-  border-radius: 4px;
-  background-color: #6172d6 !important;
+  border: 1px solid #5F78D6 !important;
+  border-radius: 2px;
+  background-color: #5F78D6 !important;
   color: #fff !important;
-  font-size: 8px;
-  margin-top: 15px;
+  font-size: 10px;
+  position: relative;
+  top: 4px;
 }
 
 .Ok:hover,
@@ -769,25 +784,27 @@ body[dir="rtl"] svg.pointer-chat-icon {
 .Ok:focus-visible,
 .Ok:visited,
 .Ok:target {
-  width: 108px !important;
+  width: 100px !important;
   height: 30px !important;
-  border: 1px solid #6172d6 !important;
-  border-radius: 4px;
-  background-color: #6172d6 !important;
+  border: 1px solid #5F78D6 !important;
+  border-radius: 2px;
+  background-color: #5F78D6 !important;
   color: #fff !important;
-  font-size: 8px;
-  margin-top: 15px;
+  font-size: 10px;
+  position: relative;
+  top: 4px;
 }
 
 .White-btn {
-  width: 108px !important;
-  height: 30px !important;
   border: 1px solid #e1e1e1 !important;
-  border-radius: 4px;
   background-color: #fff !important;
   color: #232323 !important;
-  font-size: 8px;
-  margin-top: 15px;
+  width: 100px !important;
+  height: 30px !important;
+  border-radius: 2px;
+  font-size: 10px;
+  position: relative;
+  top: 4px;
 }
 
 .White:hover,
@@ -796,14 +813,15 @@ body[dir="rtl"] svg.pointer-chat-icon {
 .White:focus-visible,
 .White:visited,
 .White:target {
-  width: 108px !important;
-  height: 30px !important;
   border: 1px solid #e1e1e1 !important;
-  border-radius: 4px;
   background-color: #fff !important;
   color: #232323 !important;
-  font-size: 8px;
-  margin-top: 15px;
+  width: 100px !important;
+  height: 30px !important;
+  border-radius: 2px;
+  font-size: 10px;
+  position: relative;
+  top: 4px;
 }
 
 .chat-menu-popups {
@@ -1112,6 +1130,19 @@ body[dir="rtl"] .chathead-box-icons {
   right: -1px;
 }
 
+.last-message .dropdown-menus-chatmessage {
+  position: absolute;
+  background: #fff;
+  display: inline-grid;
+  text-align: center;
+  top: -125px;
+  width: 100px;
+  border-radius: 5px;
+  border: 1px solid #b6b6b6;
+  z-index: 9;
+  right: -1px;
+}
+
 .dropdown-menus-chatmessage span {
   border-bottom: 1px solid #ccc;
   margin: 5px 5px 3px 5px;
@@ -1138,7 +1169,7 @@ body[dir="rtl"] .chathead-box-icons {
 
 .chat-feature {
   height: 45px;
-  width: 210px;
+  width: 200px;
   background: #e8eef3;
   border-radius: 7px;
   margin-right: 50px;
@@ -1153,7 +1184,7 @@ p.chat-feature-text {
   left: 15px;
   top: 10px;
   width: 180px;
-  font-size: 13px;
+  font-size: 14px;
   color: #5a5a5a;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1189,7 +1220,7 @@ img.chat-feature-image {
 
 p.feature-name {
   margin: 0;
-  font-size: 8px;
+  font-size: 9px;
   padding-right: 5px;
   color: #fff;
 }
