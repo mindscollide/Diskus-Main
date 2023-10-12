@@ -42,6 +42,7 @@ const Participants = ({
   const { NewMeetingreducer } = useSelector((state) => state);
   const [particiapntsView, setParticiapntsView] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
+  const [inputValues, setInputValues] = useState({});
 
   //open row icon cross modal
   const openCrossIconModal = () => {
@@ -86,8 +87,6 @@ const Participants = ({
     } catch (error) {}
   }, [NewMeetingreducer.getAllPartiicpantsRoles]);
 
-  console.log(particpantsRole, "particpantsRoleparticpantsRoleparticpantsRole");
-
   // Table coloumn
   const ParticipantsColoumn = [
     {
@@ -123,6 +122,8 @@ const Participants = ({
               placeholder={t("Participant-title")}
               labelClass={"d-none"}
               applyClass={"Organizer_table"}
+              value={inputValues[record.userID] || ""}
+              change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
             />
           </Col>
         </Row>
@@ -171,6 +172,26 @@ const Participants = ({
   //Clearing the non saved  participant
   const handleCancelButtonForClearingParticipants = () => {
     setrspvRows([]);
+  };
+
+  //state management For textfield
+  const handleInputChange = (userID, newValue) => {
+    setInputValues((prevInputValues) => ({
+      ...prevInputValues,
+      [userID]: newValue,
+    }));
+    setrspvRows((prevRowsData) => {
+      console.log(prevRowsData, "prevRowsDataprevRowsData");
+      return prevRowsData.map((row) => {
+        if (row.userID === userID) {
+          return {
+            ...row,
+            Title: newValue,
+          };
+        }
+        return row;
+      });
+    });
   };
 
   return (
