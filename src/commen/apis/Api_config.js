@@ -910,8 +910,8 @@ const meetingStatusUpdate = {
   RequestMethod: "ServiceManager.MeetingStatusUpdate",
 };
 
-const getAllCommitteeAndGroupsParticipants = {
-  RequestMethod: " ServiceManager.GetAllGroupsAndCommitteesByOrganizaitonID",
+const getParticipantsRoles = {
+  RequestMethod: "ServiceManager.GetAllParticipantRoles",
 };
 
 export {
@@ -1159,5 +1159,5 @@ export {
   GetMeetingNewFrequencyReminder,
   GetAllRecurringNewMeeting,
   meetingStatusUpdate,
-  getAllCommitteeAndGroupsParticipants,
+  getParticipantsRoles,
 };
