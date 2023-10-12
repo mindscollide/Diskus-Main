@@ -2,6 +2,7 @@ import * as actions from "../action_types";
 
 const initialState = {
   Loading: false,
+  meetingurlspinner: false,
   ResponseMessage: "",
   adduserModal: false,
   crossConfirmation: false,
@@ -514,10 +515,17 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
-    case actions.GET_MEETING_URL_INIT: {
+    case actions.GET_MEETING_URL_FAILED: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_MEETING_URL_SPINNER: {
+      return {
+        ...state,
+        meetingurlspinner: action.response,
       };
     }
 

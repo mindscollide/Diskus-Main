@@ -15,7 +15,7 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import whiteVideIcon from "../../../../../assets/images/whiteVideoIcon.png";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import {
   Button,
   Switch,
@@ -34,6 +34,7 @@ import moment from "moment";
 import TextFieldTime from "../../../../../components/elements/input_field_time/Input_field";
 import { useDispatch } from "react-redux";
 import {
+  FetchMeetingURLApi,
   GetAllMeetingRecurringApiNew,
   GetAllMeetingRemindersApiFrequencyNew,
   GetAllMeetingTypesNewFunction,
@@ -54,7 +55,7 @@ const MeetingDetails = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-
+  console.log(NewMeetingreducer.getmeetingURL, "getmeetingURL");
   const [options, setOptions] = useState([]);
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
@@ -80,7 +81,7 @@ const MeetingDetails = ({
     MeetingType: 0,
     Location: "",
     Description: "",
-    Link: "https://portal.letsdiskus.com/Video?RoomID=5682AD",
+    Link: "",
     ReminderFrequency: 0,
     ReminderFrequencyTwo: 0,
     ReminderFrequencyThree: 0,
@@ -92,6 +93,8 @@ const MeetingDetails = ({
     Location: "",
     IsVideoCall: false,
   });
+
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
   const handleSelectChange = (selectedOption) => {
     setOptions({ ...options, selectedOption });
@@ -508,7 +511,24 @@ const MeetingDetails = ({
       ...meetingDetails,
       IsVideoCall: !meetingDetails.IsVideoCall,
     });
+
+    let Data = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(FetchMeetingURLApi(Data, navigate, t));
   };
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.getmeetingURL !== null &&
+      NewMeetingreducer.getmeetingURL !== undefined
+    ) {
+      setMeetingDetails({
+        ...meetingDetails,
+        Link: NewMeetingreducer.getmeetingURL.videoURL,
+      });
+    }
+  }, [NewMeetingreducer.getmeetingURL]);
 
   //funciton cancel button
   const handleCancelMeetingButton = () => {
@@ -766,21 +786,33 @@ const MeetingDetails = ({
                         >
                           <Button
                             icon={
-                              <img
-                                draggable={false}
-                                src={
-                                  meetingDetails.IsVideoCall
-                                    ? whiteVideIcon
-                                    : MeetingVideoChatIcon
-                                }
-                                width="22.32px"
-                                height="14.75px"
-                                className={
-                                  meetingDetails.IsVideoCall
-                                    ? styles["Camera_icon_active_IconStyles"]
-                                    : styles["Camera_icon"]
-                                }
-                              />
+                              NewMeetingreducer.Loading ? (
+                                <>
+                                  <Spinner
+                                    className={styles["checkEmailSpinner"]}
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  <img
+                                    draggable={false}
+                                    src={
+                                      meetingDetails.IsVideoCall
+                                        ? whiteVideIcon
+                                        : MeetingVideoChatIcon
+                                    }
+                                    width="22.32px"
+                                    height="14.75px"
+                                    className={
+                                      meetingDetails.IsVideoCall
+                                        ? styles[
+                                            "Camera_icon_active_IconStyles"
+                                          ]
+                                        : styles["Camera_icon"]
+                                    }
+                                  />
+                                </>
+                              )
                             }
                             className={
                               meetingDetails.IsVideoCall
