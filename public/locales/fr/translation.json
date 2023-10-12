@@ -696,7 +696,7 @@
   "Not-voted": "Not Voted",
   "Are-you-sure-you-want-to-continue?": "Are you sure you want to continue?",
   "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes",
-  "Meeting-title": "Meeting Title",
+  "Meeting-title": "Meeting Title*",
   "Organizer-name": "Organizer Name",
   "Date-time": "Date/Time",
   "Join-meeting": "Join Meeting",
@@ -1062,5 +1062,7 @@
   "Team-meeting": "Team Meeting",
   "Project-meeting": "Project Meeting",
   "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document.",
-  "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder."
+  "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder.",
+  "Reminder*": "Reminder*",
+  "No-row-inserted": "No Row Inserted"
 }

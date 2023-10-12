@@ -914,6 +914,14 @@ const getParticipantsRoles = {
   RequestMethod: "ServiceManager.GetAllParticipantRoles",
 };
 
+const FetchVideoUrl = {
+  RequestMethod: "ServiceManager.GetMeetingVideoURL",
+};
+
+const saveParticipantsMeeting = {
+  RequestMethod: "ServiceManager.SaveMeetingParticipants",
+};
+
 export {
   getRecentDocumentsRM,
   updateProfilePictureRM,
@@ -1160,4 +1168,6 @@ export {
   GetAllRecurringNewMeeting,
   meetingStatusUpdate,
   getParticipantsRoles,
+  FetchVideoUrl,
+  saveParticipantsMeeting,
 };

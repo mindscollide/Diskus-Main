@@ -78,7 +78,7 @@
   "Attendees": "Attendees",
   "Reminder": "Reminder",
   "Location": "Location",
-  "Meeting-title": "Meeting title",
+  "Meeting-title": "Meeting title*",
   "Description": "Description",
   "Group-chat": "Group chat",
   "Agenda-title": "Agenda title",
@@ -1537,5 +1537,8 @@
   "Team-meeting": "Team Meeting",
   "Project-meeting": "Project Meeting",
   "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document.",
-  "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder."
+  "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder.",
+  "Reminder*": "Reminder*",
+  "Save-and-next": "Save and Next",
+  "No-row-inserted": "No Row Inserted"
 }

@@ -26,7 +26,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 
-const AddParticipantModal = () => {
+const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
   const animatedComponents = makeAnimated();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -38,7 +38,10 @@ const AddParticipantModal = () => {
   const [selectedsearch, setSelectedsearch] = useState([]);
 
   const [membersParticipants, setMembersParticipants] = useState([]);
-
+  console.log(
+    { membersParticipants },
+    "membersParticipantsmembersParticipants"
+  );
   const RemovedParticipant = (index) => {
     const updatedPartipants = [...membersParticipants];
     updatedPartipants.splice(index, 1);
@@ -292,7 +295,11 @@ const AddParticipantModal = () => {
     }
   }, [NewMeetingreducer.getAllCommitteeAndGroupPartcipants]);
 
-  console.log(addParticipantDropdown, "addParticipantDropdown");
+  const handleClickDone = () => {
+    let rspvRowsCopy = [...rspvRows, ...membersParticipants];
+    setrspvRows(rspvRowsCopy);
+    dispatch(showAddParticipantsModal(false));
+  };
 
   return (
     <section>
@@ -434,6 +441,7 @@ const AddParticipantModal = () => {
                     <Button
                       text={t("Done")}
                       className={styles["Done_btn_organizor_modal"]}
+                      onClick={handleClickDone}
                     />
                   </Col>
                 </Row>
