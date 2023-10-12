@@ -1692,7 +1692,8 @@ const deleteFolder_fail = (message) => {
 const deleteFolder = (navigate, id, t, setSorted) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("setTableView");
-
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
   let data = [];
   data.push(id);
   let Data = { FolderID: data };

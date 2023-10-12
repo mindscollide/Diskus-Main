@@ -257,10 +257,12 @@ const DataRoom = () => {
         dispatch(getRecentDocumentsApi(navigate, t, Data));
       } else {
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
+        localStorage.removeItem("folderID");
       }
     } else {
       localStorage.setItem("setTableView", 3);
       dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
+      localStorage.removeItem("folderID");
     }
     return () => {
       localStorage.removeItem("folderID");
@@ -2030,18 +2032,19 @@ const DataRoom = () => {
     await dataArray.map((data, index) => {
       data.axiosCancelToken.cancel("Upload canceled");
     });
-    let newFolderData = detaUplodingForFOlder.map((data, index) => {
+    detaUplodingForFOlder.map((data, index) => {
       console.log("datadatadatadatadatadata", data);
       data.UploadCancel = true;
       data.Uploading = false;
+      return data;
     });
-    console.log(newFolderData, "newFolderDatanewFolderDatanewFolderData");
-    // setDetaUplodingForFOlder((prevFolders) => [...prevFolders]);
+    dispatch(CreateFolder_success([]));
+
+    // setDetaUplodingForFOlder(newFolderData);
     // cancelToken.cancel("API call canceled by user");
     setDetaUplodingForFOlder([]);
     setTasksAttachments([]);
     setShowbarupload(false);
-    dispatch(CreateFolder_success([]));
     setCanselingDetaUplodingForFOlder(false);
     // if (data.axiosCancelToken) {
     //   data.axiosCancelToken.cancel("Upload canceled");

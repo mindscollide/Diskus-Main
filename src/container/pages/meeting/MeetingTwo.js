@@ -222,7 +222,7 @@ const NewMeeting = () => {
     setSceduleMeeting(true);
   };
 
-  const EnableUnpublishedMeetingPage = async () => {
+  const CreateQuickMeeting = async () => {
     setQuickMeeting(true);
   };
 
@@ -262,7 +262,7 @@ const NewMeeting = () => {
       PublishedMeetings: false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
-    localStorage.setItem("MeetingCurrentView", 1);
+    localStorage.setItem("MeetingCurrentView", 2);
   };
 
   const [calendarViewModal, setCalendarViewModal] = useState(false);
@@ -946,11 +946,11 @@ const NewMeeting = () => {
                       }
                       onClick={handleUnPublishedMeeting}
                     />
-                    {/* <Button
+                    <Button
                       text={t("Quick-meeting")}
                       className={styles["UnpublishedMeetingButton"]}
-                      onClick={EnableUnpublishedMeetingPage}
-                    /> */}
+                      onClick={CreateQuickMeeting}
+                    />
                   </Col>
                 </Row>
                 {Number(currentView) === 2 ? (
