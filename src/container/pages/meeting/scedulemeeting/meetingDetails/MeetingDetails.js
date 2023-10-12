@@ -8,6 +8,7 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import { DateObject } from "react-multi-date-picker";
+import BackArrow from "../../../../../assets/images/Back Arrow.svg";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -619,7 +620,7 @@ const MeetingDetails = ({
               <Row>
                 {/* First Half */}
                 <Col lg={7} md={7} sm={12} className="mt-3">
-                  <Row className="mt-4">
+                  <Row>
                     <Col lg={12} md={12} sm={12}>
                       <TextField
                         placeholder={t("Meeting-title")}
@@ -1020,17 +1021,10 @@ const MeetingDetails = ({
                 </Col>
                 {/* Second Half */}
                 <Col lg={5} md={5} sm={12} className="mt-3">
-                  <Row className="mt-1">
-                    <Row className="mt-1">
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Frequency_heading"]}>
-                          {t("Reminder-frequency")}
-                          <span className={styles["steric"]}>*</span>
-                        </span>
-                      </Col>
-                    </Row>
+                  <Row>
                     <Col lg={4} md={4} sm={12}>
                       <Select
+                        placeholder={t("Reminder*")}
                         onChange={handleReminderFrequency}
                         options={reminderFrequencyOne}
                         value={reminderFrequencyOne.find(
@@ -1042,6 +1036,7 @@ const MeetingDetails = ({
                     </Col>
                     <Col lg={4} md={4} sm={12}>
                       <Select
+                        placeholder={t("Reminder")}
                         onChange={handleReminderFrequencyTwo}
                         options={reminderFrequencyOne}
                         value={reminderFrequencyOne.find(
@@ -1055,6 +1050,7 @@ const MeetingDetails = ({
                     </Col>
                     <Col lg={4} md={4} sm={12}>
                       <Select
+                        placeholder={t("Reminder")}
                         onChange={handleReminderFrequencyThree}
                         options={reminderFrequencyOne}
                         value={reminderFrequencyOne.find(

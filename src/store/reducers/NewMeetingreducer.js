@@ -49,6 +49,7 @@ const initialState = {
   cancelPolls: false,
   getAllCommitteeAndGroupPartcipants: [],
   getAllPartiicpantsRoles: [],
+  getmeetingURL: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -494,6 +495,29 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MEETING_URL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_MEETING_URL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getmeetingURL: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MEETING_URL_INIT: {
+      return {
+        ...state,
+        Loading: true,
       };
     }
 

@@ -78,7 +78,7 @@
   "Attendees": "Attendees",
   "Reminder": "Reminder",
   "Location": "Location",
-  "Meeting-title": "Meeting title",
+  "Meeting-title": "Meeting title*",
   "Description": "Description",
   "Group-chat": "Group chat",
   "Agenda-title": "Agenda title",
@@ -687,7 +687,7 @@
   "Decision-announcement": "Decision Announcement",
   "Voting-deadline": "Voting Deadline",
   "Circulation": "Circulation",
-  "Reminder-frequency": "Reminder Frequency",
+  "Reminder-frequency": "Reminder Frequency*",
   "Make-resolution-public": "Make the Resolution public",
   "Voters": "Voters",
   "Non-voters": "Non Voters",
@@ -1537,5 +1537,6 @@
   "Team-meeting": "Team Meeting",
   "Project-meeting": "Project Meeting",
   "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document.",
-  "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder."
+  "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder.",
+  "Reminder*": "Reminder*"
 }
