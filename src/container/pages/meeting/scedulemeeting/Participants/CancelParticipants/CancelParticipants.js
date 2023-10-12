@@ -8,7 +8,7 @@ import { Button, Modal } from "../../../../../../components/elements";
 import { showCancelModalPartipants } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 
-export const CancelParticipants = ({ setSceduleMeeting, setrspvRows }) => {
+export const CancelParticipants = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ export const CancelParticipants = ({ setSceduleMeeting, setrspvRows }) => {
   };
 
   const handleYesFunctionality = () => {
-    setrspvRows([]);
     setSceduleMeeting(false);
   };
   return (

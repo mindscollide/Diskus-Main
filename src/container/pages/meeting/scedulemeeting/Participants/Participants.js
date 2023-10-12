@@ -40,22 +40,26 @@ const Participants = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const [rspvTable, setrspvTable] = useState(false);
   const [particiapntsView, setParticiapntsView] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
+
+  //open row icon cross modal
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
   };
 
+  //Opens Add more modal
   const openAddPartcipantModal = () => {
     dispatch(showAddParticipantsModal(true));
   };
 
+  // handling save and next button
   const handleNextButton = () => {
     setParticipants(false);
     setAgenda(true);
   };
 
+  //For participants Role
   useEffect(() => {
     dispatch(GetAllParticipantsRoleNew(navigate, t));
   }, []);
@@ -64,22 +68,27 @@ const Participants = ({
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.participantRoles !== null &&
-        NewMeetingreducer.participantRoles !== undefined
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles !== null &&
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles !== undefined
       ) {
         let Newdata = [];
-        NewMeetingreducer.participantRoles.map((data, index) => {
-          console.log(data, "datadatadatas");
-          Newdata.push({
-            value: data.participantRoleID,
-            label: data.participantRole,
-          });
-        });
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles.map(
+          (data, index) => {
+            console.log(data, "datadatadatas");
+            Newdata.push({
+              value: data.participantRoleID,
+              label: data.participantRole,
+            });
+          }
+        );
         setParticpantsRole(Newdata);
       }
     } catch (error) {}
-  }, [NewMeetingreducer.participantRoles]);
+  }, [NewMeetingreducer.getAllPartiicpantsRoles]);
 
+  console.log(particpantsRole, "particpantsRoleparticpantsRoleparticpantsRole");
+
+  // Table coloumn
   const ParticipantsColoumn = [
     {
       title: (
@@ -141,92 +150,25 @@ const Participants = ({
     },
   ];
 
-  const rspvData = [
-    {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
-      Email: (
-        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-      ),
-      Participanttitle: <label>Content Writer</label>,
-      Role: <label>Participants</label>,
-
-      rsvp: (
-        <>
-          <img
-            draggable={false}
-            src={rspvGreenIcon}
-            height="30px"
-            width="30px "
-          />
-          {/* <img draggable = {false} src={rspvAbstainIcon} height="30px" width="30px " /> */}
-        </>
-      ),
-    },
-  ];
-
   const [rspvRows, setrspvRows] = useState([]);
-  const rspvColoumns = [
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "userName",
-      key: "userName",
-      width: "260px",
-    },
 
-    {
-      title: t("Email"),
-      dataIndex: "email",
-      key: "email",
-      width: "280px",
-    },
-    {
-      title: t("Participant-title"),
-      dataIndex: "Title",
-      key: "Title",
-      width: "300px",
-    },
-
-    {
-      title: t("Role"),
-      dataIndex: "Role",
-      key: "Role",
-      width: "349px",
-    },
-
-    {
-      title: t("RSVP"),
-      dataIndex: "isRSVP",
-      key: "isRSVP",
-      width: "249px",
-    },
-  ];
-
-  const enableRspvTable = () => {
-    setrspvTable(!rspvTable);
-  };
-
+  //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
     setParticipants(false);
     setProposedMeetingDates(true);
   };
 
+  //Enable the view page
   const EnableParticipantsViewPage = () => {
     setParticiapntsView(true);
   };
 
+  //canceling the participants page
   const handleCancelParticipants = () => {
     dispatch(showCancelModalPartipants(true));
   };
 
+  //Clearing the non saved  participant
   const handleCancelButtonForClearingParticipants = () => {
     setrspvRows([]);
   };
@@ -258,7 +200,6 @@ const Participants = ({
                           height="11.75px"
                         />
                       }
-                      onClick={enableRspvTable}
                     />
 
                     <Button
@@ -290,27 +231,13 @@ const Participants = ({
             </Row>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                {rspvTable ? (
-                  <>
-                    <Table
-                      column={rspvColoumns}
-                      scroll={{ y: "62vh" }}
-                      pagination={false}
-                      className="Polling_table"
-                      // rows={rspvRows}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Table
-                      column={ParticipantsColoumn}
-                      scroll={{ y: "42vh" }}
-                      pagination={false}
-                      className="Polling_table"
-                      rows={rspvRows}
-                    />
-                  </>
-                )}
+                <Table
+                  column={ParticipantsColoumn}
+                  scroll={{ y: "42vh" }}
+                  pagination={false}
+                  className="Polling_table"
+                  rows={rspvRows}
+                />
               </Col>
             </Row>
           </section>
@@ -363,10 +290,7 @@ const Participants = ({
         <AddParticipantModal setrspvRows={setrspvRows} rspvRows={rspvRows} />
       )}
       {NewMeetingreducer.cancelPartipants && (
-        <CancelParticipants
-          setSceduleMeeting={setSceduleMeeting}
-          setrspvRows={setrspvRows}
-        />
+        <CancelParticipants setSceduleMeeting={setSceduleMeeting} />
       )}
       {/* {proposeMeeting && } */}
     </>

@@ -918,6 +918,10 @@ const FetchVideoUrl = {
   RequestMethod: "ServiceManager.GetMeetingVideoURL",
 };
 
+const saveParticipantsMeeting = {
+  RequestMethod: "ServiceManager.SaveMeetingParticipants",
+};
+
 export {
   getRecentDocumentsRM,
   updateProfilePictureRM,
@@ -1165,4 +1169,5 @@ export {
   meetingStatusUpdate,
   getParticipantsRoles,
   FetchVideoUrl,
+  saveParticipantsMeeting,
 };

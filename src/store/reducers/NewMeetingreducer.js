@@ -51,6 +51,7 @@ const initialState = {
   getAllCommitteeAndGroupPartcipants: [],
   getAllPartiicpantsRoles: [],
   getmeetingURL: null,
+  saveMeetingParticipants: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -522,10 +523,35 @@ const NewMeetingreducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
     case actions.GET_MEETING_URL_SPINNER: {
       return {
         ...state,
         meetingurlspinner: action.response,
+      };
+    }
+
+    case actions.SAVE_MEETING_PARTICIPANTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_MEETING_PARTICIPANTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveMeetingParticipants: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_MEETING_PARTICIPANTS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
       };
     }
 

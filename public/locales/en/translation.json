@@ -1539,5 +1539,6 @@
   "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document.",
   "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder.",
   "Reminder*": "Reminder*",
-  "Save-and-next": "Save and Next"
+  "Save-and-next": "Save and Next",
+  "No-row-inserted": "No Row Inserted"
 }
