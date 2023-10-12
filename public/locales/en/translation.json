@@ -1538,5 +1538,6 @@
   "Project-meeting": "Project Meeting",
   "Atleast-one-user-should-be-selected-to-share-the-document": "Atleast one user should be selected to share the document.",
   "Atleast-one-user-should-be-selected-to-share-the-folder": "Atleast one user should be selected to share the folder.",
-  "Already-exists-in-this-location-folder": "already exists in this location"
+  "Already-exists-in-this-location-folder": "already exists in this location",
+  "Advanced-meeting": "Advanced meeting"
 }

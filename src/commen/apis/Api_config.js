@@ -914,7 +914,12 @@ const getParticipantsRoles = {
   RequestMethod: "ServiceManager.GetAllParticipantRoles",
 };
 
+const saveAgendaContributorsRM = {
+  RequestMethod: "ServiceManager.SaveAgendaContributors",
+};
+
 export {
+  saveAgendaContributorsRM,
   getRecentDocumentsRM,
   updateProfilePictureRM,
   DeleteCommentRM,

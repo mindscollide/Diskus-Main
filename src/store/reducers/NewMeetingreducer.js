@@ -497,6 +497,27 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.SAVE_AGENDACONTRIBUTORS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVE_AGENDACONTRIBUTORS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVE_AGENDACONTRIBUTORS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     default: {
       return { ...state };
     }
