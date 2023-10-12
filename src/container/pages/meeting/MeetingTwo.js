@@ -316,7 +316,7 @@ const NewMeeting = () => {
       title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
-      width: "185px",
+      width: "115px",
       render: (text, record) => {
         return (
           <span
@@ -337,7 +337,7 @@ const NewMeeting = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "40px",
+      width: "30px",
       filters: [
         {
           text: t("Active"),
@@ -375,11 +375,7 @@ const NewMeeting = () => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
       render: (text, record) => {
-        return (
-          <span className="d-flex justify-content-center text-center">
-            {text}
-          </span>
-        );
+        return <span>{text}</span>;
       },
     },
     {
@@ -390,7 +386,7 @@ const NewMeeting = () => {
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className="d-flex justify-content-center">
+            <span>
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -411,17 +407,12 @@ const NewMeeting = () => {
     {
       dataIndex: "Chat",
       key: "Chat",
-      width: "46px",
+      width: "36px",
       render: (text, record) => {
         return (
           <>
             <Row>
-              <Col
-                sm={12}
-                md={12}
-                lg={12}
-                className="d-flex justify-content-center"
-              >
+              <Col sm={12} md={12} lg={12}>
                 {record.isAttachment ? (
                   <span
                     className={
@@ -614,12 +605,7 @@ const NewMeeting = () => {
         return (
           <>
             <Row>
-              <Col
-                sm={12}
-                md={12}
-                lg={12}
-                className="d-flex justify-content-center"
-              >
+              <Col sm={12} md={12} lg={12}>
                 <Tooltip placement="topRight" title={t("Edit")}>
                   <img
                     src={EditIcon}

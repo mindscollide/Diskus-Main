@@ -6191,7 +6191,7 @@ input[type="time"]::-webkit-clear-button {
 }
 
 .ant-table-wrapper.newMeetingTable .ant-table-tbody tr td {
-  padding: 6px 4px !important;
+  padding: 6px 0px !important;
 }
 .ant-table-wrapper.newMeetingTable .ant-table-thead tr th:nth-child(1) {
   text-align: left !important;

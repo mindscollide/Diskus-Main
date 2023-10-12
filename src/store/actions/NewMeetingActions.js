@@ -2,6 +2,7 @@ import {
   GetAllRecurringNewMeeting,
   GetMeetingNewFrequencyReminder,
   getAllCommitteeAndGroupsParticipants,
+  getAllGroupsUsersAndCommitteesByOrganizaitonID,
   getallMeetingType,
   saveMeetingDetials,
   searchUserMeetings,
@@ -802,7 +803,7 @@ const GetAllCommitteesUsersandGroupsParticipants = (Data, navigate, t) => {
     form.append("RequestData", JSON.stringify(Data));
     form.append(
       "RequestMethod",
-      getAllCommitteeAndGroupsParticipants.RequestMethod
+      getAllGroupsUsersAndCommitteesByOrganizaitonID.RequestMethod
     );
     axios({
       method: "post",
