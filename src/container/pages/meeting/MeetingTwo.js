@@ -22,7 +22,7 @@ import {
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
 
-import { Col, Row } from "react-bootstrap";
+import { Col, Dropdown, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -234,6 +234,8 @@ const NewMeeting = () => {
   const EndForAllModal = () => {
     dispatch(showEndMeetingForAll(true));
   };
+
+  const eventClickHandler = () => {};
 
   //Published Meeting Page
   const handlePublishedMeeting = () => {
@@ -770,21 +772,49 @@ const NewMeeting = () => {
       ) : (
         <>
           <Row className="mt-2">
-            <Col
-              sm={12}
-              md={6}
-              lg={6}
-              className="d-flex gap-3 align-items-center"
-            >
+            <Col sm={12} md={6} lg={6} className="d-flex gap-5">
               <span className={styles["NewMeetinHeading"]}>
                 {t("Meetings")}
               </span>
-              <Button
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <Dropdown
+                    className="Calendar_CreateBtn"
+                    onClick={eventClickHandler}
+                    align={"start"}
+                  >
+                    <Dropdown.Toggle title={t("Create")}>
+                      <Row>
+                        <Col lg={12} md={12} sm={12} className="heading_button">
+                          <Plus width={20} height={20} fontWeight={800} />
+                          <span>{t("Create")}</span>
+                        </Col>
+                      </Row>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={openSceduleMeetingPage}
+                      >
+                        {t("Schedule-a-meeting")}
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={CreateQuickMeeting}
+                      >
+                        {t("Quick-meeting")}
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Col>
+              </Row>
+              {/* <Button
                 text={t("Schedule-a-meeting")}
                 className={styles["Newmeeting_Scehedule_meet"]}
                 icon={<Plus width={20} height={20} fontWeight={800} />}
                 onClick={openSceduleMeetingPage}
-              />
+              /> */}
             </Col>
             <Col
               sm={12}
@@ -946,11 +976,11 @@ const NewMeeting = () => {
                       }
                       onClick={handleUnPublishedMeeting}
                     />
-                    <Button
+                    {/* <Button
                       text={t("Quick-meeting")}
                       className={styles["UnpublishedMeetingButton"]}
                       onClick={CreateQuickMeeting}
-                    />
+                    /> */}
                   </Col>
                 </Row>
                 {Number(currentView) === 2 ? (

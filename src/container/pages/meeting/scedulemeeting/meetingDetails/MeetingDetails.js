@@ -944,16 +944,22 @@ const MeetingDetails = ({
                                         sm={12}
                                         className="d-flex justify-content-end position-relative align-items-center"
                                       >
-                                        <img
-                                          draggable={false}
-                                          src={redcrossIcon}
-                                          width="23px"
-                                          height="23px"
-                                          className={styles["Cross_icon_class"]}
-                                          onClick={() => {
-                                            HandleCancelFunction(index);
-                                          }}
-                                        />
+                                        {index > 0 ? (
+                                          <>
+                                            <img
+                                              draggable={false}
+                                              src={redcrossIcon}
+                                              width="23px"
+                                              height="23px"
+                                              className={
+                                                styles["Cross_icon_class"]
+                                              }
+                                              onClick={() => {
+                                                HandleCancelFunction(index);
+                                              }}
+                                            />
+                                          </>
+                                        ) : null}
                                       </Col>
                                     </Row>
                                   </Col>
