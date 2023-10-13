@@ -90,6 +90,8 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                       IsOrganizerNotified: false,
                       Title: "",
                       isRSVP: false,
+                      participantRole: {},
+                      isComingApi: false,
                     };
                     tem.push(newUser);
                   }
@@ -120,6 +122,8 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                       IsOrganizerNotified: false,
                       Title: "",
                       isRSVP: false,
+                      participantRole: {},
+                      isComingApi: false,
                     };
                     tem.push(newUser);
                   }
@@ -147,6 +151,8 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                   IsOrganizerNotified: false,
                   Title: "",
                   isRSVP: false,
+                  participantRole: {},
+                  isComingApi: false,
                 };
                 tem.push(newUser);
               }

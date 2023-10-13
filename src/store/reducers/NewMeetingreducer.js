@@ -597,6 +597,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        getAllSavedparticipants: [],
         ResponseMessage: action.message,
       };
     }

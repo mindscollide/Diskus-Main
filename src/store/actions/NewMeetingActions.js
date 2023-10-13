@@ -1296,7 +1296,12 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_GetAllMeetingParticipants_01".toLowerCase()
                 )
             ) {
-              dispatch(showAllMeetingParticipantsSuccess(t("Record-found")));
+              dispatch(
+                showAllMeetingParticipantsSuccess(
+                  response.data.responseResult.meetingParticipants,
+                  t("Record-found")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
