@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import {
   GetAllParticipantsRoleNew,
+  SaveparticipantsApi,
   showAddParticipantsModal,
   showCancelModalPartipants,
   showCrossConfirmationModal,
@@ -43,7 +44,10 @@ const Participants = ({
   const [particiapntsView, setParticiapntsView] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
   const [inputValues, setInputValues] = useState({});
-
+  const [data, setData] = useState([]);
+  const [rspvRows, setrspvRows] = useState([]);
+  let currentMeetingID = localStorage.getItem("meetingID");
+  console.log(currentMeetingID, "currentMeetingID");
   //open row icon cross modal
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
@@ -86,6 +90,22 @@ const Participants = ({
       }
     } catch (error) {}
   }, [NewMeetingreducer.getAllPartiicpantsRoles]);
+
+  const handleSelectChange = (userID, selectedOption) => {
+    setrspvRows((prevRowsData) => {
+      return prevRowsData.map((row) => {
+        if (row.userID === userID) {
+          return {
+            ...row,
+            ParticipantRoleID: selectedOption.value,
+          };
+        }
+        return row;
+      });
+    });
+  };
+
+  console.log("handleSelectChange", rspvRows);
 
   // Table coloumn
   const ParticipantsColoumn = [
@@ -142,8 +162,10 @@ const Participants = ({
             <Col lg={12} md={12} sm={12}>
               <Select
                 options={particpantsRole}
-                value={inputValues[record.userID] || ""}
-                // onChange={}
+                value={record.selectValue}
+                onChange={(selectedOption) =>
+                  handleSelectChange(record.userID, selectedOption)
+                }
               />
             </Col>
           </Row>
@@ -157,8 +179,6 @@ const Participants = ({
       width: "20px",
     },
   ];
-
-  const [rspvRows, setrspvRows] = useState([]);
 
   //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
@@ -199,6 +219,25 @@ const Participants = ({
         return row;
       });
     });
+  };
+
+  const handleSaveparticpants = () => {
+    let newData = [];
+    let copyData = [...rspvRows];
+    copyData.forEach((data, index) => {
+      console.log(data, "newDatanewDatanewData");
+      newData.push({
+        UserID: data.userID,
+        Title: data.Title,
+        ParticipantRoleID: data.ParticipantRoleID,
+        MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
+      });
+    });
+    let Data = {
+      MeetingParticipants: newData,
+    };
+
+    dispatch(SaveparticipantsApi(Data, navigate, t));
   };
 
   return (
@@ -250,6 +289,7 @@ const Participants = ({
                         <Button
                           text={t("Save")}
                           className={styles["Next_Organization"]}
+                          onClick={handleSaveparticpants}
                         />
                       </Col>
                     </Row>
