@@ -205,7 +205,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                         className={
                           videoFeatureReducer.LeaveCallModalFlag === true
                             ? 'grayScaleImage'
-                            : ''
+                            : 'cursor-pointer'
                         }
                         src={ActiveParticipantIcon}
                         alt="Normal Screen Participant"
@@ -276,7 +276,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                       className={
                         videoFeatureReducer.LeaveCallModalFlag === true
                           ? 'grayScaleImage'
-                          : ''
+                          : 'cursor-pointer'
                       }
                       src={MinimizeParticipant}
                       onClick={closeParticipantHandler}
@@ -305,10 +305,14 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               {/* <img src={MinimizeScreenShare} alt="Mininmize Screen Icon" /> */}
               <img
                 src={MinimizeVideoIcon}
-                className={'minimize-video-icon'}
+                className={'minimize-video-icon cursor-pointer'}
                 alt="Minimize Video Icon"
               />
-              <img src={MinimizeMicIcon} alt="Minimize Mic Icon" />
+              <img
+                className="cursor-pointer"
+                src={MinimizeMicIcon}
+                alt="Minimize Mic Icon"
+              />
               {videoFeatureReducer.LeaveCallModalFlag === true &&
               callerID === currentUserID ? (
                 <img
@@ -316,6 +320,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                   onClick={cancelLeaveCallOption}
                   src={videoEndIcon}
                   alt="Icon Video"
+                  className="cursor-pointer"
                 />
               ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
                   callerID === currentUserID) ||
@@ -325,6 +330,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                   src={CallEndRedIcon}
                   onClick={openVideoPanel}
                   alt="Icon Video"
+                  className="cursor-pointer"
                 />
               ) : videoFeatureReducer.LeaveCallModalFlag === false &&
                 callerID !== currentUserID ? (
@@ -333,19 +339,20 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                   src={CallEndRedIcon}
                   onClick={minimizeEndCallParticipant}
                   alt="Icon Video"
+                  className="cursor-pointer"
                 />
               ) : null}
               <img
                 src={MinToNormalIcon}
                 onClick={normalizePanel}
-                className="min-to-normal-icon"
+                className="min-to-normal-icon cursor-pointer"
                 alt="Icon Video"
               />
               <img
                 src={MinimizeExpandIcon}
                 // className="minimize-expand-icon"
                 onClick={maximizePanel}
-                className="min-to-max-icon"
+                className="min-to-max-icon cursor-pointer"
                 alt="Icon Video"
               />
             </div>

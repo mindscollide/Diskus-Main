@@ -865,7 +865,7 @@ body[dir="rtl"] svg.pointer-chat-icon {
   pointer-events: none !important;
 }
 
-span.chat-tick-icon {
+span.chat-tick-icon img {
   margin-right: 5px;
 }
 

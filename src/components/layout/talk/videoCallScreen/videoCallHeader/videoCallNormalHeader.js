@@ -354,7 +354,12 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
               <p className="Notification-text">
                 Minimize call to see the screen
               </p>
-              <img src={CloseNotification} onClick={closeNotification} alt="" />
+              <img
+                className="cursor-pointer"
+                src={CloseNotification}
+                onClick={closeNotification}
+                alt=""
+              />
             </div>
           ) : null}
         </Col>
@@ -371,7 +376,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                       className={
                         videoFeatureReducer.LeaveCallModalFlag === true
                           ? 'grayScaleImage'
-                          : ''
+                          : 'cursor-pointer'
                       }
                       src={ActiveParticipantIcon}
                       onClick={closeParticipantHandler}
@@ -433,7 +438,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                     className={
                       videoFeatureReducer.LeaveCallModalFlag === true
                         ? 'grayScaleImage'
-                        : ''
+                        : 'cursor-pointer'
                     }
                     src={ParticipantsIcon}
                     onClick={closeParticipantHandler}
@@ -448,7 +453,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
                     ? 'grayScaleImage'
-                    : ''
+                    : 'cursor-pointer'
                 }
                 onClick={screenShareButton}
                 src={NonActiveScreenShare}
@@ -459,7 +464,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
                     ? 'grayScaleImage'
-                    : ''
+                    : 'cursor-pointer'
                 }
                 onClick={onClickCloseChatHandler}
                 src={ChatIcon}
@@ -471,14 +476,21 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                 width={25}
                 onClick={cancelLeaveCallOption}
                 src={videoEndIcon}
+                className="cursor-pointer"
               />
             ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
                 callerID === currentUserID) ||
               callerID === 0 ? (
-              <img width={25} src={CallEndRedIcon} onClick={openVideoPanel} />
+              <img
+                className="cursor-pointer"
+                width={25}
+                src={CallEndRedIcon}
+                onClick={openVideoPanel}
+              />
             ) : videoFeatureReducer.LeaveCallModalFlag === false &&
               callerID !== currentUserID ? (
               <img
+                className="cursor-pointer"
                 width={35}
                 src={CallEndRedIcon}
                 onClick={endCallParticipant}
@@ -489,7 +501,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
                     ? 'grayScaleImage'
-                    : ''
+                    : 'cursor-pointer'
                 }
                 src={MinimizeIcon}
               />
@@ -504,7 +516,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                   className={
                     videoFeatureReducer.LeaveCallModalFlag === true
                       ? 'grayScaleImage'
-                      : ''
+                      : 'cursor-pointer'
                   }
                 />
               </div>
@@ -519,7 +531,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                   className={
                     videoFeatureReducer.LeaveCallModalFlag === true
                       ? 'normalize-Icon-Large grayScaleImage'
-                      : 'normalize-Icon-Large'
+                      : 'normalize-Icon-Large cursor-pointer'
                   }
                   onClick={normalizeScreen}
                 />

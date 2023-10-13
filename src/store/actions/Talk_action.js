@@ -357,7 +357,7 @@ const getOTOUserMessagesSuccess = (response, message) => {
 //Get All Messages
 const getAllMessagesInit = () => {
   return {
-    type: actions.GET_ALL_MESSAGES_SUCCESS,
+    type: actions.GET_ALL_MESSAGES_INIT,
   }
 }
 
@@ -462,6 +462,7 @@ const GetOTOUserMessages = (navigate, chatOTOData, t) => {
         }
       })
       .catch((response) => {
+        console.log('Catch of the api call', response)
         let newError = t('Something-went-wrong')
         dispatch(getOTOUserMessagesFail(false, newError))
         dispatch(getAllMessagesGlobalFail([], newError))
