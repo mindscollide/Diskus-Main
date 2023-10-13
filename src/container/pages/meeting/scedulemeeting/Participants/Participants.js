@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import {
   GetAllParticipantsRoleNew,
+  GetAllSavedparticipantsAPI,
   SaveparticipantsApi,
   showAddParticipantsModal,
   showCancelModalPartipants,
@@ -239,6 +240,13 @@ const Participants = ({
 
     dispatch(SaveparticipantsApi(Data, navigate, t));
   };
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(currentMeetingID),
+    };
+    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+  }, []);
 
   return (
     <>

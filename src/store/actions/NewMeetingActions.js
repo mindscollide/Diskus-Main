@@ -3,6 +3,7 @@ import {
   GetAllRecurringNewMeeting,
   GetMeetingNewFrequencyReminder,
   getAllGroupsUsersAndCommitteesByOrganizaitonID,
+  getAllSavedParticipants,
   getParticipantsRoles,
   getallMeetingType,
   saveAgendaContributorsRM,
@@ -1242,6 +1243,98 @@ const saveAgendaContributors = (navigate, t, data) => {
       });
   };
 };
+
+//Get all saved Participants Meeting
+const showAllMeetingParticipantsInit = () => {
+  return {
+    type: actions.GET_ALL_SAVED_PARTICIPATNS_INIT,
+  };
+};
+
+const showAllMeetingParticipantsSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_SAVED_PARTICIPATNS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showAllMeetingParticipantsFailed = (message) => {
+  return {
+    type: actions.GET_ALL_SAVED_PARTICIPATNS_FAILED,
+    message: message,
+  };
+};
+
+//Get All Saved  participants API Function
+
+const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showAllMeetingParticipantsInit());
+    let form = new FormData();
+    form.append("RequestMethod", getAllSavedParticipants.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingParticipants_01".toLowerCase()
+                )
+            ) {
+              dispatch(showAllMeetingParticipantsSuccess(t("Record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingParticipants_02".toLowerCase()
+                )
+            ) {
+              dispatch(showAllMeetingParticipantsFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingParticipants_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showAllMeetingParticipantsFailed(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                showAllMeetingParticipantsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              showAllMeetingParticipantsFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(showAllMeetingParticipantsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(showAllMeetingParticipantsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   saveAgendaContributors,
   showAddUserModal,
@@ -1296,4 +1389,5 @@ export {
   GetAllParticipantsRoleNew,
   FetchMeetingURLApi,
   SaveparticipantsApi,
+  GetAllSavedparticipantsAPI,
 };
