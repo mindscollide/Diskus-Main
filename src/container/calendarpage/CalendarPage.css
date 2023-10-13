@@ -524,6 +524,8 @@ body[dir="rtl"] .SceduleMeetingButton button {
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
   border: none !important;
+  display: flex;
+  justify-content: center;
 }
 
 .SceduleMeetingButton .dropdown-menu.show {

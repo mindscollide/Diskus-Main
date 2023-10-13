@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AgendaContributors.module.css";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import addmore from "../../../../../assets/images/addmore.png";
@@ -16,6 +16,7 @@ import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributo
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  getAllAgendaContributorApi,
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showCancelModalAgendaContributor,
@@ -28,6 +29,7 @@ import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
 import { notification } from "antd";
 import AgendaContributorView from "./AgendaContributorsView/AgendaContributorView";
 import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgendaContributor";
+import { saveAgendaContributors } from "../../../../../store/actions/NewMeetingActions";
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
@@ -39,7 +41,7 @@ const AgendaContributers = ({
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
-
+  const [isEdit, setIsEdit] = useState(false);
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
   const [selectedOption, setSelectedOption] = useState({
@@ -56,118 +58,116 @@ const AgendaContributers = ({
       </>
     ),
   });
+  const [rowsData, setRowsData] = useState([]);
 
   const [viewAgendaContributors, setViewAgendaContributors] = useState(false);
-  const [agendaContributorsData, setAgendaContributorsData] = useState({
-    AgendaContributors: [],
-  });
 
-  const shownotifyAgendaContrubutors = () => {
-    dispatch(showAgendaContributorsModals(true));
+  const [inputValues, setInputValues] = useState({});
+  console.log(inputValues, "inputValuesinputValues");
+  // const shownotifyAgendaContrubutors = () => {
+  //   dispatch(showAgendaContributorsModals(true));
+  // };
+
+  // const openCrossIconModal = () => {
+  //   dispatch(showCrossConfirmationModal(true));
+  // };
+  let currentMeetingID = localStorage.getItem("meetingID");
+
+  useEffect(() => {
+    let getAllData = {
+      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+    };
+    dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+  }, []);
+
+  const handleInputChange = (userID, newValue) => {
+    setInputValues((prevInputValues) => ({
+      ...prevInputValues,
+      [userID]: newValue,
+    }));
+    setRowsData((prevRowsData) => {
+      return prevRowsData.map((row) => {
+        if (row.userID === userID) {
+          return {
+            ...row,
+            Title: newValue,
+          };
+        }
+        return row;
+      });
+    });
   };
 
-  const openCrossIconModal = () => {
-    dispatch(showCrossConfirmationModal(true));
+  const handleRemoveContributor = (record) => {
+    let removeData = rowsData.filter(
+      (data, index) => data.userID !== record.userID
+    );
+    setRowsData(removeData);
   };
-
-  const data = [
-    {
-      key: "1",
-      Name: (
-        <label
-          className={styles["Title_desc"]}
-          onClick={shownotifyAgendaContrubutors}
-        >
-          Muahmmad Saif
-        </label>
-      ),
-      Email: (
-        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-      ),
-      OrganizerTitle: <label className="column-boldness">Organizer</label>,
-      Primary: (
-        <label className="column-boldness">
-          <>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <TextField
-                  disable={true}
-                  width={"283px"}
-                  placeholder={t("Content-title")}
-                  labelClass={"d-none"}
-                  applyClass={"Organizer_table"}
-                />
-              </Col>
-            </Row>
-          </>
-        </label>
-      ),
-      Close: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-              <img
-                draggable={false}
-                src={redcrossIcon}
-                width="21.79px"
-                height="21.79px"
-                onClick={openCrossIconModal}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
-  const [rowsData, setRowsData] = useState([]);
-  console.log(rowsData, "rowsDatarowsData");
   const AgendaColoumns = [
     {
       title: t("Name"),
       dataIndex: "userName",
       key: "userName",
-      width: "300px",
+      width: "80px",
     },
     {
       title: t("Email"),
       dataIndex: "email",
       key: "email",
-      width: "300px",
+      width: "80px",
     },
-
     {
       title: t("contributor-title"),
       dataIndex: "Title",
       key: "Title",
-      width: "400px",
-      //   render: (text, record) => {
-      //     return (
-      //       <>
-      //         <Row>
-      //           <Col
-      //             sm={12}
-      //             md={12}
-      //             lg={12}
-      //             className="d-flex justify-content-end"
-      //           >
-      //             <Tooltip placement="topRight" title={t("Edit")}>
-      //               <img draggable = {false}
-      //                 // src={EditIcon}
-      //                 className="cursor-pointer"
-      //                 width="17.11px"
-      //                 height="17.11px"
-      //               />
-      //             </Tooltip>
-      //           </Col>
-      //         </Row>
-      //       </>
-      //     );
-      //   },
+      width: "80px",
+      render: (text, record) => (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <TextField
+              disable={record.isEdit ? true : false}
+              placeholder={t("Content-title")}
+              labelClass={"d-none"}
+              width={"100%"}
+              applyClass={"Organizer_table"}
+              value={inputValues[record.userID] || ""} // Use the controlled value
+              change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
+            />
+          </Col>
+        </Row>
+      ),
     },
     {
       dataIndex: "Close",
       key: "Close",
-      width: "200px",
+      width: "80px",
+      render: (text, record) => {
+        return (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                {!record.isEdit && (
+                  <img
+                    draggable={false}
+                    src={redcrossIcon}
+                    width="21.79px"
+                    alt=""
+                    className="cursor-pointer"
+                    height="21.79px"
+                    onClick={() => handleRemoveContributor(record)}
+                  />
+                )}
+              </Col>
+            </Row>
+          </>
+        );
+      },
     },
   ];
 
@@ -245,38 +245,38 @@ const AgendaContributers = ({
     },
   ];
 
-  const rspvData = [
-    {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
-      Email: (
-        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-      ),
-      OrganizerTitle: <label className="column-boldness">Organizer</label>,
-      Notification: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <img
-                draggable={false}
-                src={NotificationIcon}
-                width="17.64px"
-                height="12.4px"
-              />
-              {/* <img draggable = {false} src={redMailIcon} width="17.64px" height="12.4px" /> */}
-            </Col>
-          </Row>
-        </>
-      ),
-      rsvp: (
-        <>
-          <img draggable={false} src={RspvIcon} height="30px" width="30px" />
-          {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
-        </>
-      ),
-    },
-  ];
-  const [rspvRows, setrspvRows] = useState(rspvData);
+  // const rspvData = [
+  //   {
+  //     key: "1",
+  //     Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
+  //     Email: (
+  //       <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
+  //     ),
+  //     OrganizerTitle: <label className="column-boldness">Organizer</label>,
+  //     Notification: (
+  //       <>
+  //         <Row>
+  //           <Col lg={12} md={12} sm={12}>
+  //             <img
+  //               draggable={false}
+  //               src={NotificationIcon}
+  //               width="17.64px"
+  //               height="12.4px"
+  //             />
+  //             {/* <img draggable = {false} src={redMailIcon} width="17.64px" height="12.4px" /> */}
+  //           </Col>
+  //         </Row>
+  //       </>
+  //     ),
+  //     rsvp: (
+  //       <>
+  //         <img draggable={false} src={RspvIcon} height="30px" width="30px" />
+  //         {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
+  //       </>
+  //     ),
+  //   },
+  // ];
+  // const [rspvRows, setrspvRows] = useState(rspvData);
 
   const rspvColoumn = [
     {
@@ -381,13 +381,126 @@ const AgendaContributers = ({
   };
 
   //You Can Enable Rspv Table From Here
-  const anableRspvTable = () => {
-    setrspvTable(!rspvTable);
-  };
+  // const anableRspvTable = () => {
+  //   setrspvTable(!rspvTable);
+  // };
 
   const EnableViewAgendaContributors = () => {
     setViewAgendaContributors(!viewAgendaContributors);
   };
+
+  const handleEditBtn = () => {
+    setRowsData((prevRowsData) => {
+      return prevRowsData.map((row) => {
+        return {
+          ...row,
+          isEdit: false,
+        };
+      });
+    });
+  };
+
+  const handleCancelBtn = () => {
+    if (NewMeetingreducer.getAllAgendaContributors.length > 0) {
+      let agendaContributorData = [
+        ...NewMeetingreducer.getAllAgendaContributors,
+      ];
+
+      // Initial values
+      const initialValues = {};
+      agendaContributorData.forEach((organizer) => {
+        initialValues[organizer.userID] = organizer.contributorTitle;
+      });
+
+      setInputValues({ ...initialValues });
+
+      let newArr = [];
+      agendaContributorData.forEach((AgConData, index) => {
+        newArr.push({
+          userName: AgConData.userName,
+          userID: AgConData.userID,
+          displayPicture: "",
+          email: AgConData.emailAddress,
+          IsPrimaryOrganizer: false,
+          IsOrganizerNotified: false,
+          Title: AgConData.contributorTitle,
+          isRSVP: AgConData.rsvp,
+          isEdit: true,
+        });
+      });
+      setRowsData(newArr);
+    }
+    // let removenewData = rowsData.filter((data, index) => data.isEdit === true);
+    // setRowsData(removenewData);
+    // let getAllData = {
+    //   MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+    // };
+    // dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    // Create a copy of data with was coming
+  };
+
+  const handleSaveBtn = () => {
+    let newData = [];
+    let copyData = [...rowsData];
+    copyData.forEach((data, index) => {
+      newData.push({
+        UserID: data.userID,
+        Title: data.Title,
+        AgendaListRightsAll: data.isRSVP,
+        MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+      });
+    });
+    let Data = {
+      AgendaContributors: newData,
+    };
+    dispatch(saveAgendaContributors(navigate, t, Data));
+  };
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.getAllAgendaContributors !== null &&
+      NewMeetingreducer.getAllAgendaContributors !== undefined &&
+      NewMeetingreducer.getAllAgendaContributors.length > 0
+    ) {
+      // Create a copy of data with was coming
+      let agendaContributorData = [
+        ...NewMeetingreducer.getAllAgendaContributors,
+      ];
+
+      // Initial values
+      const initialValues = {};
+      agendaContributorData.forEach((organizer) => {
+        initialValues[organizer.userID] = organizer.contributorTitle;
+      });
+
+      setInputValues({ ...initialValues });
+
+      let newArr = [];
+      agendaContributorData.forEach((AgConData, index) => {
+        newArr.push({
+          userName: AgConData.userName,
+          userID: AgConData.userID,
+          displayPicture: "",
+          email: AgConData.emailAddress,
+          IsPrimaryOrganizer: false,
+          IsOrganizerNotified: false,
+          Title: AgConData.contributorTitle,
+          isRSVP: AgConData.rsvp,
+          isEdit: true,
+        });
+      });
+      setRowsData(newArr);
+    }
+  }, [NewMeetingreducer.getAllAgendaContributors]);
+
+  useEffect(() => {
+    if (rowsData.length > 0) {
+      let getifTrue = rowsData.some((data, index) => data.isEdit === false);
+      setIsEdit(getifTrue);
+    } else {
+      setIsEdit(false);
+    }
+  }, [rowsData]);
 
   return (
     <>
@@ -414,19 +527,33 @@ const AgendaContributers = ({
                 sm={12}
                 className="d-flex justify-content-end gap-3"
               >
-                <Button
-                  text={t("Add-more")}
-                  icon={<img draggable={false} src={addmore} />}
-                  className={styles["AddMoreBtn"]}
-                  onClick={openAddAgendaModal}
-                />
-                {selectedOption !== null ? (
+                {isEdit ? (
                   <>
-                    <Button text={"Save"} />
-                    <Button text={"Cancel"} />
+                    <Button
+                      text={t("Cancel")}
+                      className={styles["Cancel_button"]}
+                      onClick={handleCancelBtn}
+                    />
+                    <Button
+                      text={t("Save")}
+                      onClick={handleSaveBtn}
+                      className={styles["Save_button"]}
+                    />
                   </>
                 ) : (
-                  <></>
+                  <>
+                    <Button
+                      text={t("Edit")}
+                      className={styles["Edit_button"]}
+                      onClick={handleEditBtn}
+                    />
+                    <Button
+                      text={t("Add-more")}
+                      icon={<img draggable={false} src={addmore} alt="" />}
+                      className={styles["AddMoreBtn"]}
+                      onClick={openAddAgendaModal}
+                    />
+                  </>
                 )}
               </Col>
             </Row>
@@ -568,6 +695,7 @@ const AgendaContributers = ({
                                   draggable={false}
                                   src={emptyContributorState}
                                   width="274.05px"
+                                  alt=""
                                   height="230.96px"
                                 />
                               </Col>
@@ -611,27 +739,31 @@ const AgendaContributers = ({
           </section>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <section className={styles["Footer_Class"]}>
-                <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_Organization"]}
-                  onClick={enableNotificatoinTable}
-                />
-                <Button
-                  text={t("Save")}
-                  className={styles["Cancel_Organization"]}
-                />
-                <Button
-                  text={t("Save-and-publish")}
-                  className={styles["Cancel_Organization"]}
-                  onClick={EnableViewAgendaContributors}
-                />
-                <Button
-                  text={t("Save-and-next")}
-                  className={styles["Next_Organization"]}
-                  onClick={handleNextButton}
-                />
-              </section>
+              {!isEdit ? (
+                <section className={styles["Footer_Class"]}>
+                  <Button
+                    text={t("Cancel")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={enableNotificatoinTable}
+                  />
+                  <Button
+                    text={t("Save")}
+                    className={styles["Cancel_Organization"]}
+                  />
+                  <Button
+                    text={t("Save-and-publish")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={EnableViewAgendaContributors}
+                  />
+                  <Button
+                    text={t("Save-and-next")}
+                    className={styles["Next_Organization"]}
+                    onClick={handleNextButton}
+                  />
+                </section>
+              ) : (
+                <section className={styles["Footer_Class2"]}></section>
+              )}
             </Col>
           </Row>
         </>

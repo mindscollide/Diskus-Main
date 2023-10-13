@@ -574,8 +574,8 @@ const Sidebar = () => {
                           y2="0.947"
                           gradientUnits="objectBoundingBox"
                         >
-                          <stop offset="0" stop-color="#4adede" />
-                          <stop offset="1" stop-color="#6172d6" />
+                          <stop offset="0" stopColor="#4adede" />
+                          <stop offset="1" stopColor="#6172d6" />
                         </linearGradient>
                       </defs>
                       <path
@@ -627,8 +627,8 @@ const Sidebar = () => {
                           y2="0.945"
                           gradientUnits="objectBoundingBox"
                         >
-                          <stop offset="0" stop-color="#4adede" />
-                          <stop offset="1" stop-color="#6172d6" />
+                          <stop offset="0" stopColor="#4adede" />
+                          <stop offset="1" stopColor="#6172d6" />
                         </linearGradient>
                       </defs>
                       <path
@@ -784,8 +784,8 @@ const Sidebar = () => {
                           y2="1"
                           gradientUnits="objectBoundingBox"
                         >
-                          <stop offset="0" stop-color="#4adede" />
-                          <stop offset="1" stop-color="#6172d6" />
+                          <stop offset="0" stopColor="#4adede" />
+                          <stop offset="1" stopColor="#6172d6" />
                         </linearGradient>
                       </defs>
                       <g
