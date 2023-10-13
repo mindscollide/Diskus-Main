@@ -90,6 +90,8 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                       IsOrganizerNotified: false,
                       Title: "",
                       isRSVP: false,
+                      participantRole: {},
+                      isComingApi: false,
                     };
                     tem.push(newUser);
                   }
@@ -120,6 +122,8 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                       IsOrganizerNotified: false,
                       Title: "",
                       isRSVP: false,
+                      participantRole: {},
+                      isComingApi: false,
                     };
                     tem.push(newUser);
                   }
@@ -147,6 +151,8 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                   IsOrganizerNotified: false,
                   Title: "",
                   isRSVP: false,
+                  participantRole: {},
+                  isComingApi: false,
                 };
                 tem.push(newUser);
               }
@@ -390,7 +396,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                                         <Col sm={12} md={10} lg={10}>
                                           <img
                                             draggable={false}
-                                            src={profile}
+                                            src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
                                             width="33px"
                                             height="33px"
                                           />
