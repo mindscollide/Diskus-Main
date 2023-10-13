@@ -146,6 +146,13 @@ const Participants = ({
     });
   };
 
+  const handleCancelingRow = (record) => {
+    let removingfromrow = rspvRows.filter(
+      (data, index) => data.userID !== record.userID
+    );
+    setrspvRows(removingfromrow);
+  };
+
   console.log("handleSelectChange", rspvRows);
 
   // Table coloumn
@@ -183,7 +190,7 @@ const Participants = ({
             <Col lg={12} md={12} sm={12}>
               <>
                 <TextField
-                  disable={record.isComingApi ? true : false}
+                  disable={record.isComingApi === true ? true : false}
                   placeholder={t("Participant-title")}
                   labelClass={"d-none"}
                   applyClass={"Organizer_table"}
@@ -205,18 +212,21 @@ const Participants = ({
       key: "Role",
       width: "249px",
       render: (text, record) => {
-        console.log("recordrecordrecord", { record });
         return (
           <Row>
             <Col lg={12} md={12} sm={12}>
               <>
                 <Select
-                  isDisabled={record.isComingApi ? true : false}
+                  isDisabled={record.isComingApi === true ? true : false}
                   options={particpantsRole}
-                  value={{
-                    value: record.participantRole.participantRoleID,
-                    label: record.participantRole.participantRole,
-                  }}
+                  value={
+                    record.isComingApi === true
+                      ? {
+                          value: record.participantRole.participantRoleID,
+                          label: record.participantRole.participantRole,
+                        }
+                      : record.selectedOption
+                  }
                   onChange={(selectedOption) =>
                     handleSelectChange(record.userID, selectedOption)
                   }
@@ -232,6 +242,30 @@ const Participants = ({
       dataIndex: "Close",
       key: "Close",
       width: "20px",
+      render: (text, record) => {
+        console.log("recordrecordrecord", { record });
+        return (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                {record.isComingApi === true ? (
+                  ""
+                ) : (
+                  <>
+                    <img
+                      src={redcrossIcon}
+                      className="cursor-pointer"
+                      height="21px"
+                      width="21px"
+                      onClick={() => handleCancelingRow(record)}
+                    />
+                  </>
+                )}
+              </Col>
+            </Row>
+          </>
+        );
+      },
     },
   ];
 
@@ -253,7 +287,10 @@ const Participants = ({
 
   //Clearing the non saved  participant
   const handleCancelButtonForClearingParticipants = () => {
-    setrspvRows([]);
+    let filterOut = rspvRows.filter(
+      (data, index) => data.isComingApi !== false
+    );
+    setrspvRows(filterOut);
   };
 
   //state management For textfield
@@ -307,6 +344,15 @@ const Participants = ({
     }
   }, [rspvRows]);
   console.log(isEditable, "isEditableisEditableisEditable");
+
+  const handleEditFunction = () => {
+    setrspvRows((prevRows) => {
+      return prevRows.map((data) => ({
+        ...data,
+        isComingApi: false,
+      }));
+    });
+  };
   return (
     <>
       {particiapntsView ? (
@@ -352,6 +398,7 @@ const Participants = ({
                           height="11.75px"
                         />
                       }
+                      onClick={handleEditFunction}
                     />
 
                     <Button
@@ -383,7 +430,7 @@ const Participants = ({
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
-              {isEditable ? (
+              {isEditable ? null : (
                 <>
                   <Button
                     text={t("Propose-meeting-dates")}
@@ -414,7 +461,7 @@ const Participants = ({
                     onClick={handleNextButton}
                   />
                 </>
-              ) : null}
+              )}
             </Col>
           </Row>
         </>
