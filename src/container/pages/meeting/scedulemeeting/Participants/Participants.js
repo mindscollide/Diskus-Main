@@ -169,20 +169,21 @@ const Participants = ({
       ),
       dataIndex: "userName",
       key: "userName",
-      width: "260px",
+      width: "80px",
     },
 
     {
       title: t("Email"),
       dataIndex: "email",
       key: "email",
-      width: "280px",
+      width: "80px",
     },
     {
       title: t("Participant-title"),
       dataIndex: "Title",
       key: "Title",
-      width: "300px",
+      width: "80px",
+
       render: (text, record) => {
         console.log("texttexttext", { record });
         return (
@@ -210,7 +211,8 @@ const Participants = ({
       title: t("Role"),
       dataIndex: "Role",
       key: "Role",
-      width: "249px",
+      width: "80px",
+
       render: (text, record) => {
         return (
           <Row>
@@ -241,20 +243,26 @@ const Participants = ({
     {
       dataIndex: "Close",
       key: "Close",
-      width: "20px",
+      width: "80px",
+
       render: (text, record) => {
         console.log("recordrecordrecord", { record });
         return (
           <>
             <Row>
-              <Col lg={12} md={12} sm={12}>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
                 {record.isComingApi === true ? (
                   ""
                 ) : (
                   <>
                     <img
                       src={redcrossIcon}
-                      className="cursor-pointer"
+                      className="cursor-pointer "
                       height="21px"
                       width="21px"
                       onClick={() => handleCancelingRow(record)}
@@ -287,10 +295,24 @@ const Participants = ({
 
   //Clearing the non saved  participant
   const handleCancelButtonForClearingParticipants = () => {
-    let filterOut = rspvRows.filter(
-      (data, index) => data.isComingApi !== false
-    );
-    setrspvRows(filterOut);
+    let getAllData = [];
+    if (NewMeetingreducer.getAllSavedparticipants.length > 0) {
+      NewMeetingreducer.getAllSavedparticipants.forEach((data, index) => {
+        getAllData.push({
+          IsOrganizerNotified: false,
+          IsPrimaryOrganizer: false,
+          Title: data.participantTitle,
+          displayPicture: "",
+          email: data.emailAddress,
+          isRSVP: data.rsvp,
+          participantRole: data.participantRole,
+          userID: data.userID,
+          userName: data.userName,
+          isComingApi: true,
+        });
+      });
+      setrspvRows(getAllData);
+    }
   };
 
   //state management For textfield
@@ -430,7 +452,11 @@ const Participants = ({
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
-              {isEditable ? null : (
+              {isEditable ? (
+                <>
+                  <div className={styles["definedHeight"]}></div>
+                </>
+              ) : (
                 <>
                   <Button
                     text={t("Propose-meeting-dates")}

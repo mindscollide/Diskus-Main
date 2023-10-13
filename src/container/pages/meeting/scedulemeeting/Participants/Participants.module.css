@@ -97,3 +97,7 @@
   font-family: "MontserratMedium-500" !important;
   color: #707070 !important;
 }
+
+.definedHeight {
+  height: 44px !important;
+}
