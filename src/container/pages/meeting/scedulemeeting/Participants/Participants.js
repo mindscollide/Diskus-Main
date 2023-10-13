@@ -47,6 +47,7 @@ const Participants = ({
     "getAllSavedparticipants"
   );
   const [particiapntsView, setParticiapntsView] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
   const [inputValues, setInputValues] = useState({});
   const [data, setData] = useState([]);
@@ -294,6 +295,18 @@ const Participants = ({
     dispatch(SaveparticipantsApi(Data, navigate, t));
   };
 
+  useEffect(() => {
+    if (rspvRows.length > 0) {
+      let removedublicates = rspvRows.some(
+        (data, index) => data.isComingApi === false
+      );
+      console.log(removedublicates, "removedublicatesremovedublicates");
+      setIsEditable(removedublicates);
+    } else {
+      setIsEditable(false);
+    }
+  }, [rspvRows]);
+  console.log(isEditable, "isEditableisEditableisEditable");
   return (
     <>
       {particiapntsView ? (
@@ -308,47 +321,47 @@ const Participants = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                {/* {rspvRows.length === 0 ? ( */}
-                <>
-                  <Button
-                    text={t("Edit")}
-                    className={styles["Edit_Button_Organizers"]}
-                    icon={
-                      <img
-                        draggable={false}
-                        src={EditIcon}
-                        width="11.75px"
-                        height="11.75px"
-                      />
-                    }
-                  />
+                {isEditable ? (
+                  <>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                        <Button
+                          text={t("Cancel")}
+                          className={styles["Cancel_Organization"]}
+                          onClick={handleCancelButtonForClearingParticipants}
+                        />
 
-                  <Button
-                    text={t("Add-more")}
-                    icon={<img draggable={false} src={addmore} />}
-                    className={styles["AddMoreBtn"]}
-                    onClick={openAddPartcipantModal}
-                  />
-                </>
-                {/* ) : ( */}
-                <>
-                  <Row>
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                      <Button
-                        text={t("Cancel")}
-                        className={styles["Cancel_Organization"]}
-                        onClick={handleCancelButtonForClearingParticipants}
-                      />
+                        <Button
+                          text={t("Save")}
+                          className={styles["Next_Organization"]}
+                          onClick={handleSaveparticpants}
+                        />
+                      </Col>
+                    </Row>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      text={t("Edit")}
+                      className={styles["Edit_Button_Organizers"]}
+                      icon={
+                        <img
+                          draggable={false}
+                          src={EditIcon}
+                          width="11.75px"
+                          height="11.75px"
+                        />
+                      }
+                    />
 
-                      <Button
-                        text={t("Save")}
-                        className={styles["Next_Organization"]}
-                        onClick={handleSaveparticpants}
-                      />
-                    </Col>
-                  </Row>
-                </>
-                {/* )} */}
+                    <Button
+                      text={t("Add-more")}
+                      icon={<img draggable={false} src={addmore} />}
+                      className={styles["AddMoreBtn"]}
+                      onClick={openAddPartcipantModal}
+                    />
+                  </>
+                )}
               </Col>
             </Row>
             <Row>
@@ -370,34 +383,38 @@ const Participants = ({
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
-              <Button
-                text={t("Propose-meeting-dates")}
-                className={styles["Cancel_Organization"]}
-                onClick={handleProposedmeetingDates}
-              />
+              {isEditable ? (
+                <>
+                  <Button
+                    text={t("Propose-meeting-dates")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={handleProposedmeetingDates}
+                  />
 
-              <Button
-                text={t("Cancel")}
-                className={styles["Cancel_Organization"]}
-                onClick={handleCancelParticipants}
-              />
+                  <Button
+                    text={t("Cancel")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={handleCancelParticipants}
+                  />
 
-              <Button
-                text={t("Save")}
-                className={styles["Cancel_Organization"]}
-                onClick={EnableParticipantsViewPage}
-              />
+                  <Button
+                    text={t("Save")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={EnableParticipantsViewPage}
+                  />
 
-              <Button
-                text={t("Save-and-publish")}
-                className={styles["Next_Organization"]}
-              />
+                  <Button
+                    text={t("Save-and-publish")}
+                    className={styles["Next_Organization"]}
+                  />
 
-              <Button
-                text={t("Save-and-next")}
-                className={styles["Next_Organization"]}
-                onClick={handleNextButton}
-              />
+                  <Button
+                    text={t("Save-and-next")}
+                    className={styles["Next_Organization"]}
+                    onClick={handleNextButton}
+                  />
+                </>
+              ) : null}
             </Col>
           </Row>
         </>

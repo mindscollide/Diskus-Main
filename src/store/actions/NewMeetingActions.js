@@ -1132,6 +1132,11 @@ const SaveparticipantsApi = (Data, navigate, t) => {
                   t("Record-inserted")
                 )
               );
+              let currentMeetingID = localStorage.getItem("meetingID");
+              let Data = {
+                MeetingID: Number(currentMeetingID),
+              };
+              dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
