@@ -358,6 +358,12 @@ const DataRoomReducer = (state = initialState, action) => {
         CreatedFoldersArray: newData,
       };
     }
+    case actions.CREATE_FOLDER_EMPTY: {
+      return {
+        ...state,
+        CreatedFoldersArray: [],
+      };
+    }
     case actions.SAVEFILESANDFOLDERS_SUCCESS: {
       return {
         ...state,

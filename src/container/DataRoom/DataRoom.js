@@ -68,6 +68,7 @@ import ModalShareDocument from "./ModalSharedocument/ModalShareDocument";
 import {
   CheckFolderisExist,
   CreateFolder_success,
+  CreateFolderEmpty,
   createFolder,
   folderUploadData,
   uploadFile,
@@ -432,6 +433,8 @@ const DataRoom = () => {
 
   const SharewithmeButonShow = async () => {
     setSRowsData(0);
+    localStorage.removeItem("folderID");
+
     localStorage.setItem("setTableView", 2);
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t, 1));
     setGetAllData([]);
@@ -457,6 +460,8 @@ const DataRoom = () => {
   const AllDocuments = async () => {
     setSRowsData(0);
     localStorage.setItem("setTableView", 3);
+    localStorage.removeItem("folderID");
+
     await dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
     setGetAllData([]);
     localStorage.removeItem("folderID");
@@ -465,9 +470,12 @@ const DataRoom = () => {
       setSearchoptions(false);
     }
   };
+
   const RecentTab = async () => {
     setSRowsData(0);
     localStorage.setItem("setTableView", 4);
+    localStorage.removeItem("folderID");
+
     let Data = {
       UserID: Number(userID),
       OrganizationID: Number(organizationID),
@@ -817,7 +825,10 @@ const DataRoom = () => {
       width: "90px",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
-        return <span className={styles["ownerName"]}>{text}</span>;
+        if (record.isFolder) {
+        } else {
+          return <span className={styles["ownerName"]}>{text}</span>;
+        }
       },
     },
     {
@@ -1264,7 +1275,10 @@ const DataRoom = () => {
       width: "90px",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
-        return <span className={styles["ownerName"]}>{text}</span>;
+        if (record.isFolder) {
+        } else {
+          return <span className={styles["ownerName"]}>{text}</span>;
+        }
       },
     },
     {
@@ -2023,7 +2037,7 @@ const DataRoom = () => {
       setDetaUplodingForFOlder([]);
       setTasksAttachments([]);
       setShowbarupload(false);
-      dispatch(CreateFolder_success([]));
+      dispatch(CreateFolderEmpty());
     }
   };
 
@@ -2038,7 +2052,7 @@ const DataRoom = () => {
       data.Uploading = false;
       return data;
     });
-    dispatch(CreateFolder_success([]));
+    dispatch(CreateFolderEmpty());
 
     // setDetaUplodingForFOlder(newFolderData);
     // cancelToken.cancel("API call canceled by user");

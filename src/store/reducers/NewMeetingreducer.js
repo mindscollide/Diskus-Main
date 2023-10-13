@@ -2,6 +2,7 @@ import * as actions from "../action_types";
 
 const initialState = {
   Loading: false,
+  meetingurlspinner: false,
   ResponseMessage: "",
   adduserModal: false,
   crossConfirmation: false,
@@ -49,6 +50,10 @@ const initialState = {
   cancelPolls: false,
   getAllCommitteeAndGroupPartcipants: [],
   getAllPartiicpantsRoles: [],
+  getmeetingURL: null,
+  saveMeetingParticipants: [],
+  getAllAgendaContributors: [],
+  getAllSavedparticipants: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -493,6 +498,130 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MEETING_URL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_MEETING_URL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getmeetingURL: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MEETING_URL_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_MEETING_URL_SPINNER: {
+      return {
+        ...state,
+        meetingurlspinner: action.response,
+      };
+    }
+
+    case actions.SAVE_MEETING_PARTICIPANTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_MEETING_PARTICIPANTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveMeetingParticipants: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_MEETING_PARTICIPANTS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_AGENDACONTRIBUTORS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVE_AGENDACONTRIBUTORS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVE_AGENDACONTRIBUTORS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_SAVED_PARTICIPATNS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_SAVED_PARTICIPATNS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSavedparticipants: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_SAVED_PARTICIPATNS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        getAllSavedparticipants: [],
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ALL_AGENDACONTRIBUTOR_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_ALL_AGENDACONTRIBUTOR_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllAgendaContributors: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_AGENDACONTRIBUTOR_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAllAgendaContributors: [],
         ResponseMessage: action.message,
       };
     }

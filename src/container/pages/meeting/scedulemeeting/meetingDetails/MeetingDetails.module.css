@@ -10,6 +10,7 @@
   background: #fff !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
+  position: relative !important;
 }
 
 .Button_not_active:hover,
@@ -46,6 +47,7 @@ body[dir="rtl"] .Camera_icon_active_IconStyles {
   width: 39px !important;
   border-radius: 4px !important;
   border: none !important;
+  position: relative;
 }
 
 body[rtl] .Camera_icon_Active {
@@ -251,4 +253,12 @@ body[dir="rtl"] .White_Icon_class {
   font-family: "MontserratSemiBold" !important;
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
+}
+
+.checkEmailSpinner {
+  position: absolute !important;
+  left: 9px !important;
+  height: 20px !important;
+  width: 20px !important;
+  top: 9.6px !important;
 }

@@ -1,23 +1,28 @@
 {
-  "MeetingDetails": {
-    "MeetingTitle": "Saif Testing Meeting After Task Completion",
-    "MeetingType": { "PK_MTID": 4, "Type": "Board Meetings" },
-    "Location": "karachi",
-    "Description": "Task Completed  ",
-    "IsVideoChat": true,
-    "IsTalkGroup": true,
-    "OrganizationId": 417,
-    "MeetingDates": [
-      { "MeetingDate": "20231009", "StartTime": "192443", "EndTime": "192443" },
-      { "MeetingDate": "20231023", "StartTime": "192459", "EndTime": "192500" },
-      { "MeetingDate": "", "StartTime": "", "EndTime": "" }
-    ],
-    "MeetingReminders": [2, 2, 2],
-    "Notes": "sai notes ",
-    "AllowRSVP": true,
-    "NotifyOrganizerOnRSVP": true,
-    "ReucurringMeetingID": 5,
-    "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
-    "MeetingStatusID": 1
-  }
+  "MeetingParticipants": [
+    {
+      "UserID": 984,
+      "Title": "Hello one",
+      "ParticipantRoleID": 2,
+      "MeetingID": 0
+    },
+    {
+      "UserID": 986,
+      "Title": "Hello two",
+      "ParticipantRoleID": 1,
+      "MeetingID": 0
+    },
+    {
+      "UserID": 987,
+      "Title": "Hello three",
+      "ParticipantRoleID": 3,
+      "MeetingID": 0
+    },
+    {
+      "UserID": 985,
+      "Title": "Hello Four",
+      "ParticipantRoleID": 4,
+      "MeetingID": 0
+    }
+  ]
 }

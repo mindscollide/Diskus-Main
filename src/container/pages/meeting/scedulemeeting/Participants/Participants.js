@@ -20,6 +20,8 @@ import { useTranslation } from "react-i18next";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import {
   GetAllParticipantsRoleNew,
+  GetAllSavedparticipantsAPI,
+  SaveparticipantsApi,
   showAddParticipantsModal,
   showCancelModalPartipants,
   showCrossConfirmationModal,
@@ -41,80 +43,119 @@ const Participants = ({
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   console.log(
-    NewMeetingreducer.getAllPartiicpantsRoles,
-    "NewMeetingreducer.participantRoles"
+    NewMeetingreducer.getAllSavedparticipants,
+    "getAllSavedparticipants"
   );
-  const [rspvTable, setrspvTable] = useState(false);
   const [particiapntsView, setParticiapntsView] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
+  const [inputValues, setInputValues] = useState({});
+  const [data, setData] = useState([]);
+  const [rspvRows, setrspvRows] = useState([]);
+  console.log(rspvRows, "rspvRowsrspvRows");
+  let currentMeetingID = localStorage.getItem("meetingID");
+  console.log(currentMeetingID, "currentMeetingID");
+  //open row icon cross modal
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
   };
 
+  //Opens Add more modal
   const openAddPartcipantModal = () => {
     dispatch(showAddParticipantsModal(true));
   };
 
+  // handling save and next button
   const handleNextButton = () => {
     setParticipants(false);
     setAgenda(true);
   };
 
-  const options = [
-    { value: "Particpants", label: t("Particpants") },
-    { value: "Chairperson", label: t("Chairperson") },
-    { value: "Secretary", label: t("Secretary") },
-  ];
+  //For participants Role
+  useEffect(() => {
+    dispatch(GetAllParticipantsRoleNew(navigate, t));
+  }, []);
 
-  const data = [
-    {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
-      Email: (
-        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-      ),
-      Participanttitle: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <TextField
-                disable={true}
-                placeholder={t("Content-title")}
-                labelClass={"d-none"}
-                applyClass={"Organizer_table"}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-      Role: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <Select options={options} />
-            </Col>
-          </Row>
-        </>
-      ),
-      Close: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-              <img
-                draggable={false}
-                src={redcrossIcon}
-                width="21.79px"
-                height="21.79px"
-                onClick={openCrossIconModal}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
+  //Roles Drop Down Data
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles !== null &&
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles !== undefined
+      ) {
+        let Newdata = [];
+        NewMeetingreducer.getAllPartiicpantsRoles.participantRoles.map(
+          (data, index) => {
+            console.log(data, "datadatadatas");
+            Newdata.push({
+              value: data.participantRoleID,
+              label: data.participantRole,
+            });
+          }
+        );
+        setParticpantsRole(Newdata);
+      }
+    } catch (error) {}
+  }, [NewMeetingreducer.getAllPartiicpantsRoles]);
 
-  const [rowsData, setRowsData] = useState(data);
+  //get all saved participants
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(currentMeetingID),
+    };
+    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    let getAllData = [];
+    if (
+      NewMeetingreducer.getAllSavedparticipants !== null &&
+      NewMeetingreducer.getAllSavedparticipants !== undefined &&
+      NewMeetingreducer.getAllSavedparticipants.length > 0
+    ) {
+      NewMeetingreducer.getAllSavedparticipants.forEach((data, index) => {
+        getAllData.push({
+          IsOrganizerNotified: false,
+          IsPrimaryOrganizer: false,
+          Title: data.participantTitle,
+          displayPicture: "",
+          email: data.emailAddress,
+          isRSVP: data.rsvp,
+          participantRole: data.participantRole,
+          userID: data.userID,
+          userName: data.userName,
+          isComingApi: true,
+        });
+      });
+      setrspvRows(getAllData);
+    }
+  }, [NewMeetingreducer.getAllSavedparticipants]);
+
+  const handleSelectChange = (userID, selectedOption) => {
+    setrspvRows((prevRowsData) => {
+      return prevRowsData.map((row) => {
+        if (row.userID === userID) {
+          return {
+            ...row,
+            ParticipantRoleID: selectedOption.value,
+          };
+        }
+        return row;
+      });
+    });
+  };
+
+  const handleCancelingRow = (record) => {
+    let removingfromrow = rspvRows.filter(
+      (data, index) => data.userID !== record.userID
+    );
+    setrspvRows(removingfromrow);
+  };
+
+  console.log("handleSelectChange", rspvRows);
+
+  // Table coloumn
   const ParticipantsColoumn = [
     {
       title: (
@@ -126,156 +167,221 @@ const Participants = ({
           </Row>
         </>
       ),
-      dataIndex: "Name",
-      key: "Name",
-      width: "260px",
+      dataIndex: "userName",
+      key: "userName",
+      width: "80px",
     },
 
     {
       title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      width: "280px",
+      dataIndex: "email",
+      key: "email",
+      width: "80px",
     },
     {
       title: t("Participant-title"),
-      dataIndex: "Participanttitle",
-      key: "Participanttitle",
-      width: "300px",
+      dataIndex: "Title",
+      key: "Title",
+      width: "80px",
+
+      render: (text, record) => {
+        console.log("texttexttext", { record });
+        return (
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <>
+                <TextField
+                  disable={record.isComingApi === true ? true : false}
+                  placeholder={t("Participant-title")}
+                  labelClass={"d-none"}
+                  applyClass={"Organizer_table"}
+                  value={inputValues[record.userID] || ""}
+                  change={(e) =>
+                    handleInputChange(record.userID, e.target.value)
+                  } // Update the inputValues when the user types
+                />
+              </>
+            </Col>
+          </Row>
+        );
+      },
     },
 
     {
       title: t("Role"),
       dataIndex: "Role",
       key: "Role",
-      width: "249px",
+      width: "80px",
+
+      render: (text, record) => {
+        return (
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <>
+                <Select
+                  isDisabled={record.isComingApi === true ? true : false}
+                  options={particpantsRole}
+                  value={
+                    record.isComingApi === true
+                      ? {
+                          value: record.participantRole.participantRoleID,
+                          label: record.participantRole.participantRole,
+                        }
+                      : record.selectedOption
+                  }
+                  onChange={(selectedOption) =>
+                    handleSelectChange(record.userID, selectedOption)
+                  }
+                />
+              </>
+            </Col>
+          </Row>
+        );
+      },
     },
 
     {
       dataIndex: "Close",
       key: "Close",
-      width: "20px",
+      width: "80px",
+
+      render: (text, record) => {
+        console.log("recordrecordrecord", { record });
+        return (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                {record.isComingApi === true ? (
+                  ""
+                ) : (
+                  <>
+                    <img
+                      src={redcrossIcon}
+                      className="cursor-pointer "
+                      height="21px"
+                      width="21px"
+                      onClick={() => handleCancelingRow(record)}
+                    />
+                  </>
+                )}
+              </Col>
+            </Row>
+          </>
+        );
+      },
     },
   ];
 
-  const rspvData = [
-    {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
-      Email: (
-        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-      ),
-      Participanttitle: <label>Content Writer</label>,
-      Role: <label>Participants</label>,
-
-      rsvp: (
-        <>
-          <img
-            draggable={false}
-            src={rspvGreenIcon}
-            height="30px"
-            width="30px "
-          />
-          {/* <img draggable = {false} src={rspvAbstainIcon} height="30px" width="30px " /> */}
-        </>
-      ),
-    },
-  ];
-
-  const [rspvRows, setrspvRows] = useState(rspvData);
-
-  const rspvColoumns = [
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Name",
-      key: "Name",
-      width: "260px",
-    },
-
-    {
-      title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      width: "280px",
-    },
-    {
-      title: t("Participant-title"),
-      dataIndex: "Participanttitle",
-      key: "Participanttitle",
-      width: "300px",
-    },
-
-    {
-      title: t("Role"),
-      dataIndex: "Role",
-      key: "Role",
-      width: "349px",
-    },
-
-    {
-      title: t("RSVP"),
-      dataIndex: "rsvp",
-      key: "rsvp",
-      width: "249px",
-    },
-  ];
-
-  const enableRspvTable = () => {
-    setrspvTable(!rspvTable);
-  };
-
+  //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
     setParticipants(false);
     setProposedMeetingDates(true);
   };
 
+  //Enable the view page
   const EnableParticipantsViewPage = () => {
     setParticiapntsView(true);
   };
 
+  //canceling the participants page
   const handleCancelParticipants = () => {
     dispatch(showCancelModalPartipants(true));
   };
 
-  useEffect(() => {
-    dispatch(GetAllParticipantsRoleNew(navigate, t));
-  }, []);
-
-  //Roles Drop Down Data
-  useEffect(() => {
-    try {
-      if (
-        NewMeetingreducer.participantRoles !== null &&
-        NewMeetingreducer.participantRoles !== undefined
-      ) {
-        let Newdata = [];
-        NewMeetingreducer.participantRoles.map((data, index) => {
-          console.log(data, "datadatadatas");
-          Newdata.push({
-            value: data.participantRoleID,
-            label: data.participantRole,
-          });
+  //Clearing the non saved  participant
+  const handleCancelButtonForClearingParticipants = () => {
+    let getAllData = [];
+    if (NewMeetingreducer.getAllSavedparticipants.length > 0) {
+      NewMeetingreducer.getAllSavedparticipants.forEach((data, index) => {
+        getAllData.push({
+          IsOrganizerNotified: false,
+          IsPrimaryOrganizer: false,
+          Title: data.participantTitle,
+          displayPicture: "",
+          email: data.emailAddress,
+          isRSVP: data.rsvp,
+          participantRole: data.participantRole,
+          userID: data.userID,
+          userName: data.userName,
+          isComingApi: true,
         });
-        setParticpantsRole(Newdata);
-      }
-    } catch (error) {}
-  }, [NewMeetingreducer.participantRoles]);
+      });
+      setrspvRows(getAllData);
+    }
+  };
 
+  //state management For textfield
+  const handleInputChange = (userID, newValue) => {
+    setInputValues((prevInputValues) => ({
+      ...prevInputValues,
+      [userID]: newValue,
+    }));
+    setrspvRows((prevRowsData) => {
+      console.log(prevRowsData, "prevRowsDataprevRowsData");
+      return prevRowsData.map((row) => {
+        if (row.userID === userID) {
+          return {
+            ...row,
+            Title: newValue,
+          };
+        }
+        return row;
+      });
+    });
+  };
+
+  const handleSaveparticpants = () => {
+    let newData = [];
+    let copyData = [...rspvRows];
+    copyData.forEach((data, index) => {
+      console.log(data, "newDatanewDatanewData");
+      newData.push({
+        UserID: data.userID,
+        Title: data.Title,
+        ParticipantRoleID: data.ParticipantRoleID,
+        MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
+      });
+    });
+    let Data = {
+      MeetingParticipants: newData,
+    };
+
+    dispatch(SaveparticipantsApi(Data, navigate, t));
+  };
+
+  useEffect(() => {
+    if (rspvRows.length > 0) {
+      let removedublicates = rspvRows.some(
+        (data, index) => data.isComingApi === false
+      );
+      console.log(removedublicates, "removedublicatesremovedublicates");
+      setIsEditable(removedublicates);
+    } else {
+      setIsEditable(false);
+    }
+  }, [rspvRows]);
+  console.log(isEditable, "isEditableisEditableisEditable");
+
+  const handleEditFunction = () => {
+    setrspvRows((prevRows) => {
+      return prevRows.map((data) => ({
+        ...data,
+        isComingApi: false,
+      }));
+    });
+  };
   return (
     <>
       {particiapntsView ? (
         <ParticipantsView />
       ) : (
         <>
-          <section className="position-relative">
+          <section className={styles["defined_Height"]}>
             <Row className="mt-3">
               <Col
                 lg={12}
@@ -283,93 +389,114 @@ const Participants = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                <Button
-                  text={t("Edit")}
-                  className={styles["Edit_Button_Organizers"]}
-                  icon={
-                    <img
-                      draggable={false}
-                      src={EditIcon}
-                      width="11.75px"
-                      height="11.75px"
-                    />
-                  }
-                  onClick={enableRspvTable}
-                />
-
-                <Button
-                  text={t("Add-more")}
-                  icon={<img draggable={false} src={addmore} />}
-                  className={styles["AddMoreBtn"]}
-                  onClick={openAddPartcipantModal}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                {rspvTable ? (
+                {isEditable ? (
                   <>
-                    <Table
-                      column={rspvColoumns}
-                      scroll={{ y: "62vh" }}
-                      pagination={false}
-                      className="Polling_table"
-                      rows={rspvRows}
-                    />
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                        <Button
+                          text={t("Cancel")}
+                          className={styles["Cancel_Organization"]}
+                          onClick={handleCancelButtonForClearingParticipants}
+                        />
+
+                        <Button
+                          text={t("Save")}
+                          className={styles["Next_Organization"]}
+                          onClick={handleSaveparticpants}
+                        />
+                      </Col>
+                    </Row>
                   </>
                 ) : (
                   <>
-                    <Table
-                      column={ParticipantsColoumn}
-                      scroll={{ y: "62vh" }}
-                      pagination={false}
-                      className="Polling_table"
-                      rows={rowsData}
+                    <Button
+                      text={t("Edit")}
+                      className={styles["Edit_Button_Organizers"]}
+                      icon={
+                        <img
+                          draggable={false}
+                          src={EditIcon}
+                          width="11.75px"
+                          height="11.75px"
+                        />
+                      }
+                      onClick={handleEditFunction}
+                    />
+
+                    <Button
+                      text={t("Add-more")}
+                      icon={<img draggable={false} src={addmore} />}
+                      className={styles["AddMoreBtn"]}
+                      onClick={openAddPartcipantModal}
                     />
                   </>
                 )}
               </Col>
             </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <Table
+                  column={ParticipantsColoumn}
+                  scroll={{ y: "42vh" }}
+                  pagination={false}
+                  className="Polling_table"
+                  rows={rspvRows}
+                />
+              </Col>
+            </Row>
           </section>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <section className={styles["Footer_Class"]}>
-                <Button
-                  text={t("Propose-meeting-dates")}
-                  className={styles["Cancel_Organization"]}
-                  onClick={handleProposedmeetingDates}
-                />
+          <Row className="mt-3">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end gap-2"
+            >
+              {isEditable ? (
+                <>
+                  <div className={styles["definedHeight"]}></div>
+                </>
+              ) : (
+                <>
+                  <Button
+                    text={t("Propose-meeting-dates")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={handleProposedmeetingDates}
+                  />
 
-                <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_Organization"]}
-                  onClick={handleCancelParticipants}
-                />
+                  <Button
+                    text={t("Cancel")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={handleCancelParticipants}
+                  />
 
-                <Button
-                  text={t("Save")}
-                  className={styles["Cancel_Organization"]}
-                  onClick={EnableParticipantsViewPage}
-                />
+                  <Button
+                    text={t("Save")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={EnableParticipantsViewPage}
+                  />
 
-                <Button
-                  text={t("Save-and-publish")}
-                  className={styles["Cancel_Organization"]}
-                />
+                  <Button
+                    text={t("Save-and-publish")}
+                    className={styles["Next_Organization"]}
+                  />
 
-                <Button
-                  text={t("Save-and-next")}
-                  className={styles["Next_Organization"]}
-                  onClick={handleNextButton}
-                />
-              </section>
+                  <Button
+                    text={t("Save-and-next")}
+                    className={styles["Next_Organization"]}
+                    onClick={handleNextButton}
+                  />
+                </>
+              )}
             </Col>
           </Row>
         </>
       )}
 
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
-      {NewMeetingreducer.participantModal && <AddParticipantModal />}
+      {NewMeetingreducer.participantModal && (
+        <AddParticipantModal setrspvRows={setrspvRows} rspvRows={rspvRows} />
+      )}
       {NewMeetingreducer.cancelPartipants && (
         <CancelParticipants setSceduleMeeting={setSceduleMeeting} />
       )}
