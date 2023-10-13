@@ -2,10 +2,10 @@ import {
   FetchVideoUrl,
   GetAllRecurringNewMeeting,
   GetMeetingNewFrequencyReminder,
-  getAllCommitteeAndGroupsParticipants,
   getAllGroupsUsersAndCommitteesByOrganizaitonID,
   getParticipantsRoles,
   getallMeetingType,
+  saveAgendaContributorsRM,
   saveMeetingDetials,
   saveParticipantsMeeting,
   searchUserMeetings,
@@ -1162,8 +1162,88 @@ const SaveparticipantsApi = (Data, navigate, t) => {
       });
   };
 };
+const saveAgendaContributors_init = () => {
+  return {
+    type: actions.SAVE_AGENDACONTRIBUTORS_INIT,
+  };
+};
 
+const saveAgendaContributors_success = (message) => {
+  return {
+    type: actions.SAVE_AGENDACONTRIBUTORS_SUCCESS,
+    message: message,
+  };
+};
+
+const saveAgendaContributors_fail = (message) => {
+  return {
+    type: actions.SAVE_AGENDACONTRIBUTORS_FAIL,
+    message: message,
+  };
+};
+
+const saveAgendaContributors = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(saveAgendaContributors_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveAgendaContributorsRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(saveAgendaContributors(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveAgendaContributors_01".toLowerCase()
+                )
+            ) {
+              dispatch(saveAgendaContributors_success(t("Record-Inserted")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveAgendaContributors_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveAgendaContributors_fail(t("No-record-inserted")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveAgendaContributors_03".toLowerCase()
+                )
+            ) {
+              dispatch(saveAgendaContributors_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(saveAgendaContributors_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(saveAgendaContributors_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(saveAgendaContributors_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(saveAgendaContributors_fail(t("Something-went-wrong")));
+      });
+  };
+};
 export {
+  saveAgendaContributors,
   showAddUserModal,
   showCrossConfirmationModal,
   showNotifyOrganizors,

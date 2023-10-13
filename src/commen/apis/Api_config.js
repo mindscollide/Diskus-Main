@@ -914,6 +914,9 @@ const getParticipantsRoles = {
   RequestMethod: "ServiceManager.GetAllParticipantRoles",
 };
 
+const saveAgendaContributorsRM = {
+  RequestMethod: "ServiceManager.SaveAgendaContributors",
+};
 const FetchVideoUrl = {
   RequestMethod: "ServiceManager.GetMeetingVideoURL",
 };
@@ -923,6 +926,7 @@ const saveParticipantsMeeting = {
 };
 
 export {
+  saveAgendaContributorsRM,
   getRecentDocumentsRM,
   updateProfilePictureRM,
   DeleteCommentRM,

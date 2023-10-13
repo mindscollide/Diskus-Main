@@ -108,7 +108,6 @@
   display: flex !important;
   justify-content: flex-end !important;
   gap: 10px !important;
-  position: absolute !important;
-  right: 125px !important;
-  bottom: 0px !important;
+  position: relative !important;
+  margin: 15px 0;
 }

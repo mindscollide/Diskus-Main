@@ -775,7 +775,12 @@ const NewMeeting = () => {
                   >
                     <Dropdown.Toggle title={t("Create")}>
                       <Row>
-                        <Col lg={12} md={12} sm={12} className="heading_button">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["schedule_button"]}
+                        >
                           <Plus width={20} height={20} fontWeight={800} />
                           <span> {t("Schedule-a-meeting")}</span>
                         </Col>

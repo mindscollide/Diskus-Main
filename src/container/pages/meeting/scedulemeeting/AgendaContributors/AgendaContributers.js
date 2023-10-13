@@ -36,11 +36,32 @@ const AgendaContributers = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
+    (state) => state
+  );
+
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState({
+    value: 1,
+    label: (
+      <>
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <span className={styles["Options_classs_contributors"]}>
+              {t("Grant-access-to-all-agenda-items-and-files")}
+            </span>
+          </Col>
+        </Row>
+      </>
+    ),
+  });
+
   const [viewAgendaContributors, setViewAgendaContributors] = useState(false);
+  const [agendaContributorsData, setAgendaContributorsData] = useState({
+    AgendaContributors: [],
+  });
+
   const shownotifyAgendaContrubutors = () => {
     dispatch(showAgendaContributorsModals(true));
   };
@@ -98,26 +119,26 @@ const AgendaContributers = ({
       ),
     },
   ];
-  const [rowsData, setRowsData] = useState(data);
-
+  const [rowsData, setRowsData] = useState([]);
+  console.log(rowsData, "rowsDatarowsData");
   const AgendaColoumns = [
     {
       title: t("Name"),
-      dataIndex: "Name",
-      key: "Name",
+      dataIndex: "userName",
+      key: "userName",
       width: "300px",
     },
     {
       title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
+      dataIndex: "email",
+      key: "email",
       width: "300px",
     },
 
     {
       title: t("contributor-title"),
-      dataIndex: "Primary",
-      key: "Primary",
+      dataIndex: "Title",
+      key: "Title",
       width: "400px",
       //   render: (text, record) => {
       //     return (
@@ -167,6 +188,7 @@ const AgendaContributers = ({
                 src={NotificationIcon}
                 width="17.64px"
                 height="12.4px"
+                alt=""
               />
               {/* <img draggable = {false} src={redMailIcon} width="17.64px" height="12.4px" /> */}
             </Col>
@@ -305,7 +327,7 @@ const AgendaContributers = ({
               <span className={styles["label_Styles"]}>{label}</span>
             </Col>
             <Col lg={1} md={1} sm={1}>
-              {isSelected && <img draggable={false} src={tick} />}
+              {isSelected && <img alt="" draggable={false} src={tick} />}
             </Col>
           </Row>
         </Col>
@@ -315,7 +337,7 @@ const AgendaContributers = ({
 
   const options = [
     {
-      value: "chocolate",
+      value: 1,
       label: (
         <>
           <Row>
@@ -329,7 +351,7 @@ const AgendaContributers = ({
       ),
     },
     {
-      value: "strawberry",
+      value: 2,
       label: (
         <>
           <Row>
@@ -432,6 +454,7 @@ const AgendaContributers = ({
                                   src={emptyContributorState}
                                   width="274.05px"
                                   height="230.96px"
+                                  alt=""
                                 />
                               </Col>
                             </Row>
@@ -489,6 +512,7 @@ const AgendaContributers = ({
                                   src={emptyContributorState}
                                   width="274.05px"
                                   height="230.96px"
+                                  alt=""
                                 />
                               </Col>
                             </Row>
@@ -521,7 +545,7 @@ const AgendaContributers = ({
                           </>
                         ),
                       }}
-                      rows={rspvRows}
+                      rows={[]}
                     />
                   </>
                 ) : (
@@ -613,7 +637,13 @@ const AgendaContributers = ({
         </>
       )}
 
-      {NewMeetingreducer.agendaContributors && <AgendaContributorsModal />}
+      {NewMeetingreducer.agendaContributors && (
+        <AgendaContributorsModal
+          SelectedRSVP={selectedOption}
+          rowsData={rowsData}
+          setRowsData={setRowsData}
+        />
+      )}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.notifyAgendaContributors && <NotifyAgendaModal />}
       {NewMeetingreducer.cancelAgendaContributor && (

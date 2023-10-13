@@ -270,21 +270,21 @@ const Notes = () => {
       NotesReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
-        ...open,
         open: true,
         message: NotesReducer.ResponseMessage,
       });
-      setTimeout(() => {
-        setOpen(
-          {
-            ...open,
-            open: false,
-            message: "",
-          },
-          4000
-        );
-      });
       dispatch(ClearNotesResponseMessage());
+
+      // setTimeout(() => {
+      //   setOpen(
+      //     {
+      //       ...open,
+      //       open: false,
+      //       message: "",
+      //     },
+      //     4000
+      //   );
+      // });
     }
   }, [NotesReducer.ResponseMessage]);
 
@@ -660,11 +660,7 @@ const Notes = () => {
           setViewNotes={setViewModalShow}
         />
       ) : null}
-      <Notification
-        message={open.message}
-        open={open.open}
-        setOpen={open.open}
-      />
+      <Notification message={open.message} open={open.open} setOpen={setOpen} />
       {NotesReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );

@@ -369,18 +369,25 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     if (addNoteFields.Title.value !== "") {
       if (Object.keys(fileForSend).length > 0) {
         let newfile = [];
+        let newData = [];
         const uploadPromises = fileForSend.map((newData) => {
           return dispatch(FileUploadToDo(navigate, newData, t, newfile));
         });
         await Promise.all(uploadPromises);
-        let notesAttachment = newfile;
+        newfile.map((attachmentData, index) => {
+          newData.push({
+            DisplayAttachmentName: attachmentData.DisplayAttachmentName,
+            OriginalAttachmentName: attachmentData.OriginalAttachmentName,
+            FK_NotesID: 0,
+          });
+        });
         let Data = {
           Title: addNoteFields.Title.value,
           Description: addNoteFields.Description.value,
           isStarred: isStarrted,
           FK_UserID: JSON.parse(createrID),
           FK_OrganizationID: JSON.parse(OrganizationID),
-          NotesAttachments: notesAttachment,
+          NotesAttachments: newData,
         };
         dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
       } else {
