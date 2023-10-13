@@ -23,8 +23,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
   const [dropdowndata, setDropdowndata] = useState([]);
   const [membersOrganizers, setMembersOrganizers] = useState([]);
 
-  const [membersParticipants, setMembersParticipants] = useState([]);
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  let currentMeetingID = localStorage.getItem("meetingID");
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
@@ -163,6 +162,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
     let newOrganizersData =
       MeetingOrganizersReducer.AllUserCommitteesGroupsData;
     let tem = [...membersOrganizers];
+    console.log("selectedsearch", { rowsData });
     if (Object.keys(selectedsearch).length > 0) {
       try {
         selectedsearch.map((seledtedData, index) => {
@@ -189,6 +189,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                       IsOrganizerNotified: false,
                       Title: "",
                       isRSVP: SelectedRSVP.value === 1 ? true : false,
+                      isEdit: false,
                     };
                     tem.push(newUser);
                   }
@@ -219,6 +220,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                       IsOrganizerNotified: false,
                       Title: "",
                       isRSVP: SelectedRSVP.value === 1 ? true : false,
+                      isEdit: false,
                     };
                     tem.push(newUser);
                   }
@@ -245,6 +247,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                   IsOrganizerNotified: false,
                   Title: "",
                   isRSVP: SelectedRSVP.value === 1 ? true : false,
+                  isEdit: false,
                 };
                 tem.push(newUser);
               }
@@ -265,10 +268,26 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
     }
   };
 
+  const removeContributor = (record) => {
+    let removemembersOrganizers = membersOrganizers.filter(
+      (data, index) => data.userID !== record.userID
+    );
+    setMembersOrganizers(removemembersOrganizers);
+  };
+
   const handleClickDone = () => {
     let newData = [...rowsData, ...membersOrganizers];
+    // Create a Set to remove duplicates based on userID
+    const uniqueData = new Set(newData.map((obj) => obj.userID));
+
+    // Convert the Set back to an array
+    newData = [...uniqueData].map((userID) =>
+      newData.find((obj) => obj.userID === userID)
+    );
+
     setRowsData(newData);
-    console.log("newDatahandleClickDonehandleClickDone,", { newData });
+    dispatch(showAddAgendaContributor(false));
+    // Combine the arrays into newData
   };
   return (
     <section>
@@ -337,6 +356,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                 <Row className={styles["Scroller_For_CreatePollModal2"]}>
                   {membersOrganizers.length > 0
                     ? membersOrganizers.map((data, index) => {
+                        console.log({ data }, "datadatadatadata");
                         return (
                           <>
                             <Col lg={6} md={6} sm={12} className="mt-2">
@@ -353,9 +373,10 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                                         <Col sm={12} md={10} lg={10}>
                                           <img
                                             draggable={false}
-                                            src={profile}
+                                            src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                             width="33px"
                                             height="33px"
+                                            alt=""
                                           />
                                           <span
                                             className={styles["Name_cards"]}
@@ -367,8 +388,13 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                                           <img
                                             draggable={false}
                                             src={CrossIcon}
+                                            className="cursor-pointer"
                                             width="14px"
+                                            alt=""
                                             height="14px"
+                                            onClick={() =>
+                                              removeContributor(data)
+                                            }
                                           />
                                         </Col>
                                       </Row>

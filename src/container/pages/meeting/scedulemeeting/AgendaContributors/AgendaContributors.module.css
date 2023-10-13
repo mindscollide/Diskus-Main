@@ -29,17 +29,14 @@
 .Cancel_Organization {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #fff;
-  color: #5a5a5a;
+  background: #fff !important;
+  color: #5a5a5a !important;
   font-family: "MontserratSemiBold" !important;
 }
 
-.Cancel_Organization:hover,
-.Cancel_Organization:active,
-.Cancel_Organization:focus,
-.Cancel_Organization:focus-visible {
+.Cancel_Organization:is(:hover, :active, :focus, :focus-visible) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
@@ -54,7 +51,7 @@
   font-size: 12px !important;
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
-  background: #5f78d6;
+  background: #6172d6;
   color: #fff;
   font-family: "MontserratSemiBold" !important;
 }
@@ -110,4 +107,40 @@
   gap: 10px !important;
   position: relative !important;
   margin: 15px 0;
+}
+.Footer_Class2 {
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  position: relative !important;
+  margin: 15px 0;
+  height: 44px !important;
+  /* padding: 12px 30px !important; */
+}
+.Save_button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratMedium-500" !important;
+  border: none !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+.Cancel_button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+.Edit_button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
 }

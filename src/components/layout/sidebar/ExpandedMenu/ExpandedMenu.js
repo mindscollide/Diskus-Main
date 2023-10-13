@@ -49,9 +49,9 @@ const ExpandedMenu = () => {
                     y2="1.044"
                     gradientUnits="objectBoundingBox"
                   >
-                    <stop offset="0" stop-color="#4adede" />
-                    <stop offset="0.126" stop-color="#4dd0dd" />
-                    <stop offset="1" stop-color="#6172d6" />
+                    <stop offset="0" stopColor="#4adede" />
+                    <stop offset="0.126" stopColor="#4dd0dd" />
+                    <stop offset="1" stopColor="#6172d6" />
                   </linearGradient>
                   <linearGradient
                     id="linear-gradient-2"
@@ -61,8 +61,8 @@ const ExpandedMenu = () => {
                     y2="3.803"
                     gradientUnits="objectBoundingBox"
                   >
-                    <stop offset="0" stop-color="#4adede" />
-                    <stop offset="1" stop-color="#6172d6" />
+                    <stop offset="0" stopColor="#4adede" />
+                    <stop offset="1" stopColor="#6172d6" />
                   </linearGradient>
                   <linearGradient
                     id="linear-gradient-3"
@@ -100,9 +100,9 @@ const ExpandedMenu = () => {
                     y2="2.055"
                     gradientUnits="objectBoundingBox"
                   >
-                    <stop offset="0" stop-color="#4adede" />
-                    <stop offset="0.04" stop-color="#4bdade" />
-                    <stop offset="1" stop-color="#6172d6" />
+                    <stop offset="0" stopColor="#4adede" />
+                    <stop offset="0.04" stopColor="#4bdade" />
+                    <stop offset="1" stopColor="#6172d6" />
                   </linearGradient>
                   <linearGradient
                     id="linear-gradient-8"
@@ -426,8 +426,8 @@ const ExpandedMenu = () => {
                     y2="0.956"
                     gradientUnits="objectBoundingBox"
                   >
-                    <stop offset="0" stop-color="#4adede" />
-                    <stop offset="1" stop-color="#6172d6" />
+                    <stop offset="0" stopColor="#4adede" />
+                    <stop offset="1" stopColor="#6172d6" />
                   </linearGradient>
                 </defs>
                 <path
@@ -480,8 +480,8 @@ const ExpandedMenu = () => {
                   y2="1.024"
                   gradientUnits="objectBoundingBox"
                 >
-                  <stop offset="0" stop-color="#4adede" />
-                  <stop offset="1" stop-color="#6172d6" />
+                  <stop offset="0" stopColor="#4adede" />
+                  <stop offset="1" stopColor="#6172d6" />
                 </linearGradient>
               </defs>
               <path
