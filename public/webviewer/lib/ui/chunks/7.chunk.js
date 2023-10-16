@@ -15047,7 +15047,7 @@
             "startoffset",
             "stddeviation",
             "stitchtiles",
-            "stopColor",
+            "stop-color",
             "stop-opacity",
             "stroke-dasharray",
             "stroke-dashoffset",

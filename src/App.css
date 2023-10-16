@@ -6205,6 +6205,7 @@ input[type="time"]::-webkit-clear-button {
   text-align: left !important;
   padding: 6px 4px !important;
 }
+
 .ant-table-expand-icon-col {
   width: 15px !important;
 }
@@ -6216,4 +6217,7 @@ input[type="time"]::-webkit-clear-button {
 .custom-progress .progress-bar {
   background-color: #81db86 !important;
   /* Add any other custom styles you want */
+}
+.td.ant-table-column-sort {
+  background-color: transparent !important;
 }

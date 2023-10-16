@@ -94,7 +94,8 @@ const DataRoom = () => {
   // tooltip
   const dispatch = useDispatch();
   const location = useLocation();
-
+  const [filteredInfo, setFilteredInfo] = useState({});
+  const [sortedInfo, setSortedInfo] = useState({});
   const { t } = useTranslation();
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [showbarupload, setShowbarupload] = useState(false);
@@ -550,8 +551,8 @@ const DataRoom = () => {
         );
       }
     }
-    setCurrentSort(sorter?.order);
-    fetchDataWithSorting(sorter?.order);
+    setFilteredInfo(filters);
+    setSortedInfo(sorter);
   };
 
   const handleSortMyDocuments = (pagination, filters, sorter) => {
@@ -616,8 +617,55 @@ const DataRoom = () => {
 
     if (sorter.field === "owner") {
     }
+    setFilteredInfo(filters);
+    setSortedInfo(sorter);
   };
 
+  const handleSortMyRecentTab = (pagination, filters, sorter) => {
+    console.log(
+      { pagination, filters, sorter },
+      "handleSortMyDocumentshandleSortMyDocuments"
+    );
+    if (sorter.field === "name") {
+      if (sorter.order === "ascend") {
+        dispatch(getDocumentsAndFolderApi(navigate, 5, t, 1, 1, false));
+      } else {
+        dispatch(getDocumentsAndFolderApi(navigate, 5, t, 1, 1, true));
+      }
+    }
+    if (sorter.field === "modifiedDate") {
+      if (filters.modifiedDate !== null) {
+        let getFilterValue = filters.modifiedDate[0];
+        if (getFilterValue === 2) {
+          setCurrentFilter(t("Last-modified"));
+          setFilterValue(2);
+        } else if (getFilterValue === 3) {
+          setCurrentFilter(t("Last-modified-by-me"));
+          setFilterValue(3);
+        } else if (getFilterValue === 4) {
+          setFilterValue(4);
+          setCurrentFilter(t("Last-open-by-me"));
+        }
+        dispatch(
+          getDocumentsAndFolderApi(
+            navigate,
+            5,
+            t,
+            1,
+            Number(getFilterValue),
+            true
+          )
+        );
+      } else {
+        dispatch(getDocumentsAndFolderApi(navigate, 5, t, 1, Number(2), true));
+      }
+    }
+
+    if (sorter.field === "owner") {
+    }
+    setFilteredInfo(filters);
+    setSortedInfo(sorter);
+  };
   const fetchDataWithSorting = async (sortOrder) => {
     // Call your API with the selected sort order and current filter value
     // Update the data state with the response data
@@ -629,7 +677,8 @@ const DataRoom = () => {
       dataIndex: "name",
       key: "name",
       width: "200px",
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ["ascend", "descend"],
+      sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
 
       render: (text, data) => {
         let ext = data.name.split(".").pop();
@@ -777,8 +826,8 @@ const DataRoom = () => {
       dataIndex: "owner",
       key: "owner",
       width: "90px",
-      sortDirections: ["descend", "ascend"],
-      sorter: (a, b) => a.owner.toLowerCase() < b.owner.toLowerCase(),
+      sortDirections: ["ascend", "descend"],
+      sortOrder: sortedInfo.columnKey === "owner" && sortedInfo.order,
       render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
       },
@@ -790,7 +839,6 @@ const DataRoom = () => {
       width: "110px",
       align: "center",
       sorter: true,
-      sortOrder: true,
       filters: [
         {
           text: t("Last-modified"),
@@ -809,7 +857,8 @@ const DataRoom = () => {
       filterIcon: (filtered) => (
         <DownOutlined className="filter-chevron-icon-todolist" />
       ),
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ["ascend", "descend"],
+      sortOrder: sortedInfo.columnKey === "modifiedDate" && sortedInfo.order,
       render: (text, data) => {
         return (
           <span className={styles["dataroom_table_heading"]}>
@@ -1087,9 +1136,11 @@ const DataRoom = () => {
       title: t("Name"),
       dataIndex: "name",
       key: "name",
+      sorter: true,
       width: "200px",
-      sortDirections: ["descend", "ascend"],
 
+      sortDirections: ["ascend", "descend"],
+      sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
       render: (text, data) => {
         let ext = data.name.split(".").pop();
         const pdfData = {
@@ -1220,15 +1271,14 @@ const DataRoom = () => {
           }
         }
       },
-      sorter: (a, b) => a.name.toLowerCase() < b.name.toLowerCase(),
     },
     {
       title: t("Owner"),
       dataIndex: "owner",
       key: "owner",
       width: "90px",
-      sortDirections: ["descend", "ascend"],
-      sorter: (a, b) => a.owner.toLowerCase() < b.owner.toLowerCase(),
+      sortDirections: ["ascend", "descend"],
+      sortOrder: sortedInfo.columnKey === "owner" && sortedInfo.order,
       render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
       },
@@ -1240,7 +1290,6 @@ const DataRoom = () => {
       width: "110px",
       align: "center",
       sorter: true,
-      sortOrder: true,
       filters: [
         {
           text: t("Last-modified"),
@@ -1259,7 +1308,8 @@ const DataRoom = () => {
       filterIcon: (filtered) => (
         <DownOutlined className="filter-chevron-icon-todolist" />
       ),
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ["ascend", "descend"],
+      sortOrder: sortedInfo.columnKey === "modifiedDate" && sortedInfo.order,
       render: (text, data) => {
         return (
           <span className={styles["dataroom_table_heading"]}>
@@ -2607,7 +2657,7 @@ const DataRoom = () => {
                                       </span>
                                     ),
                                   }}
-                                  // onChange={handleSortMyDocuments}
+                                  onChange={handleSortMyRecentTab}
                                   // rowSelection={rowSelection}
                                   size={"middle"}
                                 />
@@ -2715,8 +2765,8 @@ const DataRoom = () => {
                                   scrollableTarget="scrollableDiv"
                                 >
                                   <TableToDo
-                                    sortDirections={["descend", "ascend"]}
                                     column={MyDocumentsColumns}
+                                    sortDirections={["descend", "ascend"]}
                                     className={"DataRoom_Table"}
                                     onRow={(record, rowIndex) => {
                                       return {

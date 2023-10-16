@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AgendaContritbutorsModal.module.css";
 import { Modal, Button } from "../../../../../../components/elements";
-import { showAddAgendaContributor } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  showAddAgendaContributor,
+  showAgendaContributorsModals,
+} from "../../../../../../store/actions/NewMeetingActions";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import { useDispatch, useSelector } from "react-redux";
 import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
@@ -14,7 +17,12 @@ import makeAnimated from "react-select/animated";
 import { GetAllCommitteesUsersandGroups } from "../../../../../../store/actions/MeetingOrganizers_action";
 import GroupIcon from "../../../../../../assets/images/Path 636.png";
 import committeeicon from "../../../../../../assets/images/committeedropdown.svg";
-const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
+const AgendaContributorsModal = ({
+  SelectedRSVP,
+  rowsData,
+  setRowsData,
+  setNotificedMembersData,
+}) => {
   const animatedComponents = makeAnimated();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -144,7 +152,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID !== null ? currentMeetingID : 1686,
+      MeetingID: currentMeetingID !== null ? currentMeetingID : 0,
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
   }, []);
@@ -185,11 +193,10 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                       displayPicture:
                         gUser.profilePicture.displayProfilePictureName,
                       email: gUser.emailAddress,
-                      IsPrimaryOrganizer: false,
-                      IsOrganizerNotified: false,
                       Title: "",
                       isRSVP: SelectedRSVP.value === 1 ? true : false,
                       isEdit: false,
+                      isContributedNotified: true,
                     };
                     tem.push(newUser);
                   }
@@ -216,8 +223,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                       displayPicture:
                         cUser.profilePicture.displayProfilePictureName,
                       email: cUser.emailAddress,
-                      IsPrimaryOrganizer: false,
-                      IsOrganizerNotified: false,
+                      isContributedNotified: true,
                       Title: "",
                       isRSVP: SelectedRSVP.value === 1 ? true : false,
                       isEdit: false,
@@ -243,8 +249,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                   displayPicture:
                     check2.profilePicture.displayProfilePictureName,
                   email: check2.emailAddress,
-                  IsPrimaryOrganizer: false,
-                  IsOrganizerNotified: false,
+                  isContributedNotified: true,
                   Title: "",
                   isRSVP: SelectedRSVP.value === 1 ? true : false,
                   isEdit: false,
@@ -287,6 +292,8 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
 
     setRowsData(newData);
     dispatch(showAddAgendaContributor(false));
+    dispatch(showAgendaContributorsModals(true));
+    setNotificedMembersData(newData);
     // Combine the arrays into newData
   };
   return (
