@@ -138,7 +138,10 @@ const Participants = ({
         if (row.userID === userID) {
           return {
             ...row,
-            ParticipantRoleID: selectedOption.value,
+            participantRole: {
+              participantRole: selectedOption.label,
+              participantRoleID: selectedOption.value,
+            },
           };
         }
         return row;
@@ -343,13 +346,14 @@ const Participants = ({
       newData.push({
         UserID: data.userID,
         Title: data.Title,
-        ParticipantRoleID: data.ParticipantRoleID,
+        ParticipantRoleID: data.participantRole.participantRoleID,
         MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
       });
     });
     let Data = {
       MeetingParticipants: newData,
     };
+    console.log({ Data }, "DataData");
 
     dispatch(SaveparticipantsApi(Data, navigate, t));
   };
