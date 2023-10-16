@@ -78,6 +78,7 @@ body[dir="rtl"] .polling_searchinput {
   right: 88% !important;
   cursor: pointer !important;
 }
+
 .ResetButtonMeeting {
   padding: 12px 30px !important;
   border-radius: 4px !important;
@@ -255,6 +256,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
   background: #fff !important;
   color: #5a5a5a !important;
 }
+
 .publishedMeetingButton {
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
@@ -263,6 +265,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
   background: #fff !important;
   color: #5a5a5a !important;
 }
+
 .publishedMeetingButton-active {
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
@@ -271,6 +274,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
   background: #6172d6 !important;
   color: #fff !important;
 }
+
 .UnpublishedMeetingButton-active {
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
@@ -279,6 +283,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
   background: #6172d6 !important;
   color: #fff !important;
 }
+
 .UnpublishedMeetingButton:is(:hover, :active, :focus, :focus-visible) {
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
@@ -287,15 +292,18 @@ body[dir="rtl"] .PaginationStyle-Committee {
   background: #fff !important;
   color: #5a5a5a !important;
 }
+
 .meetingTitle {
   font-family: "MontserratSemiBold" !important;
   color: #6172d6;
   font-size: 12px !important;
   cursor: pointer;
 }
+
 .width-10 {
   width: 10px !important;
 }
+
 .Calendar_Meeting button {
   width: 160px;
   height: 31px;
@@ -374,7 +382,7 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
   border-bottom: 0;
   border-left: 0.3em solid transparent;
 }
+
 .schedule_button {
   font-size: calc(14px - 20%);
-  margin-left: 12px !important;
 }
