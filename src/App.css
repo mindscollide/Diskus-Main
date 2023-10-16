@@ -6195,7 +6195,6 @@ input[type="time"]::-webkit-clear-button {
 }
 .unpublished_meeting-body tr td {
   padding: 6px 0px !important;
-
 }
 
 .ant-table-wrapper.newMeetingTable .ant-table-thead tr th:nth-child(1) {
@@ -6213,4 +6212,7 @@ input[type="time"]::-webkit-clear-button {
 .custom-progress .progress-bar {
   background-color: #81db86 !important;
   /* Add any other custom styles you want */
+}
+.td.ant-table-column-sort {
+  background-color: transparent !important;
 }
