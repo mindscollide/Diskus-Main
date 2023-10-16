@@ -198,7 +198,11 @@ const Participants = ({
                   placeholder={t("Participant-title")}
                   labelClass={"d-none"}
                   applyClass={"Organizer_table"}
-                  value={inputValues[record.userID] || ""}
+                  value={
+                    record.isComingApi === true
+                      ? record.Title
+                      : inputValues[record.userID] || ""
+                  }
                   change={(e) =>
                     handleInputChange(record.userID, e.target.value)
                   } // Update the inputValues when the user types
