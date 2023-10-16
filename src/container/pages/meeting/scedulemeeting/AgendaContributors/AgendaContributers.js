@@ -843,6 +843,7 @@ const AgendaContributers = ({
           notifyMessageField={notifyMessageField}
           setNotifyMessageField={setNotifyMessageField}
           specificUser={specificUser}
+          setSpecifiUser={setSpecifiUser}
         />
       )}
       {NewMeetingreducer.cancelAgendaContributor && (

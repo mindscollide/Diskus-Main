@@ -26,6 +26,7 @@ const NotifyAgendaModal = ({
   setNotifyMessageField,
   notifyMessageField,
   specificUser,
+  setSpecifiUser,
 }) => {
   console.log(
     { notifiedMembersData },
@@ -43,6 +44,7 @@ const NotifyAgendaModal = ({
 
   const handleCrossIcon = () => {
     dispatch(showAgendaContributorsModals(false));
+    setSpecifiUser(0);
   };
 
   const HandleChange = (e, index) => {
