@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="254.997" height="80" viewBox="0 0 254.997 80">
   <defs>
     <linearGradient id="linear-gradient" x1="1" x2="0" y2="1" gradientUnits="objectBoundingBox">
-      <stop offset="0" stopColor="#3cebb9"/>
-      <stop offset="1" stopColor="#7ba5ff"/>
+      <stop offset="0" stop-color="#3cebb9"/>
+      <stop offset="1" stop-color="#7ba5ff"/>
     </linearGradient>
     <linearGradient id="linear-gradient-2" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
-      <stop offset="0" stopColor="#4adede"/>
-      <stop offset="1" stopColor="#6172d6"/>
+      <stop offset="0" stop-color="#4adede"/>
+      <stop offset="1" stop-color="#6172d6"/>
     </linearGradient>
   </defs>
   <g id="Group_253" data-name="Group 253" transform="translate(-10.002 0.001)">
