@@ -471,25 +471,62 @@ const TodoList = () => {
       },
       render: (text, record) => {
         if (Number(record.taskCreator.pK_UID) === Number(createrID)) {
-          return (
-            <p
-              className={
-                text.pK_TSID === 1
-                  ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
-                  : text.pK_TSID === 2
-                  ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 3
-                  ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
-                  : text.pK_TSID === 4
-                  ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 5
-                  ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
-                  : null
-              }
-            >
-              {text.status}
-            </p>
-          );
+          if (
+            Number(
+              record.taskAssignedTo[0].pK_UID ===
+                Number(record.taskCreator.pK_UID)
+            )
+          ) {
+            return (
+              <Select
+                defaultValue={text.status}
+                bordered={false}
+                dropdownClassName="Status-Todo"
+                className={
+                  text.pK_TSID === 1
+                    ? "InProgress MontserratSemiBold "
+                    : text.pK_TSID === 2
+                    ? "Pending MontserratSemiBold "
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold "
+                    : text.pK_TSID === 4
+                    ? "Cancelled MontserratSemiBold "
+                    : text.pK_TSID === 5
+                    ? "Completed MontserratSemiBold "
+                    : null
+                }
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+              >
+                {statusOptions.map((optValue, index) => {
+                  return (
+                    <option key={optValue.id} value={optValue.id}>
+                      {optValue.status}
+                    </option>
+                  );
+                })}
+              </Select>
+            );
+          } else {
+            return (
+              <p
+                className={
+                  text.pK_TSID === 1
+                    ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
+                    : text.pK_TSID === 2
+                    ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                    : text.pK_TSID === 4
+                    ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 5
+                    ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                    : null
+                }
+              >
+                {text.status}
+              </p>
+            );
+          }
         } else {
           return record.taskAssignedTo.map((newdata, index) => {
             if (Number(newdata.pK_UID) === Number(createrID)) {
