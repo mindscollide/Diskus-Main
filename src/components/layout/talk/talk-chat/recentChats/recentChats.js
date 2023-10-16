@@ -156,7 +156,6 @@ const RecentChats = () => {
     }
     try {
       if (record.messageType === 'O') {
-        localStorage.setItem('activeOtoChatID', record.id)
         dispatch(GetOTOUserMessages(navigate, chatOTOData, t))
       } else if (record.messageType === 'G') {
         dispatch(GetGroupMessages(navigate, chatGroupData, t))
@@ -167,6 +166,7 @@ const RecentChats = () => {
     } catch (error) {
       // console.log('error in call api')
     }
+    localStorage.setItem('activeOtoChatID', record.id)
   }
 
   const unblockblockContactHandler = (record) => {
@@ -203,57 +203,39 @@ const RecentChats = () => {
   }
 
   useEffect(() => {
-    // Find the index of the object in the second state with matching ID
     if (allChatData.length !== 0) {
-      const matchingIndex = allChatData.findIndex(
-        (obj) => obj.id === talkStateData.PushChatData.id,
+      const updatedChatData = [...allChatData] // Create a copy of the array
+
+      // Find the index of the chat to update or insert
+      const index = updatedChatData.findIndex(
+        (chat) => chat.id === talkStateData.PushChatData.id,
       )
 
-      // If a match is found, replace the object at the matching index with the one from the first state
-      if (matchingIndex !== -1) {
-        const updatedAllChatData = [...allChatData] // Create a copy to avoid mutating state directly
-        updatedAllChatData[matchingIndex] = talkStateData.PushChatData
-        // Sort the updatedAllChatData based on messageDate and messageTime
-        updatedAllChatData.sort((a, b) => {
-          const aTimestamp = new Date(
-            `${a.messageDate.substr(0, 4)}-${a.messageDate.substr(
-              4,
-              2,
-            )}-${a.messageDate.substr(6, 2)} ${a.messageDate.substr(
-              8,
-              2,
-            )}:${a.messageDate.substr(10, 2)}:${a.messageDate.substr(12, 2)}`,
-          ).getTime()
-
-          const bTimestamp = new Date(
-            `${b.messageDate.substr(0, 4)}-${b.messageDate.substr(
-              4,
-              2,
-            )}-${b.messageDate.substr(6, 2)} ${b.messageDate.substr(
-              8,
-              2,
-            )}:${b.messageDate.substr(10, 2)}:${b.messageDate.substr(12, 2)}`,
-          ).getTime()
-
-          return bTimestamp - aTimestamp
-        })
-
-        setAllChatData(updatedAllChatData)
+      if (index !== -1) {
+        // Update the existing chat data
+        updatedChatData[index] = {
+          ...updatedChatData[index],
+          ...talkStateData.PushChatData,
+        }
+      } else {
+        // Insert the new chat data
+        updatedChatData.push(talkStateData.PushChatData)
       }
-    }
-    // Check if PushChatData is not empty
-    if (talkStateData.PushChatData.length !== 0) {
-      // Check if PushChatData.id is not equal to any existing object's id in allChatData
-      const isIdUnique = allChatData.every(
-        (obj) => obj.id !== talkStateData.PushChatData.id,
-      )
 
-      if (isIdUnique) {
-        setAllChatData((prevChatData) => [
-          talkStateData.PushChatData,
-          ...prevChatData,
-        ])
-      }
+      // Sort the updatedChatData array by messageDate in descending order
+      updatedChatData.sort((a, b) => {
+        const dateA = a.messageDate
+        const dateB = b.messageDate
+
+        // Convert custom date strings to numerical values for comparison
+        const numericDateA = parseInt(`${dateA.slice(0, 8)}${dateA.slice(8)}`)
+        const numericDateB = parseInt(`${dateB.slice(0, 8)}${dateB.slice(8)}`)
+
+        return numericDateB - numericDateA
+      })
+
+      // Set the state with the sorted updatedChatData
+      setAllChatData(updatedChatData)
     } else if (
       allChatData.length === 0 &&
       talkStateData.PushChatData.length !== 0
@@ -265,8 +247,6 @@ const RecentChats = () => {
     }
   }, [talkStateData.PushChatData])
 
-  console.log('All Chat Data', allChatData, allChatData.length)
-
   //Making Data from MQTT Response
   useEffect(() => {
     if (
@@ -275,13 +255,46 @@ const RecentChats = () => {
       talkStateData.talkSocketData.socketInsertOTOMessageData.length !== 0
     ) {
       try {
-        if (
+        let mqttInsertOtoMessageData =
+          talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+        if (talkStateData.ActiveChatData.length === 0) {
+          let allChatNewMessageOtoData = {
+            id:
+              parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
+                ? mqttInsertOtoMessageData.receiverID
+                : parseInt(currentUserId) ===
+                  mqttInsertOtoMessageData.receiverID
+                ? mqttInsertOtoMessageData.senderID
+                : null,
+            fullName:
+              parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
+                ? mqttInsertOtoMessageData.receiverName
+                : parseInt(currentUserId) ===
+                  mqttInsertOtoMessageData.receiverID
+                ? mqttInsertOtoMessageData.senderName
+                : null,
+            imgURL: 'O.jpg',
+            messageBody: mqttInsertOtoMessageData.messageBody,
+            messageDate: mqttInsertOtoMessageData.sentDate,
+            notiCount: 0,
+            messageType: 'O',
+            isOnline: true,
+            isBlock: 0,
+            companyName: 'Tresmark',
+            sentDate: mqttInsertOtoMessageData.sentDate,
+            receivedDate: mqttInsertOtoMessageData.receivedDate,
+            seenDate: mqttInsertOtoMessageData.seenDate,
+            attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
+            senderID: mqttInsertOtoMessageData.senderID,
+            admin: 0,
+          }
+          console.log('Dispatch First Condition')
+          dispatch(pushChatData(allChatNewMessageOtoData))
+        } else if (
           talkStateData.ActiveChatData.id ===
           talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
             .receiverID
         ) {
-          let mqttInsertOtoMessageData =
-            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
           let allChatNewMessageOtoData = {
             id:
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
@@ -312,8 +325,8 @@ const RecentChats = () => {
             senderID: mqttInsertOtoMessageData.senderID,
             admin: 0,
           }
+          console.log('Dispatch Second Condition')
           dispatch(pushChatData(allChatNewMessageOtoData))
-          console.log('This Condition Working')
         } else if (
           parseInt(currentUserId) ===
             talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
@@ -322,8 +335,6 @@ const RecentChats = () => {
             talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
               .senderID
         ) {
-          let mqttInsertOtoMessageData =
-            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
           let allChatNewMessageOtoData = {
             id:
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
@@ -355,67 +366,13 @@ const RecentChats = () => {
             admin: 0,
           }
           dispatch(pushChatData(allChatNewMessageOtoData))
-          console.log('This Condition Working')
+          console.log('Dispatch Third Condition')
         } else if (
-          parseInt(currentUserId) ===
-            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-              .receiverID &&
           talkStateData.ActiveChatData.id !==
-            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-              .senderID
+            mqttInsertOtoMessageData.senderID &&
+          talkStateData.ActiveChatData.id !==
+            mqttInsertOtoMessageData.receiverID
         ) {
-          if (
-            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-              .senderID != undefined &&
-            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-              .senderID != null &&
-            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-              .senderID != 0 &&
-            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-              .senderID != '' &&
-            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-              .senderID != '0' &&
-            talkStateData.ActiveChatData.id === 0 &&
-            talkStateData.ActiveChatData.messageType === ''
-          ) {
-            let mqttInsertOtoMessageData =
-              talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-            let allChatNewMessageOtoData = {
-              id:
-                parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
-                  ? mqttInsertOtoMessageData.receiverID
-                  : parseInt(currentUserId) ===
-                    mqttInsertOtoMessageData.receiverID
-                  ? mqttInsertOtoMessageData.senderID
-                  : null,
-              fullName:
-                parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
-                  ? mqttInsertOtoMessageData.receiverName
-                  : parseInt(currentUserId) ===
-                    mqttInsertOtoMessageData.receiverID
-                  ? mqttInsertOtoMessageData.senderName
-                  : null,
-              imgURL: 'O.jpg',
-              messageBody: mqttInsertOtoMessageData.messageBody,
-              messageDate: mqttInsertOtoMessageData.sentDate,
-              notiCount: 0,
-              messageType: 'O',
-              isOnline: true,
-              isBlock: 0,
-              companyName: 'Tresmark',
-              sentDate: mqttInsertOtoMessageData.sentDate,
-              receivedDate: mqttInsertOtoMessageData.receivedDate,
-              seenDate: mqttInsertOtoMessageData.seenDate,
-              attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
-              senderID: mqttInsertOtoMessageData.senderID,
-              admin: 0,
-            }
-            dispatch(pushChatData(allChatNewMessageOtoData))
-            console.log('This Condition Working')
-          }
-        } else if (talkStateData.ActiveChatData.length !== 0) {
-          let mqttInsertOtoMessageData =
-            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
           let allChatNewMessageOtoData = {
             id:
               parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
@@ -447,14 +404,155 @@ const RecentChats = () => {
             admin: 0,
           }
           dispatch(pushChatData(allChatNewMessageOtoData))
-          console.log('This Condition Working')
+          console.log('Dispatch Fourth Condition')
         }
-      } catch {
-        console.log('Error in MQTT OTO')
-      }
+      } catch {}
     }
     //
   }, [talkStateData.talkSocketData.socketInsertOTOMessageData])
+
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketData.socketInsertGroupMessageData !== null &&
+      talkStateData.talkSocketData.socketInsertGroupMessageData !== undefined &&
+      talkStateData.talkSocketData.socketInsertGroupMessageData.length !== 0
+    ) {
+      try {
+        let mqttInsertGroupMessageData =
+          talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+        if (talkStateData.ActiveChatData.length === 0) {
+          let newGroupMessageChat = {
+            id: mqttInsertGroupMessageData.receiverID,
+            fullName: mqttInsertGroupMessageData.groupName,
+            imgURL: 'O.jpg',
+            messageBody: mqttInsertGroupMessageData.messageBody,
+            messageDate: mqttInsertGroupMessageData.sentDate,
+            notiCount: 0,
+            messageType: 'G',
+            isOnline: true,
+            companyName: 'Tresmark',
+            sentDate: mqttInsertGroupMessageData.sentDate,
+            receivedDate: '',
+            seenDate: '',
+            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            senderID: parseInt(currentUserId),
+            admin: mqttInsertGroupMessageData.admin,
+          }
+          dispatch(pushChatData(newGroupMessageChat))
+          console.log('Dispatch Condition 1')
+        } else if (
+          talkStateData.ActiveChatData.messageType === '' &&
+          talkStateData.ActiveChatData.id === 0
+        ) {
+          let newGroupMessageChat = {
+            id: mqttInsertGroupMessageData.receiverID,
+            fullName: mqttInsertGroupMessageData.groupName,
+            imgURL: 'O.jpg',
+            messageBody: mqttInsertGroupMessageData.messageBody,
+            messageDate: mqttInsertGroupMessageData.sentDate,
+            notiCount: 0,
+            messageType: 'G',
+            isOnline: true,
+            companyName: 'Tresmark',
+            sentDate: mqttInsertGroupMessageData.sentDate,
+            receivedDate: '',
+            seenDate: '',
+            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            senderID: parseInt(currentUserId),
+            admin: mqttInsertGroupMessageData.admin,
+          }
+          dispatch(pushChatData(newGroupMessageChat))
+          console.log('Dispatch Condition 2')
+        } else if (
+          mqttInsertGroupMessageData.senderID != undefined &&
+          mqttInsertGroupMessageData.senderID != null &&
+          mqttInsertGroupMessageData.senderID != 0 &&
+          mqttInsertGroupMessageData.senderID != '' &&
+          mqttInsertGroupMessageData.senderID != '0' &&
+          talkStateData.ActiveChatData.id ===
+            mqttInsertGroupMessageData.receiverID
+        ) {
+          let newGroupMessageChat = {
+            id: mqttInsertGroupMessageData.receiverID,
+            fullName: mqttInsertGroupMessageData.groupName,
+            imgURL: 'O.jpg',
+            messageBody: mqttInsertGroupMessageData.messageBody,
+            messageDate: mqttInsertGroupMessageData.sentDate,
+            notiCount: 0,
+            messageType: 'G',
+            isOnline: true,
+            companyName: 'Tresmark',
+            sentDate: mqttInsertGroupMessageData.sentDate,
+            receivedDate: '',
+            seenDate: '',
+            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            senderID: parseInt(currentUserId),
+            admin: mqttInsertGroupMessageData.admin,
+          }
+          dispatch(pushChatData(newGroupMessageChat))
+          console.log('Dispatch Condition 3')
+        }
+        if (
+          mqttInsertGroupMessageData.senderID != undefined &&
+          mqttInsertGroupMessageData.senderID != null &&
+          mqttInsertGroupMessageData.senderID != 0 &&
+          mqttInsertGroupMessageData.senderID != '' &&
+          mqttInsertGroupMessageData.senderID != '0' &&
+          talkStateData.ActiveChatData.id !==
+            mqttInsertGroupMessageData.receiverID
+        ) {
+          let newGroupMessageChat = {
+            id: mqttInsertGroupMessageData.receiverID,
+            fullName: mqttInsertGroupMessageData.groupName,
+            imgURL: 'O.jpg',
+            messageBody: mqttInsertGroupMessageData.messageBody,
+            messageDate: mqttInsertGroupMessageData.sentDate,
+            notiCount: 0,
+            messageType: 'G',
+            isOnline: true,
+            companyName: 'Tresmark',
+            sentDate: mqttInsertGroupMessageData.sentDate,
+            receivedDate: '',
+            seenDate: '',
+            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            senderID: parseInt(currentUserId),
+            admin: mqttInsertGroupMessageData.admin,
+          }
+          dispatch(pushChatData(newGroupMessageChat))
+          console.log('Dispatch Condition 4')
+        } else if (
+          mqttInsertGroupMessageData.senderID != undefined &&
+          mqttInsertGroupMessageData.senderID != null &&
+          mqttInsertGroupMessageData.senderID != 0 &&
+          mqttInsertGroupMessageData.senderID != '' &&
+          mqttInsertGroupMessageData.senderID != '0' &&
+          parseInt(currentUserId) !== mqttInsertGroupMessageData.senderID
+        ) {
+          let newGroupMessageChat = {
+            id: mqttInsertGroupMessageData.receiverID,
+            fullName: mqttInsertGroupMessageData.groupName,
+            imgURL: 'O.jpg',
+            messageBody: mqttInsertGroupMessageData.messageBody,
+            messageDate: mqttInsertGroupMessageData.sentDate,
+            notiCount: 0,
+            messageType: 'G',
+            isOnline: true,
+            companyName: 'Tresmark',
+            sentDate: mqttInsertGroupMessageData.sentDate,
+            receivedDate: '',
+            seenDate: '',
+            attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            senderID: parseInt(currentUserId),
+            admin: mqttInsertGroupMessageData.admin,
+          }
+          dispatch(pushChatData(newGroupMessageChat))
+          console.log('Dispatch Condition 5')
+        }
+      } catch (error) {
+        console.log('Dispatch Catch', error)
+      }
+    }
+  }, [talkStateData.talkSocketData.socketInsertGroupMessageData])
 
   useEffect(() => {
     if (
@@ -463,12 +561,22 @@ const RecentChats = () => {
       talkStateData.talkSocketUnreadMessageCount.unreadMessageData !== null &&
       talkStateData.talkSocketUnreadMessageCount.unreadMessageData.length !== 0
     ) {
-      if (
+      let chatNotificationCount =
+        talkStateData.talkSocketUnreadMessageCount.unreadMessageData.data[0]
+      let idActiveChat = Number(localStorage.getItem('activeOtoChatID'))
+      if (idActiveChat === 0) {
+        const updatedAllChatData = allChatData.map((chat) => {
+          if (chat.id === chatNotificationCount.chatID) {
+            chat.notiCount = chatNotificationCount.chatCount
+          }
+          return chat
+        })
+        setAllChatData(updatedAllChatData)
+      } else if (
         talkStateData.ActiveChatData.id ===
         talkStateData.talkSocketUnreadMessageCount.unreadMessageData.data[0]
           .chatID
       ) {
-        // Update state1 immutably
         const updatedAllChatData = allChatData.map((item) => {
           if (
             item.id ===
@@ -484,7 +592,6 @@ const RecentChats = () => {
         })
         setAllChatData(updatedAllChatData)
       } else {
-        // Update state1 immutably
         const updatedAllChatData = allChatData.map((item) => {
           if (
             item.id ===
@@ -653,6 +760,8 @@ const RecentChats = () => {
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser])
 
   console.log('RecentChat TalkStates', talkStateData)
+
+  console.log('All Chat Data', allChatData)
 
   return (
     <>
