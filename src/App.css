@@ -6070,6 +6070,7 @@ input[type="time"] {
 input[type="time"]:after {
   content: "\1F550";
   color: #555;
+  margin-left: 12px !important;
   /* padding: 0 5px; */
 }
 
@@ -6218,6 +6219,12 @@ input[type="time"]::-webkit-clear-button {
   background-color: #81db86 !important;
   /* Add any other custom styles you want */
 }
+
+/* status Slector TodoList Css */
+.ant-select-single .ant-select-selector .ant-select-selection-item {
+  margin-left: 18px !important;
+}
+
 .td.ant-table-column-sort {
   background-color: transparent !important;
 }

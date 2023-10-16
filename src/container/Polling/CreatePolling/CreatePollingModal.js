@@ -48,6 +48,7 @@ const CreatePolling = () => {
   const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
+  const [isCalendarOpen, setCalendarOpen] = useState(false);
   const { t } = useTranslation();
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -97,6 +98,7 @@ const CreatePolling = () => {
   );
   const handleIconClick = () => {
     if (datePickerRef.current) {
+      setCalendarOpen(!isCalendarOpen);
       datePickerRef.current.openCalendar();
     }
   };
@@ -361,6 +363,7 @@ const CreatePolling = () => {
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
     return newDate;
+    setCalendarOpen(false);
   };
 
   const checkOptions = (data) => {
@@ -574,21 +577,28 @@ const CreatePolling = () => {
                                 ? changeDateStartHandler2(createPollData.date)
                                 : ""}
                             </span>
+
                             <DatePicker
-                              highlightToday={false}
-                              onOpenPickNewDate={true}
-                              ref={datePickerRef}
+                              selected={createPollData.date}
+                              format={dateFormat}
+                              minDate={moment().toDate()}
+                              placeholder="DD/MM/YYYY"
                               render={<CustomIcon />}
+                              isOpen={isCalendarOpen}
+                              calendarPosition="bottom-right"
+                              editable={true}
+                              className="datePickerTodoCreate2"
+                              onOpenPickNewDate={false}
+                              highlightToday={false}
+                              inputMode=""
+                              showOtherDays
+                              calendar={calendarValue}
+                              locale={localValue}
+                              ref={datePickerRef}
+                              onClick={handleIconClick}
                               onChange={(value) =>
                                 changeDateStartHandler(value)
                               }
-                              format={dateFormat}
-                              calendarPosition="bottom-center"
-                              minDate={moment().toDate()}
-                              className="datePickerTodoCreate2"
-                              calendar={calendarValue}
-                              locale={localValue}
-                              onClick={handleIconClick}
                             />
                           </span>
                         </Col>
