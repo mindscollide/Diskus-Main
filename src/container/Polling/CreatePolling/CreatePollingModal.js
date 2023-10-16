@@ -362,8 +362,8 @@ const CreatePolling = () => {
 
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
-    setCalendarOpen(false);
     return newDate;
+    setCalendarOpen(false);
   };
 
   const checkOptions = (data) => {
@@ -592,9 +592,9 @@ const CreatePolling = () => {
                               highlightToday={false}
                               inputMode=""
                               showOtherDays
-                              ref={datePickerRef}
                               calendar={calendarValue}
                               locale={localValue}
+                              ref={datePickerRef}
                               onClick={handleIconClick}
                               onChange={(value) =>
                                 changeDateStartHandler(value)
