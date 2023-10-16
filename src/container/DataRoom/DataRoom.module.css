@@ -747,6 +747,9 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   justify-content: flex-start;
   height: 22px !important;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dataroom_location {

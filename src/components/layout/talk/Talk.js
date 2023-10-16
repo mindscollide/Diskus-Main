@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import './Talk.css'
-import { Triangle } from 'react-bootstrap-icons'
+import React, { useState, useEffect, useRef } from "react";
+import "./Talk.css";
+import { Triangle } from "react-bootstrap-icons";
 import {
   GetAllUsers,
   GetAllUsersGroupsRoomsList,
-} from '../../../store/actions/Talk_action'
+} from "../../../store/actions/Talk_action";
 import {
   recentChatFlag,
   headerShowHideStatus,
@@ -14,64 +14,64 @@ import {
   footerActionStatus,
   createGroupScreen,
   chatBoxActiveFlag,
-} from '../../../store/actions/Talk_Feature_actions'
+} from "../../../store/actions/Talk_Feature_actions";
 import {
   participantPopup,
   videoChatPanel,
   recentVideoFlag,
   contactVideoFlag,
   videoChatSearchFlag,
-} from '../../../store/actions/VideoFeature_actions'
-import { useDispatch, useSelector } from 'react-redux'
-import TalkChat from './talk-chat/Talk-Chat'
-import TalkNew from './talk-chat/Talk-New'
-import TalkVideo from './talk-Video/TalkVideo'
-import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+} from "../../../store/actions/VideoFeature_actions";
+import { useDispatch, useSelector } from "react-redux";
+import TalkChat from "./talk-chat/Talk-Chat";
+import TalkNew from "./talk-chat/Talk-New";
+import TalkVideo from "./talk-Video/TalkVideo";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const Talk = () => {
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   //Getting api result from the reducer
   const { talkStateData, videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state,
-  )
+    (state) => state
+  );
 
-  let activeCall = JSON.parse(localStorage.getItem('activeCall'))
+  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
   //Current User ID
-  let currentUserId = localStorage.getItem('userID')
+  let currentUserId = localStorage.getItem("userID");
 
   //Current Organization
-  let currentOrganizationId = localStorage.getItem('organizationID')
+  let currentOrganizationId = localStorage.getItem("organizationID");
 
   // for sub menus Icons
-  const [subIcons, setSubIcons] = useState(false)
-  const [activeChatBox, setActiveChatBox] = useState(false)
+  const [subIcons, setSubIcons] = useState(false);
+  const [activeChatBox, setActiveChatBox] = useState(false);
 
   //for video menu
-  const [videoIcon, setVideoIcon] = useState(false)
-  const [activeVideoIcon, setActiveVideoIcon] = useState(false)
+  const [videoIcon, setVideoIcon] = useState(false);
+  const [activeVideoIcon, setActiveVideoIcon] = useState(false);
 
   // for video Icon Click
   const videoIconClick = () => {
     if (videoFeatureReducer.VideoChatPanel === false) {
-      dispatch(videoChatPanel(true))
-      dispatch(contactVideoFlag(true))
-      dispatch(recentVideoFlag(false))
-      setActiveVideoIcon(true)
-      setActiveChatBox(false)
-      dispatch(videoChatSearchFlag(false))
+      dispatch(videoChatPanel(true));
+      dispatch(contactVideoFlag(true));
+      dispatch(recentVideoFlag(false));
+      setActiveVideoIcon(true);
+      setActiveChatBox(false);
+      dispatch(videoChatSearchFlag(false));
     } else {
-      dispatch(videoChatPanel(false))
-      setActiveVideoIcon(false)
-      setActiveChatBox(false)
-      dispatch(contactVideoFlag(false))
-      dispatch(recentVideoFlag(false))
-      dispatch(videoChatSearchFlag(false))
+      dispatch(videoChatPanel(false));
+      setActiveVideoIcon(false);
+      setActiveChatBox(false);
+      dispatch(contactVideoFlag(false));
+      dispatch(recentVideoFlag(false));
+      dispatch(videoChatSearchFlag(false));
     }
     // setActiveVideoIcon(true)
     // if (activeVideoIcon === false) {
@@ -80,47 +80,47 @@ const Talk = () => {
     //   setActiveVideoIcon(false)
     //   setActiveChatBox(false)
     // }
-  }
+  };
 
   const showsubTalkIcons = () => {
-    setSubIcons(!subIcons)
-    setActiveChatBox(false)
-    setActiveVideoIcon(false)
-    dispatch(videoChatPanel(false))
-  }
+    setSubIcons(!subIcons);
+    setActiveChatBox(false);
+    setActiveVideoIcon(false);
+    dispatch(videoChatPanel(false));
+  };
 
-  let currentLang = localStorage.getItem('i18nextLng')
+  let currentLang = localStorage.getItem("i18nextLng");
 
   const iconClick = () => {
     if (activeChatBox === false) {
       // dispatch(
       //   GetAllUserChats(navigate, currentUserId, currentOrganizationId, t),
       // )
-      dispatch(createShoutAllScreen(false))
-      dispatch(addNewChatScreen(false))
-      dispatch(footerActionStatus(false))
-      dispatch(createGroupScreen(false))
-      dispatch(chatBoxActiveFlag(false))
-      dispatch(recentChatFlag(true))
+      dispatch(createShoutAllScreen(false));
+      dispatch(addNewChatScreen(false));
+      dispatch(footerActionStatus(false));
+      dispatch(createGroupScreen(false));
+      dispatch(chatBoxActiveFlag(false));
+      dispatch(recentChatFlag(true));
       dispatch(
         GetAllUsers(
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t,
-        ),
-      )
+          t
+        )
+      );
       dispatch(
         GetAllUsersGroupsRoomsList(
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t,
-        ),
-      )
-      dispatch(headerShowHideStatus(true))
-      dispatch(footerShowHideStatus(true))
-      setActiveChatBox(true)
+          t
+        )
+      );
+      dispatch(headerShowHideStatus(true));
+      dispatch(footerShowHideStatus(true));
+      setActiveChatBox(true);
     }
     // else if (activeVideoIcon === false) {
     //   dispatch(recentVideoFlag(false))
@@ -130,18 +130,18 @@ const Talk = () => {
     //   dispatch(videoChatSearchFlag(false))
     // }
     else {
-      dispatch(videoChatPanel(false))
-      setActiveVideoIcon(false)
-      setActiveChatBox(false)
-      dispatch(contactVideoFlag(false))
-      dispatch(recentVideoFlag(false))
-      dispatch(videoChatSearchFlag(false))
+      dispatch(videoChatPanel(false));
+      setActiveVideoIcon(false);
+      setActiveChatBox(false);
+      dispatch(contactVideoFlag(false));
+      dispatch(recentVideoFlag(false));
+      dispatch(videoChatSearchFlag(false));
     }
-  }
+  };
 
-  const [unreadMessageCount, setUnreadMessageCount] = useState(0)
+  const [unreadMessageCount, setUnreadMessageCount] = useState(0);
 
-  const [missedCallCount, setMissedCallCount] = useState(0)
+  const [missedCallCount, setMissedCallCount] = useState(0);
 
   // useEffect(() => {
   //   dispatch(
@@ -162,10 +162,10 @@ const Talk = () => {
     ) {
       setUnreadMessageCount(
         talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount[0]
-          ?.totalCount,
-      )
+          ?.totalCount
+      );
     }
-  }, [talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount])
+  }, [talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount]);
 
   //MQTT Unread Message Count
   useEffect(() => {
@@ -176,20 +176,20 @@ const Talk = () => {
       talkStateData.talkSocketUnreadMessageCount.unreadMessageData.length !== 0
     ) {
       let mqttUnreadMessageCount =
-        talkStateData.talkSocketUnreadMessageCount.unreadMessageData
+        talkStateData.talkSocketUnreadMessageCount.unreadMessageData;
       if (Object.keys(mqttUnreadMessageCount) !== null) {
-        setUnreadMessageCount(mqttUnreadMessageCount.data[0].totalCount)
+        setUnreadMessageCount(mqttUnreadMessageCount.data[0].totalCount);
       } else {
         setUnreadMessageCount(
           talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount[0]
-            ?.totalCount,
-        )
+            ?.totalCount
+        );
       }
     }
   }, [
     talkStateData.talkSocketUnreadMessageCount.unreadMessageData,
     talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount,
-  ])
+  ]);
 
   //Setting state data of global response all chat to chatdata
   useEffect(() => {
@@ -198,9 +198,11 @@ const Talk = () => {
       VideoMainReducer.MissedCallCountData !== null &&
       Object.keys(VideoMainReducer.MissedCallCountData).length !== 0
     ) {
-      setMissedCallCount(VideoMainReducer?.MissedCallCountData?.missedCallCount)
+      setMissedCallCount(
+        VideoMainReducer?.MissedCallCountData?.missedCallCount
+      );
     }
-  }, [VideoMainReducer?.MissedCallCountData?.missedCallCount])
+  }, [VideoMainReducer?.MissedCallCountData?.missedCallCount]);
 
   //MQTT Unread Message Count
   useEffect(() => {
@@ -210,34 +212,36 @@ const Talk = () => {
       Object.keys(VideoMainReducer.MissedCallCountMqttData).length !== 0
     ) {
       let missedCallCountMqtt =
-        VideoMainReducer.MissedCallCountMqttData.missedCallCount
+        VideoMainReducer.MissedCallCountMqttData.missedCallCount;
       if (Object.keys(missedCallCountMqtt) !== null) {
-        setMissedCallCount(missedCallCountMqtt)
+        setMissedCallCount(missedCallCountMqtt);
       } else {
-        setMissedCallCount(VideoMainReducer.MissedCallCountData.missedCallCount)
+        setMissedCallCount(
+          VideoMainReducer.MissedCallCountData.missedCallCount
+        );
       }
     }
-  }, [VideoMainReducer.MissedCallCountMqttData.missedCallCount])
+  }, [VideoMainReducer.MissedCallCountMqttData.missedCallCount]);
 
   console.log(
-    'MQTT Condition',
+    "MQTT Condition",
     Object.keys(VideoMainReducer.MissedCallCountMqttData).length !== 0,
-    missedCallCount,
-  )
+    missedCallCount
+  );
 
-  let totalValue = Number(missedCallCount) + Number(unreadMessageCount)
+  let totalValue = Number(missedCallCount) + Number(unreadMessageCount);
 
-  console.log('Video Feature Reducer', videoFeatureReducer)
+  console.log("Video Feature Reducer", videoFeatureReducer);
 
   useEffect(() => {
     if (videoFeatureReducer.VideoChatPanel === false) {
-      setActiveVideoIcon(false)
+      setActiveVideoIcon(false);
     } else {
-      setActiveVideoIcon(true)
+      setActiveVideoIcon(true);
     }
-  }, [videoFeatureReducer.VideoChatPanel])
+  }, [videoFeatureReducer.VideoChatPanel]);
 
-  const videoPanelRef = useRef(null)
+  const videoPanelRef = useRef(null);
 
   const handleOutsideClick = (event) => {
     if (
@@ -245,35 +249,35 @@ const Talk = () => {
       !videoPanelRef.current.contains(event.target) &&
       activeVideoIcon
     ) {
-      setActiveVideoIcon(false)
-      dispatch(videoChatPanel(false))
+      setActiveVideoIcon(false);
+      dispatch(videoChatPanel(false));
       // dispatch(participantPopup(false))
     }
-    console.log('This Event got Clicked')
-  }
+    console.log("This Event got Clicked");
+  };
 
   useEffect(() => {
-    document.addEventListener('click', handleOutsideClick)
+    document.addEventListener("click", handleOutsideClick);
     return () => {
-      document.removeEventListener('click', handleOutsideClick)
-    }
-  }, [activeVideoIcon])
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [activeVideoIcon]);
 
   useEffect(() => {
     if (activeCall === true) {
-      setActiveChatBox(false)
+      setActiveChatBox(false);
     }
-  }, [activeCall])
+  }, [activeCall]);
 
   return (
-    <div ref={videoPanelRef} className={'talk_nav' + ' ' + currentLang}>
+    <div ref={videoPanelRef} className={"talk_nav" + " " + currentLang}>
       {activeChatBox === true ? (
         <TalkNew />
       ) : activeVideoIcon === true ? (
         <TalkVideo />
       ) : null}
-      <div className={subIcons ? 'talk-nav-icons' : 'border-0'}>
-        <div className={subIcons ? 'talk_subIcon' : 'talk_subIcon_hidden'}>
+      <div className={subIcons ? "talk-nav-icons" : "border-0"}>
+        <div className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}>
           {/* <span className="talk-count"></span> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -289,8 +293,8 @@ const Talk = () => {
                 y2="1"
                 gradientUnits="objectBoundingBox"
               >
-                <stop offset="0" stopColor="#4adede" />
-                <stop offset="1" stopColor="#6172d6" />
+                <stop offset="0" stop-color="#4adede" />
+                <stop offset="1" stop-color="#6172d6" />
               </linearGradient>
             </defs>
             <g
@@ -309,12 +313,12 @@ const Talk = () => {
           </svg>
         </div>
         <div
-          className={subIcons ? 'talk_subIcon' : 'talk_subIcon_hidden'}
+          className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
           onClick={videoIconClick}
         >
           {/* <span className="talk-count"></span> */}
-          <span className={missedCallCount === 0 ? '' : 'talk-count'}>
-            {missedCallCount === 0 ? '' : missedCallCount}
+          <span className={missedCallCount === 0 ? "" : "talk-count"}>
+            {missedCallCount === 0 ? "" : missedCallCount}
           </span>
           <svg
             id="Icon_feather-video"
@@ -332,8 +336,8 @@ const Talk = () => {
                 y2="1"
                 gradientUnits="objectBoundingBox"
               >
-                <stop offset="0" stopColor="#4adede" />
-                <stop offset="1" stopColor="#6172d6" />
+                <stop offset="0" stop-color="#4adede" />
+                <stop offset="1" stop-color="#6172d6" />
               </linearGradient>
             </defs>
             <path
@@ -345,11 +349,11 @@ const Talk = () => {
           </svg>
         </div>
         <div
-          className={subIcons ? 'talk_subIcon' : 'talk_subIcon_hidden'}
+          className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
           onClick={iconClick}
         >
-          <span className={unreadMessageCount === 0 ? '' : 'talk-count'}>
-            {unreadMessageCount === 0 ? '' : unreadMessageCount}
+          <span className={unreadMessageCount === 0 ? "" : "talk-count"}>
+            {unreadMessageCount === 0 ? "" : unreadMessageCount}
           </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -365,8 +369,8 @@ const Talk = () => {
                 y2="1"
                 gradientUnits="objectBoundingBox"
               >
-                <stop offset="0" stopColor="#4adede" />
-                <stop offset="1" stopColor="#6172d6" />
+                <stop offset="0" stop-color="#4adede" />
+                <stop offset="1" stop-color="#6172d6" />
               </linearGradient>
             </defs>
             <path
@@ -380,8 +384,8 @@ const Talk = () => {
         </div>
       </div>
       <div className="talk_Icon" onClick={showsubTalkIcons}>
-        <span className={totalValue === 0 ? '' : 'talk-count total'}>
-          {totalValue === 0 ? '' : totalValue}
+        <span className={totalValue === 0 ? "" : "talk-count total"}>
+          {totalValue === 0 ? "" : totalValue}
         </span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -418,7 +422,7 @@ const Talk = () => {
         </svg>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Talk
+export default Talk;

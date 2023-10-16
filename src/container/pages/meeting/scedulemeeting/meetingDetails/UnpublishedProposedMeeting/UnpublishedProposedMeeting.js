@@ -71,7 +71,7 @@ const UnpublishedProposedMeeting = () => {
       title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
-      width: "160px",
+      width: "120px",
       align: "left",
       render: (text, record) => {
         return <span className={styles["meetingTitle"]}>{text}</span>;
@@ -80,31 +80,6 @@ const UnpublishedProposedMeeting = () => {
         return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
       },
     },
-    // {
-    //   title: t("Status"),
-    //   dataIndex: "status",
-    //   key: "status",
-    //   width: "120px",
-    //   filters: [
-    //     {
-    //       text: t("Proposed"),
-    //       value: "12",
-    //     },
-    //     {
-    //       text: t("Unpublished"),
-    //       value: "11",
-    //     },
-    //   ],
-    //   defaultFilteredValue: ["11", "12"],
-    //   filterIcon: (filtered) => (
-    //     <ChevronDown className="filter-chevron-icon-todolist" />
-    //   ),
-    //   onFilter: (value, record) =>
-    //     record.status.toLowerCase().includes(value.toLowerCase()),
-    //   render: (text, record) => {
-    //     return StatusValue(t, record.status);
-    //   },
-    // },
     {
       title: <span> {t("Organizer")}</span>,
       dataIndex: "host",
@@ -122,7 +97,7 @@ const UnpublishedProposedMeeting = () => {
       title: t("Date-time"),
       dataIndex: "Date",
       key: "Date",
-      width: "115px",
+      width: "95px",
 
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
@@ -145,178 +120,10 @@ const UnpublishedProposedMeeting = () => {
         return dateA - dateB;
       },
     },
-    // {
-    //   title: t("Meeting-poll"),
-    //   dataIndex: "MeetingPoll",
-    //   key: "MeetingPoll",
-    //   width: "100px",
-    //   render: (text, record) => {
-    //     let maxValue = record.meetingPoll?.totalNoOfDirectors;
-    //     let value = +record.meetingPoll?.totalNoOfDirectorsVoted;
-    //     return (
-    //       <>
-    //         <Row>
-    //           <Col
-    //             lg={12}
-    //             md={12}
-    //             sm={12}
-    //             className="d-flex justify-content-center"
-    //           >
-    //             {value === maxValue ? (
-    //               <img
-    //                 src={rspvGreenIcon}
-    //                 height="17.06px"
-    //                 width="17.06px"
-    //                 alt=""
-    //               />
-    //             ) : (
-    //               <span className={styles["RatioClass"]}>
-    //                 {record.meetingPoll?.totalNoOfDirectorsVoted}/
-    //                 {record.meetingPoll?.totalNoOfDirectors}
-    //               </span>
-    //             )}
-
-    //             {/* <img src={rspvGreenIcon} height="17.06px" width="17.06px" /> */}
-    //           </Col>
-    //         </Row>
-    //         <Row>
-    //           <Col lg={12} md={12} sm={12} className={"newMeetingProgressbar"}>
-    //             {value === maxValue ? (
-    //               <ProgressBar
-    //                 variant=""
-    //                 className="custom-progress"
-    //                 now={100}
-    //               />
-    //             ) : (
-    //               <ProgressBar
-    //                 now={value}
-    //                 max={maxValue}
-    //                 className={"newMeetingProgressbar"}
-    //               />
-    //             )}
-    //           </Col>
-    //         </Row>
-    //       </>
-    //     );
-    //   },
-    // },
-    // {
-    //   title: t("Send-reponse-by"),
-    //   dataIndex: "responseDeadLine",
-    //   key: "responseDeadLine",
-    //   width: "100px",
-    //   render: (text, record) => {
-    //     return (
-    //       <span className="d-flex justify-content-center">
-    //         {convertDateinGMT(text)}
-    //       </span>
-    //     );
-    //   },
-    // },
-    // {
-    //   dataIndex: "",
-    //   key: "",
-    //   width: "125px",
-    //   render: (text, record) => {
-    //     return (
-    //       <>
-    //         <Row>
-    //           <Col sm={12} md={12} lg={12} className="d-flex gap-2">
-    //             {record.isAttachment ? (
-    //               <span
-    //                 className={
-    //                   currentLanguage === "ar"
-    //                     ? "margin-left-10"
-    //                     : "margin-right-10"
-    //                 }
-    //               >
-    //                 <Tooltip placement="topRight" title={t("ClipIcon")}>
-    //                   <img
-    //                     src={ClipIcon}
-    //                     className="cursor-pointer"
-    //                     width="17.03px"
-    //                     height="17.03px"
-    //                     alt=""
-    //                   />
-    //                 </Tooltip>
-    //               </span>
-    //             ) : (
-    //               <span
-    //                 className={
-    //                   currentLanguage === "ar"
-    //                     ? "margin-left-20"
-    //                     : "margin-right-20"
-    //                 }
-    //               ></span>
-    //             )}
-    //             {record.isChat ? (
-    //               <span
-    //                 className={
-    //                   currentLanguage === "ar"
-    //                     ? "margin-left-10"
-    //                     : "margin-right-10"
-    //                 }
-    //               >
-    //                 <Tooltip placement="topLeft" title={t("Chat")}>
-    //                   <img
-    //                     src={CommentIcon}
-    //                     className="cursor-pointer"
-    //                     width="20.06px"
-    //                     height="15.95px"
-    //                     alt=""
-    //                   />
-    //                 </Tooltip>
-    //               </span>
-    //             ) : (
-    //               <span
-    //                 className={
-    //                   currentLanguage === "ar"
-    //                     ? "margin-left-20"
-    //                     : "margin-right-20"
-    //                 }
-    //               ></span>
-    //             )}
-    //             {record.isVideoCall ? (
-    //               <span
-    //                 className={
-    //                   currentLanguage === "ar"
-    //                     ? "margin-left-10"
-    //                     : "margin-right-10"
-    //                 }
-    //               >
-    //                 <img src={VideoIcon} alt="" />
-    //               </span>
-    //             ) : (
-    //               <span
-    //                 className={
-    //                   currentLanguage === "ar"
-    //                     ? "margin-left-20"
-    //                     : "margin-right-20"
-    //                 }
-    //               ></span>
-    //             )}
-    //             {record.status === "9" && (
-    //               <Tooltip placement="topLeft" title={t("member")}>
-    //                 <img
-    //                   src={member}
-    //                   className="cursor-pointer"
-    //                   width="17.03px"
-    //                   height="17.03px"
-    //                   alt=""
-    //                 />
-    //               </Tooltip>
-    //             )}
-    //           </Col>
-    //         </Row>
-    //       </>
-    //     );
-    //   },
-    // },
-
     {
       dataIndex: "Edit",
       key: "Edit",
-      width: "130px",
+      width: "90px",
       render: (text, record) => {
         return (
           <>
@@ -407,7 +214,7 @@ const UnpublishedProposedMeeting = () => {
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12}>
+        <Col lg={12} md={12} sm={12} className="w-100">
           <Table
             column={MeetingColoumns}
             scroll={{ y: "64vh" }}

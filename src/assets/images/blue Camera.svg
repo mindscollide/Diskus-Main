@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="27.186" height="17.845" viewBox="0 0 27.186 17.845">
   <defs>
     <linearGradient id="linear-gradient" x1="1.048" y1="0.5" x2="-0.042" y2="0.5" gradientUnits="objectBoundingBox">
-      <stop offset="0" stopColor="#4adede"/>
-      <stop offset="1" stopColor="#6172d6"/>
+      <stop offset="0" stop-color="#4adede"/>
+      <stop offset="1" stop-color="#6172d6"/>
     </linearGradient>
   </defs>
   <g id="Icon_feather-video" data-name="Icon feather-video" transform="translate(0.752 0.749)">

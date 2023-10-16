@@ -15,6 +15,7 @@ const CustomTableToDo = ({
   size,
   rowSelection,
   onRow,
+  sortDirections,
 }) => {
   console.log("CustomTableToDO", className);
 
@@ -37,6 +38,7 @@ const CustomTableToDo = ({
         locale={locale}
         rowSelection={rowSelection}
         size={size}
+        sortDirections={sortDirections}
         pagination={pagination}
         // filterDropdown={(filterProps) => (
         //   <div>
