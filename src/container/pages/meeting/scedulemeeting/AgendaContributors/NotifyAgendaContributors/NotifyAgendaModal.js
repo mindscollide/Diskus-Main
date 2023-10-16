@@ -20,7 +20,13 @@ import styles from "./NotifyAgendaModal.module.css";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import BlueDownArrow from "../../../../../../assets/images/blueDownDirect.png";
 
-const NotifyAgendaModal = ({ notifiedMembersData, setRowsData }) => {
+const NotifyAgendaModal = ({
+  notifiedMembersData,
+  setRowsData,
+  setNotifyMessageField,
+  notifyMessageField,
+  specificUser,
+}) => {
   console.log(
     { notifiedMembersData },
     "NotifyAgendaModalNotifyAgendaModalNotifyAgendaModal"
@@ -30,29 +36,6 @@ const NotifyAgendaModal = ({ notifiedMembersData, setRowsData }) => {
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [hidemembes, setHidemembes] = useState(false);
-  const [members, setMembers] = useState([
-    {
-      name: "saif",
-    },
-    {
-      name: "owais wAJID",
-    },
-    {
-      name: "ALI RAZA",
-    },
-    {
-      name: "huzeifa",
-    },
-    {
-      name: "mamdani",
-    },
-    {
-      name: "aun",
-    },
-    {
-      name: "saroush",
-    },
-  ]);
 
   const [agendaMessege, setAgendaMessege] = useState({
     Messege: "",
@@ -68,21 +51,27 @@ const NotifyAgendaModal = ({ notifiedMembersData, setRowsData }) => {
     if (name === "AgendaMessege") {
       let valueCheck = validateInput(value);
       if (valueCheck !== "") {
-        setAgendaMessege({
-          ...agendaMessege,
-          Messege: valueCheck,
-        });
+        setNotifyMessageField(valueCheck);
       } else {
-        setAgendaMessege({
-          ...agendaMessege,
-          Messege: "",
-        });
+        setNotifyMessageField("");
       }
     }
   };
 
   const handleExpandNames = () => {
     setHidemembes(!hidemembes);
+  };
+
+  const handleCheckAll = (e) => {
+    console.log(e.target.checked, "checkedcheckedcheckedhandleCheckAll");
+    setRowsData((prevRowsData) => {
+      return prevRowsData.map((row, index) => {
+        return {
+          ...row,
+          isContributedNotified: e.target.checked,
+        };
+      });
+    });
   };
 
   const handleChangeBox = (e, userID) => {
@@ -135,7 +124,7 @@ const NotifyAgendaModal = ({ notifiedMembersData, setRowsData }) => {
                   as={"textarea"}
                   rows="4"
                   placeholder={t("AgendaMessege")}
-                  value={agendaMessege.Messege}
+                  value={notifyMessageField}
                   change={HandleChange}
                   required={true}
                   maxLength={500}
@@ -147,11 +136,13 @@ const NotifyAgendaModal = ({ notifiedMembersData, setRowsData }) => {
                 lg={6}
                 md={6}
                 sm={6}
-                className="d-flex justify-content-end align-items-center gap-2"
+                className="d-flex justify-content-start align-items-center gap-2"
               >
                 <Checkbox
-                // checked={data.isContributedNotified}
-                // onChange={(checked) => handleChangeBox(checked, data.userID)}
+                  checked={notifiedMembersData.every(
+                    (data) => data.isContributedNotified === true
+                  )}
+                  onChange={handleCheckAll}
                 />
                 <p className={styles["Check_box_title"]}>
                   {t("All-agenda-organizer-except")}
@@ -188,52 +179,113 @@ const NotifyAgendaModal = ({ notifiedMembersData, setRowsData }) => {
                     className={styles["Scroller_notify"]}
                   >
                     <Row>
-                      {notifiedMembersData.map((data, index) => {
-                        console.log(data, "datadatadata");
-                        return (
-                          <Col lg={6} md={6} sm={12} className="mt-2">
-                            <Row className="m-0 p-0">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className={styles["Box_for_Assignee"]}
-                              >
-                                <Row>
-                                  <Col
-                                    lg={10}
-                                    md={10}
-                                    sm={12}
-                                    className="d-flex gap-2 align-items-center"
-                                  >
-                                    <img
-                                      draggable={false}
-                                      src={`data:image/jpeg;base64,${data?.displayPicture}`}
-                                      width="33px"
-                                      height="33px"
-                                      className={styles["ProfilePic"]}
-                                      alt=""
-                                    />
-                                    <span
-                                      className={styles["Participants_Name"]}
+                      {specificUser !== 0
+                        ? notifiedMembersData
+                            .filter(
+                              (data, index) => data.userID === specificUser
+                            )
+                            .map((mapData, index) => {
+                              return (
+                                <Col lg={6} md={6} sm={12} className="mt-2">
+                                  <Row className="m-0 p-0">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={styles["Box_for_Assignee"]}
                                     >
-                                      {data.userName}
-                                    </span>
-                                  </Col>
-                                  <Col lg={2} md={2} sm={12}>
-                                    <Checkbox
-                                      checked={data.isContributedNotified}
-                                      onChange={(checked) =>
-                                        handleChangeBox(checked, data.userID)
-                                      }
-                                    />
+                                      <Row>
+                                        <Col
+                                          lg={10}
+                                          md={10}
+                                          sm={12}
+                                          className="d-flex gap-2 align-items-center"
+                                        >
+                                          <img
+                                            draggable={false}
+                                            src={`data:image/jpeg;base64,${mapData?.displayPicture}`}
+                                            width="33px"
+                                            height="33px"
+                                            className={styles["ProfilePic"]}
+                                            alt=""
+                                          />
+                                          <span
+                                            className={
+                                              styles["Participants_Name"]
+                                            }
+                                          >
+                                            {mapData.userName}
+                                          </span>
+                                        </Col>
+                                        <Col lg={2} md={2} sm={12}>
+                                          <Checkbox
+                                            checked={
+                                              mapData.isContributedNotified
+                                            }
+                                            onChange={(checked) =>
+                                              handleChangeBox(
+                                                checked,
+                                                mapData.userID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              );
+                            })
+                        : notifiedMembersData.map((data, index) => {
+                            return (
+                              <Col lg={6} md={6} sm={12} className="mt-2">
+                                <Row className="m-0 p-0">
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className={styles["Box_for_Assignee"]}
+                                  >
+                                    <Row>
+                                      <Col
+                                        lg={10}
+                                        md={10}
+                                        sm={12}
+                                        className="d-flex gap-2 align-items-center"
+                                      >
+                                        <img
+                                          draggable={false}
+                                          src={`data:image/jpeg;base64,${data?.displayPicture}`}
+                                          width="33px"
+                                          height="33px"
+                                          className={styles["ProfilePic"]}
+                                          alt=""
+                                        />
+                                        <span
+                                          className={
+                                            styles["Participants_Name"]
+                                          }
+                                        >
+                                          {data.userName}
+                                        </span>
+                                      </Col>
+                                      <Col lg={2} md={2} sm={12}>
+                                        <Checkbox
+                                          checked={data.isContributedNotified}
+                                          onChange={(checked) =>
+                                            handleChangeBox(
+                                              checked,
+                                              data.userID
+                                            )
+                                          }
+                                        />
+                                      </Col>
+                                    </Row>
                                   </Col>
                                 </Row>
                               </Col>
-                            </Row>
-                          </Col>
-                        );
-                      })}
+                            );
+                          })}
                     </Row>
                   </Col>
                 </Row>
@@ -253,8 +305,13 @@ const NotifyAgendaModal = ({ notifiedMembersData, setRowsData }) => {
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_button_Notify"]}
+                  onClick={handleCrossIcon}
                 />
-                <Button text={t("Send")} className={styles["Send_Notify"]} />
+                <Button
+                  text={t("Send")}
+                  className={styles["Send_Notify"]}
+                  onClick={handleCrossIcon}
+                />
               </Col>
             </Row>
           </>

@@ -39,10 +39,12 @@ const AgendaContributers = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [specificUser, setSpecifiUser] = useState(0);
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
   const [isEdit, setIsEdit] = useState(false);
+  const [notifyMessageField, setNotifyMessageField] = useState("");
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
   const [selectedOption, setSelectedOption] = useState({
@@ -59,6 +61,7 @@ const AgendaContributers = ({
       </>
     ),
   });
+
   const [rowsData, setRowsData] = useState([]);
 
   const [notifiedMembersData, setNotificedMembersData] = useState(null);
@@ -66,9 +69,13 @@ const AgendaContributers = ({
   const [viewAgendaContributors, setViewAgendaContributors] = useState(false);
 
   const [inputValues, setInputValues] = useState({});
-  console.log(inputValues, "inputValuesinputValues");
-  const shownotifyAgendaContrubutors = () => {
+  console.log(
+    specificUser,
+    "specificUserspecificUserspecificUserspecificUserspecificUser"
+  );
+  const shownotifyAgendaContrubutors = (id) => {
     dispatch(showAgendaContributorsModals(true));
+    setSpecifiUser(id);
   };
 
   // const openCrossIconModal = () => {
@@ -162,7 +169,7 @@ const AgendaContributers = ({
                   height="30px"
                   width="30px"
                   alt=""
-                  onClick={shownotifyAgendaContrubutors}
+                  onClick={() => shownotifyAgendaContrubutors(record.userID)}
                 />
               </Col>
             </Row>
@@ -182,7 +189,7 @@ const AgendaContributers = ({
                   height="30px"
                   alt=""
                   width="30px"
-                  onClick={shownotifyAgendaContrubutors}
+                  onClick={() => shownotifyAgendaContrubutors(record.userID)}
                 />
               </Col>
             </Row>
@@ -825,6 +832,7 @@ const AgendaContributers = ({
           SelectedRSVP={selectedOption}
           rowsData={rowsData}
           setRowsData={setRowsData}
+          setNotificedMembersData={setNotificedMembersData}
         />
       )}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
@@ -832,6 +840,9 @@ const AgendaContributers = ({
         <NotifyAgendaModal
           notifiedMembersData={rowsData}
           setRowsData={setRowsData}
+          notifyMessageField={notifyMessageField}
+          setNotifyMessageField={setNotifyMessageField}
+          specificUser={specificUser}
         />
       )}
       {NewMeetingreducer.cancelAgendaContributor && (

@@ -17,7 +17,12 @@ import makeAnimated from "react-select/animated";
 import { GetAllCommitteesUsersandGroups } from "../../../../../../store/actions/MeetingOrganizers_action";
 import GroupIcon from "../../../../../../assets/images/Path 636.png";
 import committeeicon from "../../../../../../assets/images/committeedropdown.svg";
-const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
+const AgendaContributorsModal = ({
+  SelectedRSVP,
+  rowsData,
+  setRowsData,
+  setNotificedMembersData,
+}) => {
   const animatedComponents = makeAnimated();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -147,7 +152,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID !== null ? currentMeetingID : 1686,
+      MeetingID: currentMeetingID !== null ? currentMeetingID : 0,
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
   }, []);
@@ -288,6 +293,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
     setRowsData(newData);
     dispatch(showAddAgendaContributor(false));
     dispatch(showAgendaContributorsModals(true));
+    setNotificedMembersData(newData);
     // Combine the arrays into newData
   };
   return (
