@@ -132,7 +132,7 @@ const UnpublishedProposedMeeting = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-end align-items-center gap-4"
+                className="d-flex  align-items-center gap-4"
               >
                 <img
                   src={deleteIcon}
@@ -217,7 +217,7 @@ const UnpublishedProposedMeeting = () => {
         <Col lg={12} md={12} sm={12} className="w-100">
           <Table
             column={MeetingColoumns}
-            scroll={scroll}
+            scroll={{ y: "64vh" }}
             pagination={false}
             className="newMeetingTable"
             rows={rows}

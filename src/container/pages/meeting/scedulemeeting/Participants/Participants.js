@@ -138,7 +138,10 @@ const Participants = ({
         if (row.userID === userID) {
           return {
             ...row,
-            ParticipantRoleID: selectedOption.value,
+            participantRole: {
+              participantRole: selectedOption.label,
+              participantRoleID: selectedOption.value,
+            },
           };
         }
         return row;
@@ -195,7 +198,11 @@ const Participants = ({
                   placeholder={t("Participant-title")}
                   labelClass={"d-none"}
                   applyClass={"Organizer_table"}
-                  value={inputValues[record.userID] || ""}
+                  value={
+                    record.isComingApi === true
+                      ? record.Title
+                      : inputValues[record.userID] || ""
+                  }
                   change={(e) =>
                     handleInputChange(record.userID, e.target.value)
                   } // Update the inputValues when the user types
@@ -343,13 +350,14 @@ const Participants = ({
       newData.push({
         UserID: data.userID,
         Title: data.Title,
-        ParticipantRoleID: data.ParticipantRoleID,
+        ParticipantRoleID: data.participantRole.participantRoleID,
         MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
       });
     });
     let Data = {
       MeetingParticipants: newData,
     };
+    console.log({ Data }, "DataData");
 
     dispatch(SaveparticipantsApi(Data, navigate, t));
   };

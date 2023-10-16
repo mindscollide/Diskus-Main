@@ -6197,10 +6197,15 @@ input[type="time"]::-webkit-clear-button {
   padding: 6px 0px !important;
 }
 
+.newMeetingTable .ant-table-body {
+  overflow-x: hidden !important;
+}
+
 .ant-table-wrapper.newMeetingTable .ant-table-thead tr th:nth-child(1) {
   text-align: left !important;
   padding: 6px 4px !important;
 }
+
 .ant-table-expand-icon-col {
   width: 15px !important;
 }
