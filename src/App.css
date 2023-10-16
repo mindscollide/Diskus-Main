@@ -6195,7 +6195,10 @@ input[type="time"]::-webkit-clear-button {
 }
 .unpublished_meeting-body tr td {
   padding: 6px 0px !important;
+}
 
+.newMeetingTable .ant-table-body {
+  overflow-x: hidden !important;
 }
 
 .ant-table-wrapper.newMeetingTable .ant-table-thead tr th:nth-child(1) {
