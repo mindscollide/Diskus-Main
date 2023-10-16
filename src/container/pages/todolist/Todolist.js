@@ -72,6 +72,7 @@ const TodoList = () => {
     getTodosStatus,
     socketTodoStatusData,
     LanguageReducer,
+    uploadReducer,
   } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -1029,7 +1030,8 @@ const TodoList = () => {
 
       {toDoListReducer.Loading ||
       todoStatus.Loading ||
-      LanguageReducer.Loading ? (
+      LanguageReducer.Loading ||
+      uploadReducer.Loading ? (
         <Loader />
       ) : null}
     </>
