@@ -4,8 +4,9 @@ import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import addmore from "../../../../../assets/images/addmore.png";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-import NotificationIcon from "../../../../../assets/images/greenmail.svg";
+import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
+import NotificationIcon from "../../../../../assets/images/greenmail.svg";
 import RspvIcon from "../../../../../assets/images/rspvGreen.svg";
 import RspcAbstainIcon from "../../../../../assets/images/rspvAbstain.svg";
 import Select from "react-select";
@@ -60,13 +61,15 @@ const AgendaContributers = ({
   });
   const [rowsData, setRowsData] = useState([]);
 
+  const [notifiedMembersData, setNotificedMembersData] = useState(null);
+
   const [viewAgendaContributors, setViewAgendaContributors] = useState(false);
 
   const [inputValues, setInputValues] = useState({});
   console.log(inputValues, "inputValuesinputValues");
-  // const shownotifyAgendaContrubutors = () => {
-  //   dispatch(showAgendaContributorsModals(true));
-  // };
+  const shownotifyAgendaContrubutors = () => {
+    dispatch(showAgendaContributorsModals(true));
+  };
 
   // const openCrossIconModal = () => {
   //   dispatch(showCrossConfirmationModal(true));
@@ -137,6 +140,55 @@ const AgendaContributers = ({
           </Col>
         </Row>
       ),
+    },
+    {
+      dataIndex: "isNotifed",
+      key: "isNotified",
+      width: "80px",
+      render: (text, record) => {
+        console.log("recordrecordrecordrecord", record);
+        if (record.isContributedNotified) {
+          return (
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                <img
+                  draggable={false}
+                  src={greenMailIcon}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                  onClick={shownotifyAgendaContrubutors}
+                />
+              </Col>
+            </Row>
+          );
+        } else {
+          return (
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                <img
+                  draggable={false}
+                  src={redMailIcon}
+                  height="30px"
+                  alt=""
+                  width="30px"
+                  onClick={shownotifyAgendaContrubutors}
+                />
+              </Col>
+            </Row>
+          );
+        }
+      },
     },
     {
       dataIndex: "Close",
@@ -482,11 +534,10 @@ const AgendaContributers = ({
           userID: AgConData.userID,
           displayPicture: "",
           email: AgConData.emailAddress,
-          IsPrimaryOrganizer: false,
-          IsOrganizerNotified: false,
           Title: AgConData.contributorTitle,
           isRSVP: AgConData.rsvp,
           isEdit: true,
+          isContributedNotified: AgConData.isContributorNotified,
         });
       });
       setRowsData(newArr);
@@ -777,7 +828,12 @@ const AgendaContributers = ({
         />
       )}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
-      {NewMeetingreducer.notifyAgendaContributors && <NotifyAgendaModal />}
+      {NewMeetingreducer.notifyAgendaContributors && (
+        <NotifyAgendaModal
+          notifiedMembersData={rowsData}
+          setRowsData={setRowsData}
+        />
+      )}
       {NewMeetingreducer.cancelAgendaContributor && (
         <CancelAgendaContributor setSceduleMeeting={setSceduleMeeting} />
       )}

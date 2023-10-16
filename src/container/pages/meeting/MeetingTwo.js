@@ -790,15 +790,15 @@ const NewMeeting = () => {
                     <Dropdown.Menu>
                       <Dropdown.Item
                         className="dropdown-item"
-                        onClick={openSceduleMeetingPage}
-                      >
-                        {t("Advance-meeting")}
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        className="dropdown-item"
                         onClick={CreateQuickMeeting}
                       >
                         {t("Quick-meeting")}
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={openSceduleMeetingPage}
+                      >
+                        {t("Advance-meeting")}
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>

@@ -20,7 +20,11 @@ import styles from "./NotifyAgendaModal.module.css";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import BlueDownArrow from "../../../../../../assets/images/blueDownDirect.png";
 
-const NotifyAgendaModal = () => {
+const NotifyAgendaModal = ({ notifiedMembersData, setRowsData }) => {
+  console.log(
+    { notifiedMembersData },
+    "NotifyAgendaModalNotifyAgendaModalNotifyAgendaModal"
+  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -81,6 +85,19 @@ const NotifyAgendaModal = () => {
     setHidemembes(!hidemembes);
   };
 
+  const handleChangeBox = (e, userID) => {
+    setRowsData((prevRowsData) => {
+      return prevRowsData.map((row, index) => {
+        if (row.userID === userID) {
+          return {
+            ...row,
+            isContributedNotified: e.target.checked,
+          };
+        }
+        return row;
+      });
+    });
+  };
   return (
     <section>
       <Modal
@@ -106,6 +123,7 @@ const NotifyAgendaModal = () => {
                   width="16px"
                   height="16px"
                   onClick={handleCrossIcon}
+                  alt=""
                 />
               </Col>
             </Row>
@@ -126,9 +144,23 @@ const NotifyAgendaModal = () => {
             </Row>
             <Row className="mt-4">
               <Col
-                lg={12}
-                md={12}
-                sm={12}
+                lg={6}
+                md={6}
+                sm={6}
+                className="d-flex justify-content-end align-items-center gap-2"
+              >
+                <Checkbox
+                // checked={data.isContributedNotified}
+                // onChange={(checked) => handleChangeBox(checked, data.userID)}
+                />
+                <p className={styles["Check_box_title"]}>
+                  {t("All-agenda-organizer-except")}
+                </p>
+              </Col>
+              <Col
+                lg={6}
+                md={6}
+                sm={6}
                 className="d-flex justify-content-end align-items-center gap-2"
               >
                 <span className={styles["Hide_names"]}>
@@ -139,11 +171,13 @@ const NotifyAgendaModal = () => {
                   src={hidemembes ? BlueDownArrow : UpperArrow}
                   width="18.4px"
                   height="9.2px"
+                  alt=""
                   className="cursor-pointer"
                   onClick={handleExpandNames}
                 />
               </Col>
             </Row>
+
             {hidemembes ? null : (
               <>
                 <Row className="mt-3">
@@ -154,7 +188,8 @@ const NotifyAgendaModal = () => {
                     className={styles["Scroller_notify"]}
                   >
                     <Row>
-                      {members.map((data, index) => {
+                      {notifiedMembersData.map((data, index) => {
+                        console.log(data, "datadatadata");
                         return (
                           <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row className="m-0 p-0">
@@ -173,19 +208,25 @@ const NotifyAgendaModal = () => {
                                   >
                                     <img
                                       draggable={false}
-                                      src={profile}
+                                      src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                       width="33px"
                                       height="33px"
                                       className={styles["ProfilePic"]}
+                                      alt=""
                                     />
                                     <span
                                       className={styles["Participants_Name"]}
                                     >
-                                      {data.name}
+                                      {data.userName}
                                     </span>
                                   </Col>
                                   <Col lg={2} md={2} sm={12}>
-                                    <Checkbox />
+                                    <Checkbox
+                                      checked={data.isContributedNotified}
+                                      onChange={(checked) =>
+                                        handleChangeBox(checked, data.userID)
+                                      }
+                                    />
                                   </Col>
                                 </Row>
                               </Col>

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AgendaContritbutorsModal.module.css";
 import { Modal, Button } from "../../../../../../components/elements";
-import { showAddAgendaContributor } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  showAddAgendaContributor,
+  showAgendaContributorsModals,
+} from "../../../../../../store/actions/NewMeetingActions";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import { useDispatch, useSelector } from "react-redux";
 import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
@@ -185,11 +188,10 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                       displayPicture:
                         gUser.profilePicture.displayProfilePictureName,
                       email: gUser.emailAddress,
-                      IsPrimaryOrganizer: false,
-                      IsOrganizerNotified: false,
                       Title: "",
                       isRSVP: SelectedRSVP.value === 1 ? true : false,
                       isEdit: false,
+                      isContributedNotified: true,
                     };
                     tem.push(newUser);
                   }
@@ -216,8 +218,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                       displayPicture:
                         cUser.profilePicture.displayProfilePictureName,
                       email: cUser.emailAddress,
-                      IsPrimaryOrganizer: false,
-                      IsOrganizerNotified: false,
+                      isContributedNotified: true,
                       Title: "",
                       isRSVP: SelectedRSVP.value === 1 ? true : false,
                       isEdit: false,
@@ -243,8 +244,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
                   displayPicture:
                     check2.profilePicture.displayProfilePictureName,
                   email: check2.emailAddress,
-                  IsPrimaryOrganizer: false,
-                  IsOrganizerNotified: false,
+                  isContributedNotified: true,
                   Title: "",
                   isRSVP: SelectedRSVP.value === 1 ? true : false,
                   isEdit: false,
@@ -287,6 +287,7 @@ const AgendaContributorsModal = ({ SelectedRSVP, rowsData, setRowsData }) => {
 
     setRowsData(newData);
     dispatch(showAddAgendaContributor(false));
+    dispatch(showAgendaContributorsModals(true));
     // Combine the arrays into newData
   };
   return (
