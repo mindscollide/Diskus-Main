@@ -152,6 +152,7 @@ body[dir="rtl"]
 .Status-Todo .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
   width: 100px !important;
   min-width: 100px !important;
+  margin-top: 30px !important;
 }
 
 /* .Status-Todo_todo .ant-select-dropdown span.ant-select-arrow {
