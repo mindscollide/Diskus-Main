@@ -1,16 +1,9 @@
 {
   "MeetingParticipants": [
-    {
-      "UserID": 984,
-      "Title": "Saif Test One ",
-      "ParticipantRoleID": 2,
-      "MeetingID": 1694
-    },
-    {
-      "UserID": 985,
-      "Title": "Two Test Saif ",
-      "ParticipantRoleID": 4,
-      "MeetingID": 1694
-    }
-  ]
+    { "UserID": 984, "Title": "Eren One Here ", "ParticipantRoleID": 1 },
+    { "UserID": 985, "Title": "Eren Two Here ", "ParticipantRoleID": 2 }
+  ],
+  "MeetingID": 1701,
+  "IsParticipantsAddFlow": false,
+  "NotificationMessage": ""
 }

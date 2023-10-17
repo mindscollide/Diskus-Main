@@ -303,6 +303,13 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
 
   const handleClickDone = () => {
     let rspvRowsCopy = [...rspvRows, ...membersParticipants];
+
+    const uniqueData = new Set(rspvRowsCopy.map((obj) => obj.userID));
+
+    // Convert the Set back to an array
+    rspvRowsCopy = [...uniqueData].map((userID) =>
+      rspvRowsCopy.find((obj) => obj.userID === userID)
+    );
     setrspvRows(rspvRowsCopy);
     dispatch(showAddParticipantsModal(false));
   };
