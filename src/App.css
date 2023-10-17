@@ -6070,6 +6070,7 @@ input[type="time"] {
 input[type="time"]:after {
   content: "\1F550";
   color: #555;
+  margin-left: 12px !important;
   /* padding: 0 5px; */
 }
 
@@ -6195,13 +6196,17 @@ input[type="time"]::-webkit-clear-button {
 }
 .unpublished_meeting-body tr td {
   padding: 6px 0px !important;
+}
 
+.newMeetingTable .ant-table-body {
+  overflow-x: hidden !important;
 }
 
 .ant-table-wrapper.newMeetingTable .ant-table-thead tr th:nth-child(1) {
   text-align: left !important;
   padding: 6px 4px !important;
 }
+
 .ant-table-expand-icon-col {
   width: 15px !important;
 }
@@ -6213,4 +6218,13 @@ input[type="time"]::-webkit-clear-button {
 .custom-progress .progress-bar {
   background-color: #81db86 !important;
   /* Add any other custom styles you want */
+}
+
+/* status Slector TodoList Css */
+.ant-select-single .ant-select-selector .ant-select-selection-item {
+  margin-left: 18px !important;
+}
+
+.td.ant-table-column-sort {
+  background-color: transparent !important;
 }

@@ -48,6 +48,7 @@ const CreatePolling = () => {
   const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
+  const [isCalendarOpen, setCalendarOpen] = useState(false);
   const { t } = useTranslation();
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -91,11 +92,13 @@ const CreatePolling = () => {
         height="11.11px"
         width="11.54px"
         className="custom-icon cursor-pointer"
+        onClick={handleIconClick}
         draggable="false"
       />
     </div>
   );
   const handleIconClick = () => {
+    console.log("handleIconClick");
     if (datePickerRef.current) {
       datePickerRef.current.openCalendar();
     }
@@ -349,6 +352,8 @@ const CreatePolling = () => {
   };
 
   const changeDateStartHandler = (date) => {
+    console.log("handleIconClick");
+
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     setMeetingDate(meetingDateValueFormat);
@@ -556,39 +561,46 @@ const CreatePolling = () => {
                           sm={12}
                           className="d-flex justify-content-center gap-2 align-items-center"
                         >
-                          <span
-                            onClick={handleIconClick}
-                            className="cursor-pointer d-flex gap-2 align-items-center"
-                          >
+                          <span className="cursor-pointer d-flex gap-2 align-items-center">
                             <img
                               src={AlarmClock}
                               width="14.97px"
                               height="14.66px"
                               className={styles["classOFImage"]}
+                              onClick={handleIconClick}
                               alt=""
                               draggable="false"
                             />
-                            <span className={styles["Due_Date_heading"]}>
+                            <span
+                              className={styles["Due_Date_heading"]}
+                              onClick={handleIconClick}
+                            >
                               {t("Due-date")}{" "}
                               {createPollData.date !== ""
                                 ? changeDateStartHandler2(createPollData.date)
                                 : ""}
                             </span>
+
                             <DatePicker
-                              highlightToday={false}
-                              onOpenPickNewDate={true}
-                              ref={datePickerRef}
+                              selected={createPollData.date}
+                              format={dateFormat}
+                              minDate={moment().toDate()}
+                              placeholder="DD/MM/YYYY"
                               render={<CustomIcon />}
+                              calendarPosition="bottom-right"
+                              editable={true}
+                              className="datePickerTodoCreate2"
+                              onOpenPickNewDate={false}
+                              highlightToday={false}
+                              inputMode=""
+                              showOtherDays
+                              calendar={calendarValue}
+                              locale={localValue}
+                              ref={datePickerRef}
+                              onClick={handleIconClick}
                               onChange={(value) =>
                                 changeDateStartHandler(value)
                               }
-                              format={dateFormat}
-                              calendarPosition="bottom-center"
-                              minDate={moment().toDate()}
-                              className="datePickerTodoCreate2"
-                              calendar={calendarValue}
-                              locale={localValue}
-                              onClick={handleIconClick}
                             />
                           </span>
                         </Col>

@@ -512,7 +512,7 @@ body[dir="rtl"] .Search_Icon {
   border-top-left-radius: 4px !important;
   border: #e1e1e1;
   position: fixed;
-  z-index: 1 !important;
+  z-index: 999999 !important;
   bottom: 0px !important;
   border-radius: 4px !important;
   right: 90px !important;
@@ -586,6 +586,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   border-top-left-radius: 4px !important;
   border-top-right-radius: 4px !important;
   background: #6172d6;
+  z-index: 1 !important;
 }
 
 .name_of_life_in_Bar {
@@ -746,6 +747,9 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   justify-content: flex-start;
   height: 22px !important;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dataroom_location {

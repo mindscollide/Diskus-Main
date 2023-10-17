@@ -1,28 +1,14 @@
 {
-  "MeetingParticipants": [
-    {
-      "UserID": 984,
-      "Title": "Hello one",
-      "ParticipantRoleID": 2,
-      "MeetingID": 0
-    },
-    {
-      "UserID": 986,
-      "Title": "Hello two",
-      "ParticipantRoleID": 1,
-      "MeetingID": 0
-    },
-    {
-      "UserID": 987,
-      "Title": "Hello three",
-      "ParticipantRoleID": 3,
-      "MeetingID": 0
-    },
-    {
-      "UserID": 985,
-      "Title": "Hello Four",
-      "ParticipantRoleID": 4,
-      "MeetingID": 0
-    }
-  ]
+  "Task": {
+    "PK_TID": 1,
+    "Title": "asas",
+    "Description": "",
+    "IsMainTask": true,
+    "DeadLineDate": "20231018",
+    "DeadLineTime": "071037",
+    "CreationDateTime": ""
+  },
+  "TaskCreatorID": 983,
+  "TaskAssignedTo": [985],
+  "TasksAttachments": []
 }
