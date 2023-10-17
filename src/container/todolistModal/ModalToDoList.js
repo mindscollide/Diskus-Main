@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -102,6 +103,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     DeadLineDate: "",
     DeadLineTime: "",
     CreationDateTime: "",
+    timeforView: "",
   });
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
@@ -459,7 +461,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     if (createTodoDate !== "" && task.DeadLineTime !== "") {
       finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
       newDate = finalDateTime.slice(0, 8);
-      newTime = finalDateTime.slice(8, 14);
     }
 
     let Task = {
@@ -468,7 +469,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       Description: task.Description,
       IsMainTask: task.IsMainTask,
       DeadLineDate: newDate,
-      DeadLineTime: newTime,
+      DeadLineTime: task.DeadLineTime,
       CreationDateTime: "",
     };
     if (finalDateTime === undefined) {
@@ -610,12 +611,32 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo(newDataTaskAssignedTo);
   };
 
-  const createTodoTimeChangeHandler = (e) => {
-    let getValue = e.target.value;
-    setTask({
-      ...task,
-      DeadLineTime: getValue,
-    });
+  // const createTodoTimeChangeHandler = (e) => {
+  //   let getValue = e.target.value;
+  //   setTask({
+  //     ...task,
+  //     DeadLineTime: getValue,
+  //   });
+  // };
+
+  const handleTimeChange = (newTime) => {
+    let newDate = new Date(newTime);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      console.log(hours, "Hours");
+      console.log(minutes, "hourshours");
+      console.log(seconds, "hourshours");
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      setTask({
+        ...task,
+        DeadLineTime: formattedTime,
+        timeforView: newTime,
+      });
+    }
   };
   const handleFocusCreateTodo = () => {
     setTask({
@@ -634,6 +655,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //     inputElement.blur();
   //   }
   // };
+  function CustomInput({ onFocus, value, onChange }) {
+    return (
+      <input
+        onFocus={onFocus}
+        value={value}
+        onChange={onChange}
+        className="input-with-icon"
+      />
+    );
+  }
+
   return (
     <>
       <Container>
@@ -663,7 +695,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       xs={12}
                       className="CreateMeetingTime d-flex align-items-center gap-2 h-100"
                     >
-                      <TextFieldTime
+                      {/* <TextFieldTime
                         type="time"
                         labelClass="d-none"
                         value={task.DeadLineTime}
@@ -674,6 +706,22 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         inputRef={timePickerRef}
                         onClick={handleFocusCreateTodo}
                         id="timeInput"
+                      /> */}
+
+                      <DatePicker
+                        arrowClassName="arrowClass"
+                        value={task.timeforView}
+                        containerClassName="containerClassTimePicker"
+                        className="timePicker"
+                        disableDayPicker
+                        inputClass="inputTImeMeeting"
+                        calendar={calendarValue}
+                        locale={localValue}
+                        format="HH:mm A"
+                        selected={task.timeforView}
+                        render={<CustomInput />}
+                        plugins={[<TimePicker hideSeconds />]}
+                        onChange={handleTimeChange}
                       />
 
                       <DatePicker
