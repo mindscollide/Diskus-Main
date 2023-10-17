@@ -92,13 +92,14 @@ const CreatePolling = () => {
         height="11.11px"
         width="11.54px"
         className="custom-icon cursor-pointer"
+        onClick={handleIconClick}
         draggable="false"
       />
     </div>
   );
   const handleIconClick = () => {
+    console.log("handleIconClick");
     if (datePickerRef.current) {
-      setCalendarOpen(!isCalendarOpen);
       datePickerRef.current.openCalendar();
     }
   };
@@ -351,6 +352,8 @@ const CreatePolling = () => {
   };
 
   const changeDateStartHandler = (date) => {
+    console.log("handleIconClick");
+
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     setMeetingDate(meetingDateValueFormat);
@@ -363,7 +366,6 @@ const CreatePolling = () => {
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
     return newDate;
-    setCalendarOpen(false);
   };
 
   const checkOptions = (data) => {
@@ -559,19 +561,20 @@ const CreatePolling = () => {
                           sm={12}
                           className="d-flex justify-content-center gap-2 align-items-center"
                         >
-                          <span
-                            onClick={handleIconClick}
-                            className="cursor-pointer d-flex gap-2 align-items-center"
-                          >
+                          <span className="cursor-pointer d-flex gap-2 align-items-center">
                             <img
                               src={AlarmClock}
                               width="14.97px"
                               height="14.66px"
                               className={styles["classOFImage"]}
+                              onClick={handleIconClick}
                               alt=""
                               draggable="false"
                             />
-                            <span className={styles["Due_Date_heading"]}>
+                            <span
+                              className={styles["Due_Date_heading"]}
+                              onClick={handleIconClick}
+                            >
                               {t("Due-date")}{" "}
                               {createPollData.date !== ""
                                 ? changeDateStartHandler2(createPollData.date)
@@ -584,7 +587,6 @@ const CreatePolling = () => {
                               minDate={moment().toDate()}
                               placeholder="DD/MM/YYYY"
                               render={<CustomIcon />}
-                              isOpen={isCalendarOpen}
                               calendarPosition="bottom-right"
                               editable={true}
                               className="datePickerTodoCreate2"
