@@ -380,6 +380,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                 <Row className={styles["Scroller_For_CreatePollModal2"]}>
                   {membersParticipants.length > 0
                     ? membersParticipants.map((data, index) => {
+                        console.log(data, "indexindexindexindex");
                         return (
                           <>
                             <Col lg={6} md={6} sm={12} className="mt-2">
@@ -396,7 +397,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                                         <Col sm={12} md={10} lg={10}>
                                           <img
                                             draggable={false}
-                                            src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
+                                            src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                             width="33px"
                                             height="33px"
                                           />
