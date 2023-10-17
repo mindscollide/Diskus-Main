@@ -22,7 +22,7 @@ import {
   mqttGroupLeft,
 } from '../../../../../store/actions/Talk_action'
 import { Spin } from 'antd'
-import { TextField, ResultMessage } from '../../../../elements'
+import { TextField, ResultMessage, LoaderPanel } from '../../../../elements'
 import SingleIcon from '../../../../../assets/images/Single-Icon.png'
 import GroupIcon from '../../../../../assets/images/Group-Icon.png'
 import ShoutIcon from '../../../../../assets/images/Shout-Icon.png'
@@ -785,7 +785,10 @@ const RecentChats = () => {
       {talkStateData.AllUserChats.Loading === true ||
       allChatData.length === 0 ? (
         <>
-          <Spin className="talk-overallchat-spinner" />
+          {/* <Spin className="talk-overallchat-spinner" /> */}
+          <LoaderPanel
+            message={'Safeguarding your data to enhance the experience'}
+          />
         </>
       ) : talkStateData.AllUserChats.Loading === false &&
         allChatData !== undefined &&

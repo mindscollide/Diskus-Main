@@ -1,14 +1,14 @@
 {
-  "Title": "Saif notes on Windows ",
-  "Description": "<p>hello windows </p>",
-  "isStarred": false,
-  "FK_UserID": 983,
-  "FK_OrganizationID": 417,
-  "NotesAttachments": [
-    {
-      "DisplayAttachmentName": "Screenshot 2023-10-16 165513.png",
-      "OriginalAttachmentName": "20231016122314_Screenshot2023-10-16165513.png",
-      "FK_NotesID": 0
-    }
-  ]
+  "Task": {
+    "PK_TID": 1,
+    "Title": "asas",
+    "Description": "",
+    "IsMainTask": true,
+    "DeadLineDate": "20231018",
+    "DeadLineTime": "071037",
+    "CreationDateTime": ""
+  },
+  "TaskCreatorID": 983,
+  "TaskAssignedTo": [985],
+  "TasksAttachments": []
 }
