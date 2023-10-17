@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-import styles from "./AgendaContributors.module.css";
-import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-import addmore from "../../../../../assets/images/addmore.png";
-import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
-import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-import greenMailIcon from "../../../../../assets/images/greenmail.svg";
-import redMailIcon from "../../../../../assets/images/redmail.svg";
-import NotificationIcon from "../../../../../assets/images/greenmail.svg";
-import RspvIcon from "../../../../../assets/images/rspvGreen.svg";
-import RspcAbstainIcon from "../../../../../assets/images/rspvAbstain.svg";
-import Select from "react-select";
-import { Col, Row } from "react-bootstrap";
-import { Button, Table, TextField } from "../../../../../components/elements";
-import { useTranslation } from "react-i18next";
-import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributorsModal";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import styles from './AgendaContributors.module.css'
+import EditIcon from '../../../../../assets/images/Edit-Icon.png'
+import addmore from '../../../../../assets/images/addmore.png'
+import emptyContributorState from '../../../../../assets/images/emptyStateContributor.svg'
+import redcrossIcon from '../../../../../assets/images/Artboard 9.png'
+import greenMailIcon from '../../../../../assets/images/greenmail.svg'
+import redMailIcon from '../../../../../assets/images/redmail.svg'
+import NotificationIcon from '../../../../../assets/images/greenmail.svg'
+import RspvIcon from '../../../../../assets/images/rspvGreen.svg'
+import RspcAbstainIcon from '../../../../../assets/images/rspvAbstain.svg'
+import Select from 'react-select'
+import { Col, Row } from 'react-bootstrap'
+import { Button, Table, TextField } from '../../../../../components/elements'
+import { useTranslation } from 'react-i18next'
+import AgendaContributorsModal from './AgdendaContributorsModal/AgendaContributorsModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import {
   getAllAgendaContributorApi,
   showAddAgendaContributor,
@@ -23,125 +23,125 @@ import {
   showCancelModalAgendaContributor,
   showCancelModalOrganizers,
   showCrossConfirmationModal,
-} from "../../../../../store/actions/NewMeetingActions";
-import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
-import tick from "../../../../../assets/images/PNG tick.png";
-import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
-import { notification } from "antd";
-import AgendaContributorView from "./AgendaContributorsView/AgendaContributorView";
-import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgendaContributor";
-import { saveAgendaContributors } from "../../../../../store/actions/NewMeetingActions";
+} from '../../../../../store/actions/NewMeetingActions'
+import ModalCrossIcon from '../Organizers/ModalCrossIconClick/ModalCrossIcon'
+import tick from '../../../../../assets/images/PNG tick.png'
+import NotifyAgendaModal from './NotifyAgendaContributors/NotifyAgendaModal'
+import { notification } from 'antd'
+import AgendaContributorView from './AgendaContributorsView/AgendaContributorView'
+import CancelAgendaContributor from './CancelButtonAgendaContributor/CancelAgendaContributor'
+import { saveAgendaContributors } from '../../../../../store/actions/NewMeetingActions'
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
   setSceduleMeeting,
 }) => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [specificUser, setSpecifiUser] = useState(0);
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [specificUser, setSpecifiUser] = useState(0)
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
-  );
-  const [isEdit, setIsEdit] = useState(false);
-  const [notifyMessageField, setNotifyMessageField] = useState("");
-  const [notificationTable, setNotificationTable] = useState(false);
-  const [rspvTable, setrspvTable] = useState(false);
+    (state) => state,
+  )
+  const [isEdit, setIsEdit] = useState(false)
+  const [notifyMessageField, setNotifyMessageField] = useState('')
+  const [notificationTable, setNotificationTable] = useState(false)
+  const [rspvTable, setrspvTable] = useState(false)
   const [selectedOption, setSelectedOption] = useState({
     value: 1,
     label: (
       <>
         <Row>
           <Col lg={12} md={12} sm={12}>
-            <span className={styles["Options_classs_contributors"]}>
-              {t("Grant-access-to-all-agenda-items-and-files")}
+            <span className={styles['Options_classs_contributors']}>
+              {t('Grant-access-to-all-agenda-items-and-files')}
             </span>
           </Col>
         </Row>
       </>
     ),
-  });
+  })
 
-  const [rowsData, setRowsData] = useState([]);
+  const [rowsData, setRowsData] = useState([])
 
-  const [notifiedMembersData, setNotificedMembersData] = useState(null);
+  const [notifiedMembersData, setNotificedMembersData] = useState(null)
 
-  const [viewAgendaContributors, setViewAgendaContributors] = useState(false);
+  const [viewAgendaContributors, setViewAgendaContributors] = useState(false)
 
-  const [inputValues, setInputValues] = useState({});
+  const [inputValues, setInputValues] = useState({})
   console.log(
     specificUser,
-    "specificUserspecificUserspecificUserspecificUserspecificUser"
-  );
+    'specificUserspecificUserspecificUserspecificUserspecificUser',
+  )
   const shownotifyAgendaContrubutors = (id) => {
-    dispatch(showAgendaContributorsModals(true));
-    setSpecifiUser(id);
-  };
+    dispatch(showAgendaContributorsModals(true))
+    setSpecifiUser(id)
+  }
 
   // const openCrossIconModal = () => {
   //   dispatch(showCrossConfirmationModal(true));
   // };
-  let currentMeetingID = localStorage.getItem("meetingID");
+  let currentMeetingID = localStorage.getItem('meetingID')
 
   useEffect(() => {
     let getAllData = {
-      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
-    };
-    dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
-  }, []);
+      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
+    }
+    dispatch(getAllAgendaContributorApi(navigate, t, getAllData))
+  }, [])
 
   const handleInputChange = (userID, newValue) => {
     setInputValues((prevInputValues) => ({
       ...prevInputValues,
       [userID]: newValue,
-    }));
+    }))
     setRowsData((prevRowsData) => {
       return prevRowsData.map((row) => {
         if (row.userID === userID) {
           return {
             ...row,
             Title: newValue,
-          };
+          }
         }
-        return row;
-      });
-    });
-  };
+        return row
+      })
+    })
+  }
 
   const handleRemoveContributor = (record) => {
     let removeData = rowsData.filter(
-      (data, index) => data.userID !== record.userID
-    );
-    setRowsData(removeData);
-  };
+      (data, index) => data.userID !== record.userID,
+    )
+    setRowsData(removeData)
+  }
   const AgendaColoumns = [
     {
-      title: t("Name"),
-      dataIndex: "userName",
-      key: "userName",
-      width: "80px",
+      title: t('Name'),
+      dataIndex: 'userName',
+      key: 'userName',
+      width: '80px',
     },
     {
-      title: t("Email"),
-      dataIndex: "email",
-      key: "email",
-      width: "80px",
+      title: t('Email'),
+      dataIndex: 'email',
+      key: 'email',
+      width: '80px',
     },
     {
-      title: t("contributor-title"),
-      dataIndex: "Title",
-      key: "Title",
-      width: "80px",
+      title: t('contributor-title'),
+      dataIndex: 'Title',
+      key: 'Title',
+      width: '80px',
       render: (text, record) => (
         <Row>
           <Col lg={12} md={12} sm={12}>
             <TextField
               disable={record.isEdit ? true : false}
-              placeholder={t("Content-title")}
-              labelClass={"d-none"}
-              width={"100%"}
-              applyClass={"Organizer_table"}
-              value={inputValues[record.userID] || ""} // Use the controlled value
+              placeholder={t('Content-title')}
+              labelClass={'d-none'}
+              width={'100%'}
+              applyClass={'Organizer_table'}
+              value={inputValues[record.userID] || ''} // Use the controlled value
               change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
             />
           </Col>
@@ -149,11 +149,11 @@ const AgendaContributers = ({
       ),
     },
     {
-      dataIndex: "isNotifed",
-      key: "isNotified",
-      width: "80px",
+      dataIndex: 'isNotifed',
+      key: 'isNotified',
+      width: '80px',
       render: (text, record) => {
-        console.log("recordrecordrecordrecord", record);
+        console.log('recordrecordrecordrecord', record)
         if (record.isContributedNotified) {
           return (
             <Row>
@@ -173,7 +173,7 @@ const AgendaContributers = ({
                 />
               </Col>
             </Row>
-          );
+          )
         } else {
           return (
             <Row>
@@ -193,14 +193,14 @@ const AgendaContributers = ({
                 />
               </Col>
             </Row>
-          );
+          )
         }
       },
     },
     {
-      dataIndex: "Close",
-      key: "Close",
-      width: "80px",
+      dataIndex: 'Close',
+      key: 'Close',
+      width: '80px',
       render: (text, record) => {
         return (
           <>
@@ -225,15 +225,15 @@ const AgendaContributers = ({
               </Col>
             </Row>
           </>
-        );
+        )
       },
     },
-  ];
+  ]
 
   const notificationData = [
     {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
+      key: '1',
+      Name: <label className={styles['Title_desc']}>Muahmmad Saif</label>,
       Email: (
         <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
       ),
@@ -261,10 +261,10 @@ const AgendaContributers = ({
               <Col lg={12} md={12} sm={12}>
                 <TextField
                   disable={true}
-                  width={"283px"}
-                  placeholder={t("Content-title")}
-                  labelClass={"d-none"}
-                  applyClass={"Organizer_table"}
+                  width={'283px'}
+                  placeholder={t('Content-title')}
+                  labelClass={'d-none'}
+                  applyClass={'Organizer_table'}
                 />
               </Col>
             </Row>
@@ -272,37 +272,37 @@ const AgendaContributers = ({
         </label>
       ),
     },
-  ];
+  ]
 
-  const [notificationRows, setNotificationRows] = useState(notificationData);
+  const [notificationRows, setNotificationRows] = useState(notificationData)
 
   const notificationColoumn = [
     {
-      title: t("Name"),
-      dataIndex: "Name",
-      key: "Name",
-      width: "300px",
+      title: t('Name'),
+      dataIndex: 'Name',
+      key: 'Name',
+      width: '300px',
     },
     {
-      title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      width: "300px",
+      title: t('Email'),
+      dataIndex: 'Email',
+      key: 'Email',
+      width: '300px',
     },
 
     {
-      title: t("contributor-title"),
-      dataIndex: "Primary",
-      key: "Primary",
-      width: "400px",
+      title: t('contributor-title'),
+      dataIndex: 'Primary',
+      key: 'Primary',
+      width: '400px',
     },
     {
-      title: t("Notification1"),
-      dataIndex: "Notification",
-      key: "Notification",
-      width: "200px",
+      title: t('Notification1'),
+      dataIndex: 'Notification',
+      key: 'Notification',
+      width: '200px',
     },
-  ];
+  ]
 
   // const rspvData = [
   //   {
@@ -339,51 +339,51 @@ const AgendaContributers = ({
 
   const rspvColoumn = [
     {
-      title: t("Name"),
-      dataIndex: "Name",
-      key: "Name",
-      width: "300px",
+      title: t('Name'),
+      dataIndex: 'Name',
+      key: 'Name',
+      width: '300px',
     },
     {
-      title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      width: "300px",
+      title: t('Email'),
+      dataIndex: 'Email',
+      key: 'Email',
+      width: '300px',
     },
 
     {
-      title: t("contributor-title"),
-      dataIndex: "Primary",
-      key: "Primary",
-      width: "400px",
+      title: t('contributor-title'),
+      dataIndex: 'Primary',
+      key: 'Primary',
+      width: '400px',
     },
     {
-      title: t("Notification"),
-      dataIndex: "Notification",
-      key: "Notification",
-      width: "400px",
+      title: t('Notification'),
+      dataIndex: 'Notification',
+      key: 'Notification',
+      width: '400px',
     },
     {
-      title: t("RSVP"),
-      dataIndex: "rsvp",
-      key: "rsvp",
-      width: "400px",
+      title: t('RSVP'),
+      dataIndex: 'rsvp',
+      key: 'rsvp',
+      width: '400px',
     },
-  ];
+  ]
 
   const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-  };
+    setSelectedOption(option)
+  }
 
   // React select tick option handled
   const CustomOption = ({ innerProps, label, isSelected }) => (
-    <div {...innerProps} className={styles["option"]}>
-      {console.log(label, "labellabellabel")}
+    <div {...innerProps} className={styles['option']}>
+      {console.log(label, 'labellabellabel')}
       <Row>
-        <Col lg={12} md={12} sm={12} className={styles["OverAll_padding"]}>
+        <Col lg={12} md={12} sm={12} className={styles['OverAll_padding']}>
           <Row className="mt-2">
             <Col lg={11} md={11} sm={11}>
-              <span className={styles["label_Styles"]}>{label}</span>
+              <span className={styles['label_Styles']}>{label}</span>
             </Col>
             <Col lg={1} md={1} sm={1}>
               {isSelected && <img alt="" draggable={false} src={tick} />}
@@ -392,7 +392,7 @@ const AgendaContributers = ({
         </Col>
       </Row>
     </div>
-  );
+  )
 
   const options = [
     {
@@ -401,8 +401,8 @@ const AgendaContributers = ({
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className={styles["Options_classs_contributors"]}>
-                {t("Grant-access-to-all-agenda-items-and-files")}
+              <span className={styles['Options_classs_contributors']}>
+                {t('Grant-access-to-all-agenda-items-and-files')}
               </span>
             </Col>
           </Row>
@@ -415,29 +415,29 @@ const AgendaContributers = ({
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className={styles["Options_classs_contributors"]}>
-                {t("Grant-access-to-their-own-agenda-items-and-files-only")}
+              <span className={styles['Options_classs_contributors']}>
+                {t('Grant-access-to-their-own-agenda-items-and-files-only')}
               </span>
             </Col>
           </Row>
         </>
       ),
     },
-  ];
+  ]
 
   const handleNextButton = () => {
-    setAgendaContributors(false);
-    setParticipants(true);
-  };
+    setAgendaContributors(false)
+    setParticipants(true)
+  }
 
   const openAddAgendaModal = () => {
-    dispatch(showAddAgendaContributor(true));
-  };
+    dispatch(showAddAgendaContributor(true))
+  }
 
   const enableNotificatoinTable = () => {
     // setNotificationTable(!notificationTable);
-    dispatch(showCancelModalAgendaContributor(true));
-  };
+    dispatch(showCancelModalAgendaContributor(true))
+  }
 
   //You Can Enable Rspv Table From Here
   // const anableRspvTable = () => {
@@ -445,8 +445,8 @@ const AgendaContributers = ({
   // };
 
   const EnableViewAgendaContributors = () => {
-    setViewAgendaContributors(!viewAgendaContributors);
-  };
+    setViewAgendaContributors(!viewAgendaContributors)
+  }
 
   const handleEditBtn = () => {
     setRowsData((prevRowsData) => {
@@ -454,40 +454,40 @@ const AgendaContributers = ({
         return {
           ...row,
           isEdit: false,
-        };
-      });
-    });
-  };
+        }
+      })
+    })
+  }
 
   const handleCancelBtn = () => {
     if (NewMeetingreducer.getAllAgendaContributors.length > 0) {
       let agendaContributorData = [
         ...NewMeetingreducer.getAllAgendaContributors,
-      ];
+      ]
 
       // Initial values
-      const initialValues = {};
+      const initialValues = {}
       agendaContributorData.forEach((organizer) => {
-        initialValues[organizer.userID] = organizer.contributorTitle;
-      });
+        initialValues[organizer.userID] = organizer.contributorTitle
+      })
 
-      setInputValues({ ...initialValues });
+      setInputValues({ ...initialValues })
 
-      let newArr = [];
+      let newArr = []
       agendaContributorData.forEach((AgConData, index) => {
         newArr.push({
           userName: AgConData.userName,
           userID: AgConData.userID,
-          displayPicture: "",
+          displayPicture: '',
           email: AgConData.emailAddress,
           IsPrimaryOrganizer: false,
           IsOrganizerNotified: false,
           Title: AgConData.contributorTitle,
           isRSVP: AgConData.rsvp,
           isEdit: true,
-        });
-      });
-      setRowsData(newArr);
+        })
+      })
+      setRowsData(newArr)
     }
     // let removenewData = rowsData.filter((data, index) => data.isEdit === true);
     // setRowsData(removenewData);
@@ -496,24 +496,24 @@ const AgendaContributers = ({
     // };
     // dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
     // Create a copy of data with was coming
-  };
+  }
 
   const handleSaveBtn = () => {
-    let newData = [];
-    let copyData = [...rowsData];
+    let newData = []
+    let copyData = [...rowsData]
     copyData.forEach((data, index) => {
       newData.push({
         UserID: data.userID,
         Title: data.Title,
         AgendaListRightsAll: data.isRSVP,
         MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
-      });
-    });
+      })
+    })
     let Data = {
       AgendaContributors: newData,
-    };
-    dispatch(saveAgendaContributors(navigate, t, Data));
-  };
+    }
+    dispatch(saveAgendaContributors(navigate, t, Data))
+  }
 
   useEffect(() => {
     if (
@@ -524,41 +524,41 @@ const AgendaContributers = ({
       // Create a copy of data with was coming
       let agendaContributorData = [
         ...NewMeetingreducer.getAllAgendaContributors,
-      ];
+      ]
 
       // Initial values
-      const initialValues = {};
+      const initialValues = {}
       agendaContributorData.forEach((organizer) => {
-        initialValues[organizer.userID] = organizer.contributorTitle;
-      });
+        initialValues[organizer.userID] = organizer.contributorTitle
+      })
 
-      setInputValues({ ...initialValues });
+      setInputValues({ ...initialValues })
 
-      let newArr = [];
+      let newArr = []
       agendaContributorData.forEach((AgConData, index) => {
         newArr.push({
           userName: AgConData.userName,
           userID: AgConData.userID,
-          displayPicture: "",
+          displayPicture: '',
           email: AgConData.emailAddress,
           Title: AgConData.contributorTitle,
           isRSVP: AgConData.rsvp,
           isEdit: true,
           isContributedNotified: AgConData.isContributorNotified,
-        });
-      });
-      setRowsData(newArr);
+        })
+      })
+      setRowsData(newArr)
     }
-  }, [NewMeetingreducer.getAllAgendaContributors]);
+  }, [NewMeetingreducer.getAllAgendaContributors])
 
   useEffect(() => {
     if (rowsData.length > 0) {
-      let getifTrue = rowsData.some((data, index) => data.isEdit === false);
-      setIsEdit(getifTrue);
+      let getifTrue = rowsData.some((data, index) => data.isEdit === false)
+      setIsEdit(getifTrue)
     } else {
-      setIsEdit(false);
+      setIsEdit(false)
     }
-  }, [rowsData]);
+  }, [rowsData])
 
   return (
     <>
@@ -588,27 +588,27 @@ const AgendaContributers = ({
                 {isEdit ? (
                   <>
                     <Button
-                      text={t("Cancel")}
-                      className={styles["Cancel_button"]}
+                      text={t('Cancel')}
+                      className={styles['Cancel_button']}
                       onClick={handleCancelBtn}
                     />
                     <Button
-                      text={t("Save")}
+                      text={t('Save')}
                       onClick={handleSaveBtn}
-                      className={styles["Save_button"]}
+                      className={styles['Save_button']}
                     />
                   </>
                 ) : (
                   <>
                     <Button
-                      text={t("Edit")}
-                      className={styles["Edit_button"]}
+                      text={t('Edit')}
+                      className={styles['Edit_button']}
                       onClick={handleEditBtn}
                     />
                     <Button
-                      text={t("Add-more")}
+                      text={t('Add-more')}
                       icon={<img draggable={false} src={addmore} alt="" />}
-                      className={styles["AddMoreBtn"]}
+                      className={styles['AddMoreBtn']}
                       onClick={openAddAgendaModal}
                     />
                   </>
@@ -621,7 +621,7 @@ const AgendaContributers = ({
                   <>
                     <Table
                       column={notificationColoumn}
-                      scroll={{ y: "62vh" }}
+                      scroll={{ y: '62vh' }}
                       pagination={false}
                       className="Polling_table"
                       locale={{
@@ -650,8 +650,8 @@ const AgendaContributers = ({
                                 sm={12}
                                 className="d-flex justify-content-center"
                               >
-                                <span className={styles["Empty_state_heading"]}>
-                                  {t("No-agenda-contributor")}
+                                <span className={styles['Empty_state_heading']}>
+                                  {t('No-agenda-contributor')}
                                 </span>
                               </Col>
                             </Row>
@@ -663,9 +663,9 @@ const AgendaContributers = ({
                                 className="d-flex justify-content-center"
                               >
                                 <span
-                                  className={styles["Empty_state_Subheading"]}
+                                  className={styles['Empty_state_Subheading']}
                                 >
-                                  {t("There-are-no-agenda-contributors")}
+                                  {t('There-are-no-agenda-contributors')}
                                 </span>
                               </Col>
                             </Row>
@@ -679,7 +679,7 @@ const AgendaContributers = ({
                   <>
                     <Table
                       column={rspvColoumn}
-                      scroll={{ y: "62vh" }}
+                      scroll={{ y: '62vh' }}
                       pagination={false}
                       className="Polling_table"
                       locale={{
@@ -708,8 +708,8 @@ const AgendaContributers = ({
                                 sm={12}
                                 className="d-flex justify-content-center"
                               >
-                                <span className={styles["Empty_state_heading"]}>
-                                  {t("No-agenda-contributor")}
+                                <span className={styles['Empty_state_heading']}>
+                                  {t('No-agenda-contributor')}
                                 </span>
                               </Col>
                             </Row>
@@ -721,9 +721,9 @@ const AgendaContributers = ({
                                 className="d-flex justify-content-center"
                               >
                                 <span
-                                  className={styles["Empty_state_Subheading"]}
+                                  className={styles['Empty_state_Subheading']}
                                 >
-                                  {t("There-are-no-agenda-contributors")}
+                                  {t('There-are-no-agenda-contributors')}
                                 </span>
                               </Col>
                             </Row>
@@ -737,7 +737,7 @@ const AgendaContributers = ({
                   <>
                     <Table
                       column={AgendaColoumns}
-                      scroll={{ y: "62vh" }}
+                      scroll={{ y: '62vh' }}
                       pagination={false}
                       locale={{
                         emptyText: (
@@ -765,8 +765,8 @@ const AgendaContributers = ({
                                 sm={12}
                                 className="d-flex justify-content-center"
                               >
-                                <span className={styles["Empty_state_heading"]}>
-                                  {t("No-agenda-contributor")}
+                                <span className={styles['Empty_state_heading']}>
+                                  {t('No-agenda-contributor')}
                                 </span>
                               </Col>
                             </Row>
@@ -778,9 +778,9 @@ const AgendaContributers = ({
                                 className="d-flex justify-content-center"
                               >
                                 <span
-                                  className={styles["Empty_state_Subheading"]}
+                                  className={styles['Empty_state_Subheading']}
                                 >
-                                  {t("There-are-no-agenda-contributors")}
+                                  {t('There-are-no-agenda-contributors')}
                                 </span>
                               </Col>
                             </Row>
@@ -798,29 +798,29 @@ const AgendaContributers = ({
           <Row>
             <Col lg={12} md={12} sm={12}>
               {!isEdit ? (
-                <section className={styles["Footer_Class"]}>
+                <section className={styles['Footer_Class']}>
                   <Button
-                    text={t("Cancel")}
-                    className={styles["Cancel_Organization"]}
+                    text={t('Cancel')}
+                    className={styles['Cancel_Organization']}
                     onClick={enableNotificatoinTable}
                   />
                   <Button
-                    text={t("Save")}
-                    className={styles["Cancel_Organization"]}
+                    text={t('Save')}
+                    className={styles['Cancel_Organization']}
                   />
                   <Button
-                    text={t("Save-and-publish")}
-                    className={styles["Cancel_Organization"]}
+                    text={t('Save-and-publish')}
+                    className={styles['Cancel_Organization']}
                     onClick={EnableViewAgendaContributors}
                   />
                   <Button
-                    text={t("Save-and-next")}
-                    className={styles["Next_Organization"]}
+                    text={t('Save-and-next')}
+                    className={styles['Next_Organization']}
                     onClick={handleNextButton}
                   />
                 </section>
               ) : (
-                <section className={styles["Footer_Class2"]}></section>
+                <section className={styles['Footer_Class2']}></section>
               )}
             </Col>
           </Row>
@@ -850,7 +850,7 @@ const AgendaContributers = ({
         <CancelAgendaContributor setSceduleMeeting={setSceduleMeeting} />
       )}
     </>
-  );
-};
+  )
+}
 
-export default AgendaContributers;
+export default AgendaContributers
