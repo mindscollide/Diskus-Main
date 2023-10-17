@@ -463,6 +463,7 @@ const UpdatePolls = () => {
         height="11.11px"
         width="11.54px"
         className="custom-icon cursor-pointer"
+        onClick={handleIconClick}
         draggable="false"
       />
     </div>
@@ -582,18 +583,19 @@ const UpdatePolls = () => {
                           sm={12}
                           className="d-flex justify-content-center gap-2 align-items-center"
                         >
-                          <span
-                            onClick={handleIconClick}
-                            className="cursor-pointer d-flex gap-2 align-items-center"
-                          >
+                          <span className="cursor-pointer d-flex gap-2 align-items-center">
                             <img
                               src={AlarmClock}
                               width="14.97px"
                               height="14.66px"
                               alt=""
                               draggable="false"
+                              onClick={handleIconClick}
                             />
-                            <span className={styles["Due_Date_heading"]}>
+                            <span
+                              className={styles["Due_Date_heading"]}
+                              onClick={handleIconClick}
+                            >
                               {t("Due-date-on")}{" "}
                               <span className={styles["Date_update_poll"]}>
                                 {changeDateStartHandler2(UpdatePolls.date)}
@@ -615,6 +617,7 @@ const UpdatePolls = () => {
                               minDate={moment().toDate()}
                               className="datePickerTodoCreate2"
                               calendar={calendarValue}
+                              onClick={handleIconClick}
                               locale={localValue}
                             />
                           </span>
