@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import { Button, ResultMessage } from '../../../../elements'
+import { Button, ResultMessage, LoaderPanel } from '../../../../elements'
 import {
   GetBlockedUsers,
   BlockUnblockUser,
@@ -81,7 +81,10 @@ const BlockedUsersList = () => {
       {talkStateData.BlockedUsers.Loading === true &&
       blockedUsersData.length === 0 ? (
         <>
-          <Spin className="talk-overallchat-spinner" />
+          {/* <Spin className="talk-overallchat-spinner" /> */}
+          <LoaderPanel
+            message={'Safeguarding your data to enhance the experience'}
+          />
         </>
       ) : talkStateData.BlockedUsers.Loading === false &&
         blockedUsersData !== undefined &&

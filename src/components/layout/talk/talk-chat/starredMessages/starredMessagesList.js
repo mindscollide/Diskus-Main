@@ -9,7 +9,7 @@ import { GetAllStarredMessages } from '../../../../../store/actions/Talk_action'
 import SingleIcon from '../../../../../assets/images/Single-Icon.png'
 import StarredMessageIcon from '../../../../../assets/images/Starred-Message-Icon.png'
 import StarredMessages from '../../../../../assets/images/Starred-Messages.png'
-import { ResultMessage } from '../../../../elements'
+import { ResultMessage, LoaderPanel } from '../../../../elements'
 
 const StarredMessagesList = () => {
   const dispatch = useDispatch()
@@ -79,7 +79,10 @@ const StarredMessagesList = () => {
       {talkStateData.AllStarMessagesData.Loading === true &&
       allStarredMessagesData.length === 0 ? (
         <>
-          <Spin className="talk-overallchat-spinner" />
+          {/* <Spin className="talk-overallchat-spinner" /> */}
+          <LoaderPanel
+            message={'Safeguarding your data to enhance the experience'}
+          />
         </>
       ) : talkStateData.AllStarMessagesData.Loading === false &&
         allStarredMessagesData !== undefined &&

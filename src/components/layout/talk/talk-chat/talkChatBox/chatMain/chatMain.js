@@ -411,6 +411,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [showChatSearch, setShowChatSearch] = useState(false)
 
   const [searchChatWord, setSearchChatWord] = useState('')
+  // const [filteredMessages, setFilteredMessages] = useState(allMessages)
 
   //Notification States
   var min = 10000
@@ -764,13 +765,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }
 
   const deleteFilefromAttachments = (data, index) => {
-    let searchIndex = tasksAttachments.TasksAttachments
-    searchIndex.splice(index, 1)
+    // let searchIndex = tasksAttachments.TasksAttachments
+    // searchIndex.splice(index, 1)
     setTasksAttachments({
       ...tasksAttachments,
-      ['TasksAttachments']: searchIndex,
+      ['TasksAttachments']: [],
     })
     setUploadFileTalk({})
+    setFile('')
   }
 
   const closeChat = () => {
@@ -1771,6 +1773,116 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setAllMessages([...allBroadcastMessagesArr])
     }
   }, [talkStateData.AllMessagesData])
+
+  const chatSearchChange = (e) => {
+    const searchedKeyword = e.target.value.toLowerCase()
+    const allChatMessages = talkStateData.AllMessagesData
+
+    // Ensure you have a copy of the original messages
+    const originalCopy = allChatMessages ? [...getOriginalMessages()] : []
+
+    if (searchedKeyword !== '') {
+      const filteredData = originalCopy.filter((message) =>
+        message.messageBody.toLowerCase().includes(searchedKeyword),
+      )
+      console.log('filteredData', filteredData)
+      console.log('searchedKeyword', searchedKeyword)
+      setAllMessages(filteredData)
+    } else {
+      // If the search keyword is empty, reset to the original messages
+      setAllMessages(originalCopy)
+    }
+
+    setSearchChatWord(e.target.value)
+  }
+
+  // Function to get the original messages based on messageType
+  const getOriginalMessages = () => {
+    const messageType = talkStateData.ActiveChatData.messageType
+    const allChatMessages = talkStateData.AllMessagesData
+
+    switch (messageType) {
+      case 'O':
+        return allChatMessages.oneToOneMessages || []
+      case 'G':
+        return allChatMessages.groupMessages || []
+      case 'B':
+        if (allChatMessages.broadcastMessages) {
+          return allChatMessages.broadcastMessages
+            .filter(
+              (messagesData) => messagesData.frMessages !== 'Direct Message',
+            )
+            .map((messagesData) => ({
+              messageID: messagesData.messageID,
+              senderID: messagesData.senderID,
+              // ... (other properties)
+            }))
+        }
+        return []
+      default:
+        return []
+    }
+  }
+
+  const closeChatSearch = () => {
+    let allChatMessages = talkStateData.AllMessagesData
+    if (
+      allChatMessages !== undefined &&
+      allChatMessages !== null &&
+      // allChatMessages.length !== 0 &&
+      talkStateData.ActiveChatData.messageType === 'O'
+    ) {
+      oneToOneMessages(setAllMessages, allChatMessages.oneToOneMessages)
+    } else if (
+      allChatMessages !== undefined &&
+      allChatMessages !== null &&
+      // allChatMessages.length !== 0 &&
+      talkStateData.ActiveChatData.messageType === 'G'
+    ) {
+      groupMessages(allChatMessages.groupMessages, setAllMessages)
+    } else if (
+      allChatMessages !== undefined &&
+      allChatMessages !== null &&
+      // allChatMessages.length !== 0 &&
+      talkStateData.ActiveChatData.messageType === 'B'
+    ) {
+      let allBroadcastMessagesArr = []
+      if (
+        allChatMessages.broadcastMessages !== undefined &&
+        allChatMessages.broadcastMessages !== null &&
+        allChatMessages.broadcastMessages.length !== 0
+      ) {
+        allChatMessages.broadcastMessages.map((messagesData) => {
+          if (messagesData.frMessages !== 'Direct Message') {
+            messagesData.frMessages = messagesData.frMessages.split('|')
+          }
+          allBroadcastMessagesArr.push({
+            messageID: messagesData.messageID,
+            senderID: messagesData.senderID,
+            receiverID: messagesData.receiverID,
+            messageBody: messagesData.messageBody,
+            senderName: messagesData.senderName,
+            isFlag: messagesData.isFlag,
+            sentDate: messagesData.sentDate,
+            currDate: messagesData.currDate,
+            fileGeneratedName: messagesData.fileGeneratedName,
+            fileName: messagesData.fileName,
+            frMessages: messagesData.frMessages,
+            broadcastName: messagesData.broadcastName,
+            messageCount: messagesData.messageCount,
+            attachmentLocation: messagesData.attachmentLocation,
+            sourceMessageBody: messagesData.sourceMessageBody,
+            sourceMessageId: messagesData.sourceMessageId,
+          })
+        })
+      } else {
+        allBroadcastMessagesArr = []
+      }
+      setAllMessages([...allBroadcastMessagesArr])
+    }
+    setShowChatSearch(false)
+    setSearchChatWord('')
+  }
 
   console.log('All Messages State', allMessages)
 
@@ -3024,6 +3136,41 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData])
 
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketInsertBroadcastMessage
+        .MessageSendBroadcastResponseData !== null &&
+      talkStateData.talkSocketInsertBroadcastMessage
+        .MessageSendBroadcastResponseData !== undefined &&
+      talkStateData.talkSocketInsertBroadcastMessage
+        .MessageSendBroadcastResponseData.length !== 0
+    ) {
+      try {
+        if (talkStateData.ActiveChatData.messageType === 'B') {
+          // if(
+          //           talkStateData.talkSocketInsertBroadcastMessage
+          //             .MessageSendBroadcastResponseData.data[0].senderID != undefined &&
+          //           talkStateData.talkSocketInsertBroadcastMessage
+          //             .MessageSendBroadcastResponseData.data[0].senderID != null &&
+          //           talkStateData.talkSocketInsertBroadcastMessage
+          //             .MessageSendBroadcastResponseData.data[0].senderID != 0 &&
+          //           talkStateData.talkSocketInsertBroadcastMessage
+          //             .MessageSendBroadcastResponseData.data[0].senderID != '' &&
+          //           talkStateData.talkSocketInsertBroadcastMessage
+          //             .MessageSendBroadcastResponseData.data[0].senderID != '0' &&
+          //           talkStateData.ActiveChatData.id ===
+          //             talkStateData.talkSocketInsertBroadcastMessage
+          //               .MessageSendBroadcastResponseData.data[0].receiverID
+          // ) {
+          // }
+        }
+      } catch {}
+    }
+  }, [
+    talkStateData.talkSocketInsertBroadcastMessage
+      .MessageSendBroadcastResponseData,
+  ])
+
   // //Socket Insert Broadcast Message
   // useEffect(() => {
   //   if (
@@ -4009,15 +4156,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     localStorage.setItem('activeOtoChatID', 0)
   }
 
-  // useEffect(() => {
-  //   const updatedMessages = allMessages.map((message) => ({
-  //     ...message,
-  //     messageStatus: 'Seen',
-  //   }))
-
-  //   setAllMessages(updatedMessages)
-  // }, [])
-
   console.log('talkStateData', talkStateData)
 
   return (
@@ -4271,21 +4409,34 @@ const ChatMainBody = ({ chatMessageClass }) => {
             </Row>
             {showChatSearch === true ? (
               <>
-                <div className="chat-searchfield">
-                  <Row>
-                    <Col>
+                {/* <div className="chat-searchfield"> */}
+                <Row>
+                  <Col className="p-0">
+                    <div className="chat-searchfield">
                       <TextField
                         maxLength={200}
                         applyClass="form-control2"
+                        autoComplete="off"
                         name="Name"
-                        change={(e) => setSearchChatWord(e.target.value)}
+                        change={chatSearchChange}
                         value={searchChatWord}
                         placeholder={t('Search-Chat')}
                         labelClass={'d-none'}
+                        inputicon={
+                          <span className="background-close-search">
+                            <img
+                              onClick={closeChatSearch}
+                              className="cursor-pointer"
+                              src={CrossIcon}
+                              alt=""
+                            />
+                          </span>
+                        }
                       />
-                    </Col>
-                  </Row>
-                </div>
+                    </div>
+                  </Col>
+                </Row>
+                {/* </div> */}
               </>
             ) : null}
 
@@ -4303,12 +4454,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         email === true ||
                         deleteMessage === true
                           ? 'chat-section applyBlur'
+                          : showChatSearch === true
+                          ? 'chat-section searchField'
                           : 'chat-section'
                       }
                     >
                       <>
                         {file === '' ? (
-                          <div className="chat-messages-section">
+                          <div
+                            className={
+                              replyFeature === true ||
+                              (file === '' &&
+                                tasksAttachments.TasksAttachments.length > 0)
+                                ? 'chat-messages-section'
+                                : ''
+                            }
+                          >
                             {allMessages.length > 0 &&
                             talkStateData.ActiveChatData.messageType === 'O' &&
                             talkStateData.ChatSpinner === false ? (
@@ -4482,12 +4643,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 </div>
                                               ) : null}
                                               <span className="direct-chat-body color-5a5a5a">
-                                                <Keywords
-                                                  value={searchChatWord}
-                                                  render={highlight}
-                                                >
-                                                  {messageData.messageBody}
-                                                </Keywords>
+                                                {messageData.messageBody}
                                               </span>
                                             </>
                                           ) : messageData.frMessages ===
@@ -4570,12 +4726,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               )}
 
                                               <span className="direct-chat-body color-5a5a5a">
-                                                <Keywords
-                                                  value={searchChatWord}
-                                                  render={highlight}
-                                                >
-                                                  {messageData.messageBody}
-                                                </Keywords>
+                                                {messageData.messageBody}
                                               </span>
                                             </>
                                           ) : (
@@ -4591,12 +4742,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 </p>
                                               </div>
                                               <span className="direct-chat-body color-5a5a5a">
-                                                <Keywords
-                                                  value={searchChatWord}
-                                                  render={highlight}
-                                                >
-                                                  {messageData.messageBody}
-                                                </Keywords>
+                                                {messageData.messageBody}
                                               </span>
                                             </>
                                           )}
@@ -4877,12 +5023,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               </div>
                                             ) : null}
                                             <span className="direct-chat-body color-white">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
+                                              {messageData.messageBody}
                                             </span>
                                           </>
                                         ) : (
@@ -4896,12 +5037,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               </p>
                                             </div>
                                             <span className="direct-chat-body color-white">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
+                                              {messageData.messageBody}
                                             </span>
                                           </>
                                         )}
@@ -5122,12 +5258,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               </div>
                                             ) : null}
                                             <span className="direct-chat-body color-5a5a5a">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
+                                              {messageData.messageBody}
                                             </span>
                                           </>
                                         ) : (
@@ -5141,12 +5272,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               </p>
                                             </div>
                                             <span className="direct-chat-body color-5a5a5a">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
+                                              {messageData.messageBody}
                                             </span>
                                           </>
                                         )}
@@ -5357,12 +5483,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               {messageData.senderName}
                                             </p>
                                             <span className="direct-chat-body color-white">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
+                                              {messageData.messageBody}
                                             </span>
                                           </>
                                         ) : (
@@ -5379,12 +5500,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               </p>
                                             </div>
                                             <span className="direct-chat-body color-white">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
+                                              {messageData.messageBody}
                                             </span>
                                           </>
                                         )}
@@ -5607,12 +5723,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 </div>
                                               ) : null}
                                               <span className="direct-chat-body color-5a5a5a">
-                                                <Keywords
-                                                  value={searchChatWord}
-                                                  render={highlight}
-                                                >
-                                                  {messageData.messageBody}
-                                                </Keywords>
+                                                {messageData.messageBody}
                                               </span>
                                             </>
                                           ) : (
@@ -5628,12 +5739,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 </p>
                                               </div>
                                               <span className="direct-chat-body color-5a5a5a">
-                                                <Keywords
-                                                  value={searchChatWord}
-                                                  render={highlight}
-                                                >
-                                                  {messageData.messageBody}
-                                                </Keywords>
+                                                {messageData.messageBody}
                                               </span>
                                             </>
                                           )}
@@ -6194,7 +6300,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 <img
                                                   draggable="false"
                                                   src={DeleteUploadIcon}
-                                                  className="delete-upload-file"
+                                                  className="delete-upload-file cursor-pointer"
                                                   onClick={() =>
                                                     deleteFilefromAttachments(
                                                       data,
@@ -6696,7 +6802,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
                   {groupInfoData !== undefined &&
                   groupInfoData !== null &&
                   groupInfoData.length > 0
-                    ? groupInfoData.map((dataItem, index) => {
+                    ? [
+                        ...new Map(
+                          groupInfoData.map((item) => [item.userID, item]),
+                        ).values(),
+                      ].map((dataItem, index) => {
                         return (
                           <Row style={{ alignItems: 'center' }}>
                             <Col
