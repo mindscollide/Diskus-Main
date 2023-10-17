@@ -17,6 +17,8 @@ import {
   renameFileRequestMethod,
   searchDocumentsFoldersAPI,
   getRecentDocumentsRM,
+  getUserAgainstShareFolderRM,
+  getUserAgainstShareFileRM,
 } from "../../commen/apis/Api_config";
 import { dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -2306,6 +2308,7 @@ const recentDocuments_success = (response, message) => {
 const recentDocuments_fail = (message) => {
   return {
     type: actions.GET_RECENT_DOCUMENTS_FAIL,
+    message: message,
   };
 };
 
@@ -2377,7 +2380,171 @@ const getRecentDocumentsApi = (navigate, t, data) => {
   };
 };
 
+const getSharedFileUser_init = () => {
+  return {
+    type: actions.GETUSERSAGAINSTSHAREDFILE_INIT,
+  };
+};
+const getSharedFileUser_success = (response, message) => {
+  return {
+    type: actions.GETUSERSAGAINSTSHAREDFILE_SUCCESS,
+    response,
+    message,
+  };
+};
+const getSharedFileUser_fail = (message) => {
+  return {
+    type: actions.GETUSERSAGAINSTSHAREDFILE_FAIL,
+    message,
+  };
+};
+const getSharedFileUsersApi = (navigate, data, t, setShareFileModal) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(getSharedFileUser_init());
+    let form = new FormData();
+    form.append("RequestMethod", getUserAgainstShareFileRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getSharedFileUsersApi(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_GetUsersAgainstSharedFile_01".toLowerCase()
+            ) {
+              dispatch(
+                getSharedFileUser_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+              setShareFileModal(true);
+              // dispatch();
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_GetUsersAgainstSharedFile_02".toLowerCase()
+            ) {
+              dispatch(
+                getSharedFileUser_fail(t("File-not-shared-against-any-users"))
+              );
+              setShareFileModal(true);
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_GetUsersAgainstSharedFile_03".toLowerCase()
+            ) {
+              dispatch(getSharedFileUser_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getSharedFileUser_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getSharedFileUser_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getSharedFileUser_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(getSharedFileUser_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const getSharedFolderUser_init = () => {
+  return {
+    type: actions.GETUSERSAGAINSTSHAREDFOLDER_INIT,
+  };
+};
+const getSharedFolderUser_success = (response, message) => {
+  return {
+    type: actions.GETUSERSAGAINSTSHAREDFOLDER_SUCCESS,
+    response,
+    message,
+  };
+};
+const getSharedFolderUser_fail = (message) => {
+  return {
+    type: actions.GETUSERSAGAINSTSHAREDFOLDER_FAIL,
+    message,
+  };
+};
+const getSharedFolderUsersApi = (navigate, data, t, setSharefoldermodal) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(getSharedFolderUser_init());
+    let form = new FormData();
+    form.append("RequestMethod", getUserAgainstShareFolderRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getSharedFolderUsersApi(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_GetUsersAgainstSharedFolder_01".toLowerCase()
+            ) {
+              dispatch(
+                getSharedFolderUser_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+              setSharefoldermodal(true);
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_GetUsersAgainstSharedFolder_02".toLowerCase()
+            ) {
+              dispatch(
+                getSharedFolderUser_fail(
+                  t("Folder-not-shared-against-any-users")
+                )
+              );
+              setSharefoldermodal(true);
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_GetUsersAgainstSharedFolder_03".toLowerCase()
+            ) {
+              dispatch(getSharedFolderUser_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getSharedFolderUser_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getSharedFolderUser_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getSharedFolderUser_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(getSharedFolderUser_fail(t("Something-went-wrong")));
+      });
+  };
+};
 export {
+  getSharedFolderUsersApi,
+  getSharedFileUsersApi,
   saveFilesApi,
   FileisExist,
   deleteFolder,

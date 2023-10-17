@@ -30,6 +30,8 @@ const initialState = {
   SearchFilesAndFoldersResponse: [],
   SearchFileListCount: 0,
   RecentDocuments: null,
+  getSharedFileUsers: null,
+  getSharedFolderUsers: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -461,6 +463,50 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         RecentDocuments: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFILE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFILE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getSharedFileUsers: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFILE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getSharedFileUsers: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFOLDER_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFOLDER_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getSharedFolderUsers: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFOLDER_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getSharedFolderUsers: null,
         ResponseMessage: action.message,
       };
     }

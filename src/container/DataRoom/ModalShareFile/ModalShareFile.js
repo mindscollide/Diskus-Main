@@ -252,6 +252,7 @@ const ModalShareFile = ({
             FK_FileID: folderId,
             FK_PermissionID: JSON.parse(permissionID.value),
             FK_UserID: taskAssignedTo,
+            ExpiryDateTime: "",
           };
           if (taskAssignedTo !== 0) {
             if (assignees.user.length > 0) {

@@ -934,7 +934,16 @@ const getAllSavedParticipants = {
   RequestMethod: "ServiceManager.GetAllMeetingParticipants",
 };
 
+const getUserAgainstShareFileRM = {
+  RequestMethod: "ServiceManager.GetUsersAgainstSharedFile",
+};
+
+const getUserAgainstShareFolderRM = {
+  RequestMethod: "ServiceManager.GetUsersAgainstSharedFolder",
+};
 export {
+  getUserAgainstShareFolderRM,
+  getUserAgainstShareFileRM,
   getAllAgendaContributorRM,
   saveAgendaContributorsRM,
   getRecentDocumentsRM,

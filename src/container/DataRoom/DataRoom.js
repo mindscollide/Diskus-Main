@@ -52,6 +52,8 @@ import {
   getDocumentsAndFolderApiScrollbehaviour,
   getFolderDocumentsApi,
   getRecentDocumentsApi,
+  getSharedFileUsersApi,
+  getSharedFolderUsersApi,
   isFolder,
   uploadDocumentsApi,
 } from "../../store/actions/DataRoom_actions";
@@ -407,19 +409,26 @@ const DataRoom = () => {
   };
 
   const showShareFolderModal = (id, name) => {
+    // getSharedFolderUsersApi;
+    let Data = { FolderID: id };
+    dispatch(getSharedFolderUsersApi(navigate, Data, t, setSharefoldermodal));
     setFolderId(id);
     setFolderName(name);
-    setSharefoldermodal(true);
-    setSharehoverstyle(true);
-    setDeltehoverstyle(false);
+    // setSharefoldermodal(true);
+    // setSharehoverstyle(true);
+    // setDeltehoverstyle(false);
   };
 
   const showShareFileModal = (id, name) => {
+    // getSharedFileUsersApi
+    let Data = { FileID: id };
+
+    dispatch(getSharedFileUsersApi(navigate, Data, t, setShareFileModal));
     setFolderId(id);
     setFileName(name);
-    setShareFileModal(true);
-    setSharehoverstyle(true);
-    setDeltehoverstyle(false);
+    // setShareFileModal(true);
+    // setSharehoverstyle(true);
+    // setDeltehoverstyle(false);
   };
 
   const handleGridView = () => {

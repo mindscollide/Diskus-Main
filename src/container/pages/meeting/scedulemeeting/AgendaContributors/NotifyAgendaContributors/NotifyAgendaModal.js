@@ -89,6 +89,7 @@ const NotifyAgendaModal = ({
       });
     });
   };
+
   return (
     <section>
       <Modal
@@ -140,15 +141,19 @@ const NotifyAgendaModal = ({
                 sm={6}
                 className="d-flex justify-content-start align-items-center gap-2"
               >
-                <Checkbox
-                  checked={notifiedMembersData.every(
-                    (data) => data.isContributedNotified === true
-                  )}
-                  onChange={handleCheckAll}
-                />
-                <p className={styles["Check_box_title"]}>
-                  {t("All-agenda-organizer-except")}
-                </p>
+                {specificUser === 0 && (
+                  <>
+                    <Checkbox
+                      checked={notifiedMembersData.every(
+                        (data) => data.isContributedNotified === true
+                      )}
+                      onChange={handleCheckAll}
+                    />
+                    <p className={styles["Check_box_title"]}>
+                      {t("All-agenda-organizer-except")}
+                    </p>
+                  </>
+                )}
               </Col>
               <Col
                 lg={6}

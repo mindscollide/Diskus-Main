@@ -228,10 +228,11 @@ const ModalShareFolder = ({
             FK_FolderID: folderId,
             FK_PermissionID: JSON.parse(permissionID.value),
             FK_UserID: taskAssignedTo,
+            ExpiryDateTime: "",
           };
           if (taskAssignedTo !== 0) {
             if (assignees.user.length > 0) {
-              assignees.user.map((data, index) => {
+              assignees.user.forEach((data, index) => {
                 if (data.pK_UID === taskAssignedTo) {
                   setMembers([...isMembers, data]);
                 }

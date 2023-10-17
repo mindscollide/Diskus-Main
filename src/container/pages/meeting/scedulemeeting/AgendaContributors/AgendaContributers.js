@@ -85,7 +85,7 @@ const AgendaContributers = ({
 
   useEffect(() => {
     let getAllData = {
-      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
   }, []);
