@@ -278,6 +278,7 @@ span.user-active-status.offline {
   border-bottom: 1px solid #d6d6d6;
   margin-left: -5px;
   margin-right: -5px;
+  position: relative;
 }
 
 p.chat-username.m-0 {
@@ -951,10 +952,10 @@ body[dir="rtl"] span.securityicon-box {
 }
 
 .chathead-box-icons {
-  text-align: right;
-  position: relative;
-  margin-top: -63px;
   display: none;
+  position: absolute;
+  right: 0;
+  top: -10px;
 }
 
 .chathead-box-icons img {
@@ -1020,6 +1021,16 @@ body[dir="rtl"] span.securityicon-box {
   overflow: hidden auto;
   display: flex;
   flex-direction: column-reverse;
+}
+
+.chat-section.searchField {
+  position: relative;
+  height: 34.7vh;
+  padding: 15px;
+  overflow: hidden auto;
+  display: flex;
+  flex-direction: column-reverse;
+  top: 25px;
 }
 
 .chat-box-content .message-box {
@@ -1720,9 +1731,10 @@ mark.YourHighlightClass {
 
 .chat-searchfield {
   position: absolute;
-  width: 90%;
+  width: 100%;
+  /* width: 90%;
   top: 95px;
-  z-index: 9999;
+  z-index: 9999; */
 }
 
 .replied-message-send {
@@ -1960,9 +1972,29 @@ textarea.chat-message-input.form-control::-webkit-scrollbar-thumb {
 }
 
 .chat-searchfield input {
-  border: 1px solid #cdcdcd !important;
-  background: #f9f9f9;
+  border: 2px solid #6172d6 !important;
+  border-left: none !important;
+  background: #ffffff;
   height: 35px !important;
+  border-radius: 0 !important;
+  border-right: none !important;
+  z-index: 9;
+  position: absolute;
+}
+
+.chat-searchfield input:hover,
+.chat-searchfield input:active,
+.chat-searchfield input:focus,
+.chat-searchfield input:focus-visible,
+.chat-searchfield input:visited,
+.chat-searchfield input:target {
+  border: 2px solid #6172d6 !important;
+  border-left: none !important;
+  background: #ffffff;
+  height: 35px !important;
+  border-radius: 0 !important;
+  border-right: none !important;
+  z-index: 9;
 }
 
 .chat-messenger-head-video .chat-searchfield {
@@ -1974,4 +2006,29 @@ textarea.chat-message-input.form-control::-webkit-scrollbar-thumb {
   background: #f9f9f9;
   height: 35px !important;
   margin-top: 10px;
+}
+
+.chat-messages-section {
+  margin-bottom: 48px;
+}
+
+.chat-searchfield .valid-feedback {
+  display: block;
+  position: absolute;
+  right: -7px !important;
+  width: 40px;
+  top: 4px;
+  z-index: 9;
+}
+
+span.background-close-search {
+  display: flex;
+  width: 34px;
+  height: 33px;
+  text-align: center;
+  margin-top: -7px;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to left, #4ADEDE 0%, #6172D6 100%) !important;
 }
