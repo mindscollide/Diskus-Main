@@ -1,14 +1,16 @@
 {
-  "Task": {
-    "PK_TID": 1,
-    "Title": "asas",
-    "Description": "",
-    "IsMainTask": true,
-    "DeadLineDate": "20231018",
-    "DeadLineTime": "071037",
-    "CreationDateTime": ""
-  },
-  "TaskCreatorID": 983,
-  "TaskAssignedTo": [985],
-  "TasksAttachments": []
+  "MeetingParticipants": [
+    {
+      "UserID": 984,
+      "Title": "Saif Test One ",
+      "ParticipantRoleID": 2,
+      "MeetingID": 1694
+    },
+    {
+      "UserID": 985,
+      "Title": "Two Test Saif ",
+      "ParticipantRoleID": 4,
+      "MeetingID": 1694
+    }
+  ]
 }

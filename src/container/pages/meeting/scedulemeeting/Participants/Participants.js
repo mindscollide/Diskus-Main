@@ -351,11 +351,14 @@ const Participants = ({
         UserID: data.userID,
         Title: data.Title,
         ParticipantRoleID: data.participantRole.participantRoleID,
-        MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
+        MeetingID: 0,
       });
     });
     let Data = {
       MeetingParticipants: newData,
+      MeetingID: Number(currentMeetingID),
+      IsParticipantsAddFlow: false,
+      NotificationMessage: "",
     };
     console.log({ Data }, "DataData");
 
