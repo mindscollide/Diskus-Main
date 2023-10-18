@@ -76,6 +76,7 @@ const Participants = ({
     setAgenda(true);
   };
 
+  //For menu Portal of the React select
   const customStyles = {
     menuPortal: (base) => ({
       ...base,
