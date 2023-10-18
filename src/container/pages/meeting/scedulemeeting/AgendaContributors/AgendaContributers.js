@@ -166,6 +166,7 @@ const AgendaContributers = ({
                 <img
                   draggable={false}
                   src={greenMailIcon}
+                  className="cursor-pointer"
                   height="30px"
                   width="30px"
                   alt=""
@@ -186,6 +187,7 @@ const AgendaContributers = ({
                 <img
                   draggable={false}
                   src={redMailIcon}
+                  className="cursor-pointer"
                   height="30px"
                   alt=""
                   width="30px"
@@ -195,6 +197,30 @@ const AgendaContributers = ({
             </Row>
           );
         }
+      },
+    },
+    {
+      dataIndex: "rsvp",
+      key: "rsvp",
+      width: "80px",
+      render: (text, record) => {
+        return (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <img
+                  draggable={false}
+                  src={RspvIcon}
+                  className="cursor-pointer"
+                  height="30px"
+                  width="30px"
+                />
+
+                {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
+              </Col>
+            </Row>
+          </>
+        );
       },
     },
     {
@@ -229,39 +255,6 @@ const AgendaContributers = ({
       },
     },
   ];
-
-  // const rspvData = [
-  //   {
-  //     key: "1",
-  //     Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
-  //     Email: (
-  //       <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-  //     ),
-  //     OrganizerTitle: <label className="column-boldness">Organizer</label>,
-  //     Notification: (
-  //       <>
-  //         <Row>
-  //           <Col lg={12} md={12} sm={12}>
-  //             <img
-  //               draggable={false}
-  //               src={NotificationIcon}
-  //               width="17.64px"
-  //               height="12.4px"
-  //             />
-  //             {/* <img draggable = {false} src={redMailIcon} width="17.64px" height="12.4px" /> */}
-  //           </Col>
-  //         </Row>
-  //       </>
-  //     ),
-  //     rsvp: (
-  //       <>
-  //         <img draggable={false} src={RspvIcon} height="30px" width="30px" />
-  //         {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
-  //       </>
-  //     ),
-  //   },
-  // ];
-  // const [rspvRows, setrspvRows] = useState(rspvData);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);

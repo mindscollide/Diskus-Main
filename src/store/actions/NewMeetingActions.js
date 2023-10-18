@@ -11,6 +11,7 @@ import {
   saveMeetingDetials,
   saveParticipantsMeeting,
   searchUserMeetings,
+  sendNotification,
 } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -1091,7 +1092,7 @@ const showSaveParticipantsSuccess = (response, message) => {
   };
 };
 
-const showSaveParticipantsFailed = (response, message) => {
+const showSaveParticipantsFailed = (message) => {
   return {
     type: actions.SAVE_MEETING_PARTICIPANTS_FAILED,
     message: message,
@@ -1442,6 +1443,95 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
   };
 };
 
+//Send Notification Api
+const sendNotificationParticipantsInit = () => {
+  return {
+    type: actions.SEND_NOTIFICATION_INIT,
+  };
+};
+
+const sendNotificationParticipantsSuccess = (message) => {
+  return {
+    type: actions.SEND_NOTIFICATION_SUCCESS,
+    message: message,
+  };
+};
+
+const sendNotificationParticipantsFailed = (message) => {
+  return {
+    type: actions.SEND_NOTIFICATION_FAILED,
+    message: message,
+  };
+};
+
+//Send Notification API Function
+const SendNotificationApiFunc = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(sendNotificationParticipantsInit());
+    let form = new FormData();
+    form.append("RequestMethod", sendNotification.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SendNotificationApiFunc(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetRecentNotifications_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                sendNotificationParticipantsSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetRecentNotifications_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                sendNotificationParticipantsFailed(t("No-record-found"))
+              );
+            } else {
+              dispatch(
+                sendNotificationParticipantsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              sendNotificationParticipantsFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            sendNotificationParticipantsFailed(t("Something-went-wrong"))
+          );
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(sendNotificationParticipantsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -1498,4 +1588,5 @@ export {
   FetchMeetingURLApi,
   SaveparticipantsApi,
   GetAllSavedparticipantsAPI,
+  SendNotificationApiFunc,
 };

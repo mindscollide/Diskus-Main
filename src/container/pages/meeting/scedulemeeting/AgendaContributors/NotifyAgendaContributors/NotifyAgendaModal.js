@@ -11,6 +11,7 @@ import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals
 import { useNavigate } from "react-router-dom";
 import profile from "../../../../../../assets/images/newprofile.png";
 import {
+  SendNotificationApiFunc,
   showAgendaContributorsModals,
   showNotifyOrganizors,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -37,15 +38,10 @@ const NotifyAgendaModal = ({
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [hidemembes, setHidemembes] = useState(false);
-
+  let userID = localStorage.getItem("userID");
   const [agendaMessege, setAgendaMessege] = useState({
     Messege: "",
   });
-
-  const handleCrossIcon = () => {
-    dispatch(showAgendaContributorsModals(false));
-    setSpecifiUser(0);
-  };
 
   const HandleChange = (e, index) => {
     let name = e.target.name;
@@ -89,6 +85,18 @@ const NotifyAgendaModal = ({
       });
     });
   };
+
+  const handleCrossIcon = () => {
+    let Data = {
+      UserID: userID,
+      Message: agendaMessege.Messege,
+      IsAgendaContributor: false,
+    };
+    dispatch(SendNotificationApiFunc(Data, navigate, t));
+    dispatch(showAgendaContributorsModals(false));
+    setSpecifiUser(0);
+  };
+
   return (
     <section>
       <Modal
@@ -187,6 +195,7 @@ const NotifyAgendaModal = ({
                               (data, index) => data.userID === specificUser
                             )
                             .map((mapData, index) => {
+                              console.log(mapData, "mapDatamapData");
                               return (
                                 <Col lg={6} md={6} sm={12} className="mt-2">
                                   <Row className="m-0 p-0">

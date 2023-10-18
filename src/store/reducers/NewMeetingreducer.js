@@ -626,6 +626,29 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.SEND_NOTIFICATION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SEND_NOTIFICATION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SEND_NOTIFICATION_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     default: {
       return { ...state };
     }

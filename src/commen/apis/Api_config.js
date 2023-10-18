@@ -934,6 +934,10 @@ const getAllSavedParticipants = {
   RequestMethod: "ServiceManager.GetAllMeetingParticipants",
 };
 
+const sendNotification = {
+  RequestMethod: "ServiceManager.SendRecentNotifications",
+};
+
 export {
   getAllAgendaContributorRM,
   saveAgendaContributorsRM,
@@ -1185,4 +1189,5 @@ export {
   FetchVideoUrl,
   saveParticipantsMeeting,
   getAllSavedParticipants,
+  sendNotification,
 };
