@@ -98,6 +98,11 @@ const NotifyAgendaModal = ({
     setSpecifiUser(0);
   };
 
+  const handleCancel = () => {
+    dispatch(showAgendaContributorsModals(false));
+    setSpecifiUser(0);
+  };
+
   return (
     <section>
       <Modal
@@ -122,7 +127,7 @@ const NotifyAgendaModal = ({
                   className={styles["Cross_Icon_Styling"]}
                   width="16px"
                   height="16px"
-                  onClick={handleCrossIcon}
+                  onClick={handleCancel}
                   alt=""
                 />
               </Col>
@@ -321,7 +326,7 @@ const NotifyAgendaModal = ({
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_button_Notify"]}
-                  onClick={handleCrossIcon}
+                  onClick={handleCancel}
                 />
                 <Button
                   text={t("Send")}

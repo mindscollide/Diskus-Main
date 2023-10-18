@@ -434,7 +434,7 @@ const AgendaContributers = ({
           Title: AgConData.contributorTitle,
           isRSVP: AgConData.rsvp,
           isEdit: true,
-          isContributedNotified: AgConData.isContributorNotified,
+          isContributedNotified: true,
         });
       });
       setRowsData(newArr);
