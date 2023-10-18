@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./AddParticipant.module.css";
 import {
   Modal,
-  Table,
-  TextField,
   Button,
-  Loader,
   Notification,
 } from "../../../../../../components/elements";
 import {
@@ -36,7 +33,10 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [addParticipantDropdown, setAddParticipantDropdown] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
-
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const [membersParticipants, setMembersParticipants] = useState([]);
   console.log(
     { membersParticipants },
@@ -310,8 +310,15 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
     rspvRowsCopy = [...uniqueData].map((userID) =>
       rspvRowsCopy.find((obj) => obj.userID === userID)
     );
-    setrspvRows(rspvRowsCopy);
-    dispatch(showAddParticipantsModal(false));
+    if (membersParticipants.length === 0) {
+      setOpen({
+        flag: true,
+        message: t("Atleast-one-participant-should-be-selected"),
+      });
+    } else {
+      setrspvRows(rspvRowsCopy);
+      dispatch(showAddParticipantsModal(false));
+    }
   };
 
   return (
@@ -464,6 +471,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
           </>
         }
       />
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>
   );
 };

@@ -1513,5 +1513,6 @@
   "No-row-inserted": "No Row Inserted",
   "All-agenda-organizer-except": "All agenda contributor",
   "Previous-meeting": "Previous",
-  "Please-select-a-member": "Please select a member"
+  "Atleast-one-agenda-contributor-should-be-selected": "Atleast one agenda contributor should be selected",
+  "Atleast-one-participant-should-be-selected": "Atleast one Participant should be selected"
 }

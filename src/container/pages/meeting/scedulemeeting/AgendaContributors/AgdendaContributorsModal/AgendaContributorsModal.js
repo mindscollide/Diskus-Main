@@ -159,7 +159,7 @@ const AgendaContributorsModal = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID !== null ? currentMeetingID : 0,
+      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
   }, []);
@@ -299,7 +299,7 @@ const AgendaContributorsModal = ({
     if (membersOrganizers.length === 0) {
       setOpen({
         flag: true,
-        message: t("Please-select-a-member"),
+        message: t("Atleast-one-agenda-contributor-should-be-selected"),
       });
     } else {
       setRowsData(newData);

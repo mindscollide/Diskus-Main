@@ -392,6 +392,7 @@ const AgendaContributers = ({
     let newData = [];
     let copyData = [...rowsData];
     copyData.forEach((data, index) => {
+      console.log(data, "AgendaListRightsAllAgendaListRightsAll");
       newData.push({
         UserID: data.userID,
         Title: data.Title,
