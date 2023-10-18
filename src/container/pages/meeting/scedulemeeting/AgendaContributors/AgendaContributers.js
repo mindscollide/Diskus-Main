@@ -45,6 +45,7 @@ const AgendaContributers = ({
   );
   const [isEdit, setIsEdit] = useState(false);
   const [disbaleIcon, setDisbaleIcon] = useState(false);
+  const [isEditFlag, setIsEditFlag] = useState(0);
   const [notifyMessageField, setNotifyMessageField] = useState("");
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
@@ -133,21 +134,24 @@ const AgendaContributers = ({
       dataIndex: "Title",
       key: "Title",
       width: "80px",
-      render: (text, record) => (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <TextField
-              disable={record.isEdit ? true : false}
-              placeholder={t("Content-title")}
-              labelClass={"d-none"}
-              width={"100%"}
-              applyClass={"Organizer_table"}
-              value={inputValues[record.userID] || ""} // Use the controlled value
-              change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
-            />
-          </Col>
-        </Row>
-      ),
+      render: (text, record) => {
+        console.log({ record }, "texttexttexttext");
+        return (
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <TextField
+                disable={record.isEdit ? true : false}
+                placeholder={t("Content-title")}
+                labelClass={"d-none"}
+                width={"100%"}
+                applyClass={"Organizer_table"}
+                value={inputValues[record.userID] || ""} // Use the controlled value
+                change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
+              />
+            </Col>
+          </Row>
+        );
+      },
     },
     {
       dataIndex: "isNotifed",
@@ -341,6 +345,7 @@ const AgendaContributers = ({
   };
 
   const handleEditBtn = () => {
+    setIsEditFlag(1);
     setRowsData((prevRowsData) => {
       return prevRowsData.map((row) => {
         return {
@@ -391,25 +396,49 @@ const AgendaContributers = ({
   };
 
   const handleSaveBtn = () => {
-    let newData = [];
-    let copyData = [...rowsData];
-    copyData.forEach((data, index) => {
-      console.log(data, "AgendaListRightsAllAgendaListRightsAll");
-      newData.push({
-        UserID: data.userID,
-        Title: data.Title,
-        AgendaListRightsAll: data.AgendaListRightsAll,
-        MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
-        IsContributorNotified: data.isContributedNotified,
+    if (isEditFlag === 1) {
+      let newData = [];
+      let copyData = [...rowsData];
+      copyData.forEach((data, index) => {
+        console.log(data, "AgendaListRightsAllAgendaListRightsAll");
+        newData.push({
+          UserID: data.userID,
+          Title: data.Title,
+          AgendaListRightsAll: data.AgendaListRightsAll,
+          MeetingID:
+            currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+          IsContributorNotified: data.isContributedNotified,
+        });
       });
-    });
-    let Data = {
-      AgendaContributors: newData,
-      MeetingID: Number(currentMeetingID),
-      IsAgendaContributorAddFlow: true,
-      NotificationMessage: notifyMessageField,
-    };
-    dispatch(saveAgendaContributors(navigate, t, Data));
+      let Data = {
+        AgendaContributors: newData,
+        MeetingID: Number(currentMeetingID),
+        IsAgendaContributorAddFlow: false,
+        NotificationMessage: notifyMessageField,
+      };
+      dispatch(saveAgendaContributors(navigate, t, Data));
+    } else {
+      let newData = [];
+      let copyData = [...rowsData];
+      copyData.forEach((data, index) => {
+        console.log(data, "AgendaListRightsAllAgendaListRightsAll");
+        newData.push({
+          UserID: data.userID,
+          Title: data.Title,
+          AgendaListRightsAll: data.AgendaListRightsAll,
+          MeetingID:
+            currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+          IsContributorNotified: data.isContributedNotified,
+        });
+      });
+      let Data = {
+        AgendaContributors: newData,
+        MeetingID: Number(currentMeetingID),
+        IsAgendaContributorAddFlow: true,
+        NotificationMessage: notifyMessageField,
+      };
+      dispatch(saveAgendaContributors(navigate, t, Data));
+    }
   };
 
   useEffect(() => {
