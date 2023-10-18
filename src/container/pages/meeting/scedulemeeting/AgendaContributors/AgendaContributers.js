@@ -327,6 +327,7 @@ const AgendaContributers = ({
   };
 
   const openAddAgendaModal = () => {
+    setIsEditFlag(0);
     dispatch(showAddAgendaContributor(true));
   };
 
