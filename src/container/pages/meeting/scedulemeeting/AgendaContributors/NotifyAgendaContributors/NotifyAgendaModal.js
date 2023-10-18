@@ -233,7 +233,7 @@ const NotifyAgendaModal = ({
                                         <Col lg={2} md={2} sm={12}>
                                           <Checkbox
                                             checked={
-                                              mapData.IsOrganizerNotified
+                                              mapData.isContributedNotified
                                             }
                                             onChange={(checked) =>
                                               handleChangeBox(

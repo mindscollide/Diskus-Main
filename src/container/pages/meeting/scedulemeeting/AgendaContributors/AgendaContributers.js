@@ -44,6 +44,7 @@ const AgendaContributers = ({
     (state) => state
   );
   const [isEdit, setIsEdit] = useState(false);
+  const [disbaleIcon, setDisbaleIcon] = useState(false);
   const [notifyMessageField, setNotifyMessageField] = useState("");
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
@@ -153,7 +154,7 @@ const AgendaContributers = ({
       key: "isNotified",
       width: "80px",
       render: (text, record) => {
-        console.log("recordrecordrecordrecord", record);
+        console.log("isContributedNotifiedisContributedNotified", record);
         if (record.isContributedNotified) {
           return (
             <Row>
@@ -166,7 +167,7 @@ const AgendaContributers = ({
                 <img
                   draggable={false}
                   src={greenMailIcon}
-                  className="cursor-pointer"
+                  className={"cursor-pointer"}
                   height="30px"
                   width="30px"
                   alt=""
@@ -187,7 +188,9 @@ const AgendaContributers = ({
                 <img
                   draggable={false}
                   src={redMailIcon}
-                  className="cursor-pointer"
+                  className={
+                    record.isEdit === true ? "cursor-pointer" : "pe-none"
+                  }
                   height="30px"
                   alt=""
                   width="30px"
@@ -211,7 +214,9 @@ const AgendaContributers = ({
                 <img
                   draggable={false}
                   src={RspvIcon}
-                  className="cursor-pointer"
+                  className={
+                    record.isEdit === true ? "cursor-pointer" : "pe-none"
+                  }
                   height="30px"
                   width="30px"
                 />
@@ -345,41 +350,41 @@ const AgendaContributers = ({
   };
 
   const handleCancelBtn = () => {
-    if (NewMeetingreducer.getAllAgendaContributors.length > 0) {
-      let agendaContributorData = [
-        ...NewMeetingreducer.getAllAgendaContributors,
-      ];
+    // if (NewMeetingreducer.getAllAgendaContributors.length > 0) {
+    //   let agendaContributorData = [
+    //     ...NewMeetingreducer.getAllAgendaContributors,
+    //   ];
 
-      // Initial values
-      const initialValues = {};
-      agendaContributorData.forEach((organizer) => {
-        initialValues[organizer.userID] = organizer.contributorTitle;
-      });
+    //   // Initial values
+    //   const initialValues = {};
+    //   agendaContributorData.forEach((organizer) => {
+    //     initialValues[organizer.userID] = organizer.contributorTitle;
+    //   });
 
-      setInputValues({ ...initialValues });
+    //   setInputValues({ ...initialValues });
 
-      let newArr = [];
-      agendaContributorData.forEach((AgConData, index) => {
-        newArr.push({
-          userName: AgConData.userName,
-          userID: AgConData.userID,
-          displayPicture: "",
-          email: AgConData.emailAddress,
-          IsPrimaryOrganizer: false,
-          IsOrganizerNotified: false,
-          Title: AgConData.contributorTitle,
-          isRSVP: AgConData.rsvp,
-          isEdit: true,
-        });
-      });
-      setRowsData(newArr);
-    }
-    // let removenewData = rowsData.filter((data, index) => data.isEdit === true);
-    // setRowsData(removenewData);
-    // let getAllData = {
-    //   MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
-    // };
-    // dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    //   let newArr = [];
+    //   agendaContributorData.forEach((AgConData, index) => {
+    //     newArr.push({
+    //       userName: AgConData.userName,
+    //       userID: AgConData.userID,
+    //       displayPicture: "",
+    //       email: AgConData.emailAddress,
+    //       IsPrimaryOrganizer: false,
+    //       IsOrganizerNotified: false,
+    //       Title: AgConData.contributorTitle,
+    //       isRSVP: AgConData.rsvp,
+    //       isEdit: true,
+    //     });
+    //   });
+    //   setRowsData(newArr);
+    // }
+    let removenewData = rowsData.filter((data, index) => data.isEdit === true);
+    setRowsData(removenewData);
+    let getAllData = {
+      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+    };
+    dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
     // Create a copy of data with was coming
   };
 
@@ -568,7 +573,7 @@ const AgendaContributers = ({
                     onClick={enableNotificatoinTable}
                   />
                   <Button
-                    text={t("Previous")}
+                    text={t("Previous-meeting")}
                     className={styles["Cancel_Organization"]}
                   />
                   <Button
