@@ -89,9 +89,10 @@ const NotifyAgendaModal = ({
   const handleCrossIcon = () => {
     let Data = {
       UserID: userID,
-      Message: agendaMessege.Messege,
+      Message: notifyMessageField,
       IsAgendaContributor: false,
     };
+    console.log(Data, "notificationData");
     dispatch(SendNotificationApiFunc(Data, navigate, t));
     dispatch(showAgendaContributorsModals(false));
     setSpecifiUser(0);
@@ -134,6 +135,7 @@ const NotifyAgendaModal = ({
                   as={"textarea"}
                   rows="4"
                   placeholder={t("AgendaMessege")}
+                  name={"AgendaMessege"}
                   value={notifyMessageField}
                   change={HandleChange}
                   required={true}
