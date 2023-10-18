@@ -568,16 +568,16 @@ const AgendaContributers = ({
                     onClick={enableNotificatoinTable}
                   />
                   <Button
-                    text={t("Save")}
+                    text={t("Previous")}
                     className={styles["Cancel_Organization"]}
                   />
                   <Button
-                    text={t("Save-and-publish")}
+                    text={t("Next")}
                     className={styles["Cancel_Organization"]}
                     onClick={EnableViewAgendaContributors}
                   />
                   <Button
-                    text={t("Save-and-next")}
+                    text={t("Published")}
                     className={styles["Next_Organization"]}
                     onClick={handleNextButton}
                   />

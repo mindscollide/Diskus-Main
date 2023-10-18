@@ -1511,6 +1511,7 @@
   "Reminder*": "Reminder*",
   "Save-and-next": "Save and Next",
   "No-row-inserted": "No Row Inserted",
-  "All-agenda-organizer-except": "All agenda organizer except",
-  "Previous-meeting": "Previous"
+  "All-agenda-organizer-except": "All agenda contributor",
+  "Previous-meeting": "Previous",
+  "Please-select-a-member": "Please select a member"
 }

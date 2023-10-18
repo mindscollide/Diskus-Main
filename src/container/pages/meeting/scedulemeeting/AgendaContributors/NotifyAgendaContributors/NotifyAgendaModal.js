@@ -88,7 +88,7 @@ const NotifyAgendaModal = ({
 
   const handleCrossIcon = () => {
     let Data = {
-      UserID: userID,
+      UserID: Number(userID),
       Message: notifyMessageField,
       IsAgendaContributor: false,
     };
@@ -249,56 +249,59 @@ const NotifyAgendaModal = ({
                                 </Col>
                               );
                             })
-                        : notifiedMembersData.map((data, index) => {
-                            return (
-                              <Col lg={6} md={6} sm={12} className="mt-2">
-                                <Row className="m-0 p-0">
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className={styles["Box_for_Assignee"]}
-                                  >
-                                    <Row>
-                                      <Col
-                                        lg={10}
-                                        md={10}
-                                        sm={12}
-                                        className="d-flex gap-2 align-items-center"
-                                      >
-                                        <img
-                                          draggable={false}
-                                          src={`data:image/jpeg;base64,${data?.displayPicture}`}
-                                          width="33px"
-                                          height="33px"
-                                          className={styles["ProfilePic"]}
-                                          alt=""
-                                        />
-                                        <span
-                                          className={
-                                            styles["Participants_Name"]
-                                          }
+                        : notifiedMembersData
+                            .filter((data, index) => data.isEdit === false)
+                            .map((data, index) => {
+                              console.log(data, "datadatadata");
+                              return (
+                                <Col lg={6} md={6} sm={12} className="mt-2">
+                                  <Row className="m-0 p-0">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={styles["Box_for_Assignee"]}
+                                    >
+                                      <Row>
+                                        <Col
+                                          lg={10}
+                                          md={10}
+                                          sm={12}
+                                          className="d-flex gap-2 align-items-center"
                                         >
-                                          {data.userName}
-                                        </span>
-                                      </Col>
-                                      <Col lg={2} md={2} sm={12}>
-                                        <Checkbox
-                                          checked={data.isContributedNotified}
-                                          onChange={(checked) =>
-                                            handleChangeBox(
-                                              checked,
-                                              data.userID
-                                            )
-                                          }
-                                        />
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </Row>
-                              </Col>
-                            );
-                          })}
+                                          <img
+                                            draggable={false}
+                                            src={`data:image/jpeg;base64,${data?.displayPicture}`}
+                                            width="33px"
+                                            height="33px"
+                                            className={styles["ProfilePic"]}
+                                            alt=""
+                                          />
+                                          <span
+                                            className={
+                                              styles["Participants_Name"]
+                                            }
+                                          >
+                                            {data.userName}
+                                          </span>
+                                        </Col>
+                                        <Col lg={2} md={2} sm={12}>
+                                          <Checkbox
+                                            checked={data.isContributedNotified}
+                                            onChange={(checked) =>
+                                              handleChangeBox(
+                                                checked,
+                                                data.userID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              );
+                            })}
                     </Row>
                   </Col>
                 </Row>
