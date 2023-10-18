@@ -73,11 +73,11 @@ const ModalShareFile = ({
 
   const [permissionID, setPermissionID] = useState({
     label: t("Editor"),
-    value: 1,
+    value: 2,
   });
   const [generalAccess, setGeneralAccess] = useState({
-    label: "",
-    value: 0,
+    label: t("Restricted"),
+    value: 1,
   });
   const [getAllAssignees, setGetAllAssignees] = useState([]);
 
@@ -290,11 +290,11 @@ const ModalShareFile = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 1,
+            value: 2,
           });
           setGeneralAccess({
-            label: "",
-            value: 0,
+            label: t("Restricted"),
+            value: 1,
           });
         } else {
           setTaskAssignedToInput("");
@@ -302,11 +302,11 @@ const ModalShareFile = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 1,
+            value: 2,
           });
           setGeneralAccess({
-            label: "",
-            value: 0,
+            label: t("Restricted"),
+            value: 1,
           });
           setOpen({
             flag: true,
@@ -317,6 +317,14 @@ const ModalShareFile = ({
         setOpen({
           flag: true,
           message: t("Please-select-user"),
+        });
+        setPermissionID({
+          label: t("Editor"),
+          value: 2,
+        });
+        setGeneralAccess({
+          label: t("Restricted"),
+          value: 1,
         });
       }
     } else {
@@ -628,7 +636,12 @@ const ModalShareFile = ({
                       </Col>
                       <Col lg={3} md={3} sm={3}>
                         <Select
+                          value={{
+                            value: permissionID.value,
+                            label: permissionID.label,
+                          }}
                           options={options}
+                          isSearchable={false}
                           placeholder={t("Editor")}
                           className={styles["Editor_select"]}
                           onChange={handlechange}
@@ -641,6 +654,11 @@ const ModalShareFile = ({
                       </Col>
                       <Col lg={3} md={3} sm={3}>
                         <Select
+                          value={{
+                            value: generalAccess.value,
+                            label: generalAccess.label,
+                          }}
+                          isSearchable={false}
                           options={optionsgeneralAccess}
                           placeholder={t("General-access")}
                           className={styles["Editor_select"]}

@@ -89,8 +89,8 @@ const ModalShareFolder = ({
     value: 2,
   });
   const [generalAccess, setGeneralAccess] = useState({
-    label: "",
-    value: 0,
+    label: t("Restricted"),
+    value: 1,
   });
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [organizationMembers, setOrganizationMembers] = useState([]);
@@ -315,11 +315,11 @@ const ModalShareFolder = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 1,
+            value: 2,
           });
           setGeneralAccess({
-            label: "",
-            value: 0,
+            label: t("Restricted"),
+            value: 1,
           });
         } else {
           setOpen({
@@ -331,11 +331,11 @@ const ModalShareFolder = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 1,
+            value: 2,
           });
           setGeneralAccess({
-            label: "",
-            value: 0,
+            label: t("Restricted"),
+            value: 1,
           });
         }
       } else {
@@ -351,17 +351,17 @@ const ModalShareFolder = ({
       });
     }
 
-    setTaskAssignedToInput("");
-    setTaskAssignedTo(0);
-    setTaskAssignedName("");
-    setPermissionID({
-      label: "",
-      value: 0,
-    });
-    setGeneralAccess({
-      label: "",
-      value: 0,
-    });
+    // setTaskAssignedToInput("");
+    // setTaskAssignedTo(0);
+    // setTaskAssignedName("");
+    // setPermissionID({
+    //   label: t("Editor"),
+    //   value: 2,
+    // });
+    // setGeneralAccess({
+    //   label: t("Restricted"),
+    //   value: 1,
+    // });
   };
 
   const closebtn = async () => {
@@ -699,6 +699,10 @@ const ModalShareFolder = ({
                       <Col lg={3} md={3} sm={3}>
                         <Select
                           isSearchable={false}
+                          value={{
+                            value: permissionID.value,
+                            label: permissionID.label,
+                          }}
                           options={options}
                           placeholder={t("Editor")}
                           className={styles["Editor_select"]}
@@ -713,6 +717,11 @@ const ModalShareFolder = ({
                       </Col>
                       <Col lg={3} md={3} sm={3}>
                         <Select
+                          value={{
+                            label: generalAccess.label,
+                            value: generalAccess.value,
+                          }}
+                          isSearchable={false}
                           options={optionsgeneralAccess}
                           placeholder={t("General-access")}
                           className={styles["Editor_select"]}
