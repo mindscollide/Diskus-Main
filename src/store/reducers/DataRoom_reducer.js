@@ -32,6 +32,8 @@ const initialState = {
   RecentDocuments: null,
   getSharedFileUsers: null,
   getSharedFolderUsers: null,
+  getCreateFolderLink: null,
+  getCreateFileLink: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -510,6 +512,53 @@ const DataRoomReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+    // getCreateFolderLink: null,
+    // getCreateFileLink: null,
+    case actions.CREATEFILELINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.CREATEFILELINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getCreateFileLink: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CREATEFILELINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getCreateFileLink: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CREATEFOLDERLINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.CREATEFOLDERLINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getCreateFolderLink: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CREATEFOLDERLINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getCreateFolderLink: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     default:
       return { ...state };
   }

@@ -853,7 +853,7 @@
   "Open": "Open",
   "Copy-link": "Copy Link",
   "Send": "Send",
-  "Link-copied": "Link-copied",
+  "Link-copied": "Link copied",
   "You-dont-have-permission-to-edit": "You don't have permission to edit",
   "Access-updated": "Access updated",
   "Is-outisde-your-organization": "is outisde your organization",
@@ -1543,5 +1543,9 @@
   "Reminder*": "Reminder*",
   "Save-and-next": "Save and Next",
   "No-row-inserted": "No Row Inserted",
-  "All-agenda-organizer-except": "All agenda organizer except"
+  "All-agenda-organizer-except": "All agenda organizer except",
+  "File-shared-against-different-users": "File shared against different users",
+  "File-not-shared-against-any-users": "File not shared against any users",
+  "Folder-shared-against-different-users": "Folder shared against different users",
+  "Folder-not-shared-against-any-users": "Folder not shared against any users"
 }

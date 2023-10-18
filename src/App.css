@@ -4064,10 +4064,10 @@ select {
   height: 33px !important;
 } */
 
-#react-select-9-listbox {
+/* #react-select-9-listbox {
   height: 100px !important;
   overflow: auto !important;
-}
+} */
 
 #react-select-9-listbox::-webkit-scrollbar {
   width: 0.5rem !important;
@@ -6227,4 +6227,36 @@ input[type="time"]::-webkit-clear-button {
 
 .td.ant-table-column-sort {
   background-color: transparent !important;
+}
+
+.shareFolderEditor_Selector__control {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+.shareFolderEditor_Selector_empty {
+  background: #fff !important;
+}
+.shareFolderEditor_Selector__single-value {
+  color: #fff !important;
+}
+
+.shareFolderEditor_Selector__dropdown-indicator {
+  color: #fff !important;
+}
+.shareFolderEditor_Selector__option:hover {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+.shareFolderEditor_Selector__option--is-selected,
+.shareFolderEditor_Selector__option--is-focused {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+.shareFolderEditor_Selector_empty__option--is-selected,
+.shareFolderEditor_Selector_empty__option--is-focused {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+.shareFolderEditor_Selector__placeholder {
+  color: #ffffff !important;
 }

@@ -12,7 +12,7 @@ import del from "../../assets/images/delete_dataroom.png";
 import dot from "../../assets/images/Group 2898.svg";
 import DrapDropIcon from "../../assets/images/DrapDropIcon.svg";
 import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg";
-import { Plus, XCircleFill } from "react-bootstrap-icons";
+import { Dash, Plus, XCircleFill } from "react-bootstrap-icons";
 import Grid_Not_Selected from "../../assets/images/resolutions/Grid_Not_Selected.svg";
 import Grid_Selected from "../../assets/images/resolutions/Grid_Selected.svg";
 import List_Not_selected from "../../assets/images/resolutions/List_Not_selected.svg";
@@ -1332,9 +1332,11 @@ const DataRoom = () => {
       dataIndex: "fileSize",
       key: "fileSize",
       width: "90px",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         if (record.isFolder) {
+          return <Dash />;
         } else {
           return <span className={styles["ownerName"]}>{text}</span>;
         }
@@ -2574,7 +2576,7 @@ const DataRoom = () => {
                                       sortDirections={["descend", "ascend"]}
                                       column={shareWithmeColoumns}
                                       className={"DataRoom_Table"}
-                                      size={"small"}
+                                      size={"middle"}
                                       onChange={handleSortChange}
                                       rows={getAllData}
                                       pagination={false}

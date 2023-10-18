@@ -941,7 +941,16 @@ const getUserAgainstShareFileRM = {
 const getUserAgainstShareFolderRM = {
   RequestMethod: "ServiceManager.GetUsersAgainstSharedFolder",
 };
+const createFileLinkRM = {
+  RequestMethod: "ServiceManager.CreateFileLink",
+};
+const createFolderLinkRM = {
+  RequestMethod: "ServiceManager.CreateFolderLink",
+};
+
 export {
+  createFileLinkRM,
+  createFolderLinkRM,
   getUserAgainstShareFolderRM,
   getUserAgainstShareFileRM,
   getAllAgendaContributorRM,

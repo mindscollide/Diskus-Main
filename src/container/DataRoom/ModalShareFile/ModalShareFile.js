@@ -27,7 +27,10 @@ import ChevronDownWhite from "../../../assets/images/chevron_down_white.svg";
 import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
 import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
-import { shareFilesApi } from "../../../store/actions/DataRoom_actions";
+import {
+  createFileLinkApi,
+  shareFilesApi,
+} from "../../../store/actions/DataRoom_actions";
 import { useNavigate } from "react-router-dom";
 const ModalShareFile = ({
   ModalTitle,
@@ -38,6 +41,10 @@ const ModalShareFile = ({
 }) => {
   const [showaccessrequest, setShowaccessrequest] = useState(false);
   const { assignees } = useSelector((state) => state);
+  const getSharedFileUsers = useSelector(
+    (state) => state.DataRoomReducer.getSharedFileUsers
+  );
+  console.log(getSharedFileUsers, "getSharedFileUsersgetSharedFileUsers");
   const [showrequestsend, setShowrequestsend] = useState(false);
   const [generalaccessdropdown, setGeneralaccessdropdown] = useState(false);
   const [linkedcopied, setLinkedcopied] = useState(false);
@@ -72,16 +79,21 @@ const ModalShareFile = ({
     label: "",
     value: 0,
   });
+  const [getAllAssignees, setGetAllAssignees] = useState([]);
+
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
   let organizationName = localStorage.getItem("OrganizatioName");
-  console.log(isMembers, "isMembersisMembersisMembersisMembers");
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
+  let userID = localStorage.getItem("userID");
+
   const [flag, setFlag] = useState(1);
   const showcalender = () => {
     // setCalenderdate(!calenderdate);
-    setInviteedit(!inviteedit);
-    setExpirationheader(false);
+    // setInviteedit(!inviteedit);
+    // setExpirationheader(false);
   };
   useEffect(() => {
     if (linkedcopied === true) {
@@ -91,34 +103,75 @@ const ModalShareFile = ({
     }
   }, []);
 
+  useEffect(() => {
+    dispatch(allAssignessList(navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (assignees.user.length > 0) {
+      setGetAllAssignees(assignees.user);
+    }
+  }, [assignees]);
+  useEffect(() => {
+    try {
+      if (getSharedFileUsers !== null && getSharedFileUsers !== undefined) {
+        if (assignees.user.length > 0) {
+          if (getSharedFileUsers.listOfUsers.length > 0) {
+            // let newData = [];
+            let newMembersData = [];
+
+            let usersList = getSharedFileUsers.listOfUsers;
+            // let ownerInfo = getSharedFileUsers.owner;
+            let allMembers = assignees.user;
+
+            usersList.forEach((userData, index) => {
+              // newData.push({
+              //   FK_FileID: ownerInfo.fileID,
+              //   FK_PermissionID: 1,
+              //   FK_UserID: userData.userID,
+              //   ExpiryDateTime: "",
+              // });
+              allMembers.forEach((newData, index) => {
+                if (newData.pK_UID === userData.userID) {
+                  newMembersData.push(newData);
+                }
+              });
+            });
+            // setFileData((prev) => {
+            //   return { ...prev, Files: newData };
+            // });
+            setMembers(newMembersData);
+          }
+        }
+      }
+    } catch {}
+  }, [getSharedFileUsers, assignees]);
+
   const handlechange = (SelectedOptions) => {
     console.log("handlechangehandlechange", SelectedOptions);
     setPermissionID({
       label: SelectedOptions.label,
       value: SelectedOptions.value,
     });
-    if (SelectedOptions.value === 3) {
-      console.log("yes add expiration selected ");
-      setExpirationheader(true);
-      setEditNotification(false);
-      setAccessupdate(false);
-    } else if (SelectedOptions.value === 1) {
-      setExpirationheader(false);
+    if (SelectedOptions.value === 1) {
+      // setExpirationheader(false);
       setEditNotification(false);
       setAccessupdate(true);
     } else if (SelectedOptions.value === 2) {
-      setExpirationheader(false);
+      // setExpirationheader(false);
       setEditNotification(true);
       setAccessupdate(false);
     }
   };
   const NotificationForlinkCopied = () => {
-    setLinkedcopied(true);
+    let Data = { FileID: Number(folderId), UserID: Number(userID) };
+    dispatch(createFileLinkApi(navigate, t, Data, setLinkedcopied));
+    // setLinkedcopied(true);
   };
   const options = [
     { value: 1, label: t("Viewer") },
     { value: 2, label: t("Editor") },
-    // { value: 3, label: "Add Expiration" },
+    // { value: 3, label: t("Add-expiration") },
   ];
   const optionsgeneralAccess = [
     { value: 1, label: t("Restricted") },
@@ -133,49 +186,15 @@ const ModalShareFile = ({
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
   };
+
   //Drop Down Values
-  // const searchFilterHandler = (value) => {
-  //   let allAssignees = assignees.user;
-  //   if (
-  //     allAssignees != undefined &&
-  //     allAssignees != null &&
-  //     allAssignees != NaN &&
-  //     allAssignees != []
-  //   ) {
-  //     return allAssignees
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.name.toLowerCase();
-  //         return (
-  //           searchTerm &&
-  //           assigneesName.startsWith(searchTerm) &&
-  //           assigneesName !== searchTerm
-  //         );
-  //       })
-  //       .slice(0, 3)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.name, item.pK_UID)}
-  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
-  //           key={item.pK_UID}
-  //         >
-  //           <img draggable="false" src={userImage} />
-  //           <p className="p-0 m-0">{item.name}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-    console.log("Input Value", allAssignees);
     if (
-      allAssignees != undefined &&
-      allAssignees != null &&
-      allAssignees != NaN &&
-      allAssignees != []
+      getAllAssignees !== null &&
+      getAllAssignees !== undefined &&
+      getAllAssignees.length > 0
     ) {
-      return allAssignees
+      return getAllAssignees
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
@@ -332,9 +351,7 @@ const ModalShareFile = ({
       return { ...prev, Files: [...prev.Files] };
     });
   };
-  useEffect(() => {
-    dispatch(allAssignessList(navigate, t));
-  }, []);
+
   return (
     <>
       <Container>
@@ -345,85 +362,85 @@ const ModalShareFile = ({
           }}
           setShow={setShareFile}
           ButtonTitle={ModalTitle}
-          modalFooterClassName="d-block"
+          modalFooterClassName="d-block position-relative"
           modalTitleClassName={styles["ModalHeader"]}
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
           size={"lg"}
-          ModalTitle={
-            <>
-              {expirationheader ? (
-                <>
-                  {calenderdate ? (
-                    <>
-                      <MultiDatePicker
-                        // onChange={meetingDateHandler}
-                        name="MeetingDate"
-                        value={meetingDate}
-                        calendar={calendarValue}
-                        locale={localValue}
-                        // newValue={createMeeting.MeetingDate}
-                      />
-                    </>
-                  ) : null}
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["Expiration_header_background"]}
-                    >
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-center gap-3"
-                        >
-                          <img
-                            draggable="false"
-                            src={clock}
-                            height="14.66px"
-                            alt=""
-                            width="14.97px"
-                          />
-                          <span
-                            className={styles["Text_for_header_expiration"]}
-                          >
-                            {t("Access-expires-on")} Apr 20 11:11PM
-                          </span>
-                          <Row className={styles["margin"]}>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="d-flex gap-2"
-                            >
-                              <img
-                                draggable="false"
-                                src={EditIconNote}
-                                height="11.11px"
-                                alt=""
-                                width="11.54px"
-                                onClick={showcalender}
-                              />
-                              <img
-                                draggable="false"
-                                src={DeleteiCon}
-                                width="9.47px"
-                                alt=""
-                                height="11.75px"
-                              />
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </>
-              ) : null}
-            </>
-          }
+          // ModalTitle={
+          //   <>
+          //     {expirationheader ? (
+          //       <>
+          //         {calenderdate ? (
+          //           <>
+          //             <MultiDatePicker
+          //               // onChange={meetingDateHandler}
+          //               name="MeetingDate"
+          //               value={meetingDate}
+          //               calendar={calendarValue}
+          //               locale={localValue}
+          //               // newValue={createMeeting.MeetingDate}
+          //             />
+          //           </>
+          //         ) : null}
+          //         <Row>
+          //           <Col
+          //             lg={12}
+          //             md={12}
+          //             sm={12}
+          //             className={styles["Expiration_header_background"]}
+          //           >
+          //             <Row>
+          //               <Col
+          //                 lg={12}
+          //                 md={12}
+          //                 sm={12}
+          //                 className="d-flex justify-content-center gap-3"
+          //               >
+          //                 <img
+          //                   draggable="false"
+          //                   src={clock}
+          //                   height="14.66px"
+          //                   alt=""
+          //                   width="14.97px"
+          //                 />
+          //                 <span
+          //                   className={styles["Text_for_header_expiration"]}
+          //                 >
+          //                   {t("Access-expires-on")} Apr 20 11:11PM
+          //                 </span>
+          //                 <Row className={styles["margin"]}>
+          //                   <Col
+          //                     lg={12}
+          //                     md={12}
+          //                     sm={12}
+          //                     className="d-flex gap-2"
+          //                   >
+          //                     <img
+          //                       draggable="false"
+          //                       src={EditIconNote}
+          //                       height="11.11px"
+          //                       alt=""
+          //                       width="11.54px"
+          //                       onClick={showcalender}
+          //                     />
+          //                     <img
+          //                       draggable="false"
+          //                       src={DeleteiCon}
+          //                       width="9.47px"
+          //                       alt=""
+          //                       height="11.75px"
+          //                     />
+          //                   </Col>
+          //                 </Row>
+          //               </Col>
+          //             </Row>
+          //           </Col>
+          //         </Row>
+          //       </>
+          //     ) : null}
+          //   </>
+          // }
           ModalBody={
             <>
               {showaccessrequest ? (
@@ -610,60 +627,30 @@ const ModalShareFile = ({
                         />
                       </Col>
                       <Col lg={3} md={3} sm={3}>
-                        {permissionID.value !== 0 ? (
-                          <div className={styles["dropdown__Document_Value"]}>
-                            <span className={styles["overflow-text"]}>
-                              {permissionID.label}
-                            </span>
-                            <img
-                              draggable="false"
-                              width="12px"
-                              height="12px"
-                              onClick={() => {
-                                setPermissionID({
-                                  label: "",
-                                  value: 0,
-                                });
-                              }}
-                              src={ChevronDownWhite}
-                            />
-                          </div>
-                        ) : (
-                          <Select
-                            options={options}
-                            placeholder={t("Editor")}
-                            className={styles["Editor_select"]}
-                            onChange={handlechange}
-                          />
-                        )}
+                        <Select
+                          options={options}
+                          placeholder={t("Editor")}
+                          className={styles["Editor_select"]}
+                          onChange={handlechange}
+                          classNamePrefix={
+                            permissionID.value === 0
+                              ? "shareFolderEditor_Selector_empty"
+                              : "shareFolderEditor_Selector"
+                          }
+                        />
                       </Col>
                       <Col lg={3} md={3} sm={3}>
-                        {generalAccess.value !== 0 ? (
-                          <div className={styles["dropdown__Document_Value"]}>
-                            <span className={styles["overflow-text"]}>
-                              {generalAccess.label}
-                            </span>
-                            <img
-                              draggable="false"
-                              width="12px"
-                              height="12px"
-                              onClick={() => {
-                                setGeneralAccess({
-                                  label: "",
-                                  value: 0,
-                                });
-                              }}
-                              src={ChevronDownWhite}
-                            />
-                          </div>
-                        ) : (
-                          <Select
-                            options={optionsgeneralAccess}
-                            placeholder={t("General-access")}
-                            className={styles["Editor_select"]}
-                            onChange={handleChangeGeneralAccess}
-                          />
-                        )}
+                        <Select
+                          options={optionsgeneralAccess}
+                          placeholder={t("General-access")}
+                          className={styles["Editor_select"]}
+                          onChange={handleChangeGeneralAccess}
+                          classNamePrefix={
+                            generalAccess.value === 0
+                              ? "shareFolderEditor_Selector_empty"
+                              : "shareFolderEditor_Selector"
+                          }
+                        />
                       </Col>
                       <Col lg={2} md={2} sm={2}>
                         <Button
