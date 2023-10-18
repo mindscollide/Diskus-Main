@@ -1071,5 +1071,6 @@
   "File-shared-against-different-users": "File shared against different users",
   "File-not-shared-against-any-users": "File not shared against any users",
   "Folder-shared-against-different-users": "Folder shared against different users",
-  "Folder-not-shared-against-any-users": "Folder not shared against any users"
+  "Folder-not-shared-against-any-users": "Folder not shared against any users",
+  "Previous-meeting": "Previous"
 }

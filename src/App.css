@@ -6221,8 +6221,8 @@ input[type="time"]::-webkit-clear-button {
 }
 
 /* status Slector TodoList Css */
-.ant-select-single .ant-select-selector .ant-select-selection-item {
-  margin-left: 18px !important;
+.custom-class span.ant-select-selection-item {
+  margin-left: 12px !important;
 }
 
 .td.ant-table-column-sort {

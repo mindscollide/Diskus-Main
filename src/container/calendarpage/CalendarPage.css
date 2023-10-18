@@ -28,7 +28,8 @@
 }
 
 .calendar {
-  height: 68.5vh;
+  height: auto !important;
+  min-height: 68.5vh;
   margin: 21px;
   border-radius: 4px;
 }
