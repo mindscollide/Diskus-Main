@@ -86,16 +86,20 @@ const NotifyAgendaModal = ({
     });
   };
 
-  const handleCrossIcon = () => {
-    let Data = {
-      UserID: Number(userID),
-      Message: notifyMessageField,
-      IsAgendaContributor: false,
-    };
-    console.log(Data, "notificationData");
-    dispatch(SendNotificationApiFunc(Data, navigate, t));
-    dispatch(showAgendaContributorsModals(false));
-    setSpecifiUser(0);
+  const handleSendIcon = () => {
+    if (specificUser !== 0) {
+      let Data = {
+        UserID: Number(userID),
+        Message: notifyMessageField,
+        IsAgendaContributor: false,
+      };
+      console.log(Data, "notificationData");
+      dispatch(SendNotificationApiFunc(Data, navigate, t));
+      dispatch(showAgendaContributorsModals(false));
+      setSpecifiUser(0);
+    } else {
+      dispatch(showAgendaContributorsModals(false));
+    }
   };
 
   const handleCancel = () => {
@@ -331,7 +335,7 @@ const NotifyAgendaModal = ({
                 <Button
                   text={t("Send")}
                   className={styles["Send_Notify"]}
-                  onClick={handleCrossIcon}
+                  onClick={handleSendIcon}
                 />
               </Col>
             </Row>

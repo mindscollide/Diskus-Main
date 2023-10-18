@@ -1,8 +1,11 @@
 {
-  "MeetingParticipants": [
-    { "UserID": 984, "Title": "mamdani ", "ParticipantRoleID": 4 }
-  ],
-  "MeetingID": 1707,
-  "IsParticipantsAddFlow": false,
-  "NotificationMessage": ""
+  "AgendaContributors": [
+    {
+      "UserID": 985,
+      "Title": "Saif",
+      "AgendaListRightsAll": true,
+      "MeetingID": 1709,
+      "IsContributorNotified": true
+    }
+  ]
 }

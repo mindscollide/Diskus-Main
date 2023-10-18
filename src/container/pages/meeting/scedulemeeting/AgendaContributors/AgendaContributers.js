@@ -167,7 +167,9 @@ const AgendaContributers = ({
                 <img
                   draggable={false}
                   src={greenMailIcon}
-                  className={"cursor-pointer"}
+                  className={
+                    record.isEdit === true ? "cursor-pointer" : "pe-none"
+                  }
                   height="30px"
                   width="30px"
                   alt=""
@@ -396,12 +398,16 @@ const AgendaContributers = ({
       newData.push({
         UserID: data.userID,
         Title: data.Title,
-        AgendaListRightsAll: data.isRSVP,
+        AgendaListRightsAll: data.AgendaListRightsAll,
         MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+        IsContributorNotified: data.isContributedNotified,
       });
     });
     let Data = {
       AgendaContributors: newData,
+      MeetingID: Number(currentMeetingID),
+      IsAgendaContributorAddFlow: true,
+      NotificationMessage: notifyMessageField,
     };
     dispatch(saveAgendaContributors(navigate, t, Data));
   };
@@ -427,6 +433,7 @@ const AgendaContributers = ({
 
       let newArr = [];
       agendaContributorData.forEach((AgConData, index) => {
+        console.log(AgConData, "AgConDataAgConDataAgConData");
         newArr.push({
           userName: AgConData.userName,
           userID: AgConData.userID,
