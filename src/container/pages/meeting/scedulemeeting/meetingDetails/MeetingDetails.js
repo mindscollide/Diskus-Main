@@ -200,11 +200,15 @@ const MeetingDetails = ({
     // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
-    newReminderData.push(
-      meetingDetails.ReminderFrequency,
-      meetingDetails.ReminderFrequencyTwo,
-      meetingDetails.ReminderFrequencyThree
-    );
+    if (meetingDetails.ReminderFrequency !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequency);
+    }
+    if (meetingDetails.ReminderFrequencyTwo !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyTwo);
+    }
+    if (meetingDetails.ReminderFrequencyThree !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyThree);
+    }
     rows.map((data, index) => {
       newArr.push({
         MeetingDate: data.selectedOption,
@@ -267,11 +271,15 @@ const MeetingDetails = ({
     // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
-    newReminderData.push(
-      meetingDetails.ReminderFrequency,
-      meetingDetails.ReminderFrequencyTwo,
-      meetingDetails.ReminderFrequencyThree
-    );
+    if (meetingDetails.ReminderFrequency !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequency);
+    }
+    if (meetingDetails.ReminderFrequencyTwo !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyTwo);
+    }
+    if (meetingDetails.ReminderFrequencyThree !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyThree);
+    }
     rows.map((data, index) => {
       newArr.push({
         MeetingDate: data.selectedOption,
