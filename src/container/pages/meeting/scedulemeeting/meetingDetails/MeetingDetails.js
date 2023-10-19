@@ -61,9 +61,8 @@ const MeetingDetails = ({
   const [options, setOptions] = useState([]);
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
-  const [reminderFrequencyTwo, setReminderFrequencyTwo] = useState([]);
-  const [reminderFrequencyThree, setReminderFrequencyThree] = useState([]);
   const [recurringDropDown, setRecurringDropDown] = useState([]);
+  const [reminderfrequencyValues, setReminderFrequencyValues] = useState([]);
 
   const [rows, setRows] = useState([
     { selectedOption: "", startDate: "", endDate: "" },
@@ -331,16 +330,21 @@ const MeetingDetails = ({
   };
 
   const SaveMeeting = () => {
-    //Enable the Error Handling From here
-    // seterror(true);
     // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
-    newReminderData.push(
-      meetingDetails.ReminderFrequency,
-      meetingDetails.ReminderFrequencyTwo,
-      meetingDetails.ReminderFrequencyThree
-    );
+    if (meetingDetails.ReminderFrequency !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequency);
+    }
+    if (meetingDetails.ReminderFrequencyTwo !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyTwo);
+    }
+    if (meetingDetails.ReminderFrequencyThree !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyThree);
+    }
+
+    console.log(newReminderData, "newReminderDatanewReminderData");
+
     rows.map((data, index) => {
       newArr.push({
         MeetingDate: data.selectedOption,
@@ -378,6 +382,7 @@ const MeetingDetails = ({
           MeetingStatusID: 11,
         },
       };
+      console.log(data, "SaveMeetingDetialsNewApiFunction");
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
@@ -402,6 +407,8 @@ const MeetingDetails = ({
   };
 
   const handleReminderFrequencyTwo = (e) => {
+    console.log(e, "firstfirstfirstfirst");
+
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyTwo: e.value,
