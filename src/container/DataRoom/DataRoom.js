@@ -133,7 +133,7 @@ const DataRoom = () => {
   const [showrenamenotification, setShowrenamenotification] = useState(false);
   const [showrenamemodal, setShowreanmemodal] = useState(false);
   const [showrenameFile, setShowRenameFile] = useState(false);
-  const [requestingAccess, setRequestingAccess] = useState(true);
+  const [requestingAccess, setRequestingAccess] = useState(false);
   const [fileremoved, setFileremoved] = useState(false);
   const [uploadCounter, setUploadCounter] = useState(0);
   const [deletenotification, setDeletenotification] = useState(false);

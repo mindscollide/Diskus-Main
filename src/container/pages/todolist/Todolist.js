@@ -533,7 +533,7 @@ const TodoList = () => {
               return (
                 <Select
                   defaultValue={text.status}
-                  prefixCls="todo-status-select"
+                  // prefixCls="todo-status-select"
                   bordered={false}
                   dropdownClassName="Status-Todo"
                   className={
@@ -977,7 +977,7 @@ const TodoList = () => {
                     column={columnsToDo}
                     className={"ToDo"}
                     rows={rowsToDo}
-                    scroll={{ y: "65vh", x: "scroll" }}
+                    scroll={{ y: "58vh", x: "scroll" }}
                     // onChange={tableTodoChange}
                     pagination={false}
                   />
