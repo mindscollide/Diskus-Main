@@ -29,9 +29,12 @@ import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import {
   createFileLinkApi,
+  createFileLink_fail,
   shareFilesApi,
 } from "../../../store/actions/DataRoom_actions";
 import { useNavigate } from "react-router-dom";
+import copyToClipboard from "../../../hooks/useClipBoard";
+
 const ModalShareFile = ({
   ModalTitle,
   shareFile,
@@ -39,29 +42,22 @@ const ModalShareFile = ({
   folderId,
   fileName,
 }) => {
-  const [showaccessrequest, setShowaccessrequest] = useState(false);
   const { assignees } = useSelector((state) => state);
   const getSharedFileUsers = useSelector(
     (state) => state.DataRoomReducer.getSharedFileUsers
   );
-  console.log(getSharedFileUsers, "getSharedFileUsersgetSharedFileUsers");
+  const getCreateFileLink = useSelector(
+    (state) => state.DataRoomReducer.getCreateFileLink
+  );
+  const [showaccessrequest, setShowaccessrequest] = useState(false);
   const [showrequestsend, setShowrequestsend] = useState(false);
   const [generalaccessdropdown, setGeneralaccessdropdown] = useState(false);
   const [linkedcopied, setLinkedcopied] = useState(false);
   const [expirationheader, setExpirationheader] = useState(false);
   const [calenderdate, setCalenderdate] = useState(false);
-  const [inviteedit, setInviteedit] = useState(true);
+  const [inviteedit, setInviteedit] = useState(false);
   const [notifyPeople, setNotifyPeople] = useState(false);
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-  });
-  const [fileData, setFileData] = useState({
-    Files: [],
-  });
-  console.log(fileData, "datadatadata");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [ownerInfo, setOwnerInfo] = useState(null);
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [meetingDate, setMeetingDate] = useState("");
@@ -69,6 +65,17 @@ const ModalShareFile = ({
   const [accessupdate, setAccessupdate] = useState(false);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
+  const [onclickFlag, setOnclickFlag] = useState(false);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
+  const [fileData, setFileData] = useState({
+    Files: [],
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { t } = useTranslation();
 
   const [permissionID, setPermissionID] = useState({
@@ -86,32 +93,57 @@ const ModalShareFile = ({
   const [isMembers, setMembers] = useState([]);
   let organizationName = localStorage.getItem("OrganizatioName");
   let currentLanguage = localStorage.getItem("i18nextLng");
-
   let userID = localStorage.getItem("userID");
+  const options = [
+    { value: 1, label: t("Viewer") },
+    { value: 2, label: t("Editor") },
+    // { value: 3, label: t("Add-expiration") },
+  ];
 
-  const [flag, setFlag] = useState(1);
+  const optionsgeneralAccess = [
+    { value: 1, label: t("Restricted") },
+    { value: 2, label: organizationName },
+    { value: 3, label: t("Any-one-with-link") },
+  ];
+
   const showcalender = () => {
     // setCalenderdate(!calenderdate);
     // setInviteedit(!inviteedit);
     // setExpirationheader(false);
   };
+
+  //  Copy Link  useEffect
   useEffect(() => {
     if (linkedcopied === true) {
       setTimeout(() => {
         setLinkedcopied(false);
       }, 2000);
     }
-  }, []);
+  }, [linkedcopied]);
 
+  // Copy Link text useEffect
+  useEffect(() => {
+    if (getCreateFileLink !== "") {
+      copyToClipboard(getCreateFileLink);
+      setTimeout(() => {
+        dispatch(createFileLink_fail(""));
+      }, 2000);
+    }
+  }, [getCreateFileLink]);
+
+  // Get All Assignee Api Calling
   useEffect(() => {
     dispatch(allAssignessList(navigate, t));
   }, []);
 
+  // set All User in state which was coming from api
   useEffect(() => {
     if (assignees.user.length > 0) {
       setGetAllAssignees(assignees.user);
     }
   }, [assignees]);
+
+  // set All Shared data with are coming from api
   useEffect(() => {
     try {
       if (getSharedFileUsers !== null && getSharedFileUsers !== undefined) {
@@ -121,7 +153,7 @@ const ModalShareFile = ({
             let newMembersData = [];
 
             let usersList = getSharedFileUsers.listOfUsers;
-            // let ownerInfo = getSharedFileUsers.owner;
+            let ownerInfo = getSharedFileUsers.owner;
             let allMembers = assignees.user;
 
             usersList.forEach((userData, index) => {
@@ -131,6 +163,10 @@ const ModalShareFile = ({
               //   FK_UserID: userData.userID,
               //   ExpiryDateTime: "",
               // });
+              let findOwner = allMembers.find(
+                (data, index) => data.pK_UID === ownerInfo.userID
+              );
+              setOwnerInfo(findOwner);
               allMembers.forEach((newData, index) => {
                 if (newData.pK_UID === userData.userID) {
                   newMembersData.push(newData);
@@ -147,8 +183,8 @@ const ModalShareFile = ({
     } catch {}
   }, [getSharedFileUsers, assignees]);
 
+  // change Handler for user rights
   const handlechange = (SelectedOptions) => {
-    console.log("handlechangehandlechange", SelectedOptions);
     setPermissionID({
       label: SelectedOptions.label,
       value: SelectedOptions.value,
@@ -163,22 +199,13 @@ const ModalShareFile = ({
       setAccessupdate(false);
     }
   };
+
+  // copy link api calling
   const NotificationForlinkCopied = () => {
     let Data = { FileID: Number(folderId), UserID: Number(userID) };
     dispatch(createFileLinkApi(navigate, t, Data, setLinkedcopied));
-    // setLinkedcopied(true);
   };
-  const options = [
-    { value: 1, label: t("Viewer") },
-    { value: 2, label: t("Editor") },
-    // { value: 3, label: t("Add-expiration") },
-  ];
-  const optionsgeneralAccess = [
-    { value: 1, label: t("Restricted") },
-    { value: 2, label: organizationName },
-    { value: 3, label: t("Any-one-with-link") },
-  ];
-  const [onclickFlag, setOnclickFlag] = useState(false);
+
   const onSearch = (name, id) => {
     console.log("name id", name, id);
     setOnclickFlag(true);
@@ -248,6 +275,7 @@ const ModalShareFile = ({
     } else {
     }
   };
+
   const openAccessRequestModalClick = () => {
     if (fileData.Files.length > 0) {
       // setShareFile(false);
@@ -345,6 +373,7 @@ const ModalShareFile = ({
       value: selectedValue.value,
     });
   };
+
   const handleRemoveMember = (memberData) => {
     let findIndexfromsendData = fileData.Files.findIndex(
       (data, index) => data.FK_UserID === memberData.pK_UID
@@ -374,7 +403,14 @@ const ModalShareFile = ({
           modalTitleClassName={styles["ModalHeader"]}
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
-          size={"lg"}
+          size={
+            showaccessrequest
+              ? "md"
+              : inviteedit === true ||
+                (showaccessrequest === true && showrequestsend === true)
+              ? "md"
+              : "lg"
+          }
           // ModalTitle={
           //   <>
           //     {expirationheader ? (
@@ -515,101 +551,112 @@ const ModalShareFile = ({
                     </Container>
                   </>
                 )
-              ) : (
-                // inviteedit ? (
-                //   <>
-                //     <Container>
-                //       <Row>
-                //         <Col lg={12} md={12} sm={12}>
-                //           <span className={styles["Shared_Document_Heading"]}>
-                //             Saad Fudda {t("Shared-a-document")}
-                //           </span>
-                //         </Col>
-                //       </Row>
+              ) : inviteedit ? (
+                <>
+                  <Container>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["Shared_Document_Heading"]}>
+                          Saad Fudda {t("Shared-a-document")}
+                        </span>
+                      </Col>
+                    </Row>
 
-                //       <Row className="mt-3">
-                //         <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                //           <img draggable="false" src={newprofile} height="40px" width="41px" />
-                //           <Row className="mt-1">
-                //             <Col
-                //               lg={12}
-                //               md={12}
-                //               sm={12}
-                //               className={styles["Line-height"]}
-                //             >
-                //               <Row>
-                //                 <Col lg={12} md={12} sm={12}>
-                //                   <span
-                //                     className={styles["InvitetoEdit_Heading"]}
-                //                   >
-                //                     Saad Fudda (Saad@gmail.com)
-                //                     {t("Has-invited-you-to")}
-                //                     <span className={styles["Edit_options"]}>
-                //                       {t("Edit")}
-                //                     </span>
-                //                   </span>
-                //                 </Col>
-                //               </Row>
-                //               <Row>
-                //                 <Col lg={12} md={12} sm={12}>
-                //                   <span
-                //                     className={styles["InvitetoEdit_Heading"]}
-                //                   >
-                //                     {t("The-following-document-until")} 27 Apr
-                //                     2023, 11:59 GMT
-                //                   </span>
-                //                 </Col>
-                //               </Row>
-                //             </Col>
-                //           </Row>
-                //         </Col>
-                //       </Row>
-                //       <Row className="mt-4">
-                //         <Col
-                //           lg={12}
-                //           md={12}
-                //           sm={12}
-                //           className={styles["Box_for_attachments"]}
-                //         >
-                //           <Row className="mt-2">
-                //             <Col lg={12} md={12} sm={12}>
-                //               <Row>
-                //                 <Col
-                //                   lg={10}
-                //                   md={10}
-                //                   sm={10}
-                //                   className="d-flex justify-content-start gap-2 "
-                //                 >
-                //                   <img draggable="false" src={pdf} height="16px" width="14.23px" />
-                //                   <span className={styles["File_name"]}>
-                //                     Merger proposal for ABC Industries.pdf
-                //                   </span>
-                //                 </Col>
-                //                 <Col
-                //                   lg={2}
-                //                   md={2}
-                //                   sm={2}
-                //                   className="d-flex justify-content-end gap-2 mt-1"
-                //                 >
-                //                   <img draggable="false"
-                //                     src={download}
-                //                     height="11px"
-                //                     width="12.15px"
-                //                   />
-                //                   <img draggable="false"
-                //                     src={star}
-                //                     height="10.22px"
-                //                     width="12.07px"
-                //                   />
-                //                 </Col>
-                //               </Row>
-                //             </Col>
-                //           </Row>
-                //         </Col>
-                //       </Row>
-                //     </Container>
-                //   </>
-                // ) :
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                        <img
+                          draggable="false"
+                          src={newprofile}
+                          height="40px"
+                          width="41px"
+                        />
+                        <Row className="mt-1">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["Line-height"]}
+                          >
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span
+                                  className={styles["InvitetoEdit_Heading"]}
+                                >
+                                  Saad Fudda (Saad@gmail.com)
+                                  {t("Has-invited-you-to")}
+                                  <span className={styles["Edit_options"]}>
+                                    {t("Edit")}
+                                  </span>
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span
+                                  className={styles["InvitetoEdit_Heading"]}
+                                >
+                                  {t("The-following-document-until")} 27 Apr
+                                  2023, 11:59 GMT
+                                </span>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Box_for_attachments"]}
+                      >
+                        <Row className="mt-2">
+                          <Col lg={12} md={12} sm={12}>
+                            <Row>
+                              <Col
+                                lg={10}
+                                md={10}
+                                sm={10}
+                                className="d-flex justify-content-start gap-2 "
+                              >
+                                <img
+                                  draggable="false"
+                                  src={pdf}
+                                  height="16px"
+                                  width="14.23px"
+                                />
+                                <span className={styles["File_name"]}>
+                                  Merger proposal for ABC Industries.pdf
+                                </span>
+                              </Col>
+                              <Col
+                                lg={2}
+                                md={2}
+                                sm={2}
+                                className="d-flex justify-content-end gap-2 mt-1"
+                              >
+                                <img
+                                  draggable="false"
+                                  src={download}
+                                  height="11px"
+                                  width="12.15px"
+                                />
+                                <img
+                                  draggable="false"
+                                  src={star}
+                                  height="10.22px"
+                                  width="12.07px"
+                                />
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Container>
+                </>
+              ) : (
                 <>
                   <Container>
                     <Row>
@@ -623,7 +670,7 @@ const ModalShareFile = ({
                       <Col lg={4} md={4} sm={4}>
                         <InputSearchFilter
                           labelClass="d-none"
-                          flag={flag}
+                          flag={1}
                           applyClass="sharefoldersearchInput"
                           placeholder={t("Search-member-here")}
                           value={taskAssignedToInput}
@@ -686,6 +733,15 @@ const ModalShareFile = ({
                         className={styles["Scroller_particiapnt_shared_folder"]}
                       >
                         <Row>
+                          {ownerInfo !== null && (
+                            <Col sm={4} md={4} lg={4}>
+                              <ParticipantInfoShareFolder
+                                participantname={ownerInfo?.name}
+                                particiapantdesignation={ownerInfo?.designation}
+                                userPic={ownerInfo?.displayProfilePictureName}
+                              />{" "}
+                            </Col>
+                          )}
                           {isMembers.length > 0
                             ? isMembers.map((data, index) => {
                                 return (
@@ -772,24 +828,23 @@ const ModalShareFile = ({
                     </Row>
                   </>
                 )
+              ) : inviteedit ? (
+                <>
+                  <Row>
+                    <Col
+                      lg={11}
+                      md={11}
+                      sm={11}
+                      className="d-flex justify-content-end"
+                    >
+                      <Button
+                        text={t("Open")}
+                        className={styles["Open_button"]}
+                      />
+                    </Col>
+                  </Row>
+                </>
               ) : (
-                //  inviteedit ? (
-                //   <>
-                //     <Row>
-                //       <Col
-                //         lg={11}
-                //         md={11}
-                //         sm={11}
-                //         className="d-flex justify-content-end"
-                //       >
-                //         <Button
-                //           text={t("Open")}
-                //           className={styles["Open_button"]}
-                //         />
-                //       </Col>
-                //     </Row>
-                //   </>
-                // ) :
                 <>
                   <Row>
                     <Col

@@ -21,6 +21,10 @@ import {
   getUserAgainstShareFileRM,
   createFileLinkRM,
   createFolderLinkRM,
+  updateGeneralAccessRM,
+  checkFileLinkRM,
+  requestAccessRM,
+  updateFolderGeneralAccessRM,
 } from "../../commen/apis/Api_config";
 import { dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -2665,6 +2669,7 @@ const createFileLinkApi = (navigate, t, data, setLinkedcopied) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          dispatch(createFileLinkApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2706,7 +2711,365 @@ const createFileLinkApi = (navigate, t, data, setLinkedcopied) => {
   };
 };
 
+const checkFileLink_init = () => {
+  return {
+    type: actions.CHECKLINKFILE_INIT,
+  };
+};
+const checkFileLink_success = (response, message) => {
+  return {
+    type: actions.CHECKLINKFILE_SUCCESS,
+    response,
+    message,
+  };
+};
+const checkFileLink_fail = (message) => {
+  return {
+    type: actions.CHECKLINKFILE_FAIL,
+    message,
+  };
+};
+const checkFileLinkApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(checkFileLink_init());
+    let form = new FormData();
+    form.append("RequestMethod", checkFileLinkRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(checkFileLinkApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CheckLink_01".toLowerCase()
+            ) {
+              dispatch(
+                checkFileLink_success(
+                  response.data.responseResult,
+                  t("No-restrictions")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CheckLink_02".toLowerCase()
+            ) {
+              dispatch(
+                checkFileLink_success(
+                  response.data.responseResult,
+                  t(
+                    "Only-allowed-to-my-organization-and-user-part-of-organization"
+                  )
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CheckLink_03".toLowerCase()
+            ) {
+              dispatch(
+                checkFileLink_success(
+                  response.data.responseResult,
+                  t(
+                    "Only-allowed-to-my-organization-and-user-not-part-of-organization"
+                  )
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CheckLink_04".toLowerCase()
+            ) {
+              dispatch(
+                checkFileLink_success(
+                  response.data.responseResult,
+                  t("File-restricted-but-this-user-has-assigned-rights")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CheckLink_05".toLowerCase()
+            ) {
+              dispatch(
+                checkFileLink_success(
+                  response.data.responseResult,
+                  t("File-restricted-request-is-to-ask-for-request-access")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CheckLink_06".toLowerCase()
+            ) {
+              dispatch(checkFileLink_fail(t("No-file-exists-in-the-system")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CheckLink_07".toLowerCase()
+            ) {
+              dispatch(checkFileLink_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(checkFileLink_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(checkFileLink_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(checkFileLink_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(checkFileLink_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const requestAccess_init = () => {
+  return {
+    type: actions.REQUESTACCESS_INIT,
+  };
+};
+const requestAccess_success = (message) => {
+  return {
+    type: actions.REQUESTACCESS_SUCCESS,
+    message,
+  };
+};
+const requestAccess_fail = (message) => {
+  return {
+    type: actions.REQUESTACCESS_FAIL,
+    message,
+  };
+};
+const requestAccessApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(requestAccess_init());
+    let form = new FormData();
+    form.append("RequestMethod", requestAccessRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(requestAccessApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_RequestAccess_01".toLowerCase()
+            ) {
+              dispatch(requestAccess_success(t("Access-requested")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_RequestAccess_02".toLowerCase()
+            ) {
+              dispatch(requestAccess_fail(t("Failed-to-request-access")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_RequestAccess_03".toLowerCase()
+            ) {
+              dispatch(requestAccess_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(requestAccess_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(requestAccess_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(requestAccess_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(requestAccess_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const updateGeneralAccess_init = () => {
+  return {
+    type: actions.UPDATEGENERALACCESS_INIT,
+  };
+};
+const updateGeneralAccess_success = (response, message) => {
+  return {
+    type: actions.UPDATEGENERALACCESS_SUCCESS,
+    response,
+    message,
+  };
+};
+const updateGeneralAccess_fail = (message) => {
+  return {
+    type: actions.UPDATEGENERALACCESS_FAIL,
+    message,
+  };
+};
+const updateGeneralAccessApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(updateGeneralAccess_init());
+    let form = new FormData();
+    form.append("RequestMethod", updateGeneralAccessRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(requestAccessApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_UpdateGeneralAccess_01".toLowerCase()
+            ) {
+              dispatch(
+                updateGeneralAccess_success(
+                  response.data.responseResult,
+                  t("General-access-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_UpdateGeneralAccess_02".toLowerCase()
+            ) {
+              dispatch(
+                updateGeneralAccess_fail(t("Failed-to-update-general-access"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_UpdateGeneralAccess_03".toLowerCase()
+            ) {
+              dispatch(updateGeneralAccess_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(updateGeneralAccess_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(updateGeneralAccess_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(updateGeneralAccess_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(updateGeneralAccess_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const updateFolderGeneralAccess_init = () => {
+  return {
+    type: actions.UPDATEFOLDERGENERALACCESS_INIT,
+  };
+};
+const updateFolderGeneralAccess_success = (response, message) => {
+  return {
+    type: actions.UPDATEFOLDERGENERALACCESS_SUCCESS,
+    response,
+    message,
+  };
+};
+
+const updateFolderGeneralAccess_fail = (message) => {
+  return {
+    type: actions.UPDATEFOLDERGENERALACCESS_FAIL,
+    message,
+  };
+};
+const updateFolderGeneralAccessApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(updateFolderGeneralAccess_init());
+    let form = new FormData();
+    form.append("RequestMethod", updateFolderGeneralAccessRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateFolderGeneralAccessApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_UpdateFolderGeneralAccess_01".toLowerCase()
+            ) {
+              dispatch(
+                updateFolderGeneralAccess_success(
+                  response.data.responseResult,
+                  t("General-access-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_UpdateFolderGeneralAccess_02".toLowerCase()
+            ) {
+              dispatch(
+                updateFolderGeneralAccess_fail(
+                  t("Failed-to-update-general-access")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_UpdateFolderGeneralAccess_03".toLowerCase()
+            ) {
+              dispatch(
+                updateFolderGeneralAccess_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                updateFolderGeneralAccess_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(updateFolderGeneralAccess_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(updateFolderGeneralAccess_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(updateFolderGeneralAccess_fail(t("Something-went-wrong")));
+      });
+  };
+};
 export {
+  createFolderLink_fail,
+  createFileLink_fail,
+  checkFileLinkApi,
+  requestAccessApi,
+  updateGeneralAccessApi,
+  updateFolderGeneralAccessApi,
   createFileLinkApi,
   createFolderLinkApi,
   getSharedFolderUsersApi,

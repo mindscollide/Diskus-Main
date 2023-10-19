@@ -941,14 +941,36 @@ const getUserAgainstShareFileRM = {
 const getUserAgainstShareFolderRM = {
   RequestMethod: "ServiceManager.GetUsersAgainstSharedFolder",
 };
+
 const createFileLinkRM = {
   RequestMethod: "ServiceManager.CreateFileLink",
 };
+
 const createFolderLinkRM = {
   RequestMethod: "ServiceManager.CreateFolderLink",
 };
 
+const updateGeneralAccessRM = {
+  RequestMethod: "ServiceManager.UpdateGeneralAccess",
+};
+
+const updateFolderGeneralAccessRM = {
+  RequestMethod: "ServiceManager.UpdateFolderGeneralAccess",
+};
+
+const checkFileLinkRM = {
+  RequestMethod: "ServiceManager.CreateFileLink",
+};
+
+const requestAccessRM = {
+  RequestMethod: "ServiceManager.RequestAccess",
+};
+
 export {
+  updateGeneralAccessRM,
+  checkFileLinkRM,
+  requestAccessRM,
+  updateFolderGeneralAccessRM,
   createFileLinkRM,
   createFolderLinkRM,
   getUserAgainstShareFolderRM,
