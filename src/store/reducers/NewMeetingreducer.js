@@ -54,6 +54,7 @@ const initialState = {
   saveMeetingParticipants: [],
   getAllAgendaContributors: [],
   getAllSavedparticipants: [],
+  getAllMeetingDetails: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -642,6 +643,30 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SEND_NOTIFICATION_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllMeetingDetails: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_FAILED: {
       return {
         ...state,
         Loading: false,

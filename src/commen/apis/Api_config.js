@@ -938,6 +938,10 @@ const sendNotification = {
   RequestMethod: "ServiceManager.SendRecentNotifications",
 };
 
+const getAllMeetingDetailsByMeetingID = {
+  RequestMethod: "ServiceManager.GetAdvanceMeetingDetailsByMeetingID",
+};
+
 export {
   getAllAgendaContributorRM,
   saveAgendaContributorsRM,
@@ -1190,4 +1194,5 @@ export {
   saveParticipantsMeeting,
   getAllSavedParticipants,
   sendNotification,
+  getAllMeetingDetailsByMeetingID,
 };
