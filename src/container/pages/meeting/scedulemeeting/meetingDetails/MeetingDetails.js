@@ -664,6 +664,22 @@ const MeetingDetails = ({
     }
   }, [NewMeetingreducer.ResponseMessage]);
 
+  //For reminder frequency uniqueness
+  useEffect(() => {
+    // Filter out the selected options from reminderFrequencyOne
+    const updatedOptions = reminderFrequencyOne.filter(
+      (option) =>
+        option.value !== meetingDetails.ReminderFrequency &&
+        option.value !== meetingDetails.ReminderFrequencyTwo &&
+        option.value !== meetingDetails.ReminderFrequencyThree
+    );
+    setReminderFrequencyOne(updatedOptions);
+  }, [
+    meetingDetails.ReminderFrequency,
+    meetingDetails.ReminderFrequencyTwo,
+    meetingDetails.ReminderFrequencyThree,
+  ]);
+
   return (
     <section>
       {saveMeeting ? (
@@ -1250,15 +1266,17 @@ const MeetingDetails = ({
               />
 
               <Button
-                text={t("Save-and-publish")}
+                disableBtn={Number(currentMeetingID) === 0 ? true : false}
+                text={t("Next")}
                 className={styles["Published"]}
-                onClick={handlePublish}
+                onClick={handleUpdateNext}
               />
 
               <Button
-                text={t("Save-and-next")}
+                disableBtn={Number(currentMeetingID) === 0 ? true : false}
+                text={t("Publish")}
                 className={styles["Update_Next"]}
-                onClick={handleUpdateNext}
+                onClick={handlePublish}
               />
             </Col>
           </Row>
