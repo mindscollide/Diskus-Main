@@ -901,19 +901,6 @@ const MeetingDetails = ({
                                 : ""
                             }
                           />
-                          <Row>
-                            <Col>
-                              <p
-                                className={
-                                  error && meetingDetails.Link === ""
-                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                    : `${styles["errorMessage-inLogin_hidden"]}`
-                                }
-                              >
-                                {t("Please-enter-meeting-link")}
-                              </p>
-                            </Col>
-                          </Row>
                         </Col>
                       </Row>
                     </Col>
