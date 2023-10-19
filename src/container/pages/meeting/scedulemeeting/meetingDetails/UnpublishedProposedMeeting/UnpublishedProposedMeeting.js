@@ -208,6 +208,7 @@ const UnpublishedProposedMeeting = () => {
       }
     } catch {}
   }, [NewMeetingreducer.searchMeetings]);
+
   const scroll = {
     y: 800, // Set the desired height for the vertical scroll
   };

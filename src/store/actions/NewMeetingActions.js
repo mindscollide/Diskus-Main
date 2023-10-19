@@ -19,6 +19,12 @@ import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import axios from "axios";
 
+const ClearMessegeMeetingdetails = () => {
+  return {
+    type: actions.CLEAR_MEETING_DETAILS,
+  };
+};
+
 const showAddUserModal = (response) => {
   return {
     type: actions.NEW_MEETING_ADDUSER_MODAL,
@@ -423,6 +429,20 @@ const SaveMeetingDetialsNewApiFunction = (
                 )
             ) {
               dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(
+                  t(
+                    "Consecutive-date-times-should-be-greater-than-previous-date-time"
+                  )
+                )
+              );
             } else {
               dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
             }
@@ -1684,4 +1704,5 @@ export {
   GetAllSavedparticipantsAPI,
   SendNotificationApiFunc,
   GetAllMeetingDetailsApiFunc,
+  ClearMessegeMeetingdetails,
 };

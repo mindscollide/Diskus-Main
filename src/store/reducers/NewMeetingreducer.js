@@ -62,6 +62,14 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.NEW_MEETING_ADDUSER_MODAL: {
       return {
         ...state,
+        Loading: false,
+        ResponseMessage: "",
+      };
+    }
+
+    case actions.NEW_MEETING_ADDUSER_MODAL: {
+      return {
+        ...state,
         adduserModal: action.response,
       };
     }
