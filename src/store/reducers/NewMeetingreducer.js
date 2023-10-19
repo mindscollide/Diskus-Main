@@ -54,10 +54,19 @@ const initialState = {
   saveMeetingParticipants: [],
   getAllAgendaContributors: [],
   getAllSavedparticipants: [],
+  getAllMeetingDetails: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.NEW_MEETING_ADDUSER_MODAL: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: "",
+      };
+    }
+
     case actions.NEW_MEETING_ADDUSER_MODAL: {
       return {
         ...state,
@@ -622,6 +631,53 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getAllAgendaContributors: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SEND_NOTIFICATION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SEND_NOTIFICATION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SEND_NOTIFICATION_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllMeetingDetails: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_FAILED: {
+      return {
+        ...state,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }

@@ -44,6 +44,8 @@ const AgendaContributers = ({
     (state) => state
   );
   const [isEdit, setIsEdit] = useState(false);
+  const [disbaleIcon, setDisbaleIcon] = useState(false);
+  const [isEditFlag, setIsEditFlag] = useState(0);
   const [notifyMessageField, setNotifyMessageField] = useState("");
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
@@ -132,28 +134,35 @@ const AgendaContributers = ({
       dataIndex: "Title",
       key: "Title",
       width: "80px",
-      render: (text, record) => (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <TextField
-              disable={record.isEdit ? true : false}
-              placeholder={t("Content-title")}
-              labelClass={"d-none"}
-              width={"100%"}
-              applyClass={"Organizer_table"}
-              value={inputValues[record.userID] || ""} // Use the controlled value
-              change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
-            />
-          </Col>
-        </Row>
-      ),
+      render: (text, record) => {
+        console.log({ record }, "texttexttexttext");
+        return (
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <TextField
+                disable={record.isEdit ? true : false}
+                placeholder={t("Content-title")}
+                labelClass={"d-none"}
+                width={"100%"}
+                applyClass={"Organizer_table"}
+                value={
+                  record.isEdit === true
+                    ? record.Title
+                    : inputValues[record.userID] || ""
+                } // Use the controlled value
+                change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
+              />
+            </Col>
+          </Row>
+        );
+      },
     },
     {
       dataIndex: "isNotifed",
       key: "isNotified",
       width: "80px",
       render: (text, record) => {
-        console.log("recordrecordrecordrecord", record);
+        console.log("isContributedNotifiedisContributedNotified", record);
         if (record.isContributedNotified) {
           return (
             <Row>
@@ -166,6 +175,9 @@ const AgendaContributers = ({
                 <img
                   draggable={false}
                   src={greenMailIcon}
+                  className={
+                    record.isEdit === true ? "cursor-pointer" : "pe-none"
+                  }
                   height="30px"
                   width="30px"
                   alt=""
@@ -186,6 +198,9 @@ const AgendaContributers = ({
                 <img
                   draggable={false}
                   src={redMailIcon}
+                  className={
+                    record.isEdit === true ? "cursor-pointer" : "pe-none"
+                  }
                   height="30px"
                   alt=""
                   width="30px"
@@ -195,6 +210,32 @@ const AgendaContributers = ({
             </Row>
           );
         }
+      },
+    },
+    {
+      dataIndex: "rsvp",
+      key: "rsvp",
+      width: "80px",
+      render: (text, record) => {
+        return (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <img
+                  draggable={false}
+                  src={RspvIcon}
+                  className={
+                    record.isEdit === true ? "cursor-pointer" : "pe-none"
+                  }
+                  height="30px"
+                  width="30px"
+                />
+
+                {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
+              </Col>
+            </Row>
+          </>
+        );
       },
     },
     {
@@ -229,39 +270,6 @@ const AgendaContributers = ({
       },
     },
   ];
-
-  // const rspvData = [
-  //   {
-  //     key: "1",
-  //     Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
-  //     Email: (
-  //       <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-  //     ),
-  //     OrganizerTitle: <label className="column-boldness">Organizer</label>,
-  //     Notification: (
-  //       <>
-  //         <Row>
-  //           <Col lg={12} md={12} sm={12}>
-  //             <img
-  //               draggable={false}
-  //               src={NotificationIcon}
-  //               width="17.64px"
-  //               height="12.4px"
-  //             />
-  //             {/* <img draggable = {false} src={redMailIcon} width="17.64px" height="12.4px" /> */}
-  //           </Col>
-  //         </Row>
-  //       </>
-  //     ),
-  //     rsvp: (
-  //       <>
-  //         <img draggable={false} src={RspvIcon} height="30px" width="30px" />
-  //         {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
-  //       </>
-  //     ),
-  //   },
-  // ];
-  // const [rspvRows, setrspvRows] = useState(rspvData);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -323,6 +331,7 @@ const AgendaContributers = ({
   };
 
   const openAddAgendaModal = () => {
+    setIsEditFlag(0);
     dispatch(showAddAgendaContributor(true));
   };
 
@@ -341,6 +350,7 @@ const AgendaContributers = ({
   };
 
   const handleEditBtn = () => {
+    setIsEditFlag(1);
     setRowsData((prevRowsData) => {
       return prevRowsData.map((row) => {
         return {
@@ -352,59 +362,88 @@ const AgendaContributers = ({
   };
 
   const handleCancelBtn = () => {
-    if (NewMeetingreducer.getAllAgendaContributors.length > 0) {
-      let agendaContributorData = [
-        ...NewMeetingreducer.getAllAgendaContributors,
-      ];
+    // if (NewMeetingreducer.getAllAgendaContributors.length > 0) {
+    //   let agendaContributorData = [
+    //     ...NewMeetingreducer.getAllAgendaContributors,
+    //   ];
 
-      // Initial values
-      const initialValues = {};
-      agendaContributorData.forEach((organizer) => {
-        initialValues[organizer.userID] = organizer.contributorTitle;
-      });
+    //   // Initial values
+    //   const initialValues = {};
+    //   agendaContributorData.forEach((organizer) => {
+    //     initialValues[organizer.userID] = organizer.contributorTitle;
+    //   });
 
-      setInputValues({ ...initialValues });
+    //   setInputValues({ ...initialValues });
 
-      let newArr = [];
-      agendaContributorData.forEach((AgConData, index) => {
-        newArr.push({
-          userName: AgConData.userName,
-          userID: AgConData.userID,
-          displayPicture: "",
-          email: AgConData.emailAddress,
-          IsPrimaryOrganizer: false,
-          IsOrganizerNotified: false,
-          Title: AgConData.contributorTitle,
-          isRSVP: AgConData.rsvp,
-          isEdit: true,
-        });
-      });
-      setRowsData(newArr);
-    }
-    // let removenewData = rowsData.filter((data, index) => data.isEdit === true);
-    // setRowsData(removenewData);
-    // let getAllData = {
-    //   MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
-    // };
-    // dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    //   let newArr = [];
+    //   agendaContributorData.forEach((AgConData, index) => {
+    //     newArr.push({
+    //       userName: AgConData.userName,
+    //       userID: AgConData.userID,
+    //       displayPicture: "",
+    //       email: AgConData.emailAddress,
+    //       IsPrimaryOrganizer: false,
+    //       IsOrganizerNotified: false,
+    //       Title: AgConData.contributorTitle,
+    //       isRSVP: AgConData.rsvp,
+    //       isEdit: true,
+    //     });
+    //   });
+    //   setRowsData(newArr);
+    // }
+    let removenewData = rowsData.filter((data, index) => data.isEdit === true);
+    setRowsData(removenewData);
+    let getAllData = {
+      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+    };
+    dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
     // Create a copy of data with was coming
   };
 
   const handleSaveBtn = () => {
-    let newData = [];
-    let copyData = [...rowsData];
-    copyData.forEach((data, index) => {
-      newData.push({
-        UserID: data.userID,
-        Title: data.Title,
-        AgendaListRightsAll: data.isRSVP,
-        MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+    if (isEditFlag === 1) {
+      let newData = [];
+      let copyData = [...rowsData];
+      copyData.forEach((data, index) => {
+        console.log(data, "AgendaListRightsAllAgendaListRightsAll");
+        newData.push({
+          UserID: data.userID,
+          Title: data.Title,
+          AgendaListRightsAll: data.AgendaListRightsAll,
+          MeetingID:
+            currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+          IsContributorNotified: data.isContributedNotified,
+        });
       });
-    });
-    let Data = {
-      AgendaContributors: newData,
-    };
-    dispatch(saveAgendaContributors(navigate, t, Data));
+      let Data = {
+        AgendaContributors: newData,
+        MeetingID: Number(currentMeetingID),
+        IsAgendaContributorAddFlow: false,
+        NotificationMessage: notifyMessageField,
+      };
+      dispatch(saveAgendaContributors(navigate, t, Data));
+    } else {
+      let newData = [];
+      let copyData = [...rowsData];
+      copyData.forEach((data, index) => {
+        console.log(data, "AgendaListRightsAllAgendaListRightsAll");
+        newData.push({
+          UserID: data.userID,
+          Title: data.Title,
+          AgendaListRightsAll: data.AgendaListRightsAll,
+          MeetingID:
+            currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+          IsContributorNotified: data.isContributedNotified,
+        });
+      });
+      let Data = {
+        AgendaContributors: newData,
+        MeetingID: Number(currentMeetingID),
+        IsAgendaContributorAddFlow: true,
+        NotificationMessage: notifyMessageField,
+      };
+      dispatch(saveAgendaContributors(navigate, t, Data));
+    }
   };
 
   useEffect(() => {
@@ -428,6 +467,7 @@ const AgendaContributers = ({
 
       let newArr = [];
       agendaContributorData.forEach((AgConData, index) => {
+        console.log(AgConData, "AgConDataAgConDataAgConData");
         newArr.push({
           userName: AgConData.userName,
           userID: AgConData.userID,
@@ -436,7 +476,7 @@ const AgendaContributers = ({
           Title: AgConData.contributorTitle,
           isRSVP: AgConData.rsvp,
           isEdit: true,
-          isContributedNotified: AgConData.isContributorNotified,
+          isContributedNotified: true,
         });
       });
       setRowsData(newArr);
@@ -575,16 +615,16 @@ const AgendaContributers = ({
                     onClick={enableNotificatoinTable}
                   />
                   <Button
-                    text={t("Save")}
+                    text={t("Previous-meeting")}
                     className={styles["Cancel_Organization"]}
                   />
                   <Button
-                    text={t("Save-and-publish")}
+                    text={t("Next")}
                     className={styles["Cancel_Organization"]}
                     onClick={EnableViewAgendaContributors}
                   />
                   <Button
-                    text={t("Save-and-next")}
+                    text={t("Published")}
                     className={styles["Next_Organization"]}
                     onClick={handleNextButton}
                   />

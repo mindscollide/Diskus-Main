@@ -4,6 +4,7 @@ import {
   GetMeetingNewFrequencyReminder,
   getAllAgendaContributorRM,
   getAllGroupsUsersAndCommitteesByOrganizaitonID,
+  getAllMeetingDetailsByMeetingID,
   getAllSavedParticipants,
   getParticipantsRoles,
   getallMeetingType,
@@ -11,11 +12,18 @@ import {
   saveMeetingDetials,
   saveParticipantsMeeting,
   searchUserMeetings,
+  sendNotification,
 } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import axios from "axios";
+
+const ClearMessegeMeetingdetails = () => {
+  return {
+    type: actions.CLEAR_MEETING_DETAILS,
+  };
+};
 
 const showAddUserModal = (response) => {
   return {
@@ -421,6 +429,20 @@ const SaveMeetingDetialsNewApiFunction = (
                 )
             ) {
               dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(
+                  t(
+                    "Consecutive-date-times-should-be-greater-than-previous-date-time"
+                  )
+                )
+              );
             } else {
               dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
             }
@@ -1091,7 +1113,7 @@ const showSaveParticipantsSuccess = (response, message) => {
   };
 };
 
-const showSaveParticipantsFailed = (response, message) => {
+const showSaveParticipantsFailed = (message) => {
   return {
     type: actions.SAVE_MEETING_PARTICIPANTS_FAILED,
     message: message,
@@ -1442,6 +1464,188 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
   };
 };
 
+//Send Notification Api
+const sendNotificationParticipantsInit = () => {
+  return {
+    type: actions.SEND_NOTIFICATION_INIT,
+  };
+};
+
+const sendNotificationParticipantsSuccess = (message) => {
+  return {
+    type: actions.SEND_NOTIFICATION_SUCCESS,
+    message: message,
+  };
+};
+
+const sendNotificationParticipantsFailed = (message) => {
+  return {
+    type: actions.SEND_NOTIFICATION_FAILED,
+    message: message,
+  };
+};
+
+//Send Notification API Function
+const SendNotificationApiFunc = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(sendNotificationParticipantsInit());
+    let form = new FormData();
+    form.append("RequestMethod", sendNotification.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SendNotificationApiFunc(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetRecentNotifications_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                sendNotificationParticipantsSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetRecentNotifications_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                sendNotificationParticipantsFailed(t("No-record-found"))
+              );
+            } else {
+              dispatch(
+                sendNotificationParticipantsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              sendNotificationParticipantsFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            sendNotificationParticipantsFailed(t("Something-went-wrong"))
+          );
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(sendNotificationParticipantsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//GET ALL MEETING DETAILS STARTED
+
+const showGetAllMeetingDetialsInit = () => {
+  return {
+    type: actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_INIT,
+  };
+};
+
+const showGetAllMeetingDetialsSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showGetAllMeetingDetialsFailed = (message) => {
+  return {
+    type: actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_FAILED,
+    message: message,
+  };
+};
+
+//GET ALL MEETING DETAILS API Function
+const GetAllMeetingDetailsApiFunc = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showGetAllMeetingDetialsInit());
+    let form = new FormData();
+    form.append("RequestMethod", getAllMeetingDetailsByMeetingID.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showGetAllMeetingDetialsSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_02".toLowerCase()
+                )
+            ) {
+              dispatch(showGetAllMeetingDetialsFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_03".toLowerCase()
+                )
+            ) {
+              dispatch(showGetAllMeetingDetialsFailed(t("No-record-found")));
+            } else {
+              dispatch(
+                showGetAllMeetingDetialsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -1498,4 +1702,7 @@ export {
   FetchMeetingURLApi,
   SaveparticipantsApi,
   GetAllSavedparticipantsAPI,
+  SendNotificationApiFunc,
+  GetAllMeetingDetailsApiFunc,
+  ClearMessegeMeetingdetails,
 };

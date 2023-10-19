@@ -47,6 +47,7 @@ const Participants = ({
     "getAllSavedparticipants"
   );
   const [particiapntsView, setParticiapntsView] = useState(false);
+  const [menuIsOpen, setMenuIsOpen] = useState(true);
   const [IsParticipantsAddFlow, setIsParticpantAddFlow] = useState({
     IsParticipantsAddFlow: true,
   });
@@ -74,6 +75,18 @@ const Participants = ({
     setParticipants(false);
     setAgenda(true);
   };
+
+  //For menu Portal of the React select
+  const customStyles = {
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999,
+    }),
+  };
+
+  useEffect(() => {
+    setMenuIsOpen(true);
+  }, []);
 
   //For participants Role
   useEffect(() => {
@@ -197,7 +210,7 @@ const Participants = ({
       width: "80px",
 
       render: (text, record) => {
-        console.log("texttexttext", { record });
+        console.log("SaifSaifSaifSaif", { record });
         return (
           <Row>
             <Col lg={12} md={12} sm={12}>
@@ -238,6 +251,9 @@ const Participants = ({
                 <Select
                   isDisabled={record.isComingApi === true ? true : false}
                   options={particpantsRole}
+                  menuPortalTarget={document.body}
+                  styles={customStyles}
+                  classNamePrefix={"ParticipantRole"}
                   value={
                     record.isComingApi === true
                       ? {
