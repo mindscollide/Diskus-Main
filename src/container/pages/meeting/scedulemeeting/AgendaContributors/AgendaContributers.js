@@ -145,7 +145,11 @@ const AgendaContributers = ({
                 labelClass={"d-none"}
                 width={"100%"}
                 applyClass={"Organizer_table"}
-                value={inputValues[record.userID] || ""} // Use the controlled value
+                value={
+                  record.isEdit === true
+                    ? record.Title
+                    : inputValues[record.userID] || ""
+                } // Use the controlled value
                 change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
               />
             </Col>
