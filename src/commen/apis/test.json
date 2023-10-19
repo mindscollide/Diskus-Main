@@ -1,9 +1,21 @@
 {
-  "MeetingParticipants": [
-    { "UserID": 984, "Title": "Eren One Here ", "ParticipantRoleID": 1 },
-    { "UserID": 985, "Title": "Eren Two Here ", "ParticipantRoleID": 2 }
-  ],
-  "MeetingID": 1701,
-  "IsParticipantsAddFlow": false,
-  "NotificationMessage": ""
+  "MeetingDetails": {
+    "MeetingTitle": "After fixing all the issues ",
+    "MeetingType": { "PK_MTID": 5, "Type": "Committee Meeting" },
+    "Location": "karachi east ",
+    "Description": "hello there i have fixed all the requirements ",
+    "IsVideoChat": true,
+    "IsTalkGroup": true,
+    "OrganizationId": 417,
+    "MeetingDates": [
+      { "MeetingDate": "20231020", "StartTime": "061958", "EndTime": "071959" }
+    ],
+    "MeetingReminders": [1, 2, 3],
+    "Notes": "hello there i have these notes ",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 2,
+    "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
+    "MeetingStatusID": 1
+  }
 }

@@ -11,6 +11,7 @@ import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals
 import { useNavigate } from "react-router-dom";
 import profile from "../../../../../../assets/images/newprofile.png";
 import {
+  SendNotificationApiFunc,
   showAgendaContributorsModals,
   showNotifyOrganizors,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -37,15 +38,10 @@ const NotifyAgendaModal = ({
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [hidemembes, setHidemembes] = useState(false);
-
+  let userID = localStorage.getItem("userID");
   const [agendaMessege, setAgendaMessege] = useState({
     Messege: "",
   });
-
-  const handleCrossIcon = () => {
-    dispatch(showAgendaContributorsModals(false));
-    setSpecifiUser(0);
-  };
 
   const HandleChange = (e, index) => {
     let name = e.target.name;
@@ -90,6 +86,27 @@ const NotifyAgendaModal = ({
     });
   };
 
+  const handleSendIcon = () => {
+    if (specificUser !== 0) {
+      let Data = {
+        UserID: Number(userID),
+        Message: notifyMessageField,
+        IsAgendaContributor: false,
+      };
+      console.log(Data, "notificationData");
+      dispatch(SendNotificationApiFunc(Data, navigate, t));
+      dispatch(showAgendaContributorsModals(false));
+      setSpecifiUser(0);
+    } else {
+      dispatch(showAgendaContributorsModals(false));
+    }
+  };
+
+  const handleCancel = () => {
+    dispatch(showAgendaContributorsModals(false));
+    setSpecifiUser(0);
+  };
+
   return (
     <section>
       <Modal
@@ -114,7 +131,7 @@ const NotifyAgendaModal = ({
                   className={styles["Cross_Icon_Styling"]}
                   width="16px"
                   height="16px"
-                  onClick={handleCrossIcon}
+                  onClick={handleCancel}
                   alt=""
                 />
               </Col>
@@ -127,6 +144,7 @@ const NotifyAgendaModal = ({
                   as={"textarea"}
                   rows="4"
                   placeholder={t("AgendaMessege")}
+                  name={"AgendaMessege"}
                   value={notifyMessageField}
                   change={HandleChange}
                   required={true}
@@ -192,6 +210,7 @@ const NotifyAgendaModal = ({
                               (data, index) => data.userID === specificUser
                             )
                             .map((mapData, index) => {
+                              console.log(mapData, "mapDatamapData");
                               return (
                                 <Col lg={6} md={6} sm={12} className="mt-2">
                                   <Row className="m-0 p-0">
@@ -243,56 +262,59 @@ const NotifyAgendaModal = ({
                                 </Col>
                               );
                             })
-                        : notifiedMembersData.map((data, index) => {
-                            return (
-                              <Col lg={6} md={6} sm={12} className="mt-2">
-                                <Row className="m-0 p-0">
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className={styles["Box_for_Assignee"]}
-                                  >
-                                    <Row>
-                                      <Col
-                                        lg={10}
-                                        md={10}
-                                        sm={12}
-                                        className="d-flex gap-2 align-items-center"
-                                      >
-                                        <img
-                                          draggable={false}
-                                          src={`data:image/jpeg;base64,${data?.displayPicture}`}
-                                          width="33px"
-                                          height="33px"
-                                          className={styles["ProfilePic"]}
-                                          alt=""
-                                        />
-                                        <span
-                                          className={
-                                            styles["Participants_Name"]
-                                          }
+                        : notifiedMembersData
+                            .filter((data, index) => data.isEdit === false)
+                            .map((data, index) => {
+                              console.log(data, "datadatadata");
+                              return (
+                                <Col lg={6} md={6} sm={12} className="mt-2">
+                                  <Row className="m-0 p-0">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={styles["Box_for_Assignee"]}
+                                    >
+                                      <Row>
+                                        <Col
+                                          lg={10}
+                                          md={10}
+                                          sm={12}
+                                          className="d-flex gap-2 align-items-center"
                                         >
-                                          {data.userName}
-                                        </span>
-                                      </Col>
-                                      <Col lg={2} md={2} sm={12}>
-                                        <Checkbox
-                                          checked={data.isContributedNotified}
-                                          onChange={(checked) =>
-                                            handleChangeBox(
-                                              checked,
-                                              data.userID
-                                            )
-                                          }
-                                        />
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </Row>
-                              </Col>
-                            );
-                          })}
+                                          <img
+                                            draggable={false}
+                                            src={`data:image/jpeg;base64,${data?.displayPicture}`}
+                                            width="33px"
+                                            height="33px"
+                                            className={styles["ProfilePic"]}
+                                            alt=""
+                                          />
+                                          <span
+                                            className={
+                                              styles["Participants_Name"]
+                                            }
+                                          >
+                                            {data.userName}
+                                          </span>
+                                        </Col>
+                                        <Col lg={2} md={2} sm={12}>
+                                          <Checkbox
+                                            checked={data.isContributedNotified}
+                                            onChange={(checked) =>
+                                              handleChangeBox(
+                                                checked,
+                                                data.userID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              );
+                            })}
                     </Row>
                   </Col>
                 </Row>
@@ -312,12 +334,12 @@ const NotifyAgendaModal = ({
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_button_Notify"]}
-                  onClick={handleCrossIcon}
+                  onClick={handleCancel}
                 />
                 <Button
                   text={t("Send")}
                   className={styles["Send_Notify"]}
-                  onClick={handleCrossIcon}
+                  onClick={handleSendIcon}
                 />
               </Col>
             </Row>

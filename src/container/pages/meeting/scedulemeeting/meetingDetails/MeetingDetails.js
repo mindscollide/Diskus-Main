@@ -20,7 +20,7 @@ import {
   Button,
   Switch,
   TextField,
-  Loader,
+  Notification,
 } from "../../../../../components/elements";
 import desh from "../../../../../assets/images/desh.svg";
 import {
@@ -34,7 +34,9 @@ import moment from "moment";
 import TextFieldTime from "../../../../../components/elements/input_field_time/Input_field";
 import { useDispatch } from "react-redux";
 import {
+  ClearMessegeMeetingdetails,
   FetchMeetingURLApi,
+  GetAllMeetingDetailsApiFunc,
   GetAllMeetingRecurringApiNew,
   GetAllMeetingRemindersApiFrequencyNew,
   GetAllMeetingTypesNewFunction,
@@ -76,6 +78,10 @@ const MeetingDetails = ({
   const [error, seterror] = useState(false);
   const [activeVideo, setActiveVideo] = useState(false);
   const [saveMeeting, setSaveMeeting] = useState(false);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const [meetingDetails, setMeetingDetails] = useState({
     MeetingTitle: "",
     MeetingType: 0,
@@ -623,6 +629,40 @@ const MeetingDetails = ({
       }
     }
   }, [currentLanguage]);
+
+  //Calling getAll Meeting Details By Meeting ID
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(currentMeetingID),
+    };
+    dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+  }, []);
+
+  // Showing The reposnse messege
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(ClearMessegeMeetingdetails());
+    } else {
+      dispatch(ClearMessegeMeetingdetails());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
 
   return (
     <section>
@@ -1227,6 +1267,7 @@ const MeetingDetails = ({
       {NewMeetingreducer.cancelModalMeetingDetails && (
         <CancelButtonModal setSceduleMeeting={setSceduleMeeting} />
       )}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );
 };

@@ -1067,11 +1067,14 @@
   "Advanced-meeting": "Advanced meeting",
   "Reminder*": "Reminder*",
   "No-row-inserted": "No Row Inserted",
-  "All-agenda-organizer-except": "All agenda organizer except",
   "File-shared-against-different-users": "File shared against different users",
   "File-not-shared-against-any-users": "File not shared against any users",
   "Folder-shared-against-different-users": "Folder shared against different users",
   "Folder-not-shared-against-any-users": "Folder not shared against any users",
+  "Please-select-user": "Please select user",
+  "All-agenda-organizer-except": "All agenda contributor",
   "Previous-meeting": "Previous",
-  "Please-select-user": "Please select user"
+  "Atleast-one-agenda-contributor-should-be-selected": "Atleast one agenda contributor should be selected",
+  "Atleast-one-participant-should-be-selected": "Atleast one Participant should be selected",
+  "Consecutive-date-times-should-be-greater-than-previous-date-time": "Consecutive Date Times Should be greater than previous date time"
 }

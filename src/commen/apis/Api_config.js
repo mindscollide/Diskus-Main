@@ -966,6 +966,14 @@ const requestAccessRM = {
   RequestMethod: "ServiceManager.RequestAccess",
 };
 
+const sendNotification = {
+  RequestMethod: "ServiceManager.SendRecentNotifications",
+};
+
+const getAllMeetingDetailsByMeetingID = {
+  RequestMethod: "ServiceManager.GetAdvanceMeetingDetailsByMeetingID",
+};
+
 export {
   updateGeneralAccessRM,
   checkFileLinkRM,
@@ -1225,4 +1233,6 @@ export {
   FetchVideoUrl,
   saveParticipantsMeeting,
   getAllSavedParticipants,
+  sendNotification,
+  getAllMeetingDetailsByMeetingID,
 };
