@@ -57,7 +57,7 @@ const MeetingDetails = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  console.log(NewMeetingreducer.getmeetingURL, "getmeetingURL");
+
   const [options, setOptions] = useState([]);
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
@@ -77,6 +77,8 @@ const MeetingDetails = ({
   const [error, seterror] = useState(false);
   const [activeVideo, setActiveVideo] = useState(false);
   const [saveMeeting, setSaveMeeting] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [savedMeetingData, setSavedMeetingData] = useState(null);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -388,6 +390,7 @@ const MeetingDetails = ({
           ReucurringMeetingID: meetingDetails.RecurringOptions,
           VideoURL: meetingDetails.Link,
           MeetingStatusID: 11,
+          IsComingFromApi: true,
         },
       };
       console.log(data, "SaveMeetingDetialsNewApiFunction");
@@ -648,10 +651,13 @@ const MeetingDetails = ({
   //Calling getAll Meeting Details By Meeting ID
 
   useEffect(() => {
-    let Data = {
-      MeetingID: Number(currentMeetingID),
-    };
-    dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    if (currentMeetingID > 0) {
+      let Data = {
+        MeetingID: Number(currentMeetingID),
+      };
+      dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    } else {
+    }
   }, []);
 
   // Showing The reposnse messege
@@ -694,6 +700,55 @@ const MeetingDetails = ({
     meetingDetails.ReminderFrequencyTwo,
     meetingDetails.ReminderFrequencyThree,
   ]);
+
+  //Fetching All Saved Data
+
+  useEffect(() => {
+    console.log(NewMeetingreducer.getAllMeetingDetails, "NewMeetingreducer");
+    if (
+      NewMeetingreducer.getAllMeetingDetails != null &&
+      NewMeetingreducer.getAllMeetingDetails != undefined
+    ) {
+      let MeetingData =
+        NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+      let getmeetingDates = MeetingData.meetingDates;
+      let getmeetingRecurrance = MeetingData.meetingRecurrance;
+      let getmeetingReminders = MeetingData.meetingReminders;
+      let getmeetingStatus = MeetingData.meetingStatus;
+      let getmeetingType = MeetingData.meetingType;
+      console.log(getmeetingReminders, "getmeetingTypegetmeetingType");
+      // setSavedMeetingData({
+
+      // })
+      setMeetingDetails({
+        MeetingTitle: MeetingData.meetingTitle,
+        MeetingType: {
+          PK_MTID: getmeetingType.pK_MTID,
+          Type: getmeetingType.type,
+        },
+        Location: MeetingData.location,
+        Description: MeetingData.description,
+        Link: MeetingData.videoCallURl,
+        ReminderFrequency: {
+          pK_MRID: getmeetingReminders.pK_MRID,
+          duration: getmeetingReminders.duration,
+          description: getmeetingReminders.description,
+        },
+        ReminderFrequencyTwo: 0,
+        ReminderFrequencyThree: 0,
+        Notes: MeetingData.notes,
+        groupChat: MeetingData.isTalkGroup,
+        AllowRSPV: MeetingData.allowRSVP,
+        NotifyMeetingOrganizer: MeetingData.notifyAdminOnRSVP,
+        RecurringOptions: {
+          recurranceID: getmeetingRecurrance.recurranceID,
+          recurrance: getmeetingRecurrance.recurrance,
+        },
+        Location: MeetingData.location,
+        IsVideoCall: MeetingData.isVideo,
+      });
+    }
+  }, [NewMeetingreducer.getAllMeetingDetails]);
 
   return (
     <section>
@@ -751,6 +806,14 @@ const MeetingDetails = ({
                           <Select
                             options={meetingTypeDropdown}
                             placeholder={t("Meeting-type")}
+                            value={{
+                              value: meetingDetails.MeetingType?.PK_MTID,
+                              label: meetingDetails.MeetingType?.Type,
+                            }}
+                            //   Number(currentMeetingID) > 0
+                            //     ? savedMeetingData.meetingType
+                            //     : null
+                            // }
                             onChange={handleMeetingSelectChange}
                             isSearchable={false}
                           />
@@ -1117,10 +1180,7 @@ const MeetingDetails = ({
                         placeholder={t("Reminder*")}
                         onChange={handleReminderFrequency}
                         options={reminderFrequencyOne}
-                        value={reminderFrequencyOne.find(
-                          (option) =>
-                            option.value === meetingDetails.ReminderFrequency
-                        )}
+                        value={Number()}
                         isDisabled={false} // First dropdown should always be enabled
                       />
                     </Col>
@@ -1238,9 +1298,13 @@ const MeetingDetails = ({
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <Select
-                        value={rows.RecurringOptions}
+                        // value={rows.RecurringOptions}
                         onChange={handleRecurringSelectoptions}
                         options={recurringDropDown}
+                        value={{
+                          value: meetingDetails.RecurringOptions?.recurranceID,
+                          label: meetingDetails.RecurringOptions?.recurrance,
+                        }}
                       />
                     </Col>
                   </Row>
@@ -1260,12 +1324,23 @@ const MeetingDetails = ({
                 className={styles["Published"]}
                 onClick={handleCancelMeetingButton}
               />
-
-              <Button
-                text={t("Save")}
-                className={styles["Published"]}
-                onClick={SaveMeeting}
-              />
+              {Number(currentMeetingID) === 0 ? (
+                <>
+                  <Button
+                    text={t("Save")}
+                    className={styles["Published"]}
+                    onClick={SaveMeeting}
+                  />
+                </>
+              ) : (
+                <>
+                  <Button
+                    text={t("Update")}
+                    className={styles["Published"]}
+                    onClick={SaveMeeting}
+                  />
+                </>
+              )}
 
               <Button
                 disableBtn={Number(currentMeetingID) === 0 ? true : false}

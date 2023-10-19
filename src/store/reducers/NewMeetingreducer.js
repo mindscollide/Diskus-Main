@@ -54,7 +54,7 @@ const initialState = {
   saveMeetingParticipants: [],
   getAllAgendaContributors: [],
   getAllSavedparticipants: [],
-  getAllMeetingDetails: [],
+  getAllMeetingDetails: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -678,6 +678,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        getAllMeetingDetails: null,
         ResponseMessage: action.message,
       };
     }
