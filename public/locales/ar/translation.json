@@ -1514,5 +1514,6 @@
   "All-agenda-organizer-except": "All agenda contributor",
   "Previous-meeting": "Previous",
   "Atleast-one-agenda-contributor-should-be-selected": "Atleast one agenda contributor should be selected",
-  "Atleast-one-participant-should-be-selected": "Atleast one Participant should be selected"
+  "Atleast-one-participant-should-be-selected": "Atleast one Participant should be selected",
+  "Consecutive-date-times-should-be-greater-than-previous-date-time": "Consecutive Date Times Should be greater than previous date time"
 }

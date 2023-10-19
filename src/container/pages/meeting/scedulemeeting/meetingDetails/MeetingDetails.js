@@ -36,6 +36,7 @@ import { useDispatch } from "react-redux";
 import {
   ClearMessegeMeetingdetails,
   FetchMeetingURLApi,
+  GetAllMeetingDetailsApiFunc,
   GetAllMeetingRecurringApiNew,
   GetAllMeetingRemindersApiFrequencyNew,
   GetAllMeetingTypesNewFunction,
@@ -629,8 +630,16 @@ const MeetingDetails = ({
     }
   }, [currentLanguage]);
 
-  // Showing The reposnse messege
+  //Calling getAll Meeting Details By Meeting ID
 
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(currentMeetingID),
+    };
+    dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+  }, []);
+
+  // Showing The reposnse messege
   useEffect(() => {
     if (
       NewMeetingreducer.ResponseMessage !== "" &&
