@@ -85,10 +85,9 @@ const MeetingDetails = ({
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
   const [error, seterror] = useState(false);
-  const [activeVideo, setActiveVideo] = useState(false);
   const [saveMeeting, setSaveMeeting] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [savedMeetingData, setSavedMeetingData] = useState(null);
+  const [publishedFlag, setPublishedFlag] = useState(null);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -420,7 +419,6 @@ const MeetingDetails = ({
           ReucurringMeetingID: meetingDetails.RecurringOptions.value,
           VideoURL: meetingDetails.Link,
           MeetingStatusID: 11,
-          IsComingFromApi: true,
         },
       };
       console.log(data, "SaveMeetingDetialsNewApiFunction");
@@ -497,17 +495,16 @@ const MeetingDetails = ({
           // IsComingFromApi: true,
         },
       };
-      // dispatch(
-      //   SaveMeetingDetialsNewApiFunction(
-      //     navigate,
-      //     t,
-      //     data,
-      //     setSceduleMeeting,
-      //     setorganizers,
-      //     setmeetingDetails,
-      //     2
-      //   )
-      // );
+      dispatch(
+        SaveMeetingDetialsNewApiFunction(
+          navigate,
+          t,
+          data,
+          setSceduleMeeting,
+          setorganizers,
+          setmeetingDetails
+        )
+      );
     } else {
       seterror(true);
     }
@@ -831,7 +828,8 @@ const MeetingDetails = ({
       let getmeetingReminders = MeetingData.meetingReminders;
       let getmeetingStatus = MeetingData.meetingStatus;
       let getmeetingType = MeetingData.meetingType;
-      console.log(getmeetingRecurrance, "getmeetingTypegetmeetingType");
+      let wasPublishedFlag = MeetingData.wasMeetingPublished;
+      console.log(wasPublishedFlag, "getmeetingTypegetmeetingType");
       setMeetingDetails({
         MeetingTitle: MeetingData.meetingTitle,
         MeetingType: {
@@ -902,9 +900,10 @@ const MeetingDetails = ({
         });
       }
       setRows(newDateTimeData);
+      setPublishedFlag(wasPublishedFlag);
     }
   }, [NewMeetingreducer.getAllMeetingDetails]);
-  console.log(meetingDetails.RecurringOptions, "rowsrowsrows");
+  console.log(publishedFlag, "publishedFlagpublishedFlag");
   return (
     <section>
       {saveMeeting ? (
@@ -1519,7 +1518,11 @@ const MeetingDetails = ({
               />
 
               <Button
-                disableBtn={Number(currentMeetingID) === 0 ? true : false}
+                disableBtn={
+                  Number(currentMeetingID) === 0 && publishedFlag === true
+                    ? true
+                    : false
+                }
                 text={t("Publish")}
                 className={styles["Update_Next"]}
                 onClick={handlePublish}
