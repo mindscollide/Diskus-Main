@@ -278,13 +278,22 @@ const ModalShareFolder = ({
     console.log("hnbhaiclicktuhorahahy");
     if (folderData.Folders.length > 0) {
       setShowrequestsend(true);
-      dispatch(shareFoldersApi(navigate, folderData, t, setSharefolder));
+      let ShareFolderData = {
+        FolderID: Number(folderId),
+        Folders: folderData.Folders,
+      };
+      dispatch(shareFoldersApi(navigate, ShareFolderData, t, setSharefolder));
     }
   };
 
   const openAccessRequestModalClick = () => {
     if (folderData.Folders.length > 0) {
-      dispatch(shareFoldersApi(navigate, folderData, t, setSharefolder));
+      let ShareFolderData = {
+        FolderID: Number(folderId),
+        Folders: folderData.Folders,
+      };
+
+      dispatch(shareFoldersApi(navigate, ShareFolderData, t, setSharefolder));
     } else {
       setOpen({
         flag: true,

@@ -270,7 +270,11 @@ const ModalShareFile = ({
   const Notificationnaccessrequest = () => {
     console.log("hnbhaiclicktuhorahahy");
     if (fileData.Files.length > 0) {
-      dispatch(shareFilesApi(navigate, fileData, t));
+      let ShareFilesData = {
+        FileID: Number(folderId),
+        Files: fileData.Files,
+      };
+      dispatch(shareFilesApi(navigate, ShareFilesData, t));
       setShowrequestsend(true);
     } else {
     }
@@ -279,7 +283,8 @@ const ModalShareFile = ({
   const openAccessRequestModalClick = () => {
     if (fileData.Files.length > 0) {
       // setShareFile(false);
-      dispatch(shareFilesApi(navigate, fileData, t, setShareFile));
+      let ShareFilesData = { FileID: Number(folderId), Files: fileData.Files };
+      dispatch(shareFilesApi(navigate, ShareFilesData, t, setShareFile));
     } else {
       setOpen({
         flag: true,
