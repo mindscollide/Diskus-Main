@@ -1358,7 +1358,9 @@ const MeetingDetails = ({
                           label: meetingDetails.ReminderFrequencyTwo.label,
                         }}
                         isDisabled={
-                          meetingDetails.ReminderFrequency === 0 ? true : false
+                          meetingDetails.ReminderFrequency.value === 0
+                            ? true
+                            : false
                         }
                       />
                     </Col>
@@ -1372,7 +1374,7 @@ const MeetingDetails = ({
                           label: meetingDetails.ReminderFrequencyThree.label,
                         }}
                         isDisabled={
-                          meetingDetails.ReminderFrequencyTwo === 0
+                          meetingDetails.ReminderFrequencyTwo.value === 0
                             ? true
                             : false
                         }

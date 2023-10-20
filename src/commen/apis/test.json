@@ -1,24 +1,65 @@
 {
-  "MeetingDetails": {
-    "MeetingID": 1734,
-    "MeetingTitle": "Talha meeting ",
-    "MeetingType": { "PK_MTID": 4, "Type": "Board Meetings" },
-    "Location": "Minds Collide",
-    "Description": "qweqeqeqwe",
-    "IsVideoChat": true,
-    "IsTalkGroup": true,
-    "OrganizationId": 417,
-    "MeetingDates": [
-      { "MeetingDate": "080502", "StartTime": "080502", "EndTime": "075002" },
-      { "MeetingDate": "085004", "StartTime": "085004", "EndTime": "075002" }
+  "advanceMeetingDetails": {
+    "meetingID": 1785,
+    "meetingTitle": "test meeting change",
+    "description": "test ",
+    "meetingDates": [
+      {
+        "meetingDate": "20231025",
+        "startTime": "120635",
+        "endTime": "115135"
+      },
+      {
+        "meetingDate": "20231025",
+        "startTime": "125136",
+        "endTime": "115135"
+      }
     ],
-    "MeetingReminders": [1, 2, 3],
-    "Notes": "asdadasd",
-    "AllowRSVP": true,
-    "NotifyOrganizerOnRSVP": true,
-    "ReucurringMeetingID": 3,
-    "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
-    "MeetingStatusID": 11,
-    "IsComingFromApi": true
+    "calendarEventID": 343,
+    "meetingReminders": [
+      {
+        "pK_MRID": 1,
+        "description": "On starting of meeting",
+        "duration": 0
+      },
+      {
+        "pK_MRID": 2,
+        "description": "10 minutes before",
+        "duration": 0
+      },
+      {
+        "pK_MRID": 5,
+        "description": "5 hours before",
+        "duration": 0
+      }
+    ],
+    "meetingStatus": {
+      "pK_MSID": 11,
+      "status": "11",
+      "description": null,
+      "creationDate": null,
+      "creationTime": null
+    },
+    "meetingType": {
+      "pK_MTID": 6,
+      "type": "Group Meeting",
+      "description": null,
+      "creationDate": null,
+      "creationTime": null
+    },
+    "notes": "asasd",
+    "videoCallURl": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
+    "location": "asas",
+    "isQuickMeeting": false,
+    "creatorID": 983,
+    "allowRSVP": true,
+    "notifyAdminOnRSVP": true,
+    "isTalkGroup": true,
+    "isVideo": true,
+    "wasMeetingPublished": false,
+    "meetingRecurrance": {
+      "recurranceID": 4,
+      "recurrance": "Monthly"
+    }
   }
 }
