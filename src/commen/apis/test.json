@@ -1,21 +1,24 @@
 {
   "MeetingDetails": {
-    "MeetingTitle": "After fixing all the issues ",
-    "MeetingType": { "PK_MTID": 5, "Type": "Committee Meeting" },
-    "Location": "karachi east ",
-    "Description": "hello there i have fixed all the requirements ",
+    "MeetingID": 1734,
+    "MeetingTitle": "Talha meeting ",
+    "MeetingType": { "PK_MTID": 4, "Type": "Board Meetings" },
+    "Location": "Minds Collide",
+    "Description": "qweqeqeqwe",
     "IsVideoChat": true,
     "IsTalkGroup": true,
     "OrganizationId": 417,
     "MeetingDates": [
-      { "MeetingDate": "20231020", "StartTime": "061958", "EndTime": "071959" }
+      { "MeetingDate": "080502", "StartTime": "080502", "EndTime": "075002" },
+      { "MeetingDate": "085004", "StartTime": "085004", "EndTime": "075002" }
     ],
     "MeetingReminders": [1, 2, 3],
-    "Notes": "hello there i have these notes ",
+    "Notes": "asdadasd",
     "AllowRSVP": true,
     "NotifyOrganizerOnRSVP": true,
-    "ReucurringMeetingID": 2,
+    "ReucurringMeetingID": 3,
     "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
-    "MeetingStatusID": 1
+    "MeetingStatusID": 11,
+    "IsComingFromApi": true
   }
 }
