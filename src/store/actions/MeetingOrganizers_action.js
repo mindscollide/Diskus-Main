@@ -5,6 +5,7 @@ import {
   getAllGroupsUsersAndCommitteesByOrganizaitonID,
   saveMeetingOrganizers,
   meetingStatusUpdate,
+  getAllMeetingOrganizers,
 } from '../../commen/apis/Api_config'
 import { meetingApi } from '../../commen/apis/Api_ends_points'
 
@@ -323,6 +324,90 @@ const clearResponseMessage = (message) => {
   }
 }
 
+const getAllMeetingOrganizers_init = () => {
+  return {
+    type: actions.GETALLMEETINGORGANIZERS_INIT,
+  }
+}
+const getAllMeetingOrganizers_success = (response, message) => {
+  return {
+    type: actions.GETALLMEETINGORGANIZERS_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+const getAllMeetingOrganizers_fail = (message) => {
+  return {
+    type: actions.GETALLMEETINGORGANIZERS_FAIL,
+    message: message,
+  }
+}
+const GetAllMeetingOrganizers = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(getAllMeetingOrganizers_init())
+    let form = new FormData()
+    form.append('RequestData', JSON.stringify(Data))
+    form.append('RequestMethod', getAllMeetingOrganizers.RequestMethod)
+    axios({
+      method: 'post',
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(GetAllMeetingOrganizers(Data, navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Meeting_MeetingServiceManager_GetAllMeetingOrganizers_01'.toLowerCase(),
+                )
+            ) {
+              dispatch(
+                getAllMeetingOrganizers_success(
+                  response.data.responseResult,
+                  t('Record-found'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Meeting_MeetingServiceManager_GetAllMeetingOrganizers_02'.toLowerCase(),
+                )
+            ) {
+              dispatch(getAllMeetingOrganizers_fail(t('No-records-found')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Meeting_MeetingServiceManager_GetAllMeetingOrganizers_03'.toLowerCase(),
+                )
+            ) {
+              dispatch(getAllMeetingOrganizers_fail(t('Something-went-wrong')))
+            } else {
+              dispatch(getAllMeetingOrganizers_fail(t('Something-went-wrong')))
+            }
+          } else {
+            dispatch(getAllMeetingOrganizers_fail(t('Something-went-wrong')))
+          }
+        } else {
+          dispatch(getAllMeetingOrganizers_fail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllMeetingOrganizers_fail(t('Something-went-wrong')))
+      })
+  }
+}
+
 export {
   GetAllCommitteesUsersandGroups,
   meetingOrganizers,
@@ -330,4 +415,5 @@ export {
   SaveMeetingOrganizers,
   clearResponseMessage,
   UpdateOrganizersMeeting,
+  GetAllMeetingOrganizers,
 }

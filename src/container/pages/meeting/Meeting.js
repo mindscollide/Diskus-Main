@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import React, { useEffect, useState } from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
 import {
   ChatDotsFill,
   Search,
@@ -8,18 +8,18 @@ import {
   ArrowLeft,
   Plus,
   ArrowCounterclockwise,
-} from "react-bootstrap-icons";
-import moment from "moment";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
-import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
-import CommentIcon from "../../../assets/images/Comment-Icon.png";
-import IconAttachment from "../../../assets/images/Icon-Attachment.png";
-import VideoIcon from "../../../assets/images/Video-Icon.png";
-import UserImageInTable from "../../../assets/images/newElements/meetingtableuserIcon.png";
-import { useNavigate } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import "./Meeting.css";
+} from 'react-bootstrap-icons'
+import moment from 'moment'
+import EditIcon from '../../../assets/images/Edit-Icon.png'
+import NoMeetingsIcon from '../../../assets/images/No-Meetings.png'
+import CommentIcon from '../../../assets/images/Comment-Icon.png'
+import IconAttachment from '../../../assets/images/Icon-Attachment.png'
+import VideoIcon from '../../../assets/images/Video-Icon.png'
+import UserImageInTable from '../../../assets/images/newElements/meetingtableuserIcon.png'
+import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import Form from 'react-bootstrap/Form'
+import './Meeting.css'
 
 import {
   Table,
@@ -30,14 +30,14 @@ import {
   Notification,
   TextField,
   CustomDatePicker,
-} from "../../../components/elements";
-import ModalMeeting from "../../modalmeeting/ModalMeeting";
+} from '../../../components/elements'
+import ModalMeeting from '../../modalmeeting/ModalMeeting'
 import {
   getMeetingUserId,
   HideNotificationMeetings,
   searchMeetingUserId,
   searchUserMeeting,
-} from "../.../../../../store/actions/GetMeetingUserId";
+} from '../.../../../../store/actions/GetMeetingUserId'
 import {
   ViewMeeting,
   StartMeeting,
@@ -45,49 +45,49 @@ import {
   GetAllReminders,
   clearResponseMessage,
   allAssignessList,
-} from "../.../../../../store/actions/Get_List_Of_Assignees";
-import { useSelector, useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import ModalView from "../../modalView/ModalView";
-import ModalUpdate from "../../modalUpdate/ModalUpdate";
-import { HideMinuteMeetingMessage } from "../../../store/actions/AddMinutesofMeeting_action";
-import { uploadResponseEmpty } from "../../../store/actions/Upload_action";
-import { registerLocale } from "react-datepicker";
+} from '../.../../../../store/actions/Get_List_Of_Assignees'
+import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import ModalView from '../../modalView/ModalView'
+import ModalUpdate from '../../modalUpdate/ModalUpdate'
+import { HideMinuteMeetingMessage } from '../../../store/actions/AddMinutesofMeeting_action'
+import { uploadResponseEmpty } from '../../../store/actions/Upload_action'
+import { registerLocale } from 'react-datepicker'
 // import * as ar from "date-fns/locale/ar/index.js";
 // import * as en from "date-fns/locale/en-GB/index.js";
-import { enGB, ar } from "date-fns/locale";
+import { enGB, ar } from 'date-fns/locale'
 import {
   newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
-} from "../../../commen/functions/date_formater";
-import { Pagination, Select } from "antd";
-const { Option } = Select;
+} from '../../../commen/functions/date_formater'
+import { Pagination, Select } from 'antd'
+const { Option } = Select
 const Meeting = () => {
   //For Localization
-  const { t } = useTranslation();
-  registerLocale("ar", ar);
-  registerLocale("en", enGB);
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  moment.locale(currentLanguage);
-  const state = useSelector((state) => state);
-  const [rows, setRow] = useState([]);
-  const [tableFilterValue, setTableFilterValue] = useState([]);
-  const [editFlag, setEditFlag] = useState(false);
-  const [calendarViewModal, setCalendarViewModal] = useState(false);
-  const [viewFlag, setViewFlag] = useState(false);
-  const [modalsflag, setModalsflag] = useState(false);
+  const { t } = useTranslation()
+  registerLocale('ar', ar)
+  registerLocale('en', enGB)
+  let currentLanguage = localStorage.getItem('i18nextLng')
+  moment.locale(currentLanguage)
+  const state = useSelector((state) => state)
+  const [rows, setRow] = useState([])
+  const [tableFilterValue, setTableFilterValue] = useState([])
+  const [editFlag, setEditFlag] = useState(false)
+  const [calendarViewModal, setCalendarViewModal] = useState(false)
+  const [viewFlag, setViewFlag] = useState(false)
+  const [modalsflag, setModalsflag] = useState(false)
   const [open, setOpen] = useState({
     open: false,
-    message: "",
-  });
-  const [isExpand, setExpand] = useState(false);
-  const navigate = useNavigate();
-  const UserID = localStorage.getItem("userID");
-  const [show, setShow] = useState(false);
-  const [totalRecords, setTotalRecords] = useState(0);
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+    message: '',
+  })
+  const [isExpand, setExpand] = useState(false)
+  const navigate = useNavigate()
+  const UserID = localStorage.getItem('userID')
+  const [show, setShow] = useState(false)
+  const [totalRecords, setTotalRecords] = useState(0)
+  let meetingpageRow = localStorage.getItem('MeetingPageRows')
+  let meetingPageCurrent = parseInt(localStorage.getItem('MeetingPageCurrent'))
 
   //import meetingReducer and gettodolistreducer from reducers
   const {
@@ -96,110 +96,111 @@ const Meeting = () => {
     minuteofMeetingReducer,
     uploadReducer,
     LanguageReducer,
-  } = state;
+    MeetingOrganizersReducer,
+  } = state
   const {
     allMeetingsSocketData,
     MeetingStatusSocket,
     AllMeetingIdData,
     SearchMeetingData,
-  } = meetingIdReducer;
+  } = meetingIdReducer
 
-  const dispatch = useDispatch();
-  const [flag, setFlag] = useState(true);
+  const dispatch = useDispatch()
+  const [flag, setFlag] = useState(true)
   const [searchData, setSearchData] = useState({
-    Date: "",
-    Title: "",
-    HostName: "",
+    Date: '',
+    Title: '',
+    HostName: '',
     // UserID: 0,
-  });
+  })
   useEffect(() => {
     if (meetingpageRow !== null && meetingPageCurrent !== null) {
-      dispatch(searchUserMeeting(navigate, searchData, t));
-      dispatch(allAssignessList(navigate, t));
+      dispatch(searchUserMeeting(navigate, searchData, t))
+      dispatch(allAssignessList(navigate, t))
     } else {
-      localStorage.setItem("MeetingPageRows", 50);
-      localStorage.setItem("MeetingPageCurrent", 1);
-      dispatch(searchUserMeeting(navigate, searchData, t));
-      dispatch(allAssignessList(navigate, t));
+      localStorage.setItem('MeetingPageRows', 50)
+      localStorage.setItem('MeetingPageCurrent', 1)
+      dispatch(searchUserMeeting(navigate, searchData, t))
+      dispatch(allAssignessList(navigate, t))
     }
     return () => {
-      localStorage.removeItem("MeetingPageRows");
-      localStorage.removeItem("MeetingPageCurrent");
-    };
-  }, []);
+      localStorage.removeItem('MeetingPageRows')
+      localStorage.removeItem('MeetingPageCurrent')
+    }
+  }, [])
 
   useEffect(() => {
-    let organzier = [];
+    let organzier = []
     if (assignees.user !== null && assignees.user !== undefined) {
       assignees.user.map((data, index) => {
         return organzier.push({
           text: data.name,
           value: data.name,
-        });
-      });
-      setTableFilterValue(organzier);
+        })
+      })
+      setTableFilterValue(organzier)
     }
-  }, [assignees.user]);
+  }, [assignees.user])
 
   // for Socket Update meeting and edit meeting
   useEffect(() => {
     if (Object.keys(allMeetingsSocketData).length > 0) {
-      let tableRowsData = [...rows];
+      let tableRowsData = [...rows]
       var foundIndex = tableRowsData.findIndex(
-        (x) => x.pK_MDID === allMeetingsSocketData.pK_MDID
-      );
+        (x) => x.pK_MDID === allMeetingsSocketData.pK_MDID,
+      )
       if (foundIndex !== -1) {
         const newState = tableRowsData.map((obj, index) => {
           // 👇️ if id equals 2 replace object
           if (foundIndex === index) {
-            return allMeetingsSocketData;
+            return allMeetingsSocketData
           }
 
           // 👇️ otherwise return object as is
-          return obj;
-        });
-        setRow(newState);
+          return obj
+        })
+        setRow(newState)
       } else {
-        setRow([allMeetingsSocketData, ...rows]);
+        setRow([allMeetingsSocketData, ...rows])
       }
     }
-  }, [allMeetingsSocketData]);
+  }, [allMeetingsSocketData])
 
   // for Socket Update meeting status update
   useEffect(() => {
     if (Object.keys(MeetingStatusSocket).length > 0) {
-      let tableRowsData = [...rows];
+      let tableRowsData = [...rows]
       var foundIndex = tableRowsData.findIndex(
-        (x) => x.pK_MDID === MeetingStatusSocket.meetingID
-      );
+        (x) => x.pK_MDID === MeetingStatusSocket.meetingID,
+      )
       if (foundIndex !== -1) {
         let newArr = tableRowsData.map((rowObj, index) => {
           if (index === foundIndex) {
             const newData = {
               ...rowObj,
               status: MeetingStatusSocket.meetingStatusID.toString(),
-            };
-            return newData;
+            }
+            return newData
           }
-          return rowObj;
-        });
-        setRow(newArr);
+          return rowObj
+        })
+        setRow(newArr)
       }
     }
-  }, [MeetingStatusSocket]);
+  }, [MeetingStatusSocket])
 
   useEffect(() => {
     if (
       assignees.SearchMeetingData !== null &&
       assignees.SearchMeetingData !== undefined
     ) {
-      setTotalRecords(assignees.SearchMeetingData.totalRecords);
+      setTotalRecords(assignees.SearchMeetingData.totalRecords)
       if (
         assignees.SearchMeetingData.meetings !== null &&
         assignees.SearchMeetingData.meetings !== undefined &&
         assignees.SearchMeetingData.meetings.length > 0
       ) {
-        let newRowData = [];
+        let newRowData = []
         assignees.SearchMeetingData.meetings.map((data, index) => {
           newRowData.push({
             dateOfMeeting: data.dateOfMeeting,
@@ -217,23 +218,23 @@ const Meeting = () => {
             status: data.status,
             title: data.title,
             key: index,
-          });
-        });
-        setRow(newRowData);
+          })
+        })
+        setRow(newRowData)
       }
     } else {
-      setRow([]);
+      setRow([])
     }
-  }, [assignees.SearchMeetingData]);
+  }, [assignees.SearchMeetingData])
 
   // for modal create  handler
   const modalHandler = async (e) => {
-    await setShow(true);
-  };
+    await setShow(true)
+  }
 
   // for view modal  handler
   const viewModalHandler = async (id) => {
-    let Data = { MeetingID: id };
+    let Data = { MeetingID: id }
     await dispatch(
       ViewMeeting(
         navigate,
@@ -242,15 +243,15 @@ const Meeting = () => {
         setViewFlag,
         setEditFlag,
         setCalendarViewModal,
-        1
-      )
-    );
+        1,
+      ),
+    )
     // setViewFlag(true);
-  };
+  }
 
   // for edit modal  handler
   const editModalHandler = async (id) => {
-    let Data = { MeetingID: id };
+    let Data = { MeetingID: id }
 
     await dispatch(
       ViewMeeting(
@@ -260,31 +261,31 @@ const Meeting = () => {
         setViewFlag,
         setEditFlag,
         setCalendarViewModal,
-        2
-      )
-    );
+        2,
+      ),
+    )
     // setModalsflag(true);
-  };
+  }
 
   // colums for meatings table
   const startMeeting = (record) => {
-    let meetingID = record.pK_MDID;
+    let meetingID = record.pK_MDID
     let Data = {
       MeetingID: meetingID,
       UserID: parseInt(UserID),
-    };
+    }
 
-    dispatch(StartMeeting(navigate, Data, t, searchData));
-  };
+    dispatch(StartMeeting(navigate, Data, t, searchData))
+  }
 
   const endMeeting = (record) => {
-    let meetingID = record.pK_MDID;
+    let meetingID = record.pK_MDID
     let Data = {
       MeetingID: meetingID,
       UserID: parseInt(UserID),
-    };
-    dispatch(EndMeeting(navigate, Data, t, searchData));
-  };
+    }
+    dispatch(EndMeeting(navigate, Data, t, searchData))
+  }
 
   const checkForEdit = (record) => {
     try {
@@ -294,24 +295,24 @@ const Meeting = () => {
             data.meetingAttendeeRole.pK_MARID === 1 ||
             data.meetingAttendeeRole.pK_MARID === 3
           ) {
-            return true;
+            return true
           } else {
-            return false;
+            return false
           }
         } else {
-          return false;
+          return false
         }
-      });
+      })
     } catch (e) {}
-  };
+  }
 
   const columns = [
     {
-      title: t("Title"),
-      dataIndex: "title",
-      width: "200px",
-      align: "left",
-      sortDirections: ["descend", "ascend"],
+      title: t('Title'),
+      dataIndex: 'title',
+      width: '200px',
+      align: 'left',
+      sortDirections: ['descend', 'ascend'],
       render: (text, record) => (
         <span
           className="meeting-title"
@@ -321,46 +322,46 @@ const Meeting = () => {
         </span>
       ),
       sorter: (a, b) => {
-        return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
+        return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase())
       },
     },
     {
-      title: t("Status"),
-      dataIndex: "status",
-      align: "center",
-      width: "10rem",
+      title: t('Status'),
+      dataIndex: 'status',
+      align: 'center',
+      width: '10rem',
       filters: [
         {
-          text: t("Upcoming"),
-          value: "1",
+          text: t('Upcoming'),
+          value: '1',
         },
         {
-          text: t("Start"),
-          value: "2",
+          text: t('Start'),
+          value: '2',
         },
         {
-          text: t("End"),
-          value: "3",
+          text: t('End'),
+          value: '3',
         },
         {
-          text: t("Cancelled"),
-          value: "4",
+          text: t('Cancelled'),
+          value: '4',
         },
         {
-          text: t("Reschedule"),
-          value: "5",
+          text: t('Reschedule'),
+          value: '5',
         },
         {
-          text: t("Close"),
-          value: "6",
+          text: t('Close'),
+          value: '6',
         },
         {
-          text: t("Delete"),
-          value: "7",
+          text: t('Delete'),
+          value: '7',
         },
         {
-          text: t("Not-conducted"),
-          value: "8",
+          text: t('Not-conducted'),
+          value: '8',
         },
       ],
       filterIcon: (filtered) => (
@@ -369,106 +370,106 @@ const Meeting = () => {
       onFilter: (value, record) =>
         record.status.toLowerCase().includes(value.toLowerCase()),
       render: (text, record) => {
-        if (text === "1") {
+        if (text === '1') {
           return (
             <div className="activebtn  ">
-              <span className="activebtnp">{t("Upcoming")}</span>
+              <span className="activebtnp">{t('Upcoming')}</span>
             </div>
-          );
-        } else if (text === "2") {
+          )
+        } else if (text === '2') {
           return (
             <div className="activebtn active-start text-center ">
-              <span className="activebtn">{t("Started")}</span>
+              <span className="activebtn">{t('Started')}</span>
             </div>
-          );
-        } else if (text === "3") {
+          )
+        } else if (text === '3') {
           return (
             <div className="activebtn ">
-              <span className="activebtnp">{t("End")}</span>
+              <span className="activebtnp">{t('End')}</span>
             </div>
-          );
-        } else if (text === "4") {
+          )
+        } else if (text === '4') {
           return (
             <div className="activebtn ">
-              <span className="activebtn">{t("Cancelled")}</span>
+              <span className="activebtn">{t('Cancelled')}</span>
             </div>
-          );
-        } else if (text === "5") {
+          )
+        } else if (text === '5') {
           return (
             <div className="activebtn ">
-              <span className="activebtn">{t("Reschedule")}</span>
+              <span className="activebtn">{t('Reschedule')}</span>
             </div>
-          );
-        } else if (text === "6") {
+          )
+        } else if (text === '6') {
           return (
             <div className="activebtn ">
-              <span className="activebtn">{t("Close")}</span>
+              <span className="activebtn">{t('Close')}</span>
             </div>
-          );
-        } else if (text === "7") {
+          )
+        } else if (text === '7') {
           return (
             <div className="activebtn ">
-              <span className="activebtn">{t("Delete")}</span>
+              <span className="activebtn">{t('Delete')}</span>
             </div>
-          );
-        } else if (text === "8") {
+          )
+        } else if (text === '8') {
           return (
             <div className="activebtn ">
-              <span className="activebtn">{t("Not-conducted")}</span>
+              <span className="activebtn">{t('Not-conducted')}</span>
             </div>
-          );
+          )
         }
       },
     },
     {
-      title: t("Organizer"),
-      dataIndex: "host",
-      key: "host",
-      width: "10rem",
+      title: t('Organizer'),
+      dataIndex: 'host',
+      key: 'host',
+      width: '10rem',
       filters: tableFilterValue,
       onFilter: (value, record) =>
         record.host.toLowerCase().includes(value.toLowerCase()),
       filterIcon: (filtered) => (
         <ChevronDown
-          className={filtered ? "filter-chevron-icon-meeting" : null}
+          className={filtered ? 'filter-chevron-icon-meeting' : null}
         />
       ),
     },
     {
-      title: t("Date-or-time"),
-      dataIndex: "dateOfMeeting",
-      width: "13rem",
-      sortDirections: ["descend", "ascend"],
+      title: t('Date-or-time'),
+      dataIndex: 'dateOfMeeting',
+      width: '13rem',
+      sortDirections: ['descend', 'ascend'],
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return newTimeFormaterAsPerUTCFullDate(
-            record.dateOfMeeting + record.meetingStartTime
-          );
+            record.dateOfMeeting + record.meetingStartTime,
+          )
         }
       },
       sorter: (a, b, sortOrder) => {
         const dateA = utcConvertintoGMT(
-          `${a?.dateOfMeeting}${a?.meetingStartTime}`
-        );
+          `${a?.dateOfMeeting}${a?.meetingStartTime}`,
+        )
         const dateB = utcConvertintoGMT(
-          `${b?.dateOfMeeting}${b?.meetingStartTime}`
-        );
-        return dateA - dateB;
+          `${b?.dateOfMeeting}${b?.meetingStartTime}`,
+        )
+        return dateA - dateB
       },
     },
     {
-      title: "",
-      dataIndex: "attach",
-      width: "7rem",
+      title: '',
+      dataIndex: 'attach',
+      width: '7rem',
       render: (text, record) => {
         return (
           <>
             {record.isAttachment ? (
               <span
                 className={
-                  currentLanguage === "ar"
-                    ? "margin-left-10"
-                    : "margin-right-10"
+                  currentLanguage === 'ar'
+                    ? 'margin-left-10'
+                    : 'margin-right-10'
                 }
               >
                 <img
@@ -480,18 +481,18 @@ const Meeting = () => {
             ) : (
               <span
                 className={
-                  currentLanguage === "ar"
-                    ? "margin-left-20"
-                    : "margin-right-20"
+                  currentLanguage === 'ar'
+                    ? 'margin-left-20'
+                    : 'margin-right-20'
                 }
               ></span>
             )}
             {record.isVideoCall ? (
               <span
                 className={
-                  currentLanguage === "ar"
-                    ? "margin-left-10"
-                    : "margin-right-10"
+                  currentLanguage === 'ar'
+                    ? 'margin-left-10'
+                    : 'margin-right-10'
                 }
               >
                 <img src={VideoIcon} className="" alt="" />
@@ -499,9 +500,9 @@ const Meeting = () => {
             ) : (
               <span
                 className={
-                  currentLanguage === "ar"
-                    ? "margin-left-10"
-                    : "margin-right-10"
+                  currentLanguage === 'ar'
+                    ? 'margin-left-10'
+                    : 'margin-right-10'
                 }
               >
                 <img src={UserImageInTable} />
@@ -513,64 +514,64 @@ const Meeting = () => {
                 {/* <CameraVideo /> */}
               </span>
             ) : (
-              ""
+              ''
             )}
           </>
-        );
+        )
       },
     },
     {
-      title: "",
-      dataIndex: "status",
-      width: "10rem",
+      title: '',
+      dataIndex: 'status',
+      width: '10rem',
       render: (text, record) => {
-        console.log("recordrecord", text, record);
-        let check = checkForEdit(record);
-        console.log("recordrecord", check);
+        console.log('recordrecord', text, record)
+        let check = checkForEdit(record)
+        console.log('recordrecord', check)
         const found =
           check !== null && check !== undefined
             ? check.find((element) => element === true)
-            : undefined;
+            : undefined
         if (found !== undefined) {
-          if (text === "1") {
+          if (text === '1') {
             return (
               <Button
-                text={t("Start-meeting")}
+                text={t('Start-meeting')}
                 size="small"
                 // className="btn btn-primary meetingStart meeting-startbutton-width"
-                className={"start-meeting-btn"}
+                className={'start-meeting-btn'}
                 onClick={() => startMeeting(record)}
               >
-                {t("Start-meeting")}
+                {t('Start-meeting')}
               </Button>
-            );
-          } else if (text === "2") {
+            )
+          } else if (text === '2') {
             return (
               <Button
-                text={t("End-meeting")}
+                text={t('End-meeting')}
                 size="small"
                 // className="btn btn-danger meetingEnd"
-                className={"End-meeting-btn"}
+                className={'End-meeting-btn'}
                 onClick={() => endMeeting(record)}
               ></Button>
-            );
+            )
           } else {
-            return "";
+            return ''
           }
         }
       },
     },
     {
-      title: "",
-      dataIndex: "pK_MDID",
-      width: "4rem",
+      title: '',
+      dataIndex: 'pK_MDID',
+      width: '4rem',
       render: (text, record) => {
-        let check = checkForEdit(record);
+        let check = checkForEdit(record)
         const found =
           check !== null && check !== undefined
             ? check.find((element) => element === true)
-            : undefined;
-        if (found !== undefined && record.status !== "4") {
+            : undefined
+        if (found !== undefined && record.status !== '4') {
           return (
             <i
               className="meeting-editbutton"
@@ -578,13 +579,13 @@ const Meeting = () => {
             >
               <img src={EditIcon} alt="" />
             </i>
-          );
+          )
         } else {
-          return "";
+          return ''
         }
       },
     },
-  ];
+  ]
 
   // useEffect(() => {
   //   if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
@@ -601,166 +602,166 @@ const Meeting = () => {
 
   useEffect(() => {
     if (
-      meetingIdReducer.ResponseMessage !== "" &&
-      meetingIdReducer.ResponseMessage !== t("Record-found") &&
-      meetingIdReducer.ResponseMessage !== t("No-records-found")
+      meetingIdReducer.ResponseMessage !== '' &&
+      meetingIdReducer.ResponseMessage !== t('Record-found') &&
+      meetingIdReducer.ResponseMessage !== t('No-records-found')
     ) {
       setOpen({
         ...open,
         open: true,
         message: meetingIdReducer.ResponseMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: "",
-        });
-      }, 3000);
+          message: '',
+        })
+      }, 3000)
 
-      dispatch(HideNotificationMeetings());
+      dispatch(HideNotificationMeetings())
     } else if (
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== t("Record-found") &&
-      assignees.ResponseMessage !== t("No-records-found")
+      assignees.ResponseMessage !== '' &&
+      assignees.ResponseMessage !== t('Record-found') &&
+      assignees.ResponseMessage !== t('No-records-found')
     ) {
       setOpen({
         ...open,
         open: true,
         message: assignees.ResponseMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: "",
-        });
-      }, 3000);
+          message: '',
+        })
+      }, 3000)
 
-      dispatch(clearResponseMessage());
+      dispatch(clearResponseMessage())
     } else {
-      console.log("ResponseMessage Meeting");
-      dispatch(HideNotificationMeetings());
-      dispatch(clearResponseMessage());
+      console.log('ResponseMessage Meeting')
+      dispatch(HideNotificationMeetings())
+      dispatch(clearResponseMessage())
     }
-  }, [meetingIdReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [meetingIdReducer.ResponseMessage, assignees.ResponseMessage])
   console.log(
     meetingIdReducer.ResponseMessage,
-    "ResponseMessageResponseMessageResponseMessage"
-  );
+    'ResponseMessageResponseMessageResponseMessage',
+  )
   console.log(
     assignees.ResponseMessage,
-    "ResponseMessageResponseMessageResponseMessage"
-  );
+    'ResponseMessageResponseMessageResponseMessage',
+  )
   useEffect(() => {
     if (
-      minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
+      minuteofMeetingReducer.AddMeetingofMinutesMessage != '' &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully") &&
+        t('The-record-has-been-saved-successfully') &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !==
-        t("No-records-found")
+        t('No-records-found')
     ) {
       setOpen({
         ...open,
         open: true,
         message: minuteofMeetingReducer.AddMeetingofMinutesMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: "",
-        });
-      }, 3000);
+          message: '',
+        })
+      }, 3000)
 
-      dispatch(HideMinuteMeetingMessage());
+      dispatch(HideMinuteMeetingMessage())
     } else if (
-      minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
+      minuteofMeetingReducer.UpdateMeetingofMinutesMessage != '' &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully") &&
+        t('The-record-has-been-saved-successfully') &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !==
-        t("No-records-found")
+        t('No-records-found')
     ) {
       setOpen({
         ...open,
         open: true,
         message: minuteofMeetingReducer.UpdateMeetingofMinutesMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: "",
-        });
-      }, 3000);
+          message: '',
+        })
+      }, 3000)
 
-      dispatch(HideMinuteMeetingMessage());
+      dispatch(HideMinuteMeetingMessage())
     } else if (
-      minuteofMeetingReducer.ResponseMessage != "" &&
+      minuteofMeetingReducer.ResponseMessage != '' &&
       assignees.ResponseMessage !=
-        t("The-record-has-been-saved-successfully") &&
-      minuteofMeetingReducer.ResponseMessage !== t("No-records-found") &&
-      assignees.ResponseMessage !== t("No-records-found")
+        t('The-record-has-been-saved-successfully') &&
+      minuteofMeetingReducer.ResponseMessage !== t('No-records-found') &&
+      assignees.ResponseMessage !== t('No-records-found')
     ) {
       setOpen({
         ...open,
         open: true,
         message: minuteofMeetingReducer.ResponseMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: "",
-        });
-      }, 3000);
+          message: '',
+        })
+      }, 3000)
 
-      dispatch(HideMinuteMeetingMessage());
+      dispatch(HideMinuteMeetingMessage())
     } else {
-      console.log("ResponseMessage Meeting");
-      dispatch(HideMinuteMeetingMessage());
+      console.log('ResponseMessage Meeting')
+      dispatch(HideMinuteMeetingMessage())
     }
   }, [
     minuteofMeetingReducer.AddMeetingofMinutesMessage,
     minuteofMeetingReducer.ResponseMessage,
     minuteofMeetingReducer.UpdateMeetingofMinutesMessage,
-  ]);
+  ])
 
   useEffect(() => {
     if (
-      uploadReducer.ResponseMessage != "" &&
-      uploadReducer.ResponseMessage != t("valid-data") &&
-      uploadReducer.ResponseMessage !== t("No-records-found")
+      uploadReducer.ResponseMessage != '' &&
+      uploadReducer.ResponseMessage != t('valid-data') &&
+      uploadReducer.ResponseMessage !== t('No-records-found')
     ) {
       setOpen({
         ...open,
         open: true,
         message: uploadReducer.ResponseMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: "",
-        });
-      }, 3000);
+          message: '',
+        })
+      }, 3000)
 
-      dispatch(uploadResponseEmpty());
+      dispatch(uploadResponseEmpty())
     } else {
-      console.log("ResponseMessage uploadReducer");
-      dispatch(uploadResponseEmpty());
+      console.log('ResponseMessage uploadReducer')
+      dispatch(uploadResponseEmpty())
     }
-  }, [uploadReducer.ResponseMessage]);
+  }, [uploadReducer.ResponseMessage])
 
   const ShowHide = () => {
-    setExpand(!isExpand);
+    setExpand(!isExpand)
     setSearchData({
-      Date: "",
-      Title: "",
-      HostName: "",
+      Date: '',
+      Title: '',
+      HostName: '',
       UserID: parseInt(0),
-    });
-  };
+    })
+  }
 
   // for search Date handler
   const searchHandlerDate = (e) => {
@@ -768,44 +769,44 @@ const Meeting = () => {
       ...searchData,
       Date: e.target.value,
       UserID: parseInt(UserID),
-    });
-  };
+    })
+  }
 
   // for search handler
   const searchHandler = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "Title") {
+    let name = e.target.name
+    let value = e.target.value
+    if (name === 'Title') {
       setSearchData({
         ...searchData,
         [name]: value.trimStart(),
         UserID: parseInt(UserID),
-      });
-    } else if (name === "HostName") {
+      })
+    } else if (name === 'HostName') {
       setSearchData({
         ...searchData,
         [name]: value.trimStart(),
         UserID: parseInt(UserID),
-      });
+      })
     }
-  };
+  }
 
   // for search
   const search = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (
-      searchData.Date === "" &&
-      searchData.Title === "" &&
-      searchData.HostName === ""
+      searchData.Date === '' &&
+      searchData.Title === '' &&
+      searchData.HostName === ''
     ) {
       let newData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-      };
-      await localStorage.setItem("MeetingPageCurrent", 1);
-      dispatch(searchUserMeeting(navigate, newData, t));
+        Date: '',
+        Title: '',
+        HostName: '',
+      }
+      await localStorage.setItem('MeetingPageCurrent', 1)
+      dispatch(searchUserMeeting(navigate, newData, t))
       // setSearchData({
       //   ...searchData,
       //   Date: "",
@@ -818,10 +819,10 @@ const Meeting = () => {
         Date: searchData.Date,
         Title: searchData.Title,
         HostName: searchData.HostName,
-      };
-      await localStorage.setItem("MeetingPageCurrent", 1);
-      dispatch(searchUserMeeting(navigate, newData, t));
-      console.log(newData, "newDatanewDatanewData");
+      }
+      await localStorage.setItem('MeetingPageCurrent', 1)
+      dispatch(searchUserMeeting(navigate, newData, t))
+      console.log(newData, 'newDatanewDatanewData')
       // make notification for if input fields is empty here
       // dispatch(searchMeetingUserId(navigate, searchData, t));
       // setSearchData({
@@ -831,7 +832,7 @@ const Meeting = () => {
       //   UserID: parseInt(0),
       // });
     }
-  };
+  }
 
   // const tableChangeHandler = (pagination, organizerfilter) => {
   //   let newArray = [];
@@ -881,51 +882,51 @@ const Meeting = () => {
   // };
 
   const paginationChangeHandlerMeeting = (current, pageSize) => {
-    localStorage.setItem("MeetingPageRows", pageSize);
-    localStorage.setItem("MeetingPageCurrent", current);
+    localStorage.setItem('MeetingPageRows', pageSize)
+    localStorage.setItem('MeetingPageCurrent', current)
     let newData = {
       Date: searchData.Date,
       Title: searchData.Title,
       HostName: searchData.HostName,
-    };
-    dispatch(searchUserMeeting(navigate, newData, t));
-  };
+    }
+    dispatch(searchUserMeeting(navigate, newData, t))
+  }
 
   const resetSearchBar = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     let newData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-    };
-    await localStorage.setItem("MeetingPageCurrent", 1);
-    dispatch(searchUserMeeting(navigate, newData, t));
+      Date: '',
+      Title: '',
+      HostName: '',
+    }
+    await localStorage.setItem('MeetingPageCurrent', 1)
+    dispatch(searchUserMeeting(navigate, newData, t))
     setSearchData({
       ...searchData,
-      Date: "",
-      HostName: "",
-      Title: "",
-    });
-  };
+      Date: '',
+      HostName: '',
+      Title: '',
+    })
+  }
 
   const handleNavigationToAdnvanceMeeting = () => {
-    navigate("/DisKus/Meeting2");
-  };
+    navigate('/DisKus/Meeting2')
+  }
 
   return (
     <>
       <div className="meeting_container">
         <Row className="d-flex justify-content-around align-items-center margin-bottom-15 ">
           <Col lg={2} md={2} sm={2} className="meeting-heading mt-1">
-            {t("Meetings")}
+            {t('Meetings')}
           </Col>
           <Col lg={2} md={2} sm={12} className="meeting-schedulenewmeeting-btn">
             <Button
-              className={"ScheduleAMeeting"}
-              variant={"Primary"}
+              className={'ScheduleAMeeting'}
+              variant={'Primary'}
               icon={<Plus width={20} height={20} fontWeight={800} />}
               // className={"Meeting-schedule-btn"}
-              text={t("Quick-meeting")}
+              text={t('Quick-meeting')}
               onClick={modalHandler}
             />
           </Col>
@@ -942,10 +943,10 @@ const Meeting = () => {
             />
             {isExpand && (
               <>
-                {currentLanguage === "ar" ? (
+                {currentLanguage === 'ar' ? (
                   <div className="expandableMenuSearch_Meeting">
                     <Form className="d-flex">
-                      {currentLanguage === "ar" ? (
+                      {currentLanguage === 'ar' ? (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
@@ -968,7 +969,7 @@ const Meeting = () => {
                         applyClass="form-control2"
                         width="250px"
                         className=" mx-2"
-                        placeholder={t("Title-name")}
+                        placeholder={t('Title-name')}
                         labelClass="textFieldSearch"
                         name="Title"
                         value={searchData.Title}
@@ -978,7 +979,7 @@ const Meeting = () => {
                         applyClass="form-control2"
                         width="120px"
                         className="mx-2"
-                        placeholder={t("Host-name")}
+                        placeholder={t('Host-name')}
                         labelClass="textFieldSearch"
                         name="HostName"
                         value={searchData.HostName}
@@ -987,13 +988,13 @@ const Meeting = () => {
 
                       <Button
                         className="btn  btn-primary meeting search"
-                        variant={"Primary"}
+                        variant={'Primary'}
                         text={<ArrowLeft />}
                         onClick={search}
                       />
                       <Button
                         className="btn  btn-primary meeting search"
-                        variant={"Primary"}
+                        variant={'Primary'}
                         type="reset"
                         text={<ArrowCounterclockwise />}
                         onClick={resetSearchBar}
@@ -1003,7 +1004,7 @@ const Meeting = () => {
                 ) : (
                   <div className="expandableMenuSearch_Meeting">
                     <Form className="d-flex gap-2 ">
-                      {currentLanguage === "ar" ? (
+                      {currentLanguage === 'ar' ? (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
@@ -1023,7 +1024,7 @@ const Meeting = () => {
                         applyClass="form-control2"
                         width="250px"
                         className="mx-2"
-                        placeholder={t("Title-name")}
+                        placeholder={t('Title-name')}
                         labelClass="textFieldSearch"
                         name="Title"
                         value={searchData.Title}
@@ -1033,7 +1034,7 @@ const Meeting = () => {
                         applyClass="form-control2"
                         width="120px"
                         className="mx-2"
-                        placeholder={t("Host-name")}
+                        placeholder={t('Host-name')}
                         labelClass="textFieldSearch"
                         name="HostName"
                         value={searchData.HostName}
@@ -1041,13 +1042,13 @@ const Meeting = () => {
                       />
                       <Button
                         className="btn btn-primary meeting search"
-                        variant={"Primary"}
+                        variant={'Primary'}
                         text={<ArrowRight />}
                         onClick={search}
                       />
                       <Button
                         className="btn btn-primary  meeting search"
-                        variant={"Primary"}
+                        variant={'Primary'}
                         text={<ArrowCounterclockwise />}
                         onClick={resetSearchBar}
                       />
@@ -1064,10 +1065,10 @@ const Meeting = () => {
             className="d-flex justify-content-center  p-0 m-0 align-items-center"
           >
             <Button
-              text={t("Advance-meeting")}
-              className={"ScheduleAMeeting"}
+              text={t('Advance-meeting')}
+              className={'ScheduleAMeeting'}
               icon={<Plus width={20} height={20} fontWeight={800} />}
-              variant={"Primary"}
+              variant={'Primary'}
               onClick={handleNavigationToAdnvanceMeeting}
             />
           </Col>
@@ -1083,10 +1084,10 @@ const Meeting = () => {
                       className="hello"
                       // onChange={tableChangeHandler}
                       rows={rows}
-                      scroll={{ y: "50vh" }}
+                      scroll={{ y: '50vh' }}
                       pagination={false}
                       // key={flag}
-                      labelTitle={t("Meetings")}
+                      labelTitle={t('Meetings')}
                       expandable={{
                         rowExpandable: (record) => true,
                         expandedRowRender: (record) => {
@@ -1097,7 +1098,7 @@ const Meeting = () => {
                                   ?.title
                               }
                             </p>
-                          );
+                          )
                         },
                       }}
                     />
@@ -1119,18 +1120,18 @@ const Meeting = () => {
                       }
                       title={
                         meetingIdReducer.searchRecordFound === true
-                          ? t("No-records-found")
-                          : t("No-new-meetings")
+                          ? t('No-records-found')
+                          : t('No-new-meetings')
                       }
-                      subTitle={t("Anything-important-thats-needs-discussion")}
+                      subTitle={t('Anything-important-thats-needs-discussion')}
                     />
                     <Row>
                       <Col className="d-flex justify-content-center">
                         <Button
-                          className={"ScheduleAMeeting"}
-                          variant={"Primary"}
+                          className={'ScheduleAMeeting'}
+                          variant={'Primary'}
                           // className={"Meeting-schedule-btn"}
-                          text={"+ " + t("Schedule-a-meeting")}
+                          text={'+ ' + t('Schedule-a-meeting')}
                           onClick={modalHandler}
                         />
                       </Col>
@@ -1166,10 +1167,10 @@ const Meeting = () => {
                 }
                 showSizeChanger
                 locale={{
-                  items_per_page: t("items_per_page"),
-                  page: t("page"),
+                  items_per_page: t('items_per_page'),
+                  page: t('page'),
                 }}
-                pageSizeOptions={["30", "50", "100", "200"]}
+                pageSizeOptions={['30', '50', '100', '200']}
                 total={totalRecords}
               />
             </Col>
@@ -1190,11 +1191,12 @@ const Meeting = () => {
       {meetingIdReducer.Loading ||
       uploadReducer.Loading ||
       minuteofMeetingReducer.Loading ||
-      LanguageReducer.Loading ? (
+      LanguageReducer.Loading ||
+      MeetingOrganizersReducer.Loading ? (
         <Loader />
       ) : null}
     </>
-  );
-};
+  )
+}
 
-export default Meeting;
+export default Meeting
