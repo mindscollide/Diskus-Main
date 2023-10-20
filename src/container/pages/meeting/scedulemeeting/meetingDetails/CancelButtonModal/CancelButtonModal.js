@@ -7,7 +7,11 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { showCancelModalmeetingDeitals } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
-const CancelButtonModal = ({ setSceduleMeeting }) => {
+const CancelButtonModal = ({
+  setSceduleMeeting,
+  setMeetingDetails,
+  setRows,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,7 +22,48 @@ const CancelButtonModal = ({ setSceduleMeeting }) => {
   };
 
   const handleYesFunctionality = () => {
+    localStorage.removeItem("meetingID");
     setSceduleMeeting(false);
+    setMeetingDetails({
+      MeetingTitle: "",
+      MeetingType: 0,
+      Location: "",
+      Description: "",
+      Link: "",
+      ReminderFrequency: {
+        value: 0,
+        label: "",
+      },
+      ReminderFrequencyTwo: {
+        value: 0,
+        label: "",
+      },
+      ReminderFrequencyThree: {
+        value: 0,
+        label: "",
+      },
+      Notes: "",
+      groupChat: false,
+      AllowRSPV: false,
+      NotifyMeetingOrganizer: false,
+      RecurringOptions: {
+        value: 0,
+        label: "",
+      },
+      Location: "",
+      IsVideoCall: false,
+    });
+    setRows([
+      {
+        selectedOption: "",
+        dateForView: "",
+        startDate: "",
+        startTime: "",
+        endDate: "",
+        endTime: "",
+      },
+    ]);
+    dispatch(showCancelModalmeetingDeitals(false));
   };
 
   return (
