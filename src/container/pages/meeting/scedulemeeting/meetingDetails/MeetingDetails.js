@@ -362,6 +362,7 @@ const MeetingDetails = ({
     }
   };
 
+  //Save Meeting
   const SaveMeeting = () => {
     // setSaveMeeting(!saveMeeting);
     let newArr = [];
@@ -398,6 +399,79 @@ const MeetingDetails = ({
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       let data = {
         MeetingDetails: {
+          MeetingTitle: meetingDetails.MeetingTitle,
+          MeetingType: meetingDetails.MeetingType,
+          Location: meetingDetails.Location,
+          Description: meetingDetails.Description,
+          IsVideoChat: meetingDetails.IsVideoCall,
+          IsTalkGroup: meetingDetails.groupChat,
+          OrganizationId: organizationID,
+          MeetingDates: newArr,
+          MeetingReminders: newReminderData,
+          Notes: meetingDetails.Notes,
+          AllowRSVP: meetingDetails.AllowRSPV,
+          NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
+          ReucurringMeetingID: meetingDetails.RecurringOptions,
+          VideoURL: meetingDetails.Link,
+          MeetingStatusID: 11,
+          IsComingFromApi: true,
+        },
+      };
+      console.log(data, "SaveMeetingDetialsNewApiFunction");
+      dispatch(
+        SaveMeetingDetialsNewApiFunction(
+          navigate,
+          t,
+          data,
+          setSceduleMeeting,
+          setorganizers,
+          setmeetingDetails,
+          2
+        )
+      );
+    } else {
+      seterror(true);
+    }
+  };
+
+  //Update Meeting
+  const UpdateMeetings = () => {
+    // setSaveMeeting(!saveMeeting);
+    let newArr = [];
+    let newReminderData = [];
+    if (meetingDetails.ReminderFrequency.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequency.value);
+    }
+    if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyTwo.value);
+    }
+    if (meetingDetails.ReminderFrequencyThree.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
+    }
+
+    console.log(newReminderData, "newReminderDatanewReminderData");
+
+    rows.map((data, index) => {
+      newArr.push({
+        MeetingDate: data.selectedOption,
+        StartTime: data.startDate,
+        EndTime: data.endDate,
+      });
+    });
+    if (
+      meetingDetails.MeetingTitle !== "" &&
+      meetingDetails.MeetingType !== 0 &&
+      meetingDetails.Location !== "" &&
+      meetingDetails.Description !== "" &&
+      newArr.length > 0 &&
+      newReminderData.length > 0 &&
+      meetingDetails.Notes !== "" &&
+      meetingDetails.Link != ""
+    ) {
+      let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let data = {
+        MeetingDetails: {
+          MeetingID: Number(currentMeetingID),
           MeetingTitle: meetingDetails.MeetingTitle,
           MeetingType: meetingDetails.MeetingType,
           Location: meetingDetails.Location,
@@ -1428,7 +1502,7 @@ const MeetingDetails = ({
                   <Button
                     text={t("Update")}
                     className={styles["Published"]}
-                    onClick={SaveMeeting}
+                    onClick={UpdateMeetings}
                   />
                 </>
               )}
