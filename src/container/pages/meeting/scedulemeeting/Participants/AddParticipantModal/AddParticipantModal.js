@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./AddParticipant.module.css";
 import {
   Modal,
-  Table,
-  TextField,
   Button,
-  Loader,
   Notification,
 } from "../../../../../../components/elements";
 import {
@@ -36,7 +33,10 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [addParticipantDropdown, setAddParticipantDropdown] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
-
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const [membersParticipants, setMembersParticipants] = useState([]);
   console.log(
     { membersParticipants },
@@ -303,8 +303,22 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
 
   const handleClickDone = () => {
     let rspvRowsCopy = [...rspvRows, ...membersParticipants];
-    setrspvRows(rspvRowsCopy);
-    dispatch(showAddParticipantsModal(false));
+
+    const uniqueData = new Set(rspvRowsCopy.map((obj) => obj.userID));
+
+    // Convert the Set back to an array
+    rspvRowsCopy = [...uniqueData].map((userID) =>
+      rspvRowsCopy.find((obj) => obj.userID === userID)
+    );
+    if (membersParticipants.length === 0) {
+      setOpen({
+        flag: true,
+        message: t("Atleast-one-participant-should-be-selected"),
+      });
+    } else {
+      setrspvRows(rspvRowsCopy);
+      dispatch(showAddParticipantsModal(false));
+    }
   };
 
   return (
@@ -380,6 +394,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                 <Row className={styles["Scroller_For_CreatePollModal2"]}>
                   {membersParticipants.length > 0
                     ? membersParticipants.map((data, index) => {
+                        console.log(data, "indexindexindexindex");
                         return (
                           <>
                             <Col lg={6} md={6} sm={12} className="mt-2">
@@ -396,7 +411,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                                         <Col sm={12} md={10} lg={10}>
                                           <img
                                             draggable={false}
-                                            src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
+                                            src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                             width="33px"
                                             height="33px"
                                           />
@@ -456,6 +471,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
           </>
         }
       />
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>
   );
 };

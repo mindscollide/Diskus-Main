@@ -392,31 +392,23 @@ const Groups = () => {
 
             {/* pagination */}
             {groupsData.length > 0 && (
-              <Row className="">
-                <Col lg={4} md={4} sm={4}></Col>
+              <Row>
                 <Col
-                  lg={4}
-                  md={4}
-                  sm={4}
-                  className="d-flex justify-content-center "
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={
+                    "pagination-groups-table d-flex justify-content-center"
+                  }
                 >
-                  {/* <Container className={styles["PaginationStyle-Committee"]}> */}
-                  <Row className={styles["PaginationStyle-Committee"]}>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={"pagination-groups-table"}
-                    >
-                      <Pagination
-                        current={currentPage}
-                        total={totalLength}
-                        pageSize={8}
-                        onChange={handlechange}
-                      />
-                    </Col>
-                  </Row>
-                  {/* </Container> */}
+                  <span className={styles["PaginationStyle-Committee"]}>
+                    <Pagination
+                      current={currentPage}
+                      total={totalLength}
+                      pageSize={8}
+                      onChange={handlechange}
+                    />
+                  </span>
                 </Col>
               </Row>
             )}

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AgendaContritbutorsModal.module.css";
-import { Modal, Button } from "../../../../../../components/elements";
+import {
+  Modal,
+  Button,
+  Notification,
+} from "../../../../../../components/elements";
 import {
   showAddAgendaContributor,
   showAgendaContributorsModals,
@@ -30,7 +34,10 @@ const AgendaContributorsModal = ({
   const navigate = useNavigate();
   const [dropdowndata, setDropdowndata] = useState([]);
   const [membersOrganizers, setMembersOrganizers] = useState([]);
-
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   let currentMeetingID = localStorage.getItem("meetingID");
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
@@ -152,7 +159,7 @@ const AgendaContributorsModal = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID !== null ? currentMeetingID : 0,
+      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
   }, []);
@@ -194,7 +201,8 @@ const AgendaContributorsModal = ({
                         gUser.profilePicture.displayProfilePictureName,
                       email: gUser.emailAddress,
                       Title: "",
-                      isRSVP: SelectedRSVP.value === 1 ? true : false,
+                      AgendaListRightsAll:
+                        SelectedRSVP.value === 1 ? true : false,
                       isEdit: false,
                       isContributedNotified: true,
                     };
@@ -225,7 +233,8 @@ const AgendaContributorsModal = ({
                       email: cUser.emailAddress,
                       isContributedNotified: true,
                       Title: "",
-                      isRSVP: SelectedRSVP.value === 1 ? true : false,
+                      AgendaListRightsAll:
+                        SelectedRSVP.value === 1 ? true : false,
                       isEdit: false,
                     };
                     tem.push(newUser);
@@ -251,7 +260,7 @@ const AgendaContributorsModal = ({
                   email: check2.emailAddress,
                   isContributedNotified: true,
                   Title: "",
-                  isRSVP: SelectedRSVP.value === 1 ? true : false,
+                  AgendaListRightsAll: SelectedRSVP.value === 1 ? true : false,
                   isEdit: false,
                 };
                 tem.push(newUser);
@@ -284,17 +293,23 @@ const AgendaContributorsModal = ({
     let newData = [...rowsData, ...membersOrganizers];
     // Create a Set to remove duplicates based on userID
     const uniqueData = new Set(newData.map((obj) => obj.userID));
-
     // Convert the Set back to an array
     newData = [...uniqueData].map((userID) =>
       newData.find((obj) => obj.userID === userID)
     );
 
-    setRowsData(newData);
-    dispatch(showAddAgendaContributor(false));
-    dispatch(showAgendaContributorsModals(true));
-    setNotificedMembersData(newData);
-    // Combine the arrays into newData
+    if (membersOrganizers.length === 0) {
+      setOpen({
+        flag: true,
+        message: t("Atleast-one-agenda-contributor-should-be-selected"),
+      });
+    } else {
+      setRowsData(newData);
+      dispatch(showAddAgendaContributor(false));
+      dispatch(showAgendaContributorsModals(true));
+      setNotificedMembersData(newData);
+      // Combine the arrays into newData
+    }
   };
   return (
     <section>
@@ -447,6 +462,7 @@ const AgendaContributorsModal = ({
           </>
         }
       />
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>
   );
 };

@@ -44,6 +44,8 @@ const AgendaContributers = ({
     (state) => state,
   )
   const [isEdit, setIsEdit] = useState(false)
+  const [disbaleIcon, setDisbaleIcon] = useState(false)
+  const [isEditFlag, setIsEditFlag] = useState(0)
   const [notifyMessageField, setNotifyMessageField] = useState('')
   const [notificationTable, setNotificationTable] = useState(false)
   const [rspvTable, setrspvTable] = useState(false)
@@ -132,28 +134,35 @@ const AgendaContributers = ({
       dataIndex: 'Title',
       key: 'Title',
       width: '80px',
-      render: (text, record) => (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <TextField
-              disable={record.isEdit ? true : false}
-              placeholder={t('Content-title')}
-              labelClass={'d-none'}
-              width={'100%'}
-              applyClass={'Organizer_table'}
-              value={inputValues[record.userID] || ''} // Use the controlled value
-              change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
-            />
-          </Col>
-        </Row>
-      ),
+      render: (text, record) => {
+        console.log({ record }, 'texttexttexttext')
+        return (
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <TextField
+                disable={record.isEdit ? true : false}
+                placeholder={t('Content-title')}
+                labelClass={'d-none'}
+                width={'100%'}
+                applyClass={'Organizer_table'}
+                value={
+                  record.isEdit === true
+                    ? record.Title
+                    : inputValues[record.userID] || ''
+                } // Use the controlled value
+                change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
+              />
+            </Col>
+          </Row>
+        )
+      },
     },
     {
       dataIndex: 'isNotifed',
       key: 'isNotified',
       width: '80px',
       render: (text, record) => {
-        console.log('recordrecordrecordrecord', record)
+        console.log('isContributedNotifiedisContributedNotified', record)
         if (record.isContributedNotified) {
           return (
             <Row>
@@ -166,6 +175,9 @@ const AgendaContributers = ({
                 <img
                   draggable={false}
                   src={greenMailIcon}
+                  className={
+                    record.isEdit === true ? 'cursor-pointer' : 'pe-none'
+                  }
                   height="30px"
                   width="30px"
                   alt=""
@@ -186,6 +198,9 @@ const AgendaContributers = ({
                 <img
                   draggable={false}
                   src={redMailIcon}
+                  className={
+                    record.isEdit === true ? 'cursor-pointer' : 'pe-none'
+                  }
                   height="30px"
                   alt=""
                   width="30px"
@@ -195,6 +210,32 @@ const AgendaContributers = ({
             </Row>
           )
         }
+      },
+    },
+    {
+      dataIndex: 'rsvp',
+      key: 'rsvp',
+      width: '80px',
+      render: (text, record) => {
+        return (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <img
+                  draggable={false}
+                  src={RspvIcon}
+                  className={
+                    record.isEdit === true ? 'cursor-pointer' : 'pe-none'
+                  }
+                  height="30px"
+                  width="30px"
+                />
+
+                {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
+              </Col>
+            </Row>
+          </>
+        )
       },
     },
     {
@@ -227,147 +268,6 @@ const AgendaContributers = ({
           </>
         )
       },
-    },
-  ]
-
-  const notificationData = [
-    {
-      key: '1',
-      Name: <label className={styles['Title_desc']}>Muahmmad Saif</label>,
-      Email: (
-        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-      ),
-      OrganizerTitle: <label className="column-boldness">Organizer</label>,
-      Notification: (
-        <>
-          <Row>
-            <Col lg={6} md={6} sm={6} className="d-flex justify-content-center">
-              <img
-                draggable={false}
-                src={NotificationIcon}
-                width="17.64px"
-                height="12.4px"
-                alt=""
-              />
-              {/* <img draggable = {false} src={redMailIcon} width="17.64px" height="12.4px" /> */}
-            </Col>
-          </Row>
-        </>
-      ),
-      Primary: (
-        <label className="column-boldness">
-          <>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <TextField
-                  disable={true}
-                  width={'283px'}
-                  placeholder={t('Content-title')}
-                  labelClass={'d-none'}
-                  applyClass={'Organizer_table'}
-                />
-              </Col>
-            </Row>
-          </>
-        </label>
-      ),
-    },
-  ]
-
-  const [notificationRows, setNotificationRows] = useState(notificationData)
-
-  const notificationColoumn = [
-    {
-      title: t('Name'),
-      dataIndex: 'Name',
-      key: 'Name',
-      width: '300px',
-    },
-    {
-      title: t('Email'),
-      dataIndex: 'Email',
-      key: 'Email',
-      width: '300px',
-    },
-
-    {
-      title: t('contributor-title'),
-      dataIndex: 'Primary',
-      key: 'Primary',
-      width: '400px',
-    },
-    {
-      title: t('Notification1'),
-      dataIndex: 'Notification',
-      key: 'Notification',
-      width: '200px',
-    },
-  ]
-
-  // const rspvData = [
-  //   {
-  //     key: "1",
-  //     Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
-  //     Email: (
-  //       <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-  //     ),
-  //     OrganizerTitle: <label className="column-boldness">Organizer</label>,
-  //     Notification: (
-  //       <>
-  //         <Row>
-  //           <Col lg={12} md={12} sm={12}>
-  //             <img
-  //               draggable={false}
-  //               src={NotificationIcon}
-  //               width="17.64px"
-  //               height="12.4px"
-  //             />
-  //             {/* <img draggable = {false} src={redMailIcon} width="17.64px" height="12.4px" /> */}
-  //           </Col>
-  //         </Row>
-  //       </>
-  //     ),
-  //     rsvp: (
-  //       <>
-  //         <img draggable={false} src={RspvIcon} height="30px" width="30px" />
-  //         {/* <img draggable = {false} src={RspcAbstainIcon} height="30px" width="30px" /> */}
-  //       </>
-  //     ),
-  //   },
-  // ];
-  // const [rspvRows, setrspvRows] = useState(rspvData);
-
-  const rspvColoumn = [
-    {
-      title: t('Name'),
-      dataIndex: 'Name',
-      key: 'Name',
-      width: '300px',
-    },
-    {
-      title: t('Email'),
-      dataIndex: 'Email',
-      key: 'Email',
-      width: '300px',
-    },
-
-    {
-      title: t('contributor-title'),
-      dataIndex: 'Primary',
-      key: 'Primary',
-      width: '400px',
-    },
-    {
-      title: t('Notification'),
-      dataIndex: 'Notification',
-      key: 'Notification',
-      width: '400px',
-    },
-    {
-      title: t('RSVP'),
-      dataIndex: 'rsvp',
-      key: 'rsvp',
-      width: '400px',
     },
   ]
 
@@ -431,6 +331,7 @@ const AgendaContributers = ({
   }
 
   const openAddAgendaModal = () => {
+    setIsEditFlag(0)
     dispatch(showAddAgendaContributor(true))
   }
 
@@ -449,6 +350,7 @@ const AgendaContributers = ({
   }
 
   const handleEditBtn = () => {
+    setIsEditFlag(1)
     setRowsData((prevRowsData) => {
       return prevRowsData.map((row) => {
         return {
@@ -460,59 +362,88 @@ const AgendaContributers = ({
   }
 
   const handleCancelBtn = () => {
-    if (NewMeetingreducer.getAllAgendaContributors.length > 0) {
-      let agendaContributorData = [
-        ...NewMeetingreducer.getAllAgendaContributors,
-      ]
+    // if (NewMeetingreducer.getAllAgendaContributors.length > 0) {
+    //   let agendaContributorData = [
+    //     ...NewMeetingreducer.getAllAgendaContributors,
+    //   ];
 
-      // Initial values
-      const initialValues = {}
-      agendaContributorData.forEach((organizer) => {
-        initialValues[organizer.userID] = organizer.contributorTitle
-      })
+    //   // Initial values
+    //   const initialValues = {};
+    //   agendaContributorData.forEach((organizer) => {
+    //     initialValues[organizer.userID] = organizer.contributorTitle;
+    //   });
 
-      setInputValues({ ...initialValues })
+    //   setInputValues({ ...initialValues });
 
-      let newArr = []
-      agendaContributorData.forEach((AgConData, index) => {
-        newArr.push({
-          userName: AgConData.userName,
-          userID: AgConData.userID,
-          displayPicture: '',
-          email: AgConData.emailAddress,
-          IsPrimaryOrganizer: false,
-          IsOrganizerNotified: false,
-          Title: AgConData.contributorTitle,
-          isRSVP: AgConData.rsvp,
-          isEdit: true,
-        })
-      })
-      setRowsData(newArr)
+    //   let newArr = [];
+    //   agendaContributorData.forEach((AgConData, index) => {
+    //     newArr.push({
+    //       userName: AgConData.userName,
+    //       userID: AgConData.userID,
+    //       displayPicture: "",
+    //       email: AgConData.emailAddress,
+    //       IsPrimaryOrganizer: false,
+    //       IsOrganizerNotified: false,
+    //       Title: AgConData.contributorTitle,
+    //       isRSVP: AgConData.rsvp,
+    //       isEdit: true,
+    //     });
+    //   });
+    //   setRowsData(newArr);
+    // }
+    let removenewData = rowsData.filter((data, index) => data.isEdit === true)
+    setRowsData(removenewData)
+    let getAllData = {
+      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
     }
-    // let removenewData = rowsData.filter((data, index) => data.isEdit === true);
-    // setRowsData(removenewData);
-    // let getAllData = {
-    //   MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
-    // };
-    // dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    dispatch(getAllAgendaContributorApi(navigate, t, getAllData))
     // Create a copy of data with was coming
   }
 
   const handleSaveBtn = () => {
-    let newData = []
-    let copyData = [...rowsData]
-    copyData.forEach((data, index) => {
-      newData.push({
-        UserID: data.userID,
-        Title: data.Title,
-        AgendaListRightsAll: data.isRSVP,
-        MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+    if (isEditFlag === 1) {
+      let newData = []
+      let copyData = [...rowsData]
+      copyData.forEach((data, index) => {
+        console.log(data, 'AgendaListRightsAllAgendaListRightsAll')
+        newData.push({
+          UserID: data.userID,
+          Title: data.Title,
+          AgendaListRightsAll: data.AgendaListRightsAll,
+          MeetingID:
+            currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+          IsContributorNotified: data.isContributedNotified,
+        })
       })
-    })
-    let Data = {
-      AgendaContributors: newData,
+      let Data = {
+        AgendaContributors: newData,
+        MeetingID: Number(currentMeetingID),
+        IsAgendaContributorAddFlow: false,
+        NotificationMessage: notifyMessageField,
+      }
+      dispatch(saveAgendaContributors(navigate, t, Data))
+    } else {
+      let newData = []
+      let copyData = [...rowsData]
+      copyData.forEach((data, index) => {
+        console.log(data, 'AgendaListRightsAllAgendaListRightsAll')
+        newData.push({
+          UserID: data.userID,
+          Title: data.Title,
+          AgendaListRightsAll: data.AgendaListRightsAll,
+          MeetingID:
+            currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+          IsContributorNotified: data.isContributedNotified,
+        })
+      })
+      let Data = {
+        AgendaContributors: newData,
+        MeetingID: Number(currentMeetingID),
+        IsAgendaContributorAddFlow: true,
+        NotificationMessage: notifyMessageField,
+      }
+      dispatch(saveAgendaContributors(navigate, t, Data))
     }
-    dispatch(saveAgendaContributors(navigate, t, Data))
   }
 
   useEffect(() => {
@@ -536,6 +467,7 @@ const AgendaContributers = ({
 
       let newArr = []
       agendaContributorData.forEach((AgConData, index) => {
+        console.log(AgConData, 'AgConDataAgConDataAgConData')
         newArr.push({
           userName: AgConData.userName,
           userID: AgConData.userID,
@@ -544,7 +476,7 @@ const AgendaContributers = ({
           Title: AgConData.contributorTitle,
           isRSVP: AgConData.rsvp,
           isEdit: true,
-          isContributedNotified: AgConData.isContributorNotified,
+          isContributedNotified: true,
         })
       })
       setRowsData(newArr)
@@ -617,181 +549,59 @@ const AgendaContributers = ({
             </Row>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                {notificationTable ? (
-                  <>
-                    <Table
-                      column={notificationColoumn}
-                      scroll={{ y: '62vh' }}
-                      pagination={false}
-                      className="Polling_table"
-                      locale={{
-                        emptyText: (
-                          <>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <img
-                                  draggable={false}
-                                  src={emptyContributorState}
-                                  width="274.05px"
-                                  height="230.96px"
-                                  alt=""
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span className={styles['Empty_state_heading']}>
-                                  {t('No-agenda-contributor')}
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span
-                                  className={styles['Empty_state_Subheading']}
-                                >
-                                  {t('There-are-no-agenda-contributors')}
-                                </span>
-                              </Col>
-                            </Row>
-                          </>
-                        ),
-                      }}
-                      rows={notificationRows}
-                    />
-                  </>
-                ) : rspvTable ? (
-                  <>
-                    <Table
-                      column={rspvColoumn}
-                      scroll={{ y: '62vh' }}
-                      pagination={false}
-                      className="Polling_table"
-                      locale={{
-                        emptyText: (
-                          <>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <img
-                                  draggable={false}
-                                  src={emptyContributorState}
-                                  width="274.05px"
-                                  height="230.96px"
-                                  alt=""
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span className={styles['Empty_state_heading']}>
-                                  {t('No-agenda-contributor')}
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span
-                                  className={styles['Empty_state_Subheading']}
-                                >
-                                  {t('There-are-no-agenda-contributors')}
-                                </span>
-                              </Col>
-                            </Row>
-                          </>
-                        ),
-                      }}
-                      rows={[]}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Table
-                      column={AgendaColoumns}
-                      scroll={{ y: '62vh' }}
-                      pagination={false}
-                      locale={{
-                        emptyText: (
-                          <>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <img
-                                  draggable={false}
-                                  src={emptyContributorState}
-                                  width="274.05px"
-                                  alt=""
-                                  height="230.96px"
-                                />
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span className={styles['Empty_state_heading']}>
-                                  {t('No-agenda-contributor')}
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span
-                                  className={styles['Empty_state_Subheading']}
-                                >
-                                  {t('There-are-no-agenda-contributors')}
-                                </span>
-                              </Col>
-                            </Row>
-                          </>
-                        ),
-                      }}
-                      className="Polling_table"
-                      rows={rowsData}
-                    />
-                  </>
-                )}
+                <Table
+                  column={AgendaColoumns}
+                  scroll={{ y: '62vh' }}
+                  pagination={false}
+                  locale={{
+                    emptyText: (
+                      <>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <img
+                              draggable={false}
+                              src={emptyContributorState}
+                              width="274.05px"
+                              alt=""
+                              height="230.96px"
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles['Empty_state_heading']}>
+                              {t('No-agenda-contributor')}
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles['Empty_state_Subheading']}>
+                              {t('There-are-no-agenda-contributors')}
+                            </span>
+                          </Col>
+                        </Row>
+                      </>
+                    ),
+                  }}
+                  className="Polling_table"
+                  rows={rowsData}
+                />
               </Col>
             </Row>
           </section>
@@ -805,16 +615,16 @@ const AgendaContributers = ({
                     onClick={enableNotificatoinTable}
                   />
                   <Button
-                    text={t('Save')}
+                    text={t('Previous-meeting')}
                     className={styles['Cancel_Organization']}
                   />
                   <Button
-                    text={t('Save-and-publish')}
+                    text={t('Next')}
                     className={styles['Cancel_Organization']}
                     onClick={EnableViewAgendaContributors}
                   />
                   <Button
-                    text={t('Save-and-next')}
+                    text={t('Published')}
                     className={styles['Next_Organization']}
                     onClick={handleNextButton}
                   />

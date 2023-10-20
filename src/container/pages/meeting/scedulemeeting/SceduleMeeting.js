@@ -20,20 +20,10 @@ import ProposedMeetingDate from './Participants/ProposedMeetingDate/ProposedMeet
 import Actions from './Actions/Actions'
 import Polls from './Polls/Polls'
 import Attendence from './Attendence/Attendence'
-const SceduleMeeting = ({
-  // setAgendaContributors,
-  // setmeetingDetails,
-  // setorganizers,
-  // setParticipants,
-  // setAgenda,
-  // setMinutes,
-  // setactionsPage,
-  // setAttendance,
-  // setPolls,
-  // setMeetingMaterial,
-  setSceduleMeeting,
-}) => {
+const SceduleMeeting = ({ setSceduleMeeting }) => {
   const { t } = useTranslation()
+  let currentMeetingID = Number(localStorage.getItem('meetingID'))
+  console.log(currentMeetingID, 'currentMeetingIDcurrentMeetingID')
   const [meetingDetails, setmeetingDetails] = useState(true)
   const [organizers, setorganizers] = useState(false)
   const [agendaContributors, setAgendaContributors] = useState(false)
@@ -217,6 +207,9 @@ const SceduleMeeting = ({
                         onClick={showMeetingDeitals}
                       />
                       <Button
+                        disableBtn={
+                          Number(currentMeetingID) === 0 ? true : false
+                        }
                         text={t('Organizers')}
                         className={
                           organizers === true
@@ -226,6 +219,9 @@ const SceduleMeeting = ({
                         onClick={showOrganizers}
                       />
                       <Button
+                        disableBtn={
+                          Number(currentMeetingID) === 0 ? true : false
+                        }
                         text={t('Agenda-contributors')}
                         className={
                           agendaContributors === true
@@ -235,6 +231,9 @@ const SceduleMeeting = ({
                         onClick={showAgendaContributers}
                       />
                       <Button
+                        disableBtn={
+                          Number(currentMeetingID) === 0 ? true : false
+                        }
                         text={t('Participants')}
                         className={
                           participants === true
@@ -244,6 +243,9 @@ const SceduleMeeting = ({
                         onClick={showParticipants}
                       />
                       <Button
+                        disableBtn={
+                          Number(currentMeetingID) === 0 ? true : false
+                        }
                         text={t('Agenda')}
                         className={
                           agenda === true
@@ -253,6 +255,9 @@ const SceduleMeeting = ({
                         onClick={showAgenda}
                       />
                       <Button
+                        disableBtn={
+                          Number(currentMeetingID) === 0 ? true : false
+                        }
                         text={t('Meeting-material')}
                         className={
                           meetingMaterial === true
@@ -262,6 +267,9 @@ const SceduleMeeting = ({
                         onClick={showMeetingMaterial}
                       />
                       <Button
+                        disableBtn={
+                          Number(currentMeetingID) === 0 ? true : false
+                        }
                         text={t('Minutes')}
                         className={
                           minutes === true
@@ -271,6 +279,9 @@ const SceduleMeeting = ({
                         onClick={showMinutes}
                       />
                       <Button
+                        disableBtn={
+                          Number(currentMeetingID) === 0 ? true : false
+                        }
                         text={t('Actions')}
                         className={
                           actionsPage === true
@@ -280,6 +291,9 @@ const SceduleMeeting = ({
                         onClick={showActions}
                       />
                       <Button
+                        disableBtn={
+                          Number(currentMeetingID) === 0 ? true : false
+                        }
                         text={t('Polls')}
                         className={
                           polls === true
@@ -289,6 +303,9 @@ const SceduleMeeting = ({
                         onClick={ShowPolls}
                       />
                       <Button
+                        disableBtn={
+                          Number(currentMeetingID) === 0 ? true : false
+                        }
                         text={t('Attendence')}
                         className={
                           attendance === true

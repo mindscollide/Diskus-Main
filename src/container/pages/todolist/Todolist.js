@@ -484,15 +484,15 @@ const TodoList = () => {
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
-                    ? "InProgress MontserratSemiBold "
+                    ? "InProgress MontserratSemiBold custom-class "
                     : text.pK_TSID === 2
-                    ? "Pending MontserratSemiBold "
+                    ? "Pending MontserratSemiBold custom-class "
                     : text.pK_TSID === 3
-                    ? "Upcoming MontserratSemiBold "
+                    ? "Upcoming MontserratSemiBold custom-class "
                     : text.pK_TSID === 4
-                    ? "Cancelled MontserratSemiBold "
+                    ? "Cancelled MontserratSemiBold custom-class "
                     : text.pK_TSID === 5
-                    ? "Completed MontserratSemiBold "
+                    ? "Completed MontserratSemiBold custom-class "
                     : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
@@ -533,6 +533,7 @@ const TodoList = () => {
               return (
                 <Select
                   defaultValue={text.status}
+                  prefixCls="todo-status-select"
                   bordered={false}
                   dropdownClassName="Status-Todo"
                   className={

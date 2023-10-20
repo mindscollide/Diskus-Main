@@ -47,9 +47,14 @@ const Participants = ({
     "getAllSavedparticipants"
   );
   const [particiapntsView, setParticiapntsView] = useState(false);
+  const [menuIsOpen, setMenuIsOpen] = useState(true);
+  const [IsParticipantsAddFlow, setIsParticpantAddFlow] = useState({
+    IsParticipantsAddFlow: true,
+  });
   const [isEditable, setIsEditable] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
   const [inputValues, setInputValues] = useState({});
+  const [editableSave, setEditableSave] = useState(0);
   const [data, setData] = useState([]);
   const [rspvRows, setrspvRows] = useState([]);
   console.log(rspvRows, "rspvRowsrspvRows");
@@ -70,6 +75,18 @@ const Participants = ({
     setParticipants(false);
     setAgenda(true);
   };
+
+  //For menu Portal of the React select
+  const customStyles = {
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999,
+    }),
+  };
+
+  useEffect(() => {
+    setMenuIsOpen(true);
+  }, []);
 
   //For participants Role
   useEffect(() => {
@@ -114,20 +131,25 @@ const Participants = ({
       NewMeetingreducer.getAllSavedparticipants !== undefined &&
       NewMeetingreducer.getAllSavedparticipants.length > 0
     ) {
-      NewMeetingreducer.getAllSavedparticipants.forEach((data, index) => {
-        getAllData.push({
-          IsOrganizerNotified: false,
-          IsPrimaryOrganizer: false,
-          Title: data.participantTitle,
-          displayPicture: "",
-          email: data.emailAddress,
-          isRSVP: data.rsvp,
-          participantRole: data.participantRole,
-          userID: data.userID,
-          userName: data.userName,
-          isComingApi: true,
+      if (NewMeetingreducer.getAllSavedparticipants.length > 0) {
+        NewMeetingreducer.getAllSavedparticipants.forEach((data, index) => {
+          getAllData.push({
+            IsOrganizerNotified: false,
+            IsPrimaryOrganizer: false,
+            Title: data.participantTitle,
+            displayPicture: "",
+            email: data.emailAddress,
+            isRSVP: data.rsvp,
+            participantRole: data.participantRole,
+            userID: data.userID,
+            userName: data.userName,
+            isComingApi: true,
+          });
         });
-      });
+      } else {
+        // IsParticipantsAddFlow;
+      }
+
       setrspvRows(getAllData);
     }
   }, [NewMeetingreducer.getAllSavedparticipants]);
@@ -188,7 +210,7 @@ const Participants = ({
       width: "80px",
 
       render: (text, record) => {
-        console.log("texttexttext", { record });
+        console.log("SaifSaifSaifSaif", { record });
         return (
           <Row>
             <Col lg={12} md={12} sm={12}>
@@ -221,6 +243,7 @@ const Participants = ({
       width: "80px",
 
       render: (text, record) => {
+        console.log(record, "isComingApiisComingApiisComingApi");
         return (
           <Row>
             <Col lg={12} md={12} sm={12}>
@@ -228,6 +251,9 @@ const Participants = ({
                 <Select
                   isDisabled={record.isComingApi === true ? true : false}
                   options={particpantsRole}
+                  menuPortalTarget={document.body}
+                  styles={customStyles}
+                  classNamePrefix={"ParticipantRole"}
                   value={
                     record.isComingApi === true
                       ? {
@@ -302,24 +328,10 @@ const Participants = ({
 
   //Clearing the non saved  participant
   const handleCancelButtonForClearingParticipants = () => {
-    let getAllData = [];
-    if (NewMeetingreducer.getAllSavedparticipants.length > 0) {
-      NewMeetingreducer.getAllSavedparticipants.forEach((data, index) => {
-        getAllData.push({
-          IsOrganizerNotified: false,
-          IsPrimaryOrganizer: false,
-          Title: data.participantTitle,
-          displayPicture: "",
-          email: data.emailAddress,
-          isRSVP: data.rsvp,
-          participantRole: data.participantRole,
-          userID: data.userID,
-          userName: data.userName,
-          isComingApi: true,
-        });
-      });
-      setrspvRows(getAllData);
-    }
+    let Data = {
+      MeetingID: Number(currentMeetingID),
+    };
+    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
   };
 
   //state management For textfield
@@ -342,6 +354,16 @@ const Participants = ({
     });
   };
 
+  const handleEditFunction = () => {
+    setEditableSave(1);
+    setrspvRows((prevRows) => {
+      return prevRows.map((data) => ({
+        ...data,
+        isComingApi: false,
+      }));
+    });
+  };
+
   const handleSaveparticpants = () => {
     let newData = [];
     let copyData = [...rspvRows];
@@ -351,15 +373,29 @@ const Participants = ({
         UserID: data.userID,
         Title: data.Title,
         ParticipantRoleID: data.participantRole.participantRoleID,
-        MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
       });
     });
-    let Data = {
-      MeetingParticipants: newData,
-    };
-    console.log({ Data }, "DataData");
+    if (editableSave === 1) {
+      let Data = {
+        MeetingParticipants: newData,
+        MeetingID: Number(currentMeetingID),
+        IsParticipantsAddFlow: false,
+        NotificationMessage: "",
+      };
+      console.log({ Data }, "DataData");
 
-    dispatch(SaveparticipantsApi(Data, navigate, t));
+      dispatch(SaveparticipantsApi(Data, navigate, t));
+    } else {
+      let Data = {
+        MeetingParticipants: newData,
+        MeetingID: Number(currentMeetingID),
+        IsParticipantsAddFlow: true,
+        NotificationMessage: "",
+      };
+      console.log({ Data }, "DataData");
+
+      dispatch(SaveparticipantsApi(Data, navigate, t));
+    }
   };
 
   useEffect(() => {
@@ -375,14 +411,6 @@ const Participants = ({
   }, [rspvRows]);
   console.log(isEditable, "isEditableisEditableisEditable");
 
-  const handleEditFunction = () => {
-    setrspvRows((prevRows) => {
-      return prevRows.map((data) => ({
-        ...data,
-        isComingApi: false,
-      }));
-    });
-  };
   return (
     <>
       {particiapntsView ? (
@@ -468,7 +496,7 @@ const Participants = ({
                 <>
                   <Button
                     text={t("Propose-meeting-dates")}
-                    className={styles["Cancel_Organization"]}
+                    className={styles["Next_Organization"]}
                     onClick={handleProposedmeetingDates}
                   />
 
@@ -479,18 +507,18 @@ const Participants = ({
                   />
 
                   <Button
-                    text={t("Save")}
+                    text={t("Previous-meeting")}
                     className={styles["Cancel_Organization"]}
                     onClick={EnableParticipantsViewPage}
                   />
 
                   <Button
-                    text={t("Save-and-publish")}
-                    className={styles["Next_Organization"]}
+                    text={t("Next")}
+                    className={styles["Cancel_Organization"]}
                   />
 
                   <Button
-                    text={t("Save-and-next")}
+                    text={t("Published")}
                     className={styles["Next_Organization"]}
                     onClick={handleNextButton}
                   />
