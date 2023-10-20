@@ -531,7 +531,6 @@ const MeetingDetails = ({
       },
     });
   };
-  console.log("meetingDetailsmeetingDetails", { meetingDetails });
 
   const handleReminderFrequencyThree = (e) => {
     setMeetingDetails({
@@ -542,7 +541,6 @@ const MeetingDetails = ({
       },
     });
   };
-  console.log("meetingDetailsmeetingDetails", meetingDetails);
 
   const HandleChange = (e, index) => {
     let name = e.target.name;
@@ -798,13 +796,18 @@ const MeetingDetails = ({
 
   //For reminder frequency uniqueness
   useEffect(() => {
-    // Filter out the selected options from reminderFrequencyOne
+    const selectedValues = new Set([
+      meetingDetails.ReminderFrequency.value,
+      meetingDetails.ReminderFrequencyTwo.value,
+      meetingDetails.ReminderFrequencyThree.value,
+    ]);
+
+    // Filter out the selected options from the initial options
     const updatedOptions = reminderFrequencyOne.filter(
-      (option) =>
-        option.value !== meetingDetails.ReminderFrequency.value &&
-        option.value !== meetingDetails.ReminderFrequencyTwo.value &&
-        option.value !== meetingDetails.ReminderFrequencyThree.value
+      (option) => !selectedValues.has(option.value)
     );
+
+    // Update the available options
     setReminderFrequencyOne(updatedOptions);
   }, [
     meetingDetails.ReminderFrequency,
