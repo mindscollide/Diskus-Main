@@ -45,7 +45,10 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { convertGMTDateintoUTC } from "../../../../../commen/functions/date_formater";
+import {
+  convertGMTDateintoUTC,
+  resolutionResultTable,
+} from "../../../../../commen/functions/date_formater";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 
 const MeetingDetails = ({
@@ -65,7 +68,14 @@ const MeetingDetails = ({
   const [reminderfrequencyValues, setReminderFrequencyValues] = useState([]);
 
   const [rows, setRows] = useState([
-    { selectedOption: "", startDate: "", endDate: "" },
+    {
+      selectedOption: "",
+      dateForView: "",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
+    },
   ]);
 
   //For Custom language datepicker
@@ -89,9 +99,18 @@ const MeetingDetails = ({
     Location: "",
     Description: "",
     Link: "",
-    ReminderFrequency: 0,
-    ReminderFrequencyTwo: 0,
-    ReminderFrequencyThree: 0,
+    ReminderFrequency: {
+      value: 0,
+      label: "",
+    },
+    ReminderFrequencyTwo: {
+      value: 0,
+      label: "",
+    },
+    ReminderFrequencyThree: {
+      value: 0,
+      label: "",
+    },
     Notes: "",
     groupChat: false,
     AllowRSPV: false,
@@ -138,6 +157,7 @@ const MeetingDetails = ({
       console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
       updatedRows[index].startDate = formattedTime;
+      updatedRows[index].startTime = newDate;
       setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
@@ -159,6 +179,7 @@ const MeetingDetails = ({
 
       const updatedRows = [...rows];
       updatedRows[index].endDate = formattedTime;
+      updatedRows[index].endTime = newDate;
       setRows(updatedRows);
     } else {
       console.error("Invalid date and time object:", date);
@@ -167,12 +188,14 @@ const MeetingDetails = ({
 
   //Onchange Function For DatePicker inAdd datess First
   const changeDateStartHandler = (date, index) => {
+    let newDate = new Date(date);
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = convertGMTDateintoUTC(date);
     console.log(DateDate, "DateDateDateDateDateDate");
     setMeetingDate(meetingDateValueFormat);
     const updatedRows = [...rows];
     updatedRows[index].selectedOption = DateDate.slice(0, 8);
+    updatedRows[index].dateForView = newDate;
     setRows(updatedRows);
   };
 
@@ -343,14 +366,14 @@ const MeetingDetails = ({
     // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
-    if (meetingDetails.ReminderFrequency !== 0) {
-      newReminderData.push(meetingDetails.ReminderFrequency);
+    if (meetingDetails.ReminderFrequency.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequency.value);
     }
-    if (meetingDetails.ReminderFrequencyTwo !== 0) {
-      newReminderData.push(meetingDetails.ReminderFrequencyTwo);
+    if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyTwo.value);
     }
-    if (meetingDetails.ReminderFrequencyThree !== 0) {
-      newReminderData.push(meetingDetails.ReminderFrequencyThree);
+    if (meetingDetails.ReminderFrequencyThree.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
     }
 
     console.log(newReminderData, "newReminderDatanewReminderData");
@@ -413,7 +436,10 @@ const MeetingDetails = ({
   const handleReminderFrequency = (e) => {
     setMeetingDetails({
       ...meetingDetails,
-      ReminderFrequency: e.value,
+      ReminderFrequency: {
+        value: e.value,
+        label: e.label,
+      },
     });
   };
 
@@ -422,16 +448,24 @@ const MeetingDetails = ({
 
     setMeetingDetails({
       ...meetingDetails,
-      ReminderFrequencyTwo: e.value,
+      ReminderFrequencyTwo: {
+        value: e.value,
+        label: e.label,
+      },
     });
   };
+  console.log("meetingDetailsmeetingDetails", { meetingDetails });
 
   const handleReminderFrequencyThree = (e) => {
     setMeetingDetails({
       ...meetingDetails,
-      ReminderFrequencyThree: e.value,
+      ReminderFrequencyThree: {
+        value: e.value,
+        label: e.label,
+      },
     });
   };
+  console.log("meetingDetailsmeetingDetails", meetingDetails);
 
   const HandleChange = (e, index) => {
     let name = e.target.name;
@@ -717,9 +751,6 @@ const MeetingDetails = ({
       let getmeetingStatus = MeetingData.meetingStatus;
       let getmeetingType = MeetingData.meetingType;
       console.log(getmeetingReminders, "getmeetingTypegetmeetingType");
-      // setSavedMeetingData({
-
-      // })
       setMeetingDetails({
         MeetingTitle: MeetingData.meetingTitle,
         MeetingType: {
@@ -730,12 +761,17 @@ const MeetingDetails = ({
         Description: MeetingData.description,
         Link: MeetingData.videoCallURl,
         ReminderFrequency: {
-          pK_MRID: getmeetingReminders.pK_MRID,
-          duration: getmeetingReminders.duration,
-          description: getmeetingReminders.description,
+          value: getmeetingReminders[0].pK_MRID,
+          label: getmeetingReminders[0].description,
         },
-        ReminderFrequencyTwo: 0,
-        ReminderFrequencyThree: 0,
+        ReminderFrequencyTwo: {
+          value: getmeetingReminders[1].pK_MRID,
+          label: getmeetingReminders[1].description,
+        },
+        ReminderFrequencyThree: {
+          value: getmeetingReminders[2].pK_MRID,
+          label: getmeetingReminders[2].description,
+        },
         Notes: MeetingData.notes,
         groupChat: MeetingData.isTalkGroup,
         AllowRSPV: MeetingData.allowRSVP,
@@ -747,9 +783,30 @@ const MeetingDetails = ({
         Location: MeetingData.location,
         IsVideoCall: MeetingData.isVideo,
       });
+      let newDateTimeData = [];
+      console.log("getmeetingDatesgetmeetingDates", getmeetingDates);
+      if (
+        getmeetingDates !== null &&
+        getmeetingDates !== undefined &&
+        getmeetingDates.length > 0
+      ) {
+        getmeetingDates.forEach((data, index) => {
+          newDateTimeData.push({
+            selectedOption: data.startTime,
+            startDate: data.startTime,
+            endDate: data.endTime,
+            endTime: resolutionResultTable(data.meetingDate + data.endTime),
+            startTime: resolutionResultTable(data.meetingDate + data.startTime),
+            dateForView: resolutionResultTable(
+              data.meetingDate + data.startTime
+            ),
+          });
+        });
+      }
+      setRows(newDateTimeData);
     }
   }, [NewMeetingreducer.getAllMeetingDetails]);
-
+  console.log(rows, "rowsrowsrows");
   return (
     <section>
       {saveMeeting ? (
@@ -903,7 +960,10 @@ const MeetingDetails = ({
                     <Col lg={4} md={4} sm={12}>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12} className="d-flex gap-3">
-                          <Switch onChange={handleGroupChat} />
+                          <Switch
+                            onChange={handleGroupChat}
+                            checkedValue={meetingDetails.groupChat}
+                          />
                           <span className={styles["Create_group_chat_heading"]}>
                             {t("Create-group-chat")}
                           </span>
@@ -993,6 +1053,7 @@ const MeetingDetails = ({
                     >
                       {rows.length > 0
                         ? rows.map((data, index) => {
+                            console.log(data, "datadata");
                             return (
                               <>
                                 <Row>
@@ -1000,7 +1061,8 @@ const MeetingDetails = ({
                                     <Row className="mt-2">
                                       <Col lg={4} md={4} sm={12}>
                                         <DatePicker
-                                          selected={rows.selectedOption}
+                                          selected={data.selectedOption}
+                                          value={data.dateForView}
                                           format={"DD/MM/YYYY"}
                                           minDate={moment().toDate()}
                                           placeholder="DD/MM/YYYY"
@@ -1051,7 +1113,12 @@ const MeetingDetails = ({
                                           calendar={calendarValue}
                                           locale={localValue}
                                           format="HH:mm A"
-                                          selected={data.startDate}
+                                          selected={
+                                            currentMeetingID === 0
+                                              ? data.startDate
+                                              : rows.startDate
+                                          }
+                                          value={data.startTime}
                                           plugins={[<TimePicker hideSeconds />]}
                                           onChange={(date) =>
                                             handleStartDateChange(index, date)
@@ -1084,8 +1151,9 @@ const MeetingDetails = ({
                                           inputClass="inputTImeMeeting"
                                           calendar={calendarValue}
                                           locale={localValue}
+                                          value={data.endTime}
                                           format="HH:mm A"
-                                          selected={data.startDate}
+                                          selected={data.endDate}
                                           plugins={[<TimePicker hideSeconds />]}
                                           onChange={(date) =>
                                             handleEndDateChange(index, date)
@@ -1180,7 +1248,20 @@ const MeetingDetails = ({
                         placeholder={t("Reminder*")}
                         onChange={handleReminderFrequency}
                         options={reminderFrequencyOne}
-                        value={Number()}
+                        value={{
+                          value: meetingDetails.ReminderFrequency.value,
+                          label: meetingDetails.ReminderFrequency.label,
+                        }}
+                        // value={
+                        //   currentMeetingID !== 0
+                        //     ? {
+                        //         value:
+                        //           meetingDetails.ReminderFrequency?.pK_MRID,
+                        //         label:
+                        //           meetingDetails.ReminderFrequency?.description,
+                        //       }
+                        //     : Number()
+                        // }
                         isDisabled={false} // First dropdown should always be enabled
                       />
                     </Col>
@@ -1189,10 +1270,10 @@ const MeetingDetails = ({
                         placeholder={t("Reminder")}
                         onChange={handleReminderFrequencyTwo}
                         options={reminderFrequencyOne}
-                        value={reminderFrequencyOne.find(
-                          (option) =>
-                            option.value === meetingDetails.ReminderFrequencyTwo
-                        )}
+                        value={{
+                          value: meetingDetails.ReminderFrequencyTwo.value,
+                          label: meetingDetails.ReminderFrequencyTwo.label,
+                        }}
                         isDisabled={
                           meetingDetails.ReminderFrequency === 0 ? true : false
                         } // Disable if first dropdown is not selected
@@ -1203,11 +1284,10 @@ const MeetingDetails = ({
                         placeholder={t("Reminder")}
                         onChange={handleReminderFrequencyThree}
                         options={reminderFrequencyOne}
-                        value={reminderFrequencyOne.find(
-                          (option) =>
-                            option.value ===
-                            meetingDetails.ReminderFrequencyThree
-                        )}
+                        value={{
+                          value: meetingDetails.ReminderFrequencyThree.value,
+                          label: meetingDetails.ReminderFrequencyThree.label,
+                        }}
                         isDisabled={
                           meetingDetails.ReminderFrequencyTwo === 0
                             ? true
@@ -1265,7 +1345,10 @@ const MeetingDetails = ({
                     <Col lg={3} md={3} sm={12}>
                       <Row>
                         <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                          <Switch onChange={handleRSPV} />
+                          <Switch
+                            onChange={handleRSPV}
+                            checkedValue={meetingDetails.AllowRSPV}
+                          />
                           <span className={styles["Notify_heading"]}>
                             {t("Allow-rsvp")}
                           </span>
@@ -1280,7 +1363,10 @@ const MeetingDetails = ({
                           sm={12}
                           className="d-flex gap-2 justify-content-start"
                         >
-                          <Switch onChange={handleNotifyOrganizers} />
+                          <Switch
+                            onChange={handleNotifyOrganizers}
+                            checkedValue={meetingDetails.NotifyMeetingOrganizer}
+                          />
                           <span className={styles["Notify_heading"]}>
                             {t("Notify-meeting-organizer-when-members-rsvp")}
                           </span>
@@ -1298,13 +1384,18 @@ const MeetingDetails = ({
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <Select
-                        // value={rows.RecurringOptions}
                         onChange={handleRecurringSelectoptions}
                         options={recurringDropDown}
-                        value={{
-                          value: meetingDetails.RecurringOptions?.recurranceID,
-                          label: meetingDetails.RecurringOptions?.recurrance,
-                        }}
+                        value={
+                          currentMeetingID === 0
+                            ? rows.RecurringOptions
+                            : {
+                                value:
+                                  meetingDetails.RecurringOptions?.recurranceID,
+                                label:
+                                  meetingDetails.RecurringOptions?.recurrance,
+                              }
+                        }
                       />
                     </Col>
                   </Row>
