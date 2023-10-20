@@ -801,9 +801,9 @@ const MeetingDetails = ({
     // Filter out the selected options from reminderFrequencyOne
     const updatedOptions = reminderFrequencyOne.filter(
       (option) =>
-        option.value !== meetingDetails.ReminderFrequency &&
-        option.value !== meetingDetails.ReminderFrequencyTwo &&
-        option.value !== meetingDetails.ReminderFrequencyThree
+        option.value !== meetingDetails.ReminderFrequency.value &&
+        option.value !== meetingDetails.ReminderFrequencyTwo.value &&
+        option.value !== meetingDetails.ReminderFrequencyThree.value
     );
     setReminderFrequencyOne(updatedOptions);
   }, [
