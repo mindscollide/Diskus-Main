@@ -1534,7 +1534,11 @@ const MeetingDetails = ({
         </>
       )}
       {NewMeetingreducer.cancelModalMeetingDetails && (
-        <CancelButtonModal setSceduleMeeting={setSceduleMeeting} />
+        <CancelButtonModal
+          setSceduleMeeting={setSceduleMeeting}
+          setMeetingDetails={setMeetingDetails}
+          setRows={setRows}
+        />
       )}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
