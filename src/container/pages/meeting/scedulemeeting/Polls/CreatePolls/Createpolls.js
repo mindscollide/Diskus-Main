@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./CreatePolls.module.css";
 import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
@@ -8,6 +8,7 @@ import {
   Button,
   TextField,
   Checkbox,
+  Loader,
 } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -29,7 +30,10 @@ import makeAnimated from "react-select/animated";
 import Profile from "../../../../../../assets/images/newprofile.png";
 import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
-import { showUnsavedPollsMeeting } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  GetAllMeetingUserApiFunc,
+  showUnsavedPollsMeeting,
+} from "../../../../../../store/actions/NewMeetingActions";
 import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 
@@ -42,6 +46,13 @@ const Createpolls = ({ setCreatepoll }) => {
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
+  const [memberSelect, setmemberSelect] = useState([
+    {
+      value: 0,
+      label: "",
+    },
+  ]);
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [pollsData, setPollsData] = useState({
     Title: "",
     AllowMultipleAnswer: false,
@@ -72,32 +83,7 @@ const Createpolls = ({ setCreatepoll }) => {
     message: "",
   });
 
-  const [members, setMembers] = useState([
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-  ]);
+  const [members, setMembers] = useState([]);
 
   const HandleCancelFunction = (index) => {
     let optionscross = [...options];
@@ -195,6 +181,62 @@ const Createpolls = ({ setCreatepoll }) => {
       date: DateDate,
     });
   };
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getMeetingusers !== undefined &&
+        NewMeetingreducer.getMeetguserins !== null
+      ) {
+        console.log(
+          NewMeetingreducer.getMeetingusers,
+          "meetingOrganizersmeetingOrganizers"
+        );
+        let newmembersArray = [];
+        NewMeetingreducer.getMeetingusers.meetingOrganizers.map(
+          (data, index) => {
+            console.log(data, "meetingOrganizers");
+            newmembersArray.push({
+              value: data.userID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        // src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
+                        src={Profile}
+                        alt=""
+                        className={styles["UserProfilepic"]}
+                        width="22px"
+                        height="22px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {data.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+            });
+          }
+        );
+        setmemberSelect(newmembersArray);
+      }
+    } catch {}
+  }, [NewMeetingreducer.getMeetingusers]);
 
   return (
     <>
@@ -404,6 +446,7 @@ const Createpolls = ({ setCreatepoll }) => {
                       >
                         <Select
                           classNamePrefix={"Polls_Meeting"}
+                          options={memberSelect}
                           closeMenuOnSelect={false}
                           components={animatedComponents}
                           isMulti

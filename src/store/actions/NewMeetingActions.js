@@ -6,6 +6,7 @@ import {
   getAllGroupsUsersAndCommitteesByOrganizaitonID,
   getAllMeetingDetailsByMeetingID,
   getAllSavedParticipants,
+  getAllmeetingUsers,
   getParticipantsRoles,
   getPollsByMeetingID,
   getallMeetingType,
@@ -1737,6 +1738,97 @@ const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
   };
 };
 
+//get all meeting users Api
+
+const showGetAllMeetingUsersInit = () => {
+  return {
+    type: actions.GET_ALL_MEETING_USER_INIT,
+  };
+};
+
+const showGetAllMeetingUsersSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_MEETING_USER_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showGetAllMeetingUsersFailed = (response, message) => {
+  return {
+    type: actions.GET_ALL_MEETING_USER_FAILED,
+    message: message,
+  };
+};
+
+//get all meeting users Api function
+const GetAllMeetingUserApiFunc = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showGetAllMeetingUsersInit());
+    let form = new FormData();
+    form.append("RequestMethod", getAllmeetingUsers.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingUsers_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showGetAllMeetingUsersSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingUsers_02".toLowerCase()
+                )
+            ) {
+              dispatch(showGetAllMeetingUsersFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingUsers_03".toLowerCase()
+                )
+            ) {
+              dispatch(showGetAllMeetingUsersFailed(t("Something-went-wrong")));
+            } else {
+              dispatch(showGetAllMeetingUsersFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(showGetAllMeetingUsersFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(showGetAllMeetingUsersFailed(t("Something-went-wrong")));
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(showGetAllMeetingUsersFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -1797,4 +1889,5 @@ export {
   GetAllMeetingDetailsApiFunc,
   ClearMessegeMeetingdetails,
   GetAllPollsByMeetingIdApiFunc,
+  GetAllMeetingUserApiFunc,
 };
