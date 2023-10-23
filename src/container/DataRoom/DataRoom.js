@@ -12,7 +12,7 @@ import del from "../../assets/images/delete_dataroom.png";
 import dot from "../../assets/images/Group 2898.svg";
 import DrapDropIcon from "../../assets/images/DrapDropIcon.svg";
 import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg";
-import { Plus, XCircleFill } from "react-bootstrap-icons";
+import { Dash, Plus, XCircleFill } from "react-bootstrap-icons";
 import Grid_Not_Selected from "../../assets/images/resolutions/Grid_Not_Selected.svg";
 import Grid_Selected from "../../assets/images/resolutions/Grid_Selected.svg";
 import List_Not_selected from "../../assets/images/resolutions/List_Not_selected.svg";
@@ -52,6 +52,8 @@ import {
   getDocumentsAndFolderApiScrollbehaviour,
   getFolderDocumentsApi,
   getRecentDocumentsApi,
+  getSharedFileUsersApi,
+  getSharedFolderUsersApi,
   isFolder,
   uploadDocumentsApi,
 } from "../../store/actions/DataRoom_actions";
@@ -90,6 +92,7 @@ import {
 } from "./SearchFunctionality/option";
 import { allAssignessList } from "../../store/actions/Get_List_Of_Assignees";
 import axios from "axios";
+import ModalFileRequest from "./ModalFileRequesting/ModalFileRequesting";
 const DataRoom = () => {
   // tooltip
   const dispatch = useDispatch();
@@ -107,6 +110,7 @@ const DataRoom = () => {
     (state) => state
   );
   console.log("uploadReducer", uploadReducer);
+
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -117,6 +121,7 @@ const DataRoom = () => {
   const [searchbarshow, setSearchbarshow] = useState(false);
   const [searchoptions, setSearchoptions] = useState(false);
   const [sRowsData, setSRowsData] = useState(0);
+  const [RequestFile, setRequestFile] = useState(false);
   const [gridbtnactive, setGridbtnactive] = useState(false);
   const [listviewactive, setListviewactive] = useState(true);
   const [actionundonenotification, setActionundonenotification] =
@@ -209,7 +214,7 @@ const DataRoom = () => {
     LastModifiedStartDate: "",
     LastModifiedEndDate: "",
     UserIDToSearch: 0,
-    isOwnedByMe: false,
+    isOwnedByMe: true,
     isNotOwnedByMe: false,
     isSpecificUser: false,
     sRow: 0,
@@ -407,19 +412,26 @@ const DataRoom = () => {
   };
 
   const showShareFolderModal = (id, name) => {
+    // getSharedFolderUsersApi;
+    let Data = { FolderID: id };
+    dispatch(getSharedFolderUsersApi(navigate, Data, t, setSharefoldermodal));
     setFolderId(id);
     setFolderName(name);
-    setSharefoldermodal(true);
-    setSharehoverstyle(true);
-    setDeltehoverstyle(false);
+    // setSharefoldermodal(true);
+    // setSharehoverstyle(true);
+    // setDeltehoverstyle(false);
   };
 
   const showShareFileModal = (id, name) => {
+    // getSharedFileUsersApi
+    let Data = { FileID: id };
+
+    dispatch(getSharedFileUsersApi(navigate, Data, t, setShareFileModal));
     setFolderId(id);
     setFileName(name);
-    setShareFileModal(true);
-    setSharehoverstyle(true);
-    setDeltehoverstyle(false);
+    // setShareFileModal(true);
+    // setSharehoverstyle(true);
+    // setDeltehoverstyle(false);
   };
 
   const handleGridView = () => {
@@ -1323,9 +1335,11 @@ const DataRoom = () => {
       dataIndex: "fileSize",
       key: "fileSize",
       width: "90px",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         if (record.isFolder) {
+          return <Dash />;
         } else {
           return <span className={styles["ownerName"]}>{text}</span>;
         }
@@ -2565,7 +2579,7 @@ const DataRoom = () => {
                                       sortDirections={["descend", "ascend"]}
                                       column={shareWithmeColoumns}
                                       className={"DataRoom_Table"}
-                                      size={"small"}
+                                      size={"middle"}
                                       onChange={handleSortChange}
                                       rows={getAllData}
                                       pagination={false}
@@ -2962,6 +2976,12 @@ const DataRoom = () => {
           isRenameFileData={isRenameFileData}
           showrenameFile={showrenameFile}
           setShowRenameFile={setShowRenameFile}
+        />
+      )}
+      {RequestFile && (
+        <ModalFileRequest
+          RequestFile={RequestFile}
+          setRequestFile={setRequestFile}
         />
       )}
       {DataRoomReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}

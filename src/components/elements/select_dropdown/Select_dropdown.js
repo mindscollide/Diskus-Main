@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { withStyles } from "@material-ui/core/styles";
@@ -17,9 +17,9 @@ const SelectBox = memo(
     focus,
     propertyName,
     disable,
-    className
+    className,
   }) => {
-    console.log("option", option)
+    console.log("option", option);
     const CustomText = withStyles({
       root: {
         "& label.Mui-focused": {
@@ -61,10 +61,10 @@ const SelectBox = memo(
               ? item[propertyName]
               : ""
             : item
-              ? typeof item === "string" || item instanceof String
-                ? item
-                : ""
+            ? typeof item === "string" || item instanceof String
+              ? item
               : ""
+            : ""
         }
         style={{ width: `${width}` }}
         onChange={change}

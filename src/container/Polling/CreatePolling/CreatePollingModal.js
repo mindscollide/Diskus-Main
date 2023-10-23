@@ -591,7 +591,7 @@ const CreatePolling = () => {
                               editable={true}
                               className="datePickerTodoCreate2"
                               onOpenPickNewDate={false}
-                              highlightToday={false}
+                              highlightToday={true}
                               inputMode=""
                               showOtherDays
                               calendar={calendarValue}

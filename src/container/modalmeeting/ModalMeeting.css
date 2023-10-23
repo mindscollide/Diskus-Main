@@ -736,5 +736,5 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   overflow: auto !important;
   list-style: none !important;
   max-height: 40vh !important;
-  width: 193px !important;
+  width: 100% !important;
 }
