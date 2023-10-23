@@ -154,7 +154,8 @@ body[rtl] .Camera_icon_Active {
   font-family: "MontserratSemiBold" !important;
 }
 
-.Published {
+.Published,
+.Published:disabled {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff;
