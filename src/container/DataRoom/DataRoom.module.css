@@ -936,12 +936,13 @@ body[dir="rtl"] .dataroom_searchinput2 {
   font-family: "MontserratSemiBold-600" !important;
   color: #5a5a5a !important;
   font-size: 12px !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
   width: 300px !important;
   user-select: none !important;
   cursor: pointer !important;
+  display: flex;
 }
 
 .Dataroom__mydocument_location {

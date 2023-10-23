@@ -228,6 +228,7 @@ const DataRoom = () => {
     Location: null,
     People: null,
   });
+  console.log(uploadOptionsmodal, "uploadOptionsmodaluploadOptionsmodal");
 
   useEffect(() => {
     try {
@@ -446,7 +447,6 @@ const DataRoom = () => {
 
   const SharewithmeButonShow = async () => {
     setSRowsData(0);
-    localStorage.removeItem("folderID");
 
     localStorage.setItem("setTableView", 2);
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t, 1));
@@ -1183,20 +1183,22 @@ const DataRoom = () => {
             if (ext === "pdf") {
               return (
                 <>
-                  <img
-                    src={getIconSource(getFileExtension(data.name))}
-                    alt=""
-                    width={"25px"}
-                    height={"25px"}
-                  />
-                  <abbr title={text}>
-                    <span
-                      onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                      className={styles["dataroom_table_heading"]}
-                    >
-                      {text} <img src={sharedIcon} alt="" draggable="false" />
-                    </span>
-                  </abbr>
+                  <section className="d-flex gap-2">
+                    <img
+                      src={getIconSource(getFileExtension(data.name))}
+                      alt=""
+                      width={"25px"}
+                      height={"25px"}
+                    />
+                    <abbr title={text}>
+                      <span
+                        onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                        className={styles["dataroom_table_heading"]}
+                      >
+                        {text} <img src={sharedIcon} alt="" draggable="false" />
+                      </span>
+                    </abbr>
+                  </section>
                 </>
               );
             } else {
@@ -1245,20 +1247,22 @@ const DataRoom = () => {
                 //   rel="noopener noreferrer"
                 // >
                 <>
-                  <img
-                    src={getIconSource(getFileExtension(data.name))}
-                    alt=""
-                    width={"25px"}
-                    height={"25px"}
-                  />
-                  <abbr title={text}>
-                    <span
-                      onClick={(e) => handleLinkClick(e, pdfDataJson)}
-                      className={styles["dataroom_table_heading"]}
-                    >
-                      {text}
-                    </span>
-                  </abbr>
+                  <section className="d-flex gap-2">
+                    <img
+                      src={getIconSource(getFileExtension(data.name))}
+                      alt=""
+                      width={"25px"}
+                      height={"25px"}
+                    />
+                    <abbr title={text}>
+                      <span
+                        onClick={(e) => handleLinkClick(e, pdfDataJson)}
+                        className={styles["dataroom_table_heading"]}
+                      >
+                        {text}
+                      </span>
+                    </abbr>
+                  </section>
                 </>
 
                 // </Link>

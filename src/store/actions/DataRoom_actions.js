@@ -1330,7 +1330,7 @@ const deleteFileDataroom_fail = (message) => {
 const deleteFileDataroom = (navigate, id, t, setSorted) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("setTableView");
-
+  let folderId = localStorage.getItem("folderID");
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let data = [];
@@ -1370,9 +1370,15 @@ const deleteFileDataroom = (navigate, id, t, setSorted) => {
                 };
                 dispatch(getRecentDocumentsApi(navigate, t, Data));
               } else {
-                dispatch(
-                  getDocumentsAndFolderApi(navigate, Number(currentView), t)
-                );
+                if (folderId !== null) {
+                  dispatch(
+                    getFolderDocumentsApi(navigate, Number(folderId), t)
+                  );
+                } else {
+                  dispatch(
+                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                  );
+                }
               }
               dispatch(
                 deleteFileDataroom_success(
@@ -1451,9 +1457,10 @@ const FileisExist = (
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
+  let folderId = localStorage.getItem("folderID");
   let Data = {
     UserID: JSON.parse(createrID),
-    ParentFolderID: 0,
+    ParentFolderID: folderId !== null ? Number(folderId) : 0,
     FileName: newJsonCreateFile.FileName,
   };
   return (dispatch) => {
@@ -1701,6 +1708,8 @@ const deleteFolder = (navigate, id, t, setSorted) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("setTableView");
   let createrID = localStorage.getItem("userID");
+  let folderId = localStorage.getItem("folderID");
+
   let OrganizationID = localStorage.getItem("organizationID");
   let data = [];
   data.push(id);
@@ -1739,9 +1748,15 @@ const deleteFolder = (navigate, id, t, setSorted) => {
                 };
                 dispatch(getRecentDocumentsApi(navigate, t, Data));
               } else {
-                dispatch(
-                  getDocumentsAndFolderApi(navigate, Number(currentView), t)
-                );
+                if (folderId !== null) {
+                  dispatch(
+                    getFolderDocumentsApi(navigate, Number(folderId), t)
+                  );
+                } else {
+                  dispatch(
+                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                  );
+                }
               }
               dispatch(
                 deleteFolder_success(
@@ -1909,6 +1924,7 @@ const renameFolder_fail = (message) => {
 const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("setTableView");
+  let folderId = localStorage.getItem("folderID");
 
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -1950,9 +1966,15 @@ const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
                 };
                 dispatch(getRecentDocumentsApi(navigate, t, Data));
               } else {
-                dispatch(
-                  getDocumentsAndFolderApi(navigate, Number(currentView), t)
-                );
+                if (folderId !== null) {
+                  dispatch(
+                    getFolderDocumentsApi(navigate, Number(folderId), t)
+                  );
+                } else {
+                  dispatch(
+                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                  );
+                }
               }
               setRenamefolder(false);
             } else if (
@@ -2092,6 +2114,7 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
   let currentView = localStorage.getItem("setTableView");
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
+  let folderId = localStorage.getItem("folderID");
 
   let Data = {
     FileName: filedata.FileName,
@@ -2131,9 +2154,15 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
                 };
                 dispatch(getRecentDocumentsApi(navigate, t, Data));
               } else {
-                dispatch(
-                  getDocumentsAndFolderApi(navigate, Number(currentView), t)
-                );
+                if (folderId !== null) {
+                  dispatch(
+                    getFolderDocumentsApi(navigate, Number(folderId), t)
+                  );
+                } else {
+                  dispatch(
+                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                  );
+                }
               }
             } else if (
               response.data.responseResult.responseMessage
