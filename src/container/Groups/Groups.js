@@ -283,7 +283,7 @@ const Groups = () => {
               </Col>
             </Row>
 
-            <Row>
+            <Row className="mt-4">
               <Col lg={12} sm={12} md={12}>
                 <Row
                   className={`${"d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0"} ${

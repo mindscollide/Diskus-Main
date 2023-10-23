@@ -116,14 +116,14 @@
 }
 
 .Background_notification {
-  width: 134px !important;
-  height: 31px !important;
+  width: auto;
+  padding: 6px 20px;
   background: #5a5a5a;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px !important;
-  position: absolute !important;
-  right: 230px !important;
-  bottom: 0px !important;
+  position: absolute;
+  right: 50%;
+  bottom: 0px;
 }
 
 .Back_ground_editNotification {

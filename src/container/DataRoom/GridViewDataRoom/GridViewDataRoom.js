@@ -94,21 +94,33 @@ const GridViewDataRoom = ({
       value: filterValue.value,
     });
     if (filterValue.value === 1) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 1, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 1, sortIon)
+      );
     } else if (filterValue.value === 2) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 2, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 2, sortIon)
+      );
     } else if (filterValue.value === 3) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 3, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 3, sortIon)
+      );
     } else if (filterValue.value === 4) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 4, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 4, sortIon)
+      );
     }
   };
 
   const handleShareTabFilter = (filterValue) => {
     if (filterValue.value === 1) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 1, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 1, sortIon)
+      );
     } else if (filterValue.value === 2) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 2, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 2, sortIon)
+      );
     }
     setFilteShareTabrValue({
       label: filterValue.label,

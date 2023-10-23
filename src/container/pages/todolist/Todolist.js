@@ -59,6 +59,7 @@ import {
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
+import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 
 const TodoList = () => {
   //For Localization
@@ -533,7 +534,7 @@ const TodoList = () => {
               return (
                 <Select
                   defaultValue={text.status}
-                  prefixCls="todo-status-select"
+                  // prefixCls="todo-status-select"
                   bordered={false}
                   dropdownClassName="Status-Todo"
                   className={
@@ -977,7 +978,7 @@ const TodoList = () => {
                     column={columnsToDo}
                     className={"ToDo"}
                     rows={rowsToDo}
-                    scroll={{ y: "65vh", x: "scroll" }}
+                    scroll={{ y: "58vh", x: "scroll" }}
                     // onChange={tableTodoChange}
                     pagination={false}
                   />
@@ -1004,36 +1005,35 @@ const TodoList = () => {
                       sm={12}
                       className="d-flex justify-content-center"
                     >
-                      <Row className="PaginationStyle-Committee">
+                      <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className={"pagination-groups-table"}
+                          className={
+                            "pagination-groups-table d-flex justify-content-center"
+                          }
                         >
-                          <Pagination
-                            onChange={paginationChangeHandlerTodo}
-                            // className="PaginationStyle-Meeting"
-                            current={
-                              todoListCurrentPage !== null &&
-                              todoListCurrentPage !== undefined
-                                ? todoListCurrentPage
-                                : 1
-                            }
-                            total={totalRecords}
-                            locale={{
-                              items_per_page: t("items_per_page"),
-                              page: t("page"),
-                            }}
-                            showSizeChanger
-                            pageSizeOptions={["30", "50", "100", "200"]}
-                            pageSize={
-                              todoListPageSize !== null &&
-                              todoListPageSize !== undefined
-                                ? todoListPageSize
-                                : 50
-                            }
-                          />
+                          <span className="PaginationStyle-TodoList">
+                            <CustomPagination
+                              onChange={paginationChangeHandlerTodo}
+                              current={
+                                todoListCurrentPage !== null &&
+                                todoListCurrentPage !== undefined
+                                  ? todoListCurrentPage
+                                  : 1
+                              }
+                              showSizer={true}
+                              total={totalRecords}
+                              pageSizeOptionsValues={["30", "50", "100", "200"]}
+                              pageSize={
+                                todoListPageSize !== null &&
+                                todoListPageSize !== undefined
+                                  ? todoListPageSize
+                                  : 50
+                              }
+                            />
+                          </span>
                         </Col>
                       </Row>
                     </Col>

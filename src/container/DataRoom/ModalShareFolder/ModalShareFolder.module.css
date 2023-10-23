@@ -33,22 +33,21 @@
 
 .Copy_Link_btn {
   padding: 12px 30px !important;
-  font-size: 12px;
-  font-family: "MontserratSemiBold";
-  color: #5a5a5a;
-  background: #fff;
-  border: 1px solid #e1e1e1;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .Copy_Link_btn:is(:active, :hover, :focus, :focus-visible, :target, :visited) {
   padding: 12px 30px !important;
-  font-size: 12px;
-  font-family: "MontserratSemiBold";
-  color: #5a5a5a;
-  background: #fff;
-  border: 1px solid #e1e1e1;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
 }
-
 .send_btn {
   padding: 12px 30px !important;
   font-size: 12px;
@@ -125,14 +124,14 @@
 }
 
 .Background_notification {
-  width: 134px !important;
-  height: 31px !important;
+  width: auto;
+  padding: 6px 20px;
   background: #5a5a5a;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px !important;
-  position: absolute !important;
-  right: 230px !important;
-  bottom: 0px !important;
+  position: absolute;
+  right: 50%;
+  bottom: 0px;
 }
 
 .Back_ground_editNotification {
@@ -170,11 +169,12 @@
 }
 
 .Expiration_header_background {
-  background: #c2c2c2;
+  background: rgba(97, 114, 214, 0.14);
   padding: 8px 8px !important;
   margin: 0 !important;
   border-top-right-radius: 6px !important;
   border-top-left-radius: 6px !important;
+  color: #6172d6 !important;
 }
 
 .ModalRequestHeader {
@@ -195,7 +195,7 @@
 }
 
 .Text_for_header_expiration {
-  color: #707070 !important;
+  color: #6172d6 !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
 }
@@ -293,4 +293,7 @@
   padding: 0 10px;
   justify-content: space-between;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+}
+.generalAccess-value {
+  font-size: 0.5rem;
 }
