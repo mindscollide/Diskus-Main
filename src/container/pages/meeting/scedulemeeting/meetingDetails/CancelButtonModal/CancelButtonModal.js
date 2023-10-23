@@ -23,7 +23,6 @@ const CancelButtonModal = ({
 
   const handleYesFunctionality = () => {
     localStorage.removeItem("meetingID");
-    setSceduleMeeting(false);
     setMeetingDetails({
       MeetingTitle: "",
       MeetingType: 0,
@@ -63,6 +62,7 @@ const CancelButtonModal = ({
         endTime: "",
       },
     ]);
+    setSceduleMeeting(false);
     dispatch(showCancelModalmeetingDeitals(false));
   };
 

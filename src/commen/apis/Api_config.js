@@ -974,6 +974,14 @@ const getAllMeetingDetailsByMeetingID = {
   RequestMethod: "ServiceManager.GetAdvanceMeetingDetailsByMeetingID",
 };
 
+const getPollsByMeetingID = {
+  RequestMethod: "ServiceManager.GetPollsByMeetingID",
+};
+
+const getAllmeetingUsers = {
+  RequestMethod: "ServiceManager.GetAllMeetingUsers",
+};
+
 export {
   updateGeneralAccessRM,
   checkFileLinkRM,
@@ -1235,4 +1243,6 @@ export {
   getAllSavedParticipants,
   sendNotification,
   getAllMeetingDetailsByMeetingID,
+  getPollsByMeetingID,
+  getAllmeetingUsers,
 };

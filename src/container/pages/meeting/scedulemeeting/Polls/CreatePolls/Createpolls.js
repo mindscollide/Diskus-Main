@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./CreatePolls.module.css";
 import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
@@ -8,6 +8,7 @@ import {
   Button,
   TextField,
   Checkbox,
+  Loader,
 } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -27,9 +28,13 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Profile from "../../../../../../assets/images/newprofile.png";
+import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
-import { showUnsavedPollsMeeting } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  GetAllMeetingUserApiFunc,
+  showUnsavedPollsMeeting,
+} from "../../../../../../store/actions/NewMeetingActions";
 import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 
@@ -42,6 +47,9 @@ const Createpolls = ({ setCreatepoll }) => {
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
+  const [selectedsearch, setSelectedsearch] = useState([]);
+  const [memberSelect, setmemberSelect] = useState([]);
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [pollsData, setPollsData] = useState({
     Title: "",
     AllowMultipleAnswer: false,
@@ -72,32 +80,7 @@ const Createpolls = ({ setCreatepoll }) => {
     message: "",
   });
 
-  const [members, setMembers] = useState([
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-  ]);
+  const [members, setMembers] = useState([]);
 
   const HandleCancelFunction = (index) => {
     let optionscross = [...options];
@@ -194,6 +177,126 @@ const Createpolls = ({ setCreatepoll }) => {
       ...pollsData,
       date: DateDate,
     });
+  };
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    let pollMeetingData = NewMeetingreducer.getMeetingusers;
+    console.log(pollMeetingData, "pollMeetingDatapollMeetingData");
+    if (pollMeetingData !== undefined && pollMeetingData !== null) {
+      let newmembersArray = [];
+      if (Object.keys(pollMeetingData).length > 0) {
+        if (Object.keys(pollMeetingData.meetingOrganizers).length > 0) {
+          pollMeetingData.meetingOrganizers.map(
+            (MorganizerData, MorganizerIndex) => {
+              let MeetingOrganizerData = {
+                value: MorganizerData.userID,
+                label: (
+                  <>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={GroupIcon}
+                            height="16.45px"
+                            width="18.32px"
+                            draggable="false"
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {MorganizerData.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  </>
+                ),
+                type: 1,
+              };
+              newmembersArray.push(MeetingOrganizerData);
+            }
+          );
+        }
+      }
+      setmemberSelect(newmembersArray);
+    } else {
+      setmemberSelect([]);
+    }
+  }, [NewMeetingreducer.getMeetingusers]);
+
+  // for selection of data
+  const handleSelectValue = (value) => {
+    setSelectedsearch(value);
+  };
+
+  const handleAddUsers = () => {
+    let pollsData = NewMeetingreducer.getMeetingusers;
+    console.log(pollsData, "pollsDatapollsData");
+    let tem = [...members];
+    try {
+      if (Object.keys(selectedsearch).length > 0) {
+        try {
+          selectedsearch.map((seledtedData, index) => {
+            console.log(
+              seledtedData,
+              "seledtedDataseledtedDataseledtedDataseledtedData"
+            );
+            if (seledtedData.type === 1) {
+              let check1 = pollsData.meetingOrganizers.find(
+                (data, index) => data.userID === seledtedData.value
+              );
+              console.log(check1, "check1check1");
+              if (check1 !== undefined) {
+                console.log(check1, "check1check1");
+
+                let meetingOrganizers = check1;
+                console.log(meetingOrganizers, "check1check1");
+
+                if (Object.keys(check1).length > 0) {
+                  meetingOrganizers.map((morganizer, index) => {
+                    console.log(morganizer, "morganizer");
+                    let check2 = members.find(
+                      (data, index) => data.UserID === morganizer.userID
+                    );
+                    if (check2 !== undefined) {
+                    } else {
+                      let newUser = {
+                        userName: morganizer.userName,
+                        userID: morganizer.userID,
+                        displayPicture: "",
+                      };
+                      tem.push(newUser);
+                    }
+                  });
+                }
+              }
+            } else {
+            }
+          });
+        } catch {
+          console.log("error in add");
+        }
+        console.log("members check", tem);
+        const uniqueData = new Set(tem.map(JSON.stringify));
+
+        // Convert the Set back to an array of objects
+        const result = Array.from(uniqueData).map(JSON.parse);
+        setMembers(result);
+        setSelectedsearch([]);
+      } else {
+        // setopen notionation work here
+      }
+    } catch {}
   };
 
   return (
@@ -404,13 +507,16 @@ const Createpolls = ({ setCreatepoll }) => {
                       >
                         <Select
                           classNamePrefix={"Polls_Meeting"}
+                          options={memberSelect}
                           closeMenuOnSelect={false}
                           components={animatedComponents}
                           isMulti
+                          onChange={handleSelectValue}
                         />
                         <Button
                           text={t("ADD")}
                           className={styles["ADD_Btn_CreatePool_Modal"]}
+                          onClick={handleAddUsers}
                         />
                       </Col>
                     </Row>
