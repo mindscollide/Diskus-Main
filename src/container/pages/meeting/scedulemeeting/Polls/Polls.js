@@ -3,6 +3,8 @@ import styles from "./Polls.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import BinIcon from "../../../../../assets/images/bin.svg";
+import { Pagination, Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
@@ -29,9 +31,11 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
+  const [pollsRows, setPollsRows] = useState([]);
   const [afterViewPolls, setafterViewPolls] = useState(false);
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
   let OrganizationID = localStorage.getItem("organizationID");
+  let userID = localStorage.getItem("userID");
 
   const enableAfterSavedViewPolls = () => {
     setafterViewPolls(true);
@@ -78,12 +82,12 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
           console.log(data, "datadatadatadata");
           newPollsArray.push(data);
         });
+        console.log(newPollsArray, "newPollsArraynewPollsArray");
         setPollsRows(newPollsArray);
       }
     } catch {}
-  }, [NewMeetingreducer.getPollsMeetingID.polls]);
+  }, [NewMeetingreducer.getPollsMeetingID]);
 
-  const [pollsRows, setPollsRows] = useState([]);
   console.log(pollsRows, "pollsRowspollsRowspollsRows");
 
   const PollsColoumn = [
@@ -92,6 +96,10 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       dataIndex: "pollTitle",
       key: "pollTitle",
       width: "300px",
+      render: (text, record) => {
+        console.log(record, "recordrecordrecordrecord");
+        return <span className={styles["DateClass"]}>{text}</span>;
+      },
     },
 
     {
@@ -108,8 +116,12 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
           text: t("UnPublished"),
           value: "UnPublished", // Use the actual status value
         },
+        {
+          text: t("Expired"),
+          value: "Expired", // Use the actual status value
+        },
       ],
-      defaultFilteredValue: ["Published", "UnPublished"], // Use the actual status values here
+      defaultFilteredValue: ["Published", "UnPublished", "Expired"], // Use the actual status values here
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
@@ -235,9 +247,84 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       },
     },
     {
-      title: t("Edit"),
       dataIndex: "Edit",
       width: "50px",
+      render: (text, record) => {
+        return (
+          <>
+            {Number(record.pollCreatorID) === Number(userID) ? (
+              <>
+                <Row>
+                  {record.pollStatus.pollStatusId === 3 ? (
+                    <>
+                      {!record.wasPollPublished ? (
+                        <>
+                          <Col sm={12} md={5} lg={5}>
+                            <Tooltip placement="topRight" title={t("Edit")}>
+                              <img
+                                src={EditIcon}
+                                className="cursor-pointer"
+                                width="21.59px"
+                                height="21.59px"
+                                alt=""
+                                draggable="false"
+                              />
+                            </Tooltip>
+                          </Col>
+                          <Col sm={12} md={5} lg={5}></Col>
+                        </>
+                      ) : (
+                        <>
+                          <Col sm={12} md={5} lg={5}></Col>
+                          <Col sm={12} md={5} lg={5}>
+                            <Tooltip placement="topLeft" title={t("Delete")}>
+                              <img
+                                src={BinIcon}
+                                alt=""
+                                className="cursor-pointer"
+                                width="21.59px"
+                                height="21.59px"
+                                draggable="false"
+                              />
+                            </Tooltip>
+                          </Col>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <Col sm={12} md={5} lg={5}>
+                        <Tooltip placement="topRight" title={t("Edit")}>
+                          <img
+                            src={EditIcon}
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
+                            alt=""
+                            draggable="false"
+                          />
+                        </Tooltip>
+                      </Col>
+                      <Col sm={12} md={5} lg={5}>
+                        <Tooltip placement="topLeft" title={t("Delete")}>
+                          <img
+                            src={BinIcon}
+                            alt=""
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
+                            draggable="false"
+                          />
+                        </Tooltip>
+                      </Col>
+                    </>
+                  )}
+                </Row>
+              </>
+            ) : null}
+          </>
+        );
+      },
     },
   ];
 
@@ -278,7 +365,59 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                 </Row>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
-                    {pollsRows.length <= 0 ? (
+                    {pollsRows.length > 0 ? (
+                      <>
+                        <section className={styles["MaintainingHeight"]}>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <Table
+                                column={PollsColoumn}
+                                rows={pollsRows}
+                                scroll={{ y: "65vh" }}
+                                pagination={false}
+                                className="Polling_table"
+                              />
+                            </Col>
+                          </Row>
+                        </section>
+                        <Row>
+                          <Col
+                            lg={!2}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-end gap-2 mt-2"
+                          >
+                            <Button
+                              text={t("Clone-meeting")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                              onClick={enableAfterSavedViewPolls}
+                            />
+
+                            <Button
+                              text={t("Cancel")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                              onClick={handleCacnelbutton}
+                            />
+
+                            <Button
+                              text={t("Save")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                            />
+
+                            <Button
+                              text={t("Save-and-publish")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                            />
+
+                            <Button
+                              text={t("Save-and-next")}
+                              className={styles["Save_Button_Polls_meeting"]}
+                              onClick={handleSaveAndnext}
+                            />
+                          </Col>
+                        </Row>
+                      </>
+                    ) : (
                       <>
                         <Row className="mt-3">
                           <Col
@@ -320,58 +459,6 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                                 "Be-the-first-to-create-a-poll-and-spark-the-conversation"
                               )}
                             </span>
-                          </Col>
-                        </Row>
-                      </>
-                    ) : (
-                      <>
-                        <section className={styles["MaintainingHeight"]}>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <Table
-                                column={PollsColoumn}
-                                scroll={{ y: "62vh" }}
-                                pagination={false}
-                                className="Polling_table"
-                                rows={pollsRows}
-                              />
-                            </Col>
-                          </Row>
-                        </section>
-                        <Row>
-                          <Col
-                            lg={!2}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end gap-2"
-                          >
-                            <Button
-                              text={t("Clone-meeting")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={enableAfterSavedViewPolls}
-                            />
-
-                            <Button
-                              text={t("Cancel")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={handleCacnelbutton}
-                            />
-
-                            <Button
-                              text={t("Save")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-
-                            <Button
-                              text={t("Save-and-publish")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-
-                            <Button
-                              text={t("Save-and-next")}
-                              className={styles["Save_Button_Polls_meeting"]}
-                              onClick={handleSaveAndnext}
-                            />
                           </Col>
                         </Row>
                       </>
