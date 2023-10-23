@@ -7,6 +7,7 @@ import {
   getAllMeetingDetailsByMeetingID,
   getAllSavedParticipants,
   getParticipantsRoles,
+  getPollsByMeetingID,
   getallMeetingType,
   saveAgendaContributorsRM,
   saveMeetingDetials,
@@ -14,7 +15,7 @@ import {
   searchUserMeetings,
   sendNotification,
 } from "../../commen/apis/Api_config";
-import { meetingApi } from "../../commen/apis/Api_ends_points";
+import { meetingApi, pollApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import axios from "axios";
@@ -1646,6 +1647,96 @@ const GetAllMeetingDetailsApiFunc = (Data, navigate, t) => {
   };
 };
 
+//Get All Polls By Meeting ID
+
+const showPollsByMeetingIdInit = () => {
+  return {
+    type: actions.GET_POLLS_BY_MEETING_ID_INIT,
+  };
+};
+
+const showPollsByMeetingIdSuccess = (response, message) => {
+  return {
+    type: actions.GET_POLLS_BY_MEETING_ID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showPollsByMeetingIdFailed = (message) => {
+  return {
+    type: actions.GET_POLLS_BY_MEETING_ID_SUCCESS,
+    message: message,
+  };
+};
+//Api FUnctions For Getting All polls By Meeting ID
+const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showPollsByMeetingIdInit());
+    let form = new FormData();
+    form.append("RequestMethod", getPollsByMeetingID.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByMeetingID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showPollsByMeetingIdSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByMeetingID_02".toLowerCase()
+                )
+            ) {
+              dispatch(showPollsByMeetingIdFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByMeetingID_03".toLowerCase()
+                )
+            ) {
+              dispatch(showPollsByMeetingIdFailed(t("Something-went-wrong")));
+            } else {
+              dispatch(showPollsByMeetingIdFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(showPollsByMeetingIdFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(showPollsByMeetingIdFailed(t("Something-went-wrong")));
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(showPollsByMeetingIdFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -1705,4 +1796,5 @@ export {
   SendNotificationApiFunc,
   GetAllMeetingDetailsApiFunc,
   ClearMessegeMeetingdetails,
+  GetAllPollsByMeetingIdApiFunc,
 };

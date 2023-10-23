@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Polls.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -13,12 +13,14 @@ import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg"
 import Createpolls from "./CreatePolls/Createpolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import {
+  GetAllPollsByMeetingIdApiFunc,
   showCancelPolls,
   showUnsavedPollsMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
+import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -28,6 +30,8 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
   const [afterViewPolls, setafterViewPolls] = useState(false);
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  let OrganizationID = localStorage.getItem("organizationID");
 
   const enableAfterSavedViewPolls = () => {
     setafterViewPolls(true);
@@ -50,61 +54,43 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     setAttendance(true);
   };
 
-  const PollsData = [
-    {
-      key: "1",
-      PollTitle: (
-        <label className={styles["DateClass"]}>
-          Did you receive the material In a sufficient time for meet... Did you
-          receive the material In a sufficient time for meet...{" "}
-        </label>
-      ),
-      Status: <label className={styles["ActionsClass"]}>Published</label>,
-      Duedate: <label className="column-boldness">15 July 2023</label>,
-      Status: <label className="column-boldness">Published</label>,
-      PollType: <label className={styles["Meeting_Title"]}>Meeting</label>,
-      CreatedBy: <label className="column-boldness">Salman Memon</label>,
-      Vote: (
-        <>
-          <Row>
-            <Col lf={12} md={12} sm={12}>
-              {/* <Button
-                text={t("Voted")}
-                className={styles["Vote_Button_Polls"]}
-              /> */}
-              <Button
-                text={t("Vote")}
-                className={styles["Not_Vote_Button_Polls"]}
-                onClick={handleCastVotePollMeeting}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-      Edit: (
-        <>
-          <Row>
-            <Col lf={12} md={12} sm={12}>
-              <img
-                draggable={false}
-                src={EditIcon}
-                className="cursor-pointer"
-                onClick={handleEditPollsMeeting}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
+  useEffect(() => {
+    let Data = {
+      MeetingID: 1785,
+      OrganizationID: Number(OrganizationID),
+      CreatorName: "",
+      PollTitle: "",
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
+  }, []);
 
-  const [pollsRows, setPollsRows] = useState(PollsData);
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getPollsMeetingID !== undefined &&
+        NewMeetingreducer.getPollsMeetingID !== null
+      ) {
+        let pollsData = NewMeetingreducer.getPollsMeetingID.polls;
+        let newPollsArray = [];
+        pollsData.map((data, index) => {
+          console.log(data, "datadatadatadata");
+          newPollsArray.push(data);
+        });
+        setPollsRows(newPollsArray);
+      }
+    } catch {}
+  }, [NewMeetingreducer.getPollsMeetingID.polls]);
+
+  const [pollsRows, setPollsRows] = useState([]);
+  console.log(pollsRows, "pollsRowspollsRowspollsRows");
 
   const PollsColoumn = [
     {
       title: t("Poll-title"),
-      dataIndex: "PollTitle",
-      key: "PollTitle",
+      dataIndex: "pollTitle",
+      key: "pollTitle",
       width: "300px",
     },
 
@@ -127,28 +113,126 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
+      onFilter: (value, record) =>
+        record.pollStatus.status.indexOf(value) === 0,
+      render: (text, record) => {
+        console.log(record, "recordrecord");
+        if (record.pollStatus?.pollStatusId === 2) {
+          return <span className="text-success">{t("Published")}</span>;
+        } else if (record.pollStatus?.pollStatusId === 1) {
+          return <span className="text-success">{t("Unpublished")}</span>;
+        } else if (record.pollStatus?.pollStatusId === 3) {
+          return <span className="text-success">{t("Expired")}</span>;
+        }
+      },
     },
     {
       title: t("Due-date"),
-      dataIndex: "Duedate",
-      key: "Duedate",
+      dataIndex: "dueDate",
+      key: "dueDate",
       width: "90px",
+      sorter: (a, b) =>
+        new Date(
+          a.dueDate.slice(0, 4),
+          a.dueDate.slice(4, 6) - 1,
+          a.dueDate.slice(6, 8)
+        ) -
+        new Date(
+          b.dueDate.slice(0, 4),
+          b.dueDate.slice(4, 6) - 1,
+          b.dueDate.slice(6, 8)
+        ),
+      sortDirections: ["ascend", "descend"],
+      render: (text, record) => {
+        return _justShowDateformatBilling(text + "000000");
+      },
     },
 
     {
       title: t("Poll-type"),
       dataIndex: "PollType",
+      key: "PollType",
       width: "90px",
     },
     {
       title: t("Created-by"),
-      dataIndex: "CreatedBy",
+      dataIndex: "pollCreator",
+      key: "pollCreator",
       width: "110px",
+      sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
     },
     {
       title: t("Vote"),
       dataIndex: "Vote",
       width: "70px",
+      render: (text, record) => {
+        console.log("votevotevotevote", record);
+        console.log("votevotevotevote", record.isVoter);
+        if (record.pollStatus.pollStatusId === 2) {
+          if (record.isVoter) {
+            if (record.voteStatus === "Not Voted") {
+              return (
+                <Button
+                  className={styles["voteBtn"]}
+                  text={t("Vote")}
+                  onClick={() => {}}
+                />
+              );
+            } else if (record.voteStatus === "Voted") {
+              return (
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={styles["Background-nonvoted-Button"]}
+                >
+                  <span className={styles["Not-voted"]}>{t("Voted")}</span>
+                </Col>
+              );
+            }
+          } else {
+            return "";
+          }
+        } else if (record.pollStatus.pollStatusId === 1) {
+          return "";
+        } else if (record.pollStatus.pollStatusId === 3) {
+          if (record.isVoter) {
+            if (record.wasPollPublished) {
+              if (record.voteStatus === "Not Voted") {
+                return (
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Background-nonvoted-Button"]}
+                  >
+                    <span className={styles["Not-voted"]}>
+                      {t("Not-voted")}
+                    </span>
+                  </Col>
+                );
+              } else {
+                return (
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Background-nonvoted-Button"]}
+                  >
+                    <span className={styles["Not-voted"]}>{t("Voted")}</span>
+                  </Col>
+                );
+              }
+            } else {
+              return "";
+            }
+          } else {
+            return "";
+          }
+        } else {
+          return "";
+        }
+      },
     },
     {
       title: t("Edit"),

@@ -942,6 +942,10 @@ const getAllMeetingDetailsByMeetingID = {
   RequestMethod: "ServiceManager.GetAdvanceMeetingDetailsByMeetingID",
 };
 
+const getPollsByMeetingID = {
+  RequestMethod: "ServiceManager.GetPollsByMeetingID",
+};
+
 export {
   getAllAgendaContributorRM,
   saveAgendaContributorsRM,
@@ -1195,4 +1199,5 @@ export {
   getAllSavedParticipants,
   sendNotification,
   getAllMeetingDetailsByMeetingID,
+  getPollsByMeetingID,
 };

@@ -55,6 +55,7 @@ const initialState = {
   getAllAgendaContributors: [],
   getAllSavedparticipants: [],
   getAllMeetingDetails: null,
+  getPollsMeetingID: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -680,6 +681,30 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getAllMeetingDetails: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_POLLS_BY_MEETING_ID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_POLLS_BY_MEETING_ID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getPollsMeetingID: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_POLLS_BY_MEETING_ID_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
       };
     }
 
