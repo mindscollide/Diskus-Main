@@ -92,6 +92,7 @@ import {
 } from "./SearchFunctionality/option";
 import { allAssignessList } from "../../store/actions/Get_List_Of_Assignees";
 import axios from "axios";
+import ModalFileRequest from "./ModalFileRequesting/ModalFileRequesting";
 const DataRoom = () => {
   // tooltip
   const dispatch = useDispatch();
@@ -109,6 +110,7 @@ const DataRoom = () => {
     (state) => state
   );
   console.log("uploadReducer", uploadReducer);
+
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -119,6 +121,7 @@ const DataRoom = () => {
   const [searchbarshow, setSearchbarshow] = useState(false);
   const [searchoptions, setSearchoptions] = useState(false);
   const [sRowsData, setSRowsData] = useState(0);
+  const [RequestFile, setRequestFile] = useState(false);
   const [gridbtnactive, setGridbtnactive] = useState(false);
   const [listviewactive, setListviewactive] = useState(true);
   const [actionundonenotification, setActionundonenotification] =
@@ -2973,6 +2976,12 @@ const DataRoom = () => {
           isRenameFileData={isRenameFileData}
           showrenameFile={showrenameFile}
           setShowRenameFile={setShowRenameFile}
+        />
+      )}
+      {RequestFile && (
+        <ModalFileRequest
+          RequestFile={RequestFile}
+          setRequestFile={setRequestFile}
         />
       )}
       {DataRoomReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}

@@ -45,6 +45,7 @@ import moment from "moment";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import clipboardCopy from "clipboard-copy";
 import copyToClipboard from "../../../hooks/useClipBoard";
+import { updateFolderGeneralAccessApi } from "../../../store/actions/DataRoom_actions";
 const ModalShareFolder = ({
   ModalTitle,
   sharefolder,
@@ -152,7 +153,10 @@ const ModalShareFolder = ({
   };
   const NotificationForlinkCopied = () => {
     console.log("Hello NotificationForlinkCopied");
-    let Data = { FolderID: Number(folderId), UserID: Number(userID) };
+    let Data = {
+      FolderID: Number(folderId),
+      PermissionID: Number(permissionID.value),
+    };
     console.log("Hello NotificationForlinkCopied", Data);
 
     dispatch(createFolderLinkApi(navigate, t, Data, setLinkedcopied));
@@ -185,7 +189,7 @@ const ModalShareFolder = ({
       if (getSharedFolderUsers !== null && getSharedFolderUsers !== undefined) {
         if (assignees.user.length > 0) {
           if (getSharedFolderUsers.listOfUsers.length > 0) {
-            // let newData = [];
+            let newData = [];
             let newMembersData = [];
 
             let usersList = getSharedFolderUsers.listOfUsers;
@@ -193,12 +197,12 @@ const ModalShareFolder = ({
             let allMembers = assignees.user;
             console.log(ownerInfo, usersList, "getAllAssigneesgetAllAssignees");
             usersList.forEach((userData, index) => {
-              // newData.push({
-              //   FK_FolderID: ownerInfo.folderID,
-              //   FK_PermissionID: 1,
-              //   FK_UserID: userData.userID,
-              //   ExpiryDateTime: "",
-              // });
+              newData.push({
+                FK_FolderID: ownerInfo.folderID,
+                FK_PermissionID: userData.permissionID,
+                FK_UserID: userData.userID,
+                ExpiryDateTime: "",
+              });
               let findOwner = allMembers.find(
                 (data, index) => data.pK_UID === ownerInfo.userID
               );
@@ -209,9 +213,9 @@ const ModalShareFolder = ({
                 }
               });
             });
-            // setFolderData((prev) => {
-            //   return { ...prev, Folders: newData };
-            // });
+            setFolderData((prev) => {
+              return { ...prev, Folders: newData };
+            });
             setMembers(newMembersData);
           }
         }
@@ -385,11 +389,13 @@ const ModalShareFolder = ({
     setSharefolder(false);
   };
 
-  const handleChangeGeneralAccess = (selectValue) => {
+  const handleChangeGeneralAccess = async (selectValue) => {
     setGeneralAccess({
       label: selectValue.label,
       value: selectValue.value,
     });
+    let data = { FolderID: Number(folderId), AccessID: selectValue.value };
+    await dispatch(updateFolderGeneralAccessApi(navigate, t, data));
   };
 
   const CustomIcon = () => (
@@ -446,14 +452,7 @@ const ModalShareFolder = ({
           modalTitleClassName={styles["ModalHeader"]}
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
-          size={
-            showaccessrequest
-              ? "md"
-              : inviteedit === true ||
-                (showaccessrequest === true && showrequestsend === true)
-              ? "md"
-              : "lg"
-          }
+          size={showaccessrequest ? "md" : inviteedit === true ? "md" : "lg"}
           // ModalTitle={
           //   <>
           //     {/* <MultiDatePicker
@@ -526,67 +525,7 @@ const ModalShareFolder = ({
           // }
           ModalBody={
             <>
-              {showaccessrequest ? (
-                showrequestsend ? (
-                  <>
-                    {/* {generalaccessdropdown} */}
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Request_send_heading"]}>
-                          {t("Request-send")}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row className="mt-2">
-                      <Col md={12} sm={12} lg={12}>
-                        <span className={styles["description_request_send"]}>
-                          {t(
-                            "You-will-get-an-email-letting-you-know-if-file-is-shared-with-you"
-                          )}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                ) : (
-                  <>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span
-                          className={styles["Access_request_modal_heading"]}
-                        >
-                          {t("You-need-acccess")}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span
-                          className={styles["Sub_line_access_request_modal"]}
-                        >
-                          {t("Ask-for-access-or-switch-account-with-access")}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="CreateMeetingInput "
-                      >
-                        <TextField
-                          applyClass="text-area-create-group"
-                          type="text"
-                          as={"textarea"}
-                          rows="11"
-                          placeholder={t("Messege(optional)")}
-                          required={true}
-                        />
-                      </Col>
-                    </Row>
-                  </>
-                )
-              ) : inviteedit ? (
+              {inviteedit ? (
                 <>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
@@ -699,7 +638,7 @@ const ModalShareFolder = ({
                     </Col>
                   </Row>
                   <Row className="mt-2">
-                    <Col lg={4} md={4} sm={4}>
+                    <Col lg={7} md={7} sm={12}>
                       <InputSearchFilter
                         labelClass="d-none"
                         flag={flag}
@@ -732,7 +671,7 @@ const ModalShareFolder = ({
                       />
                       {/* )} */}
                     </Col>
-                    <Col lg={3} md={3} sm={3}>
+                    {/* <Col lg={3} md={3} sm={3}>
                       <Select
                         value={{
                           label: generalAccess.label,
@@ -749,7 +688,7 @@ const ModalShareFolder = ({
                         }
                         onChange={handleChangeGeneralAccess}
                       />
-                    </Col>
+                    </Col> */}
                     <Col lg={2} md={2} sm={2}>
                       <Button
                         text="Add"
@@ -849,32 +788,78 @@ const ModalShareFolder = ({
                       </span>
                     </Col>
                   </Row>
+                  <Row>
+                    <Col lg={8} md={8} sm={8}>
+                      <Select
+                        value={{
+                          label:
+                            generalAccess.value === 1 ? (
+                              <>
+                                <Row>
+                                  <Col sm={12} md={12} lg={12}>
+                                    {generalAccess.label}
+                                  </Col>
+                                  <Col
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    className={styles["generalAccess-value"]}
+                                  >
+                                    ({" "}
+                                    {t(
+                                      "Only-people-with-access-can-open-with-the-link"
+                                    )}
+                                    )
+                                  </Col>
+                                </Row>
+                              </>
+                            ) : generalAccess.value === 2 ? (
+                              generalAccess.label
+                            ) : generalAccess.value === 3 ? (
+                              <>
+                                <Row>
+                                  <Col sm={12} md={12} lg={12}>
+                                    {generalAccess.label}
+                                  </Col>
+                                  <Col
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    className={styles["generalAccess-value"]}
+                                  >
+                                    (
+                                    {`${t(
+                                      "Anyone-on-the-internet-with-the-link-can-view"
+                                    )}`}
+                                    )
+                                  </Col>
+                                </Row>
+                              </>
+                            ) : (
+                              ""
+                            ),
+                          value: generalAccess.value,
+                        }}
+                        isSearchable={false}
+                        options={optionsgeneralAccess}
+                        placeholder={t("General-access")}
+                        className={styles["Editor_select"]}
+                        classNamePrefix={
+                          generalAccess.value === 0
+                            ? "shareFolderEditor_Selector_empty"
+                            : "shareFolderEditor_Selector"
+                        }
+                        onChange={handleChangeGeneralAccess}
+                      />
+                    </Col>
+                  </Row>
                 </>
               )}
             </>
           }
           ModalFooter={
             <>
-              {showaccessrequest ? (
-                showrequestsend ? null : (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-end"
-                      >
-                        <Button
-                          text={t("Request-access")}
-                          className={styles["Request_Access_btn"]}
-                          onClick={Notificationnaccessrequest}
-                        />
-                      </Col>
-                    </Row>
-                  </>
-                )
-              ) : inviteedit ? (
+              {inviteedit ? (
                 <>
                   <Row>
                     <Col

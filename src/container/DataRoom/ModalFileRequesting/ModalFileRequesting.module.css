@@ -1,0 +1,36 @@
+.Request_send_heading {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+.description_request_send {
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+.Access_request_modal_heading {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+.Sub_line_access_request_modal {
+  font-size: 12px !important;
+  color: #5a5a5a;
+}
+
+.Request_Access_btn {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+.Request_Access_btn:is(:active, :hover, :visited, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+}

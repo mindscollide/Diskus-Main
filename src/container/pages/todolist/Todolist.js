@@ -59,6 +59,7 @@ import {
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
+import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 
 const TodoList = () => {
   //For Localization
@@ -1009,25 +1010,22 @@ const TodoList = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={"pagination-groups-table"}
+                          className={
+                            "pagination-groups-table d-flex justify-content-center"
+                          }
                         >
                           <span className="PaginationStyle-TodoList">
-                            <Pagination
+                            <CustomPagination
                               onChange={paginationChangeHandlerTodo}
-                              // className="PaginationStyle-Meeting"
                               current={
                                 todoListCurrentPage !== null &&
                                 todoListCurrentPage !== undefined
                                   ? todoListCurrentPage
                                   : 1
                               }
+                              showSizer={true}
                               total={totalRecords}
-                              locale={{
-                                items_per_page: t("items_per_page"),
-                                page: t("page"),
-                              }}
-                              showSizeChanger
-                              pageSizeOptions={["30", "50", "100", "200"]}
+                              pageSizeOptionsValues={["30", "50", "100", "200"]}
                               pageSize={
                                 todoListPageSize !== null &&
                                 todoListPageSize !== undefined

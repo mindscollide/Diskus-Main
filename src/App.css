@@ -6247,16 +6247,47 @@ input[type="time"]::-webkit-clear-button {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
 }
-.shareFolderEditor_Selector__option--is-selected,
+
+/* .shareFolderEditor_Selector__option--is-selected, */
+.shareFolderEditor_Selector__option--is-selected {
+  background: #fff !important;
+  color: #000 !important;
+}
 .shareFolderEditor_Selector__option--is-focused {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
 }
-.shareFolderEditor_Selector_empty__option--is-selected,
+/* .shareFolderEditor_Selector_empty__option--is-selected, */
+.shareFolderEditor_Selector_empty__option--is-selected {
+  background: #fff !important;
+  color: #000 !important;
+}
 .shareFolderEditor_Selector_empty__option--is-focused {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
 }
 .shareFolderEditor_Selector__placeholder {
   color: #ffffff !important;
+}
+
+.ant-pagination-item-active .todolist-pagination-current {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 10px !important;
+  border: none !important;
+  max-width: 32px !important;
+  color: #fff;
+  /* width: 32px !important;
+   */
+  font-size: 1.2rem;
+  padding: 5px 10px;
+}
+.todolist-pagination-current {
+  border-radius: 10px !important;
+  border: none !important;
+  max-width: 32px !important;
+  color: #6172d6;
+  /* width: 32px !important;
+   */
+  font-size: 1.2rem;
+  padding: 5px 10px;
 }
