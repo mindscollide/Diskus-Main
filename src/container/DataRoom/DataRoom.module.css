@@ -942,7 +942,18 @@ body[dir="rtl"] .dataroom_searchinput2 {
   width: 300px !important;
   user-select: none !important;
   cursor: pointer !important;
-  display: flex;
+  /* display: flex; */
+  /* gap: 5px; */
+}
+.fileRow {
+  /* gap: 5px; */
+  /* display: flex; */
+  overflow: hidden;
+  width: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  max-width: 300px !important;
 }
 
 .Dataroom__mydocument_location {

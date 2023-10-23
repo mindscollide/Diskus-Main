@@ -89,7 +89,7 @@ const ModalShareFolder = ({
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [permissionID, setPermissionID] = useState({
     label: t("Editor"),
-    value: 2,
+    value: 1,
   });
   const [generalAccess, setGeneralAccess] = useState({
     label: t("Restricted"),
@@ -111,6 +111,7 @@ const ModalShareFolder = ({
     // setInviteedit(!inviteedit);
     // setExpirationheader(false);
   };
+
   useEffect(() => {
     if (getCreateFolderLink !== "") {
       copyToClipboard(getCreateFolderLink);
@@ -151,6 +152,7 @@ const ModalShareFolder = ({
       setAccessupdate(false);
     }
   };
+
   const NotificationForlinkCopied = () => {
     console.log("Hello NotificationForlinkCopied");
     let Data = {
@@ -164,8 +166,8 @@ const ModalShareFolder = ({
   };
 
   const options = [
-    { value: 1, label: t("Viewer") },
-    { value: 2, label: t("Editor") },
+    { value: 2, label: t("Viewer") },
+    { value: 1, label: t("Editor") },
   ];
 
   const optionsgeneralAccess = [
@@ -198,7 +200,6 @@ const ModalShareFolder = ({
             console.log(ownerInfo, usersList, "getAllAssigneesgetAllAssignees");
             usersList.forEach((userData, index) => {
               newData.push({
-                FK_FolderID: ownerInfo.folderID,
                 FK_PermissionID: userData.permissionID,
                 FK_UserID: userData.userID,
                 ExpiryDateTime: "",
@@ -314,7 +315,6 @@ const ModalShareFolder = ({
       if (taskAssignedName !== "") {
         if (findIndexData === -1) {
           let Data = {
-            FK_FolderID: folderId,
             FK_PermissionID: JSON.parse(permissionID.value),
             FK_UserID: taskAssignedTo,
             ExpiryDateTime: "",
@@ -336,7 +336,7 @@ const ModalShareFolder = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 2,
+            value: 1,
           });
           setGeneralAccess({
             label: t("Restricted"),
@@ -352,7 +352,7 @@ const ModalShareFolder = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 2,
+            value: 1,
           });
           setGeneralAccess({
             label: t("Restricted"),

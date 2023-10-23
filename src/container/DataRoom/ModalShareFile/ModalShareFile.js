@@ -96,8 +96,8 @@ const ModalShareFile = ({
   let currentLanguage = localStorage.getItem("i18nextLng");
   let userID = localStorage.getItem("userID");
   const options = [
-    { value: 1, label: t("Viewer") },
-    { value: 2, label: t("Editor") },
+    { value: 2, label: t("Viewer") },
+    { value: 1, label: t("Editor") },
     // { value: 3, label: t("Add-expiration") },
   ];
 
@@ -305,7 +305,6 @@ const ModalShareFile = ({
       if (taskAssignedName !== "") {
         if (findIndexData === -1) {
           let Data = {
-            FK_FileID: folderId,
             FK_PermissionID: JSON.parse(permissionID.value),
             FK_UserID: taskAssignedTo,
             ExpiryDateTime: "",
@@ -327,7 +326,7 @@ const ModalShareFile = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 2,
+            value: 1,
           });
           setGeneralAccess({
             label: t("Restricted"),
@@ -339,7 +338,7 @@ const ModalShareFile = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 2,
+            value: 1,
           });
           setGeneralAccess({
             label: t("Restricted"),
@@ -357,7 +356,7 @@ const ModalShareFile = ({
         });
         setPermissionID({
           label: t("Editor"),
-          value: 2,
+          value: 1,
         });
         setGeneralAccess({
           label: t("Restricted"),
@@ -614,7 +613,7 @@ const ModalShareFile = ({
                       </Col>
                     </Row>
                     <Row className="mt-3">
-                      <Col lg={4} md={4} sm={4}>
+                      <Col lg={7} md={7} sm={12}>
                         <InputSearchFilter
                           labelClass="d-none"
                           flag={1}
@@ -666,7 +665,7 @@ const ModalShareFile = ({
                       </Col> */}
                       <Col lg={2} md={2} sm={2}>
                         <Button
-                          text="Add"
+                          text={t("Add")}
                           className={styles["shareFolderAddMemberBtn"]}
                           onClick={handleAddMember}
                         />
