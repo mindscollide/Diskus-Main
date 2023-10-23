@@ -3,7 +3,10 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import styles from "./ModalOptions.module.css";
 import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../../components/elements";
-import { IsFileisExist, uploadDocumentsApi } from "../../../store/actions/DataRoom_actions";
+import {
+  IsFileisExist,
+  uploadDocumentsApi,
+} from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +18,7 @@ const ModalOptions = ({
   uploadOptionsmodal,
   setUploadOptions,
   setShowbarupload,
-  showbarupload
+  showbarupload,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -23,26 +26,29 @@ const ModalOptions = ({
   const [fileUploadOptions, setFileUploadOptions] = useState(1);
 
   const handleuploadFile = async () => {
-    console.log("tasksAttachments",tasksAttachments[tasksAttachmentsID])
- 
-      dispatch(
-        uploadDocumentsApi(
-          navigate,
-          t,
-          tasksAttachments[tasksAttachmentsID],
-          tasksAttachments[tasksAttachmentsID].TaskId,
-          setTasksAttachments,
-          tasksAttachments,
-          fileUploadOptions,
-          setShowbarupload,
-          showbarupload
-        )
-      );
-      await dispatch(IsFileisExist(null));
-      setUploadOptions(false);
-   
+    console.log("tasksAttachments", tasksAttachments[tasksAttachmentsID]);
+
+    dispatch(
+      uploadDocumentsApi(
+        navigate,
+        t,
+        tasksAttachments[tasksAttachmentsID],
+        tasksAttachments[tasksAttachmentsID].TaskId,
+        setTasksAttachments,
+        tasksAttachments,
+        fileUploadOptions,
+        setShowbarupload,
+        showbarupload
+      )
+    );
+    await dispatch(IsFileisExist(null));
+    setUploadOptions(false);
   };
   let fileName = localStorage.getItem("fileName");
+  const cancelButton = async () => {
+    await dispatch(IsFileisExist(null));
+    setUploadOptions(false);
+  };
   return (
     <>
       <Container>
@@ -126,7 +132,7 @@ const ModalOptions = ({
                   <Button
                     text={t("Cancel")}
                     className={styles["Cancel_button_UploadFile"]}
-                    onClick={() => setUploadOptions(false)}
+                    onClick={cancelButton}
                   />
 
                   <Button

@@ -2,6 +2,11 @@
   font-size: 20px !important;
   color: #5a5a5a;
   font-family: "MontserratSemiBold";
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100% !important;
+  display: block;
+  text-overflow: ellipsis;
 }
 
 /* .profile_image_shareFolder_modal {
