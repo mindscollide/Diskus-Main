@@ -45,7 +45,7 @@ const Createpolls = ({ setCreatepoll }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -480,6 +480,7 @@ const Createpolls = ({ setCreatepoll }) => {
       };
 
       await dispatch(SavePollsApi(navigate, data, t));
+      setCreatepoll(false);
     } else {
       // setError(true);
 
@@ -849,6 +850,7 @@ const Createpolls = ({ setCreatepoll }) => {
             {NewMeetingreducer.unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
             )}
+            {PollsReducer.Loading ? <Loader /> : null}
           </section>
         </>
       )}
