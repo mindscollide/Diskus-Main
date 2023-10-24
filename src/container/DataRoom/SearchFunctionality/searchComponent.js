@@ -318,7 +318,7 @@ const SearchComponent = ({
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: 0,
-        isOwnedByMe: false,
+        isOwnedByMe: true,
         isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: sRowsData,
@@ -943,7 +943,7 @@ const SearchComponent = ({
     } else {
       setSearchDataFields({
         ...searchDataFields,
-        isOwnedByMe: false,
+        isOwnedByMe: true,
         isNotOwnedByMe: false,
         isSpecificUser: true,
         UserIDToSearch: parseInt(event.value),
@@ -965,7 +965,7 @@ const SearchComponent = ({
         isSites: searchDataFields.isSites,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
-        isOwnedByMe: false,
+        isOwnedByMe: true,
         isNotOwnedByMe: false,
         isSpecificUser: true,
         UserIDToSearch: parseInt(event.value),
@@ -1495,7 +1495,7 @@ const SearchComponent = ({
       isSites: searchDataFields.isSites,
       LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
       LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
-      isOwnedByMe: false,
+      isOwnedByMe: true,
       isNotOwnedByMe: false,
       isSpecificUser: false,
       UserIDToSearch: 0,
@@ -1507,7 +1507,7 @@ const SearchComponent = ({
     dispatch(searchDocumentsAndFoldersApi(navigate, t, newData));
     setSearchDataFields({
       ...searchDataFields,
-      isOwnedByMe: false,
+      isOwnedByMe: true,
       isNotOwnedByMe: false,
       isSpecificUser: false,
       UserIDToSearch: 0,

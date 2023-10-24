@@ -132,8 +132,8 @@
 }
 
 .calendar .rbc-month-view .rbc-month-row .rbc-row-bg .rbc-day-bg:hover {
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
-  color: #fff !important;
+  background: aliceblue !important;
+  color: #000 !important;
 }
 
 body[dir="rtl"]
@@ -313,7 +313,8 @@ body[dir="rtl"] .text-white.add-event.calendar-dropdown button {
 }
 
 .rbc-today {
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
+  background: aliceblue !important;
+  color: #000 !important;
 }
 
 body[dir="rtl"] .rbc-today {
@@ -637,18 +638,14 @@ body[dir="rtl"] .heading_button {
   margin: 0 auto !important;
   height: 91vh;
 }
-.rbc-day-bg:is(:focus, :hover, :focus-visible, :visited)
-  > .rbc-show-more:hover {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #ffffff !important;
-}
+
 /* Change text color of .rbc-show-more when .rbc-day-bg is hovered */
 .rbc-show-more {
   color: #5a5a5a !important; /* Use !important to ensure the style is applied */
 }
-
-.rbc-row-content:hover
-  .rbc-row:nth-child(3)
-  .rbc-row-segment:nth-child(2):has(.rbc-show-more) {
+.rbc-button-link {
+  color: #5a5a5a !important; /* Use !important to ensure the style is applied */
+}
+.rbc-overlay .rbc-event .rbc-event-content {
   color: #fff !important;
 }

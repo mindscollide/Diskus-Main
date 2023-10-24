@@ -1,21 +1,65 @@
 {
-  "MeetingDetails": {
-    "MeetingTitle": "After fixing all the issues ",
-    "MeetingType": { "PK_MTID": 5, "Type": "Committee Meeting" },
-    "Location": "karachi east ",
-    "Description": "hello there i have fixed all the requirements ",
-    "IsVideoChat": true,
-    "IsTalkGroup": true,
-    "OrganizationId": 417,
-    "MeetingDates": [
-      { "MeetingDate": "20231020", "StartTime": "061958", "EndTime": "071959" }
+  "advanceMeetingDetails": {
+    "meetingID": 1785,
+    "meetingTitle": "test meeting change",
+    "description": "test ",
+    "meetingDates": [
+      {
+        "meetingDate": "20231025",
+        "startTime": "120635",
+        "endTime": "115135"
+      },
+      {
+        "meetingDate": "20231025",
+        "startTime": "125136",
+        "endTime": "115135"
+      }
     ],
-    "MeetingReminders": [1, 2, 3],
-    "Notes": "hello there i have these notes ",
-    "AllowRSVP": true,
-    "NotifyOrganizerOnRSVP": true,
-    "ReucurringMeetingID": 2,
-    "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
-    "MeetingStatusID": 1
+    "calendarEventID": 343,
+    "meetingReminders": [
+      {
+        "pK_MRID": 1,
+        "description": "On starting of meeting",
+        "duration": 0
+      },
+      {
+        "pK_MRID": 2,
+        "description": "10 minutes before",
+        "duration": 0
+      },
+      {
+        "pK_MRID": 5,
+        "description": "5 hours before",
+        "duration": 0
+      }
+    ],
+    "meetingStatus": {
+      "pK_MSID": 11,
+      "status": "11",
+      "description": null,
+      "creationDate": null,
+      "creationTime": null
+    },
+    "meetingType": {
+      "pK_MTID": 6,
+      "type": "Group Meeting",
+      "description": null,
+      "creationDate": null,
+      "creationTime": null
+    },
+    "notes": "asasd",
+    "videoCallURl": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
+    "location": "asas",
+    "isQuickMeeting": false,
+    "creatorID": 983,
+    "allowRSVP": true,
+    "notifyAdminOnRSVP": true,
+    "isTalkGroup": true,
+    "isVideo": true,
+    "wasMeetingPublished": false,
+    "meetingRecurrance": {
+      "recurranceID": 4,
+      "recurrance": "Monthly"
+    }
   }
 }

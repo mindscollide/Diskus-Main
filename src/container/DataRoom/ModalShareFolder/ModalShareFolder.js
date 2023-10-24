@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalShareFolder.module.css";
 import newprofile from "../../../assets/images/Mask Group 67.svg";
-import clock from "../../../assets/images/Icon metro-alarm.svg";
+import clock from "../../../assets/images/DataRoom-clock_icon.png";
 import DeleteiCon from "../../../assets/images/Icon material-delete.svg";
 import userImage from "../../../assets/images/user.png";
 import crossIcon from "../../../assets/images/CrossIcon.svg";
@@ -13,6 +13,9 @@ import star from "../../../assets/images/startd.png";
 import pdf from "../../../assets/images/222.svg";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -29,11 +32,20 @@ import { style } from "@mui/system";
 import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
 import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
-import { shareFoldersApi } from "../../../store/actions/DataRoom_actions";
+import {
+  createFileLinkApi,
+  createFolderLinkApi,
+  createFolderLink_fail,
+  shareFoldersApi,
+} from "../../../store/actions/DataRoom_actions";
 import { useNavigate } from "react-router-dom";
 import ChevronDown from "../../../assets/images/chevron-down.svg";
 import ChevronDownWhite from "../../../assets/images/chevron_down_white.svg";
-
+import moment from "moment";
+import EditIcon from "../../../assets/images/Edit-Icon.png";
+import clipboardCopy from "clipboard-copy";
+import copyToClipboard from "../../../hooks/useClipBoard";
+import { updateFolderGeneralAccessApi } from "../../../store/actions/DataRoom_actions";
 const ModalShareFolder = ({
   ModalTitle,
   sharefolder,
@@ -44,10 +56,16 @@ const ModalShareFolder = ({
   const { t } = useTranslation();
   const [showaccessrequest, setShowaccessrequest] = useState(false);
   const { assignees } = useSelector((state) => state);
+  const getSharedFolderUsers = useSelector(
+    (state) => state.DataRoomReducer.getSharedFolderUsers
+  );
+  const getCreateFolderLink = useSelector(
+    (state) => state.DataRoomReducer.getCreateFolderLink
+  );
   const [showrequestsend, setShowrequestsend] = useState(false);
   const [generalaccessdropdown, setGeneralaccessdropdown] = useState(false);
   const [linkedcopied, setLinkedcopied] = useState(false);
-  const [expirationheader, setExpirationheader] = useState(false);
+  const [expirationheader, setExpirationheader] = useState(true);
   const [calenderdate, setCalenderdate] = useState(false);
   const [inviteedit, setInviteedit] = useState(false);
   const [notifyPeople, setNotifyPeople] = useState(false);
@@ -58,9 +76,10 @@ const ModalShareFolder = ({
     flag: false,
     message: "",
   });
-  console.log(folderData, "datadatadata");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const datePickerRef = useRef();
+  const [getAllAssignees, setGetAllAssignees] = useState([]);
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [meetingDate, setMeetingDate] = useState("");
@@ -73,59 +92,84 @@ const ModalShareFolder = ({
     value: 1,
   });
   const [generalAccess, setGeneralAccess] = useState({
-    label: "",
-    value: 0,
+    label: t("Restricted"),
+    value: 1,
   });
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
-  console.log(isMembers, "isMembersisMembersisMembersisMembers");
+  const [ownerInfo, setOwnerInfo] = useState(null);
   const [flag, setFlag] = useState(1);
   const [onclickFlag, setOnclickFlag] = useState(false);
   let organizationName = localStorage.getItem("OrganizatioName");
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  let userID = localStorage.getItem("userID");
+  const [AccessExpireDate, setAccessExpireDate] = useState(null);
 
   const showcalender = () => {
     // setCalenderdate(!calenderdate);
-    setInviteedit(!inviteedit);
-    setExpirationheader(false);
+    // setInviteedit(!inviteedit);
+    // setExpirationheader(false);
   };
+
+  useEffect(() => {
+    if (getCreateFolderLink !== "") {
+      copyToClipboard(getCreateFolderLink);
+      setTimeout(() => {
+        dispatch(createFolderLink_fail(""));
+      }, 2000);
+    }
+  }, [getCreateFolderLink]);
   useEffect(() => {
     if (linkedcopied === true) {
       setTimeout(() => {
         setLinkedcopied(false);
       }, 2000);
     }
-  }, []);
+  }, [linkedcopied]);
+  useEffect(() => {
+    if (currentLanguage !== null) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
+      }
+    }
+  }, [currentLanguage]);
 
   const handlechange = (SelectedOptions) => {
-    console.log("handlechangehandlechange", SelectedOptions);
     setPermissionID({
       label: SelectedOptions.label,
       value: SelectedOptions.value,
     });
-    if (SelectedOptions.value === 3) {
-      console.log("yes add expiration selected ");
-      setExpirationheader(true);
-      setEditNotification(false);
-      setAccessupdate(false);
-    } else if (SelectedOptions.value === 1) {
-      setExpirationheader(false);
+    if (SelectedOptions.value === 1) {
       setEditNotification(false);
       setAccessupdate(true);
     } else if (SelectedOptions.value === 2) {
-      setExpirationheader(false);
       setEditNotification(true);
       setAccessupdate(false);
     }
   };
+
   const NotificationForlinkCopied = () => {
-    setLinkedcopied(true);
+    console.log("Hello NotificationForlinkCopied");
+    let Data = {
+      FolderID: Number(folderId),
+      PermissionID: Number(permissionID.value),
+    };
+    console.log("Hello NotificationForlinkCopied", Data);
+
+    dispatch(createFolderLinkApi(navigate, t, Data, setLinkedcopied));
+    // setLinkedcopied(true);
   };
+
   const options = [
-    { value: 1, label: t("Viewer") },
-    { value: 2, label: t("Editor") },
-    // { value: 3, label: "Add Expiration" },
+    { value: 2, label: t("Viewer") },
+    { value: 1, label: t("Editor") },
   ];
+
   const optionsgeneralAccess = [
     { value: 1, label: t("Restricted") },
     { value: 2, label: organizationName },
@@ -136,25 +180,61 @@ const ModalShareFolder = ({
     dispatch(allAssignessList(navigate, t));
   }, []);
 
+  useEffect(() => {
+    if (assignees.user.length > 0) {
+      setGetAllAssignees(assignees.user);
+    }
+  }, [assignees]);
+
+  useEffect(() => {
+    try {
+      if (getSharedFolderUsers !== null && getSharedFolderUsers !== undefined) {
+        if (assignees.user.length > 0) {
+          if (getSharedFolderUsers.listOfUsers.length > 0) {
+            let newData = [];
+            let newMembersData = [];
+
+            let usersList = getSharedFolderUsers.listOfUsers;
+            let ownerInfo = getSharedFolderUsers.owner;
+            let allMembers = assignees.user;
+            console.log(ownerInfo, usersList, "getAllAssigneesgetAllAssignees");
+            usersList.forEach((userData, index) => {
+              newData.push({
+                FK_PermissionID: userData.permissionID,
+                FK_UserID: userData.userID,
+                ExpiryDateTime: "",
+              });
+              let findOwner = allMembers.find(
+                (data, index) => data.pK_UID === ownerInfo.userID
+              );
+              setOwnerInfo(findOwner);
+              allMembers.forEach((newData, index) => {
+                if (newData.pK_UID === userData.userID) {
+                  newMembersData.push(newData);
+                }
+              });
+            });
+            setFolderData((prev) => {
+              return { ...prev, Folders: newData };
+            });
+            setMembers(newMembersData);
+          }
+        }
+      }
+    } catch {}
+  }, [getSharedFolderUsers, assignees]);
+
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-    console.log("Input Value", allAssignees);
     if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees !== []
+      getAllAssignees.length > 0 &&
+      getAllAssignees !== undefined &&
+      getAllAssignees !== null
     ) {
-      return allAssignees
+      return getAllAssignees
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
-
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
+          return searchTerm && assigneesName.startsWith(searchTerm);
         })
         .slice(0, 10)
         .map((item) => (
@@ -203,12 +283,22 @@ const ModalShareFolder = ({
     console.log("hnbhaiclicktuhorahahy");
     if (folderData.Folders.length > 0) {
       setShowrequestsend(true);
-      dispatch(shareFoldersApi(navigate, folderData, t, setSharefolder));
+      let ShareFolderData = {
+        FolderID: Number(folderId),
+        Folders: folderData.Folders,
+      };
+      dispatch(shareFoldersApi(navigate, ShareFolderData, t, setSharefolder));
     }
   };
+
   const openAccessRequestModalClick = () => {
     if (folderData.Folders.length > 0) {
-      dispatch(shareFoldersApi(navigate, folderData, t, setSharefolder));
+      let ShareFolderData = {
+        FolderID: Number(folderId),
+        Folders: folderData.Folders,
+      };
+
+      dispatch(shareFoldersApi(navigate, ShareFolderData, t, setSharefolder));
     } else {
       setOpen({
         flag: true,
@@ -225,13 +315,13 @@ const ModalShareFolder = ({
       if (taskAssignedName !== "") {
         if (findIndexData === -1) {
           let Data = {
-            FK_FolderID: folderId,
             FK_PermissionID: JSON.parse(permissionID.value),
             FK_UserID: taskAssignedTo,
+            ExpiryDateTime: "",
           };
           if (taskAssignedTo !== 0) {
             if (assignees.user.length > 0) {
-              assignees.user.map((data, index) => {
+              assignees.user.forEach((data, index) => {
                 if (data.pK_UID === taskAssignedTo) {
                   setMembers([...isMembers, data]);
                 }
@@ -249,8 +339,8 @@ const ModalShareFolder = ({
             value: 1,
           });
           setGeneralAccess({
-            label: "",
-            value: 0,
+            label: t("Restricted"),
+            value: 1,
           });
         } else {
           setOpen({
@@ -265,8 +355,8 @@ const ModalShareFolder = ({
             value: 1,
           });
           setGeneralAccess({
-            label: "",
-            value: 0,
+            label: t("Restricted"),
+            value: 1,
           });
         }
       } else {
@@ -282,27 +372,51 @@ const ModalShareFolder = ({
       });
     }
 
-    setTaskAssignedToInput("");
-    setTaskAssignedTo(0);
-    setTaskAssignedName("");
-    setPermissionID({
-      label: "",
-      value: 0,
-    });
-    setGeneralAccess({
-      label: "",
-      value: 0,
-    });
+    // setTaskAssignedToInput("");
+    // setTaskAssignedTo(0);
+    // setTaskAssignedName("");
+    // setPermissionID({
+    //   label: t("Editor"),
+    //   value: 2,
+    // });
+    // setGeneralAccess({
+    //   label: t("Restricted"),
+    //   value: 1,
+    // });
   };
 
   const closebtn = async () => {
     setSharefolder(false);
   };
-  const handleChangeGeneralAccess = (selectValue) => {
+
+  const handleChangeGeneralAccess = async (selectValue) => {
     setGeneralAccess({
       label: selectValue.label,
       value: selectValue.value,
     });
+    let data = { FolderID: Number(folderId), AccessID: selectValue.value };
+    await dispatch(updateFolderGeneralAccessApi(navigate, t, data));
+  };
+
+  const CustomIcon = () => (
+    <div className="custom-icon-wrapper">
+      <img
+        src={EditIcon}
+        alt="Edit Icon"
+        height="11.11px"
+        width="11.54px"
+        className="custom-icon cursor-pointer"
+        onClick={handleIconClick}
+        draggable="false"
+      />
+    </div>
+  );
+
+  const handleIconClick = () => {
+    console.log("handleIconClick");
+    if (datePickerRef.current) {
+      datePickerRef.current.openCalendar();
+    }
   };
 
   const handleRemoveMember = (memberData) => {
@@ -320,6 +434,10 @@ const ModalShareFolder = ({
     });
   };
 
+  const AccessExpireDateChangeHandler = (date) => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    setAccessExpireDate(meetingDateValueFormat);
+  };
   return (
     <>
       <Container>
@@ -334,67 +452,174 @@ const ModalShareFolder = ({
           modalTitleClassName={styles["ModalHeader"]}
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
-          size={sharefolder === true ? "lg" : inviteedit === true ? "sm" : "md"}
-          ModalTitle={
+          size={showaccessrequest ? "md" : inviteedit === true ? "md" : "lg"}
+          // ModalTitle={
+          //   <>
+          //     {/* <MultiDatePicker
+          //               // onChange={meetingDateHandler}
+          //               name="MeetingDate"
+          //               value={meetingDate}
+          //               calendar={calendarValue}
+          //               locale={localValue}
+          //               // newValue={createMeeting.MeetingDate}
+          //             /> */}
+          //     <Row>
+          //       <Col
+          //         lg={12}
+          //         md={12}
+          //         sm={12}
+          //         className={styles["Expiration_header_background"]}
+          //       >
+          //         <Row>
+          //           <Col
+          //             lg={12}
+          //             md={12}
+          //             sm={12}
+          //             className="d-flex justify-content-center align-items-center gap-3"
+          //           >
+          //             <img
+          //               draggable="false"
+          //               src={clock}
+          //               height="14.66px"
+          //               width="14.97px"
+          //               alt=""
+          //               onClick={handleIconClick}
+          //             />
+          //             <span className={styles["Text_for_header_expiration"]}>
+          //               {`${t("Access-expires-on")} ${AccessExpireDate}`}
+          //               {/* {t("Access-expires-on")} */}
+          //               {/* {} */}
+          //             </span>
+          //             <DatePicker
+          //               format={"DD/MM/YYYY"}
+          //               minDate={moment().toDate()}
+          //               placeholder="DD/MM/YYYY"
+          //               render={<CustomIcon />}
+          //               calendarPosition="bottom-right"
+          //               editable={true}
+          //               className="datePickerTodoCreate2"
+          //               onOpenPickNewDate={false}
+          //               highlightToday={false}
+          //               inputMode=""
+          //               showOtherDays
+          //               calendar={calendarValue}
+          //               locale={localValue}
+          //               ref={datePickerRef}
+          //               onClick={handleIconClick}
+          //               onChange={(value) =>
+          //                 AccessExpireDateChangeHandler(value)
+          //               }
+          //             />
+          //             <img
+          //               draggable="false"
+          //               src={DeleteiCon}
+          //               width="9.47px"
+          //               alt=""
+          //               height="11.75px"
+          //             />
+          //           </Col>
+          //         </Row>
+          //       </Col>
+          //     </Row>
+          //   </>
+          // }
+          ModalBody={
             <>
-              {expirationheader ? (
+              {inviteedit ? (
                 <>
-                  {calenderdate ? (
-                    <>
-                      <MultiDatePicker
-                        // onChange={meetingDateHandler}
-                        name="MeetingDate"
-                        value={meetingDate}
-                        calendar={calendarValue}
-                        locale={localValue}
-                        // newValue={createMeeting.MeetingDate}
-                      />
-                    </>
-                  ) : null}
                   <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["Expiration_header_background"]}
-                    >
-                      <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["Shared_Document_Heading"]}>
+                        Saad Fudda {t("Shared-a-document")}
+                      </span>
+                    </Col>
+                  </Row>
+
+                  <Row className="mt-3">
+                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                      <img
+                        draggable="false"
+                        src={newprofile}
+                        height="40px"
+                        width="41px"
+                        alt=""
+                      />
+                      <Row className="mt-1">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center gap-3"
+                          className={styles["Line-height"]}
                         >
-                          <img
-                            draggable="false"
-                            src={clock}
-                            height="14.66px"
-                            width="14.97px"
-                          />
-                          <span
-                            className={styles["Text_for_header_expiration"]}
-                          >
-                            {t("Access-expires-on")} Apr 20 11:11PM
-                          </span>
-                          <Row className={styles["margin"]}>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["InvitetoEdit_Heading"]}>
+                                Saad Fudda (Saad@gmail.com)
+                                {t("Has-invited-you-to")}
+                                <span className={styles["Edit_options"]}>
+                                  {t("Edit")}
+                                </span>
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["InvitetoEdit_Heading"]}>
+                                {t("The-following-document-until")} 27 Apr 2023,
+                                11:59 GMT
+                              </span>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Box_for_attachments"]}
+                    >
+                      <Row className="mt-2">
+                        <Col lg={12} md={12} sm={12}>
+                          <Row>
                             <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="d-flex gap-2"
+                              lg={10}
+                              md={10}
+                              sm={10}
+                              className="d-flex justify-content-start gap-2 "
                             >
                               <img
                                 draggable="false"
-                                src={EditIconNote}
-                                height="11.11px"
-                                width="11.54px"
-                                onClick={showcalender}
+                                src={pdf}
+                                height="16px"
+                                alt=""
+                                width="14.23px"
+                              />
+                              <span className={styles["File_name"]}>
+                                Merger proposal for ABC Industries.pdf
+                              </span>
+                            </Col>
+                            <Col
+                              lg={2}
+                              md={2}
+                              sm={2}
+                              className="d-flex justify-content-end gap-2 mt-1"
+                            >
+                              <img
+                                alt=""
+                                draggable="false"
+                                src={download}
+                                height="11px"
+                                width="12.15px"
                               />
                               <img
                                 draggable="false"
-                                src={DeleteiCon}
-                                width="9.47px"
-                                height="11.75px"
+                                src={star}
+                                height="10.22px"
+                                alt=""
+                                width="12.07px"
                               />
                             </Col>
                           </Row>
@@ -403,305 +628,118 @@ const ModalShareFolder = ({
                     </Col>
                   </Row>
                 </>
-              ) : null}
-            </>
-          }
-          ModalBody={
-            <>
-              {showaccessrequest ? (
-                showrequestsend ? (
-                  <>
-                    <Container>
-                      {generalaccessdropdown}
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Request_send_heading"]}>
-                            {t("Request-send")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <Col md={12} sm={12} lg={12}>
-                          <span className={styles["description_request_send"]}>
-                            {t(
-                              "You-will-get-an-email-letting-you-know-if-file-is-shared-with-you"
-                            )}
-                          </span>
-                        </Col>
-                      </Row>
-                    </Container>
-                  </>
-                ) : (
-                  <>
-                    <Container>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <span
-                            className={styles["Access_request_modal_heading"]}
-                          >
-                            {t("You-need-acccess")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <span
-                            className={styles["Sub_line_access_request_modal"]}
-                          >
-                            {t("Ask-for-access-or-switch-account-with-access")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="CreateMeetingInput "
-                        >
-                          <TextField
-                            applyClass="text-area-create-group"
-                            type="text"
-                            as={"textarea"}
-                            rows="11"
-                            placeholder={t("Messege(optional)")}
-                            required={true}
-                          />
-                        </Col>
-                      </Row>
-                    </Container>
-                  </>
-                )
-              ) : inviteedit ? (
-                <>
-                  <Container>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Shared_Document_Heading"]}>
-                          Saad Fudda {t("Shared-a-document")}
-                        </span>
-                      </Col>
-                    </Row>
-
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                        <img
-                          draggable="false"
-                          src={newprofile}
-                          height="40px"
-                          width="41px"
-                        />
-                        <Row className="mt-1">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Line-height"]}
-                          >
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <span
-                                  className={styles["InvitetoEdit_Heading"]}
-                                >
-                                  Saad Fudda (Saad@gmail.com)
-                                  {t("Has-invited-you-to")}
-                                  <span className={styles["Edit_options"]}>
-                                    {t("Edit")}
-                                  </span>
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <span
-                                  className={styles["InvitetoEdit_Heading"]}
-                                >
-                                  {t("The-following-document-until")} 27 Apr
-                                  2023, 11:59 GMT
-                                </span>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Box_for_attachments"]}
-                      >
-                        <Row className="mt-2">
-                          <Col lg={12} md={12} sm={12}>
-                            <Row>
-                              <Col
-                                lg={10}
-                                md={10}
-                                sm={10}
-                                className="d-flex justify-content-start gap-2 "
-                              >
-                                <img
-                                  draggable="false"
-                                  src={pdf}
-                                  height="16px"
-                                  width="14.23px"
-                                />
-                                <span className={styles["File_name"]}>
-                                  Merger proposal for ABC Industries.pdf
-                                </span>
-                              </Col>
-                              <Col
-                                lg={2}
-                                md={2}
-                                sm={2}
-                                className="d-flex justify-content-end gap-2 mt-1"
-                              >
-                                <img
-                                  draggable="false"
-                                  src={download}
-                                  height="11px"
-                                  width="12.15px"
-                                />
-                                <img
-                                  draggable="false"
-                                  src={star}
-                                  height="10.22px"
-                                  width="12.07px"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </Container>
-                </>
               ) : (
                 <>
-                  <Container>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Share_folder_modal_Heading"]}>
-                          {t("Share")} <span>{folderName}</span>
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row className="mt-2">
-                      <Col lg={4} md={4} sm={4}>
-                        <InputSearchFilter
-                          labelClass="d-none"
-                          flag={flag}
-                          applyClass="sharefoldersearchInput"
-                          placeholder={t("Search-member-here")}
-                          value={taskAssignedToInput}
-                          filteredDataHandler={searchFilterHandler(
-                            taskAssignedToInput
-                          )}
-                          change={onChangeSearch}
-                          onclickFlag={onclickFlag}
-                        />
-                      </Col>
-                      <Col lg={3} md={3} sm={3}>
-                        {permissionID.value !== 0 ? (
-                          <div className={styles["dropdown__Document_Value"]}>
-                            <span className={styles["overflow-text"]}>
-                              {permissionID.label}
-                            </span>
-                            <img
-                              draggable="false"
-                              width="12px"
-                              height="12px"
-                              onClick={() => {
-                                setPermissionID({
-                                  label: "",
-                                  value: 0,
-                                });
-                              }}
-                              src={ChevronDownWhite}
-                            />
-                          </div>
-                        ) : (
-                          <Select
-                            options={options}
-                            placeholder={t("Editor")}
-                            className={styles["Editor_select"]}
-                            onChange={handlechange}
-                            classNamePrefix={"editSelector"}
-                          />
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["Share_folder_modal_Heading"]}>
+                        {t("Share")} <span>{folderName}</span>
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row className="mt-2">
+                    <Col lg={7} md={7} sm={12}>
+                      <InputSearchFilter
+                        labelClass="d-none"
+                        flag={flag}
+                        applyClass="sharefoldersearchInput"
+                        placeholder={t("Search-member-here")}
+                        value={taskAssignedToInput}
+                        filteredDataHandler={searchFilterHandler(
+                          taskAssignedToInput
                         )}
-                      </Col>
-                      <Col lg={3} md={3} sm={3}>
-                        {generalAccess.value !== 0 ? (
-                          <div className={styles["dropdown__Document_Value"]}>
-                            <span className={styles["overflow-text"]}>
-                              {generalAccess.label}
-                            </span>
-                            <img
-                              draggable="false"
-                              width="12px"
-                              height="12px"
-                              onClick={() => {
-                                setGeneralAccess({
-                                  label: "",
-                                  value: 0,
-                                });
-                              }}
-                              src={ChevronDownWhite}
-                            />
-                          </div>
-                        ) : (
-                          <Select
-                            options={optionsgeneralAccess}
-                            placeholder={t("General-access")}
-                            className={styles["Editor_select"]}
-                            classNamePrefix={"editSelector"}
-                            onChange={handleChangeGeneralAccess}
-                          />
+                        change={onChangeSearch}
+                        onclickFlag={onclickFlag}
+                      />
+                    </Col>
+                    <Col lg={3} md={3} sm={3}>
+                      <Select
+                        isSearchable={false}
+                        value={{
+                          value: permissionID.value,
+                          label: permissionID.label,
+                        }}
+                        options={options}
+                        placeholder={t("Editor")}
+                        className={styles["Editor_select"]}
+                        onChange={handlechange}
+                        classNamePrefix={
+                          permissionID.value === 0
+                            ? "shareFolderEditor_Selector_empty"
+                            : "shareFolderEditor_Selector"
+                        }
+                      />
+                      {/* )} */}
+                    </Col>
+                    {/* <Col lg={3} md={3} sm={3}>
+                      <Select
+                        value={{
+                          label: generalAccess.label,
+                          value: generalAccess.value,
+                        }}
+                        isSearchable={false}
+                        options={optionsgeneralAccess}
+                        placeholder={t("General-access")}
+                        className={styles["Editor_select"]}
+                        classNamePrefix={
+                          generalAccess.value === 0
+                            ? "shareFolderEditor_Selector_empty"
+                            : "shareFolderEditor_Selector"
+                        }
+                        onChange={handleChangeGeneralAccess}
+                      />
+                    </Col> */}
+                    <Col lg={2} md={2} sm={2}>
+                      <Button
+                        text="Add"
+                        className={styles["shareFolderAddMemberBtn"]}
+                        onClick={handleAddMember}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="mt-2">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Scroller_particiapnt_shared_folder"]}
+                    >
+                      <Row>
+                        {ownerInfo !== null && (
+                          <Col sm={4} md={4} lg={4}>
+                            <ParticipantInfoShareFolder
+                              participantname={ownerInfo?.name}
+                              particiapantdesignation={ownerInfo?.designation}
+                              userPic={ownerInfo?.displayProfilePictureName}
+                            />{" "}
+                          </Col>
                         )}
-                      </Col>
-                      <Col lg={2} md={2} sm={2}>
-                        <Button
-                          text="Add"
-                          className={styles["shareFolderAddMemberBtn"]}
-                          onClick={handleAddMember}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Scroller_particiapnt_shared_folder"]}
-                      >
-                        <Row>
-                          {isMembers.length > 0
-                            ? isMembers.map((data, index) => {
-                                return (
-                                  <Col lg={4} md={4} sm={4} key={data.pK_UID}>
-                                    <ParticipantInfoShareFolder
-                                      participantname={data.name}
-                                      particiapantdesignation={data.designation}
-                                      userPic={data.displayProfilePictureName}
-                                      icon={
-                                        <img
-                                          draggable="false"
-                                          src={crossIcon}
-                                          height="14px"
-                                          width="14px"
-                                          onClick={() =>
-                                            handleRemoveMember(data)
-                                          }
-                                        />
-                                      }
-                                    />
-                                  </Col>
-                                );
-                              })
-                            : null}
 
-                          {/* <Col lg={4} md={4} sm={4}>
+                        {isMembers.length > 0
+                          ? isMembers.map((data, index) => {
+                              return (
+                                <Col lg={4} md={4} sm={4} key={data.pK_UID}>
+                                  <ParticipantInfoShareFolder
+                                    participantname={data.name}
+                                    particiapantdesignation={data.designation}
+                                    userPic={data.displayProfilePictureName}
+                                    icon={
+                                      <img
+                                        draggable="false"
+                                        src={crossIcon}
+                                        height="14px"
+                                        width="14px"
+                                        alt=""
+                                        onClick={() => handleRemoveMember(data)}
+                                      />
+                                    }
+                                  />
+                                </Col>
+                              );
+                            })
+                          : null}
+
+                        {/* <Col lg={4} md={4} sm={4}>
                             <ParticipantInfoShareFolder
                               participantname="Saad Fudda"
                               particiapantdesignation="Owner"
@@ -714,69 +752,114 @@ const ModalShareFolder = ({
                               }
                             />
                           </Col> */}
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row className="mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="CreateMeetingInput "
-                      >
-                        <TextField
-                          applyClass="text-area-sharefolder"
-                          type="text"
-                          as={"textarea"}
-                          rows="4"
-                          placeholder={t("Messege")}
-                          required={true}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-3 align-items-center"
-                      >
-                        <Checkbox
-                          checked={notifyPeople}
-                          onChange={() => setNotifyPeople(!notifyPeople)}
-                        />
-                        <span className={styles["Notify_people_styles"]}>
-                          {t("Notify-people")}
-                        </span>
-                      </Col>
-                    </Row>
-                  </Container>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Row className="mt-2">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="CreateMeetingInput "
+                    >
+                      <TextField
+                        applyClass="text-area-sharefolder"
+                        type="text"
+                        as={"textarea"}
+                        rows="4"
+                        placeholder={t("Messege")}
+                        required={true}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-3 align-items-center"
+                    >
+                      <Checkbox
+                        checked={notifyPeople}
+                        onChange={() => setNotifyPeople(!notifyPeople)}
+                      />
+                      <span className={styles["Notify_people_styles"]}>
+                        {t("Notify-people")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={8} md={8} sm={8}>
+                      <Select
+                        value={{
+                          label:
+                            generalAccess.value === 1 ? (
+                              <>
+                                <Row>
+                                  <Col sm={12} md={12} lg={12}>
+                                    {generalAccess.label}
+                                  </Col>
+                                  <Col
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    className={styles["generalAccess-value"]}
+                                  >
+                                    ({" "}
+                                    {t(
+                                      "Only-people-with-access-can-open-with-the-link"
+                                    )}
+                                    )
+                                  </Col>
+                                </Row>
+                              </>
+                            ) : generalAccess.value === 2 ? (
+                              generalAccess.label
+                            ) : generalAccess.value === 3 ? (
+                              <>
+                                <Row>
+                                  <Col sm={12} md={12} lg={12}>
+                                    {generalAccess.label}
+                                  </Col>
+                                  <Col
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    className={styles["generalAccess-value"]}
+                                  >
+                                    (
+                                    {`${t(
+                                      "Anyone-on-the-internet-with-the-link-can-view"
+                                    )}`}
+                                    )
+                                  </Col>
+                                </Row>
+                              </>
+                            ) : (
+                              ""
+                            ),
+                          value: generalAccess.value,
+                        }}
+                        isSearchable={false}
+                        options={optionsgeneralAccess}
+                        placeholder={t("General-access")}
+                        className={styles["Editor_select"]}
+                        classNamePrefix={
+                          generalAccess.value === 0
+                            ? "shareFolderEditor_Selector_empty"
+                            : "shareFolderEditor_Selector"
+                        }
+                        onChange={handleChangeGeneralAccess}
+                      />
+                    </Col>
+                  </Row>
                 </>
               )}
             </>
           }
           ModalFooter={
             <>
-              {showaccessrequest ? (
-                showrequestsend ? null : (
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-end"
-                      >
-                        <Button
-                          text={t("Request-access")}
-                          className={styles["Request_Access_btn"]}
-                          onClick={Notificationnaccessrequest}
-                        />
-                      </Col>
-                    </Row>
-                  </>
-                )
-              ) : inviteedit ? (
+              {inviteedit ? (
                 <>
                   <Row>
                     <Col

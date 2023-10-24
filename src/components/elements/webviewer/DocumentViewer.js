@@ -35,7 +35,7 @@ const DocumentViewer = () => {
   // Deserialize the JSON string into an object
   const pdfData = JSON.parse(pdfDataJson);
   console.log(pdfData, "pdfDatapdfDatapdfDatapdfData");
-  const { taskId, attachmentID, fileName, commingFrom } = pdfData;
+  const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -106,12 +106,14 @@ const DocumentViewer = () => {
     if (webViewer.xfdfData || webViewer.attachmentBlob) {
       WebViewer(
         {
+          // fullAPI: isPermission === 2 ? "viewer" : "editor",
           path: "/webviewer/lib",
           // initialDoc: webViewer.attachmentBlob,
           // extension: "pdf",
           licenseKey:
             "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
         },
+
         viewer.current
       ).then((instance) => {
         instance.UI.loadDocument(base64ToBlob(webViewer.attachmentBlob), {

@@ -938,6 +938,38 @@ const getAllMeetingOrganizers = {
   RequestMethod: 'ServiceManager.GetAllMeetingOrganizers',
 }
 
+const getUserAgainstShareFileRM = {
+  RequestMethod: "ServiceManager.GetUsersAgainstSharedFile",
+};
+
+const getUserAgainstShareFolderRM = {
+  RequestMethod: "ServiceManager.GetUsersAgainstSharedFolder",
+};
+
+const createFileLinkRM = {
+  RequestMethod: "ServiceManager.CreateFileLink",
+};
+
+const createFolderLinkRM = {
+  RequestMethod: "ServiceManager.CreateFolderLink",
+};
+
+const updateGeneralAccessRM = {
+  RequestMethod: "ServiceManager.UpdateGeneralAccess",
+};
+
+const updateFolderGeneralAccessRM = {
+  RequestMethod: "ServiceManager.UpdateFolderGeneralAccess",
+};
+
+const checkFileLinkRM = {
+  RequestMethod: "ServiceManager.CreateFileLink",
+};
+
+const requestAccessRM = {
+  RequestMethod: "ServiceManager.RequestAccess",
+};
+
 const sendNotification = {
   RequestMethod: "ServiceManager.SendRecentNotifications",
 };
@@ -946,7 +978,23 @@ const getAllMeetingDetailsByMeetingID = {
   RequestMethod: "ServiceManager.GetAdvanceMeetingDetailsByMeetingID",
 };
 
+const getPollsByMeetingID = {
+  RequestMethod: "ServiceManager.GetPollsByMeetingID",
+};
+
+const getAllmeetingUsers = {
+  RequestMethod: "ServiceManager.GetAllMeetingUsers",
+};
+
 export {
+  updateGeneralAccessRM,
+  checkFileLinkRM,
+  requestAccessRM,
+  updateFolderGeneralAccessRM,
+  createFileLinkRM,
+  createFolderLinkRM,
+  getUserAgainstShareFolderRM,
+  getUserAgainstShareFileRM,
   getAllAgendaContributorRM,
   saveAgendaContributorsRM,
   getRecentDocumentsRM,
@@ -1200,4 +1248,6 @@ export {
   getAllMeetingOrganizers,
   sendNotification,
   getAllMeetingDetailsByMeetingID,
+  getPollsByMeetingID,
+  getAllmeetingUsers,
 };

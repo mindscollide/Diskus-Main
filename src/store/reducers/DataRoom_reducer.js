@@ -30,6 +30,14 @@ const initialState = {
   SearchFilesAndFoldersResponse: [],
   SearchFileListCount: 0,
   RecentDocuments: null,
+  getSharedFileUsers: null,
+  getSharedFolderUsers: null,
+  getCreateFolderLink: "",
+  getCreateFileLink: "",
+  checklinkresponse: null,
+  updateAccess: null,
+  updateGeneralAccess: null,
+  updateFolderGeneralAccess: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -461,6 +469,187 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         RecentDocuments: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFILE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFILE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getSharedFileUsers: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFILE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getSharedFileUsers: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFOLDER_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFOLDER_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getSharedFolderUsers: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETUSERSAGAINSTSHAREDFOLDER_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getSharedFolderUsers: null,
+        ResponseMessage: action.message,
+      };
+    }
+    // getCreateFolderLink: null,
+    // getCreateFileLink: null,
+    case actions.CREATEFILELINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.CREATEFILELINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getCreateFileLink: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CREATEFILELINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getCreateFileLink: "",
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CREATEFOLDERLINK_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.CREATEFOLDERLINK_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getCreateFolderLink: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CREATEFOLDERLINK_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getCreateFolderLink: "",
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CHECKLINKFILE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.CHECKLINKFILE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        checklinkresponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CHECKLINKFILE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        checklinkresponse: null,
+        ReResponseMessage: action.message,
+      };
+    }
+
+    case actions.REQUESTACCESS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.REQUESTACCESS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.REQUESTACCESS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        updateAccess: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.UPDATEGENERALACCESS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.UPDATEGENERALACCESS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        updateGeneralAccess: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPDATEGENERALACCESS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        updateGeneralAccess: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.UPDATEFOLDERGENERALACCESS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.UPDATEFOLDERGENERALACCESS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        updateFolderGeneralAccess: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPDATEFOLDERGENERALACCESS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        updateFolderGeneralAccess: null,
         ResponseMessage: action.message,
       };
     }

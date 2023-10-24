@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, NavDropdown, MenuItem, Dropdown } from "react-bootstrap";
 import styles from "./GridViewDataRoom.module.css";
 import folderColor from "../../../assets/images/folder_color.svg";
-
 import file_image from "../../../assets/images/file_image.svg";
 import {
   getFolderDocumentsApi,
@@ -27,7 +26,14 @@ import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getFileExtension, getIconSource } from "../SearchFunctionality/option";
-
+import {
+  optionsforFileEditableNonShareable,
+  optionsforFileEditor,
+  optionsforFileViewer,
+  optionsforFolderEditableNonShareable,
+  optionsforFolderViewer,
+  optionsforFolderEditor,
+} from "../SearchFunctionality/option";
 const GridViewDataRoom = ({
   data,
   optionsforFolder,
@@ -53,6 +59,7 @@ const GridViewDataRoom = ({
   const [fileName, setFileName] = useState("");
   const [folderName, setFolderName] = useState("");
   const [isDataforGrid, setDataForGrid] = useState([]);
+  console.log("isDataforGridisDataforGridisDataforGrid", isDataforGrid);
   const [isRenameFolderData, setRenameFolderData] = useState(null);
   const [filterValue, setFilterValue] = useState({
     label: t("Name"),
@@ -94,21 +101,33 @@ const GridViewDataRoom = ({
       value: filterValue.value,
     });
     if (filterValue.value === 1) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 1, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 1, sortIon)
+      );
     } else if (filterValue.value === 2) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 2, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 2, sortIon)
+      );
     } else if (filterValue.value === 3) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 3, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 3, sortIon)
+      );
     } else if (filterValue.value === 4) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 4, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 4, sortIon)
+      );
     }
   };
 
   const handleShareTabFilter = (filterValue) => {
     if (filterValue.value === 1) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 1, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 1, sortIon)
+      );
     } else if (filterValue.value === 2) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, 2, false));
+      dispatch(
+        getDocumentsAndFolderApi(navigate, currentView, t, 2, 2, sortIon)
+      );
     }
     setFilteShareTabrValue({
       label: filterValue.label,
@@ -239,7 +258,7 @@ const GridViewDataRoom = ({
               lg={12}
               className="d-flex gap-2 align-items-center justify-content-start"
             >
-              {currentView === 1 || currentView === 3 ? (
+              {currentView === 1 || currentView === 3 || currentView === 4 ? (
                 <>
                   <Dropdown
                     drop="down"
@@ -348,20 +367,122 @@ const GridViewDataRoom = ({
           </Row>
           <Row>
             {isDataforGrid?.length > 0
-              ? isDataforGrid.map((fileData, index) => {
-                  if (fileData.isFolder) {
-                    return (
-                      <>
-                        <Col sm={12} md={2} lg={2} key={index}>
-                          <div className={styles["gridViewFolder__name"]}>
-                            <span
-                              className={styles["folderName__text"]}
-                              onClick={() => getFolderDocuments(fileData.id)}
-                            >
-                              <img src={folderColor} alt="" draggable="false" />{" "}
-                              {fileData.name}
-                            </span>
-                            {!fileData.isShared && (
+              ? isDataforGrid
+                  .filter((data, index) => data.isFolder === true)
+                  .map((fileData, index) => {
+                    if (fileData.isShared) {
+                      return (
+                        <>
+                          <Col sm={12} md={2} lg={2} key={index}>
+                            <div className={styles["gridViewFolder__name"]}>
+                              <span
+                                className={styles["folderName__text"]}
+                                onClick={() => getFolderDocuments(fileData.id)}
+                              >
+                                <img
+                                  src={folderColor}
+                                  alt=""
+                                  draggable="false"
+                                />{" "}
+                                {fileData.name}
+                              </span>
+
+                              <span className={styles["three_dot__gridView"]}>
+                                <Dropdown
+                                  drop="down"
+                                  align="start"
+                                  className={`${
+                                    styles["options_dropdown"]
+                                  } ${"dataroom_options"}`}
+                                >
+                                  <Dropdown.Toggle id="dropdown-autoclose-true">
+                                    <img
+                                      alt=""
+                                      src={threedots_dataroom}
+                                      width="15.02px"
+                                      height="10.71px"
+                                    />
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu>
+                                    {fileData.permissionID === 1
+                                      ? optionsforFolderEditor(t).map(
+                                          (data, index) => {
+                                            return (
+                                              <Dropdown.Item
+                                                key={index}
+                                                onClick={() =>
+                                                  handleClickforFolder(
+                                                    data,
+                                                    fileData
+                                                  )
+                                                }
+                                              >
+                                                {data.label}
+                                              </Dropdown.Item>
+                                            );
+                                          }
+                                        )
+                                      : fileData.permissionID === 2
+                                      ? optionsforFolderViewer(t).map(
+                                          (data, index) => {
+                                            return (
+                                              <Dropdown.Item
+                                                key={index}
+                                                onClick={() =>
+                                                  handleClickforFolder(
+                                                    data,
+                                                    fileData
+                                                  )
+                                                }
+                                              >
+                                                {data.label}
+                                              </Dropdown.Item>
+                                            );
+                                          }
+                                        )
+                                      : fileData.permissionID === 3
+                                      ? optionsforFolderEditableNonShareable(
+                                          t
+                                        ).map((data, index) => {
+                                          return (
+                                            <Dropdown.Item
+                                              key={index}
+                                              onClick={() =>
+                                                handleClickforFolder(
+                                                  data,
+                                                  fileData
+                                                )
+                                              }
+                                            >
+                                              {data.label}
+                                            </Dropdown.Item>
+                                          );
+                                        })
+                                      : null}
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </span>
+                            </div>
+                          </Col>
+                        </>
+                      );
+                    } else {
+                      return (
+                        <>
+                          <Col sm={12} md={2} lg={2} key={index}>
+                            <div className={styles["gridViewFolder__name"]}>
+                              <span
+                                className={styles["folderName__text"]}
+                                onClick={() => getFolderDocuments(fileData.id)}
+                              >
+                                <img
+                                  src={folderColor}
+                                  alt=""
+                                  draggable="false"
+                                />{" "}
+                                {fileData.name}
+                              </span>
+
                               <span className={styles["three_dot__gridView"]}>
                                 <Dropdown
                                   drop="down"
@@ -394,13 +515,12 @@ const GridViewDataRoom = ({
                                   </Dropdown.Menu>
                                 </Dropdown>
                               </span>
-                            )}
-                          </div>
-                        </Col>
-                      </>
-                    );
-                  }
-                })
+                            </div>
+                          </Col>
+                        </>
+                      );
+                    }
+                  })
               : null}
           </Row>
           <Row>
@@ -410,44 +530,168 @@ const GridViewDataRoom = ({
           </Row>
           <Row>
             {isDataforGrid?.length > 0
-              ? isDataforGrid.map((fileData, index) => {
-                  if (!fileData.isFolder) {
-                    return (
-                      <>
-                        <Col
-                          sm={12}
-                          md={2}
-                          lg={2}
-                          className={styles["gridViewFolder"]}
-                        >
-                          <div className={styles["fileview__Box"]}>
-                            <Row>
-                              <Col sm={12} md={12} lg={12}>
-                                <img
-                                  src={file_image}
-                                  width={"100%"}
-                                  alt=""
-                                  draggable="false"
-                                />
-                              </Col>
-                              <Col sm={12} md={12} lg={12}>
-                                <div className={styles["gridViewFile__name"]}>
-                                  <span
-                                    className={styles["folderFile__text"]}
-                                    onClick={(e) =>
-                                      handleClickFile(e, fileData)
-                                    }
-                                  >
-                                    <img
-                                      src={getIconSource(
-                                        getFileExtension(fileData.name)
-                                      )}
-                                      alt=""
-                                      draggable="false"
-                                    />{" "}
-                                    {fileData.name}
-                                  </span>
-                                  {!fileData.isShared && (
+              ? isDataforGrid
+                  .filter((data, index) => data.isFolder === false)
+                  .map((fileData, index) => {
+                    if (fileData.isShared) {
+                      return (
+                        <>
+                          <Col
+                            sm={12}
+                            md={2}
+                            lg={2}
+                            className={styles["gridViewFolder"]}
+                          >
+                            <div className={styles["fileview__Box"]}>
+                              <Row>
+                                <Col sm={12} md={12} lg={12}>
+                                  <img
+                                    src={file_image}
+                                    width={"100%"}
+                                    alt=""
+                                    draggable="false"
+                                  />
+                                </Col>
+                                <Col sm={12} md={12} lg={12}>
+                                  <div className={styles["gridViewFile__name"]}>
+                                    <span
+                                      className={styles["folderFile__text"]}
+                                      onClick={(e) =>
+                                        handleClickFile(e, fileData)
+                                      }
+                                    >
+                                      <img
+                                        src={getIconSource(
+                                          getFileExtension(fileData.name)
+                                        )}
+                                        alt=""
+                                        draggable="false"
+                                      />{" "}
+                                      {fileData.name}
+                                    </span>
+
+                                    <span
+                                      className={styles["three_dot__gridView"]}
+                                    >
+                                      <Dropdown
+                                        drop="down"
+                                        align="start"
+                                        className={`${
+                                          styles["options_dropdown"]
+                                        } ${"dataroom_options"}`}
+                                      >
+                                        <Dropdown.Toggle id="dropdown-autoclose-true">
+                                          <img
+                                            src={threedots_dataroom}
+                                            width="15.02px"
+                                            height="10.71px"
+                                            alt=""
+                                          />
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                          {fileData.permissionID === 1
+                                            ? optionsforFileEditor(t).map(
+                                                (data, index) => {
+                                                  return (
+                                                    <Dropdown.Item
+                                                      key={index}
+                                                      onClick={() =>
+                                                        handleClickforFile(
+                                                          data,
+                                                          fileData
+                                                        )
+                                                      }
+                                                    >
+                                                      {data.label}
+                                                    </Dropdown.Item>
+                                                  );
+                                                }
+                                              )
+                                            : fileData.permissionID === 2
+                                            ? optionsforFileViewer(t).map(
+                                                (data, index) => {
+                                                  return (
+                                                    <Dropdown.Item
+                                                      key={index}
+                                                      onClick={() =>
+                                                        handleClickforFile(
+                                                          data,
+                                                          fileData
+                                                        )
+                                                      }
+                                                    >
+                                                      {data.label}
+                                                    </Dropdown.Item>
+                                                  );
+                                                }
+                                              )
+                                            : fileData.permissionID === 3
+                                            ? optionsforFileEditableNonShareable(
+                                                t
+                                              ).map((data, index) => {
+                                                return (
+                                                  <Dropdown.Item
+                                                    key={index}
+                                                    onClick={() =>
+                                                      handleClickforFile(
+                                                        data,
+                                                        fileData
+                                                      )
+                                                    }
+                                                  >
+                                                    {data.label}
+                                                  </Dropdown.Item>
+                                                );
+                                              })
+                                            : null}
+                                        </Dropdown.Menu>
+                                      </Dropdown>
+                                      {/* <img src={threedots_dataroom} onClick={() => handleClickforFile(fileData.id)} /> */}
+                                    </span>
+                                  </div>
+                                </Col>
+                              </Row>
+                            </div>
+                          </Col>
+                        </>
+                      );
+                    } else {
+                      return (
+                        <>
+                          <Col
+                            sm={12}
+                            md={2}
+                            lg={2}
+                            className={styles["gridViewFolder"]}
+                          >
+                            <div className={styles["fileview__Box"]}>
+                              <Row>
+                                <Col sm={12} md={12} lg={12}>
+                                  <img
+                                    src={file_image}
+                                    width={"100%"}
+                                    alt=""
+                                    draggable="false"
+                                  />
+                                </Col>
+                                <Col sm={12} md={12} lg={12}>
+                                  <div className={styles["gridViewFile__name"]}>
+                                    <span
+                                      className={styles["folderFile__text"]}
+                                      onClick={(e) =>
+                                        handleClickFile(e, fileData)
+                                      }
+                                    >
+                                      <img
+                                        src={getIconSource(
+                                          getFileExtension(fileData.name)
+                                        )}
+                                        alt=""
+                                        draggable="false"
+                                      />{" "}
+                                      {fileData.name}
+                                    </span>
+
                                     <span
                                       className={styles["three_dot__gridView"]}
                                     >
@@ -486,16 +730,15 @@ const GridViewDataRoom = ({
                                       </Dropdown>
                                       {/* <img src={threedots_dataroom} onClick={() => handleClickforFile(fileData.id)} /> */}
                                     </span>
-                                  )}
-                                </div>
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                      </>
-                    );
-                  }
-                })
+                                  </div>
+                                </Col>
+                              </Row>
+                            </div>
+                          </Col>
+                        </>
+                      );
+                    }
+                  })
               : null}
           </Row>
         </Col>

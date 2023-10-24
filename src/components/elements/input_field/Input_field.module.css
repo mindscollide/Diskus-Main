@@ -260,3 +260,7 @@
 .resolution-search-input {
   position: relative !important;
 }
+.text-area-dataroom {
+  resize: none;
+  overflow-y: auto;
+}

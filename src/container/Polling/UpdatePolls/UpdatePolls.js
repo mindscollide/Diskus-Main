@@ -602,7 +602,7 @@ const UpdatePolls = () => {
                               </span>
                             </span>
                             <DatePicker
-                              highlightToday={false}
+                              highlightToday={true}
                               onOpenPickNewDate={true}
                               ref={datePickerRef}
                               render={<CustomIcon />}
