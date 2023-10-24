@@ -97,8 +97,8 @@ const Dashboard = () => {
     assignees,
     NewMeetingreducer,
     MeetingOrganizersReducer,
+    PollsReducer,
   } = useSelector((state) => state);
-  console.log(assignees, "meetingIdReducermeetingIdReducer");
   // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate();
   let createrID = localStorage.getItem("userID");
@@ -1576,7 +1576,8 @@ const Dashboard = () => {
             {NewMeetingreducer.Loading ||
             assignees.Loading ||
             MeetingOrganizersReducer.LoadingMeetingOrganizer ||
-            MeetingOrganizersReducer.Loading ? (
+            MeetingOrganizersReducer.Loading ||
+            PollsReducer.Loading ? (
               <Loader />
             ) : null}
           </Layout>

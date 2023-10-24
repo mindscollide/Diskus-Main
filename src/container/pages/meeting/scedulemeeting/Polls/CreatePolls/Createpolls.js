@@ -850,7 +850,6 @@ const Createpolls = ({ setCreatepoll }) => {
             {NewMeetingreducer.unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
             )}
-            {PollsReducer.Loading ? <Loader /> : null}
           </section>
         </>
       )}

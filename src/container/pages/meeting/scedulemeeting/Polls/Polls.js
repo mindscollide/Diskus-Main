@@ -373,7 +373,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                               <Table
                                 column={PollsColoumn}
                                 rows={pollsRows}
-                                scroll={{ y: "50vh" }}
+                                scroll={{ y: "40vh" }}
                                 pagination={false}
                                 className="Polling_table"
                               />
