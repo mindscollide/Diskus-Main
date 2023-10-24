@@ -1197,6 +1197,10 @@ const Home = () => {
                 ) : recentActivityData !== null &&
                   recentActivityData !== undefined ? (
                   recentActivityData.map((recentActivityData, index) => {
+                    console.log(
+                      recentActivityData,
+                      "recentActivityDatarecentActivityDatarecentActivityData"
+                    );
                     return (
                       <>
                         <Row>
@@ -1528,7 +1532,7 @@ const Home = () => {
                                     lg={11}
                                     md={11}
                                     sm={11}
-                                    className="d-flex justify-content-end  gap-2 align-items-center"
+                                    className="d-flex gap-2 align-items-center"
                                   >
                                     {data.isStarred ? (
                                       <img

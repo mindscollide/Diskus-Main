@@ -1452,6 +1452,33 @@ const Dashboard = () => {
         }
       }
     }
+    if (data.action.toLowerCase() === "Notes".toLowerCase()) {
+      console.log("hello", data);
+      console.log("hello", data.payload);
+      console.log("hello", data.payload.message);
+
+      if (
+        data.payload.message.toLowerCase() ===
+        "NEW_NOTES_CREATION".toLowerCase()
+      ) {
+        let data2 = {
+          creationDateTime: data.dateTime,
+          notificationTypes: {
+            pK_NTID: 10,
+            description: changeMQTTJSONOne(
+              t("NOTES-RECENT-ACTIVITY"),
+              "[Notes Title]",
+              data.payload.model.title
+            ),
+            icon: "",
+          },
+          key: 0,
+        };
+        console.log("hello", data2);
+
+        dispatch(setRecentActivityDataNotification(data2));
+      }
+    }
   };
 
   const onConnectionLost = () => {
