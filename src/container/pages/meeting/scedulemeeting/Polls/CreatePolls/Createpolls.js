@@ -37,6 +37,8 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
+import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+import { SavePollsApi } from "../../../../../../store/actions/Polls_actions";
 
 const Createpolls = ({ setCreatepoll }) => {
   const { t } = useTranslation();
@@ -181,7 +183,7 @@ const Createpolls = ({ setCreatepoll }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: 1785,
     };
     dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
   }, []);
@@ -192,7 +194,7 @@ const Createpolls = ({ setCreatepoll }) => {
     if (pollMeetingData !== undefined && pollMeetingData !== null) {
       let newmembersArray = [];
       if (Object.keys(pollMeetingData).length > 0) {
-        if (Object.keys(pollMeetingData.meetingOrganizers).length > 0) {
+        if (Object.keys(pollMeetingData.meetingAgendaContributors).length > 0) {
           pollMeetingData.meetingOrganizers.map(
             (MorganizerData, MorganizerIndex) => {
               let MeetingOrganizerData = {
@@ -227,6 +229,76 @@ const Createpolls = ({ setCreatepoll }) => {
             }
           );
         }
+        if (Object.keys(pollMeetingData.meetingAgendaContributors).length > 0) {
+          pollMeetingData.meetingAgendaContributors.map(
+            (meetAgendaContributor, meetAgendaContributorIndex) => {
+              let MeetingAgendaContributorData = {
+                value: meetAgendaContributor.userID,
+                label: (
+                  <>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={GroupIcon}
+                            height="16.45px"
+                            width="18.32px"
+                            draggable="false"
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {meetAgendaContributor.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  </>
+                ),
+                type: 2,
+              };
+              newmembersArray.push(MeetingAgendaContributorData);
+            }
+          );
+        }
+        if (Object.keys(pollMeetingData.meetingParticipants).length > 0) {
+          pollMeetingData.meetingParticipants.map(
+            (meetParticipants, meetParticipantsIndex) => {
+              let MeetingParticipantsData = {
+                value: meetParticipants.userID,
+                label: (
+                  <>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={GroupIcon}
+                            height="16.45px"
+                            width="18.32px"
+                            draggable="false"
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {meetParticipants.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  </>
+                ),
+                type: 3,
+              };
+              newmembersArray.push(MeetingParticipantsData);
+            }
+          );
+        }
       }
       setmemberSelect(newmembersArray);
     } else {
@@ -243,6 +315,7 @@ const Createpolls = ({ setCreatepoll }) => {
     let pollsData = NewMeetingreducer.getMeetingusers;
     console.log(pollsData, "pollsDatapollsData");
     let tem = [...members];
+    let newarr = [];
     try {
       if (Object.keys(selectedsearch).length > 0) {
         try {
@@ -258,24 +331,96 @@ const Createpolls = ({ setCreatepoll }) => {
               console.log(check1, "check1check1");
               if (check1 !== undefined) {
                 console.log(check1, "check1check1");
+                newarr.push(check1);
+                console.log(newarr, "newarrnewarr");
 
                 let meetingOrganizers = check1;
                 console.log(meetingOrganizers, "check1check1");
 
-                if (Object.keys(check1).length > 0) {
-                  meetingOrganizers.map((morganizer, index) => {
-                    console.log(morganizer, "morganizer");
-                    let check2 = members.find(
+                if (newarr.length > 0) {
+                  newarr.map((morganizer, index) => {
+                    console.log(morganizer, "UserIDUserID");
+                    let check2 = newarr.find(
                       (data, index) => data.UserID === morganizer.userID
                     );
                     if (check2 !== undefined) {
+                      console.log(check2, "check2check2");
                     } else {
                       let newUser = {
                         userName: morganizer.userName,
                         userID: morganizer.userID,
-                        displayPicture: "",
+                        displayPicture:
+                          morganizer.userProfilePicture
+                            .displayProfilePictureName,
                       };
                       tem.push(newUser);
+                      console.log(tem, "temtemtemtemtem");
+                    }
+                  });
+                }
+              }
+            } else if (seledtedData.type === 2) {
+              let check1 = pollsData.meetingAgendaContributors.find(
+                (data, index) => data.userID === seledtedData.value
+              );
+              console.log(check1, "check1check1");
+              if (check1 !== undefined) {
+                console.log(check1, "check1check1");
+                newarr.push(check1);
+                console.log(newarr, "newarrnewarr");
+
+                let meetingOrganizers = check1;
+                console.log(meetingOrganizers, "check1check1");
+
+                if (newarr.length > 0) {
+                  newarr.map((morganizer, index) => {
+                    console.log(morganizer, "UserIDUserID");
+                    let check2 = newarr.find(
+                      (data, index) => data.UserID === morganizer.userID
+                    );
+                    if (check2 !== undefined) {
+                      console.log(check2, "check2check2");
+                    } else {
+                      let newUser = {
+                        userName: morganizer.userName,
+                        userID: morganizer.userID,
+                        displayPicture:
+                          morganizer.userProfilePicture
+                            .displayProfilePictureName,
+                      };
+                      tem.push(newUser);
+                      console.log(tem, "temtemtemtemtem");
+                    }
+                  });
+                }
+              }
+            } else if (seledtedData.type === 3) {
+              let check1 = pollsData.meetingParticipants.find(
+                (data, index) => data.userID === seledtedData.value
+              );
+              if (check1 !== undefined) {
+                newarr.push(check1);
+
+                let meetingOrganizers = check1;
+
+                if (newarr.length > 0) {
+                  newarr.map((morganizer, index) => {
+                    console.log(morganizer, "UserIDUserID");
+                    let check2 = newarr.find(
+                      (data, index) => data.UserID === morganizer.userID
+                    );
+                    if (check2 !== undefined) {
+                      console.log(check2, "check2check2");
+                    } else {
+                      let newUser = {
+                        userName: morganizer.userName,
+                        userID: morganizer.userID,
+                        displayPicture:
+                          morganizer.userProfilePicture
+                            .displayProfilePictureName,
+                      };
+                      tem.push(newUser);
+                      console.log(tem, "temtemtemtemtem");
                     }
                   });
                 }
@@ -288,7 +433,6 @@ const Createpolls = ({ setCreatepoll }) => {
         }
         console.log("members check", tem);
         const uniqueData = new Set(tem.map(JSON.stringify));
-
         // Convert the Set back to an array of objects
         const result = Array.from(uniqueData).map(JSON.parse);
         setMembers(result);
@@ -297,6 +441,86 @@ const Createpolls = ({ setCreatepoll }) => {
         // setopen notionation work here
       }
     } catch {}
+  };
+
+  //For Saving the polls
+
+  // for create polls
+  const SavePollsButtonFunc = async (value) => {
+    const organizationid = localStorage.getItem("organizationID");
+    const createrid = localStorage.getItem("userID");
+    let users = [];
+    let optionsListData = [];
+    if (
+      pollsData.date != "" &&
+      pollsData.Title != "" &&
+      Object.keys(members).length > 0 &&
+      Object.keys(options).length >= 2 &&
+      allValuesNotEmpty
+    ) {
+      members.map((userdata, index) => {
+        users.push(userdata.userID);
+      });
+      options.map((optionData, index) => {
+        if (optionData.value != "") {
+          optionsListData.push(optionData.value);
+        }
+      });
+      let data = {
+        PollDetails: {
+          PollTitle: pollsData.Title,
+          DueDate: multiDatePickerDateChangIntoUTC(pollsData.date),
+          AllowMultipleAnswers: pollsData.AllowMultipleAnswer,
+          CreatorID: parseInt(createrid),
+          PollStatusID: parseInt(value),
+          OrganizationID: parseInt(organizationid),
+        },
+        ParticipantIDs: users,
+        PollAnswers: optionsListData,
+      };
+
+      await dispatch(SavePollsApi(navigate, data, t));
+    } else {
+      // setError(true);
+
+      if (pollsData.Title === "") {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Title-is-required"),
+        });
+      } else if (pollsData.date === "") {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Select-date"),
+        });
+      } else if (Object.keys(members).length === 0) {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Atleat-one-member-required"),
+        });
+      } else if (Object.keys(options).length <= 1) {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Required-atleast-two-options"),
+        });
+      } else if (!allValuesNotEmpty) {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Please-fill-all-open-option-fields"),
+        });
+      } else {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Please-fill-all-reqired-fields"),
+        });
+      }
+    }
   };
 
   return (
@@ -508,6 +732,7 @@ const Createpolls = ({ setCreatepoll }) => {
                         <Select
                           classNamePrefix={"Polls_Meeting"}
                           options={memberSelect}
+                          value={selectedsearch}
                           closeMenuOnSelect={false}
                           components={animatedComponents}
                           isMulti
@@ -532,6 +757,7 @@ const Createpolls = ({ setCreatepoll }) => {
                     <Row>
                       {members.length > 0
                         ? members.map((data, index) => {
+                            console.log(data, "membersmembersmembers");
                             return (
                               <>
                                 <Col lg={6} md={6} sm={6} className="mt-3">
@@ -548,8 +774,8 @@ const Createpolls = ({ setCreatepoll }) => {
                                             className="d-flex gap-2 align-items-center"
                                           >
                                             <img
+                                              src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                               draggable={false}
-                                              src={Profile}
                                               height="33px"
                                               width="33px"
                                               className={
@@ -559,7 +785,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                             <span
                                               className={styles["Name_Members"]}
                                             >
-                                              {data.name}
+                                              {data.userName}
                                             </span>
                                           </Col>
                                           <Col
@@ -608,12 +834,15 @@ const Createpolls = ({ setCreatepoll }) => {
                 <Button
                   text={t("Save")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
-                  onClick={handleViewPollsUnPublished}
+                  onClick={() => SavePollsButtonFunc(1)}
+                  // onClick={handleViewPollsUnPublished}
                 />
                 <Button
                   text={t("Save-and-published")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
-                  onClick={handleViewPollsPublished}
+                  onClick={() => SavePollsButtonFunc(2)}
+
+                  // onClick={handleViewPollsPublished}
                 />
               </Col>
             </Row>
