@@ -273,18 +273,15 @@ const Notes = () => {
         open: true,
         message: NotesReducer.ResponseMessage,
       });
-      dispatch(ClearNotesResponseMessage());
 
-      // setTimeout(() => {
-      //   setOpen(
-      //     {
-      //       ...open,
-      //       open: false,
-      //       message: "",
-      //     },
-      //     4000
-      //   );
-      // });
+      setTimeout(() => {
+        dispatch(ClearNotesResponseMessage());
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 4000);
     }
   }, [NotesReducer.ResponseMessage]);
 
