@@ -27,16 +27,23 @@ import {
   showCancelModalOrganizers,
   showCrossConfirmationModal,
   showNotifyOrganizors,
+  sendRecentNotificationOrganizerModal,
 } from '../../../../../store/actions/NewMeetingActions'
 import ModalOrganizor from './ModalAddUserOrganizer/ModalOrganizor'
 import ModalCrossIcon from './ModalCrossIconClick/ModalCrossIcon'
 import NotifyOrganizers from './NotifyOrganizers/NotifyOrganizers'
+import SendNotificationOrganizer from './NotifyOrganizers/SendRecentNotification'
 import OrganizersViewPage from './OrganizerViewPage/OrganizersViewPage'
 import {
   SaveMeetingOrganizers,
   clearResponseMessage,
   UpdateOrganizersMeeting,
   GetAllMeetingOrganizers,
+  meetingOrganizers,
+  selectedMeetingOrganizers,
+  saveMeetingFlag,
+  editMeetingFlag,
+  notificationSendData,
 } from '../../../../../store/actions/MeetingOrganizers_action'
 import CancelModalOrganizer from './CancelModalOrganizer/CancelModalOrganizer'
 
@@ -63,14 +70,13 @@ const Organizers = ({
 
   let currentMeetingID = Number(localStorage.getItem('meetingID'))
 
+  let currentUserEmail = localStorage.getItem('userEmail')
+  let currentUserID = Number(localStorage.getItem('userID'))
+  let currentUserName = localStorage.getItem('name')
+
   const [viewOrganizers, setviewOrganizers] = useState(false)
 
   const [editState, setEditState] = useState(false)
-
-  const [disabledTitle, setDisabledTitle] = useState(true)
-  const [disabledSwitch, setDisabledSwitch] = useState(true)
-  const [disabledRSVP, setDisabledRSVP] = useState(true)
-  const [disabledNotification, setDisabledNotification] = useState(true)
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state,
@@ -87,104 +93,9 @@ const Organizers = ({
   const handleCancelOrganizer = () => {
     // dispatch(showCancelModalOrganizers(true));
     setSceduleMeeting(false)
+    dispatch(saveMeetingFlag(false))
+    dispatch(editMeetingFlag(false))
   }
-
-  // const data = [
-  //   {
-  //     key: '1',
-  //     Name: <label className={styles['Title_desc']}>Muahmmad Saif</label>,
-  //     Email: (
-  //       <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-  //     ),
-  //     OrganizerTitle: <label className="column-boldness">Organizer</label>,
-  //     rsvp: (
-  //       <>
-  //         <img
-  //           draggable={false}
-  //           src={rspvGreenIcon}
-  //           height="30px"
-  //           width="30px"
-  //         />
-  //         {/* <img draggable = {false} src={rspvAbstainIcon} height="30px" width="30px" /> */}
-  //       </>
-  //     ),
-  //     Notification: (
-  //       <>
-  //         <Row>
-  //           <Col lg={7} md={7} sm={7} className="d-flex justify-content-center">
-  //             <img
-  //               draggable={false}
-  //               src={greenMailIcon}
-  //               height="17.64px"
-  //               width="12.4px"
-  //             />
-  //             {/* <img draggable = {false} src={redMailIcon} height="17.64px" width="12.4px" /> */}
-  //           </Col>
-  //         </Row>
-  //       </>
-  //     ),
-  //     Primary: <label className="column-boldness">Primary</label>,
-  //   },
-  //   {
-  //     key: '1',
-  //     Name: <label className={styles['Title_desc']}>Muahmmad Saif</label>,
-  //     Email: (
-  //       <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-  //     ),
-  //     OrganizerTitle: (
-  //       <>
-  //         <Row>
-  //           <Col lg={12} md={12} sm={12}>
-  //             <TextField
-  //               disable={editState === true ? true : false}
-  //               placeholder={t('Content-title')}
-  //               labelClass={'d-none'}
-  //               applyClass={'Organizer_table'}
-  //             />
-  //           </Col>
-  //         </Row>
-  //       </>
-  //     ),
-  //     Primary: (
-  //       <>
-  //         <Row>
-  //           <Col
-  //             lg={12}
-  //             md={12}
-  //             sm={12}
-  //             className="d-flex gap-3 align-items-center"
-  //           >
-  //             <Switch disabled={editState === true ? true : false} />
-  //             <label className="column-boldness">Primary</label>
-  //           </Col>
-  //         </Row>
-  //       </>
-  //     ),
-  //     Close: (
-  //       <>
-  //         <Row>
-  //           <Col lg={12} md={12} sm={12}>
-  //             {editState === true ? (
-  //               <>
-  //                 <img
-  //                   draggable={false}
-  //                   src={redcrossIcon}
-  //                   width="21.79px"
-  //                   height="21.79px"
-  //                   onClick={openCrossIconModal}
-  //                 />
-  //               </>
-  //             ) : null}
-  //           </Col>
-  //         </Row>
-  //       </>
-  //     ),
-  //   },
-  // ]
-
-  let currentUserEmail = localStorage.getItem('userEmail')
-  let currentUserID = Number(localStorage.getItem('userID'))
-  let currentUserName = localStorage.getItem('name')
 
   const [inputValues, setInputValues] = useState({})
 
@@ -195,9 +106,10 @@ const Organizers = ({
     isPrimaryOrganizer: true,
     isOrganizerNotified: true,
     isRSVP: true,
-    organizerTitle: 'Organizer',
+    organizerTitle: '',
     userID: currentUserID,
     userName: currentUserName,
+    isDeletable: false,
   }
 
   const [rowsData, setRowsData] = useState([currentOrganizerData])
@@ -206,55 +118,15 @@ const Organizers = ({
     MeetingOrganizers: [],
   })
 
-  useEffect(() => {
-    if (
-      MeetingOrganizersReducer.SelectedMeetingOrganizersData !== undefined &&
-      MeetingOrganizersReducer.SelectedMeetingOrganizersData !== null &&
-      MeetingOrganizersReducer.SelectedMeetingOrganizersData.length !== 0
-    ) {
-      const uniqueMeetingOrganizers = MeetingOrganizersReducer.SelectedMeetingOrganizersData.filter(
-        (organizer) => {
-          return !inputValues.hasOwnProperty(organizer.userID)
-        },
-      )
-      const initialValues = {}
-      MeetingOrganizersReducer.SelectedMeetingOrganizersData.forEach(
-        (organizer) => {
-          initialValues[organizer.userID] = organizer.organizerTitle || ''
-        },
-      )
-      initialValues[currentOrganizerData.userID] =
-        currentOrganizerData.organizerTitle || ''
-
-      setInputValues((prevInputValues) => ({
-        ...prevInputValues,
-        ...initialValues,
-      }))
-
-      setRowsData([...rowsData, ...uniqueMeetingOrganizers])
-    }
-  }, [MeetingOrganizersReducer.SelectedMeetingOrganizersData])
+  const [open, setOpen] = useState({
+    open: false,
+    message: '',
+  })
 
   useEffect(() => {
     let Data = { MeetingID: currentMeetingID }
     dispatch(GetAllMeetingOrganizers(Data, navigate, t))
-    setDisabledTitle(true)
-    setDisabledSwitch(true)
-    setDisabledRSVP(false)
-    setDisabledNotification(false)
   }, [])
-
-  useEffect(() => {
-    if (
-      MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
-      MeetingOrganizersReducer.AllMeetingOrganizersData !== null &&
-      MeetingOrganizersReducer.AllMeetingOrganizersData.length !== 0
-    ) {
-      let allMeetingOrganizers =
-        MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers
-      setRowsData(allMeetingOrganizers)
-    }
-  }, [MeetingOrganizersReducer.AllMeetingOrganizersData])
 
   const handleInputChange = (userID, newValue) => {
     setInputValues((prevInputValues) => ({
@@ -328,7 +200,7 @@ const Organizers = ({
               applyClass={'Organizer_table'}
               value={inputValues[record.userID] || ''} // Use the controlled value
               change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
-              disable={disabledTitle === true ? true : false}
+              disable={record.disabledTitle === true ? true : false}
             />
           </Col>
         </Row>
@@ -350,7 +222,7 @@ const Organizers = ({
             <Switch
               checkedValue={text}
               onChange={(checked) => handleSwitchChange(checked, rowIndex)}
-              disabled={disabledSwitch === true ? true : false}
+              disabled={record.disabledSwitch === true ? true : false}
             />
             <label className="column-boldness">Primary</label>
           </Col>
@@ -397,16 +269,29 @@ const Organizers = ({
                 sm={7}
                 className="d-flex justify-content-center"
               >
-                <img
-                  draggable={false}
-                  src={greenMailIcon}
-                  height="30px"
-                  width="30px"
-                />
+                {record.disabledNotification === true ? (
+                  <img
+                    draggable={false}
+                    src={greenMailIcon}
+                    height="30px"
+                    width="30px"
+                    // onClick={() => sendRecentNotification(record)}
+                    className="cursor-pointer"
+                  />
+                ) : (
+                  <img
+                    draggable={false}
+                    src={greenMailIcon}
+                    height="30px"
+                    width="30px"
+                    onClick={() => sendRecentNotification(record)}
+                    className="cursor-pointer"
+                  />
+                )}
               </Col>
             </Row>
           )
-        } else {
+        } else if (record.isOrganizerNotified === false) {
           return (
             <Row>
               <Col
@@ -415,41 +300,75 @@ const Organizers = ({
                 sm={7}
                 className="d-flex justify-content-center"
               >
-                <img
-                  draggable={false}
-                  src={redMailIcon}
-                  height="30px"
-                  width="30px"
-                />
+                {record.disabledNotification === true ? (
+                  <img
+                    draggable={false}
+                    src={redMailIcon}
+                    height="30px"
+                    width="30px"
+                    className="cursor-pointer"
+                  />
+                ) : (
+                  <img
+                    draggable={false}
+                    src={redMailIcon}
+                    height="30px"
+                    width="30px"
+                    onClick={() => sendRecentNotification(record)}
+                    className="cursor-pointer"
+                  />
+                )}
               </Col>
             </Row>
           )
         }
       },
     },
-    // {
-    //   dataIndex: 'Close',
-    //   key: 'Close',
-    //   width: '50px',
-    // },
+
+    {
+      // title: t('RSVP'),
+      dataIndex: 'isDeletable',
+      key: 'isDeletable',
+      width: '120px',
+      render: (text, record) => {
+        if (record.isDeletable === true) {
+          return (
+            <img
+              draggable={false}
+              src={redcrossIcon}
+              height="30px"
+              width="30px"
+              className="cursor-pointer"
+              onClick={() => deleteRow(record)}
+            />
+          )
+        } else {
+          null
+        }
+      },
+    },
   ]
 
-  const openAddUserModal = () => {
-    dispatch(showAddUserModal(true))
+  const sendRecentNotification = (record) => {
+    console.log('Mail Clicked')
+    dispatch(sendRecentNotificationOrganizerModal(true))
+    dispatch(notificationSendData([record]))
   }
 
-  // useEffect(() => {
-  //   // Perform the data transformation here
-  //   const transformedMeetingOrganizers = rowsData.map((item) => ({
-  //     meetingID: currentMeetingID, // You can set the meetingID as needed
-  //     isPrimaryOrganizer: item.isPrimaryOrganizer,
-  //     isOrganizerNotified: item.isOrganizerNotified,
-  //     organizerTitle: item.organizerTitle,
-  //     userID: item.userID,
-  //   }))
+  // const deleteRow = (record) => {}
 
-  //   setTransformedData({ MeetingOrganizers: transformedMeetingOrganizers })
-  // }, [rowsData])
+  const deleteRow = (recordToDelete) => {
+    setRowsData((prevRowsData) =>
+      prevRowsData.filter((record) => record !== recordToDelete),
+    )
+  }
+
+  const openAddUserModal = () => {
+    console.log('Add User Modal')
+    dispatch(showAddUserModal(true))
+    dispatch(saveMeetingFlag(true))
+    console.log('Add User Modal')
+  }
 
   const previousTabOrganizer = () => {
     // console.log('For Save Data', transformedData)
@@ -467,11 +386,15 @@ const Organizers = ({
     setPolls(false)
     setMeetingMaterial(false)
     setRowsData([])
+    dispatch(saveMeetingFlag(false))
+    dispatch(editMeetingFlag(false))
   }
 
   const handleSaveNextButton = () => {
     console.log('For Save Data', transformedData)
     dispatch(SaveMeetingOrganizers(navigate, transformedData, t))
+    dispatch(saveMeetingFlag(false))
+    dispatch(editMeetingFlag(false))
     setorganizers(false)
     setAgendaContributors(true)
     setRowsData([])
@@ -493,10 +416,21 @@ const Organizers = ({
     setPolls(false)
     setMeetingMaterial(false)
     setRowsData([])
+    dispatch(saveMeetingFlag(false))
+    dispatch(editMeetingFlag(false))
   }
 
   const enableEditButton = () => {
-    setEditState(!editState)
+    const updatedRowsData = rowsData.map((row) => ({
+      ...row,
+      disabledNotification: true,
+      disabledRSVP: true,
+      disabledSwitch: false,
+      disabledTitle: false,
+      isDeletable: true,
+    }))
+    dispatch(editMeetingFlag(true))
+    setRowsData(updatedRowsData)
   }
 
   const handleEditDone = () => {
@@ -505,16 +439,148 @@ const Organizers = ({
 
   const handleCancelEdit = () => {
     setEditState(false)
+    dispatch(meetingOrganizers([]))
+    dispatch(selectedMeetingOrganizers([]))
+    dispatch(saveMeetingFlag(false))
+    dispatch(editMeetingFlag(false))
+    const allMeetingOrganizers =
+      MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers
+
+    const updatedMeetingOrganizers = allMeetingOrganizers.map((organizer) => ({
+      ...organizer,
+      disabledNotification: false,
+      disabledTitle: true,
+      disabledSwitch: true,
+      disabledRSVP: false,
+      isDeletable: false,
+    }))
+
+    setRowsData(updatedMeetingOrganizers)
   }
 
-  console.log('MeetingOrganizersReducer', MeetingOrganizersReducer)
+  const saveMeetingOrganizers = () => {
+    let Data = {
+      MeetingOrganizers: rowsData.map((item) => ({
+        IsPrimaryOrganizer: item.isPrimaryOrganizer,
+        IsOrganizerNotified: item.isOrganizerNotified,
+        Title: item.organizerTitle,
+        UserID: item.userID,
+      })),
+      MeetingID: currentMeetingID,
+      IsOrganizerAddFlow: true,
+      NotificationMessage: rowsData[0].NotificationMessage,
+    }
+    dispatch(SaveMeetingOrganizers(navigate, Data, t))
+    dispatch(saveMeetingFlag(false))
+    dispatch(editMeetingFlag(false))
+    console.log('Save API call', Data)
+  }
 
-  console.log('Table Data', rowsData)
+  const editMeetingOrganizers = () => {
+    let Data = {
+      MeetingOrganizers: rowsData.map((item) => ({
+        IsPrimaryOrganizer: item.isPrimaryOrganizer,
+        IsOrganizerNotified: item.isOrganizerNotified,
+        Title: item.organizerTitle,
+        UserID: item.userID,
+      })),
+      MeetingID: currentMeetingID,
+      IsOrganizerAddFlow: false,
+      NotificationMessage: rowsData[0].NotificationMessage,
+    }
+    dispatch(SaveMeetingOrganizers(navigate, Data, t))
+    dispatch(saveMeetingFlag(false))
+    dispatch(editMeetingFlag(false))
+    console.log('Save API call', Data)
+  }
 
-  const [open, setOpen] = useState({
-    open: false,
-    message: '',
-  })
+  useEffect(() => {
+    if (
+      MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
+      MeetingOrganizersReducer.AllMeetingOrganizersData !== null &&
+      MeetingOrganizersReducer.AllMeetingOrganizersData.length !== 0
+    ) {
+      const allMeetingOrganizers =
+        MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers
+
+      const updatedMeetingOrganizers = allMeetingOrganizers.map(
+        (organizer) => ({
+          ...organizer,
+          disabledNotification: false,
+          disabledTitle: true,
+          disabledSwitch: true,
+          disabledRSVP: false,
+          isDeletable: false,
+          NotificationMessage: '',
+        }),
+      )
+
+      setRowsData(updatedMeetingOrganizers)
+      console.log('updated Rows Data', updatedMeetingOrganizers)
+    }
+  }, [MeetingOrganizersReducer.AllMeetingOrganizersData])
+
+  useEffect(() => {
+    if (
+      MeetingOrganizersReducer.MeetingOrganizersData !== undefined &&
+      MeetingOrganizersReducer.MeetingOrganizersData !== null &&
+      MeetingOrganizersReducer.MeetingOrganizersData.length !== 0
+    ) {
+      const updatedRowsData = rowsData.map((organizer) => {
+        const matchingOrganizer = MeetingOrganizersReducer.MeetingOrganizersData.find(
+          (user) => user.userID === organizer.userID,
+        )
+
+        if (matchingOrganizer) {
+          // If a matching organizer is found in the global state, update the properties
+          return {
+            ...organizer,
+            disabledTitle: matchingOrganizer.disabledTitle,
+            disabledNotification: matchingOrganizer.disabledNotification,
+            disabledSwitch: matchingOrganizer.disabledSwitch,
+            disabledRSVP: matchingOrganizer.disabledRSVP,
+            email: matchingOrganizer.email,
+            isDeletable: matchingOrganizer.isDeletable,
+            isOrganizerNotified: matchingOrganizer.isOrganizerNotified,
+            isPrimaryOrganizer: matchingOrganizer.isPrimaryOrganizer,
+            meetingID: currentMeetingID,
+            organizerTitle: matchingOrganizer.organizerTitle,
+            rsvp: matchingOrganizer.rsvp,
+            userName: matchingOrganizer.userName,
+            NotificationMessage: matchingOrganizer.NotificationMessage,
+          }
+        }
+
+        return organizer
+      })
+
+      // Check for any new organizers in MeetingOrganizersData that are not in rowsData
+      MeetingOrganizersReducer.MeetingOrganizersData.forEach((organizer) => {
+        if (!updatedRowsData.some((user) => user.userID === organizer.userID)) {
+          updatedRowsData.push({
+            ...organizer,
+            disabledTitle: organizer.disabledTitle,
+            disabledNotification: organizer.disabledNotification,
+            disabledSwitch: organizer.disabledSwitch,
+            disabledRSVP: organizer.disabledRSVP,
+            email: organizer.email,
+            isDeletable: organizer.isDeletable,
+            isOrganizerNotified: organizer.isOrganizerNotified,
+            isPrimaryOrganizer: organizer.isPrimaryOrganizer,
+            meetingID: currentMeetingID,
+            organizerTitle: organizer.organizerTitle,
+            rsvp: organizer.rsvp,
+            userName: organizer.userName,
+            NotificationMessage: organizer.NotificationMessage,
+          })
+        }
+      })
+
+      // Set the updated rowsData
+      setRowsData(updatedRowsData)
+      console.log('updated Rows Data', updatedRowsData)
+    }
+  }, [MeetingOrganizersReducer.MeetingOrganizersData])
 
   useEffect(() => {
     if (
@@ -532,6 +598,12 @@ const Organizers = ({
     dispatch(clearResponseMessage(''))
   }, [MeetingOrganizersReducer.ResponseMessage])
 
+  console.log('MeetingOrganizersReducer', MeetingOrganizersReducer)
+
+  console.log('NewMeetingreducer', NewMeetingreducer)
+
+  console.log('Table Data', rowsData)
+
   return (
     <>
       {viewOrganizers ? (
@@ -546,48 +618,48 @@ const Organizers = ({
                 sm={12}
                 className="d-flex justify-content-end gap-4"
               >
-                {editState ? (
+                {MeetingOrganizersReducer.SaveMeetingFlag === true &&
+                MeetingOrganizersReducer.EditMeetingFlag === false ? (
                   <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex align-items-center gap-2"
-                      >
-                        <img
-                          src={redcrossIcon}
-                          height="30px"
-                          width="30px"
-                          className="cursor-pointer"
+                    <Row className="d-flex align-items-center gap-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <Button
+                          text={'Cancel'}
+                          className={styles['publish_button_Organization']}
+                          style={{ marginRight: '10px' }}
                           onClick={handleCancelEdit}
                         />
-                        <img
-                          src={rspvGreenIcon}
-                          height="30px"
-                          width="30px"
-                          className="cursor-pointer"
-                          onClick={handleEditDone}
+
+                        <Button
+                          text={t('Save')}
+                          className={styles['Next_Organization']}
+                          onClick={saveMeetingOrganizers}
+                        />
+                      </Col>
+                    </Row>
+                  </>
+                ) : MeetingOrganizersReducer.SaveMeetingFlag === false &&
+                  MeetingOrganizersReducer.EditMeetingFlag === true ? (
+                  <>
+                    <Row className="d-flex align-items-center gap-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <Button
+                          text={'Cancel'}
+                          className={styles['publish_button_Organization']}
+                          style={{ marginRight: '10px' }}
+                          onClick={handleCancelEdit}
+                        />
+
+                        <Button
+                          text={t('Save')}
+                          className={styles['Next_Organization']}
+                          onClick={editMeetingOrganizers}
                         />
                       </Col>
                     </Row>
                   </>
                 ) : (
                   <>
-                    <Button
-                      text={t('Notification1')}
-                      className={styles['Notification_button']}
-                      icon={
-                        <img
-                          draggable={false}
-                          src={mail}
-                          width="17.18px"
-                          height="12.08px"
-                        />
-                      }
-                      onClick={openNotifyOrganizorModal}
-                    />
-
                     <Button
                       text={t('Edit')}
                       className={styles['Edit_Button_Organizers']}
@@ -601,7 +673,6 @@ const Organizers = ({
                       }
                       onClick={enableEditButton}
                     />
-
                     <Button
                       text={t('Add-more')}
                       icon={<img draggable={false} src={addmore} />}
@@ -624,35 +695,39 @@ const Organizers = ({
               </Col>
             </Row>
           </section>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <section className={styles['Footer_button']}>
-                <Button
-                  text={t('Cancel')}
-                  className={styles['Cancel_Organization']}
-                  onClick={handleCancelOrganizer}
-                />
+          {NewMeetingreducer.notifyOrganizors === false &&
+          MeetingOrganizersReducer.SaveMeetingFlag === false &&
+          MeetingOrganizersReducer.EditMeetingFlag === false ? (
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <section className={styles['Footer_button']}>
+                  <Button
+                    text={t('Cancel')}
+                    className={styles['Cancel_Organization']}
+                    onClick={handleCancelOrganizer}
+                  />
 
-                <Button
-                  text={'Previous'}
-                  className={styles['Cancel_Organization']}
-                  onClick={previousTabOrganizer}
-                />
+                  <Button
+                    text={'Previous'}
+                    className={styles['Cancel_Organization']}
+                    onClick={previousTabOrganizer}
+                  />
 
-                <Button
-                  text={'Next'}
-                  className={styles['publish_button_Organization']}
-                  onClick={nextTabOrganizer}
-                />
+                  <Button
+                    text={'Next'}
+                    className={styles['publish_button_Organization']}
+                    onClick={nextTabOrganizer}
+                  />
 
-                <Button
-                  text={t('Publish')}
-                  className={styles['Next_Organization']}
-                  onClick={handleSaveNextButton}
-                />
-              </section>
-            </Col>
-          </Row>
+                  <Button
+                    text={t('Publish')}
+                    className={styles['Next_Organization']}
+                    onClick={handleSaveNextButton}
+                  />
+                </section>
+              </Col>
+            </Row>
+          ) : null}
         </>
       )}
 
@@ -661,6 +736,9 @@ const Organizers = ({
       {NewMeetingreducer.adduserModal && <ModalOrganizor />}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.notifyOrganizors && <NotifyOrganizers />}
+      {NewMeetingreducer.sendNotificationOrganizerModal === true ? (
+        <SendNotificationOrganizer />
+      ) : null}
       {NewMeetingreducer.cancelModalOrganizer && (
         <CancelModalOrganizer setSceduleMeeting={setSceduleMeeting} />
       )}

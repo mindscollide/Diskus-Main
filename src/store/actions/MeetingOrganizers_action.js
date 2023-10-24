@@ -147,6 +147,9 @@ const saveMeetingOrganizers_fail = (message) => {
 // Save Meeting Organizers Api
 const SaveMeetingOrganizers = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
+  let currentMeetingID = Number(localStorage.getItem('meetingID'))
+  let Data2 = { MeetingID: currentMeetingID }
+
   return async (dispatch) => {
     dispatch(saveMeetingOrganizers_init())
     let form = new FormData()
@@ -179,6 +182,7 @@ const SaveMeetingOrganizers = (navigate, Data, t) => {
                   t('Organizers-saved-successfully'),
                 ),
               )
+              dispatch(GetAllMeetingOrganizers(Data2, navigate, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -408,6 +412,27 @@ const GetAllMeetingOrganizers = (Data, navigate, t) => {
   }
 }
 
+const saveMeetingFlag = (response) => {
+  return {
+    type: actions.SAVE_MEETING_FLAG,
+    response: response,
+  }
+}
+
+const editMeetingFlag = (response) => {
+  return {
+    type: actions.EDIT_MEETING_FLAG,
+    response: response,
+  }
+}
+
+const notificationSendData = (response) => {
+  return {
+    type: actions.NOTIFICATION_SEND_DATA,
+    response: response,
+  }
+}
+
 export {
   GetAllCommitteesUsersandGroups,
   meetingOrganizers,
@@ -416,4 +441,7 @@ export {
   clearResponseMessage,
   UpdateOrganizersMeeting,
   GetAllMeetingOrganizers,
+  saveMeetingFlag,
+  editMeetingFlag,
+  notificationSendData,
 }

@@ -10,6 +10,9 @@ const initialState = {
   LoadingMeetingOrganizer: false,
   MeetingStatusUpdateData: [],
   AllMeetingOrganizersData: [],
+  SaveMeetingFlag: false,
+  EditMeetingFlag: false,
+  NotificationSendData: [],
 }
 
 const MeetingOrganizersReducer = (state = initialState, action) => {
@@ -124,6 +127,27 @@ const MeetingOrganizersReducer = (state = initialState, action) => {
         Loading: false,
         AllMeetingOrganizersData: [],
         ResponseMessage: action.message,
+      }
+    }
+
+    case actions.SAVE_MEETING_FLAG: {
+      return {
+        ...state,
+        SaveMeetingFlag: action.response,
+      }
+    }
+
+    case actions.EDIT_MEETING_FLAG: {
+      return {
+        ...state,
+        EditMeetingFlag: action.response,
+      }
+    }
+
+    case actions.NOTIFICATION_SEND_DATA: {
+      return {
+        ...state,
+        NotificationSendData: action.response,
       }
     }
 

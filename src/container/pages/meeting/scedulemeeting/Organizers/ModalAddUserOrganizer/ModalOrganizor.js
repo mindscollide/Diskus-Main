@@ -19,7 +19,7 @@ import CrossIcon from '../../../../../../assets/images/CrossIcon.svg'
 import {
   GetAllCommitteesUsersandGroups,
   meetingOrganizers,
-  SaveMeetingOrganizers,
+  selectedMeetingOrganizers,
 } from '../../../../../../store/actions/MeetingOrganizers_action'
 import { useDispatch, useSelector } from 'react-redux'
 import GroupIcon from '../../../../../../assets/images/groupdropdown.svg'
@@ -103,15 +103,21 @@ const ModalOrganizor = () => {
                       displayPicture:
                         gUser.profilePicture.displayProfilePictureName,
                       email: gUser.emailAddress,
-                      IsPrimaryOrganizer: false,
-                      IsOrganizerNotified: false,
-                      Title: '',
-                      isRSVP: false,
+                      isPrimaryOrganizer: false,
+                      isOrganizerNotified: false,
+                      organizerTitle: '',
+                      rsvp: false,
+                      isDeletable: true,
+                      disabledTitle: false,
+                      disabledRSVP: true,
+                      disabledNotification: true,
+                      disabledSwitch: true,
+                      NotificationMessage: '',
                     }
                     let newUserSave = {
-                      IsPrimaryOrganizer: false,
-                      IsOrganizerNotified: false,
-                      Title: '',
+                      isPrimaryOrganizer: false,
+                      isOrganizerNotified: false,
+                      organizerTitle: '',
                       UserID: gUser.userID,
                     }
                     tem.push(newUser)
@@ -143,15 +149,21 @@ const ModalOrganizor = () => {
                       displayPicture:
                         cUser.profilePicture.displayProfilePictureName,
                       email: cUser.emailAddress,
-                      IsPrimaryOrganizer: false,
-                      IsOrganizerNotified: false,
-                      Title: '',
-                      isRSVP: false,
+                      isPrimaryOrganizer: false,
+                      isOrganizerNotified: false,
+                      organizerTitle: '',
+                      rsvp: false,
+                      isDeletable: true,
+                      disabledTitle: false,
+                      disabledRSVP: true,
+                      disabledNotification: true,
+                      disabledSwitch: true,
+                      NotificationMessage: '',
                     }
                     let newUserSave = {
-                      IsPrimaryOrganizer: false,
-                      IsOrganizerNotified: false,
-                      Title: '',
+                      isPrimaryOrganizer: false,
+                      isOrganizerNotified: false,
+                      organizerTitle: '',
                       UserID: cUser.userID,
                     }
                     tem.push(newUser)
@@ -176,15 +188,21 @@ const ModalOrganizor = () => {
                   displayPicture:
                     check2.profilePicture.displayProfilePictureName,
                   email: check2.emailAddress,
-                  IsPrimaryOrganizer: false,
-                  IsOrganizerNotified: false,
-                  Title: '',
-                  isRSVP: false,
+                  isPrimaryOrganizer: false,
+                  isOrganizerNotified: false,
+                  organizerTitle: '',
+                  rsvp: false,
+                  isDeletable: true,
+                  disabledTitle: false,
+                  disabledRSVP: true,
+                  disabledNotification: true,
+                  disabledSwitch: true,
+                  NotificationMessage: '',
                 }
                 let newUserSave = {
-                  IsPrimaryOrganizer: false,
-                  IsOrganizerNotified: false,
-                  Title: '',
+                  isPrimaryOrganizer: false,
+                  isOrganizerNotified: false,
+                  organizerTitle: '',
                   UserID: check2.userID,
                 }
                 tem.push(newUser)
@@ -222,6 +240,10 @@ const ModalOrganizor = () => {
     setMembersOrganizers(removeData)
     setOrganizersSave(removeDataSave)
   }
+
+  useEffect(() => {
+    dispatch(meetingOrganizers([]))
+  }, [])
 
   useEffect(() => {
     let newOrganizersData = MeetingOrganizersReducer.AllUserCommitteesGroupsData
@@ -338,13 +360,10 @@ const ModalOrganizor = () => {
   const saveOrganizers = () => {
     console.log('Totally Saved Members', membersOrganizers)
     console.log('Totally SAVED API DATA', organizersSave)
-    // let Data = {
-
-    // }
-    // dispatch(meetingOrganizers(membersOrganizers));
-
-    // dispatch(showAddUserModal(false));
-    // dispatch(showNotifyOrganizors(true));
+    dispatch(showAddUserModal(false))
+    dispatch(showNotifyOrganizors(true))
+    dispatch(meetingOrganizers(membersOrganizers))
+    dispatch(selectedMeetingOrganizers(organizersSave))
   }
 
   console.log('MeetingOrganizersReducer', MeetingOrganizersReducer)
