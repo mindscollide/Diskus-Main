@@ -373,6 +373,7 @@ const VideoPanelBodyContact = () => {
                 </Col>
                 <Col lg={2} md={2} sm={2} className="video_call_icon mt-4">
                   <img
+                    className="cursor-pointer"
                     src={VideoCallIcon}
                     onClick={() => otoVideoCall(userData)}
                   />

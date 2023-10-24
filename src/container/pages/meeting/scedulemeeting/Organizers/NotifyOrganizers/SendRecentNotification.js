@@ -12,18 +12,16 @@ import BlackCrossIcon from '../../../../../../assets/images/BlackCrossIconModals
 import {
   selectedMeetingOrganizers,
   meetingOrganizers,
-  saveMeetingFlag,
-  editMeetingFlag,
 } from '../../../../../../store/actions/MeetingOrganizers_action'
 import { useNavigate } from 'react-router-dom'
 import profile from '../../../../../../assets/images/newprofile.png'
-import { showNotifyOrganizors } from '../../../../../../store/actions/NewMeetingActions'
+import { sendRecentNotificationOrganizerModal } from '../../../../../../store/actions/NewMeetingActions'
 import UpperArrow from '../../../../../../assets/images/UpperArrow.svg'
 import { Col, Row } from 'react-bootstrap'
 import { validateInput } from '../../../../../../commen/functions/regex'
 import downdirect from '../../../../../../assets/images/downDirect.png'
 
-const NotifyOrganizers = () => {
+const SendNotificationOrganizer = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -36,7 +34,6 @@ const NotifyOrganizers = () => {
   })
 
   const [membersHide, setMembersHide] = useState(false)
-  const [allOrganizersAccept, setAllOrganizersAccept] = useState(true)
   // const [members, setMembers] = useState([
   //   {
   //     name: 'saif',
@@ -62,10 +59,11 @@ const NotifyOrganizers = () => {
   // ])
 
   // Initialize membersOrganizers state with the modified 'isOrganizerNotified' property
-  const initialMembersOrganizers = MeetingOrganizersReducer.MeetingOrganizersData.map(
+  const initialMembersOrganizers = MeetingOrganizersReducer.NotificationSendData.map(
     (member) => ({
       ...member,
-      isOrganizerNotified: true,
+      isOrganizerNotified:
+        MeetingOrganizersReducer.NotificationSendData[0].isOrganizerNotified,
     }),
   )
 
@@ -75,11 +73,17 @@ const NotifyOrganizers = () => {
 
   // Initialize memberCheckboxes with all checkboxes initially checked
   const [memberCheckboxes, setMemberCheckboxes] = useState(
-    Array(initialMembersOrganizers.length).fill(true),
+    Array(initialMembersOrganizers.length).fill(
+      MeetingOrganizersReducer.NotificationSendData[0].isOrganizerNotified,
+    ),
+  )
+
+  const [allOrganizersAccept, setAllOrganizersAccept] = useState(
+    MeetingOrganizersReducer.NotificationSendData[0].isOrganizerNotified,
   )
 
   const handleCrossIcon = () => {
-    dispatch(showNotifyOrganizors(false))
+    dispatch(sendRecentNotificationOrganizerModal(false))
   }
 
   const HandleChange = (e, index) => {
@@ -129,37 +133,19 @@ const NotifyOrganizers = () => {
   }
 
   const sendNotification = () => {
-    dispatch(showNotifyOrganizors(false))
+    // dispatch(sendRecentNotificationOrganizerModal(false))
     const updatedMembersOrganizers = membersOrganizers.map((member) => ({
       ...member,
       NotificationMessage: notifyOrganizerData.Messege,
     }))
-
-    dispatch(meetingOrganizers(updatedMembersOrganizers))
+    console.log('Resend Notification Data', updatedMembersOrganizers)
+    // dispatch(meetingOrganizers(updatedMembersOrganizers))
   }
 
   const handleCancelButton = () => {
-    dispatch(showNotifyOrganizors(false))
+    dispatch(sendRecentNotificationOrganizerModal(false))
     dispatch(meetingOrganizers([]))
   }
-
-  useEffect(() => {
-    if (
-      MeetingOrganizersReducer.MeetingOrganizersData !== undefined &&
-      MeetingOrganizersReducer.MeetingOrganizersData !== null &&
-      MeetingOrganizersReducer.MeetingOrganizersData.length !== 0
-    ) {
-      // Map over the data and set isOrganizerNotified to true for all objects
-      const modifiedData = MeetingOrganizersReducer.MeetingOrganizersData.map(
-        (member) => ({
-          ...member,
-          isOrganizerNotified: true,
-        }),
-      )
-
-      setMembersOrganizers(modifiedData)
-    }
-  }, [MeetingOrganizersReducer.MeetingOrganizersData])
 
   console.log('MeetingOrganizersReducer', MeetingOrganizersReducer)
 
@@ -168,11 +154,11 @@ const NotifyOrganizers = () => {
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.notifyOrganizors}
-        setShow={dispatch(showNotifyOrganizors)}
+        show={NewMeetingreducer.sendNotificationOrganizerModal}
+        setShow={dispatch(sendRecentNotificationOrganizerModal)}
         modalFooterClassName={'d-block'}
         onHide={() => {
-          dispatch(showNotifyOrganizors(false))
+          dispatch(sendRecentNotificationOrganizerModal(false))
         }}
         ModalBody={
           <>
@@ -327,4 +313,4 @@ const NotifyOrganizers = () => {
   )
 }
 
-export default NotifyOrganizers
+export default SendNotificationOrganizer
