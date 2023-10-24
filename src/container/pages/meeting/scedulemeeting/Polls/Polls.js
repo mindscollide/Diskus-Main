@@ -60,7 +60,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: 1785,
+      MeetingID: currentMeetingID,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
