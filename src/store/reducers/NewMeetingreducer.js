@@ -58,6 +58,7 @@ const initialState = {
   getAllMeetingDetails: null,
   getPollsMeetingID: [],
   getMeetingusers: [],
+  setMeetingProposeDate: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -752,6 +753,30 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SET_MEETING_PROPOSED_DATE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SET_MEETING_PROPOSED_DATE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setMeetingProposeDate: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SET_MEETING_PROPOSED_DATE_FAILED: {
+      return {
+        ...state,
+        Loading: false,
         ResponseMessage: action.ResponseMessage,
       };
     }

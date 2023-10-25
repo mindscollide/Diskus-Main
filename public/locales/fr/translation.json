@@ -1081,5 +1081,6 @@
   "100": "100",
   "200": "200",
   "NOTES-RECENT-ACTIVITY": "The notes has been created [Notes Title]",
-  "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time": "Proposed dates should be in increasing order of date and start time"
+  "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time": "Proposed dates should be in increasing order of date and start time",
+  "Not-more-than-5-dates-are-allowed": "Not More Than 5 Dates Are Allowed"
 }

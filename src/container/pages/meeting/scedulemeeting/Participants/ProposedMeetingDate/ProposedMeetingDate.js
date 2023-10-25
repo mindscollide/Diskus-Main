@@ -26,13 +26,18 @@ import { Paper } from "@material-ui/core";
 import moment from "moment";
 import { style } from "@mui/system";
 import UnsavedModal from "./UnsavedChangesModal/UnsavedModal";
-import { showPrposedMeetingUnsavedModal } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  setProposedMeetingDateApiFunc,
+  showPrposedMeetingUnsavedModal,
+} from "../../../../../../store/actions/NewMeetingActions";
+import { convertGMTDateintoUTC } from "../../../../../../commen/functions/date_formater";
 const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { NewMeetingreducer } = useSelector((state) => state);
@@ -62,15 +67,46 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   console.log(rows[0].endDate, "selectedOptionselectedOption");
 
   const handleStartDateChange = (index, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].startDate = date;
-    setRows(updatedRows);
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const updatedRows = [...rows];
+      updatedRows[index].startDate = formattedTime;
+      updatedRows[index].startTime = newDate;
+      setRows(updatedRows);
+      // You can use 'formattedTime' as needed.
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
   };
 
   const handleEndDateChange = (index, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].endDate = date;
-    setRows(updatedRows);
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+
+      const updatedRows = [...rows];
+      updatedRows[index].endDate = formattedTime;
+      updatedRows[index].endTime = newDate;
+      setRows(updatedRows);
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
   };
 
   const addRow = () => {
@@ -102,21 +138,23 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   //Onchange Function For DatePicker inAdd datess First
   const changeDateStartHandler = (date, index) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new Date(date);
+    let DateDate = convertGMTDateintoUTC(date);
+    console.log(DateDate, "updatedRows");
     setMeetingDate(meetingDateValueFormat);
     const updatedRows = [...rows];
-    updatedRows[index].selectedOption = DateDate;
+    updatedRows[index].selectedOption = DateDate.slice(0, 8);
+    console.log(updatedRows, "updatedRows");
     setRows(updatedRows);
   };
 
   //Send Response By Handler
   const SendResponseHndler = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new Date(date);
+    let DateDate = convertGMTDateintoUTC(date);
     setSendResponseVal(meetingDateValueFormat);
     setSendResponseBy({
       ...sendResponseBy,
-      date: DateDate,
+      date: DateDate.slice(0, 8),
     });
   };
 
@@ -149,10 +187,24 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
     return true;
   };
 
-  // Function to handle the save button click
+  // Function to handle the save Proposed button click
   const handleSave = () => {
+    let newArr = [];
+    rows.map((data, index) => {
+      newArr.push({
+        ProposedDate: data.selectedOption,
+        StartTime: data.startDate,
+        EndTime: data.endDate,
+      });
+    });
     if (isAscendingOrder()) {
-      return true;
+      let Data = {
+        MeetingID: currentMeetingID,
+        SendResponsebyDate: sendResponseBy.date,
+        ProposedDates: newArr,
+      };
+      console.log(Data, "updatedRows");
+      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
     } else {
       // Rows are not in ascending order
       setOpen({

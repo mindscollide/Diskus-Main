@@ -990,6 +990,10 @@ const SetMeetingPolls = {
   RequestMethod: "ServiceManager.SetMeetingPolls",
 };
 
+const SettingMeetingProposedDates = {
+  RequestMethod: "ServiceManager.SetMeetingProposedDates",
+};
+
 export {
   updateGeneralAccessRM,
   checkFileLinkRM,
@@ -1255,4 +1259,5 @@ export {
   getPollsByMeetingID,
   getAllmeetingUsers,
   SetMeetingPolls,
+  SettingMeetingProposedDates,
 };
