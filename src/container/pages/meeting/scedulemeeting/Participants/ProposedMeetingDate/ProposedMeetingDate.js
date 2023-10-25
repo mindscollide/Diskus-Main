@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import styles from "./ProposedMeetingDate.module.css";
-import { Button, Checkbox } from "../../../../../../components/elements";
+import {
+  Button,
+  Checkbox,
+  Notification,
+} from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import BackArrow from "../../../../../../assets/images/Back Arrow.svg";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
@@ -23,7 +27,7 @@ import moment from "moment";
 import { style } from "@mui/system";
 import UnsavedModal from "./UnsavedChangesModal/UnsavedModal";
 import { showPrposedMeetingUnsavedModal } from "../../../../../../store/actions/NewMeetingActions";
-const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
+const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,6 +40,16 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
   const [selectError, setSelectError] = useState(false);
   const [startDateError, setStartDateError] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
+  const [sendResponseVal, setSendResponseVal] = useState("");
+  const [sendResponseBy, setSendResponseBy] = useState({
+    date: "",
+  });
+
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
+
   const [endDateError, setEndDateError] = useState(false);
   const [sendDates, setSendDates] = useState(false);
   const [options, setOptions] = useState([]);
@@ -60,9 +74,16 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
   };
 
   const addRow = () => {
-    const lastRow = rows[rows.length - 1];
-    if (isValidRow(lastRow)) {
-      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+    if (rows.length < 5) {
+      const lastRow = rows[rows.length - 1];
+      if (isValidRow(lastRow)) {
+        setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+      }
+    } else {
+      setOpen({
+        flag: true,
+        message: t("You Cant enter more then Five Dates"),
+      });
     }
   };
 
@@ -88,6 +109,17 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
     setRows(updatedRows);
   };
 
+  //Send Response By Handler
+  const SendResponseHndler = (date) => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let DateDate = new Date(date);
+    setSendResponseVal(meetingDateValueFormat);
+    setSendResponseBy({
+      ...sendResponseBy,
+      date: DateDate,
+    });
+  };
+
   const handleSelectChange = (index, selectedOption) => {
     const updatedRows = [...rows];
     updatedRows[index].selectedOption = selectedOption;
@@ -104,6 +136,32 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
     setSelectError(hasSelectError);
     setStartDateError(hasStartDateError);
     setEndDateError(hasEndDateError);
+  };
+
+  const isAscendingOrder = () => {
+    for (let i = 1; i < rows.length; i++) {
+      if (rows[i].selectedOption <= rows[i - 1].selectedOption) {
+        return false;
+      } else if (rows[i].startDate <= rows[i - 1].startDate) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // Function to handle the save button click
+  const handleSave = () => {
+    if (isAscendingOrder()) {
+      return true;
+    } else {
+      // Rows are not in ascending order
+      setOpen({
+        flag: true,
+        message: t(
+          "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time"
+        ),
+      });
+    }
   };
 
   useEffect(() => {
@@ -575,16 +633,33 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
                         </span>
                       </Col>
                     </Row>
-                    <Row className="m-0 p-0 mt-2">
+                    <Row className="mt-2">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Box_for_Send_Request"]}
+                        className={styles["Width_Date_SendResponseBy"]}
                       >
-                        <span className={styles["Date_Year_Styles"]}>
-                          21st May, 2020
-                        </span>
+                        <DatePicker
+                          value={sendResponseVal}
+                          format={"DD/MM/YYYY"}
+                          minDate={moment().toDate()}
+                          placeholder="DD/MM/YYYY"
+                          render={
+                            <InputIcon
+                              placeholder="DD/MM/YYYY"
+                              className="datepicker_input"
+                            />
+                          }
+                          editable={false}
+                          className="proposedMeetindatesDatePicker"
+                          onOpenPickNewDate={true}
+                          inputMode=""
+                          calendar={calendarValue}
+                          locale={localValue}
+                          ref={calendRef}
+                          onChange={(value) => SendResponseHndler(value)}
+                        />
                       </Col>
                     </Row>
                     <Row>
@@ -620,17 +695,21 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
                   onClick={CancelModal}
                 />
                 <Button
-                  text={t("Send")}
+                  text={t("Save")}
                   className={styles["Save_Button_ProposedMeeting"]}
-                  onClick={handleSend}
+                  onClick={handleSave}
                 />
               </Col>
             </Row>
           </Paper>
         </Col>
       </Row>
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
       {NewMeetingreducer.prposedMeetingUnsavedModal && (
-        <UnsavedModal setProposedMeetingDates={setProposedMeetingDates} />
+        <UnsavedModal
+          setProposedMeetingDates={setProposedMeetingDates}
+          setParticipants={setParticipants}
+        />
       )}
     </section>
   );

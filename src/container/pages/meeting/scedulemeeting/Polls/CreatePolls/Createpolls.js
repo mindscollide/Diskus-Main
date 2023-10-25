@@ -8,6 +8,7 @@ import {
   Button,
   TextField,
   Checkbox,
+  Notification,
   Loader,
 } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -847,6 +848,12 @@ const Createpolls = ({ setCreatepoll }) => {
                 />
               </Col>
             </Row>
+            <Notification
+              setOpen={setOpen}
+              open={open.flag}
+              message={open.message}
+            />
+
             {NewMeetingreducer.unsavedPollsMeeting && (
               <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
             )}

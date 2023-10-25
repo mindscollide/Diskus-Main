@@ -6291,3 +6291,9 @@ input[type="time"]::-webkit-clear-button {
   font-size: 1.2rem;
   padding: 5px 10px;
 }
+
+.proposedMeetindatesDatePicker {
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  width: 300px !important;
+}
