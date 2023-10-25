@@ -1927,108 +1927,6 @@ const SetMeetingPollsApiFunc = (Data, navigate, t) => {
   };
 };
 
-//Set Proposed Meeting Data
-
-const showPrposedMeetingDateInit = () => {
-  return {
-    type: actions.SET_MEETING_PROPOSED_DATE_INIT,
-  };
-};
-
-const showPrposedMeetingDateSuccess = (response, message) => {
-  return {
-    type: actions.SET_MEETING_PROPOSED_DATE_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-const showPrposedMeetingDateFailed = (message) => {
-  return {
-    type: actions.SET_MEETING_PROPOSED_DATE_FAILED,
-    message: message,
-  };
-};
-
-const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(showPrposedMeetingDateInit());
-    let form = new FormData();
-    form.append("RequestMethod", SettingMeetingProposedDates.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                showPrposedMeetingDateSuccess(
-                  response.data.responseResult.responseMessage,
-                  t("Record-saved")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_02".toLowerCase()
-                )
-            ) {
-              dispatch(showPrposedMeetingDateFailed(t("No-record-saved")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_03".toLowerCase()
-                )
-            ) {
-              dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_04".toLowerCase()
-                )
-            ) {
-              dispatch(
-                showPrposedMeetingDateFailed(
-                  t("Not-more-than-5-dates-are-allowed")
-                )
-              );
-            } else {
-              dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
-          }
-        } else {
-          dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
-        }
-        console.log("responseresponse", response);
-      })
-      .catch((response) => {
-        dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
-      });
-  };
-};
-
 //get ALl Proposed Dates
 
 const showGetAllProposedMeetingDatesInit = () => {
@@ -2082,7 +1980,7 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
             ) {
               dispatch(
                 showGetAllProposedMeetingDatesSuccess(
-                  response.data.responseResult.responseMessage,
+                  response.data.responseResult,
                   t("Record-found")
                 )
               );
@@ -2127,6 +2025,113 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
         dispatch(
           showGetAllProposedMeetingDatesFailed(t("Something-went-wrong"))
         );
+      });
+  };
+};
+
+//Set Proposed Meeting Data
+
+const showPrposedMeetingDateInit = () => {
+  return {
+    type: actions.SET_MEETING_PROPOSED_DATE_INIT,
+  };
+};
+
+const showPrposedMeetingDateSuccess = (response, message) => {
+  return {
+    type: actions.SET_MEETING_PROPOSED_DATE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showPrposedMeetingDateFailed = (message) => {
+  return {
+    type: actions.SET_MEETING_PROPOSED_DATE_FAILED,
+    message: message,
+  };
+};
+
+const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentMeetingID = localStorage.getItem("meetingID");
+  return (dispatch) => {
+    dispatch(showPrposedMeetingDateInit());
+    let form = new FormData();
+    form.append("RequestMethod", SettingMeetingProposedDates.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showPrposedMeetingDateSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Record-saved")
+                )
+              );
+              let Data = {
+                MeetingID: currentMeetingID,
+              };
+              dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_02".toLowerCase()
+                )
+            ) {
+              dispatch(showPrposedMeetingDateFailed(t("No-record-saved")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_03".toLowerCase()
+                )
+            ) {
+              dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showPrposedMeetingDateFailed(
+                  t("Not-more-than-5-dates-are-allowed")
+                )
+              );
+            } else {
+              dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
       });
   };
 };

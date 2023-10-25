@@ -31,7 +31,10 @@ import {
   setProposedMeetingDateApiFunc,
   showPrposedMeetingUnsavedModal,
 } from "../../../../../../store/actions/NewMeetingActions";
-import { convertGMTDateintoUTC } from "../../../../../../commen/functions/date_formater";
+import {
+  convertGMTDateintoUTC,
+  resolutionResultTable,
+} from "../../../../../../commen/functions/date_formater";
 const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -45,6 +48,12 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   const [error, seterror] = useState(false);
   const [selectError, setSelectError] = useState(false);
   const [startDateError, setStartDateError] = useState(false);
+  const [proposedDatesData, setProposedDatesData] = useState([
+    {
+      deadline: "",
+      proposedDates: [],
+    },
+  ]);
   const [meetingDate, setMeetingDate] = useState("");
   const [sendResponseVal, setSendResponseVal] = useState("");
   const [sendResponseBy, setSendResponseBy] = useState({
@@ -62,17 +71,6 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   const [rows, setRows] = useState([
     { selectedOption: "", startDate: "", endDate: "" },
   ]);
-
-  console.log(rows[0].selectedOption, "selectedOptionselectedOption");
-  console.log(rows[0].startDate, "selectedOptionselectedOption");
-  console.log(rows[0].endDate, "selectedOptionselectedOption");
-
-  useEffect(() => {
-    let Data = {
-      MeetingID: currentMeetingID,
-    };
-    dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
-  }, []);
 
   const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
@@ -213,6 +211,7 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
       };
       console.log(Data, "updatedRows");
       dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
+      setSendDates(true);
     } else {
       // Rows are not in ascending order
       setOpen({
@@ -246,7 +245,6 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
     // setSelectError(true);
     // setStartDateError(true);
     // setEndDateError(true);
-    setSendDates(!sendDates);
   };
 
   const CancelModal = () => {
@@ -256,6 +254,42 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   const handlebackButtonFunctionality = () => {
     setProposedMeetingDates(false);
   };
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllProposedDates !== null &&
+        NewMeetingreducer.getAllProposedDates !== undefined
+      ) {
+        NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
+          (data, index) => {
+            console.log(data, "getAllProposedDates");
+
+            setProposedDatesData([
+              {
+                ...proposedDatesData,
+                deadline: data.deadLineDate,
+                proposedDates: data.proposedDates,
+              },
+            ]);
+          }
+        );
+        console.log(
+          NewMeetingreducer.getAllProposedDates,
+          "getAllProposedDatesgetAllProposedDates"
+        );
+      }
+    } catch {}
+  }, [NewMeetingreducer.getAllProposedDates]);
+
+  console.log(proposedDatesData, "proposedDatesDataproposedDatesData");
 
   return (
     <section>
@@ -340,94 +374,48 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
                         sm={12}
                         className={styles["Scroller_Prposed_Meeting_date"]}
                       >
-                        <Row className="m-0 p-0 mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_To_Show_Time"]}
-                          >
-                            <Row className={styles["Inner_Send_class"]}>
-                              <Col lg={10} md={10} sm={10}>
-                                <span className={styles["Time_Class"]}>
-                                  03:30 pm - 05:30 pm | 17th May, 2020
-                                </span>
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Checkbox
-                                  prefixCls={"ProposedMeeting_Checkbox"}
-                                  classNameCheckBoxP="d-none"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="m-0 p-0 mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_To_Show_Time"]}
-                          >
-                            <Row className={styles["Inner_Send_class"]}>
-                              <Col lg={10} md={10} sm={10}>
-                                <span className={styles["Time_Class"]}>
-                                  03:30 pm - 05:30 pm | 17th May, 2020
-                                </span>
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Checkbox
-                                  prefixCls={"ProposedMeeting_Checkbox"}
-                                  classNameCheckBoxP="d-none"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="m-0 p-0 mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_To_Show_Time"]}
-                          >
-                            <Row className={styles["Inner_Send_class"]}>
-                              <Col lg={10} md={10} sm={10}>
-                                <span className={styles["Time_Class"]}>
-                                  03:30 pm - 05:30 pm | 17th May, 2020
-                                </span>
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Checkbox
-                                  prefixCls={"ProposedMeeting_Checkbox"}
-                                  classNameCheckBoxP="d-none"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="m-0 p-0 mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_To_Show_Time"]}
-                          >
-                            <Row className={styles["Inner_Send_class"]}>
-                              <Col lg={10} md={10} sm={10}>
-                                <span className={styles["Time_Class"]}>
-                                  03:30 pm - 05:30 pm | 17th May, 2020
-                                </span>
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Checkbox
-                                  prefixCls={"ProposedMeeting_Checkbox"}
-                                  classNameCheckBoxP="d-none"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
+                        {proposedDatesData.length > 0
+                          ? proposedDatesData.map(
+                              (proposedDates, proposedDatesIndex) => {
+                                console.log(
+                                  proposedDates,
+                                  "proposedDatesproposedDates"
+                                );
+                                return (
+                                  <>
+                                    <Row className="m-0 p-0 mt-2">
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className={styles["Box_To_Show_Time"]}
+                                      >
+                                        <Row
+                                          className={styles["Inner_Send_class"]}
+                                        >
+                                          <Col lg={10} md={10} sm={10}>
+                                            <span
+                                              className={styles["Time_Class"]}
+                                            >
+                                              {proposedDates.proposedDates}
+                                            </span>
+                                          </Col>
+                                          <Col lg={2} md={2} sm={2}>
+                                            <Checkbox
+                                              prefixCls={
+                                                "ProposedMeeting_Checkbox"
+                                              }
+                                              classNameCheckBoxP="d-none"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </>
+                                );
+                              }
+                            )
+                          : null}
                       </Col>
                     </Row>
 
@@ -439,11 +427,24 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
                         </span>
                       </Col>
                     </Row>
-                    <Row className="mt-1">
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Date"]}>21st May, 2020</span>
-                      </Col>
-                    </Row>
+                    {proposedDatesData.length > 0
+                      ? proposedDatesData.map(
+                          (responsedby, responsedbyIndex) => {
+                            console.log(responsedby, "responsedbyresponsedby");
+                            return (
+                              <>
+                                <Row className="mt-1">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span className={styles["Date"]}>
+                                      {responsedby.deadline}
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </>
+                            );
+                          }
+                        )
+                      : null}
                   </Col>
                   <Col
                     lg={2}
