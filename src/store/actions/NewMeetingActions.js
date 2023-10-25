@@ -7,6 +7,7 @@ import {
   getAllAgendaContributorRM,
   getAllGroupsUsersAndCommitteesByOrganizaitonID,
   getAllMeetingDetailsByMeetingID,
+  getAllPropsedMeetingdates,
   getAllSavedParticipants,
   getAllmeetingUsers,
   getParticipantsRoles,
@@ -1926,7 +1927,7 @@ const SetMeetingPollsApiFunc = (Data, navigate, t) => {
   };
 };
 
-//Proposed Meeting Data
+//Set Proposed Meeting Data
 
 const showPrposedMeetingDateInit = () => {
   return {
@@ -2028,6 +2029,108 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
   };
 };
 
+//get ALl Proposed Dates
+
+const showGetAllProposedMeetingDatesInit = () => {
+  return {
+    type: actions.GET_ALL_PRPOSED_DATES_INIT,
+  };
+};
+
+const showGetAllProposedMeetingDatesSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_PRPOSED_DATES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showGetAllProposedMeetingDatesFailed = (message) => {
+  return {
+    type: actions.GET_ALL_PRPOSED_DATES_SUCCESS,
+    message: message,
+  };
+};
+
+const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showGetAllProposedMeetingDatesInit());
+    let form = new FormData();
+    form.append("RequestMethod", getAllPropsedMeetingdates.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingProposedDates_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showGetAllProposedMeetingDatesSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingProposedDates_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showGetAllProposedMeetingDatesFailed(t("No-record-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingProposedDates_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showGetAllProposedMeetingDatesFailed(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                showGetAllProposedMeetingDatesFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              showGetAllProposedMeetingDatesFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            showGetAllProposedMeetingDatesFailed(t("Something-went-wrong"))
+          );
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(
+          showGetAllProposedMeetingDatesFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -2092,4 +2195,5 @@ export {
   GetAllMeetingUserApiFunc,
   SetMeetingPollsApiFunc,
   setProposedMeetingDateApiFunc,
+  GetAllProposedMeetingDateApiFunc,
 };

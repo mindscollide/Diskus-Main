@@ -27,6 +27,7 @@ import moment from "moment";
 import { style } from "@mui/system";
 import UnsavedModal from "./UnsavedChangesModal/UnsavedModal";
 import {
+  GetAllProposedMeetingDateApiFunc,
   setProposedMeetingDateApiFunc,
   showPrposedMeetingUnsavedModal,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -65,6 +66,13 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   console.log(rows[0].selectedOption, "selectedOptionselectedOption");
   console.log(rows[0].startDate, "selectedOptionselectedOption");
   console.log(rows[0].endDate, "selectedOptionselectedOption");
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+  }, []);
 
   const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
