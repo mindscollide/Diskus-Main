@@ -292,12 +292,15 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   };
 
   const CancelModal = () => {
-    setSendDates(!sendDates);
+    setProposedMeetingDates(false);
+    setParticipants(true);
+    // setSendDates(!sendDates);
     // dispatch(showPrposedMeetingUnsavedModal(true));
   };
 
   const handlebackButtonFunctionality = () => {
     setProposedMeetingDates(false);
+    setParticipants(true);
   };
 
   useEffect(() => {
