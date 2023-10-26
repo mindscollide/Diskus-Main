@@ -6,6 +6,7 @@ import {
   saveMeetingOrganizers,
   meetingStatusUpdate,
   getAllMeetingOrganizers,
+  sendNotification,
 } from '../../commen/apis/Api_config'
 import { meetingApi } from '../../commen/apis/Api_ends_points'
 
@@ -244,7 +245,7 @@ const updateOrganizerMeetingStatus_fail = (message) => {
 }
 
 // Save Meeting Organizers Api
-const UpdateOrganizersMeeting = (navigate, Data, t, setSceduleMeeting) => {
+const UpdateOrganizersMeeting = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return async (dispatch) => {
     dispatch(updateOrganizerMeetingStatus_init())
@@ -262,9 +263,7 @@ const UpdateOrganizersMeeting = (navigate, Data, t, setSceduleMeeting) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(
-            UpdateOrganizersMeeting(navigate, Data, t, setSceduleMeeting),
-          )
+          dispatch(UpdateOrganizersMeeting(navigate, Data, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -280,7 +279,6 @@ const UpdateOrganizersMeeting = (navigate, Data, t, setSceduleMeeting) => {
                   t('Record-updated'),
                 ),
               )
-              setSceduleMeeting(false)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -433,6 +431,97 @@ const notificationSendData = (response) => {
   }
 }
 
+const notificationUpdateData = (response) => {
+  return {
+    type: actions.NOTIFICATION_UPDATE_DATA,
+    response: response,
+  }
+}
+
+//Send Notification Api
+const sendNotificationOrganizerInit = () => {
+  return {
+    type: actions.SEND_NOTIFICATION_ORGANIZER_INIT,
+  }
+}
+
+const sendNotificationOrganizerSuccess = (message) => {
+  return {
+    type: actions.SEND_NOTIFICATION_ORGANIZER_SUCCESS,
+    message: message,
+  }
+}
+
+const sendNotificationOrganizerFail = (message) => {
+  return {
+    type: actions.SEND_NOTIFICATION_ORGANIZER_FAIL,
+    message: message,
+  }
+}
+
+//Send Notification API Function
+const sendNotificationOrganizer = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(sendNotificationOrganizerInit())
+    let form = new FormData()
+    form.append('RequestMethod', sendNotification.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+    axios({
+      method: 'post',
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(sendNotificationOrganizer(Data, navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Meeting_MeetingServiceManager_SendRecentNotifications_01'.toLowerCase(),
+                )
+            ) {
+              dispatch(
+                sendNotificationOrganizerSuccess(
+                  t('Notification-sent-successfully'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Meeting_MeetingServiceManager_SendRecentNotifications_02'.toLowerCase(),
+                )
+            ) {
+              dispatch(
+                sendNotificationOrganizerFail(
+                  t('Notification-not-sent-successfully'),
+                ),
+              )
+            } else {
+              dispatch(sendNotificationOrganizerFail(t('Something-went-wrong')))
+            }
+          } else {
+            dispatch(sendNotificationOrganizerFail(t('Something-went-wrong')))
+          }
+        } else {
+          dispatch(sendNotificationOrganizerFail(t('Something-went-wrong')))
+        }
+        console.log('responseresponse', response)
+      })
+      .catch((response) => {
+        dispatch(sendNotificationOrganizerFail(t('Something-went-wrong')))
+      })
+  }
+}
+
 export {
   GetAllCommitteesUsersandGroups,
   meetingOrganizers,
@@ -444,4 +533,6 @@ export {
   saveMeetingFlag,
   editMeetingFlag,
   notificationSendData,
+  sendNotificationOrganizer,
+  notificationUpdateData,
 }
