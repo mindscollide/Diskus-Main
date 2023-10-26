@@ -77,7 +77,7 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   const [sendDates, setSendDates] = useState(false);
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([
-    { selectedOption: "", startDate: "", endDate: "" },
+    { selectedOption: "", startDate: "", endDate: "", selectedOptionView: "" },
   ]);
   console.log({ rows }, "rowsrowsrows");
   const handleStartDateChange = (index, date) => {
@@ -157,6 +157,8 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
     setMeetingDate(meetingDateValueFormat);
     const updatedRows = [...rows];
     updatedRows[index].selectedOption = DateDate.slice(0, 8);
+    updatedRows[index].selectedOptionView = meetingDateValueFormat;
+
     console.log(updatedRows, "updatedRows");
     setRows(updatedRows);
   };
@@ -184,7 +186,6 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
     const hasSelectError = rows.some((row) => row.selectedOption === "");
     const hasStartDateError = rows.some((row) => row.startDate === "");
     const hasEndDateError = rows.some((row) => row.endDate === "");
-
     setSelectError(hasSelectError);
     setStartDateError(hasStartDateError);
     setEndDateError(hasEndDateError);
@@ -255,7 +256,8 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   };
 
   const CancelModal = () => {
-    dispatch(showPrposedMeetingUnsavedModal(true));
+    setSendDates(!sendDates);
+    // dispatch(showPrposedMeetingUnsavedModal(true));
   };
 
   const handlebackButtonFunctionality = () => {
@@ -268,35 +270,6 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
     };
     dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
   }, []);
-  // First Value to be stored
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       NewMeetingreducer.getAllProposedDates !== null &&
-  //       NewMeetingreducer.getAllProposedDates !== undefined
-  //     ) {
-  //       const proposedMeetingData =
-  //         NewMeetingreducer.getAllProposedDates.meetingProposedDates;
-  //       const newData = proposedMeetingData.map((deadlinedate) => ({
-  //         deadLineDate: deadlinedate.deadLineDate,
-  //         ProposedDates: deadlinedate.proposedDates.map((dates) => ({
-  //           endTime: resolutionResultTable(dates.proposedDate + dates.endTime),
-  //           proposedDate: resolutionResultTable(
-  //             dates.proposedDate + dates.startTime
-  //           ),
-  //           proposedDateID: dates.proposedDateID,
-  //           startTime: resolutionResultTable(
-  //             dates.proposedDate + dates.startTime
-  //           ),
-  //         })),
-  //       }));
-  //       setProposedDatesData(newData);
-  //       console.log({ newData }, "newDatanewDatanewData");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, [NewMeetingreducer.getAllProposedDates]);
 
   console.log(proposedDatesData, "proposedDatesDataproposedDatesData");
 
@@ -306,35 +279,28 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
         NewMeetingreducer.getAllProposedDates !== null &&
         NewMeetingreducer.getAllProposedDates !== undefined
       ) {
-        const proposedMeetingData =
-          NewMeetingreducer.getAllProposedDates.meetingProposedDates;
-        console.log(
-          proposedMeetingData,
-          "proposedMeetingDataproposedMeetingData"
+        const proposedMeetingData = NewMeetingreducer.getAllProposedDates;
+        setSendResponseVal(
+          resolutionResultTable(proposedMeetingData.deadLineDate + "000000")
+        );
+        const newDataforView = proposedMeetingData.meetingProposedDates.map(
+          (dates) => ({
+            endTimeforSend: dates.endTime,
+            startTimeforSend: dates.startTime,
+            selectDateforSend: dates.proposedDate,
+            endDate: resolutionResultTable(dates.proposedDate + dates.endTime),
+            selectedOptionView: resolutionResultTable(
+              dates.proposedDate + dates.startTime
+            ),
+            proposedDateID: dates.proposedDateID,
+            startDate: resolutionResultTable(
+              dates.proposedDate + dates.startTime
+            ),
+          })
         );
 
-        if (proposedMeetingData.length > 0) {
-          const newDataforView = proposedMeetingData.map((deadlinedate) => ({
-            deadLineDate: resolutionResultTable(
-              deadlinedate.deadLineDate + "000000"
-            ),
-            proposedDates: deadlinedate.proposedDates.map((dates) => ({
-              endDate: resolutionResultTable(
-                dates.proposedDate + dates.endTime
-              ),
-              selectedOption: resolutionResultTable(
-                dates.proposedDate + dates.startTime
-              ),
-              proposedDateID: dates.proposedDateID,
-              startDate: resolutionResultTable(
-                dates.proposedDate + dates.startTime
-              ),
-            })),
-          }));
-          setRows(newDataforView);
-          console.log({ newDataforView }, "newDatanewDatanewData");
-        } else {
-        }
+        setRows(newDataforView);
+        console.log({ newDataforView }, "newDatanewDatanewData");
       }
     } catch (error) {
       console.error(error);
@@ -530,7 +496,7 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
                                       <Row className="mt-2">
                                         <Col lg={4} md={4} sm={12}>
                                           <DatePicker
-                                            value={data.selectedOption}
+                                            value={data.selectedOptionView}
                                             selected={data.selectedOption}
                                             format={"DD/MM/YYYY"}
                                             minDate={moment().toDate()}
@@ -587,6 +553,7 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
                                             calendar={calendarValue}
                                             locale={localValue}
                                             format="HH:mm A"
+                                            value={data.startDate}
                                             selected={data.startDate}
                                             plugins={[
                                               <TimePicker hideSeconds />,
@@ -615,6 +582,7 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
                                           // className="d-flex justify-content-end"
                                         >
                                           <DatePicker
+                                            value={data.endDate}
                                             arrowClassName="arrowClass"
                                             containerClassName="containerClassTimePicker"
                                             className="timePicker"
