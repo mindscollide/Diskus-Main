@@ -1,9 +1,9 @@
-import * as actions from '../action_types'
+import * as actions from "../action_types";
 
 const initialState = {
   Loading: false,
   meetingurlspinner: false,
-  ResponseMessage: '',
+  ResponseMessage: "",
   adduserModal: false,
   crossConfirmation: false,
   notifyOrganizors: false,
@@ -58,7 +58,9 @@ const initialState = {
   getAllMeetingDetails: null,
   getPollsMeetingID: [],
   getMeetingusers: [],
-}
+  setMeetingProposeDate: [],
+  getAllProposedDates: [],
+};
 
 const NewMeetingreducer = (state = initialState, action) => {
   switch (action.type) {
@@ -66,230 +68,230 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         sendNotificationOrganizerModal: action.response,
-      }
+      };
     }
 
     case actions.NEW_MEETING_ADDUSER_MODAL: {
       return {
         ...state,
         adduserModal: action.response,
-      }
+      };
     }
     case actions.CROSS_CONFIRMATION_MODAL: {
       return {
         ...state,
         crossConfirmation: action.response,
-      }
+      };
     }
 
     case actions.NOTIFY_ORGANIZORS_MODAL: {
       return {
         ...state,
         notifyOrganizors: action.response,
-      }
+      };
     }
 
     case actions.ADD_AGENDA_CONTRIBUTORS: {
       return {
         ...state,
         agendaContributors: action.response,
-      }
+      };
     }
 
     case actions.NOTIFY_AGENDA_CONTRIBUTORS: {
       return {
         ...state,
         notifyAgendaContributors: action.response,
-      }
+      };
     }
 
     case actions.ADD_PARTICIPANTS_MODAL: {
       return {
         ...state,
         participantModal: action.response,
-      }
+      };
     }
 
     case actions.AGENDA_ITEM_REMOVED: {
       return {
         ...state,
         agendaItemRemoved: action.response,
-      }
+      };
     }
 
     case actions.MAIN_AGENDA_ITEM_REMOVED: {
       return {
         ...state,
         mainAgendaItemRemoved: action.response,
-      }
+      };
     }
 
     case actions.ADVANCED_PERSMISSION_MODAL: {
       return {
         ...state,
         advancePermissionModal: action.response,
-      }
+      };
     }
 
     case actions.ADVANCE_PERMISSION_CONFIRMATION: {
       return {
         ...state,
         advancePermissionConfirmation: action.response,
-      }
+      };
     }
 
     case actions.VOTE_AGENDA_MODAL: {
       return {
         ...state,
         voteAgendaModal: action.response,
-      }
+      };
     }
 
     case actions.VOTE_MODAL_CONFIRMATION: {
       return {
         ...state,
         voteConfirmationModal: action.response,
-      }
+      };
     }
 
     case actions.IMPORT_PREVIOUS_AGENDA: {
       return {
         ...state,
         importPreviousAgendaModal: action.response,
-      }
+      };
     }
 
     case actions.ENABLE_PROPOSED_MEETING_DATE: {
       return {
         ...state,
         enableProposedMeetingDate: action.response,
-      }
+      };
     }
 
     case actions.PROPOSED_MEETING_SAVED_MODAL: {
       return {
         ...state,
         prposedMeetingUnsavedModal: action.response,
-      }
+      };
     }
 
     case actions.IMPORT_PREVIOUS_MINUTES: {
       return {
         ...state,
         ImportPreviousMinutes: action.response,
-      }
+      };
     }
 
     case actions.AFTER_IMPORT_STATE: {
       return {
         ...state,
         afterImportState: action.response,
-      }
+      };
     }
 
     case actions.UNSAVE_MINUTES_FILEUPLOAD: {
       return {
         ...state,
         unsaveFileUploadMinutes: action.response,
-      }
+      };
     }
 
     case actions.UNSAVED_CREATE_FROM_SCRATCH: {
       return {
         ...state,
         unsavedModalScratch: action.response,
-      }
+      };
     }
 
     case actions.UNSAVED_BUTTON_CREATE_SCRATCH: {
       return {
         ...state,
         UnsavedButtonCreateScratch: action.response,
-      }
+      };
     }
 
     case actions.UNSAVED_IMPORT_AGENDA: {
       return {
         ...state,
         unsavedModalImportAgenda: action.response,
-      }
+      };
     }
 
     case actions.UNSAVED_MODAL_ACTIONS: {
       return {
         ...state,
         unsavedActions: action.response,
-      }
+      };
     }
 
     case actions.REMOVED_TABLE_MODAL: {
       return {
         ...state,
         removeTableModal: action.response,
-      }
+      };
     }
 
     case actions.UNSAVED_POLLS_MEETING: {
       return {
         ...state,
         unsavedPollsMeeting: action.response,
-      }
+      };
     }
 
     case actions.UNSAVED_EDIT_POLL_MEETING: {
       return {
         ...state,
         unsavedEditPollsMeeting: action.response,
-      }
+      };
     }
 
     case actions.DELETE_MEETING_MODAL: {
       return {
         ...state,
         deleteMeetingModal: action.response,
-      }
+      };
     }
 
     case actions.END_MEETING_MODAL: {
       return {
         ...state,
         endMeetingModal: action.response,
-      }
+      };
     }
 
     case actions.END_MEETING_FOR_ALL: {
       return {
         ...state,
         endForAllMeeting: action.response,
-      }
+      };
     }
 
     case actions.SCEDULE_PROPOSED_MEETING: {
       return {
         ...state,
         sceduleproposedMeeting: action.response,
-      }
+      };
     }
 
     case actions.VIEW_VOTE_AGENDA: {
       return {
         ...state,
         viewVotesAgenda: action.response,
-      }
+      };
     }
 
     case actions.CAST_VOTE_AGENDA: {
       return {
         ...state,
         castVoteAgendaPage: action.response,
-      }
+      };
     }
     // searchMeetings
     case actions.GET_SEARCH_NEW_MEETINGS_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
     case actions.GET_SEARCH_NEW_MEETINGS_SUCCESS: {
       return {
@@ -297,7 +299,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         searchMeetings: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
     case actions.GET_SEARCH_NEW_MEETINGS_FAIL: {
       return {
@@ -305,20 +307,20 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         searchMeetings: null,
         ResponseMessage: action.message,
-      }
+      };
     }
     case actions.CLEAR_NEWMEETINGSTATE: {
       return {
         ...state,
         searchMeetings: null,
-      }
+      };
     }
 
     case actions.GET_ALL_MEETING_TYPES_NEW_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_ALL_MEETING_TYPES_NEW_SUCCESS: {
@@ -326,7 +328,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getALlMeetingTypes: action.response,
-      }
+      };
     }
 
     case actions.GET_ALL_MEETING_TYPES_NEW_FAILED: {
@@ -334,14 +336,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.SAVE_MEETING_DETAILS_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.SAVE_MEETING_DETAILS_SUCCESS: {
@@ -350,7 +352,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         meetingDetails: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.SAVE_MEETING_DETAILS_FAILED: {
@@ -358,14 +360,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_REMINDER_FREQUENCY_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_ALL_REMINDER_FREQUENCY_SUCCESS: {
@@ -374,7 +376,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getAllReminderFrequency: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_REMINDER_FREQUENCY_FAILED: {
@@ -382,14 +384,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_RECURRING_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_ALL_RECURRING_SUCCESS: {
@@ -398,7 +400,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         recurring: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_RECURRING_FAILED: {
@@ -406,70 +408,70 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.CANCEL_BUTTON_MODAL_MEETING_DETIALS_TAB: {
       return {
         ...state,
         cancelModalMeetingDetails: action.response,
-      }
+      };
     }
 
     case actions.CANCEL_BUTTON_MODAL_ORGANIZER: {
       return {
         ...state,
         cancelModalOrganizer: action.response,
-      }
+      };
     }
 
     case actions.CANCEL_AGENDA_CONTRIBUTOR: {
       return {
         ...state,
         cancelAgendaContributor: action.response,
-      }
+      };
     }
 
     case actions.CANCEL_PARTICIPANTS: {
       return {
         ...state,
         cancelPartipants: action.response,
-      }
+      };
     }
 
     case actions.CANCEL_AGENDA: {
       return {
         ...state,
         cancelAgenda: action.response,
-      }
+      };
     }
 
     case actions.CANCEL_MEETING_MATERIAL: {
       return {
         ...state,
         cancelMeetingMaterial: action.response,
-      }
+      };
     }
 
     case actions.CANCEL_ACTIONS: {
       return {
         ...state,
         cancelActions: action.response,
-      }
+      };
     }
 
     case actions.CANCEL_POLLS: {
       return {
         ...state,
         cancelPolls: action.response,
-      }
+      };
     }
 
     case actions.ADD_MORE_PARTICIPANTS_MODAL_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.ADD_MORE_PARTICIPANTS_MODAL_SUCCESS: {
@@ -478,7 +480,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getAllCommitteeAndGroupPartcipants: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.ADD_MORE_PARTICIPANTS_MODAL_FAILED: {
@@ -486,14 +488,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_ROLES_PARTICIPANTS_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_ALL_ROLES_PARTICIPANTS_SUCCESS: {
@@ -502,7 +504,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getAllPartiicpantsRoles: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_ROLES_PARTICIPANTS_FAILED: {
@@ -510,14 +512,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_MEETING_URL_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_MEETING_URL_SUCCESS: {
@@ -526,7 +528,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getmeetingURL: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_MEETING_URL_FAILED: {
@@ -534,21 +536,21 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_MEETING_URL_SPINNER: {
       return {
         ...state,
         meetingurlspinner: action.response,
-      }
+      };
     }
 
     case actions.SAVE_MEETING_PARTICIPANTS_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.SAVE_MEETING_PARTICIPANTS_SUCCESS: {
@@ -557,7 +559,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         saveMeetingParticipants: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.SAVE_MEETING_PARTICIPANTS_FAILED: {
@@ -565,35 +567,35 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.SAVE_AGENDACONTRIBUTORS_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
     case actions.SAVE_AGENDACONTRIBUTORS_SUCCESS: {
       return {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
     case actions.SAVE_AGENDACONTRIBUTORS_FAIL: {
       return {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_SAVED_PARTICIPATNS_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_ALL_SAVED_PARTICIPATNS_SUCCESS: {
@@ -602,7 +604,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getAllSavedparticipants: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_SAVED_PARTICIPATNS_FAILED: {
@@ -611,13 +613,13 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getAllSavedparticipants: [],
         ResponseMessage: action.message,
-      }
+      };
     }
     case actions.GET_ALL_AGENDACONTRIBUTOR_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
     case actions.GET_ALL_AGENDACONTRIBUTOR_SUCCESS: {
       return {
@@ -625,7 +627,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getAllAgendaContributors: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_AGENDACONTRIBUTOR_FAIL: {
@@ -634,14 +636,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getAllAgendaContributors: [],
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.SEND_NOTIFICATION_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.SEND_NOTIFICATION_SUCCESS: {
@@ -649,7 +651,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.SEND_NOTIFICATION_FAILED: {
@@ -657,14 +659,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_SUCCESS: {
@@ -673,7 +675,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getAllMeetingDetails: action.response,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_FAILED: {
@@ -682,14 +684,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getAllMeetingDetails: null,
         ResponseMessage: action.message,
-      }
+      };
     }
 
     case actions.GET_POLLS_BY_MEETING_ID_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_POLLS_BY_MEETING_ID_SUCCESS: {
@@ -698,7 +700,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getPollsMeetingID: action.response,
         ResponseMessage: action.ResponseMessage,
-      }
+      };
     }
 
     case actions.GET_POLLS_BY_MEETING_ID_FAILED: {
@@ -706,14 +708,14 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.ResponseMessage,
-      }
+      };
     }
 
     case actions.GET_ALL_MEETING_USER_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_ALL_MEETING_USER_SUCCESS: {
@@ -722,7 +724,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         getMeetingusers: action.response,
         ResponseMessage: action.ResponseMessage,
-      }
+      };
     }
 
     case actions.GET_ALL_MEETING_USER_FAILED: {
@@ -730,13 +732,84 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.ResponseMessage,
-      }
+      };
+    }
+
+    case actions.SET_MEETING_POLLS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SET_MEETING_POLLS_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SET_MEETING_POLLS_FAILED: {
+      return {
+        ...state,
+        Loading: true,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SET_MEETING_PROPOSED_DATE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SET_MEETING_PROPOSED_DATE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setMeetingProposeDate: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SET_MEETING_PROPOSED_DATE_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_ALL_PRPOSED_DATES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_PRPOSED_DATES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAllProposedDates: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_ALL_PRPOSED_DATES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
     }
 
     default: {
-      return { ...state }
+      return { ...state };
     }
   }
-}
+};
 
-export default NewMeetingreducer
+export default NewMeetingreducer;

@@ -60,7 +60,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: 1785,
+      MeetingID: currentMeetingID,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -185,7 +185,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
             if (record.voteStatus === "Not Voted") {
               return (
                 <Button
-                  className={styles["voteBtn"]}
+                  className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
                   onClick={() => {}}
                 />
@@ -229,7 +229,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Background-nonvoted-Button"]}
+                    className={styles["Vote_Button_Polls"]}
                   >
                     <span className={styles["Not-voted"]}>{t("Voted")}</span>
                   </Col>
@@ -373,19 +373,19 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                               <Table
                                 column={PollsColoumn}
                                 rows={pollsRows}
-                                scroll={{ y: "65vh" }}
+                                scroll={{ y: "40vh" }}
                                 pagination={false}
                                 className="Polling_table"
                               />
                             </Col>
                           </Row>
                         </section>
-                        <Row>
+                        <Row className="mt-5">
                           <Col
-                            lg={!2}
+                            lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-end gap-2 mt-2"
+                            className="d-flex justify-content-end gap-2"
                           >
                             <Button
                               text={t("Clone-meeting")}

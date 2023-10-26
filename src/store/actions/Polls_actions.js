@@ -14,6 +14,10 @@ import { pollApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import { message } from "antd";
+import {
+  GetAllPollsByMeetingIdApiFunc,
+  SetMeetingPollsApiFunc,
+} from "./NewMeetingActions";
 
 // search Poll Init
 const searchPolls_init = () => {
@@ -358,6 +362,22 @@ const SavePollsApi = (navigate, Data, t) => {
               };
               await dispatch(searchPollsApi(navigate, t, data));
               dispatch(setCreatePollModal(false));
+              let currentMeetingID = Number(localStorage.getItem("meetingID"));
+              let Data = {
+                MeetingID: currentMeetingID,
+                PollID: response.data.responseResult.pollID,
+              };
+              dispatch(SetMeetingPollsApiFunc(Data, navigate, t));
+              let OrganizationID = localStorage.getItem("organizationID");
+              let Data1 = {
+                MeetingID: currentMeetingID,
+                OrganizationID: Number(OrganizationID),
+                CreatorName: "",
+                PollTitle: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(GetAllPollsByMeetingIdApiFunc(Data1, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
