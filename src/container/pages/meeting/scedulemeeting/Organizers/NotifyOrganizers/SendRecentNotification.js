@@ -12,6 +12,9 @@ import BlackCrossIcon from '../../../../../../assets/images/BlackCrossIconModals
 import {
   selectedMeetingOrganizers,
   meetingOrganizers,
+  notificationSendData,
+  sendNotificationOrganizer,
+  notificationUpdateData,
 } from '../../../../../../store/actions/MeetingOrganizers_action'
 import { useNavigate } from 'react-router-dom'
 import profile from '../../../../../../assets/images/newprofile.png'
@@ -62,8 +65,7 @@ const SendNotificationOrganizer = () => {
   const initialMembersOrganizers = MeetingOrganizersReducer.NotificationSendData.map(
     (member) => ({
       ...member,
-      isOrganizerNotified:
-        MeetingOrganizersReducer.NotificationSendData[0].isOrganizerNotified,
+      isOrganizerNotified: true,
     }),
   )
 
@@ -73,14 +75,10 @@ const SendNotificationOrganizer = () => {
 
   // Initialize memberCheckboxes with all checkboxes initially checked
   const [memberCheckboxes, setMemberCheckboxes] = useState(
-    Array(initialMembersOrganizers.length).fill(
-      MeetingOrganizersReducer.NotificationSendData[0].isOrganizerNotified,
-    ),
+    Array(initialMembersOrganizers.length).fill(true),
   )
 
-  const [allOrganizersAccept, setAllOrganizersAccept] = useState(
-    MeetingOrganizersReducer.NotificationSendData[0].isOrganizerNotified,
-  )
+  const [allOrganizersAccept, setAllOrganizersAccept] = useState(true)
 
   const handleCrossIcon = () => {
     dispatch(sendRecentNotificationOrganizerModal(false))
@@ -111,7 +109,7 @@ const SendNotificationOrganizer = () => {
     const updatedCheckboxes = membersOrganizers.map(() => newState)
     const updatedMembers = membersOrganizers.map((member) => ({
       ...member,
-      isOrganizerNotified: newState,
+      isOrganizerNotified: true,
     }))
     setMemberCheckboxes(updatedCheckboxes)
     setMembersOrganizers(updatedMembers)
@@ -126,25 +124,26 @@ const SendNotificationOrganizer = () => {
     updatedCheckboxes[index] = isChecked
 
     const updatedMembers = [...membersOrganizers]
-    updatedMembers[index] = { ...data, isOrganizerNotified: isChecked }
+    updatedMembers[index] = { ...data, isOrganizerNotified: true }
 
     setMemberCheckboxes(updatedCheckboxes)
     setMembersOrganizers(updatedMembers)
   }
 
   const sendNotification = () => {
-    // dispatch(sendRecentNotificationOrganizerModal(false))
-    const updatedMembersOrganizers = membersOrganizers.map((member) => ({
-      ...member,
-      NotificationMessage: notifyOrganizerData.Messege,
-    }))
-    console.log('Resend Notification Data', updatedMembersOrganizers)
-    // dispatch(meetingOrganizers(updatedMembersOrganizers))
+    let Data = {
+      UserID: MeetingOrganizersReducer.NotificationSendData[0].userID,
+      Message: notifyOrganizerData.Messege,
+      IsAgendaContributor: false,
+    }
+    dispatch(sendNotificationOrganizer(Data, navigate, t))
+    dispatch(notificationUpdateData(membersOrganizers))
+    dispatch(sendRecentNotificationOrganizerModal(false))
   }
 
   const handleCancelButton = () => {
     dispatch(sendRecentNotificationOrganizerModal(false))
-    dispatch(meetingOrganizers([]))
+    // dispatch(meetingOrganizers([]))
   }
 
   console.log('MeetingOrganizersReducer', MeetingOrganizersReducer)
@@ -205,6 +204,8 @@ const SendNotificationOrganizer = () => {
                 <Checkbox
                   checked={allOrganizersAccept}
                   onChange={handleAllowOrganizerCheck}
+                  disabled={true}
+                  className="sendNotificationOrganizer"
                 />
                 <p className={styles['Check_box_title']}>
                   {t('All-organizers')}
@@ -254,7 +255,7 @@ const SendNotificationOrganizer = () => {
                                 >
                                   <img
                                     draggable={false}
-                                    src={`data:image/jpeg;base64,${data.displayPicture}`}
+                                    src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                     width="33px"
                                     height="33px"
                                     className={styles['ProfilePic']}
@@ -271,6 +272,8 @@ const SendNotificationOrganizer = () => {
                                         data,
                                       )
                                     }
+                                    disabled={true}
+                                    className="sendNotificationOrganizer"
                                   />
                                 </Col>
                               </Row>

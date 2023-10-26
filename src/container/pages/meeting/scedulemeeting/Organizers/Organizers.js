@@ -371,10 +371,6 @@ const Organizers = ({
   }
 
   const previousTabOrganizer = () => {
-    // console.log('For Save Data', transformedData)
-    // dispatch(SaveMeetingOrganizers(navigate, transformedData, t))
-    // setorganizers(false)
-    // setAgendaContributors(true)
     setAgendaContributors(false)
     setmeetingDetails(true)
     setorganizers(false)
@@ -390,20 +386,22 @@ const Organizers = ({
     dispatch(editMeetingFlag(false))
   }
 
-  const handleSaveNextButton = () => {
-    console.log('For Save Data', transformedData)
-    dispatch(SaveMeetingOrganizers(navigate, transformedData, t))
+  const handlePublishButton = () => {
+    // console.log('For Save Data', transformedData)
+    // dispatch(SaveMeetingOrganizers(navigate, transformedData, t))
     dispatch(saveMeetingFlag(false))
     dispatch(editMeetingFlag(false))
-    setorganizers(false)
-    setAgendaContributors(true)
+    let Data = { meetingID: currentMeetingID, StatusID: 1 }
+    dispatch(UpdateOrganizersMeeting(navigate, Data, t))
+    // setorganizers(false)
+    // setAgendaContributors(true)
     setRowsData([])
   }
 
   const nextTabOrganizer = () => {
     // setviewOrganizers(!viewOrganizers)
     // let Data = { meetingID: currentMeetingID, StatusID: 1 };
-    // dispatch(UpdateOrganizersMeeting(navigate, Data, t, setSceduleMeeting));
+    // dispatch(UpdateOrganizersMeeting(navigate, Data, t));
     // setRowsData([]);
     setAgendaContributors(true)
     setmeetingDetails(false)
@@ -583,6 +581,26 @@ const Organizers = ({
   }, [MeetingOrganizersReducer.MeetingOrganizersData])
 
   useEffect(() => {
+    const updatedRowsData = [...rowsData]
+
+    MeetingOrganizersReducer.NotificationUpdateData.forEach((data) => {
+      const index = updatedRowsData.findIndex(
+        (rowData) => rowData.userID === data.userID,
+      )
+
+      if (index !== -1) {
+        updatedRowsData[index] = {
+          ...updatedRowsData[index],
+          isOrganizerNotified: true,
+        }
+      }
+    })
+
+    // Update the rowsData state with the modified data
+    setRowsData(updatedRowsData)
+  }, [MeetingOrganizersReducer.NotificationUpdateData])
+
+  useEffect(() => {
     if (
       MeetingOrganizersReducer.ResponseMessage ===
       'Organizers-saved-successfully'
@@ -591,6 +609,28 @@ const Organizers = ({
         setOpen({
           open: true,
           message: t('Organizers-saved-successfully'),
+        }),
+        3000,
+      )
+    } else if (
+      MeetingOrganizersReducer.ResponseMessage ===
+      'Notification-sent-successfully'
+    ) {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t('Notification-sent-successfully'),
+        }),
+        3000,
+      )
+    } else if (
+      MeetingOrganizersReducer.ResponseMessage ===
+      'Notification-not-sent-successfully'
+    ) {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t('Notification-not-sent-successfully'),
         }),
         3000,
       )
@@ -722,7 +762,7 @@ const Organizers = ({
                   <Button
                     text={t('Publish')}
                     className={styles['Next_Organization']}
-                    onClick={handleSaveNextButton}
+                    onClick={handlePublishButton}
                   />
                 </section>
               </Col>
