@@ -38,6 +38,8 @@ const initialState = {
   updateAccess: null,
   updateGeneralAccess: null,
   updateFolderGeneralAccess: null,
+  FolderisExistMessage: "",
+  FileisExistMessage: "",
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -266,7 +268,7 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         FileisExistResponse: null,
-        ResponseMessage: action.message,
+        FileisExistMessage: action.message,
       };
     }
     case actions.FOLDERISEXIST_FAIL: {
@@ -274,7 +276,7 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         FolderisExistResponse: null,
-        ResponseMessage: action.message,
+        FolderisExistMessage: action.message,
       };
     }
     case actions.DELETEFOLDER_DATAROOM_INIT: {
@@ -343,10 +345,12 @@ const DataRoomReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-    case actions.CLEARE_MESSAGE: {
+    case actions.DATAROOM_CLEAR_MESSAGE: {
       return {
         ...state,
         ResponseMessage: "",
+        FileisExistMessage: "",
+        FolderisExistMessage: "",
       };
     }
     // huzeifa

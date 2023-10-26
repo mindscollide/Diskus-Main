@@ -617,20 +617,16 @@ const Notes = () => {
           >
             {notes !== null && notes !== undefined && notes.length > 0 ? (
               <>
-                <Pagination
+                <CustomPagination
                   current={
                     notesPage !== null && notesPage !== undefined
                       ? notesPage
                       : 1
                   }
-                  locale={{
-                    items_per_page: t("items_per_page"),
-                    page: t("page"),
-                  }}
+                  showSizer={true}
+                  pageSizeOptionsValues={["30", "50", "100", "200"]}
                   onChange={handelChangeNotesPagination}
-                  showSizeChanger
                   total={totalRecords}
-                  pageSizeOptions={["30", "50", "100", "200"]}
                   pageSize={notesPagesize !== null ? notesPagesize : 50}
                   className={styles["PaginationStyle-Notes"]}
                 />

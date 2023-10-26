@@ -19,6 +19,7 @@ import {
   getSelectedLanguage,
   changeNewLanguage,
 } from "../../../store/actions/Language_actions";
+import moment from "moment";
 
 const LanguageSelector = () => {
   const { LanguageReducer } = useSelector((state) => state);
@@ -123,6 +124,7 @@ const LanguageSelector = () => {
         code: "en",
       });
       localStorage.setItem("i18nextLng", "en");
+      moment.locale("en");
       setTimeout(() => {
         // window.location.reload()
         i18n.changeLanguage("en");
@@ -134,7 +136,7 @@ const LanguageSelector = () => {
         code: "ar",
       });
       localStorage.setItem("i18nextLng", "ar");
-
+      moment.locale("ar");
       setTimeout(() => {
         // window.location.reload()
         i18n.changeLanguage("ar");
@@ -146,6 +148,7 @@ const LanguageSelector = () => {
         code: "fr",
       });
       localStorage.setItem("i18nextLng", "fr");
+      moment.locale("fr");
       setTimeout(() => {
         // window.location.reload()
         i18n.changeLanguage("fr");

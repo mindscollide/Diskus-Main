@@ -1199,6 +1199,7 @@ const DataRoom = () => {
                       alt=""
                       width={"25px"}
                       height={"25px"}
+                      className="me-2"
                     />
                     <abbr title={text}>
                       <span
@@ -1220,6 +1221,7 @@ const DataRoom = () => {
                     alt=""
                     width={"25px"}
                     height={"25px"}
+                    className="me-2"
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
@@ -1265,6 +1267,7 @@ const DataRoom = () => {
                       alt=""
                       width={"25px"}
                       height={"25px"}
+                      className="me-2"
                     />
                     <abbr title={text}>
                       <span
@@ -1287,6 +1290,7 @@ const DataRoom = () => {
                     alt=""
                     width={"25px"}
                     height={"25px"}
+                    className="me-2"
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
@@ -2449,28 +2453,65 @@ const DataRoom = () => {
     };
   }, [searchbarshow, optionsFileisShown, optionsFolderisShown]);
 
-  // useEffect(() => {
-  //   if (
-  //     DataRoomReducer.ResponseMessage !== "" &&
-  //     DataRoomReducer.ResponseMessage !== t("Data-available") &&
-  //     DataRoomReducer.ResponseMessage !== t("No-record-found") &&
-  //     DataRoomReducer.ResponseMessage !==
-  //       t("No-folder-exist-against-this-name") &&
-  //     DataRoomReducer.ResponseMessage !== t("No-duplicate-found")
-  //   ) {
-  //     setOpen({
-  //       open: true,
-  //       message: DataRoomReducer.ResponseMessage,
-  //     });
-  //     setTimeout(() => {
-  //       setOpen({
-  //         open: false,
-  //         message: "",
-  //       });
-  //     }, 4000);
-  //     dispatch(clearDataResponseMessage());
-  //   }
-  // }, [DataRoomReducer.ResponseMessage]);
+  useEffect(() => {
+    console.log(
+      "DataRoomReducerResponseMessage",
+      DataRoomReducer.ResponseMessage,
+      DataRoomReducer.FileisExistMessage,
+      DataRoomReducer.FolderisExistMessage
+    );
+    if (
+      DataRoomReducer.ResponseMessage !== "" &&
+      DataRoomReducer.ResponseMessage !== t("Data-available") &&
+      DataRoomReducer.ResponseMessage !== t("No-record-found") &&
+      DataRoomReducer.ResponseMessage !==
+        t("No-folder-exist-against-this-name") &&
+      DataRoomReducer.ResponseMessage !== t("No-duplicate-found") &&
+      DataRoomReducer.ResponseMessage !== t("Record-found")
+    ) {
+      setOpen({
+        open: true,
+        message: DataRoomReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+        dispatch(clearDataResponseMessage());
+      }, 4000);
+    }
+    if (DataRoomReducer.FolderisExistMessage !== "") {
+      setOpen({
+        open: true,
+        message: DataRoomReducer.FolderisExistMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+        dispatch(clearDataResponseMessage());
+      }, 4000);
+    }
+    if (DataRoomReducer.FileisExistMessage !== "") {
+      setOpen({
+        open: true,
+        message: DataRoomReducer.FileisExistMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+        dispatch(clearDataResponseMessage());
+      }, 4000);
+    }
+  }, [
+    DataRoomReducer.FileisExistMessage,
+    DataRoomReducer.FolderisExistMessage,
+    DataRoomReducer.ResponseMessage,
+  ]);
 
   return (
     <>
@@ -3201,7 +3242,7 @@ const DataRoom = () => {
         />
       )}
       {DataRoomReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
-      {/* <Notification open={open.open} message={open.message} setOpen={setOpen} /> */}
+      <Notification open={open.open} message={open.message} setOpen={setOpen} />
     </>
   );
 };

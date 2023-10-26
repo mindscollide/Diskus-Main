@@ -1517,7 +1517,7 @@ const FileisExist = (
                   "DataRoom_DataRoomServiceManager_FileExist_03".toLowerCase()
                 )
             ) {
-              await dispatch(FileisExist_fail(t("No-duplicate-found")));
+              // await dispatch(FileisExist_fail(t("No-duplicate-found")));
               dispatch(
                 uploadDocumentsApi(
                   navigate,
@@ -1877,9 +1877,9 @@ const FolderisExistRename = (navigate, folderData, t, setRenamefolder) => {
                   "DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase()
                 )
             ) {
-              await dispatch(
-                FolderisExistrename_fail(t("No-folder-exist-against-this-name"))
-              );
+              // await dispatch(
+              //   FolderisExistrename_fail(t("No-folder-exist-against-this-name"))
+              // );
               dispatch(
                 renameFolderApi(navigate, folderData, t, setRenamefolder)
               );
@@ -2226,7 +2226,7 @@ const isFolder = (response) => {
 // const resetSpinner = () => {}
 const clearDataResponseMessage = () => {
   return {
-    type: actions.CLEARE_MESSAGE,
+    type: actions.DATAROOM_CLEAR_MESSAGE,
   };
 };
 // Get Documents and Folders Init
@@ -2420,6 +2420,7 @@ const getSharedFileUser_init = () => {
     type: actions.GETUSERSAGAINSTSHAREDFILE_INIT,
   };
 };
+
 const getSharedFileUser_success = (response, message) => {
   return {
     type: actions.GETUSERSAGAINSTSHAREDFILE_SUCCESS,
@@ -2427,12 +2428,14 @@ const getSharedFileUser_success = (response, message) => {
     message,
   };
 };
+
 const getSharedFileUser_fail = (message) => {
   return {
     type: actions.GETUSERSAGAINSTSHAREDFILE_FAIL,
     message,
   };
 };
+
 const getSharedFileUsersApi = (navigate, data, t, setShareFileModal) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -2471,9 +2474,7 @@ const getSharedFileUsersApi = (navigate, data, t, setShareFileModal) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_GetUsersAgainstSharedFile_02".toLowerCase()
             ) {
-              dispatch(
-                getSharedFileUser_fail(t("File-not-shared-against-any-users"))
-              );
+              dispatch(getSharedFileUser_fail(t("No-record-found")));
               setShareFileModal(true);
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -2501,6 +2502,7 @@ const getSharedFolderUser_init = () => {
     type: actions.GETUSERSAGAINSTSHAREDFOLDER_INIT,
   };
 };
+
 const getSharedFolderUser_success = (response, message) => {
   return {
     type: actions.GETUSERSAGAINSTSHAREDFOLDER_SUCCESS,
@@ -2508,12 +2510,14 @@ const getSharedFolderUser_success = (response, message) => {
     message,
   };
 };
+
 const getSharedFolderUser_fail = (message) => {
   return {
     type: actions.GETUSERSAGAINSTSHAREDFOLDER_FAIL,
     message,
   };
 };
+
 const getSharedFolderUsersApi = (navigate, data, t, setSharefoldermodal) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -2553,11 +2557,7 @@ const getSharedFolderUsersApi = (navigate, data, t, setSharefoldermodal) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_GetUsersAgainstSharedFolder_02".toLowerCase()
             ) {
-              dispatch(
-                getSharedFolderUser_fail(
-                  t("Folder-not-shared-against-any-users")
-                )
-              );
+              dispatch(getSharedFolderUser_fail(t("No-record-found")));
               setSharefoldermodal(true);
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -2585,6 +2585,7 @@ const createFolderLink_init = () => {
     type: actions.CREATEFOLDERLINK_INIT,
   };
 };
+
 const createFolderLink_success = (response, message) => {
   return {
     type: actions.CREATEFOLDERLINK_SUCCESS,
@@ -2592,12 +2593,14 @@ const createFolderLink_success = (response, message) => {
     message,
   };
 };
+
 const createFolderLink_fail = (message) => {
   return {
     type: actions.CREATEFOLDERLINK_FAIL,
     message,
   };
 };
+
 const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -2627,7 +2630,7 @@ const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
               dispatch(
                 createFolderLink_success(
                   response.data.responseResult.link,
-                  t("Folder-shared-against-different-users")
+                  t("Data-available")
                 )
               );
               setLinkedcopied(true);
@@ -2865,18 +2868,21 @@ const requestAccess_init = () => {
     type: actions.REQUESTACCESS_INIT,
   };
 };
+
 const requestAccess_success = (message) => {
   return {
     type: actions.REQUESTACCESS_SUCCESS,
     message,
   };
 };
+
 const requestAccess_fail = (message) => {
   return {
     type: actions.REQUESTACCESS_FAIL,
     message,
   };
 };
+
 const requestAccessApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
 

@@ -47,6 +47,7 @@ const ModalOptions = ({
   let fileName = localStorage.getItem("fileName");
   const cancelButton = async () => {
     await dispatch(IsFileisExist(null));
+    localStorage.removeItem("fileName");
     setUploadOptions(false);
   };
   return (

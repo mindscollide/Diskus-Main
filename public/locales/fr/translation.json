@@ -1079,5 +1079,8 @@
   "Consecutive-date-times-should-be-greater-than-previous-date-time": "Consecutive Date Times Should be greater than previous date time",
   "30": "30",
   "100": "100",
-  "200": "200"
+  "200": "200",
+  "Anyone-on-the-internet-with-the-link-can-view": "Anyone on the internet with the link can view",
+  "Only-people-with-access-can-open-with-the-link": "Only people with access can open with the link",
+  "General-access-updated": "General access updated"
 }
