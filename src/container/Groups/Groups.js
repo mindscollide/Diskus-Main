@@ -24,6 +24,7 @@ import {
 } from "../../store/actions/Groups_actions";
 import { Plus } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const Groups = () => {
   const { t } = useTranslation();
@@ -402,12 +403,19 @@ const Groups = () => {
                   }
                 >
                   <span className={styles["PaginationStyle-Committee"]}>
-                    <Pagination
+                    <CustomPagination
+                      total={totalLength}
+                      current={currentPage}
+                      pageSize={8}
+                      onChange={handlechange}
+                      showSizer={false}
+                    />
+                    {/* <Pagination
                       current={currentPage}
                       total={totalLength}
                       pageSize={8}
                       onChange={handlechange}
-                    />
+                    /> */}
                   </span>
                 </Col>
               </Row>

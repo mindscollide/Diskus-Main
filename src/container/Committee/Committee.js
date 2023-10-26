@@ -26,6 +26,7 @@ import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommi
 import { useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 import { Plus } from "react-bootstrap-icons";
+import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const Committee = () => {
   const { CommitteeReducer, LanguageReducer } = useSelector((state) => state);
@@ -80,14 +81,14 @@ const Committee = () => {
           CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.length >
           0
         ) {
-          let newArr = [];
-          let copyData = [
-            ...CommitteeReducer.GetAllCommitteesByUserIDResponse?.committees,
-          ];
-          copyData.map((data, index) => {
-            newArr.push(data);
-          });
-          setGetCommitteeData(newArr);
+          // let newArr = [];
+          let copyData =
+            CommitteeReducer.GetAllCommitteesByUserIDResponse?.committees;
+
+          // copyData.forEach((data, index) => {
+          //   newArr.push(data);
+          // });
+          setGetCommitteeData(copyData);
         } else {
           setGetCommitteeData([]);
         }
@@ -448,11 +449,12 @@ const Committee = () => {
                         sm={12}
                         className={"pagination-groups-table"}
                       >
-                        <Pagination
-                          current={currentPage}
+                        <CustomPagination
                           total={totalRecords}
+                          current={currentPage}
                           pageSize={8}
                           onChange={handlechange}
+                          showSizer={false}
                         />
                       </Col>
                     </Row>

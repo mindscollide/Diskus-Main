@@ -55,6 +55,7 @@ import {
   regexOnlyCharacters,
   regexOnlyForNumberNCharacters,
 } from "../../commen/functions/regex";
+import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const Polling = () => {
   const dispatch = useDispatch();
@@ -899,16 +900,12 @@ const Polling = () => {
                   sm={12}
                   className={"pagination-groups-table"}
                 >
-                  <Pagination
-                    pageSize={currentPageSize !== null ? currentPageSize : 50}
-                    showSizeChanger
-                    onChange={handleChangePagination}
-                    pageSizeOptions={["30", "50", "100", "200"]}
+                  <CustomPagination
                     current={currentPage !== null ? currentPage : 1}
-                    locale={{
-                      items_per_page: t("items_per_page"),
-                      page: t("page"),
-                    }}
+                    pageSize={currentPageSize !== null ? currentPageSize : 50}
+                    pageSizeOptionsValues={["30", "50", "100", "200"]}
+                    showSizer={true}
+                    onChange={handleChangePagination}
                     total={isTotalRecords}
                   />
                 </Col>

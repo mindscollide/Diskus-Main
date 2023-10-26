@@ -414,6 +414,9 @@ body[dir="rtl"] .PaginationStyle-TodoList {
   .rc-virtual-list-holder-inner {
   display: block !important;
 }
+td.ant-table-column-sort {
+  background: transparent;
+}
 .ToDo .ant-table .ant-table-body {
   padding-right: 10px;
 }

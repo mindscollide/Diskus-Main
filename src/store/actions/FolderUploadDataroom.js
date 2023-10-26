@@ -144,7 +144,7 @@ const uploadDocument_success = (response, message) => {
   return {
     type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
     response: response,
-    message: message,
+    message: "",
   };
 };
 
@@ -286,7 +286,7 @@ const saveFiles_success = (response, message) => {
   return {
     type: actions.SAVEFILES_DATAROOM_SUCCESS,
     response: response,
-    message: message,
+    message: "",
   };
 };
 // Save Files Fail

@@ -1199,6 +1199,7 @@ const DataRoom = () => {
                       alt=""
                       width={"25px"}
                       height={"25px"}
+                      className="me-2"
                     />
                     <abbr title={text}>
                       <span
@@ -1220,6 +1221,7 @@ const DataRoom = () => {
                     alt=""
                     width={"25px"}
                     height={"25px"}
+                    className="me-2"
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
@@ -1265,6 +1267,7 @@ const DataRoom = () => {
                       alt=""
                       width={"25px"}
                       height={"25px"}
+                      className="me-2"
                     />
                     <abbr title={text}>
                       <span
@@ -1287,6 +1290,7 @@ const DataRoom = () => {
                     alt=""
                     width={"25px"}
                     height={"25px"}
+                    className="me-2"
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
@@ -1402,33 +1406,37 @@ const DataRoom = () => {
                   className="d-flex justify-content-end gap-2 position-relative otherstuff"
                 >
                   <div className="tablerowFeatures">
-                    <Tooltip placement="topRight" title={t("Share")}>
-                      <span className={styles["share__Icon"]}>
-                        <svg
-                          className={styles["share__Icon_img"]}
-                          onClick={() => {
-                            if (record.isFolder) {
-                              showShareFolderModal(record.id, record.name);
-                            } else {
-                              showShareFileModal(record.id, record.name);
-                            }
-                          }}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16.022"
-                          height="11.71"
-                          viewBox="0 0 16.022 11.71"
-                        >
-                          <path
-                            id="Icon_material-group-add"
-                            data-name="Icon material-group-add"
-                            d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                            transform="translate(0.5 -7)"
-                            fill="none"
-                            stroke="#5a5a5a"
-                          />
-                        </svg>
-                      </span>
-                    </Tooltip>
+                    {record.permissionID === 2 ||
+                    record.permissionID === 3 ? null : (
+                      <Tooltip placement="topRight" title={t("Share")}>
+                        <span className={styles["share__Icon"]}>
+                          <svg
+                            className={styles["share__Icon_img"]}
+                            onClick={() => {
+                              if (record.isFolder) {
+                                showShareFolderModal(record.id, record.name);
+                              } else {
+                                showShareFileModal(record.id, record.name);
+                              }
+                            }}
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16.022"
+                            height="11.71"
+                            viewBox="0 0 16.022 11.71"
+                          >
+                            <path
+                              id="Icon_material-group-add"
+                              data-name="Icon material-group-add"
+                              d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
+                              transform="translate(0.5 -7)"
+                              fill="none"
+                              stroke="#5a5a5a"
+                            />
+                          </svg>
+                        </span>
+                      </Tooltip>
+                    )}
+
                     <Tooltip placement="topRight" title={t("Download")}>
                       <span className={styles["download__Icon"]}>
                         <img
@@ -1441,46 +1449,9 @@ const DataRoom = () => {
                         />
                       </span>
                     </Tooltip>
-                    {record.permissionID === 1 ? (
-                      <Tooltip placement="topRight" title={t("Delete")}>
-                        <span className={styles["delete__Icon"]}>
-                          <img
-                            src={hoverdelete}
-                            height="10.71px"
-                            alt=""
-                            width="15.02px"
-                            className={styles["delete__Icon_img_hover"]}
-                            onClick={() => {
-                              if (record.isFolder) {
-                                dispatch(deleteFolder(navigate, record.id, t));
-                              } else {
-                                dispatch(
-                                  deleteFileDataroom(navigate, record.id, t)
-                                );
-                              }
-                            }}
-                          />
-                          <img
-                            src={del}
-                            height="12.17px"
-                            alt=""
-                            width="9.47px"
-                            className={styles["delete__Icon_img"]}
-                            onClick={() => {
-                              if (record.isFolder) {
-                                dispatch(deleteFolder(navigate, record.id, t));
-                              } else {
-                                dispatch(
-                                  deleteFileDataroom(navigate, record.id, t)
-                                );
-                              }
-                            }}
-                          />
-                        </span>
-                      </Tooltip>
-                    ) : record.permissionID === 1 ||
-                      record.permissionID === 2 ||
-                      record.permissionID === 3 ? null : (
+                    {record.permissionID === 1 ||
+                    record.permissionID === 2 ||
+                    record.permissionID === 3 ? null : (
                       <Tooltip placement="topRight" title={t("Delete")}>
                         <span className={styles["delete__Icon"]}>
                           <img
@@ -2482,28 +2453,65 @@ const DataRoom = () => {
     };
   }, [searchbarshow, optionsFileisShown, optionsFolderisShown]);
 
-  // useEffect(() => {
-  //   if (
-  //     DataRoomReducer.ResponseMessage !== "" &&
-  //     DataRoomReducer.ResponseMessage !== t("Data-available") &&
-  //     DataRoomReducer.ResponseMessage !== t("No-record-found") &&
-  //     DataRoomReducer.ResponseMessage !==
-  //       t("No-folder-exist-against-this-name") &&
-  //     DataRoomReducer.ResponseMessage !== t("No-duplicate-found")
-  //   ) {
-  //     setOpen({
-  //       open: true,
-  //       message: DataRoomReducer.ResponseMessage,
-  //     });
-  //     setTimeout(() => {
-  //       setOpen({
-  //         open: false,
-  //         message: "",
-  //       });
-  //     }, 4000);
-  //     dispatch(clearDataResponseMessage());
-  //   }
-  // }, [DataRoomReducer.ResponseMessage]);
+  useEffect(() => {
+    console.log(
+      "DataRoomReducerResponseMessage",
+      DataRoomReducer.ResponseMessage,
+      DataRoomReducer.FileisExistMessage,
+      DataRoomReducer.FolderisExistMessage
+    );
+    if (
+      DataRoomReducer.ResponseMessage !== "" &&
+      DataRoomReducer.ResponseMessage !== t("Data-available") &&
+      DataRoomReducer.ResponseMessage !== t("No-record-found") &&
+      DataRoomReducer.ResponseMessage !==
+        t("No-folder-exist-against-this-name") &&
+      DataRoomReducer.ResponseMessage !== t("No-duplicate-found") &&
+      DataRoomReducer.ResponseMessage !== t("Record-found")
+    ) {
+      setOpen({
+        open: true,
+        message: DataRoomReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+        dispatch(clearDataResponseMessage());
+      }, 4000);
+    }
+    if (DataRoomReducer.FolderisExistMessage !== "") {
+      setOpen({
+        open: true,
+        message: DataRoomReducer.FolderisExistMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+        dispatch(clearDataResponseMessage());
+      }, 4000);
+    }
+    if (DataRoomReducer.FileisExistMessage !== "") {
+      setOpen({
+        open: true,
+        message: DataRoomReducer.FileisExistMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+        dispatch(clearDataResponseMessage());
+      }, 4000);
+    }
+  }, [
+    DataRoomReducer.FileisExistMessage,
+    DataRoomReducer.FolderisExistMessage,
+    DataRoomReducer.ResponseMessage,
+  ]);
 
   return (
     <>
@@ -3234,7 +3242,7 @@ const DataRoom = () => {
         />
       )}
       {DataRoomReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
-      {/* <Notification open={open.open} message={open.message} setOpen={setOpen} /> */}
+      <Notification open={open.open} message={open.message} setOpen={setOpen} />
     </>
   );
 };

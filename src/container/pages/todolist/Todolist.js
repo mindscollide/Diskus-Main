@@ -998,6 +998,7 @@ const TodoList = () => {
                           draggable="false"
                           src={TodoMessageIcon1}
                           width={250}
+                          alt=""
                         />
                       }
                       title="No-Task"

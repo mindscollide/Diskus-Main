@@ -43,7 +43,6 @@ import ChevronDown from "../../../assets/images/chevron-down.svg";
 import ChevronDownWhite from "../../../assets/images/chevron_down_white.svg";
 import moment from "moment";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
-import clipboardCopy from "clipboard-copy";
 import copyToClipboard from "../../../hooks/useClipBoard";
 import { updateFolderGeneralAccessApi } from "../../../store/actions/DataRoom_actions";
 const ModalShareFolder = ({
