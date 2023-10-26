@@ -225,7 +225,7 @@ const Home = () => {
     dispatch(SetSpinnerTrue());
     dispatch(SetSpinnersTrue());
     dispatch(getusernotificationinit());
-    dispatch(getCalendarDataInit(true));
+    // dispatch(getCalendarDataInit(true));
     dispatch(getNotes_Init());
     // console.log("getUserSettinggetUserSetting")
     // await dispatch(getUserSetting(navigate, t));
@@ -245,40 +245,31 @@ const Home = () => {
     dispatch(GetWeeklyToDoCount(navigate, Data2, t));
     dispatch(GetUpcomingEvents(navigate, Data2, t));
     dispatch(getNotifications(navigate, createrID, t));
-    let CalenderMonthsSpans = localStorage.getItem("calenderMonthsSpan");
-    try {
-      // let startDates =
-      //   parseInt(CalenderMonthsSpans) &&
-      //   new Date(
-      //     currentDate.getFullYear(),
-      //     currentDate.getMonth() - parseInt(1),
-      //     1
-      //   );
+  };
+  useEffect(() => {
+    // let CalenderMonthsSpans = localStorage.getItem("calenderMonthsSpan");
+    // console.log(CalenderMonthsSpans, "CalenderMonthsSpansCalenderMonthsSpans");
+    console.log({ CalenderMonthsSpan }, "CalenderMonthsSpanCalenderMonthsSpan");
+    if (CalenderMonthsSpan !== null && CalenderMonthsSpan !== undefined) {
+      dispatch(getCalendarDataInit(true));
+
       let startDates = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth() -
           parseInt(
-            parseInt(CalenderMonthsSpans) === 0
+            parseInt(CalenderMonthsSpan) === 0
               ? 1
-              : parseInt(CalenderMonthsSpans)
+              : parseInt(CalenderMonthsSpan)
           ),
         1
       );
-      // Subtract CalenderMonthsSpan months and set the day to the 1st
-      // let endDates =
-      //   parseInt(CalenderMonthsSpans) &&
-      //   new Date(
-      //     currentDate.getFullYear(),
-      //     currentDate.getMonth() + parseInt(1),
-      //     0
-      //   );
       let endDates = new Date(
         date.getFullYear(),
         date.getMonth() +
           parseInt(
-            parseInt(CalenderMonthsSpans) === 0
+            parseInt(CalenderMonthsSpan) === 0
               ? 1
-              : parseInt(CalenderMonthsSpans)
+              : parseInt(CalenderMonthsSpan)
           ),
         0
       );
@@ -290,23 +281,17 @@ const Home = () => {
         EndDate:
           endDates !== null && newDateFormaterAsPerUTC(endDates) + "000000",
       };
-      console.log("newListnewListnewList12", startDates);
-      console.log("newListnewListnewList12", endDates);
-      console.log("newListnewListnewList12", calendarData);
-
       setStartDataUpdate(newDateFormaterAsPerUTC(startDates));
       setEndDataUpdate(newDateFormaterAsPerUTC(endDates));
       if (startDates !== null && endDates !== null) {
         console.log("getCalendarDataResponse");
         dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
       }
-    } catch {
+    } else {
       dispatch(getCalendarDataInit(false));
     }
-  };
-
+  }, []);
   useEffect(() => {
-    console.log("getCalendarDataResponse123123");
     callApi();
     return () => {
       dispatch(cleareAssigneesState());
@@ -1197,6 +1182,10 @@ const Home = () => {
                 ) : recentActivityData !== null &&
                   recentActivityData !== undefined ? (
                   recentActivityData.map((recentActivityData, index) => {
+                    console.log(
+                      recentActivityData,
+                      "recentActivityDatarecentActivityDatarecentActivityData"
+                    );
                     return (
                       <>
                         <Row>
@@ -1528,7 +1517,7 @@ const Home = () => {
                                     lg={11}
                                     md={11}
                                     sm={11}
-                                    className="d-flex justify-content-end  gap-2 align-items-center"
+                                    className="d-flex gap-2 align-items-center"
                                   >
                                     {data.isStarred ? (
                                       <img

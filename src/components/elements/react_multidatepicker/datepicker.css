@@ -46,7 +46,12 @@
 .datepicker_input:is(:hover, :focus, :focus-visible, :visited) {
   outline: none !important;
 }
+
 .datePickerTodoCreate2 {
   border: 1px solid #e1e1e1 !important;
   font-family: "MontserratSemiBold-600" !important;
+}
+
+.proposedMeetindatesDatePicker .rmdp-container {
+  width: 500px !important;
 }

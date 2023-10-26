@@ -827,7 +827,15 @@ const TodoList = () => {
     getTodosStatus.UpdateTodoStatusMessage,
     getTodosStatus.UpdateTodoStatus,
   ]);
-
+  const scroll = {
+    y: "58vh",
+    scrollbar: {
+      // You can adjust the width and distance as needed
+      verticalWidth: 20, // Width of the vertical scrollbar
+      handleSize: 10, // Distance between data and scrollbar
+      // Other scrollbar options
+    },
+  };
   return (
     <>
       <div className="todolistContainer">
@@ -978,7 +986,7 @@ const TodoList = () => {
                     column={columnsToDo}
                     className={"ToDo"}
                     rows={rowsToDo}
-                    scroll={{ y: "58vh", x: "scroll" }}
+                    scroll={scroll}
                     // onChange={tableTodoChange}
                     pagination={false}
                   />
@@ -990,6 +998,7 @@ const TodoList = () => {
                           draggable="false"
                           src={TodoMessageIcon1}
                           width={250}
+                          alt=""
                         />
                       }
                       title="No-Task"

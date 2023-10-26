@@ -60,6 +60,7 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import CustomPagination from "../../commen/functions/customPagination/Paginations";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -1545,7 +1546,17 @@ const Resolution = () => {
                           lg={12}
                           className="d-flex justify-content-center my-3 pagination-groups-table"
                         >
-                          <Pagination
+                          <CustomPagination
+                            current={moderatorPage !== null ? moderatorPage : 1}
+                            onChange={handleChangeResolutionPagination}
+                            pageSizeOptionsValues={["30", "50", "100", "200"]}
+                            showSizer={true}
+                            pageSize={
+                              moderatorRows !== null ? moderatorRows : 50
+                            }
+                            total={totalResolution}
+                          />
+                          {/* <Pagination
                             defaultCurrent={
                               moderatorPage !== null ? moderatorPage : 1
                             }
@@ -1562,7 +1573,7 @@ const Resolution = () => {
                             defaultPageSize={
                               moderatorRows !== null ? moderatorRows : 50
                             }
-                          />
+                          /> */}
                         </Col>
                       </Row>
                     </>
@@ -1620,21 +1631,14 @@ const Resolution = () => {
                           lg={12}
                           className="d-flex justify-content-center my-3 pagination-groups-table"
                         >
-                          <Pagination
-                            defaultCurrent={voterPage !== null ? voterPage : 1}
+                          <CustomPagination
+                            current={voterPage !== null ? voterPage : 1}
                             total={totalVoterResolution}
-                            defaultPageSize={
-                              voterRows !== null ? voterRows : 50
-                            }
-                            locale={{
-                              items_per_page: t("items_per_page"),
-                              page: t("page"),
-                            }}
-                            showSizeChanger
-                            pageSizeOptions={["30", "50", "100", "200"]}
+                            pageSize={voterRows !== null ? voterRows : 50}
+                            pageSizeOptionsValues={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}
-                            // selectComponentClass={"pagination_resolution"}
                             onChange={handleChangeVoterResolutionPagination}
+                            showSizer={true}
                           />
                         </Col>
                       </Row>

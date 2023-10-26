@@ -313,7 +313,7 @@ const EnterPassword = () => {
                       <Form.Control
                         className={styles["PasswordTextField"]}
                         type={showNewPasswordIcon ? "text" : "password"}
-                        name="Password"
+                        name="MyUniquePasswordField"
                         ref={passwordRef}
                         value={password || ""}
                         onChange={passwordChangeHandler}
@@ -327,7 +327,7 @@ const EnterPassword = () => {
                         }
                         iconClassName={styles["IconStyle"]}
                         labelClass="lightLabel"
-                        autoComplete="false"
+                        autoComplete="new-password"
                         maxLength={200}
                         // clickIcon={showNewPassowrd}
                       />

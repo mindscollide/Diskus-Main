@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import styles from "./ProposedMeetingDate.module.css";
-import { Button, Checkbox } from "../../../../../../components/elements";
+import {
+  Button,
+  Checkbox,
+  Notification,
+} from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import BackArrow from "../../../../../../assets/images/Back Arrow.svg";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
@@ -22,20 +26,45 @@ import { Paper } from "@material-ui/core";
 import moment from "moment";
 import { style } from "@mui/system";
 import UnsavedModal from "./UnsavedChangesModal/UnsavedModal";
-import { showPrposedMeetingUnsavedModal } from "../../../../../../store/actions/NewMeetingActions";
-const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
+import {
+  GetAllProposedMeetingDateApiFunc,
+  setProposedMeetingDateApiFunc,
+  showPrposedMeetingUnsavedModal,
+} from "../../../../../../store/actions/NewMeetingActions";
+import {
+  convertGMTDateintoUTC,
+  resolutionResultTable,
+} from "../../../../../../commen/functions/date_formater";
+const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { NewMeetingreducer } = useSelector((state) => state);
   const [error, seterror] = useState(false);
   const [selectError, setSelectError] = useState(false);
   const [startDateError, setStartDateError] = useState(false);
+  const [proposedDatesData, setProposedDatesData] = useState([
+    {
+      deadline: "",
+      proposedDates: [],
+    },
+  ]);
   const [meetingDate, setMeetingDate] = useState("");
+  const [sendResponseVal, setSendResponseVal] = useState("");
+  const [sendResponseBy, setSendResponseBy] = useState({
+    date: "",
+  });
+
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
+
   const [endDateError, setEndDateError] = useState(false);
   const [sendDates, setSendDates] = useState(false);
   const [options, setOptions] = useState([]);
@@ -43,26 +72,60 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
     { selectedOption: "", startDate: "", endDate: "" },
   ]);
 
-  console.log(rows[0].selectedOption, "selectedOptionselectedOption");
-  console.log(rows[0].startDate, "selectedOptionselectedOption");
-  console.log(rows[0].endDate, "selectedOptionselectedOption");
-
   const handleStartDateChange = (index, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].startDate = date;
-    setRows(updatedRows);
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const updatedRows = [...rows];
+      updatedRows[index].startDate = formattedTime;
+      updatedRows[index].startTime = newDate;
+      setRows(updatedRows);
+      // You can use 'formattedTime' as needed.
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
   };
 
   const handleEndDateChange = (index, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].endDate = date;
-    setRows(updatedRows);
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+
+      const updatedRows = [...rows];
+      updatedRows[index].endDate = formattedTime;
+      updatedRows[index].endTime = newDate;
+      setRows(updatedRows);
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
   };
 
   const addRow = () => {
-    const lastRow = rows[rows.length - 1];
-    if (isValidRow(lastRow)) {
-      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+    if (rows.length < 5) {
+      const lastRow = rows[rows.length - 1];
+      if (isValidRow(lastRow)) {
+        setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+      }
+    } else {
+      setOpen({
+        flag: true,
+        message: t("You Cant enter more then Five Dates"),
+      });
     }
   };
 
@@ -81,11 +144,24 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
   //Onchange Function For DatePicker inAdd datess First
   const changeDateStartHandler = (date, index) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new Date(date);
+    let DateDate = convertGMTDateintoUTC(date);
+    console.log(DateDate, "updatedRows");
     setMeetingDate(meetingDateValueFormat);
     const updatedRows = [...rows];
-    updatedRows[index].selectedOption = DateDate;
+    updatedRows[index].selectedOption = DateDate.slice(0, 8);
+    console.log(updatedRows, "updatedRows");
     setRows(updatedRows);
+  };
+
+  //Send Response By Handler
+  const SendResponseHndler = (date) => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let DateDate = convertGMTDateintoUTC(date);
+    setSendResponseVal(meetingDateValueFormat);
+    setSendResponseBy({
+      ...sendResponseBy,
+      date: DateDate.slice(0, 8),
+    });
   };
 
   const handleSelectChange = (index, selectedOption) => {
@@ -104,6 +180,47 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
     setSelectError(hasSelectError);
     setStartDateError(hasStartDateError);
     setEndDateError(hasEndDateError);
+  };
+
+  const isAscendingOrder = () => {
+    for (let i = 1; i < rows.length; i++) {
+      if (rows[i].selectedOption <= rows[i - 1].selectedOption) {
+        return false;
+      } else if (rows[i].startDate <= rows[i - 1].startDate) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // Function to handle the save Proposed button click
+  const handleSave = () => {
+    let newArr = [];
+    rows.map((data, index) => {
+      newArr.push({
+        ProposedDate: data.selectedOption,
+        StartTime: data.startDate,
+        EndTime: data.endDate,
+      });
+    });
+    if (isAscendingOrder()) {
+      let Data = {
+        MeetingID: currentMeetingID,
+        SendResponsebyDate: sendResponseBy.date,
+        ProposedDates: newArr,
+      };
+      console.log(Data, "updatedRows");
+      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
+      setSendDates(true);
+    } else {
+      // Rows are not in ascending order
+      setOpen({
+        flag: true,
+        message: t(
+          "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time"
+        ),
+      });
+    }
   };
 
   useEffect(() => {
@@ -128,7 +245,6 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
     // setSelectError(true);
     // setStartDateError(true);
     // setEndDateError(true);
-    setSendDates(!sendDates);
   };
 
   const CancelModal = () => {
@@ -138,6 +254,42 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
   const handlebackButtonFunctionality = () => {
     setProposedMeetingDates(false);
   };
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllProposedDates !== null &&
+        NewMeetingreducer.getAllProposedDates !== undefined
+      ) {
+        NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
+          (data, index) => {
+            console.log(data, "getAllProposedDates");
+
+            setProposedDatesData([
+              {
+                ...proposedDatesData,
+                deadline: data.deadLineDate,
+                proposedDates: data.proposedDates,
+              },
+            ]);
+          }
+        );
+        console.log(
+          NewMeetingreducer.getAllProposedDates,
+          "getAllProposedDatesgetAllProposedDates"
+        );
+      }
+    } catch {}
+  }, [NewMeetingreducer.getAllProposedDates]);
+
+  console.log(proposedDatesData, "proposedDatesDataproposedDatesData");
 
   return (
     <section>
@@ -222,94 +374,48 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
                         sm={12}
                         className={styles["Scroller_Prposed_Meeting_date"]}
                       >
-                        <Row className="m-0 p-0 mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_To_Show_Time"]}
-                          >
-                            <Row className={styles["Inner_Send_class"]}>
-                              <Col lg={10} md={10} sm={10}>
-                                <span className={styles["Time_Class"]}>
-                                  03:30 pm - 05:30 pm | 17th May, 2020
-                                </span>
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Checkbox
-                                  prefixCls={"ProposedMeeting_Checkbox"}
-                                  classNameCheckBoxP="d-none"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="m-0 p-0 mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_To_Show_Time"]}
-                          >
-                            <Row className={styles["Inner_Send_class"]}>
-                              <Col lg={10} md={10} sm={10}>
-                                <span className={styles["Time_Class"]}>
-                                  03:30 pm - 05:30 pm | 17th May, 2020
-                                </span>
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Checkbox
-                                  prefixCls={"ProposedMeeting_Checkbox"}
-                                  classNameCheckBoxP="d-none"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="m-0 p-0 mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_To_Show_Time"]}
-                          >
-                            <Row className={styles["Inner_Send_class"]}>
-                              <Col lg={10} md={10} sm={10}>
-                                <span className={styles["Time_Class"]}>
-                                  03:30 pm - 05:30 pm | 17th May, 2020
-                                </span>
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Checkbox
-                                  prefixCls={"ProposedMeeting_Checkbox"}
-                                  classNameCheckBoxP="d-none"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="m-0 p-0 mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_To_Show_Time"]}
-                          >
-                            <Row className={styles["Inner_Send_class"]}>
-                              <Col lg={10} md={10} sm={10}>
-                                <span className={styles["Time_Class"]}>
-                                  03:30 pm - 05:30 pm | 17th May, 2020
-                                </span>
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Checkbox
-                                  prefixCls={"ProposedMeeting_Checkbox"}
-                                  classNameCheckBoxP="d-none"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
+                        {proposedDatesData.length > 0
+                          ? proposedDatesData.map(
+                              (proposedDates, proposedDatesIndex) => {
+                                console.log(
+                                  proposedDates,
+                                  "proposedDatesproposedDates"
+                                );
+                                return (
+                                  <>
+                                    <Row className="m-0 p-0 mt-2">
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className={styles["Box_To_Show_Time"]}
+                                      >
+                                        <Row
+                                          className={styles["Inner_Send_class"]}
+                                        >
+                                          <Col lg={10} md={10} sm={10}>
+                                            <span
+                                              className={styles["Time_Class"]}
+                                            >
+                                              {proposedDates.proposedDates}
+                                            </span>
+                                          </Col>
+                                          <Col lg={2} md={2} sm={2}>
+                                            <Checkbox
+                                              prefixCls={
+                                                "ProposedMeeting_Checkbox"
+                                              }
+                                              classNameCheckBoxP="d-none"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </>
+                                );
+                              }
+                            )
+                          : null}
                       </Col>
                     </Row>
 
@@ -321,11 +427,24 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
                         </span>
                       </Col>
                     </Row>
-                    <Row className="mt-1">
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Date"]}>21st May, 2020</span>
-                      </Col>
-                    </Row>
+                    {proposedDatesData.length > 0
+                      ? proposedDatesData.map(
+                          (responsedby, responsedbyIndex) => {
+                            console.log(responsedby, "responsedbyresponsedby");
+                            return (
+                              <>
+                                <Row className="mt-1">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span className={styles["Date"]}>
+                                      {responsedby.deadline}
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </>
+                            );
+                          }
+                        )
+                      : null}
                   </Col>
                   <Col
                     lg={2}
@@ -575,16 +694,33 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
                         </span>
                       </Col>
                     </Row>
-                    <Row className="m-0 p-0 mt-2">
+                    <Row className="mt-2">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Box_for_Send_Request"]}
+                        className={styles["Width_Date_SendResponseBy"]}
                       >
-                        <span className={styles["Date_Year_Styles"]}>
-                          21st May, 2020
-                        </span>
+                        <DatePicker
+                          value={sendResponseVal}
+                          format={"DD/MM/YYYY"}
+                          minDate={moment().toDate()}
+                          placeholder="DD/MM/YYYY"
+                          render={
+                            <InputIcon
+                              placeholder="DD/MM/YYYY"
+                              className="datepicker_input"
+                            />
+                          }
+                          editable={false}
+                          className="proposedMeetindatesDatePicker"
+                          onOpenPickNewDate={true}
+                          inputMode=""
+                          calendar={calendarValue}
+                          locale={localValue}
+                          ref={calendRef}
+                          onChange={(value) => SendResponseHndler(value)}
+                        />
                       </Col>
                     </Row>
                     <Row>
@@ -620,17 +756,21 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
                   onClick={CancelModal}
                 />
                 <Button
-                  text={t("Send")}
+                  text={t("Save")}
                   className={styles["Save_Button_ProposedMeeting"]}
-                  onClick={handleSend}
+                  onClick={handleSave}
                 />
               </Col>
             </Row>
           </Paper>
         </Col>
       </Row>
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
       {NewMeetingreducer.prposedMeetingUnsavedModal && (
-        <UnsavedModal setProposedMeetingDates={setProposedMeetingDates} />
+        <UnsavedModal
+          setProposedMeetingDates={setProposedMeetingDates}
+          setParticipants={setParticipants}
+        />
       )}
     </section>
   );
