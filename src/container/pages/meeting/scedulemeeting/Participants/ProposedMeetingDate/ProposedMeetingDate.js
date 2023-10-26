@@ -783,20 +783,20 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
                   className={styles["Cancel_Button_ProposedMeeting"]}
                   onClick={CancelModal}
                 />
-                {rows.proposedDateID !== 0 ? (
-                  <>
-                    <Button
-                      text={t("Update")}
-                      className={styles["Save_Button_ProposedMeeting"]}
-                      onClick={UpdateProposedDates}
-                    />
-                  </>
-                ) : (
+                {rows.proposedDateID === 0 ? (
                   <>
                     <Button
                       text={t("Save")}
                       className={styles["Save_Button_ProposedMeeting"]}
                       onClick={handleSave}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      text={t("Update")}
+                      className={styles["Save_Button_ProposedMeeting"]}
+                      onClick={UpdateProposedDates}
                     />
                   </>
                 )}
