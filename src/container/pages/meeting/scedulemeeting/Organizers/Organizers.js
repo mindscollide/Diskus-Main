@@ -324,7 +324,6 @@ const Organizers = ({
         }
       },
     },
-
     {
       // title: t('RSVP'),
       dataIndex: "isDeletable",

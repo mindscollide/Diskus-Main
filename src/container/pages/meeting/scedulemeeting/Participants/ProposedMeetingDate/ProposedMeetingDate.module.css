@@ -201,3 +201,7 @@ body[dir="rtl"] .errorMessage-inLogin {
   background: #ccc;
   margin-left: -15px;
 }
+
+.Width_Date_SendResponseBy {
+  width: 100% !important;
+}

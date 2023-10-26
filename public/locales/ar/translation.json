@@ -1526,5 +1526,8 @@
   "200": "۲۰۰",
   "Anyone-on-the-internet-with-the-link-can-view": "Anyone on the internet with the link can view",
   "Only-people-with-access-can-open-with-the-link": "Only people with access can open with the link",
-  "General-access-updated": "General access updated"
+  "General-access-updated": "General access updated",
+  "NOTES-RECENT-ACTIVITY": "The notes has been created [Notes Title]",
+  "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time": "Proposed dates should be in increasing order of date and start time",
+  "Not-more-than-5-dates-are-allowed": "Not More Than 5 Dates Are Allowed"
 }

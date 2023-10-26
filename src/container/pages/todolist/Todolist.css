@@ -417,3 +417,6 @@ body[dir="rtl"] .PaginationStyle-TodoList {
 td.ant-table-column-sort {
   background: transparent;
 }
+.ToDo .ant-table .ant-table-body {
+  padding-right: 10px;
+}

@@ -229,7 +229,7 @@ const NotifyAgendaModal = ({
                                         >
                                           <img
                                             draggable={false}
-                                            src={`data:image/jpeg;base64,${mapData?.displayPicture}`}
+                                            src={`data:image/jpeg;base64,${mapData?.displayPicture.displayProfilePictureName}`}
                                             width="33px"
                                             height="33px"
                                             className={styles["ProfilePic"]}
