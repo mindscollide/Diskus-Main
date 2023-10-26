@@ -11,11 +11,65 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Paper } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { GetAllProposedMeetingDateApiFunc } from "../../../../../../store/actions/NewMeetingActions";
+import { useEffect } from "react";
+import { useState } from "react";
+import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
 
 const ViewParticipantsDates = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
+  const [deadline, setDeadline] = useState("");
+  const [prposedData, setPrposedData] = useState([]);
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllProposedDates !== null &&
+        NewMeetingreducer.getAllProposedDates !== undefined
+      ) {
+        console.log(
+          NewMeetingreducer.getAllProposedDates.deadLineDate,
+          "NewMeetingreducergetAllProposedDates"
+        );
+        let deadline = NewMeetingreducer.getAllProposedDates.deadLineDate;
+        setDeadline(deadline);
+        let datesarry = [];
+        NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
+          (data, index) => {
+            datesarry.push({
+              endTime: resolutionResultTable(data.proposedDate + data.endTime),
+              proposedDate: resolutionResultTable(
+                data.proposedDate + data.startTime
+              ),
+              proposedDateID: data.proposedDateID,
+              startTime: resolutionResultTable(
+                data.proposedDate + data.startTime
+              ),
+            });
+          }
+        );
+        setPrposedData(datesarry);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  console.log(prposedData, "prposedDataprposedData");
+
   return (
     <section>
       <Row className="mt-2">
@@ -96,28 +150,37 @@ const ViewParticipantsDates = () => {
                     sm={12}
                     className={styles["Scroller_Prposed_Meeting_date"]}
                   >
-                    <Row className="m-0 p-0 mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Box_To_Show_Time"]}
-                      >
-                        <Row className={styles["Inner_Send_class"]}>
-                          <Col lg={10} md={10} sm={10}>
-                            <span className={styles["Time_Class"]}>
-                              3:30pm-3:20am,21,May,2023
-                            </span>
-                          </Col>
-                          <Col lg={2} md={2} sm={2}>
-                            <Checkbox
-                              prefixCls={"ProposedMeeting_Checkbox"}
-                              classNameCheckBoxP="d-none"
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
+                    {prposedData.length > 0
+                      ? prposedData.map((data, index) => {
+                          console.log(data, "lengthlength");
+                          return (
+                            <>
+                              <Row className="m-0 p-0 mt-2">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className={styles["Box_To_Show_Time"]}
+                                >
+                                  <Row className={styles["Inner_Send_class"]}>
+                                    <Col lg={10} md={10} sm={10}>
+                                      <span className={styles["Time_Class"]}>
+                                        {/* {data.startTime} */}
+                                      </span>
+                                    </Col>
+                                    <Col lg={2} md={2} sm={2}>
+                                      <Checkbox
+                                        prefixCls={"ProposedMeeting_Checkbox"}
+                                        classNameCheckBoxP="d-none"
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </Row>
+                            </>
+                          );
+                        })
+                      : null}
                   </Col>
                 </Row>
 
