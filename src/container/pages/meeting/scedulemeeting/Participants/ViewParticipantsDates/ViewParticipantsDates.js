@@ -15,7 +15,11 @@ import { useSelector } from "react-redux";
 import { GetAllProposedMeetingDateApiFunc } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import { useState } from "react";
-import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
+import {
+  formatDateToMMDDYY,
+  resolutionResultTable,
+} from "../../../../../../commen/functions/date_formater";
+import moment from "moment";
 
 const ViewParticipantsDates = () => {
   const { t } = useTranslation();
@@ -26,6 +30,11 @@ const ViewParticipantsDates = () => {
   const [prposedData, setPrposedData] = useState([]);
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
+
+  const changeDateStartHandler2 = (date) => {
+    let newDate = moment(date).format("DD MMMM YYYY");
+    return newDate;
+  };
 
   useEffect(() => {
     let Data = {
@@ -163,9 +172,17 @@ const ViewParticipantsDates = () => {
                                   className={styles["Box_To_Show_Time"]}
                                 >
                                   <Row className={styles["Inner_Send_class"]}>
-                                    <Col lg={10} md={10} sm={10}>
+                                    <Col lg={10} md={10} sm={12}>
                                       <span className={styles["Time_Class"]}>
-                                        {/* {data.startTime} */}
+                                        {moment(data.startTime).format(
+                                          "HH:MM a"
+                                        )}
+                                        -{" "}
+                                        {moment(data.endTime).format("HH:MM a")}
+                                        ,
+                                        {changeDateStartHandler2(
+                                          data.proposedDate
+                                        )}
                                       </span>
                                     </Col>
                                     <Col lg={2} md={2} sm={2}>
@@ -195,7 +212,9 @@ const ViewParticipantsDates = () => {
 
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Date"]}>21,May,2021</span>
+                    <span className={styles["Date"]}>
+                      {changeDateStartHandler2(deadline)}
+                    </span>
                   </Col>
                 </Row>
               </Col>
