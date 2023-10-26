@@ -77,7 +77,14 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   const [sendDates, setSendDates] = useState(false);
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([
-    { selectedOption: "", startDate: "", endDate: "", selectedOptionView: "" },
+    {
+      selectedOption: "",
+      startDate: "",
+      endDate: "",
+      selectedOptionView: "",
+      endDateView: "",
+      startDateView: "",
+    },
   ]);
   console.log({ rows }, "rowsrowsrows");
   const handleStartDateChange = (index, date) => {
@@ -94,7 +101,7 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
       console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
       updatedRows[index].startDate = formattedTime;
-      updatedRows[index].startTime = newDate;
+      updatedRows[index].startDateView = newDate;
       setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
@@ -116,7 +123,7 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
 
       const updatedRows = [...rows];
       updatedRows[index].endDate = formattedTime;
-      updatedRows[index].endTime = newDate;
+      updatedRows[index].endDateView = newDate;
       setRows(updatedRows);
     } else {
       console.error("Invalid date and time object:", date);
@@ -288,12 +295,14 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
             endTimeforSend: dates.endTime,
             startTimeforSend: dates.startTime,
             selectDateforSend: dates.proposedDate,
-            endDate: resolutionResultTable(dates.proposedDate + dates.endTime),
+            endDateView: resolutionResultTable(
+              dates.proposedDate + dates.endTime
+            ),
             selectedOptionView: resolutionResultTable(
               dates.proposedDate + dates.startTime
             ),
             proposedDateID: dates.proposedDateID,
-            startDate: resolutionResultTable(
+            startDateView: resolutionResultTable(
               dates.proposedDate + dates.startTime
             ),
           })
@@ -553,7 +562,7 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
                                             calendar={calendarValue}
                                             locale={localValue}
                                             format="HH:mm A"
-                                            value={data.startDate}
+                                            value={data.startDateView}
                                             selected={data.startDate}
                                             plugins={[
                                               <TimePicker hideSeconds />,
@@ -582,7 +591,7 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
                                           // className="d-flex justify-content-end"
                                         >
                                           <DatePicker
-                                            value={data.endDate}
+                                            value={data.endDateView}
                                             arrowClassName="arrowClass"
                                             containerClassName="containerClassTimePicker"
                                             className="timePicker"
