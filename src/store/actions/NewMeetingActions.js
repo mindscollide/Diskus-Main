@@ -2087,10 +2087,6 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
                   t("Record-saved")
                 )
               );
-              let Data = {
-                MeetingID: currentMeetingID,
-              };
-              dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
