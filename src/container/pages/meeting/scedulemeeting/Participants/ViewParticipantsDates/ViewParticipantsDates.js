@@ -12,7 +12,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Paper } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { GetAllProposedMeetingDateApiFunc } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  GetAllProposedMeetingDateApiFunc,
+  SetMeetingResponseApiFunc,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import { useState } from "react";
 import {
@@ -30,6 +33,7 @@ const ViewParticipantsDates = () => {
   const [prposedData, setPrposedData] = useState([]);
   const [sendProposedData, setSendProposedData] = useState([]);
   const [checkedObjects, setCheckedObjects] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
   console.log(checkedObjects, "checkedObjectscheckedObjectscheckedObjects");
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
@@ -78,26 +82,6 @@ const ViewParticipantsDates = () => {
           }
         );
 
-        setPrposedData(datesarry);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [NewMeetingreducer.getAllProposedDates]);
-
-  useEffect(() => {
-    try {
-      if (
-        NewMeetingreducer.getAllProposedDates !== null &&
-        NewMeetingreducer.getAllProposedDates !== undefined
-      ) {
-        console.log(
-          NewMeetingreducer.getAllProposedDates.deadLineDate,
-          "NewMeetingreducergetAllProposedDates"
-        );
-        let deadline = NewMeetingreducer.getAllProposedDates.deadLineDate;
-        setDeadline(deadline);
-
         let SenddataObject = [];
 
         NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
@@ -111,6 +95,7 @@ const ViewParticipantsDates = () => {
           }
         );
 
+        setPrposedData(datesarry);
         setSendProposedData(SenddataObject);
       }
     } catch (error) {
@@ -120,13 +105,40 @@ const ViewParticipantsDates = () => {
 
   // console.log(prposedData, "prposedDataprposedData");
   console.log(sendProposedData, "prposedDataprposedData");
-
   const handleCheckboxChange = (data) => {
-    if (sendProposedData.includes(data)) {
+    if (checkedObjects.includes(data)) {
       setCheckedObjects(checkedObjects.filter((obj) => obj !== data));
+      setSelectAll(false); // Uncheck select all if a checkbox is unchecked
     } else {
       setCheckedObjects([...checkedObjects, data]);
     }
+  };
+
+  const handleSelectAllChange = () => {
+    if (selectAll) {
+      setCheckedObjects([]);
+    } else {
+      setCheckedObjects([...sendProposedData]);
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const handleSave = () => {
+    let newarr = [];
+    checkedObjects.forEach((data, index) => {
+      newarr.push({
+        ProposedDateID: data.proposedDateID,
+        ProposedDate: data.ProposedDateSend,
+        StartTime: data.StartTimeSend,
+        EndTime: data.EndtimeSend,
+      });
+    });
+    let Data = {
+      MeetingID: currentMeetingID,
+      ProposedDates: newarr,
+    };
+    console.log(Data, "DataDataDataData");
+    // dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
   };
 
   return (
@@ -299,11 +311,32 @@ const ViewParticipantsDates = () => {
                         <Checkbox
                           prefixCls={"ProposedMeeting_Checkbox"}
                           classNameCheckBoxP="d-none"
+                          checked={selectAll}
+                          onChange={handleSelectAllChange}
                         />
                       </Col>
                     </Row>
                   </Col>
                 </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                <Button
+                  text={t("Save")}
+                  className={styles["Save_Button_ProposedMeeting"]}
+                  onClick={handleSave}
+                />
+
+                <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Button_ProposedMeeting"]}
+                />
               </Col>
             </Row>
           </Paper>
