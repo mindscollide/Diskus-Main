@@ -6213,3 +6213,24 @@ label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked.ant-checkbox-wrapper-dis
   font-family: "MontserratSemiBold-600" !important;
   width: 300px !important;
 }
+
+.discussion-menu {
+  display: contents;
+}
+
+.newMeetingTable .ant-table .ant-table-container::before,
+.newMeetingTable .ant-table .ant-table-container::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  width: 30px;
+  transition: box-shadow 0.3s;
+  content: '';
+  pointer-events: none;
+}
+
+.discussion-menu.disabled {
+  color: #ccc;
+  pointer-events: default !important;
+}

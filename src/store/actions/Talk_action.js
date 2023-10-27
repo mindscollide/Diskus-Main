@@ -4296,6 +4296,13 @@ const DeleteMultipleMessages = (object, t, navigate) => {
   }
 }
 
+const lastMessageDeletion = (response) => {
+  return {
+    type: actions.LAST_MESSAGE_DELETION,
+    response: response,
+  }
+}
+
 export {
   activeChatID,
   activeMessageID,
@@ -4363,4 +4370,5 @@ export {
   downloadChatEmptyObject,
   mqttGroupLeft,
   DeleteMultipleMessages,
+  lastMessageDeletion,
 }

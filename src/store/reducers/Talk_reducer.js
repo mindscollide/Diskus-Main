@@ -305,6 +305,8 @@ const initialState = {
     MultipleMessagesDeletedResponse: [],
     MultipleMessagesDeletedResponseMessage: '',
   },
+
+  LastMessageDeletionObject: [],
 }
 
 const talkReducer = (state = initialState, action) => {
@@ -1759,6 +1761,13 @@ const talkReducer = (state = initialState, action) => {
           MultipleMessagesDeletedResponse: [],
           MultipleMessagesDeletedResponseMessage: action.message,
         },
+      }
+    }
+
+    case actions.LAST_MESSAGE_DELETION: {
+      return {
+        ...state,
+        LastMessageDeletionObject: action.response,
       }
     }
 

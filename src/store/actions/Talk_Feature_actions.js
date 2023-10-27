@@ -154,6 +154,13 @@ const resetCloseChatFlags = () => {
   }
 }
 
+const activeChatBoxGS = (response) => {
+  return {
+    type: actions.ACTIVE_CHAT_BOX_GS,
+    response: response,
+  }
+}
+
 export {
   //Chat Filter Global Actions
   recentChatFlag,
@@ -185,4 +192,5 @@ export {
   // Global Chats Search
   globalChatsSearchFlag,
   resetCloseChatFlags,
+  activeChatBoxGS,
 }
