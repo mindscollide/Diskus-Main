@@ -242,33 +242,6 @@ const ProposedMeetingDate = ({
   };
 
   // Function to handle the save Proposed button click
-  const UpdateProposedDates = () => {
-    let newArr = [];
-    rows.map((data, index) => {
-      newArr.push({
-        ProposedDate: data.selectedOption,
-        StartTime: data.startDate,
-        EndTime: data.endDate,
-      });
-    });
-    if (isAscendingOrder()) {
-      let Data = {
-        MeetingID: currentMeetingID,
-        SendResponsebyDate: sendResponseBy.date,
-        ProposedDates: newArr,
-      };
-      console.log(Data, "updatedRows");
-      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
-    } else {
-      // Rows are not in ascending order
-      setOpen({
-        flag: true,
-        message: t(
-          "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time"
-        ),
-      });
-    }
-  };
 
   useEffect(() => {
     validate();
@@ -701,7 +674,7 @@ const ProposedMeetingDate = ({
                     <Button
                       text={t("Update")}
                       className={styles["Save_Button_ProposedMeeting"]}
-                      onClick={UpdateProposedDates}
+                      onClick={handleSave}
                     />
                   </>
                 )}

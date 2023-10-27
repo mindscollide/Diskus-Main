@@ -33,6 +33,7 @@ const ViewParticipantsDates = () => {
   const [prposedData, setPrposedData] = useState([]);
   const [sendProposedData, setSendProposedData] = useState([]);
   const [checkedObjects, setCheckedObjects] = useState([]);
+  const [noneOfAbove, setNoneOfAbove] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   console.log(checkedObjects, "checkedObjectscheckedObjectscheckedObjects");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -95,6 +96,27 @@ const ViewParticipantsDates = () => {
           }
         );
 
+        let DefaultDate = [];
+
+        NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
+          (data, index) => {
+            console.log(data, "datadatadata");
+            if (
+              data.proposedDate === "10000101" &&
+              data.endTime === "000000" &&
+              data.startTime === "000000"
+            ) {
+              DefaultDate.push({
+                EndtimeSend: data.endTime,
+                ProposedDateSend: data.proposedDate,
+                proposedDateIDSend: data.proposedDateID,
+                StartTimeSend: data.startTime,
+              });
+            } else {
+            }
+          }
+        );
+        setNoneOfAbove(DefaultDate);
         setPrposedData(datesarry);
         setSendProposedData(SenddataObject);
       }
@@ -124,21 +146,39 @@ const ViewParticipantsDates = () => {
   };
 
   const handleSave = () => {
-    let newarr = [];
-    checkedObjects.forEach((data, index) => {
-      newarr.push({
-        ProposedDateID: data.proposedDateID,
-        ProposedDate: data.ProposedDateSend,
-        StartTime: data.StartTimeSend,
-        EndTime: data.EndtimeSend,
+    if (selectAll) {
+      let defaultarr = [];
+      noneOfAbove.forEach((data, index) => {
+        defaultarr.push({
+          ProposedDateID: data.proposedDateID,
+          ProposedDate: data.ProposedDateSend,
+          StartTime: data.StartTimeSend,
+          EndTime: data.EndtimeSend,
+        });
       });
-    });
-    let Data = {
-      MeetingID: currentMeetingID,
-      ProposedDates: newarr,
-    };
-    console.log(Data, "DataDataDataData");
-    dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+      let Data = {
+        MeetingID: currentMeetingID,
+        ProposedDates: defaultarr,
+      };
+      console.log(Data, "DataDataDataData");
+      dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+    } else {
+      let newarr = [];
+      checkedObjects.forEach((data, index) => {
+        newarr.push({
+          ProposedDateID: data.proposedDateID,
+          ProposedDate: data.ProposedDateSend,
+          StartTime: data.StartTimeSend,
+          EndTime: data.EndtimeSend,
+        });
+      });
+      let Data = {
+        MeetingID: currentMeetingID,
+        ProposedDates: newarr,
+      };
+      console.log(Data, "DataDataDataData");
+      dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+    }
   };
 
   return (
