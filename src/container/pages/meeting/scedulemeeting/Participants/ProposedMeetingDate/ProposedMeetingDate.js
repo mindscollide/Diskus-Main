@@ -326,7 +326,7 @@ const ProposedMeetingDate = ({
                 selectDateforSend: "",
                 endDateView: "",
                 selectedOptionView: "",
-                proposedDateID: dates.proposedDateID,
+                proposedDateID: 0,
                 startDateView: "",
                 isComing: true,
               };
@@ -367,8 +367,16 @@ const ProposedMeetingDate = ({
   };
   useEffect(() => {
     if (rows.length > 0) {
-      let getifTrue = rows.some((data, index) => data.isComing === false);
-      setIsEdit(getifTrue);
+      if (
+        rows[0].selectedOption === "" &&
+        rows[0].startDate === "" &&
+        rows[0].endDate === ""
+      ) {
+        let getifTrue = rows.some((data, index) => data.isComing === false);
+        setIsEdit(getifTrue);
+      } else {
+        setIsEdit(false);
+      }
     } else {
       setIsEdit(false);
     }
