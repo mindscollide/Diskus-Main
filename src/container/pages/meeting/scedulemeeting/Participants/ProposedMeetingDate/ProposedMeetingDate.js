@@ -68,6 +68,8 @@ const ProposedMeetingDate = ({
   console.log(proposedDatesData, "proposedDatesDataproposedDatesData");
   const [meetingDate, setMeetingDate] = useState("");
   const [sendResponseVal, setSendResponseVal] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+
   const [sendResponseBy, setSendResponseBy] = useState({
     date: "",
   });
@@ -105,6 +107,7 @@ const ProposedMeetingDate = ({
       const updatedRows = [...rows];
       updatedRows[index].startDate = formattedTime;
       updatedRows[index].startDateView = newDate;
+      updatedRows[index].isComing = false;
       setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
@@ -127,6 +130,8 @@ const ProposedMeetingDate = ({
       const updatedRows = [...rows];
       updatedRows[index].endDate = formattedTime;
       updatedRows[index].endDateView = newDate;
+      updatedRows[index].isComing = false;
+
       setRows(updatedRows);
     } else {
       console.error("Invalid date and time object:", date);
@@ -168,6 +173,7 @@ const ProposedMeetingDate = ({
     const updatedRows = [...rows];
     updatedRows[index].selectedOption = DateDate.slice(0, 8);
     updatedRows[index].selectedOptionView = meetingDateValueFormat;
+    updatedRows[index].isComing = false;
 
     console.log(updatedRows, "updatedRows");
     setRows(updatedRows);
@@ -312,6 +318,7 @@ const ProposedMeetingDate = ({
             startDateView: resolutionResultTable(
               dates.proposedDate + dates.startTime
             ),
+            isComing: true,
           })
         );
 
@@ -329,6 +336,14 @@ const ProposedMeetingDate = ({
     setProposedMeetingDates(false);
     setViewProposedMeetingDate(true);
   };
+  useEffect(() => {
+    if (rows.length > 0) {
+      let getifTrue = rows.some((data, index) => data.isComing === false);
+      setIsEdit(getifTrue);
+    } else {
+      setIsEdit(false);
+    }
+  }, [rows]);
 
   return (
     <section>
@@ -661,7 +676,7 @@ const ProposedMeetingDate = ({
                   className={styles["Save_Button_ProposedMeeting"]}
                   onClick={EnabletheViewProposedmeetingDates}
                 />
-                {rows.proposedDateID === 0 ? (
+                {!isEdit ? (
                   <>
                     <Button
                       text={t("Save")}
