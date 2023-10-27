@@ -28,6 +28,8 @@ const ViewParticipantsDates = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const [deadline, setDeadline] = useState("");
   const [prposedData, setPrposedData] = useState([]);
+  const [checkedObjects, setCheckedObjects] = useState([]);
+  console.log(checkedObjects, "checkedObjectscheckedObjectscheckedObjects");
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
@@ -75,9 +77,20 @@ const ViewParticipantsDates = () => {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [NewMeetingreducer.getAllProposedDates]);
 
   console.log(prposedData, "prposedDataprposedData");
+
+  // Event handler to toggle the checked state
+  const handleCheckboxChange = (data) => {
+    if (checkedObjects.includes(data)) {
+      // If the data is already in the array, remove it
+      setCheckedObjects(checkedObjects.filter((obj) => obj !== data));
+    } else {
+      // If the data is not in the array, add it
+      setCheckedObjects([...checkedObjects, data]);
+    }
+  };
 
   return (
     <section>
@@ -189,6 +202,10 @@ const ViewParticipantsDates = () => {
                                       <Checkbox
                                         prefixCls={"ProposedMeeting_Checkbox"}
                                         classNameCheckBoxP="d-none"
+                                        checked={checkedObjects.includes(data)} // Check if data is in checkedObjects
+                                        onChange={() =>
+                                          handleCheckboxChange(data)
+                                        }
                                       />
                                     </Col>
                                   </Row>
