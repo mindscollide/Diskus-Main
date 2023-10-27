@@ -137,7 +137,7 @@ const ViewParticipantsDates = () => {
   }, [NewMeetingreducer.getAllProposedDates]);
 
   // console.log(prposedData, "prposedDataprposedData");
-  console.log(sendProposedData, "prposedDataprposedData");
+  console.log(noneOfAbove, "prposedDataprposedData");
   const handleCheckboxChange = (data) => {
     if (checkedObjects.includes(data)) {
       setCheckedObjects(checkedObjects.filter((obj) => obj !== data));
@@ -160,9 +160,9 @@ const ViewParticipantsDates = () => {
     if (selectAll) {
       let defaultarr = [];
       noneOfAbove.forEach((data, index) => {
-        console.log(data, "datadatadata");
+        console.log(data, "ProposedDate");
         defaultarr.push({
-          ProposedDateID: data.proposedDateID,
+          ProposedDateID: data.proposedDateIDSend,
           ProposedDate: data.ProposedDateSend,
           StartTime: data.StartTimeSend,
           EndTime: data.EndtimeSend,
@@ -173,7 +173,7 @@ const ViewParticipantsDates = () => {
         ProposedDates: defaultarr,
       };
       console.log(Data, "DataDataDataData");
-      // dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+      dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
     } else {
       let newarr = [];
       checkedObjects.forEach((data, index) => {
