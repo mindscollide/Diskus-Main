@@ -20,6 +20,7 @@ import ProposedMeetingDate from "./Participants/ProposedMeetingDate/ProposedMeet
 import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
+import ViewParticipantsDates from "./Participants/ViewParticipantsDates/ViewParticipantsDates";
 const SceduleMeeting = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
@@ -32,6 +33,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
   const [meetingMaterial, setMeetingMaterial] = useState(false);
   const [minutes, setMinutes] = useState(false);
   const [proposedMeetingDates, setProposedMeetingDates] = useState(false);
+  const [viewProposedMeetingDate, setViewProposedMeetingDate] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
@@ -172,7 +174,10 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
         <ProposedMeetingDate
           setProposedMeetingDates={setProposedMeetingDates}
           setParticipants={setParticipants}
+          setViewProposedMeetingDate={setViewProposedMeetingDate}
         />
+      ) : viewProposedMeetingDate ? (
+        <ViewParticipantsDates />
       ) : (
         <>
           <section>

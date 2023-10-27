@@ -1005,6 +1005,11 @@ const updateResolutionDataRoomMapRM = {
 const saveResolutionDocumentsRM = {
   RequestMethod: "ServiceManager.SaveResolutionDocuments",
 };
+
+const setMeetingProposedDatesResponse = {
+  RequestMethod: "ServiceManager.SetMeetingProposedDatesResponse",
+};
+
 export {
   saveResolutionDocumentsRM,
   updateResolutionDataRoomMapRM,
@@ -1274,4 +1279,5 @@ export {
   SetMeetingPolls,
   SettingMeetingProposedDates,
   getAllPropsedMeetingdates,
+  setMeetingProposedDatesResponse,
 };
