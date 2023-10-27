@@ -57,7 +57,7 @@ const ViewParticipantsDates = () => {
         NewMeetingreducer.getAllProposedDates !== undefined
       ) {
         console.log(
-          NewMeetingreducer.getAllProposedDates.deadLineDate,
+          NewMeetingreducer.getAllProposedDates,
           "NewMeetingreducergetAllProposedDates"
         );
         let deadline = NewMeetingreducer.getAllProposedDates.deadLineDate;
@@ -138,7 +138,7 @@ const ViewParticipantsDates = () => {
       ProposedDates: newarr,
     };
     console.log(Data, "DataDataDataData");
-    // dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+    dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
   };
 
   return (
