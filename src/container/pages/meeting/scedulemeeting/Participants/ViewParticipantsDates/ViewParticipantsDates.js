@@ -66,22 +66,33 @@ const ViewParticipantsDates = () => {
         let datesarry = [];
         NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
           (data, index) => {
-            datesarry.push({
-              endTime: resolutionResultTable(data.proposedDate + data.endTime),
-              proposedDate: resolutionResultTable(
-                data.proposedDate + data.startTime
-              ),
-              proposedDateID: data.proposedDateID,
-              startTime: resolutionResultTable(
-                data.proposedDate + data.startTime
-              ),
-              EndtimeSend: data.endTime,
-              ProposedDateSend: data.proposedDate,
-              proposedDateIDSend: data.proposedDateID,
-              StartTimeSend: data.startTime,
-            });
+            console.log(data, "getAllProposedDatesgetAllProposedDates");
+            if (
+              data.proposedDate === "10000101" &&
+              data.endTime === "000000" &&
+              data.startTime === "000000"
+            ) {
+            } else {
+              datesarry.push({
+                endTime: resolutionResultTable(
+                  data.proposedDate + data.endTime
+                ),
+                proposedDate: resolutionResultTable(
+                  data.proposedDate + data.startTime
+                ),
+                proposedDateID: data.proposedDateID,
+                startTime: resolutionResultTable(
+                  data.proposedDate + data.startTime
+                ),
+                EndtimeSend: data.endTime,
+                ProposedDateSend: data.proposedDate,
+                proposedDateIDSend: data.proposedDateID,
+                StartTimeSend: data.startTime,
+              });
+            }
           }
         );
+        //For Sending  Date
 
         let SenddataObject = [];
 
@@ -97,7 +108,7 @@ const ViewParticipantsDates = () => {
         );
 
         let DefaultDate = [];
-
+        //For Sending Default Date
         NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
           (data, index) => {
             console.log(data, "datadatadata");
@@ -149,6 +160,7 @@ const ViewParticipantsDates = () => {
     if (selectAll) {
       let defaultarr = [];
       noneOfAbove.forEach((data, index) => {
+        console.log(data, "datadatadata");
         defaultarr.push({
           ProposedDateID: data.proposedDateID,
           ProposedDate: data.ProposedDateSend,
@@ -161,7 +173,7 @@ const ViewParticipantsDates = () => {
         ProposedDates: defaultarr,
       };
       console.log(Data, "DataDataDataData");
-      dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+      // dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
     } else {
       let newarr = [];
       checkedObjects.forEach((data, index) => {

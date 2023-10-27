@@ -300,26 +300,55 @@ const ProposedMeetingDate = ({
         NewMeetingreducer.getAllProposedDates !== undefined
       ) {
         const proposedMeetingData = NewMeetingreducer.getAllProposedDates;
-        setSendResponseVal(
-          resolutionResultTable(proposedMeetingData.deadLineDate + "000000")
+        console.log(
+          proposedMeetingData,
+          "proposedMeetingDataproposedMeetingData"
         );
+        if (proposedMeetingData.deadLineDate === "10000101") {
+          setSendResponseVal("");
+        } else {
+          setSendResponseVal(
+            resolutionResultTable(proposedMeetingData.deadLineDate + "000000")
+          );
+        }
+
         const newDataforView = proposedMeetingData.meetingProposedDates.map(
-          (dates) => ({
-            endTimeforSend: dates.endTime,
-            startTimeforSend: dates.startTime,
-            selectDateforSend: dates.proposedDate,
-            endDateView: resolutionResultTable(
-              dates.proposedDate + dates.endTime
-            ),
-            selectedOptionView: resolutionResultTable(
-              dates.proposedDate + dates.startTime
-            ),
-            proposedDateID: dates.proposedDateID,
-            startDateView: resolutionResultTable(
-              dates.proposedDate + dates.startTime
-            ),
-            isComing: true,
-          })
+          (dates) => {
+            console.log(dates, "meetingProposedDates");
+            if (
+              dates.proposedDate === "10000101" &&
+              dates.endTime === "000000" &&
+              dates.startTime === "000000"
+            ) {
+              return {
+                endTimeforSend: "",
+                startTimeforSend: "",
+                selectDateforSend: "",
+                endDateView: "",
+                selectedOptionView: "",
+                proposedDateID: dates.proposedDateID,
+                startDateView: "",
+                isComing: true,
+              };
+            } else {
+              return {
+                endTimeforSend: dates.endTime,
+                startTimeforSend: dates.startTime,
+                selectDateforSend: dates.proposedDate,
+                endDateView: resolutionResultTable(
+                  dates.proposedDate + dates.endTime
+                ),
+                selectedOptionView: resolutionResultTable(
+                  dates.proposedDate + dates.startTime
+                ),
+                proposedDateID: dates.proposedDateID,
+                startDateView: resolutionResultTable(
+                  dates.proposedDate + dates.startTime
+                ),
+                isComing: true,
+              };
+            }
+          }
         );
 
         setRows(newDataforView);
