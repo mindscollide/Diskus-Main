@@ -35,7 +35,11 @@ import {
   convertGMTDateintoUTC,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
-const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
+const ProposedMeetingDate = ({
+  setProposedMeetingDates,
+  setParticipants,
+  setViewProposedMeetingDate,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,28 +54,44 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
   const [startDateError, setStartDateError] = useState(false);
   const [proposedDatesData, setProposedDatesData] = useState([
     {
-      deadline: "",
-      proposedDates: [],
+      deadLineDate: "",
+      proposedDates: [
+        {
+          endTime: "",
+          proposedDate: "",
+          proposedDateID: 0,
+          startTime: "",
+        },
+      ],
     },
   ]);
+  console.log(proposedDatesData, "proposedDatesDataproposedDatesData");
   const [meetingDate, setMeetingDate] = useState("");
   const [sendResponseVal, setSendResponseVal] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+
   const [sendResponseBy, setSendResponseBy] = useState({
     date: "",
   });
-
+  console.log(sendResponseBy, "sendResponseBysendResponseBysendResponseBy");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
 
   const [endDateError, setEndDateError] = useState(false);
-  const [sendDates, setSendDates] = useState(false);
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([
-    { selectedOption: "", startDate: "", endDate: "" },
+    {
+      selectedOption: "",
+      startDate: "",
+      endDate: "",
+      selectedOptionView: "",
+      endDateView: "",
+      startDateView: "",
+    },
   ]);
-
+  console.log({ rows }, "rowsrowsrows");
   const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
@@ -86,7 +106,8 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
       console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
       updatedRows[index].startDate = formattedTime;
-      updatedRows[index].startTime = newDate;
+      updatedRows[index].startDateView = newDate;
+      updatedRows[index].isComing = false;
       setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
@@ -108,7 +129,9 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
 
       const updatedRows = [...rows];
       updatedRows[index].endDate = formattedTime;
-      updatedRows[index].endTime = newDate;
+      updatedRows[index].endDateView = newDate;
+      updatedRows[index].isComing = false;
+
       setRows(updatedRows);
     } else {
       console.error("Invalid date and time object:", date);
@@ -149,6 +172,9 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
     setMeetingDate(meetingDateValueFormat);
     const updatedRows = [...rows];
     updatedRows[index].selectedOption = DateDate.slice(0, 8);
+    updatedRows[index].selectedOptionView = meetingDateValueFormat;
+    updatedRows[index].isComing = false;
+
     console.log(updatedRows, "updatedRows");
     setRows(updatedRows);
   };
@@ -176,7 +202,6 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
     const hasSelectError = rows.some((row) => row.selectedOption === "");
     const hasStartDateError = rows.some((row) => row.startDate === "");
     const hasEndDateError = rows.some((row) => row.endDate === "");
-
     setSelectError(hasSelectError);
     setStartDateError(hasStartDateError);
     setEndDateError(hasEndDateError);
@@ -211,7 +236,6 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
       };
       console.log(Data, "updatedRows");
       dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
-      setSendDates(true);
     } else {
       // Rows are not in ascending order
       setOpen({
@@ -222,6 +246,8 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
       });
     }
   };
+
+  // Function to handle the save Proposed button click
 
   useEffect(() => {
     validate();
@@ -241,18 +267,21 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
 
   const handleSend = () => {
     // States For Error Handling
-    // seterror(true);
     // setSelectError(true);
     // setStartDateError(true);
     // setEndDateError(true);
   };
 
   const CancelModal = () => {
-    dispatch(showPrposedMeetingUnsavedModal(true));
+    setProposedMeetingDates(false);
+    setParticipants(true);
+
+    // dispatch(showPrposedMeetingUnsavedModal(true));
   };
 
   const handlebackButtonFunctionality = () => {
     setProposedMeetingDates(false);
+    setParticipants(true);
   };
 
   useEffect(() => {
@@ -262,34 +291,96 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
     dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
   }, []);
 
+  console.log(proposedDatesData, "proposedDatesDataproposedDatesData");
+
   useEffect(() => {
     try {
       if (
         NewMeetingreducer.getAllProposedDates !== null &&
         NewMeetingreducer.getAllProposedDates !== undefined
       ) {
-        NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
-          (data, index) => {
-            console.log(data, "getAllProposedDates");
+        const proposedMeetingData = NewMeetingreducer.getAllProposedDates;
+        console.log(
+          proposedMeetingData,
+          "proposedMeetingDataproposedMeetingData"
+        );
+        if (proposedMeetingData.deadLineDate === "10000101") {
+          setSendResponseVal("");
+        } else {
+          setSendResponseVal(
+            resolutionResultTable(proposedMeetingData.deadLineDate + "000000")
+          );
+        }
 
-            setProposedDatesData([
-              {
-                ...proposedDatesData,
-                deadline: data.deadLineDate,
-                proposedDates: data.proposedDates,
-              },
-            ]);
+        const newDataforView = proposedMeetingData.meetingProposedDates.map(
+          (dates) => {
+            console.log(dates, "meetingProposedDates");
+            if (
+              dates.proposedDate === "10000101" &&
+              dates.endTime === "000000" &&
+              dates.startTime === "000000"
+            ) {
+              return {
+                endTimeforSend: "",
+                startTimeforSend: "",
+                selectDateforSend: "",
+                endDateView: "",
+                selectedOptionView: "",
+                proposedDateID: 0,
+                startDateView: "",
+                isComing: true,
+              };
+            } else {
+              return {
+                endTimeforSend: dates.endTime,
+                startTimeforSend: dates.startTime,
+                selectDateforSend: dates.proposedDate,
+                endDateView: resolutionResultTable(
+                  dates.proposedDate + dates.endTime
+                ),
+                selectedOptionView: resolutionResultTable(
+                  dates.proposedDate + dates.startTime
+                ),
+                proposedDateID: dates.proposedDateID,
+                startDateView: resolutionResultTable(
+                  dates.proposedDate + dates.startTime
+                ),
+                isComing: true,
+              };
+            }
           }
         );
-        console.log(
-          NewMeetingreducer.getAllProposedDates,
-          "getAllProposedDatesgetAllProposedDates"
-        );
+
+        setRows(newDataforView);
+        console.log({ newDataforView }, "newDatanewDatanewData");
       }
-    } catch {}
+    } catch (error) {
+      console.error(error);
+    }
   }, [NewMeetingreducer.getAllProposedDates]);
 
-  console.log(proposedDatesData, "proposedDatesDataproposedDatesData");
+  console.log(rows, "rowsrowsrowsrowsrows");
+
+  const EnabletheViewProposedmeetingDates = () => {
+    setProposedMeetingDates(false);
+    setViewProposedMeetingDate(true);
+  };
+  useEffect(() => {
+    if (rows.length > 0) {
+      if (
+        rows[0].selectedOption === "" &&
+        rows[0].startDate === "" &&
+        rows[0].endDate === ""
+      ) {
+        let getifTrue = rows.some((data, index) => data.isComing === false);
+        setIsEdit(getifTrue);
+      } else {
+        setIsEdit(false);
+      }
+    } else {
+      setIsEdit(false);
+    }
+  }, [rows]);
 
   return (
     <section>
@@ -355,394 +446,256 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
                 </p>
               </Col>
             </Row>
-            {sendDates ? (
-              <>
+
+            <Row>
+              <Col lg={8} md={8} sm={8}>
                 <Row>
-                  <Col lg={4} md={4} sm={4}>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Prposed_On_Heading"]}>
-                          {t("Proposed-on")}
-                          <span className={styles["Steric_Color"]}>*</span>
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Scroller_Prposed_Meeting_date"]}
-                      >
-                        {proposedDatesData.length > 0
-                          ? proposedDatesData.map(
-                              (proposedDates, proposedDatesIndex) => {
-                                console.log(
-                                  proposedDates,
-                                  "proposedDatesproposedDates"
-                                );
-                                return (
-                                  <>
-                                    <Row className="m-0 p-0 mt-2">
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className={styles["Box_To_Show_Time"]}
-                                      >
-                                        <Row
-                                          className={styles["Inner_Send_class"]}
-                                        >
-                                          <Col lg={10} md={10} sm={10}>
-                                            <span
-                                              className={styles["Time_Class"]}
-                                            >
-                                              {proposedDates.proposedDates}
-                                            </span>
-                                          </Col>
-                                          <Col lg={2} md={2} sm={2}>
-                                            <Checkbox
-                                              prefixCls={
-                                                "ProposedMeeting_Checkbox"
-                                              }
-                                              classNameCheckBoxP="d-none"
-                                            />
-                                          </Col>
-                                        </Row>
-                                      </Col>
-                                    </Row>
-                                  </>
-                                );
-                              }
-                            )
-                          : null}
-                      </Col>
-                    </Row>
-
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Prposed_On_Heading"]}>
-                          {t("Send-response-by")}{" "}
-                          <span className={styles["Steric_Color"]}>*</span>
-                        </span>
-                      </Col>
-                    </Row>
-                    {proposedDatesData.length > 0
-                      ? proposedDatesData.map(
-                          (responsedby, responsedbyIndex) => {
-                            console.log(responsedby, "responsedbyresponsedby");
-                            return (
-                              <>
-                                <Row className="mt-1">
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span className={styles["Date"]}>
-                                      {responsedby.deadline}
-                                    </span>
-                                  </Col>
-                                </Row>
-                              </>
-                            );
-                          }
-                        )
-                      : null}
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={2}
-                    className="d-flex justify-content-center mt-4"
-                  >
-                    <span className={styles["OR_Heading"]}>{"OR"}</span>
-                  </Col>
-
-                  <Col lg={4} md={4} sm={4}>
-                    <Row className="m-0 p-0 mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Box_To_Show_Time"]}
-                      >
-                        <Row className={styles["Inner_Send_class"]}>
-                          <Col lg={10} md={10} sm={10}>
-                            <span className={styles["Time_Class"]}>
-                              None of the above
-                            </span>
-                          </Col>
-                          <Col lg={2} md={2} sm={2}>
-                            <Checkbox
-                              prefixCls={"ProposedMeeting_Checkbox"}
-                              classNameCheckBoxP="d-none"
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Prposed_On_Heading"]}>
+                      {t("Proposed-on")}{" "}
+                      <span className={styles["Steric_Color"]}>*</span>
+                    </span>
                   </Col>
                 </Row>
-              </>
-            ) : (
-              <>
                 <Row>
-                  <Col lg={8} md={8} sm={8}>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Prposed_On_Heading"]}>
-                          {t("Proposed-on")}{" "}
-                          <span className={styles["Steric_Color"]}>*</span>
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Scroller_meeting"]}
-                      >
-                        {rows.length > 0
-                          ? rows.map((data, index) => {
-                              return (
-                                <>
-                                  <Row>
-                                    <Col lg={12} md={12} sm={12} key={index}>
-                                      <Row className="mt-2">
-                                        <Col lg={4} md={4} sm={12}>
-                                          <DatePicker
-                                            selected={rows.selectedOption}
-                                            format={"DD/MM/YYYY"}
-                                            minDate={moment().toDate()}
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Scroller_meeting"]}
+                  >
+                    {rows.length > 0
+                      ? rows.map((data, index) => {
+                          console.log(data, "datadatadatarows");
+                          return (
+                            <>
+                              <Row>
+                                <Col lg={12} md={12} sm={12} key={index}>
+                                  <Row className="mt-2">
+                                    <Col lg={4} md={4} sm={12}>
+                                      <DatePicker
+                                        value={data.selectedOptionView}
+                                        selected={data.selectedOption}
+                                        format={"DD/MM/YYYY"}
+                                        minDate={moment().toDate()}
+                                        placeholder="DD/MM/YYYY"
+                                        render={
+                                          <InputIcon
                                             placeholder="DD/MM/YYYY"
-                                            render={
-                                              <InputIcon
-                                                placeholder="DD/MM/YYYY"
-                                                className="datepicker_input"
-                                              />
-                                            }
-                                            editable={false}
-                                            className="datePickerTodoCreate2"
-                                            onOpenPickNewDate={true}
-                                            inputMode=""
-                                            calendar={calendarValue}
-                                            locale={localValue}
-                                            ref={calendRef}
-                                            onChange={(value) =>
-                                              changeDateStartHandler(
-                                                value,
-                                                index
-                                              )
-                                            }
+                                            className="datepicker_input"
                                           />
-                                          <Row>
-                                            <Col>
-                                              <p
-                                                className={
-                                                  error &&
-                                                  data.selectedOption === ""
-                                                    ? ` ${styles["errorMessage-inLogin"]} `
-                                                    : `${styles["errorMessage-inLogin_hidden"]}`
-                                                }
-                                              >
-                                                {t(
-                                                  "Please-select-data-and-time"
-                                                )}
-                                              </p>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={3}
-                                          md={3}
-                                          sm={3}
-                                          className="timePicker"
-                                        >
-                                          <DatePicker
-                                            arrowClassName="arrowClass"
-                                            containerClassName="containerClassTimePicker"
-                                            className="timePicker"
-                                            disableDayPicker
-                                            inputClass="inputTImeMeeting"
-                                            calendar={calendarValue}
-                                            locale={localValue}
-                                            format="HH:mm A"
-                                            selected={data.startDate}
-                                            plugins={[
-                                              <TimePicker hideSeconds />,
-                                            ]}
-                                            onChange={(date) =>
-                                              handleStartDateChange(index, date)
-                                            }
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={1}
-                                          md={1}
-                                          sm={12}
-                                          className="d-flex justify-content-center align-items-center"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={desh}
-                                            width="19.02px"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={3}
-                                          md={3}
-                                          sm={12}
-                                          // className="d-flex justify-content-end"
-                                        >
-                                          <DatePicker
-                                            arrowClassName="arrowClass"
-                                            containerClassName="containerClassTimePicker"
-                                            className="timePicker"
-                                            disableDayPicker
-                                            inputClass="inputTImeMeeting"
-                                            calendar={calendarValue}
-                                            locale={localValue}
-                                            format="HH:mm A"
-                                            selected={data.startDate}
-                                            plugins={[
-                                              <TimePicker hideSeconds />,
-                                            ]}
-                                            onChange={(date) =>
-                                              handleEndDateChange(index, date)
-                                            }
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={1}
-                                          md={1}
-                                          sm={12}
-                                          className="d-flex justify-content-end position-relative align-items-center"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={redcrossIcon}
-                                            width="23px"
-                                            height="23px"
+                                        }
+                                        editable={false}
+                                        className="datePickerTodoCreate2"
+                                        onOpenPickNewDate={true}
+                                        inputMode=""
+                                        calendar={calendarValue}
+                                        locale={localValue}
+                                        ref={calendRef}
+                                        onChange={(value) =>
+                                          changeDateStartHandler(value, index)
+                                        }
+                                      />
+                                      <Row>
+                                        <Col>
+                                          <p
                                             className={
-                                              styles["Cross_icon_class"]
+                                              error &&
+                                              data.selectedOption === ""
+                                                ? ` ${styles["errorMessage-inLogin"]} `
+                                                : `${styles["errorMessage-inLogin_hidden"]}`
                                             }
-                                            onClick={() => {
-                                              HandleCancelFunction(index);
-                                            }}
-                                          />
+                                          >
+                                            {t("Please-select-data-and-time")}
+                                          </p>
                                         </Col>
                                       </Row>
                                     </Col>
-                                  </Row>
-                                  <Row>
-                                    <Col>
-                                      <p
-                                        className={
-                                          error &&
-                                          rows.selectedOption === "" &&
-                                          rows.startDate === "" &&
-                                          rows.endDate === ""
-                                            ? ` ${styles["errorMessage-inLogin"]} `
-                                            : `${styles["errorMessage-inLogin_hidden"]}`
+                                    <Col
+                                      lg={3}
+                                      md={3}
+                                      sm={3}
+                                      className="timePicker"
+                                    >
+                                      <DatePicker
+                                        arrowClassName="arrowClass"
+                                        containerClassName="containerClassTimePicker"
+                                        className="timePicker"
+                                        disableDayPicker
+                                        inputClass="inputTImeMeeting"
+                                        calendar={calendarValue}
+                                        locale={localValue}
+                                        format="HH:mm A"
+                                        value={data.startDateView}
+                                        selected={data.startDate}
+                                        plugins={[<TimePicker hideSeconds />]}
+                                        onChange={(date) =>
+                                          handleStartDateChange(index, date)
                                         }
-                                      >
-                                        {t("Please-select-data-and-time")}
-                                      </p>
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={1}
+                                      md={1}
+                                      sm={12}
+                                      className="d-flex justify-content-center align-items-center"
+                                    >
+                                      <img
+                                        draggable={false}
+                                        src={desh}
+                                        width="19.02px"
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={3}
+                                      md={3}
+                                      sm={12}
+                                      // className="d-flex justify-content-end"
+                                    >
+                                      <DatePicker
+                                        value={data.endDateView}
+                                        arrowClassName="arrowClass"
+                                        containerClassName="containerClassTimePicker"
+                                        className="timePicker"
+                                        disableDayPicker
+                                        inputClass="inputTImeMeeting"
+                                        calendar={calendarValue}
+                                        locale={localValue}
+                                        format="HH:mm A"
+                                        selected={data.startDate}
+                                        plugins={[<TimePicker hideSeconds />]}
+                                        onChange={(date) =>
+                                          handleEndDateChange(index, date)
+                                        }
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={1}
+                                      md={1}
+                                      sm={12}
+                                      className="d-flex justify-content-end position-relative align-items-center"
+                                    >
+                                      <img
+                                        draggable={false}
+                                        src={redcrossIcon}
+                                        width="23px"
+                                        height="23px"
+                                        className={styles["Cross_icon_class"]}
+                                        onClick={() => {
+                                          HandleCancelFunction(index);
+                                        }}
+                                      />
                                     </Col>
                                   </Row>
-                                </>
-                              );
-                            })
-                          : null}
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Button
-                          text={
-                            <>
-                              <Row className="mt-1">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center gap-2 align-items-center"
-                                >
-                                  <img
-                                    draggable={false}
-                                    src={plusFaddes}
-                                    width="15.87px"
-                                    height="15.87px"
-                                  />
-                                  <span className={styles["Add_dates_label"]}>
-                                    {t("Add-dates")}
-                                  </span>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      error &&
+                                      rows.selectedOption === "" &&
+                                      rows.startDate === "" &&
+                                      rows.endDate === ""
+                                        ? ` ${styles["errorMessage-inLogin"]} `
+                                        : `${styles["errorMessage-inLogin_hidden"]}`
+                                    }
+                                  >
+                                    {t("Please-select-data-and-time")}
+                                  </p>
                                 </Col>
                               </Row>
                             </>
-                          }
-                          className={styles["Add_Dates_Btn_Class"]}
-                          onClick={addRow}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col lg={4} md={4} sm={4}>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Prposed_On_Heading"]}>
-                          {t("Send-response-by")}{" "}
-                          <span className={styles["Steric_Color"]}>*</span>
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row className="mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Width_Date_SendResponseBy"]}
-                      >
-                        <DatePicker
-                          value={sendResponseVal}
-                          format={"DD/MM/YYYY"}
-                          minDate={moment().toDate()}
-                          placeholder="DD/MM/YYYY"
-                          render={
-                            <InputIcon
-                              placeholder="DD/MM/YYYY"
-                              className="datepicker_input"
-                            />
-                          }
-                          editable={false}
-                          className="proposedMeetindatesDatePicker"
-                          onOpenPickNewDate={true}
-                          inputMode=""
-                          calendar={calendarValue}
-                          locale={localValue}
-                          ref={calendRef}
-                          onChange={(value) => SendResponseHndler(value)}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <p
-                          className={
-                            error &&
-                            selectError &&
-                            startDateError &&
-                            endDateError
-                              ? ` ${styles["errorMessage-inLogin"]} `
-                              : `${styles["errorMessage-inLogin_hidden"]}`
-                          }
-                        >
-                          {t("Please-select-date")}
-                        </p>
-                      </Col>
-                    </Row>
+                          );
+                        })
+                      : null}
                   </Col>
                 </Row>
-              </>
-            )}
+                <Row className="mt-3">
+                  <Col lg={12} md={12} sm={12}>
+                    <Button
+                      text={
+                        <>
+                          <Row className="mt-1">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center gap-2 align-items-center"
+                            >
+                              <img
+                                draggable={false}
+                                src={plusFaddes}
+                                width="15.87px"
+                                height="15.87px"
+                              />
+                              <span className={styles["Add_dates_label"]}>
+                                {t("Add-dates")}
+                              </span>
+                            </Col>
+                          </Row>
+                        </>
+                      }
+                      className={styles["Add_Dates_Btn_Class"]}
+                      onClick={addRow}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+              <Col lg={4} md={4} sm={4}>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Prposed_On_Heading"]}>
+                      {t("Send-response-by")}{" "}
+                      <span className={styles["Steric_Color"]}>*</span>
+                    </span>
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Width_Date_SendResponseBy"]}
+                  >
+                    <DatePicker
+                      value={sendResponseVal}
+                      format={"DD/MM/YYYY"}
+                      minDate={moment().toDate()}
+                      placeholder="DD/MM/YYYY"
+                      render={
+                        <InputIcon
+                          placeholder="DD/MM/YYYY"
+                          className="datepicker_input"
+                        />
+                      }
+                      editable={false}
+                      className="proposedMeetindatesDatePicker"
+                      onOpenPickNewDate={true}
+                      inputMode=""
+                      calendar={calendarValue}
+                      locale={localValue}
+                      ref={calendRef}
+                      onChange={(value) => SendResponseHndler(value)}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <p
+                      className={
+                        error && selectError && startDateError && endDateError
+                          ? ` ${styles["errorMessage-inLogin"]} `
+                          : `${styles["errorMessage-inLogin_hidden"]}`
+                      }
+                    >
+                      {t("Please-select-date")}
+                    </p>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+
             <Row className="mt-3">
               <Col
                 lg={12}
@@ -756,10 +709,27 @@ const ProposedMeetingDate = ({ setProposedMeetingDates, setParticipants }) => {
                   onClick={CancelModal}
                 />
                 <Button
-                  text={t("Save")}
+                  text={t("View")}
                   className={styles["Save_Button_ProposedMeeting"]}
-                  onClick={handleSave}
+                  onClick={EnabletheViewProposedmeetingDates}
                 />
+                {!isEdit ? (
+                  <>
+                    <Button
+                      text={t("Save")}
+                      className={styles["Save_Button_ProposedMeeting"]}
+                      onClick={handleSave}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      text={t("Update")}
+                      className={styles["Save_Button_ProposedMeeting"]}
+                      onClick={handleSave}
+                    />
+                  </>
+                )}
               </Col>
             </Row>
           </Paper>

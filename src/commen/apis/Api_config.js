@@ -998,7 +998,21 @@ const getAllPropsedMeetingdates = {
   RequestMethod: "ServiceManager.GetAllMeetingProposedDates",
 };
 
+const updateResolutionDataRoomMapRM = {
+  RequestMethod: "ServiceManager.UpdateResolutionDataRoomMap",
+};
+
+const saveResolutionDocumentsRM = {
+  RequestMethod: "ServiceManager.SaveResolutionDocuments",
+};
+
+const setMeetingProposedDatesResponse = {
+  RequestMethod: "ServiceManager.SetMeetingProposedDatesResponse",
+};
+
 export {
+  saveResolutionDocumentsRM,
+  updateResolutionDataRoomMapRM,
   updateGeneralAccessRM,
   checkFileLinkRM,
   requestAccessRM,
@@ -1265,4 +1279,5 @@ export {
   SetMeetingPolls,
   SettingMeetingProposedDates,
   getAllPropsedMeetingdates,
+  setMeetingProposedDatesResponse,
 };

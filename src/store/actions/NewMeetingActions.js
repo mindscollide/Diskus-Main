@@ -18,6 +18,7 @@ import {
   saveParticipantsMeeting,
   searchUserMeetings,
   sendNotification,
+  setMeetingProposedDatesResponse,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { meetingApi, pollApi } from "../../commen/apis/Api_ends_points";
@@ -2087,10 +2088,6 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
                   t("Record-saved")
                 )
               );
-              let Data = {
-                MeetingID: currentMeetingID,
-              };
-              dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2132,6 +2129,102 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
       })
       .catch((response) => {
         dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//set Proposed Meeting Response Api
+
+const showPrposedMeetingReponsneInit = () => {
+  return {
+    type: actions.SET_MEETING_RESPONSE_INIT,
+  };
+};
+
+const showPrposedMeetingReponsneSuccess = (response, message) => {
+  return {
+    type: actions.SET_MEETING_RESPONSE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showPrposedMeetingReponsneFailed = (message) => {
+  return {
+    type: actions.SET_MEETING_RESPONSE_FAILED,
+    message: message,
+  };
+};
+
+const SetMeetingResponseApiFunc = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showPrposedMeetingReponsneInit());
+    let form = new FormData();
+    form.append("RequestMethod", setMeetingProposedDatesResponse.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatesResponse_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showPrposedMeetingReponsneSuccess(
+                  response.data.responseResult,
+                  t("Record-saved")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatesResponse_02".toLowerCase()
+                )
+            ) {
+              dispatch(showPrposedMeetingReponsneFailed(t("No-record-saved")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatesResponse_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showPrposedMeetingReponsneFailed(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                showPrposedMeetingReponsneFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              showPrposedMeetingReponsneFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(showPrposedMeetingReponsneFailed(t("Something-went-wrong")));
+        }
+        console.log("responseresponse", response);
+      })
+      .catch((response) => {
+        dispatch(showPrposedMeetingReponsneFailed(t("Something-went-wrong")));
       });
   };
 };
@@ -2201,4 +2294,5 @@ export {
   SetMeetingPollsApiFunc,
   setProposedMeetingDateApiFunc,
   GetAllProposedMeetingDateApiFunc,
+  SetMeetingResponseApiFunc,
 };
