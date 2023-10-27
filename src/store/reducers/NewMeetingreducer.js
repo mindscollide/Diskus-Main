@@ -60,6 +60,7 @@ const initialState = {
   getMeetingusers: [],
   setMeetingProposeDate: [],
   getAllProposedDates: [],
+  meetingResponse: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -799,6 +800,30 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_PRPOSED_DATES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SET_MEETING_RESPONSE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SET_MEETING_RESPONSE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        meetingResponse: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SET_MEETING_RESPONSE_FAILED: {
       return {
         ...state,
         Loading: false,

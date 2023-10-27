@@ -288,7 +288,6 @@ const ProposedMeetingDate = ({
 
   const handleSend = () => {
     // States For Error Handling
-    // seterror(true);
     // setSelectError(true);
     // setStartDateError(true);
     // setEndDateError(true);

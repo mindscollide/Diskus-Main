@@ -28,6 +28,7 @@ const ViewParticipantsDates = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const [deadline, setDeadline] = useState("");
   const [prposedData, setPrposedData] = useState([]);
+  const [sendProposedData, setSendProposedData] = useState([]);
   const [checkedObjects, setCheckedObjects] = useState([]);
   console.log(checkedObjects, "checkedObjectscheckedObjectscheckedObjects");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -69,9 +70,14 @@ const ViewParticipantsDates = () => {
               startTime: resolutionResultTable(
                 data.proposedDate + data.startTime
               ),
+              EndtimeSend: data.endTime,
+              ProposedDateSend: data.proposedDate,
+              proposedDateIDSend: data.proposedDateID,
+              StartTimeSend: data.startTime,
             });
           }
         );
+
         setPrposedData(datesarry);
       }
     } catch (error) {
@@ -79,15 +85,46 @@ const ViewParticipantsDates = () => {
     }
   }, [NewMeetingreducer.getAllProposedDates]);
 
-  console.log(prposedData, "prposedDataprposedData");
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getAllProposedDates !== null &&
+        NewMeetingreducer.getAllProposedDates !== undefined
+      ) {
+        console.log(
+          NewMeetingreducer.getAllProposedDates.deadLineDate,
+          "NewMeetingreducergetAllProposedDates"
+        );
+        let deadline = NewMeetingreducer.getAllProposedDates.deadLineDate;
+        setDeadline(deadline);
 
-  // Event handler to toggle the checked state
+        let SenddataObject = [];
+
+        NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
+          (data, index) => {
+            SenddataObject.push({
+              EndtimeSend: data.endTime,
+              ProposedDateSend: data.proposedDate,
+              proposedDateIDSend: data.proposedDateID,
+              StartTimeSend: data.startTime,
+            });
+          }
+        );
+
+        setSendProposedData(SenddataObject);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [NewMeetingreducer.getAllProposedDates]);
+
+  // console.log(prposedData, "prposedDataprposedData");
+  console.log(sendProposedData, "prposedDataprposedData");
+
   const handleCheckboxChange = (data) => {
-    if (checkedObjects.includes(data)) {
-      // If the data is already in the array, remove it
+    if (sendProposedData.includes(data)) {
       setCheckedObjects(checkedObjects.filter((obj) => obj !== data));
     } else {
-      // If the data is not in the array, add it
       setCheckedObjects([...checkedObjects, data]);
     }
   };
@@ -202,7 +239,7 @@ const ViewParticipantsDates = () => {
                                       <Checkbox
                                         prefixCls={"ProposedMeeting_Checkbox"}
                                         classNameCheckBoxP="d-none"
-                                        checked={checkedObjects.includes(data)} // Check if data is in checkedObjects
+                                        checked={checkedObjects.includes(data)}
                                         onChange={() =>
                                           handleCheckboxChange(data)
                                         }
