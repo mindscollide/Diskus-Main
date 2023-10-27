@@ -41,6 +41,9 @@ import {
   createResolution,
   clearResponseMessage,
   createResolutionModal,
+  uploadDocumentsResolutionApi,
+  saveFilesResolutionApi,
+  updateResolution,
 } from "../../../store/actions/Resolution_actions";
 import {
   createConvert,
@@ -64,6 +67,7 @@ const ScheduleNewResolution = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { ResolutionReducer, assignees } = useSelector((state) => state);
+  const [sendUpdate, setSendUpdate] = useState(false);
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [isVoter, setVoter] = useState(true);
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -76,6 +80,8 @@ const ScheduleNewResolution = () => {
     flag: false,
     message: "",
   });
+  const [sendStatus, setsendStatus] = useState(0);
+  const [folderID, setFolderID] = useState(0);
   const [error, setError] = useState(false);
   const [voters, setVoters] = useState([]);
   const [nonVoter, setNonVoters] = useState([]);
@@ -401,7 +407,7 @@ const ScheduleNewResolution = () => {
           if (meetingAttendeesList.length > 0) {
             meetingAttendeesList
               .filter((data, index) => data.pK_UID === taskAssignedTo)
-              .map((voeterdata, index) => {
+              .forEach((voeterdata, index) => {
                 nonVoter.push({
                   FK_UID: voeterdata.pK_UID,
                   FK_VotingStatus_ID: 3,
@@ -446,21 +452,10 @@ const ScheduleNewResolution = () => {
       createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
+      setsendStatus(1);
       if (fileForSend.length > 0) {
-        let newfile = [];
-        let sendingData = [];
-        const uploadPromises = fileForSend.map((newData) => {
-          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
-        });
-        await Promise.all(uploadPromises);
-        newfile.map((fileattachmentData, index) => {
-          sendingData.push({
-            DisplayAttachmentName: fileattachmentData.DisplayAttachmentName,
-            OriginalAttachmentName: fileattachmentData.OriginalAttachmentName,
-          });
-        });
-
-        let tasksAttachments = sendingData;
+        // let folderID = [];
+        // let tasksAttachments;
         let Data = {
           ResolutionModel: {
             FK_ResolutionStatusID: 1,
@@ -490,19 +485,7 @@ const ScheduleNewResolution = () => {
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
-
-        dispatch(
-          createResolution(
-            navigate,
-            Data,
-            voters,
-            nonVoter,
-            tasksAttachments,
-            t,
-            1,
-            1
-          )
-        );
+        await dispatch(createResolution(navigate, Data, voters, t));
       } else {
         let Data = {
           ResolutionModel: {
@@ -533,18 +516,7 @@ const ScheduleNewResolution = () => {
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
-        dispatch(
-          createResolution(
-            navigate,
-            Data,
-            voters,
-            nonVoter,
-            tasksAttachments,
-            t,
-            1,
-            1
-          )
-        );
+        dispatch(createResolution(navigate, Data, voters, t));
         setTasksAttachments([]);
       }
     } else {
@@ -570,13 +542,14 @@ const ScheduleNewResolution = () => {
       createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
       // voters.length > 0
     ) {
+      setsendStatus(2);
       if (fileForSend.length > 0) {
-        let newfile = [];
-        const uploadPromises = fileForSend.map((newData) => {
-          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
-        });
-        await Promise.all(uploadPromises);
-        let tasksAttachments = newfile;
+        // let newfile = [];
+        // const uploadPromises = fileForSend.map((newData) => {
+        //   return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+        // });
+        // await Promise.all(uploadPromises);
+        // let tasksAttachments = newfile;
         let Data = {
           ResolutionModel: {
             FK_ResolutionStatusID: 2,
@@ -611,18 +584,7 @@ const ScheduleNewResolution = () => {
           setVoter(true);
           setNonVoter(false);
         } else {
-          dispatch(
-            createResolution(
-              navigate,
-              Data,
-              voters,
-              nonVoter,
-              tasksAttachments,
-              t,
-              1,
-              2
-            )
-          );
+          dispatch(createResolution(navigate, Data, voters, t));
         }
       } else {
         let Data = {
@@ -659,18 +621,7 @@ const ScheduleNewResolution = () => {
           setVoter(true);
           setNonVoter(false);
         } else {
-          dispatch(
-            createResolution(
-              navigate,
-              Data,
-              voters,
-              nonVoter,
-              tasksAttachments,
-              t,
-              1,
-              2
-            )
-          );
+          dispatch(createResolution(navigate, Data, voters, t));
         }
         setTasksAttachments([]);
       }
@@ -846,6 +797,39 @@ const ScheduleNewResolution = () => {
       }
     } catch (error) {}
   }, [assignees.user]);
+
+  const documentsUploadCall = async (folderID) => {
+    let newfile = [];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsResolutionApi(navigate, t, newData, folderID, newfile)
+      );
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+
+    let resolutionID = localStorage.getItem("resolutionID");
+    await dispatch(
+      updateResolution(
+        navigate,
+        Number(resolutionID),
+        voters,
+        nonVoter,
+        newfile,
+        t,
+        sendStatus
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (ResolutionReducer.updateResolutionDataroom !== 0) {
+      setFolderID(ResolutionReducer.updateResolutionDataroom);
+      let folderIDCreated = ResolutionReducer.updateResolutionDataroom;
+      documentsUploadCall(folderIDCreated);
+    }
+  }, [ResolutionReducer.updateResolutionDataroom]);
 
   useEffect(() => {
     if (

@@ -24,9 +24,103 @@ const initialState = {
   mqttResolutionCreated: null,
   mqttResolutionCancelled: null,
   mqttResolutionClosed: null,
+  UploadDocuments: null,
+  SaveDocumentsIDs: [],
+  updateResolutionDataroom: 0,
+  saveResolutionDocuments: null,
 };
 const ResolutionReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.UPLOAD_DOCUMENTS_DATAROOM_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        UploadDocuments: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        UploadDocuments: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVEFILES_DATAROOM_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVEFILES_DATAROOM_SUCCESS: {
+      // let copyData = [...state.SaveDocumentsIDs];
+      // copyData.push(action.response);
+      return {
+        ...state,
+        Loading: false,
+        SaveDocumentsIDs: [...state.SaveDocumentsIDs, action.response],
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVEFILES_DATAROOM_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        SaveDocumentsIDs: [],
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPDATERESOLUTIONDATAROOMMAP_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.UPDATERESOLUTIONDATAROOMMAP_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        updateResolutionDataroom: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPDATERESOLUTIONDATAROOMMAP_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        updateResolutionDataroom: 0,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVERESOLUTIONDOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVERESOLUTIONDOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveResolutionDocuments: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVERESOLUTIONDOCUMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        saveResolutionDocuments: action.response,
+        ResponseMessage: action.message,
+      };
+    }
     case actions.CANCELLED_RESOLUTION_MQTT: {
       return {
         ...state,
