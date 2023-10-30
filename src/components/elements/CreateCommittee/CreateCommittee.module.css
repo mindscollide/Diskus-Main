@@ -15,7 +15,7 @@ body[dir="rtl"] .details-class-Create-Committee {
 }
 
 .scroll-bar-createCommittee {
-  height: 30vh !important;
+  height: 24vh !important;
   overflow-x: hidden !important;
 }
 
@@ -156,7 +156,7 @@ body[dir="rtl"] .ADD-Committee-btn {
 }
 
 .scrollbar-addmember-createcommittee {
-  height: 40vh !important;
+  height: 15vh !important;
   overflow-x: hidden !important;
   max-width: 100% !important;
   display: flex !important;
