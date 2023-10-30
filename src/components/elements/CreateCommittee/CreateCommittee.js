@@ -1279,13 +1279,18 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 styles["scrollbar-addmember-createcommittee"]
                               }
                             >
-                              {" "}
                               {meetingAttendeesList.length > 0 ? (
                                 meetingAttendeesList.map(
                                   (attendeelist, index) => {
                                     return (
-                                      <Row className="mt-4" key={index}>
-                                        <Col lg={12} md={12} sm={12}>
+                                      <>
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={6}
+                                          className="mt-4"
+                                          key={index}
+                                        >
                                           <Row className="d-flex gap-2">
                                             <Col lg={2} md={2} sm={12}>
                                               <img
@@ -1382,7 +1387,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             </Col>
                                           </Row>
                                         </Col>
-                                      </Row>
+                                      </>
                                     );
                                   }
                                 )

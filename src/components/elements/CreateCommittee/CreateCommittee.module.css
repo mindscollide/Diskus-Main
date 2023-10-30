@@ -158,6 +158,9 @@ body[dir="rtl"] .ADD-Committee-btn {
 .scrollbar-addmember-createcommittee {
   height: 40vh !important;
   overflow-x: hidden !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
 }
 
 .scrollbar-addmember-createcommittee::-webkit-scrollbar {
@@ -276,5 +279,5 @@ body[dir="rtl"] .Committee_error_coloumn {
 }
 
 .create_committee_title::placeholder {
-  color: #E1E1E1 !important;
+  color: #e1e1e1 !important;
 }
