@@ -23,6 +23,7 @@ const initialState = {
   FileUploadFlag: false,
   FileUploadType: '',
   GlobalChatsSearchFlag: false,
+  ActiveChatBoxGS: false,
 }
 
 const talkFeatureReducer = (state = initialState, action) => {
@@ -175,6 +176,13 @@ const talkFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         GlobalChatsSearchFlag: action.response,
+      }
+    }
+
+    case actions.ACTIVE_CHAT_BOX_GS: {
+      return {
+        ...state,
+        ActiveChatBoxGS: action.response,
       }
     }
 

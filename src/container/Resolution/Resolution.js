@@ -1554,6 +1554,7 @@ const Resolution = () => {
                             pageSize={
                               moderatorRows !== null ? moderatorRows : 50
                             }
+                            className={styles["PaginationStyle-Resolution"]}
                             total={totalResolution}
                           />
                           {/* <Pagination
