@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import Newprofile from "../../../assets/images/newprofile.png";
 import { Paper } from "@material-ui/core";
 import featherupload from "../../../assets/images/featherupload.svg";
+import Leftploygon from "../../../assets/images/Polygon 3.svg";
+import Rightploygon from "../../../assets/images/Polygon right.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { Upload } from "antd";
 import userImage from "../../../assets/images/user.png";
@@ -45,6 +47,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const [committeeTypeValue, setCommitteeTypeValue] = useState("");
   const [committeeTypesOptions, setCommitteeTypesOptions] = useState([]);
   const [committeeTypesValues, setCommitteeTypesValues] = useState([]);
+  const [fileAttachments, setFileAttachments] = useState([]);
   const [committeeMemberRolesOptions, setCommitteeMemberRolesOptions] =
     useState([]);
   const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(
@@ -472,9 +475,26 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
+      console.log(data.file.originFileObj.name, "customRequestcustomRequest");
+      const File = data.file.originFileObj.name;
+      setFileAttachments([...fileAttachments, File]);
     },
     onDrop(e) {},
     customRequest() {},
+  };
+
+  console.log(fileAttachments, "fileAttachmentsfileAttachments");
+
+  //Sliders For Attachments
+
+  const SlideLeft = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft - 300;
+  };
+
+  const Slideright = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft + 300;
   };
 
   return (
@@ -1444,6 +1464,79 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           <span className={styles["Attachments_Heading"]}>
                             {"Attachment"}
                           </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <Col lg={1} md={1} sm={1}>
+                            {fileAttachments.length > 6 ? (
+                              <>
+                                <Button
+                                  icon={
+                                    <img
+                                      src={Leftploygon}
+                                      width="20px"
+                                      height="15px"
+                                      draggable="false"
+                                    />
+                                  }
+                                  onClick={SlideLeft}
+                                  className={styles["Leftpolygon"]}
+                                />
+                              </>
+                            ) : null}
+                          </Col>
+                          <Col lg={10} md={10} sm={10}>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="ScrolllerFiles_Committees"
+                                id="Slider"
+                              >
+                                {fileAttachments.length > 0
+                                  ? fileAttachments.map((data, index) => {
+                                      return (
+                                        <>
+                                          <Col lg={4} md={4} sm={12}>
+                                            <section
+                                              className={styles["Outer_Box"]}
+                                            >
+                                              <Row>
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                ></Col>
+                                              </Row>
+                                            </section>
+                                          </Col>
+                                        </>
+                                      );
+                                    })
+                                  : null}
+                              </Col>
+                            </Row>
+                          </Col>
+                          <Col lg={1} md={1} sm={1}>
+                            {fileAttachments.length > 6 ? (
+                              <>
+                                <Button
+                                  icon={
+                                    <img
+                                      src={Rightploygon}
+                                      width="20px"
+                                      height="15px"
+                                      draggable="false"
+                                    />
+                                  }
+                                  onClick={Slideright}
+                                  className={styles["Leftpolygon"]}
+                                />
+                              </>
+                            ) : null}
+                          </Col>
                         </Col>
                       </Row>
                       <Row>
