@@ -482,7 +482,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
-                    <Col lg={8} md={8} sm={8}>
+                    <Col lg={6} md={6} sm={6}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <span
@@ -1205,8 +1205,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
                       {/* till this point the scroll will be applied  */}
                     </Col>
-                    <Col lg={1} md={1} sm={1}></Col>
-                    <Col lg={3} md={3} sm={3}>
+                    <Col lg={6} md={6} sm={6}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <Row>
@@ -1242,9 +1241,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
                           <Row className="mt-3">
                             <Col
-                              lg={8}
-                              md={8}
-                              sm={8}
+                              lg={10}
+                              md={10}
+                              sm={10}
                               className="committee-select-fields CreateMeetingReminder   "
                             >
                               <SelectBox
@@ -1257,9 +1256,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               />
                             </Col>
                             <Col
-                              lg={4}
-                              md={4}
-                              sm={4}
+                              lg={2}
+                              md={2}
+                              sm={2}
                               className="d-flex justify-content-end "
                             >
                               <Button
