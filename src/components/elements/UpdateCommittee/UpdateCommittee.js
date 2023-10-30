@@ -15,6 +15,11 @@ import {
 import styles from "./UpdateCommittee.module.css";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { useSelector, useDispatch } from "react-redux";
+import featherupload from "../../../assets/images/featherupload.svg";
+import Leftploygon from "../../../assets/images/Polygon 3.svg";
+import file_image from "../../../assets/images/file_image.svg";
+import pdfIcon from "../../../assets/images/pdf_icon.svg";
+import Rightploygon from "../../../assets/images/Polygon right.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import {
   getCommitteeMembersRole,
@@ -23,7 +28,10 @@ import {
 } from "../../../store/actions/Committee_actions";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
+import { Upload } from "antd";
+
 const UpdateCommittee = ({ setUpdateComponentpage }) => {
+  const { Dragger } = Upload;
   const { CommitteeReducer, assignees } = useSelector((state) => state);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const dispatch = useDispatch();
@@ -35,6 +43,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const [groupMembers, setGroupMembers] = useState([]);
   console.log(groupMembers, "groupMembersgroupMembers");
   const [erorbar, setErrorBar] = useState(false);
+  const [fileAttachments, setFileAttachments] = useState([]);
   const [committeeTypesOptions, setCommitteeTypesOptions] = useState([]);
   const [committeeTypesValues, setCommitteeTypesValues] = useState([]);
   const [committeeMemberRolesOptions, setCommitteeMemberRolesOptions] =
@@ -504,6 +513,40 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     }
   }, [CommitteeReducer.getCommitteeByCommitteeID, meetingAttendeesList]);
 
+  const props = {
+    name: "file",
+    multiple: true,
+    showUploadList: false,
+    onChange(data) {
+      const { status } = data.file;
+      console.log(data.file.originFileObj.name, "customRequestcustomRequest");
+      const File = data.file.originFileObj.name;
+      setFileAttachments([...fileAttachments, File]);
+    },
+    onDrop(e) {},
+    customRequest() {},
+  };
+
+  console.log(fileAttachments, "fileAttachmentsfileAttachments");
+
+  //Sliders For Attachments
+
+  const SlideLeft = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft - 300;
+  };
+
+  const Slideright = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft + 300;
+  };
+
+  const handleRemoveFile = (index) => {
+    const updatedFies = [...fileAttachments];
+    updatedFies.splice(index, 1);
+    setFileAttachments(updatedFies);
+  };
+
   return (
     <>
       <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -525,7 +568,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
-                    <Col lg={8} md={8} sm={8}>
+                    <Col lg={6} md={6} sm={6}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <span
@@ -693,103 +736,107 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 2) {
                                   return (
-                                    <Col lg={4} md={4} sm={12}>
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data.data.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={12}
-                                          className={
-                                            styles["Executive-Member-info"]
-                                          }
-                                        >
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="mt-1"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "name-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "Designation-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.designation}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "email-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <a>
-                                                      {data.data.emailAddress}
-                                                    </a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          {console.log(
-                                            "datadatadatadatadata",
-                                            data,
-                                            data.data.pK_UID,
-                                            committeeData.CreatorID
-                                          )}
-                                          <img
-                                            src={CrossIcon}
-                                            className="cursor-pointer"
-                                            width={18}
-                                            alt=""
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
+                                    <Col lg={6} md={6} sm={6}>
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data.data.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={12}
+                                            className={
+                                              styles["Executive-Member-info"]
                                             }
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                      </Row>
+                                          >
+                                            <Row>
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
+                                                className="mt-1"
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "name-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.name}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Designation-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.designation}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "email-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <a>
+                                                        {data.data.emailAddress}
+                                                      </a>
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            {console.log(
+                                              "datadatadatadatadata",
+                                              data,
+                                              data.data.pK_UID,
+                                              committeeData.CreatorID
+                                            )}
+                                            <img
+                                              src={CrossIcon}
+                                              className="cursor-pointer"
+                                              width={18}
+                                              alt=""
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 } else {
@@ -823,95 +870,99 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 1) {
                                   return (
-                                    <Col lg={4} md={4} sm={4} className="mt-2">
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={12}
-                                          className={
-                                            styles["Executive-Member-info"]
-                                          }
-                                        >
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="mt-1"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "name-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "Designation-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.designation}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "email-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <a>
-                                                      {data.data.emailAddress}
-                                                    </a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          <img
-                                            src={CrossIcon}
-                                            width={18}
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
+                                    <Col lg={6} md={6} sm={6}>
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={12}
+                                            className={
+                                              styles["Executive-Member-info"]
                                             }
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                      </Row>
+                                          >
+                                            <Row>
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
+                                                className="mt-1"
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "name-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.name}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Designation-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.designation}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "email-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <a>
+                                                        {data.data.emailAddress}
+                                                      </a>
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              width={18}
+                                              className="cursor-pointer"
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 } else {
@@ -945,102 +996,106 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 3) {
                                   return (
-                                    <Col lg={4} md={4} sm={12}>
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={12}
-                                          className={
-                                            styles["Executive-Member-info"]
-                                          }
-                                        >
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="mt-1"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "name-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "Designation-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.designation}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "email-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <a>
-                                                      {data.data.emailAddress}
-                                                    </a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          {console.log(
-                                            "datadatadatadatadata",
-                                            data,
-                                            data.data.pK_UID,
-                                            committeeData.CreatorID
-                                          )}
-                                          <img
-                                            src={CrossIcon}
-                                            className="cursor-pointer"
-                                            width={18}
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
+                                    <Col lg={6} md={6} sm={6}>
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={12}
+                                            className={
+                                              styles["Executive-Member-info"]
                                             }
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                      </Row>
+                                          >
+                                            <Row>
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
+                                                className="mt-1"
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "name-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.name}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Designation-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.designation}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "email-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <a>
+                                                        {data.data.emailAddress}
+                                                      </a>
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            {console.log(
+                                              "datadatadatadatadata",
+                                              data,
+                                              data.data.pK_UID,
+                                              committeeData.CreatorID
+                                            )}
+                                            <img
+                                              src={CrossIcon}
+                                              className="cursor-pointer"
+                                              width={18}
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 } else {
@@ -1074,102 +1129,106 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 4) {
                                   return (
-                                    <Col lg={4} md={4} sm={12}>
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={12}
-                                          className={
-                                            styles["Executive-Member-info"]
-                                          }
-                                        >
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="mt-1"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "name-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "Designation-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.designation}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "email-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <a>
-                                                      {data.data.emailAddress}
-                                                    </a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          {console.log(
-                                            "datadatadatadatadata",
-                                            data,
-                                            data.data.pK_UID,
-                                            committeeData.CreatorID
-                                          )}
-                                          <img
-                                            src={CrossIcon}
-                                            className="cursor-pointer"
-                                            width={18}
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
+                                    <Col lg={6} md={6} sm={6}>
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={12}
+                                            className={
+                                              styles["Executive-Member-info"]
                                             }
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                      </Row>
+                                          >
+                                            <Row>
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
+                                                className="mt-1"
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "name-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.name}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Designation-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.designation}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "email-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <a>
+                                                        {data.data.emailAddress}
+                                                      </a>
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            {console.log(
+                                              "datadatadatadatadata",
+                                              data,
+                                              data.data.pK_UID,
+                                              committeeData.CreatorID
+                                            )}
+                                            <img
+                                              src={CrossIcon}
+                                              className="cursor-pointer"
+                                              width={18}
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 } else {
@@ -1203,103 +1262,107 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 5) {
                                   return (
-                                    <Col lg={4} md={4} sm={12}>
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={12}
-                                          className={
-                                            styles["Executive-Member-info"]
-                                          }
-                                        >
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="mt-1"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "name-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "Designation-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.designation}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "email-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <a>
-                                                      {data.data.emailAddress}
-                                                    </a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          {console.log(
-                                            "datadatadatadatadata",
-                                            data,
-                                            data.data.pK_UID,
-                                            committeeData.CreatorID
-                                          )}
-                                          <img
-                                            src={CrossIcon}
-                                            className="cursor-pointer"
-                                            width={18}
-                                            alt=""
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
+                                    <Col lg={6} md={6} sm={6}>
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={12}
+                                            className={
+                                              styles["Executive-Member-info"]
                                             }
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                      </Row>
+                                          >
+                                            <Row>
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
+                                                className="mt-1"
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "name-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.name}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Designation-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.designation}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "email-Update-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <a>
+                                                        {data.data.emailAddress}
+                                                      </a>
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            {console.log(
+                                              "datadatadatadatadata",
+                                              data,
+                                              data.data.pK_UID,
+                                              committeeData.CreatorID
+                                            )}
+                                            <img
+                                              src={CrossIcon}
+                                              className="cursor-pointer"
+                                              width={18}
+                                              alt=""
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 } else {
@@ -1320,8 +1383,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                       </Row>
                       {/* till this point the scroll will be applied  */}
                     </Col>
-                    <Col lg={1} md={1} sm={1}></Col>
-                    <Col lg={3} md={3} sm={3}>
+                    <Col lg={6} md={6} sm={6}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <Row>
@@ -1355,10 +1417,10 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           </Row>
                           <Row className="mt-4">
                             <Col
-                              lg={8}
-                              md={8}
-                              sm={8}
-                              className="committee-select-fields  CreateMeetingReminder"
+                              lg={10}
+                              md={10}
+                              sm={10}
+                              className="committee-select-fields CreateMeetingReminder   "
                             >
                               <SelectBox
                                 name="Participant"
@@ -1369,20 +1431,20 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               />
                             </Col>
                             <Col
-                              lg={4}
-                              md={4}
-                              sm={4}
-                              className=" d-flex justify-content-start  "
+                              lg={2}
+                              md={2}
+                              sm={2}
+                              className="d-flex justify-content-end"
                             >
                               <Button
-                                className={styles["ADD-Update-Committee-btn"]}
+                                className={styles["ADD-Committee-btn"]}
                                 onClick={handleAddAttendees}
                                 text={t("ADD")}
                               />
                             </Col>
                           </Row>
                           {/* from this point add members are starting */}
-                          <Row>
+                          <Row className="mt-2">
                             <Col
                               lg={12}
                               md={12}
@@ -1398,8 +1460,13 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                       data
                                     );
                                     return (
-                                      <Row className="mt-4">
-                                        <Col lg={12} md={12} sm={12}>
+                                      <>
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={6}
+                                          className="mt-3"
+                                        >
                                           <Row className="d-flex gap-2">
                                             <Col lg={2} md={2} sm={12}>
                                               <img
@@ -1490,13 +1557,179 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             </Col>
                                           </Row>
                                         </Col>
-                                      </Row>
+                                      </>
                                     );
                                   })
                                 : null}
                             </Col>
                           </Row>
                           {/* at this point it is ending  */}
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["Attachments_Heading"]}>
+                            {"Attachment"}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row className="mt-1">
+                        <Col lg={1} md={1} sm={1} className="mt-4">
+                          {fileAttachments.length > 2 ? (
+                            <>
+                              <Button
+                                icon={
+                                  <img
+                                    src={Leftploygon}
+                                    width="20px"
+                                    height="15px"
+                                    draggable="false"
+                                  />
+                                }
+                                onClick={SlideLeft}
+                                className={styles["Leftpolygon"]}
+                              />
+                            </>
+                          ) : null}
+                        </Col>
+                        <Col lg={10} md={10} sm={10}>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="ScrolllerFiles_Committees"
+                              id="Slider"
+                            >
+                              {fileAttachments.length > 0
+                                ? fileAttachments.map((data, index) => {
+                                    console.log(data, "datadatadata");
+                                    return (
+                                      <>
+                                        <Col
+                                          lg={4}
+                                          md={4}
+                                          sm={12}
+                                          className="position-relative gap-2"
+                                        >
+                                          <span
+                                            className={
+                                              styles["Crossicon_Class"]
+                                            }
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              height="12.68px"
+                                              width="12.68px"
+                                              onClick={() =>
+                                                handleRemoveFile(index)
+                                              }
+                                            />
+                                          </span>
+                                          <section
+                                            className={styles["Outer_Box"]}
+                                          >
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <img
+                                                  src={file_image}
+                                                  width={"100%"}
+                                                  alt=""
+                                                  draggable="false"
+                                                />
+                                              </Col>
+                                            </Row>
+
+                                            <section
+                                              className={
+                                                styles["backGround_name_Icon"]
+                                              }
+                                            >
+                                              <Row className="mb-2">
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className={
+                                                    styles["IconTextClass"]
+                                                  }
+                                                >
+                                                  <img
+                                                    src={pdfIcon}
+                                                    height="10px"
+                                                    width="10px"
+                                                    className={
+                                                      styles["IconPDF"]
+                                                    }
+                                                  />
+                                                  <span
+                                                    className={
+                                                      styles["FileName"]
+                                                    }
+                                                  >
+                                                    {data}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </section>
+                                          </section>
+                                        </Col>
+                                      </>
+                                    );
+                                  })
+                                : null}
+                            </Col>
+                          </Row>
+                        </Col>
+                        <Col lg={1} md={1} sm={1} className="mt-4">
+                          {fileAttachments.length > 2 ? (
+                            <>
+                              <Button
+                                icon={
+                                  <img
+                                    src={Rightploygon}
+                                    width="20px"
+                                    height="15px"
+                                    draggable="false"
+                                  />
+                                }
+                                onClick={Slideright}
+                                className={styles["Leftpolygon"]}
+                              />
+                            </>
+                          ) : null}
+                        </Col>
+                      </Row>
+                      <Row className="mt-2">
+                        <Col lg={12} md={12} sm={12}>
+                          <Dragger
+                            {...props}
+                            className={
+                              styles["dragdrop_attachment_create_resolution"]
+                            }
+                          >
+                            <p className="ant-upload-drag-icon">
+                              <span
+                                className={styles["create_resolution_dragger"]}
+                              >
+                                <img
+                                  src={featherupload}
+                                  width="18.87px"
+                                  height="18.87px"
+                                  draggable="false"
+                                />
+                              </span>
+                            </p>
+                            <p className={styles["ant-upload-text"]}>
+                              {t("Drag-&-drop-or")}
+                              <span className={styles["Choose_file_style"]}>
+                                {t("Choose-file")}
+                              </span>
+                              <span className={styles["here_text"]}>
+                                {t("Here")}
+                              </span>
+                            </p>
+                          </Dragger>
                         </Col>
                       </Row>
                       <Row>

@@ -1327,7 +1327,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               lg={2}
                               md={2}
                               sm={2}
-                              className="d-flex justify-content-end "
+                              className="d-flex justify-content-end"
                             >
                               <Button
                                 className={styles["ADD-Committee-btn"]}
