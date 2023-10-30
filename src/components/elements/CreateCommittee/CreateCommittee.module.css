@@ -281,3 +281,37 @@ body[dir="rtl"] .Committee_error_coloumn {
 .create_committee_title::placeholder {
   color: #e1e1e1 !important;
 }
+
+.Attachments_Heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6 !important;
+}
+
+.Choose_file_style {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 3px !important;
+}
+
+.ant-upload-text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .ant-upload-text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.dragdrop_attachment_create_resolution {
+  height: auto !important;
+  border: 1px dashed #49dbdb !important;
+}
+
+.Outer_Border-Line {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 10px 10px !important;
+}

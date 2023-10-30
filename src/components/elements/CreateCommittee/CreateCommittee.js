@@ -3,7 +3,9 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Newprofile from "../../../assets/images/newprofile.png";
 import { Paper } from "@material-ui/core";
+import featherupload from "../../../assets/images/featherupload.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
+import { Upload } from "antd";
 import userImage from "../../../assets/images/user.png";
 import {
   TextField,
@@ -27,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Spin } from "antd";
 const CreateCommittee = ({ setCreategrouppage }) => {
+  const { Dragger } = Upload;
   const navigate = useNavigate();
   const [viewCreateCommittee, setViewCreateCommittee] = useState(true);
   const { assignees, CommitteeReducer } = useSelector((state) => state);
@@ -461,6 +464,19 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     });
   }, [meetingAttendeesList]);
 
+  //Upload File
+
+  const props = {
+    name: "file",
+    multiple: true,
+    showUploadList: false,
+    onChange(data) {
+      const { status } = data.file;
+    },
+    onDrop(e) {},
+    customRequest() {},
+  };
+
   return (
     <>
       <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -643,7 +659,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 2) {
                                   return (
-                                    <Col lg={4} md={4} sm={4} className="my-2">
+                                    <Col lg={6} md={6} sm={6} className="my-2">
                                       <Row>
                                         <Col lg={3} md={3} sm={12}>
                                           <img
@@ -757,86 +773,92 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 1) {
                                   return (
-                                    <Col lg={4} md={4} sm={4} className="mt-2">
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={7}
-                                          className={
-                                            styles[
-                                              "group-head-info-Create-Committee"
-                                            ]
-                                          }
-                                        >
-                                          <Row className="mt-1">
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "name-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                {data.data.name}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "Designation-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                {data.data.designation}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "email-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                <a>{data.data.emailAddress}</a>
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          <img
-                                            src={CrossIcon}
-                                            width={18}
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
+                                    <Col lg={6} md={6} sm={6} className="mt-2">
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={7}
+                                            className={
+                                              styles[
+                                                "group-head-info-Create-Committee"
+                                              ]
                                             }
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                      </Row>
+                                          >
+                                            <Row className="mt-1">
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "name-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data.data.name}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "Designation-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data.data.designation}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "email-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  <a>
+                                                    {data.data.emailAddress}
+                                                  </a>
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              width={18}
+                                              className="cursor-pointer"
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 } else {
@@ -872,86 +894,92 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 3) {
                                   return (
-                                    <Col lg={4} md={4} sm={4} className="my-2">
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={7}
-                                          className={
-                                            styles[
-                                              "group-head-info-Create-Committee"
-                                            ]
-                                          }
-                                        >
-                                          <Row className="mt-1">
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "name-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                {data.data.name}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "Designation-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                {data.data.designation}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "email-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                <a>{data.data.emailAddress}</a>
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          <img
-                                            src={CrossIcon}
-                                            width={18}
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
+                                    <Col lg={6} md={6} sm={6} className="my-2">
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={7}
+                                            className={
+                                              styles[
+                                                "group-head-info-Create-Committee"
+                                              ]
                                             }
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                      </Row>
+                                          >
+                                            <Row className="mt-1">
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "name-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data.data.name}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "Designation-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data.data.designation}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "email-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  <a>
+                                                    {data.data.emailAddress}
+                                                  </a>
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              width={18}
+                                              className="cursor-pointer"
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 } else {
@@ -987,86 +1015,92 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 4) {
                                   return (
-                                    <Col lg={4} md={4} sm={4} className="my-2">
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={7}
-                                          className={
-                                            styles[
-                                              "group-head-info-Create-Committee"
-                                            ]
-                                          }
-                                        >
-                                          <Row className="mt-1">
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "name-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                {data.data.name}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "Designation-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                {data.data.designation}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "email-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                <a>{data.data.emailAddress}</a>
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          <img
-                                            src={CrossIcon}
-                                            width={18}
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
+                                    <Col lg={6} md={6} sm={6} className="my-2">
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={7}
+                                            className={
+                                              styles[
+                                                "group-head-info-Create-Committee"
+                                              ]
                                             }
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                      </Row>
+                                          >
+                                            <Row className="mt-1">
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "name-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data.data.name}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "Designation-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data.data.designation}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "email-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  <a>
+                                                    {data.data.emailAddress}
+                                                  </a>
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              width={18}
+                                              className="cursor-pointer"
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 } else {
@@ -1102,86 +1136,92 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 5) {
                                   return (
-                                    <Col lg={4} md={4} sm={4} className="my-2">
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={7}
-                                          className={
-                                            styles[
-                                              "group-head-info-Create-Committee"
-                                            ]
-                                          }
-                                        >
-                                          <Row className="mt-1">
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "name-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                {data.data.name}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "Designation-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                {data.data.designation}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "email-create-Committee"
-                                                  ]
-                                                }
-                                              >
-                                                <a>{data.data.emailAddress}</a>
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          <img
-                                            src={CrossIcon}
-                                            width={18}
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
+                                    <Col lg={6} md={6} sm={6} className="my-2">
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data?.data?.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={7}
+                                            className={
+                                              styles[
+                                                "group-head-info-Create-Committee"
+                                              ]
                                             }
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                      </Row>
+                                          >
+                                            <Row className="mt-1">
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "name-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data.data.name}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "Designation-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data.data.designation}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "email-create-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  <a>
+                                                    {data.data.emailAddress}
+                                                  </a>
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              width={18}
+                                              className="cursor-pointer"
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 } else {
@@ -1397,6 +1437,45 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             </Col>
                           </Row>
                           {/* at this point it is ending  */}
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["Attachments_Heading"]}>
+                            {"Attachment"}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <Dragger
+                            {...props}
+                            className={
+                              styles["dragdrop_attachment_create_resolution"]
+                            }
+                          >
+                            <p className="ant-upload-drag-icon">
+                              <span
+                                className={styles["create_resolution_dragger"]}
+                              >
+                                <img
+                                  src={featherupload}
+                                  width="18.87px"
+                                  height="18.87px"
+                                  draggable="false"
+                                />
+                              </span>
+                            </p>
+                            <p className={styles["ant-upload-text"]}>
+                              {t("Drag-&-drop-or")}
+                              <span className={styles["Choose_file_style"]}>
+                                {t("Choose-file")}
+                              </span>
+                              <span className={styles["here_text"]}>
+                                {t("Here")}
+                              </span>
+                            </p>
+                          </Dragger>
                         </Col>
                       </Row>
                       <Row>
