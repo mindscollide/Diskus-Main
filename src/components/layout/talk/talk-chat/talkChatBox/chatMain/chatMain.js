@@ -2596,11 +2596,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
   //Send Chat
   const sendChat = async () => {
     if (
-      (messageSendData.Body !== '' && uploadFileTalk !== {}) ||
-      (messageSendData.Body === '' && uploadFileTalk !== {}) ||
+      messageSendData.Body !== '' ||
+      messageSendData.Body === '' ||
       messageSendData.Body !== ''
     ) {
+      let otoMessageLocal = JSON.parse(
+        localStorage.getItem('singleMessageObject'),
+      )
+
       if (talkStateData.ActiveChatData.messageType === 'O') {
+        let Message = []
+
         let Data = {
           TalkRequest: {
             ChannelID: parseInt(currentOrganizationId),
@@ -2610,6 +2616,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
             },
           },
         }
+
+        if (otoMessageLocal) {
+          Message = [...otoMessageLocal]
+          Message.push(Data)
+        } else {
+          Message = Data
+        }
+
+        localStorage.setItem('singleMessageObject', JSON.stringify(Message))
 
         dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t))
 
@@ -2831,6 +2846,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }
 
+  let unsentMessageObject =
+    JSON.parse(localStorage.getItem('unsentMessage')) || []
+
+  useEffect(() => {
+    if (unsentMessageObject) {
+      console.log('unsentMessageObject', unsentMessageObject)
+    }
+  }, [unsentMessageObject])
+
   //New MQTT Message SEnding UseEffect
   useEffect(() => {
     if (
@@ -2840,6 +2864,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       let mqttResponseSingleMessage =
         talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+      console.log('mqttResponseSingleMessage', mqttResponseSingleMessage)
+
+      const uidToMatch = mqttResponseSingleMessage.uid
+
+      const existingMessages =
+        JSON.parse(localStorage.getItem('singleMessageObject')) || []
+
+      const updatedMessages = existingMessages.filter((message) => {
+        return message.TalkRequest.Message.UID !== uidToMatch
+      })
+
+      localStorage.setItem(
+        'singleMessageObject',
+        JSON.stringify(updatedMessages),
+      )
+
       if (
         talkStateData.ActiveChatData.id ===
         talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
