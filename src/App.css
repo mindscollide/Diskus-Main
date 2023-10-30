@@ -5429,6 +5429,8 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   scroll-behavior: smooth !important;
   align-items: center;
   gap: 5px !important;
+  min-height: 120px !important;
+  height: auto !important;
 }
 
 .Scroller-x-Meeting {

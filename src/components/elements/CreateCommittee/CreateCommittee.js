@@ -5,6 +5,8 @@ import Newprofile from "../../../assets/images/newprofile.png";
 import { Paper } from "@material-ui/core";
 import featherupload from "../../../assets/images/featherupload.svg";
 import Leftploygon from "../../../assets/images/Polygon 3.svg";
+import file_image from "../../../assets/images/file_image.svg";
+import pdfIcon from "../../../assets/images/pdf_icon.svg";
 import Rightploygon from "../../../assets/images/Polygon right.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { Upload } from "antd";
@@ -495,6 +497,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const Slideright = () => {
     var Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft + 300;
+  };
+
+  const handleRemoveFile = (index) => {
+    const updatedFies = [...fileAttachments];
+    updatedFies.splice(index, 1);
+    setFileAttachments(updatedFies);
   };
 
   return (
@@ -1467,8 +1475,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                         </Col>
                       </Row>
                       <Row>
-                        <Col lg={1} md={1} sm={1} className="mt-3">
-                          {fileAttachments.length > 6 ? (
+                        <Col lg={1} md={1} sm={1} className="mt-4">
+                          {fileAttachments.length > 2 ? (
                             <>
                               <Button
                                 icon={
@@ -1496,19 +1504,75 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             >
                               {fileAttachments.length > 0
                                 ? fileAttachments.map((data, index) => {
+                                    console.log(data, "datadatadata");
                                     return (
                                       <>
-                                        <Col lg={4} md={4} sm={12}>
+                                        <Col
+                                          lg={4}
+                                          md={4}
+                                          sm={12}
+                                          className="position-relative gap-2"
+                                        >
+                                          <span
+                                            className={
+                                              styles["Crossicon_Class"]
+                                            }
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              height="12.68px"
+                                              width="12.68px"
+                                              onClick={() =>
+                                                handleRemoveFile(index)
+                                              }
+                                            />
+                                          </span>
                                           <section
                                             className={styles["Outer_Box"]}
                                           >
                                             <Row>
-                                              <Col
-                                                lg={12}
-                                                md={12}
-                                                sm={12}
-                                              ></Col>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <img
+                                                  src={file_image}
+                                                  width={"100%"}
+                                                  alt=""
+                                                  draggable="false"
+                                                />
+                                              </Col>
                                             </Row>
+
+                                            <section
+                                              className={
+                                                styles["backGround_name_Icon"]
+                                              }
+                                            >
+                                              <Row className="mb-2">
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className={
+                                                    styles["IconTextClass"]
+                                                  }
+                                                >
+                                                  <img
+                                                    src={pdfIcon}
+                                                    height="10px"
+                                                    width="10px"
+                                                    className={
+                                                      styles["IconPDF"]
+                                                    }
+                                                  />
+                                                  <span
+                                                    className={
+                                                      styles["FileName"]
+                                                    }
+                                                  >
+                                                    {data}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </section>
                                           </section>
                                         </Col>
                                       </>
@@ -1518,8 +1582,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col lg={1} md={1} sm={1} className="mt-3">
-                          {fileAttachments.length > 6 ? (
+                        <Col lg={1} md={1} sm={1} className="mt-4">
+                          {fileAttachments.length > 2 ? (
                             <>
                               <Button
                                 icon={
