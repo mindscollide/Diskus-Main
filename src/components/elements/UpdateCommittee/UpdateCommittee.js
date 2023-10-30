@@ -680,11 +680,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col lg={2} md={2} sm={2}></Col>
+                        <Col lg={1} md={1} sm={1}></Col>
                         <Col
-                          lg={4}
-                          md={4}
-                          sm={4}
+                          lg={5}
+                          md={5}
+                          sm={5}
                           className="committee-update-type-select-fields CreateMeetingReminder ml-0 "
                         >
                           <SelectBox
