@@ -518,20 +518,6 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-5">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Button
-                    className={styles["Close-ViewCommittee-btn"]}
-                    text={t("Close")}
-                    onClick={closebtn}
-                  />
-                </Col>
-              </Row>
             </Col>
             <Col lg={6} md={6} sm={6}>
               <Row className="mt-2">
@@ -561,18 +547,13 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                 </Col>
               </Row>
               <Row className="mt-4">
-                <Col lg={12} md={12} sm={12}>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                   {fileAttachments.length > 0
                     ? fileAttachments.map((data, index) => {
                         console.log(data, "datadatadata");
                         return (
                           <>
-                            <Col
-                              lg={4}
-                              md={4}
-                              sm={12}
-                              className="position-relative gap-2"
-                            >
+                            <Col lg={4} md={4} sm={4}>
                               <section className={styles["Outer_Box"]}>
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
@@ -615,6 +596,15 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                     : null}
                 </Col>
               </Row>
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+              <Button
+                className={styles["Close-ViewCommittee-btn"]}
+                text={t("Close")}
+                onClick={closebtn}
+              />
             </Col>
           </Row>
         </Paper>
