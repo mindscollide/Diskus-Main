@@ -156,7 +156,7 @@ body[dir="rtl"] .ADD-Committee-btn {
 }
 
 .scrollbar-addmember-createcommittee {
-  height: 15vh !important;
+  height: 14vh !important;
   overflow-x: hidden !important;
   max-width: 100% !important;
   display: flex !important;

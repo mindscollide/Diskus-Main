@@ -1474,7 +1474,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className="mt-2">
+                      <Row className="mt-1">
                         <Col lg={1} md={1} sm={1} className="mt-4">
                           {fileAttachments.length > 2 ? (
                             <>
