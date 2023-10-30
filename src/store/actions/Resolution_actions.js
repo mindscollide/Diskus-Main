@@ -50,11 +50,6 @@ const saveFiles_fail = (message) => {
 
 // Save Files API for Resolution
 const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
-  console.log(
-    data,
-    folderID,
-    "saveFilesResolutionApisaveFilesResolutionApisaveFilesResolutionApi"
-  );
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
@@ -297,7 +292,7 @@ const updateResolutionDataRoomApi = (navigate, t, Data) => {
               dispatch(
                 updateResolutionDataRoom_success(
                   response.data.responseResult.folderID,
-                  t("Folder-mapped-with-dataroom")
+                  ""
                 )
               );
             } else if (
@@ -322,7 +317,7 @@ const updateResolutionDataRoomApi = (navigate, t, Data) => {
               dispatch(
                 updateResolutionDataRoom_success(
                   response.data.responseResult.folderID,
-                  t("Updated-successfully")
+                  ""
                 )
               );
             } else if (
@@ -816,6 +811,7 @@ const createResolution_Fail = (message) => {
     message: message,
   };
 };
+
 // Create Resolution Api
 const createResolution = (navigate, Data, voters, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -947,6 +943,7 @@ const createResolution = (navigate, Data, voters, t) => {
       });
   };
 };
+
 const updateResolution_Init = () => {
   return {
     type: actions.ADD_UPDATE_DETAILS_RESOLUTION_INIT,

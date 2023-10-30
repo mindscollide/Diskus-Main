@@ -222,7 +222,6 @@ const DataRoom = () => {
     LastModifiedEndDate: "",
     UserIDToSearch: 0,
     isOwnedByMe: true,
-    isNotOwnedByMe: false,
     isSpecificUser: false,
     sRow: 0,
     Length: 10,
