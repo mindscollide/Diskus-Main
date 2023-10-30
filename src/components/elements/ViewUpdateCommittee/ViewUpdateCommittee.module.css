@@ -141,3 +141,54 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   justify-content: center !important;
   align-items: center !important;
 }
+
+.ant-upload-text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .ant-upload-text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Choose_file_style {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 3px !important;
+}
+
+.FileName {
+  font-size: 10px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratRegular";
+  display: inline-block !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  width: 100px !important;
+}
+
+.IconPDF {
+  margin-left: 10px !important;
+}
+
+.IconTextClass {
+  display: flex;
+  text-align: center !important;
+  align-items: center !important;
+  gap: 7px !important;
+}
+
+.backGround_name_Icon {
+  background: #fff;
+}
+
+.Outer_Box {
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  margin-bottom: 10px !important;
+  border-radius: 4px !important;
+  width: 100% !important;
+}
