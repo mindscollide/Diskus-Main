@@ -6,7 +6,6 @@ import {
 import {
   ChangePassword,
   CustomMiscellaneous,
-  CustomSetting,
   Dashboard,
   DeleteOrganization,
   Home,
@@ -28,7 +27,6 @@ import Invoice from "../container/Admin/BillingInfo/Invoice/Invoice";
 import PaymentHistory from "../container/Admin/BillingInfo/PaymentHistory/PaymentHistory";
 import PayOutstanding from "../container/Admin/BillingInfo/PayOutstanding/PayOutstanding";
 import Summary from "../container/Admin/BillingInfo/Summary/Summary";
-import Organization from "../container/Admin/Configurations/Organization/Organization";
 import CustomerInformation from "../container/Admin/CustomerInfo/CustomerInformation/CustomerInformation";
 import AdminHome from "../container/Admin/Main/AdminHome";
 import Groups from "../container/Groups/Groups";
@@ -122,9 +120,7 @@ export const router = createHashRouter(
           <Route path="meeting" element={<Meeting />} />
           <Route path="Meeting2" element={<NewMeeting />} />
           <Route path="videochat" element={<VideoChat />} />
-          {/* <Route path="setting" element={<CustomSetting />} /> */}
           <Route path="setting" element={<UserSettings />} />
-          {/* <Route path="UserNewSettings" element={<UserSettings />} /> */}
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="groups" element={<Groups />} />
           <Route path="changePassword" element={<ChangePassword />} />
@@ -149,8 +145,6 @@ export const router = createHashRouter(
           <Route path="PayOutstanding" element={<PayOutstanding />} />
           <Route path="PaymentHistory" element={<PaymentHistory />} />
           <Route path="Summary" element={<Summary />} />
-          {/* OrganizationLevelSetting */}
-          {/* <Route path="OrganizationLevelSetting" element={<OrganizationLevelSetting />} /> */}
           <Route path="Organization" element={<OrganizationLevelSetting />} />
           <Route path="AllMeeting" element={<AllMeetings />} />
           <Route path="CancelSub" element={<CancelSubs />} />
@@ -170,7 +164,6 @@ export const router = createHashRouter(
             element={<PackageUpgradeSelect />}
           />
           <Route path="CustomerInformation" element={<CustomerInformation />} />
-          {/* <Route path="setting" element={<CustomSetting />} /> */}
           <Route path="setting" element={<UserSettings />} />
         </Route>
       </Route>
@@ -193,8 +186,6 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
-
-      {/* <Route path="CustomerInformation" element={<CustomerInformation />} /> */}
     </>
   )
 );
