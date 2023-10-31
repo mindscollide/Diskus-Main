@@ -3,9 +3,10 @@ import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
 import Newprofile from "../../../assets/images/newprofile.png";
 import { Paper } from "@material-ui/core";
-import { Button } from "./../../../components/elements";
+import { Button, Notification } from "./../../../components/elements";
 import { useTranslation } from "react-i18next";
 import pdfIcon from "../../../assets/images/pdf_icon.svg";
+import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import file_image from "../../../assets/images/file_image.svg";
 import featherupload from "../../../assets/images/featherupload.svg";
 import Committee from "../../../container/Committee/Committee";
@@ -13,6 +14,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import { Upload } from "antd";
+import {
+  saveCommitteeDocumentsApi,
+  uploadDocumentsCommitteesApi,
+} from "../../../store/actions/Committee_actions";
 
 const ViewUpdateCommittee = ({ setViewGroupPage }) => {
   const { Dragger } = Upload;
@@ -22,6 +27,15 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
   const [fileAttachments, setFileAttachments] = useState([]);
   const [viewCommitteeClose, setViewCommitteeClose] = useState(true);
   const { CommitteeReducer } = useSelector((state) => state);
+  const [folderID, setFolderId] = useState(0);
+  const [filesSending, setFilesSending] = useState([]);
+  const [fileSize, setFileSize] = useState(0);
+  const [fileForSend, setFileForSend] = useState([]);
+  let currentUserID = localStorage.getItem("userID");
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const [committeeData, setCommitteeData] = useState({
     committeeTitle: "",
     committeeDescription: "",
@@ -31,9 +45,53 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
     committeeID: 0,
     committeeMembers: [],
   });
+  console.log("committeeDatacommitteeData", committeeData);
+
   const closebtn = async () => {
     setViewGroupPage(false);
   };
+
+  const handleSave = async () => {
+    let newFolder = [...filesSending];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, newFolder)
+      );
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+
+    let newData = {
+      CommitteeID: Number(committeeData.committeeID),
+      UpdateFileList: newFolder.map((data, index) => {
+        return { PK_FileID: data.pK_FileID };
+      }),
+    };
+    await dispatch(saveCommitteeDocumentsApi(navigate, t, newData));
+  };
+  const handleRemoveFile = (data) => {
+    setFileForSend((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) => fileSend.name !== data.DisplayAttachmentName
+      )
+    );
+
+    setFilesSending((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+
+    setFileAttachments((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+  };
+  console.log(fileForSend, filesSending, fileAttachments);
   useEffect(() => {
     if (
       CommitteeReducer.getCommitteeByCommitteeID !== null &&
@@ -46,7 +104,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
         isTalkGroup: committeedetails.isTalkChatGroup,
         committeeType: committeedetails.committeeType.committeeTypeId,
         committeeStatus: committeedetails.committeeStatus.committeeStatusID,
-        committeeID: 0,
+        committeeID: committeedetails.committeMembers[0].committeeID,
         committeeMembers: committeedetails.committeMembers,
       });
     }
@@ -54,19 +112,142 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
 
   const props = {
     name: "file",
+    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
-      console.log(data.file.originFileObj.name, "customRequestcustomRequest");
-      const File = data.file.originFileObj.name;
-      setFileAttachments([...fileAttachments, File]);
+      let fileSizeArr;
+      if (fileAttachments.length > 9) {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+      } else if (fileAttachments.length > 0) {
+        let flag = false;
+        let sizezero;
+        let size;
+        fileAttachments.map((arData, index) => {
+          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+            flag = true;
+          }
+        });
+        if (data.file.size > 10485760) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else if (flag === true) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-already-exists"),
+            }),
+            3000
+          );
+        } else {
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size,
+            fk_UserID: Number(currentUserID),
+          };
+          setFileAttachments([...fileAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+        }
+      } else {
+        let sizezero;
+        let size;
+        if (data.file.size > 10485760) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else {
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size,
+            fk_UserID: Number(currentUserID),
+          };
+          setFileAttachments([...fileAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+        }
+      }
     },
     onDrop(e) {},
     customRequest() {},
   };
 
-  console.log(fileAttachments, "fileAttachmentsfileAttachments");
+  console.log(CommitteeReducer, "fileAttachmentsfileAttachments");
+  useEffect(() => {
+    try {
+      if (
+        CommitteeReducer.reteriveCommitteeDocuments !== null &&
+        CommitteeReducer.reteriveCommitteeDocuments !== undefined
+      ) {
+        if (CommitteeReducer.reteriveCommitteeDocuments.data.length > 0) {
+          let newfolderID =
+            CommitteeReducer.reteriveCommitteeDocuments.folderID;
+          let filesArr = CommitteeReducer.reteriveCommitteeDocuments.data;
+          let newArr = [];
+          let fileSend = [];
+          setFolderId(newfolderID);
+          filesArr.forEach((fileData, index) => {
+            newArr.push({
+              pK_FileID: fileData.pK_FileID,
+              DisplayAttachmentName: fileData.displayFileName,
+              fk_UserID: fileData.fK_UserID,
+            });
+            fileSend.push({
+              pK_FileID: fileData.pK_FileID,
+              DisplayAttachmentName: fileData.displayFileName,
+            });
+          });
+          setFileAttachments(newArr);
+          setFilesSending(fileSend);
+        }
+      }
+    } catch {}
+  }, [CommitteeReducer.reteriveCommitteeDocuments]);
 
   return (
     <>
@@ -290,9 +471,9 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                           "ChairPersonChairPersonChairPersonChairPerson"
                         );
                         return (
-                          <Col lg={4} md={4} sm={12} className="mt-2">
+                          <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>
-                              <Col lg={2} md={2} sm={12}>
+                              <Col lg={3} md={3} sm={12}>
                                 <img
                                   src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                   width={50}
@@ -374,9 +555,9 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                           "ChairPersonChairPersonChairPersonChairPerson"
                         );
                         return (
-                          <Col lg={4} md={4} sm={12} className="mt-2">
+                          <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>
-                              <Col lg={2} md={2} sm={12}>
+                              <Col lg={3} md={3} sm={12}>
                                 <img
                                   src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                   width={50}
@@ -454,9 +635,14 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                       )
                       .map((data, index) => {
                         return (
-                          <Col lg={4} md={4} sm={12} className="mt-2">
+                          <Col
+                            lg={6}
+                            md={6}
+                            sm={12}
+                            className="mt-2 position-relative"
+                          >
                             <Row>
-                              <Col lg={2} md={2} sm={12}>
+                              <Col lg={3} md={3} sm={12}>
                                 <img
                                   src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                   width={50}
@@ -547,7 +733,16 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                 </Col>
               </Row>
               <Row className="mt-4">
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex flex-wrap"
+                  style={{
+                    height: "275px",
+                    overflow: "hidden auto",
+                  }}
+                >
                   {fileAttachments.length > 0
                     ? fileAttachments.map((data, index) => {
                         console.log(data, "datadatadata");
@@ -555,6 +750,19 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                           <>
                             <Col lg={4} md={4} sm={4}>
                               <section className={styles["Outer_Box"]}>
+                                {Number(data.fk_UserID) ===
+                                  Number(currentUserID) && (
+                                  <span className={styles["Crossicon_Class"]}>
+                                    <img
+                                      src={CrossIcon}
+                                      height="12.68px"
+                                      alt=""
+                                      width="12.68px"
+                                      onClick={() => handleRemoveFile(data)}
+                                    />
+                                  </span>
+                                )}
+
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
                                     <img
@@ -583,7 +791,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                         className={styles["IconPDF"]}
                                       />
                                       <span className={styles["FileName"]}>
-                                        {data}
+                                        {data.DisplayAttachmentName}
                                       </span>
                                     </Col>
                                   </Row>
@@ -598,17 +806,28 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
               </Row>
             </Col>
           </Row>
-          <Row className="mt-5">
-            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Row className="mt-3">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex gap-3 justify-content-end"
+            >
               <Button
                 className={styles["Close-ViewCommittee-btn"]}
                 text={t("Close")}
                 onClick={closebtn}
               />
+              <Button
+                className={styles["Close-ViewCommittee-btn"]}
+                text={t("Save")}
+                onClick={handleSave}
+              />
             </Col>
           </Row>
         </Paper>
       </section>
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );
 };

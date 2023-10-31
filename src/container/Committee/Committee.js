@@ -50,6 +50,7 @@ const Committee = () => {
     CommitteeReducer,
     LanguageReducer,
     talkStateData,
+    DataRoomReducer,
     talkFeatureStates,
   } = useSelector((state) => state);
   const { t } = useTranslation();
@@ -563,7 +564,11 @@ const Committee = () => {
           </>
         )}
       </div>
-      {CommitteeReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {CommitteeReducer.Loading ||
+      LanguageReducer.Loading ||
+      DataRoomReducer.Loading ? (
+        <Loader />
+      ) : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {showModal ? (
         <ModalArchivedCommittee
