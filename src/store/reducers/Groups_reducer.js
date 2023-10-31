@@ -285,6 +285,29 @@ const GroupsReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.SAVE_GROUPS_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_GROUPS_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_GROUPS_DOCUMENTS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     default:
       return { ...state };
   }

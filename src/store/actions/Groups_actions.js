@@ -14,6 +14,7 @@ import {
   CreateUpdateGroupDataRoadMap,
   uploadDocumentsRequestMethod,
   saveFilesRequestMethod,
+  SaveTheGroupsDocuments,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
 import { Data } from "emoji-mart";
@@ -496,6 +497,10 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                   t("Data-available")
                 )
               );
+              localStorage.setItem(
+                "groupID",
+                response.data.responseResult.groupID
+              );
               let newData = {
                 GroupID: response.data.responseResult.groupID,
                 GroupTitle: Data.GroupDetails.title,
@@ -506,6 +511,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               };
               console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
               dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
+
               // dispatch(getGroups(navigate, t, currentPage));
               // setCreategrouppage(false);
             } else if (
@@ -1414,6 +1420,94 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
   };
 };
 
+//Save Groups Documents
+
+const showSaveGroupDocsInit = () => {
+  return {
+    type: actions.SAVE_GROUPS_DOCUMENTS_INIT,
+  };
+};
+
+const showSaveGroupDocsSuccess = (response, message) => {
+  return {
+    type: actions.SAVE_GROUPS_DOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showSaveGroupDocsFailed = (message) => {
+  return {
+    type: actions.SAVE_GROUPS_DOCUMENTS_SUCCESS,
+    message: message,
+  };
+};
+
+//SAVE GROUPS DOCUMENTS API
+
+const SaveGroupsDocumentsApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showSaveGroupDocsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", SaveTheGroupsDocuments.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveGroupsDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showSaveGroupDocsSuccess(
+                  response.data.responseResult,
+                  t("Update-successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveGroupsDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getGroups,
   getAllGroups,
@@ -1431,4 +1525,5 @@ export {
   CreateUpdateDataRoadMapApiFunc,
   uploadDocumentsGroupsApi,
   saveFilesGroupsApi,
+  SaveGroupsDocumentsApiFunc,
 };

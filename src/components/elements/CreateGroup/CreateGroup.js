@@ -22,6 +22,7 @@ import {
 import styles from "./CreateGroup.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  SaveGroupsDocumentsApiFunc,
   createGroup,
   getGroupMembersRoles,
   getOrganizationGroupTypes,
@@ -669,6 +670,25 @@ const CreateGroup = ({ setCreategrouppage }) => {
     });
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
+
+    console.log(newfile, "newfilenewfilenewfile");
+
+    let newFileID = [];
+    newfile.map((data, index) => {
+      console.log(data, "datadatadata");
+      newFileID.push(data.OriginalAttachmentName);
+    });
+
+    let groupID = localStorage.getItem("groupID");
+
+    let Data = {
+      GroupID: Number(groupID),
+      UpdateFileList: newfile.map((data, index) => {
+        console.log(data, "datadatadata");
+        return { PK_FileID: Number(data.OriginalAttachmentName) };
+      }),
+    };
+    dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t));
   };
 
   useEffect(() => {

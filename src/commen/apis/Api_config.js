@@ -1028,6 +1028,10 @@ const CreateUpdateGroupDataRoadMap = {
   RequestMethod: "ServiceManager.CreateUpdateGroupDataRoomMap",
 };
 
+const SaveTheGroupsDocuments = {
+  RequestMethod: "ServiceManager.SaveGroupsDocuments",
+};
+
 export {
   CreateUpdateCommitteeDatarRoomRM,
   saveResolutionDocumentsRM,
@@ -1304,4 +1308,5 @@ export {
   saveMeetingAttendance,
   setMeetingProposedDatesResponse,
   CreateUpdateGroupDataRoadMap,
+  SaveTheGroupsDocuments,
 };
