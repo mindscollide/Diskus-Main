@@ -1010,7 +1010,12 @@ const setMeetingProposedDatesResponse = {
   RequestMethod: "ServiceManager.SetMeetingProposedDatesResponse",
 };
 
+const CreateUpdateCommitteeDatarRoomRM = {
+  RequestMethod: "ServiceManager.CreateUpdateCommiteeDataRoomMap",
+};
+
 export {
+  CreateUpdateCommitteeDatarRoomRM,
   saveResolutionDocumentsRM,
   updateResolutionDataRoomMapRM,
   updateGeneralAccessRM,
