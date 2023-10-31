@@ -16,6 +16,7 @@ const initialState = {
   ArcheivedGroups: null,
   getAllLoading: false,
   FolderID: 0,
+  groupDocuments: [],
 };
 
 const GroupsReducer = (state = initialState, action) => {
@@ -301,6 +302,37 @@ const GroupsReducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_GROUPS_DOCUMENTS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.RETREIVE_GROUP_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.RETREIVE_GROUP_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.RETREIVE_GROUP_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        groupDocuments: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.RETREIVE_GROUP_DOCUMENTS_FAILED: {
       return {
         ...state,
         Loading: false,

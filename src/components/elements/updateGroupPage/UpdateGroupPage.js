@@ -21,6 +21,7 @@ import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import Groups from "../../../container/Groups/Groups";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  RetriveDocumentsGroupsApiFunc,
   getGroupMembersRoles,
   getOrganizationGroupTypes,
   updateGroup,
@@ -595,6 +596,30 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     updatedFies.splice(index, 1);
     setFileAttachments(updatedFies);
   };
+
+  //Retrive Documents
+
+  useEffect(() => {
+    let groupID = localStorage.getItem("groupID");
+    let Data = {
+      GroupID: Number(groupID),
+    };
+    dispatch(RetriveDocumentsGroupsApiFunc(navigate, Data, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      GroupsReducer.groupDocuments !== null &&
+      GroupsReducer.groupDocuments !== undefined
+    ) {
+      let retirveArray = [];
+      GroupsReducer.groupDocuments.data.map((docsData, docsDataindex) => {
+        console.log(docsData, "docsDatadocsDatadocsDatassss");
+        retirveArray.push(docsData);
+      });
+      setFileAttachments(retirveArray);
+    }
+  }, [GroupsReducer.groupDocuments]);
 
   return (
     <>
@@ -1303,7 +1328,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                       styles["FileName"]
                                                     }
                                                   >
-                                                    {data}
+                                                    {data.displayFileName}
                                                   </span>
                                                 </Col>
                                               </Row>

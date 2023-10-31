@@ -15,6 +15,7 @@ import {
   uploadDocumentsRequestMethod,
   saveFilesRequestMethod,
   SaveTheGroupsDocuments,
+  RetrieveGroupDocuments,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
 import { Data } from "emoji-mart";
@@ -511,9 +512,8 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               };
               console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
               dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
-
-              // dispatch(getGroups(navigate, t, currentPage));
-              // setCreategrouppage(false);
+              dispatch(getGroups(navigate, t, currentPage));
+              setCreategrouppage(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -808,8 +808,19 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                   t("Group-updated")
                 )
               );
-              dispatch(getGroups(navigate, t, currentPage));
-              setViewUpdateGroup(false);
+              // console.log(response.data.responseResult, "updatedupdated");
+              // let newData = {
+              //   GroupID: response.data.responseResult.groupID,
+              //   GroupTitle: Data.GroupDetails.title,
+              //   IsUpdateFlow: false,
+              //   GroupMembers: Data.GroupMembers.map(
+              //     (data, index) => data.FK_UID
+              //   ),
+              // };
+              // console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
+              // dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
+              // dispatch(getGroups(navigate, t, currentPage));
+              // setViewUpdateGroup(false);
               console.log("Group-updated");
             } else if (
               response.data.responseResult.responseMessage
@@ -1508,6 +1519,100 @@ const SaveGroupsDocumentsApiFunc = (navigate, Data, t) => {
   };
 };
 
+//Retrive Document APi
+
+const showRetriveDocumentsInit = () => {
+  return {
+    type: actions.RETREIVE_GROUP_DOCUMENTS_INIT,
+  };
+};
+
+const showRetriveDocumentsSuccess = (response, message) => {
+  return {
+    type: actions.RETREIVE_GROUP_DOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showRetriveDocumentsFailed = (message) => {
+  return {
+    type: actions.RETREIVE_GROUP_DOCUMENTS_FAILED,
+    message: message,
+  };
+};
+
+const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showRetriveDocumentsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", RetrieveGroupDocuments.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(RetriveDocumentsGroupsApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveGroupDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showRetriveDocumentsSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveGroupDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(showRetriveDocumentsFailed(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveGroupDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(showRetriveDocumentsFailed(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(showRetriveDocumentsFailed(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(showRetriveDocumentsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showRetriveDocumentsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getGroups,
   getAllGroups,
@@ -1526,4 +1631,5 @@ export {
   uploadDocumentsGroupsApi,
   saveFilesGroupsApi,
   SaveGroupsDocumentsApiFunc,
+  RetriveDocumentsGroupsApiFunc,
 };
