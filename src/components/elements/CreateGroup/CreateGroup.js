@@ -673,11 +673,14 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   useEffect(() => {
     if (GroupsReducer.FolderID !== 0) {
-      setFolderID(GroupsReducer.FolderID);
-      let folderIDCreated = GroupsReducer.FolderID;
+      console.log(GroupsReducer.FolderID.folderID, "GroupsDocumentCallUpload");
+      setFolderID(GroupsReducer.FolderID.folderID);
+      let folderIDCreated = GroupsReducer.FolderID.folderID;
       GroupsDocumentCallUpload(folderIDCreated);
     }
   }, [GroupsReducer.FolderID]);
+
+  console.log(folderID, "folderIDfolderIDfolderID");
 
   return (
     <>
