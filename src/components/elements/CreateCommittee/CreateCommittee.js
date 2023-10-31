@@ -82,17 +82,13 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   });
 
   useEffect(() => {
-    try {
-      dispatch(allAssignessList(navigate, t));
-    } catch {}
-    // dispatch(allAssignessList(navigate, t));
-  }, []);
-  useEffect(() => {
     CommitteeTitle.current.focus();
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       OrganizationID: organizationID,
     };
+    dispatch(allAssignessList(navigate, t));
+
     dispatch(getCommitteeTypes(navigate, Data, t));
     dispatch(getCommitteeMembersRole(navigate, Data, t));
   }, []);
