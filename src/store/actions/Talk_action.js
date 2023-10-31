@@ -2558,6 +2558,9 @@ const GroupPrivateSendNotification = (message) => {
 //Insert Private Group Messages
 const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
+  let unsentMessageObject =
+    JSON.parse(localStorage.getItem('unsentMessage')) || []
+  let messageUnsent = []
   return (dispatch) => {
     dispatch(GroupPrivateMessageSendInit())
     let form = new FormData()
@@ -2600,6 +2603,17 @@ const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
               await dispatch(
                 GroupPrivateSendNotification(t('Group-message-not-inserted')),
               )
+              if (unsentMessageObject) {
+                messageUnsent = [...unsentMessageObject]
+                messageUnsent.push(object.TalkRequest.Message.UID)
+              } else {
+                messageUnsent = object.TalkRequest.Message.UID
+              }
+
+              localStorage.setItem(
+                'unsentMessage',
+                JSON.stringify(messageUnsent),
+              )
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2610,20 +2624,55 @@ const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
               await dispatch(
                 GroupPrivateSendNotification(t('Something-went-wrong')),
               )
+              if (unsentMessageObject) {
+                messageUnsent = [...unsentMessageObject]
+                messageUnsent.push(object.TalkRequest.Message.UID)
+              } else {
+                messageUnsent = object.TalkRequest.Message.UID
+              }
+
+              localStorage.setItem(
+                'unsentMessage',
+                JSON.stringify(messageUnsent),
+              )
             }
           } else {
             await dispatch(
               GroupPrivateSendNotification(t('Something-went-wrong')),
             )
+            if (unsentMessageObject) {
+              messageUnsent = [...unsentMessageObject]
+              messageUnsent.push(object.TalkRequest.Message.UID)
+            } else {
+              messageUnsent = object.TalkRequest.Message.UID
+            }
+
+            localStorage.setItem('unsentMessage', JSON.stringify(messageUnsent))
           }
         } else {
           await dispatch(
             GroupPrivateSendNotification(t('Something-went-wrong')),
           )
+          if (unsentMessageObject) {
+            messageUnsent = [...unsentMessageObject]
+            messageUnsent.push(object.TalkRequest.Message.UID)
+          } else {
+            messageUnsent = object.TalkRequest.Message.UID
+          }
+
+          localStorage.setItem('unsentMessage', JSON.stringify(messageUnsent))
         }
       })
       .catch((response) => {
         dispatch(GroupPrivateSendNotification(t('Something-went-wrong')))
+        if (unsentMessageObject) {
+          messageUnsent = [...unsentMessageObject]
+          messageUnsent.push(object.TalkRequest.Message.UID)
+        } else {
+          messageUnsent = object.TalkRequest.Message.UID
+        }
+
+        localStorage.setItem('unsentMessage', JSON.stringify(messageUnsent))
       })
   }
 }
