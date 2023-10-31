@@ -1,6 +1,6 @@
-import { applyMiddleware, combineReducers } from 'redux'
-import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { applyMiddleware, combineReducers } from "redux";
+import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
 import {
   authReducer,
   toDoListReducer,
@@ -30,19 +30,20 @@ import {
   NewMeetingReducer,
   VideoMainReducer,
   videoFeatureReducer,
-} from './reducers'
-import * as actions from './action_types'
-import { configureStore } from '@reduxjs/toolkit'
-import uploadReducer from './reducers/Upload_reducer'
-import fAQsReducer from './reducers/Get_Faqs_reducer'
-import meetingIdReducer from './reducers/GetMeetingId_reducer'
-import { assigneesReducer } from './reducers'
-import { calendarReducer } from './reducers'
-import { OnBoardModalStates } from './reducers'
-import { RoleListReducer } from './reducers'
-import { webViewerReducer } from './reducers'
-
-import downloadReducer from './reducers/Download_reducer'
+} from "./reducers";
+import * as actions from "./action_types";
+import { configureStore } from "@reduxjs/toolkit";
+import uploadReducer from "./reducers/Upload_reducer";
+import fAQsReducer from "./reducers/Get_Faqs_reducer";
+import meetingIdReducer from "./reducers/GetMeetingId_reducer";
+import { assigneesReducer } from "./reducers";
+import { calendarReducer } from "./reducers";
+import { OnBoardModalStates } from "./reducers";
+import { RoleListReducer } from "./reducers";
+import { webViewerReducer } from "./reducers";
+import downloadReducer from "./reducers/Download_reducer";
+//Aun Attendance Meeting Reducer
+import attendanceMeetingReducer from "./reducers/Attendance_Reducer";
 
 const AppReducer = combineReducers({
   auth: authReducer,
@@ -84,17 +85,20 @@ const AppReducer = combineReducers({
   VideoMainReducer: VideoMainReducer,
   webViewer: webViewerReducer,
   MeetingOrganizersReducer: MeetingOrganizersReducer,
-})
+
+  //Attendance Meeting Reducer aun
+  attendanceMeetingReducer: attendanceMeetingReducer,
+});
 
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state
   if (action.type === actions.SIGN_OUT) {
-    state = undefined
+    state = undefined;
   }
-  return AppReducer(state, action)
-}
+  return AppReducer(state, action);
+};
 const store = configureStore(
   { reducer: rootReducer },
-  composeWithDevTools(applyMiddleware(thunk)),
-)
-export default store
+  composeWithDevTools(applyMiddleware(thunk))
+);
+export default store;
