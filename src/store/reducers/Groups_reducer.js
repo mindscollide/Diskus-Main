@@ -16,7 +16,7 @@ const initialState = {
   ArcheivedGroups: null,
   getAllLoading: false,
   FolderID: 0,
-  groupDocuments: [],
+  groupDocuments: null,
 };
 
 const GroupsReducer = (state = initialState, action) => {
