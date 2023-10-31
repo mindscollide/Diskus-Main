@@ -50,11 +50,6 @@ const saveFiles_fail = (message) => {
 
 // Save Files API for Resolution
 const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
-  console.log(
-    data,
-    folderID,
-    "saveFilesResolutionApisaveFilesResolutionApisaveFilesResolutionApi"
-  );
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
@@ -297,7 +292,7 @@ const updateResolutionDataRoomApi = (navigate, t, Data) => {
               dispatch(
                 updateResolutionDataRoom_success(
                   response.data.responseResult.folderID,
-                  t("Folder-mapped-with-dataroom")
+                  ""
                 )
               );
             } else if (
@@ -322,7 +317,7 @@ const updateResolutionDataRoomApi = (navigate, t, Data) => {
               dispatch(
                 updateResolutionDataRoom_success(
                   response.data.responseResult.folderID,
-                  t("Updated-successfully")
+                  ""
                 )
               );
             } else if (
@@ -344,7 +339,7 @@ const updateResolutionDataRoomApi = (navigate, t, Data) => {
             ) {
               dispatch(
                 updateResolutionDataRoom_success(
-                  response.data.responseResult,
+                  response.data.responseResult.folderID,
                   t("New-mapping-created")
                 )
               );
@@ -816,6 +811,7 @@ const createResolution_Fail = (message) => {
     message: message,
   };
 };
+
 // Create Resolution Api
 const createResolution = (navigate, Data, voters, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -947,6 +943,7 @@ const createResolution = (navigate, Data, voters, t) => {
       });
   };
 };
+
 const updateResolution_Init = () => {
   return {
     type: actions.ADD_UPDATE_DETAILS_RESOLUTION_INIT,
@@ -1044,6 +1041,8 @@ const updateResolution = (
               dispatch(
                 updateResolution_Fail(t("Failed-to-update-resolution-status"))
               );
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()
@@ -1081,21 +1080,37 @@ const updateResolution = (
               dispatch(
                 updateResolution_Fail(t("Please-add-at-least-one-voter"))
               );
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_05".toLowerCase()
             ) {
               dispatch(updateResolution_Fail(t("Something-went-wrong")));
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
+
+              localStorage.removeItem("resolutionID");
             }
           } else {
             dispatch(updateResolution_Fail(t("Something-went-wrong")));
+            dispatch(updateResolutionDataRoom_fail(""));
+            dispatch(saveFiles_fail(""));
+
+            localStorage.removeItem("resolutionID");
           }
         } else {
           dispatch(updateResolution_Fail(t("Something-went-wrong")));
+          dispatch(updateResolutionDataRoom_fail(""));
+          dispatch(saveFiles_fail(""));
+
+          localStorage.removeItem("resolutionID");
         }
       })
       .catch((response) => {
         dispatch(updateResolution_Fail(t("Something-went-wrong")));
+        dispatch(updateResolutionDataRoom_fail(""));
+        dispatch(saveFiles_fail(""));
       });
   };
 };

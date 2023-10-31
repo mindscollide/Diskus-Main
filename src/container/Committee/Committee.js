@@ -82,15 +82,13 @@ const Committee = () => {
   const [mapgroupsData, setMapGroupData] = useState(null);
 
   useEffect(() => {
-    try {
-      if (currentPage !== null && currentPage !== undefined) {
-        dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
-      } else {
-        localStorage.removeItem("CoArcurrentPage");
-        localStorage.setItem("CocurrentPage", 1);
-        dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
-      }
-    } catch {}
+    if (currentPage !== null) {
+      dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
+    } else {
+      localStorage.removeItem("CoArcurrentPage");
+      localStorage.setItem("CocurrentPage", 1);
+      dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
+    }
   }, []);
 
   useEffect(() => {
