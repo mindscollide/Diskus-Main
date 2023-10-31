@@ -110,7 +110,7 @@ body[dir="rtl"] .members-create-group-page {
 .View-group-paper {
   height: auto !important;
   width: 100% !important;
-  padding: 60px 60px !important;
+  padding: 60px 40px !important;
 }
 
 .Close-ViewGroup-btn {
@@ -184,4 +184,24 @@ body[dir="rtl"] .ant-upload-text {
   border: 1px solid #e1e1e1 !important;
   margin-bottom: 10px !important;
   border-radius: 4px !important;
+  margin: 5px !important;
+}
+
+.Scroller_files {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  height: 39vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_files::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_files::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
