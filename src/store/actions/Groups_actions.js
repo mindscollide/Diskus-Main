@@ -1,7 +1,7 @@
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 
-import { getGroupsApi } from "../../commen/apis/Api_ends_points";
+import { dataRoomApi, getGroupsApi } from "../../commen/apis/Api_ends_points";
 import {
   getGroupsByUserIdRequestMethod,
   getAllOrganizationGroups,
@@ -1069,6 +1069,10 @@ const methodCreateUpdateDataRoadMapFailed = (message) => {
 };
 
 const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
+  console.log(
+    { Data },
+    "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc"
+  );
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -1078,7 +1082,7 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
     form.append("RequestMethod", CreateUpdateGroupDataRoadMap.RequestMethod);
     axios({
       method: "post",
-      url: getGroupsApi,
+      url: dataRoomApi,
       data: form,
       headers: {
         _token: token,
