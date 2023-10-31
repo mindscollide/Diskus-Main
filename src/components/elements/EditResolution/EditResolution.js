@@ -390,24 +390,27 @@ const EditResolution = ({ setCancelresolution }) => {
     } else {
     }
   };
+
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
-    let removeFilefromAttachments = attachments.findIndex(
-      (attacData, index) =>
-        data.displayAttachmentName === attacData.displayAttachmentName
-    );
-    let copyattachments = [...attachments];
-    let fileForSendingIndex = fileForSend.findIndex(
-      (newData, index) => newData.name === data.DisplayAttachmentName
-    );
-    copyattachments.splice(removeFilefromAttachments, 1);
-    fileForSend.splice(fileForSendingIndex, 1);
-    setFileForSend(fileForSend);
+
+    setAttachments((prevState) => {
+      return prevState.filter((attacData, index) => {
+        return attacData.displayAttachmentName !== data.displayAttachmentName;
+      });
+    });
+    setFileForSend((prevFileSend) => {
+      return prevFileSend.filter((attacData, index) => {
+        return attacData.name !== data.displayAttachmentName;
+      });
+    });
+    setTasksAttachments((prevState) => {
+      return prevState.filter((newdata, index) => {
+        return newdata.DisplayAttachmentName !== data.displayAttachmentName;
+      });
+    });
+
     setFileSize(fileSizefound);
-    setAttachments(copyattachments);
-    let searchIndex = tasksAttachments;
-    searchIndex.splice(index, 1);
-    setTasksAttachments([...tasksAttachments]);
   };
 
   const addVoters = () => {
@@ -819,19 +822,22 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const documentsUploadCall = async (folderID) => {
     let newfile = [...tasksAttachments];
-    const uploadPromises = fileForSend.map(async (newData) => {
-      await dispatch(
-        uploadDocumentsResolutionApi(navigate, t, newData, folderID, newfile)
-      );
-    });
+    console.log(newfile, fileForSend, "newfilenewfilenewfile");
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsResolutionApi(navigate, t, newData, folderID, newfile)
+        );
+      });
 
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-    let resolutionID = localStorage.getItem("resolutionID");
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+    }
+
     await dispatch(
       updateResolution(
         navigate,
-        Number(resolutionID),
+        editResolutionData.pK_ResolutionID,
         voters,
         nonVoter,
         newfile,
@@ -1161,6 +1167,7 @@ const EditResolution = ({ setCancelresolution }) => {
         });
         if (attachmentsResolution.length > 0) {
           let atCH = [];
+
           let newData = [];
           attachmentsResolution.map((data, index) => {
             atCH.push({

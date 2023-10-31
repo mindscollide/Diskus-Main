@@ -998,6 +998,16 @@ const getAllPropsedMeetingdates = {
   RequestMethod: "ServiceManager.GetAllMeetingProposedDates",
 };
 
+//AUN working on Attendance Meeting
+const getAllAttendanceMeeting = {
+  RequestMethod: "ServiceManager.GetAllMeetingAttendanceReport",
+};
+
+//Aun working on Save Attendance Meeting
+const saveMeetingAttendance = {
+  RequestMethod: "ServiceManager.SaveMeetingAttendanceReport",
+};
+
 const updateResolutionDataRoomMapRM = {
   RequestMethod: "ServiceManager.UpdateResolutionDataRoomMap",
 };
@@ -1010,7 +1020,12 @@ const setMeetingProposedDatesResponse = {
   RequestMethod: "ServiceManager.SetMeetingProposedDatesResponse",
 };
 
+const CreateUpdateCommitteeDatarRoomRM = {
+  RequestMethod: "ServiceManager.CreateUpdateCommiteeDataRoomMap",
+};
+
 export {
+  CreateUpdateCommitteeDatarRoomRM,
   saveResolutionDocumentsRM,
   updateResolutionDataRoomMapRM,
   updateGeneralAccessRM,
@@ -1279,5 +1294,9 @@ export {
   SetMeetingPolls,
   SettingMeetingProposedDates,
   getAllPropsedMeetingdates,
+
+  //Aun attendance
+  getAllAttendanceMeeting,
+  saveMeetingAttendance,
   setMeetingProposedDatesResponse,
 };

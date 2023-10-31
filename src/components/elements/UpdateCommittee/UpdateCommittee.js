@@ -134,16 +134,10 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   //   } else {
   //   }
   // };
+
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-    console.log("Input Value", allAssignees);
-    if (
-      allAssignees != undefined &&
-      allAssignees != null &&
-      allAssignees != NaN &&
-      allAssignees != []
-    ) {
-      return allAssignees
+    if (meetingAttendeesList.length > 0) {
+      return meetingAttendeesList
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
@@ -239,7 +233,8 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
 
   // add members in state
   const handleAddAttendees = () => {
-    if (taskAssignedTo != 0 && attendees.length > 0) {
+    let newGroupMembers = [...groupMembers];
+    if (taskAssignedTo !== 0 && attendees.length > 0) {
       setOpen({
         flag: true,
         message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
@@ -248,15 +243,15 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       setTaskAssignedTo(0);
       setParticipantRoleName("");
       setTaskAssignedToInput("");
-    } else if (taskAssignedTo != 0) {
+    } else if (taskAssignedTo !== 0) {
       var foundIndex = membersData.findIndex(
         (x) => x.FK_UID === taskAssignedTo
       );
-      if (participantRoleName != "") {
+      if (participantRoleName !== "") {
         if (foundIndex === -1) {
           let roleID;
           let newDataForMembers = [];
-          committeeMemberRolesOptions.map((data, index) => {
+          committeeMemberRolesOptions.forEach((data, index) => {
             if (data.label === participantRoleName) {
               roleID = data.id;
               newDataForMembers.push({
@@ -270,11 +265,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           if (meetingAttendeesList.length > 0) {
             meetingAttendeesList.map((data, index) => {
               if (data.pK_UID === taskAssignedTo) {
-                groupMembers.push({
+                newGroupMembers.push({
                   data,
                   role: roleID,
                 });
-                setGroupMembers([...groupMembers]);
+                setGroupMembers(newGroupMembers);
               }
             });
           }
@@ -305,7 +300,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         );
       attendees.map((data, index) => {
         membersData.map((data2, index) => {
-          console.log("found2found2found2", data, data2, data === data2.FK_UID);
           if (data === data2.FK_UID) {
             check = true;
           }
@@ -330,11 +324,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             setMembersData([...membersData, ...newDataForMembers]);
             meetingAttendeesList.map((data, index) => {
               if (data.pK_UID === dataID) {
-                groupMembers.push({
+                newGroupMembers.push({
                   data,
                   role: participantOptionsWithID.id,
                 });
-                setGroupMembers([...groupMembers]);
+                setGroupMembers(newGroupMembers);
               }
             });
             setAttendees([]);
