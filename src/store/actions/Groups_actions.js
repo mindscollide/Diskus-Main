@@ -14,6 +14,7 @@ import {
   CreateUpdateGroupDataRoadMap,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
+import { Data } from "emoji-mart";
 
 const clearMessagesGroup = () => {
   return {
@@ -475,7 +476,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          await dispatch(createGroup(navigate, Data, t, setCreategrouppage));
+          dispatch(createGroup(navigate, Data, t, setCreategrouppage));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -493,8 +494,18 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                   t("Data-available")
                 )
               );
-              dispatch(getGroups(navigate, t, currentPage));
-              setCreategrouppage(false);
+              let newData = {
+                GroupID: response.data.responseResult.groupID,
+                GroupTitle: Data.GroupDetails.title,
+                IsUpdateFlow: false,
+                GroupMembers: Data.GroupMembers.map(
+                  (data, index) => data.FK_UID
+                ),
+              };
+              console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
+              dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
+              // dispatch(getGroups(navigate, t, currentPage));
+              // setCreategrouppage(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
