@@ -1,32 +1,32 @@
-import { Container, Row, Col } from 'react-bootstrap'
-import styles from './Committee.module.css'
-import { Button, Loader, Notification } from '../../components/elements'
-import React, { useEffect, useState } from 'react'
-import { Pagination } from 'antd'
-import NoCommitteeImg from '../../assets/images/No-Committee.svg'
-import { useTranslation } from 'react-i18next'
-import archivedbtn from '../../assets/images/archivedbtn.png'
-import plusbutton from '../../assets/images/Group 119.svg'
-import ModalActivegroup from '../ModalActiveGroup/ModalActivegroup'
-import CreateCommittee from '../../components/elements/CreateCommittee/CreateCommittee'
-import UpdateCommittee from '../../components/elements/UpdateCommittee/UpdateCommittee'
-import ViewUpdateCommittee from '../../components/elements/ViewUpdateCommittee/ViewUpdateCommittee'
-import ModalMarketingTeamCommittee from '../ModalMarketingTeamCommittee/ModalMarketingTeamCommittee'
-import committeeicon from '../../assets/images/Group 2584.png'
-import { useDispatch, useSelector } from 'react-redux'
+import { Container, Row, Col } from "react-bootstrap";
+import styles from "./Committee.module.css";
+import { Button, Loader, Notification } from "../../components/elements";
+import React, { useEffect, useState } from "react";
+import { Pagination } from "antd";
+import NoCommitteeImg from "../../assets/images/No-Committee.svg";
+import { useTranslation } from "react-i18next";
+import archivedbtn from "../../assets/images/archivedbtn.png";
+import plusbutton from "../../assets/images/Group 119.svg";
+import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
+import CreateCommittee from "../../components/elements/CreateCommittee/CreateCommittee";
+import UpdateCommittee from "../../components/elements/UpdateCommittee/UpdateCommittee";
+import ViewUpdateCommittee from "../../components/elements/ViewUpdateCommittee/ViewUpdateCommittee";
+import ModalMarketingTeamCommittee from "../ModalMarketingTeamCommittee/ModalMarketingTeamCommittee";
+import committeeicon from "../../assets/images/Group 2584.png";
+import { useDispatch, useSelector } from "react-redux";
 import {
   committeeStatusUpdate,
   getallcommitteebyuserid_clear,
   getCommitteesbyCommitteeId,
   realtimeCommitteeStatusResponse,
-} from '../../store/actions/Committee_actions'
-import { getAllCommitteesByUserIdActions } from '../../store/actions/Committee_actions'
+} from "../../store/actions/Committee_actions";
+import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import {
   GetAllUsers,
   GetAllUsersGroupsRoomsList,
   GetGroupMessages,
   activeChat,
-} from '../../store/actions/Talk_action'
+} from "../../store/actions/Talk_action";
 import {
   recentChatFlag,
   headerShowHideStatus,
@@ -37,13 +37,13 @@ import {
   createGroupScreen,
   chatBoxActiveFlag,
   activeChatBoxGS,
-} from '../../store/actions/Talk_Feature_actions'
-import Card from '../../components/elements/Card/Card'
-import ModalArchivedCommittee from '../ModalArchivedCommittee/ModalArchivedCommittee'
-import { useNavigate } from 'react-router-dom'
-import CommitteeStatusModal from '../../components/elements/committeeChangeStatusModal/CommitteeStatusModal'
-import { Plus } from 'react-bootstrap-icons'
-import CustomPagination from '../../commen/functions/customPagination/Paginations'
+} from "../../store/actions/Talk_Feature_actions";
+import Card from "../../components/elements/Card/Card";
+import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
+import { useNavigate } from "react-router-dom";
+import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
+import { Plus } from "react-bootstrap-icons";
+import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const Committee = () => {
   const {
@@ -51,47 +51,47 @@ const Committee = () => {
     LanguageReducer,
     talkStateData,
     talkFeatureStates,
-  } = useSelector((state) => state)
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const [showModal, setShowModal] = useState(false)
-  const [showActiveGroup, setShowActivegroup] = useState(false)
-  const [totalRecords, setTotalRecords] = useState(0)
-  let currentPage = JSON.parse(localStorage.getItem('CocurrentPage'))
-  const [editFlag, setEditFlag] = useState(false)
-  const [changeStatusModal, setChangeStatusModal] = useState(false)
-  const [statusUpdateData, setStatusUpdateData] = useState(null)
-  const [updateComponentpage, setUpdateComponentpage] = useState(false)
-  const [ViewGroupPage, setViewGroupPage] = useState(false)
-  const [creategrouppage, setCreategrouppage] = useState(false)
-  const [marketingTeamModal, setMarketingTeamModal] = useState(false)
-  const [committeeID, setCommitteeID] = useState(0)
-  const [modalsure, setModalsure] = useState(false)
-  const [getcommitteedata, setGetCommitteeData] = useState([])
-  const [uniqCardID, setUniqCardID] = useState(0)
+  } = useSelector((state) => state);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [showActiveGroup, setShowActivegroup] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
+  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
+  const [editFlag, setEditFlag] = useState(false);
+  const [changeStatusModal, setChangeStatusModal] = useState(false);
+  const [statusUpdateData, setStatusUpdateData] = useState(null);
+  const [updateComponentpage, setUpdateComponentpage] = useState(false);
+  const [ViewGroupPage, setViewGroupPage] = useState(false);
+  const [creategrouppage, setCreategrouppage] = useState(false);
+  const [marketingTeamModal, setMarketingTeamModal] = useState(false);
+  const [committeeID, setCommitteeID] = useState(0);
+  const [modalsure, setModalsure] = useState(false);
+  const [getcommitteedata, setGetCommitteeData] = useState([]);
+  const [uniqCardID, setUniqCardID] = useState(0);
   //Current User ID
-  let currentUserId = localStorage.getItem('userID')
+  let currentUserId = localStorage.getItem("userID");
 
   //Current Organization
-  let currentOrganizationId = localStorage.getItem('organizationID')
+  let currentOrganizationId = localStorage.getItem("organizationID");
   const [open, setOpen] = useState({
     open: false,
-    message: '',
-  })
-  const [mapgroupsData, setMapGroupData] = useState(null)
+    message: "",
+  });
+  const [mapgroupsData, setMapGroupData] = useState(null);
 
   useEffect(() => {
     try {
       if (currentPage !== null && currentPage !== undefined) {
-        dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage))
+        dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
       } else {
-        localStorage.removeItem('CoArcurrentPage')
-        localStorage.setItem('CocurrentPage', 1)
-        dispatch(getAllCommitteesByUserIdActions(navigate, t, 1))
+        localStorage.removeItem("CoArcurrentPage");
+        localStorage.setItem("CocurrentPage", 1);
+        dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
       }
     } catch {}
-  }, [])
+  }, []);
 
   useEffect(() => {
     try {
@@ -100,8 +100,8 @@ const Committee = () => {
         CommitteeReducer.GetAllCommitteesByUserIDResponse !== undefined
       ) {
         setTotalRecords(
-          CommitteeReducer.GetAllCommitteesByUserIDResponse.totalRecords,
-        )
+          CommitteeReducer.GetAllCommitteesByUserIDResponse.totalRecords
+        );
 
         if (
           CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.length >
@@ -109,42 +109,42 @@ const Committee = () => {
         ) {
           // let newArr = [];
           let copyData =
-            CommitteeReducer.GetAllCommitteesByUserIDResponse?.committees
+            CommitteeReducer.GetAllCommitteesByUserIDResponse?.committees;
 
           // copyData.forEach((data, index) => {
           //   newArr.push(data);
           // });
-          setGetCommitteeData(copyData)
+          setGetCommitteeData(copyData);
         } else {
-          setGetCommitteeData([])
+          setGetCommitteeData([]);
         }
       } else {
-        setGetCommitteeData([])
+        setGetCommitteeData([]);
       }
     } catch {}
-  }, [CommitteeReducer.GetAllCommitteesByUserIDResponse])
+  }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
 
   useEffect(() => {
     if (CommitteeReducer.realtimeCommitteeStatus !== null) {
-      let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID
+      let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID;
       if (status === 2) {
         let findINdexCommitteeStatus = getcommitteedata.findIndex(
           (data, index) =>
             data.committeeID ===
-            CommitteeReducer.realtimeCommitteeStatus.commmitteeID,
-        )
+            CommitteeReducer.realtimeCommitteeStatus.commmitteeID
+        );
         if (findINdexCommitteeStatus !== -1) {
-          let newData = [...getcommitteedata]
-          newData.splice(findINdexCommitteeStatus, 1)
-          setGetCommitteeData(newData)
-          dispatch(realtimeCommitteeStatusResponse(null))
+          let newData = [...getcommitteedata];
+          newData.splice(findINdexCommitteeStatus, 1);
+          setGetCommitteeData(newData);
+          dispatch(realtimeCommitteeStatusResponse(null));
         }
       } else {
         let findINdexCommitteeStatus = getcommitteedata.findIndex(
           (data, index) =>
             data.committeeID ===
-            CommitteeReducer.realtimeCommitteeStatus.commmitteeID,
-        )
+            CommitteeReducer.realtimeCommitteeStatus.commmitteeID
+        );
         if (findINdexCommitteeStatus !== -1) {
           let newArr = getcommitteedata.map((committeeCard, index) => {
             if (findINdexCommitteeStatus === index) {
@@ -152,21 +152,21 @@ const Committee = () => {
                 ...committeeCard,
                 committeeStatusID:
                   CommitteeReducer.realtimeCommitteeStatus.committeeStatusID,
-              }
-              return newData
+              };
+              return newData;
             }
-            return committeeCard
-          })
-          setGetCommitteeData(newArr)
-          dispatch(realtimeCommitteeStatusResponse(null))
+            return committeeCard;
+          });
+          setGetCommitteeData(newArr);
+          dispatch(realtimeCommitteeStatusResponse(null));
         }
       }
     }
-  }, [CommitteeReducer.realtimeCommitteeStatus])
+  }, [CommitteeReducer.realtimeCommitteeStatus]);
 
   useEffect(() => {
     if (CommitteeReducer.realtimeCommitteeCreateResponse !== null) {
-      let committeeData = CommitteeReducer.realtimeCommitteeCreateResponse
+      let committeeData = CommitteeReducer.realtimeCommitteeCreateResponse;
       let newCommitteeData = {
         committeesTitle: committeeData.committeesTitle,
         committeeID: committeeData.committeeID,
@@ -174,37 +174,37 @@ const Committee = () => {
         committeeMembers: committeeData.committeeMembers,
         committeeStatusID: committeeData.committeeStatusID,
         listofGroups: committeeData.listOfGroups,
-      }
+      };
 
-      setGetCommitteeData([newCommitteeData, ...getcommitteedata])
+      setGetCommitteeData([newCommitteeData, ...getcommitteedata]);
     }
-  }, [CommitteeReducer.realtimeCommitteeCreateResponse])
+  }, [CommitteeReducer.realtimeCommitteeCreateResponse]);
 
   const archivedmodaluser = async (e) => {
-    setShowModal(true)
-  }
+    setShowModal(true);
+  };
 
   const groupModal = async (e) => {
-    setCreategrouppage(true)
-  }
+    setCreategrouppage(true);
+  };
 
   const showMarketingModal = (id) => {
-    setMarketingTeamModal(true)
-    setCommitteeID(id)
+    setMarketingTeamModal(true);
+    setCommitteeID(id);
     if (getcommitteedata.length > 0) {
       let findMapGroups = getcommitteedata.filter(
-        (data, index) => data.committeeID === id,
-      )
-      setMapGroupData(findMapGroups)
+        (data, index) => data.committeeID === id
+      );
+      setMapGroupData(findMapGroups);
     }
-  }
+  };
 
   const viewTitleModal = (data) => {
-    let OrganizationID = JSON.parse(localStorage.getItem('organizationID'))
+    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       CommitteeID: JSON.parse(data.committeeID),
       OrganizationId: OrganizationID,
-    }
+    };
     dispatch(
       getCommitteesbyCommitteeId(
         navigate,
@@ -212,17 +212,17 @@ const Committee = () => {
         t,
         setViewGroupPage,
         setUpdateComponentpage,
-        1,
-      ),
-    )
-  }
+        1
+      )
+    );
+  };
 
   const viewUpdateModal = (committeeID, CommitteeStatusID) => {
-    let OrganizationID = JSON.parse(localStorage.getItem('organizationID'))
+    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       CommitteeID: JSON.parse(committeeID),
       OrganizationId: OrganizationID,
-    }
+    };
     dispatch(
       getCommitteesbyCommitteeId(
         navigate,
@@ -230,118 +230,118 @@ const Committee = () => {
         t,
         setViewGroupPage,
         setUpdateComponentpage,
-        CommitteeStatusID,
-      ),
-    )
-  }
+        CommitteeStatusID
+      )
+    );
+  };
 
   const discussionGroupChat = (data) => {
     if (data.talkGroupID !== 0) {
-      console.log('discussionGroupChat', data)
-      dispatch(createShoutAllScreen(false))
-      dispatch(addNewChatScreen(false))
-      dispatch(footerActionStatus(false))
-      dispatch(createGroupScreen(false))
-      dispatch(chatBoxActiveFlag(false))
-      dispatch(recentChatFlag(true))
-      dispatch(activeChatBoxGS(true))
-      dispatch(chatBoxActiveFlag(true))
-      dispatch(headerShowHideStatus(true))
-      dispatch(footerShowHideStatus(true))
+      console.log("discussionGroupChat", data);
+      dispatch(createShoutAllScreen(false));
+      dispatch(addNewChatScreen(false));
+      dispatch(footerActionStatus(false));
+      dispatch(createGroupScreen(false));
+      dispatch(chatBoxActiveFlag(false));
+      dispatch(recentChatFlag(true));
+      dispatch(activeChatBoxGS(true));
+      dispatch(chatBoxActiveFlag(true));
+      dispatch(headerShowHideStatus(true));
+      dispatch(footerShowHideStatus(true));
       let chatGroupData = {
         UserID: parseInt(currentUserId),
         ChannelID: currentOrganizationId,
         GroupID: data.talkGroupID,
         NumberOfMessages: 50,
         OffsetMessage: 0,
-      }
-      dispatch(GetGroupMessages(navigate, chatGroupData, t))
+      };
+      dispatch(GetGroupMessages(navigate, chatGroupData, t));
       dispatch(
         GetAllUsers(
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t,
-        ),
-      )
+          t
+        )
+      );
       dispatch(
         GetAllUsersGroupsRoomsList(
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t,
-        ),
-      )
+          t
+        )
+      );
       let allChatMessages =
-        talkStateData.AllUserChats.AllUserChatsData.allMessages
+        talkStateData.AllUserChats.AllUserChatsData.allMessages;
       const foundRecord = allChatMessages.find(
-        (item) => item.id === data.talkGroupID,
-      )
+        (item) => item.id === data.talkGroupID
+      );
       if (foundRecord) {
-        dispatch(activeChat(foundRecord))
+        dispatch(activeChat(foundRecord));
       }
-      localStorage.setItem('activeOtoChatID', data.talkGroupID)
+      localStorage.setItem("activeOtoChatID", data.talkGroupID);
     } else {
       setOpen({
         ...open,
         flag: true,
-        message: 'No Talk Group Created',
-      })
+        message: "No Talk Group Created",
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           flag: false,
-          message: '',
-        })
-      }, 3000)
+          message: "",
+        });
+      }, 3000);
     }
-  }
+  };
 
   const handlechange = (value) => {
-    localStorage.setItem('CocurrentPage', value)
-    dispatch(getAllCommitteesByUserIdActions(navigate, t, value))
-  }
+    localStorage.setItem("CocurrentPage", value);
+    dispatch(getAllCommitteesByUserIdActions(navigate, t, value));
+  };
 
   const changeHandleStatus = (e, CardID) => {
-    let OrganizationID = localStorage.getItem('organizationID')
+    let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
       CommitteeId: JSON.parse(CardID),
       CommitteeStatusId: JSON.parse(e.value),
       OrganizationID: JSON.parse(OrganizationID),
-    }
-    setStatusUpdateData(Data)
-    setChangeStatusModal(true)
-  }
+    };
+    setStatusUpdateData(Data);
+    setChangeStatusModal(true);
+  };
 
   useEffect(() => {
     if (
-      CommitteeReducer.ResponseMessage !== '' &&
+      CommitteeReducer.ResponseMessage !== "" &&
       CommitteeReducer.ResponseMessage !== undefined &&
-      CommitteeReducer.ResponseMessage !== t('Data-available') &&
-      CommitteeReducer.ResponseMessage !== t('No-data-available')
+      CommitteeReducer.ResponseMessage !== t("Data-available") &&
+      CommitteeReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
         ...open,
         open: true,
         message: CommitteeReducer.ResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: '',
-        })
-      }, 3000)
+          message: "",
+        });
+      }, 3000);
 
-      dispatch(getallcommitteebyuserid_clear())
+      dispatch(getallcommitteebyuserid_clear());
     } else {
-      dispatch(getallcommitteebyuserid_clear())
+      dispatch(getallcommitteebyuserid_clear());
     }
-  }, [CommitteeReducer.ResponseMessage])
+  }, [CommitteeReducer.ResponseMessage]);
 
   return (
     <>
-      <div className={styles['CommitteeContainer']}>
+      <div className={styles["CommitteeContainer"]}>
         {creategrouppage ? (
           <>
             <CreateCommittee setCreategrouppage={setCreategrouppage} />
@@ -358,12 +358,12 @@ const Committee = () => {
           <>
             <Row className="mt-3">
               <Col md={6} sm={6} lg={6} className="d-flex gap-3 ">
-                <span className={styles['Committee-heading-size']}>
-                  {t('Committees')}
+                <span className={styles["Committee-heading-size"]}>
+                  {t("Committees")}
                 </span>
                 <Button
-                  className={styles['create-Committee-btn']}
-                  text={t('Create-new-committee')}
+                  className={styles["create-Committee-btn"]}
+                  text={t("Create-new-committee")}
                   onClick={groupModal}
                   icon={
                     <img
@@ -371,7 +371,7 @@ const Committee = () => {
                       src={plusbutton}
                       height="7.6px"
                       width="7.6px"
-                      className={styles['PLusICon']}
+                      className={styles["PLusICon"]}
                     />
                   }
                 />
@@ -384,8 +384,8 @@ const Committee = () => {
                 className="d-flex justify-content-end mt-2 "
               >
                 <Button
-                  className={styles['Archived-Group-btn-Committee-section']}
-                  text={t('Archived-committees')}
+                  className={styles["Archived-Group-btn-Committee-section"]}
+                  text={t("Archived-committees")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
@@ -393,7 +393,7 @@ const Committee = () => {
                       src={archivedbtn}
                       width="18px"
                       height="18px"
-                      className={styles['archivedbtnIcon']}
+                      className={styles["archivedbtnIcon"]}
                     />
                   }
                 />
@@ -407,8 +407,8 @@ const Committee = () => {
                 // className={styles["Committee-Main_Scrollbar"]}
               >
                 <Row
-                  className={`${'d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1'} ${
-                    styles['committess_box']
+                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${
+                    styles["committess_box"]
                   }`}
                 >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
@@ -429,7 +429,7 @@ const Committee = () => {
                                 onClickFunction={() =>
                                   viewUpdateModal(
                                     data.committeeID,
-                                    data.committeeStatusID,
+                                    data.committeeStatusID
                                   )
                                 }
                                 handleClickDiscussion={
@@ -439,8 +439,8 @@ const Committee = () => {
                                 }
                                 discussionMenuClass={
                                   data.talkGroupID !== 0
-                                    ? 'discussion-menu'
-                                    : 'discussion-menu disabled'
+                                    ? "discussion-menu"
+                                    : "discussion-menu disabled"
                                 }
                                 titleOnCLick={() => viewTitleModal(data)}
                                 associatedTags={data.listofGroups}
@@ -460,23 +460,23 @@ const Committee = () => {
                                 }
                                 BtnText={
                                   data.committeeStatusID === 1
-                                    ? t('View-committee')
+                                    ? t("View-committee")
                                     : data.committeeStatusID === 2
-                                    ? ''
+                                    ? ""
                                     : data.committeeStatusID === 3
-                                    ? t('Update-committee')
-                                    : ''
+                                    ? t("Update-committee")
+                                    : ""
                                 }
                               />
                             </Col>
-                          )
+                          );
                         })
                       ) : (
                         <Col
                           sm={12}
                           lg={12}
                           md={12}
-                          className={styles['CommiiteeNotFoundContainer']}
+                          className={styles["CommiiteeNotFoundContainer"]}
                         >
                           <Row>
                             <Col sm={12} md={12} lg={12} className="mb-3">
@@ -486,17 +486,17 @@ const Committee = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className={styles['CommitteeNotFoundText']}
+                              className={styles["CommitteeNotFoundText"]}
                             >
-                              {t('You-dont-have-any-committee-yet')}
+                              {t("You-dont-have-any-committee-yet")}
                             </Col>
                             <Col
                               sm={12}
                               md={12}
                               lg={12}
-                              className={styles['CommitteeNotFoundText']}
+                              className={styles["CommitteeNotFoundText"]}
                             >
-                              {t('Click-create-new-committee-to-get-started.')}
+                              {t("Click-create-new-committee-to-get-started.")}
                             </Col>
                             <Col
                               sm={12}
@@ -505,8 +505,8 @@ const Committee = () => {
                               className="d-flex justify-content-center mt-3"
                             >
                               <Button
-                                className={styles['create-Committee-btn']}
-                                text={t('Create-new-committee')}
+                                className={styles["create-Committee-btn"]}
+                                text={t("Create-new-committee")}
                                 onClick={groupModal}
                                 icon={
                                   <img
@@ -514,7 +514,7 @@ const Committee = () => {
                                     src={plusbutton}
                                     height="7.6px"
                                     width="7.6px"
-                                    className={styles['PLusICon']}
+                                    className={styles["PLusICon"]}
                                   />
                                 }
                               />
@@ -539,13 +539,13 @@ const Committee = () => {
                   sm={4}
                   className="d-flex justify-content-center "
                 >
-                  <Container className={styles['PaginationStyle-Committee']}>
+                  <Container className={styles["PaginationStyle-Committee"]}>
                     <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={'pagination-groups-table'}
+                        className={"pagination-groups-table"}
                       >
                         <CustomPagination
                           total={totalRecords}
@@ -607,7 +607,7 @@ const Committee = () => {
         />
       ) : null} */}
     </>
-  )
-}
+  );
+};
 
-export default Committee
+export default Committee;
