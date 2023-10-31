@@ -339,7 +339,7 @@ const updateResolutionDataRoomApi = (navigate, t, Data) => {
             ) {
               dispatch(
                 updateResolutionDataRoom_success(
-                  response.data.responseResult,
+                  response.data.responseResult.folderID,
                   t("New-mapping-created")
                 )
               );
@@ -1041,6 +1041,8 @@ const updateResolution = (
               dispatch(
                 updateResolution_Fail(t("Failed-to-update-resolution-status"))
               );
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()
@@ -1078,21 +1080,37 @@ const updateResolution = (
               dispatch(
                 updateResolution_Fail(t("Please-add-at-least-one-voter"))
               );
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_05".toLowerCase()
             ) {
               dispatch(updateResolution_Fail(t("Something-went-wrong")));
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
+
+              localStorage.removeItem("resolutionID");
             }
           } else {
             dispatch(updateResolution_Fail(t("Something-went-wrong")));
+            dispatch(updateResolutionDataRoom_fail(""));
+            dispatch(saveFiles_fail(""));
+
+            localStorage.removeItem("resolutionID");
           }
         } else {
           dispatch(updateResolution_Fail(t("Something-went-wrong")));
+          dispatch(updateResolutionDataRoom_fail(""));
+          dispatch(saveFiles_fail(""));
+
+          localStorage.removeItem("resolutionID");
         }
       })
       .catch((response) => {
         dispatch(updateResolution_Fail(t("Something-went-wrong")));
+        dispatch(updateResolutionDataRoom_fail(""));
+        dispatch(saveFiles_fail(""));
       });
   };
 };

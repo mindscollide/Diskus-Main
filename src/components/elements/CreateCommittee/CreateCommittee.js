@@ -125,12 +125,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   }, [CommitteeReducer.getCommitteeTypes]);
 
   const searchFilterHandler = (value) => {
-    if (
-      meetingAttendeesList != undefined &&
-      meetingAttendeesList != null &&
-      meetingAttendeesList != NaN &&
-      meetingAttendeesList != []
-    ) {
+    if (meetingAttendeesList.length > 0) {
       return meetingAttendeesList
         .filter((item) => {
           const searchTerm = value.toLowerCase();
@@ -222,7 +217,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   };
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
-    if (taskAssignedTo != 0 && attendees.length > 0) {
+    let newMeetingAttendees = [...meetingAttendees];
+    let newGroupMembers = [...groupMembers];
+    if (taskAssignedTo !== 0 && attendees.length > 0) {
       setOpen({
         flag: true,
         message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
@@ -231,7 +228,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       setTaskAssignedTo(0);
       setParticipantRoleName("");
       setTaskAssignedToInput("");
-    } else if (taskAssignedTo != 0) {
+    } else if (taskAssignedTo !== 0) {
       var foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
       );
@@ -241,26 +238,26 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           committeeMemberRolesOptions.map((data, index) => {
             if (data.label === participantRoleName) {
               roleID = data.id;
-              meetingAttendees.push({
+              newMeetingAttendees.push({
                 FK_UID: taskAssignedTo, //userid
                 FK_CMMRID: data.id, //group member role id
                 FK_CMID: 0, //group id
               });
-              setMeetingAttendees([...meetingAttendees]);
+              setMeetingAttendees(newMeetingAttendees);
             }
             setCreateCommitteeDetails({
               ...createCommitteeDetails,
-              CommitteeMembers: meetingAttendees,
+              CommitteeMembers: newMeetingAttendees,
             });
           });
           if (meetingAttendeesList.length > 0) {
-            meetingAttendeesList.map((data, index) => {
+            meetingAttendeesList.forEach((data, index) => {
               if (data.pK_UID === taskAssignedTo) {
-                groupMembers.push({
+                newGroupMembers.push({
                   data,
                   role: roleID,
                 });
-                setGroupMembers([...groupMembers]);
+                setGroupMembers(newGroupMembers);
               }
             });
           }
@@ -292,8 +289,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         committeeMemberRolesOptions.find(
           (data, index) => data.label === participantRoleName
         );
-      attendees.map((data, index) => {
-        meetingAttendees.map((data2, index) => {
+      attendees.forEach((data, index) => {
+        newMeetingAttendees.forEach((data2, index) => {
           if (data === data2.FK_UID) {
             check = true;
           }
@@ -308,25 +305,25 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         setParticipantRoleName("");
       } else {
         if (participantOptionsWithID !== undefined) {
-          attendees.map((dataID, index) => {
-            meetingAttendees.push({
+          attendees.forEach((dataID, index) => {
+            newMeetingAttendees.push({
               FK_UID: dataID, //userid
               FK_CMMRID: participantOptionsWithID.id, //group member role id
               FK_CMID: 0, //group id
             });
-            setMeetingAttendees([...meetingAttendees]);
-            meetingAttendeesList.map((data, index) => {
+            setMeetingAttendees(newMeetingAttendees);
+            meetingAttendeesList.forEach((data, index) => {
               if (data.pK_UID === dataID) {
-                groupMembers.push({
+                newGroupMembers.push({
                   data,
                   role: participantOptionsWithID.id,
                 });
-                setGroupMembers([...groupMembers]);
+                setGroupMembers(newGroupMembers);
               }
             });
             setCreateCommitteeDetails({
               ...createCommitteeDetails,
-              CommitteeMembers: meetingAttendees,
+              CommitteeMembers: newMeetingAttendees,
             });
             setAttendees([]);
             setTaskAssignedTo(0);
@@ -404,7 +401,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
       let flag2 = GroupMembers.find((data, index) => data.FK_CMMRID === 2);
-      if (flag2 != undefined) {
+      if (flag2 !== undefined) {
         return true;
       } else {
         return false;

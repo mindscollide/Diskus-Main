@@ -1514,9 +1514,9 @@ const Home = () => {
                                 </Row>
                                 <Row className="mt-2">
                                   <Col
-                                    lg={11}
-                                    md={11}
-                                    sm={11}
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
                                     className="d-flex gap-2 align-items-center"
                                   >
                                     {data.isStarred ? (
@@ -1563,7 +1563,6 @@ const Home = () => {
                                       |{_justShowDay(data.date + data.time)}
                                     </span>
                                   </Col>
-                                  <Col lg={1} md={1} sm={1}></Col>
                                 </Row>
                               </div>
                               {/* <span>See More</span> */}
