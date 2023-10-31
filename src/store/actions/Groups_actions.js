@@ -1049,13 +1049,13 @@ const getAllGroups = (navigate, t) => {
 //Group Data RoadMap
 const methodCreateUpdateDataRoadMapInit = () => {
   return {
-    types: actions.CREAT_UPDATE_GROUP_ROADMAP_INIT,
+    type: actions.CREAT_UPDATE_GROUP_ROADMAP_INIT,
   };
 };
 
 const methodCreateUpdateDataRoadMapSuccess = (response, message) => {
   return {
-    types: actions.CREAT_UPDATE_GROUP_ROADMAP_SUCCESS,
+    type: actions.CREAT_UPDATE_GROUP_ROADMAP_SUCCESS,
     response: response,
     message: message,
   };
@@ -1063,7 +1063,7 @@ const methodCreateUpdateDataRoadMapSuccess = (response, message) => {
 
 const methodCreateUpdateDataRoadMapFailed = (message) => {
   return {
-    types: actions.CREAT_UPDATE_GROUP_ROADMAP_SUCCESS,
+    type: actions.CREAT_UPDATE_GROUP_ROADMAP_SUCCESS,
     message: message,
   };
 };
@@ -1074,7 +1074,6 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
     "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc"
   );
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(methodCreateUpdateDataRoadMapInit());
     let form = new FormData();
@@ -1089,7 +1088,7 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
+        console.log(response, "headers");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(CreateUpdateDataRoadMapApiFunc(navigate, Data, t));
@@ -1110,7 +1109,6 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
                   t(" Folder-mapped-with-data-room")
                 )
               );
-              dispatch(getGroups(navigate, t, currentPage));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
