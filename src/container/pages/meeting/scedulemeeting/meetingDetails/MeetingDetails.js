@@ -115,7 +115,7 @@ const MeetingDetails = ({
     AllowRSPV: false,
     NotifyMeetingOrganizer: false,
     RecurringOptions: {
-      value: 0,
+      value: 1,
       label: "",
     },
     Location: "",
