@@ -561,7 +561,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
-                    <Col lg={8} md={8} sm={8}>
+                    <Col lg={6} md={6} sm={6}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["details-class"]}>
@@ -917,8 +917,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
                       {/* till this point the scroll will be applied  */}
                     </Col>
-                    <Col lg={1} md={1} sm={1}></Col>
-                    <Col lg={3} md={3} sm={3}>
+                    <Col lg={6} md={6} sm={6}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <Row>
@@ -948,9 +947,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           </Row>
                           <Row className="mt-4">
                             <Col
-                              lg={8}
-                              md={8}
-                              sm={8}
+                              lg={10}
+                              md={10}
+                              sm={10}
                               className="group-select-field  CreateMeetingReminder   "
                             >
                               <SelectBox
@@ -962,9 +961,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               />
                             </Col>
                             <Col
-                              lg={4}
-                              md={4}
-                              sm={4}
+                              lg={2}
+                              md={2}
+                              sm={2}
                               className=" d-flex justify-content-end"
                             >
                               <Button
@@ -984,13 +983,18 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 styles["scrollbar-addmember-creategroup"]
                               }
                             >
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  {meetingAttendeesList.length > 0
-                                    ? meetingAttendeesList.map(
-                                        (attendeelist, index) => {
-                                          return (
-                                            <Row className="d-flex gap-2 my-3">
+                              {meetingAttendeesList.length > 0
+                                ? meetingAttendeesList.map(
+                                    (attendeelist, index) => {
+                                      return (
+                                        <>
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={6}
+                                            className="mt-3"
+                                          >
+                                            <Row className="d-flex gap-2">
                                               <Col lg={2} md={2} sm={12}>
                                                 <img
                                                   // src={Newprofile}
@@ -1085,12 +1089,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 />
                                               </Col>
                                             </Row>
-                                          );
-                                        }
-                                      )
-                                    : null}
-                                </Col>
-                              </Row>
+                                          </Col>
+                                        </>
+                                      );
+                                    }
+                                  )
+                                : null}
                             </Col>
                           </Row>
                           {/* at this point it is ending  */}

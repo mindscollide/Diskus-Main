@@ -44,6 +44,8 @@ import {
   closeResolutionApi,
   clearResponseMessage,
   updateResolutionModal,
+  updateResolution,
+  uploadDocumentsResolutionApi,
 } from "../../../store/actions/Resolution_actions";
 import moment from "moment";
 import {
@@ -66,6 +68,7 @@ import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import TextFieldTime from "../input_field_time/Input_field";
+import { left } from "@popperjs/core";
 const EditResolution = ({ setCancelresolution }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
@@ -180,6 +183,7 @@ const EditResolution = ({ setCancelresolution }) => {
   const [showmodal, setShowmodal] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [cancelResolutionID, setCancelResolutionID] = useState(0);
+  const [sendStatus, setsendStatus] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [resolutionupdate, setResolutionupdate] = useState(false);
   const [resolutionCirculate, setResolutionCirculate] = useState(false);
@@ -187,6 +191,10 @@ const EditResolution = ({ setCancelresolution }) => {
     useState(false);
   const [discardresolution, setDsicardresolution] = useState(false);
   const [tasksAttachments, setTasksAttachments] = useState([]);
+  console.log(
+    tasksAttachments,
+    "tasksAttachmentstasksAttachmentstasksAttachments"
+  );
   const [editResolutionData, setEditResolutionData] = useState({
     FK_ResolutionStatusID: 0,
     FK_ResolutionVotingMethodID: 0,
@@ -215,12 +223,12 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
+    let Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft - 300;
   };
 
   const Slideright = () => {
-    var Slider = document.getElementById("Slider");
+    let Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft + 300;
   };
 
@@ -382,24 +390,27 @@ const EditResolution = ({ setCancelresolution }) => {
     } else {
     }
   };
+
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
-    let removeFilefromAttachments = attachments.findIndex(
-      (attacData, index) =>
-        data.displayAttachmentName === attacData.displayAttachmentName
-    );
-    let copyattachments = [...attachments];
-    let fileForSendingIndex = fileForSend.findIndex(
-      (newData, index) => newData.name === data.DisplayAttachmentName
-    );
-    copyattachments.splice(removeFilefromAttachments, 1);
-    fileForSend.splice(fileForSendingIndex, 1);
-    setFileForSend(fileForSend);
+
+    setAttachments((prevState) => {
+      return prevState.filter((attacData, index) => {
+        return attacData.displayAttachmentName !== data.displayAttachmentName;
+      });
+    });
+    setFileForSend((prevFileSend) => {
+      return prevFileSend.filter((attacData, index) => {
+        return attacData.name !== data.displayAttachmentName;
+      });
+    });
+    setTasksAttachments((prevState) => {
+      return prevState.filter((newdata, index) => {
+        return newdata.DisplayAttachmentName !== data.displayAttachmentName;
+      });
+    });
+
     setFileSize(fileSizefound);
-    setAttachments(copyattachments);
-    let searchIndex = tasksAttachments;
-    searchIndex.splice(index, 1);
-    setTasksAttachments([...tasksAttachments]);
   };
 
   const addVoters = () => {
@@ -517,7 +528,7 @@ const EditResolution = ({ setCancelresolution }) => {
         let flag = false;
         let sizezero;
         let size;
-        attachments.map((arData, index) => {
+        attachments.forEach((arData, index) => {
           if (arData.displayAttachmentName === data.file.originFileObj.name) {
             flag = true;
           }
@@ -614,21 +625,22 @@ const EditResolution = ({ setCancelresolution }) => {
 
   const handleCirculateResolution = async () => {
     if (fileForSend.length > 0) {
-      let newfiles = [...tasksAttachments];
-      let tasksAttachmentsData = [];
-      const uploadPromises = fileForSend.map((newData) => {
-        // Return the promise from FileUploadToDo
-        return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
-      });
+      setsendStatus(2);
+      // let newfiles = [...tasksAttachments];
+      // let tasksAttachmentsData = [];
+      // const uploadPromises = fileForSend.map((newData) => {
+      //   // Return the promise from FileUploadToDo
+      //   return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
+      // });
 
-      // Wait for all uploadPromises to resolve
-      await Promise.all(uploadPromises);
-      newfiles.map((attachmentData, index) => {
-        tasksAttachmentsData.push({
-          DisplayAttachmentName: attachmentData.DisplayAttachmentName,
-          OriginalAttachmentName: attachmentData.OriginalAttachmentName,
-        });
-      });
+      // // Wait for all uploadPromises to resolve
+      // await Promise.all(uploadPromises);
+      // newfiles.map((attachmentData, index) => {
+      //   tasksAttachmentsData.push({
+      //     DisplayAttachmentName: attachmentData.DisplayAttachmentName,
+      //     OriginalAttachmentName: attachmentData.OriginalAttachmentName,
+      //   });
+      // });
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
@@ -657,19 +669,9 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      dispatch(
-        createResolution(
-          navigate,
-          Data,
-          voters,
-          nonVoter,
-          tasksAttachmentsData,
-          t,
-          2,
-          2
-        )
-      );
+      dispatch(createResolution(navigate, Data, voters, t));
     } else {
+      setsendStatus(2);
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
@@ -698,38 +700,28 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      dispatch(
-        createResolution(
-          navigate,
-          Data,
-          voters,
-          nonVoter,
-          tasksAttachments,
-          t,
-          2,
-          2
-        )
-      );
+      dispatch(createResolution(navigate, Data, voters, t));
     }
   };
 
   const handleUpdateResolution = async () => {
     if (fileForSend.length > 0) {
-      let newfiles = [...tasksAttachments];
-      let tasksAttachmentsData = [];
-      const uploadPromises = fileForSend.map((newData) => {
-        // Return the promise from FileUploadToDo
-        return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
-      });
+      setsendStatus(1);
+      // let newfiles = [...tasksAttachments];
+      // let tasksAttachmentsData = [];
+      // const uploadPromises = fileForSend.map((newData) => {
+      //   // Return the promise from FileUploadToDo
+      //   return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
+      // });
 
-      // Wait for all uploadPromises to resolve
-      await Promise.all(uploadPromises);
-      newfiles.map((attachmentData, index) => {
-        tasksAttachmentsData.push({
-          DisplayAttachmentName: attachmentData.DisplayAttachmentName,
-          OriginalAttachmentName: attachmentData.OriginalAttachmentName,
-        });
-      });
+      // // Wait for all uploadPromises to resolve
+      // await Promise.all(uploadPromises);
+      // newfiles.map((attachmentData, index) => {
+      //   tasksAttachmentsData.push({
+      //     DisplayAttachmentName: attachmentData.DisplayAttachmentName,
+      //     OriginalAttachmentName: attachmentData.OriginalAttachmentName,
+      //   });
+      // });
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
@@ -758,19 +750,9 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      dispatch(
-        createResolution(
-          navigate,
-          Data,
-          voters,
-          nonVoter,
-          tasksAttachmentsData,
-          t,
-          2,
-          1
-        )
-      );
+      dispatch(createResolution(navigate, Data, voters, t));
     } else {
+      setsendStatus(1);
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
@@ -799,18 +781,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      dispatch(
-        createResolution(
-          navigate,
-          Data,
-          voters,
-          nonVoter,
-          tasksAttachments,
-          t,
-          2,
-          1
-        )
-      );
+      dispatch(createResolution(navigate, Data, voters, t));
     }
   };
 
@@ -847,6 +818,41 @@ const EditResolution = ({ setCancelresolution }) => {
       });
     }
   };
+  const [folderID, setFolderID] = useState(0);
+
+  const documentsUploadCall = async (folderID) => {
+    let newfile = [...tasksAttachments];
+    console.log(newfile, fileForSend, "newfilenewfilenewfile");
+    if (fileForSend.length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsResolutionApi(navigate, t, newData, folderID, newfile)
+        );
+      });
+
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+    }
+
+    await dispatch(
+      updateResolution(
+        navigate,
+        editResolutionData.pK_ResolutionID,
+        voters,
+        nonVoter,
+        newfile,
+        t,
+        sendStatus
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (ResolutionReducer.updateResolutionDataroom !== 0) {
+      let folderIDCreated = ResolutionReducer.updateResolutionDataroom;
+      documentsUploadCall(folderIDCreated);
+    }
+  }, [ResolutionReducer.updateResolutionDataroom]);
 
   const handleChangeChecker = (e, checked) => {
     setEditResolutionData({
@@ -1161,6 +1167,7 @@ const EditResolution = ({ setCancelresolution }) => {
         });
         if (attachmentsResolution.length > 0) {
           let atCH = [];
+
           let newData = [];
           attachmentsResolution.map((data, index) => {
             atCH.push({

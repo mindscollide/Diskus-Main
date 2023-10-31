@@ -15,6 +15,7 @@ import greenMailIcon from '../../../../../assets/images/greenmail.svg'
 import redMailIcon from '../../../../../assets/images/redmail.svg'
 import rspvGreenIcon from '../../../../../assets/images/rspvGreen.svg'
 import rspvAbstainIcon from '../../../../../assets/images/rspvAbstain.svg'
+import CrossResolution from '../../../../../assets/images/resolutions/cross_icon_resolution.svg'
 import NORSVP from '../../../../../assets/images/No-RSVP.png'
 import mail from '../../../../../assets/images/mail.svg'
 import { useTranslation } from 'react-i18next'
@@ -334,7 +335,7 @@ const Organizers = ({
           return (
             <img
               draggable={false}
-              src={redcrossIcon}
+              src={CrossResolution}
               height="30px"
               width="30px"
               className="cursor-pointer"

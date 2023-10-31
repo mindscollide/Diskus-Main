@@ -64,6 +64,7 @@ const RecentChats = () => {
   let yesterdayDateUtc = moment(changeDateFormatYesterday).format('YYYYMMDD')
 
   const [allChatData, setAllChatData] = useState([])
+  const [updateAllChatData, setUpdateAllChatData] = useState(false)
   const [searchChatValue, setSearchChatValue] = useState('')
 
   //Dropdown state of chat head menu (Dropdown icon wali)
@@ -758,6 +759,77 @@ const RecentChats = () => {
       setAllChatData(updatedAllChatData)
     }
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser])
+
+  useEffect(() => {
+    if (
+      talkStateData.LastMessageDeletionObject !== undefined &&
+      talkStateData.LastMessageDeletionObject !== null &&
+      talkStateData.LastMessageDeletionObject.length !== 0
+    ) {
+      if (
+        talkStateData.LastMessageDeletionObject.data[0].messageBody === '' &&
+        talkStateData.LastMessageDeletionObject.data[0].chatID !== undefined
+      ) {
+        console.log(
+          'Last Message Deletion',
+          talkStateData.LastMessageDeletionObject.data[0].messageBody,
+          talkStateData.LastMessageDeletionObject.data[0].chatID,
+        )
+        // const updatedAllChatData = allChatData.filter(
+        //   (item) =>
+        //     item.id !== talkStateData.LastMessageDeletionObject.data[0].chatID,
+        // )
+        // console.log('Last Message Deletion', updatedAllChatData)
+        // setAllChatData(updatedAllChatData)
+        // Find the index of the object in the stateWithMultipleObjects array that matches chatID
+        const indexToRemove = allChatData.findIndex(
+          (obj) =>
+            obj.id === talkStateData.LastMessageDeletionObject.data[0].chatID,
+        )
+        if (indexToRemove !== -1) {
+          allChatData.splice(indexToRemove, 1)
+        }
+        setAllChatData(allChatData)
+      } else if (
+        talkStateData.LastMessageDeletionObject.data[0].messageBody !== '' &&
+        talkStateData.LastMessageDeletionObject.data[0].chatID !== undefined
+      ) {
+        let data = {
+          messageBody:
+            talkStateData.LastMessageDeletionObject.data[0].messageBody,
+          senderID: talkStateData.LastMessageDeletionObject.data[0].senderID,
+          receiverID:
+            talkStateData.LastMessageDeletionObject.data[0].receiverID,
+          fk_ChannelID:
+            talkStateData.LastMessageDeletionObject.data[0].fk_ChannelID,
+          messageID: talkStateData.LastMessageDeletionObject.data[0].messageID,
+          messageStatus:
+            talkStateData.LastMessageDeletionObject.data[0].messageStatus,
+          chatType: talkStateData.LastMessageDeletionObject.data[0].chatType,
+          chatID: talkStateData.LastMessageDeletionObject.data[0].chatID,
+          sentDate: talkStateData.LastMessageDeletionObject.data[0].sentDate,
+          receivedDate:
+            talkStateData.LastMessageDeletionObject.data[0].receivedDate,
+          seenDate: talkStateData.LastMessageDeletionObject.data[0].seenDate,
+        }
+        // Find the index of the object with a matching ID in allChatData
+        const index = allChatData.findIndex((item) => item.id === data.chatID)
+
+        // Check if a matching object was found
+        if (index !== -1) {
+          // Update the properties in the matching object
+          allChatData[index].messageBody = data.messageBody
+          allChatData[index].senderID = data.senderID
+          allChatData[index].sentDate = data.sentDate
+          allChatData[index].receivedDate = data.receivedDate
+          allChatData[index].seenDate = data.seenDate
+        }
+
+        // Now allChatData contains the updated values if there was a match
+        setAllChatData(allChatData)
+      }
+    }
+  }, [talkStateData.LastMessageDeletionObject])
 
   console.log('RecentChat TalkStates', talkStateData)
 

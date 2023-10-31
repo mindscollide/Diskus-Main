@@ -1,5 +1,7 @@
 import axios from "axios";
 import {
+  updateResolutionDataRoomMapRM,
+  saveResolutionDocumentsRM,
   getAllVotingRequestMethod,
   cancelResolutionRequestMethod,
   updateVoteRequestMethod,
@@ -12,16 +14,527 @@ import {
   getResolutionByIDRequestMethod,
   addUpdateResolutionRequestMethod,
   getVoterResolutionRequestMethod,
+  uploadDocumentsRequestMethod,
+  saveFilesRequestMethod,
 } from "../../commen/apis/Api_config";
-import { getResolutionApi } from "../../commen/apis/Api_ends_points";
+import {
+  dataRoomApi,
+  getResolutionApi,
+} from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
+
+// Save Files Init
+const saveFiles_init = () => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_INIT,
+  };
+};
+
+// Save Files Success
+const saveFiles_success = (response, message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Save Files Fail
+const saveFiles_fail = (message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Save Files API for Resolution
+const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+  let Data = {
+    FolderID: folderID !== null ? folderID : 0,
+    Files: [
+      {
+        DisplayFileName: data.displayFileName,
+        DiskusFileName: JSON.parse(data.diskusFileName),
+        ShareAbleLink: data.shareAbleLink,
+        FK_UserID: JSON.parse(creatorID),
+        FK_OrganizationID: JSON.parse(organizationID),
+      },
+    ],
+    UserID: JSON.parse(creatorID),
+    Type: 0,
+  };
+  return async (dispatch) => {
+    dispatch(saveFiles_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(saveFilesResolutionApi(navigate, t, data, newFolder));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                )
+            ) {
+              let newData = {
+                DisplayAttachmentName: data.displayFileName,
+                OriginalAttachmentName:
+                  response.data.responseResult.fileID.toString(),
+              };
+              newFolder.push(newData);
+              await dispatch(
+                saveFiles_success(newData, t("Files-saved-successfully"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(saveFiles_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(saveFiles_fail(t("Something-went-wrong")));
+        }
+        console.log(response);
+      })
+      .catch(() => {
+        dispatch(saveFiles_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Upload Documents Init
+const uploadDocument_init = () => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+  };
+};
+
+// Upload Documents Success
+const uploadDocument_success = (response, message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Upload Documents Fail
+const uploadDocument_fail = (message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Upload Documents API for Resolution
+const uploadDocumentsResolutionApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return async (dispatch) => {
+    dispatch(uploadDocument_init());
+    let form = new FormData();
+    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(uploadDocumentsResolutionApi(navigate, t, data, folderID));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                saveFilesResolutionApi(
+                  navigate,
+                  t,
+                  response.data.responseResult,
+                  folderID,
+                  newFolder
+                )
+              );
+              await dispatch(
+                uploadDocument_success(
+                  response.data.responseResult,
+                  t("Document-uploaded-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(uploadDocument_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(uploadDocument_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(uploadDocument_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const updateResolutionDataRoom_init = () => {
+  return {
+    type: actions.UPDATERESOLUTIONDATAROOMMAP_INIT,
+  };
+};
+
+const updateResolutionDataRoom_success = (response, message) => {
+  return {
+    type: actions.UPDATERESOLUTIONDATAROOMMAP_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const updateResolutionDataRoom_fail = (message) => {
+  return {
+    type: actions.UPDATERESOLUTIONDATAROOMMAP_FAIL,
+    message: message,
+  };
+};
+
+const updateResolutionDataRoomApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(updateResolutionDataRoom_init());
+    let form = new FormData();
+    form.append("RequestMethod", updateResolutionDataRoomMapRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(updateResolutionDataRoomApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UpdateResolutionDataRoomMap_01".toLowerCase()
+                )
+            ) {
+              localStorage.setItem("resolutionID", Data.ResolutionID);
+              dispatch(
+                updateResolutionDataRoom_success(
+                  response.data.responseResult.folderID,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UpdateResolutionDataRoomMap_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updateResolutionDataRoom_fail(t("Failed-to-save-or-map-folder"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UpdateResolutionDataRoomMap_03".toLowerCase()
+                )
+            ) {
+              localStorage.setItem("resolutionID", Data.ResolutionID);
+
+              dispatch(
+                updateResolutionDataRoom_success(
+                  response.data.responseResult.folderID,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UpdateResolutionDataRoomMap_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updateResolutionDataRoom_fail(t("Unable-to-update-folder"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UpdateResolutionDataRoomMap_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updateResolutionDataRoom_success(
+                  response.data.responseResult.folderID,
+                  t("New-mapping-created")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UpdateResolutionDataRoomMap_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updateResolutionDataRoom_fail(t("Failed-to-create-new-mapping"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UpdateResolutionDataRoomMap_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updateResolutionDataRoom_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                updateResolutionDataRoom_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(updateResolutionDataRoom_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(updateResolutionDataRoom_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch(() => {
+        dispatch(updateResolutionDataRoom_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const saveResolutionDocuments_init = () => {
+  return {
+    type: actions.SAVERESOLUTIONDOCUMENTS_INIT,
+  };
+};
+
+const saveResolutionDocuments_success = (response, message) => {
+  return {
+    type: actions.SAVERESOLUTIONDOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const saveResolutionDocuments_fail = (message) => {
+  return {
+    type: actions.SAVERESOLUTIONDOCUMENTS_FAIL,
+    message: message,
+  };
+};
+
+const saveResolutionDocumentsApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentView = localStorage.getItem("ButtonTab");
+  let resolutionView = localStorage.getItem("resolutionView");
+  return (dispatch) => {
+    dispatch(saveResolutionDocuments_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveResolutionDocumentsRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(updateResolutionDataRoomApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveResolutionDocuments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveResolutionDocuments_success(
+                  response.data.responseResult,
+                  t("Update-successful")
+                )
+              );
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
+
+              localStorage.removeItem("resolutionID");
+              dispatch(createResolutionModal(false));
+              dispatch(updateResolutionModal(false));
+              if (Number(resolutionView) === 1) {
+                dispatch(getResolutions(navigate, Number(currentView), t));
+              } else {
+                dispatch(getVoterResolution(navigate, Number(currentView), t));
+              }
+              // updateResolutionDataRoom_fail
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveResolutionDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveResolutionDocuments_fail(t("Something-went-wrong")));
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
+
+              localStorage.removeItem("resolutionID");
+              dispatch(createResolutionModal(false));
+              dispatch(updateResolutionModal(false));
+              if (Number(resolutionView) === 1) {
+                dispatch(getResolutions(navigate, Number(currentView), t));
+              } else {
+                dispatch(getVoterResolution(navigate, Number(currentView), t));
+              }
+            } else {
+              dispatch(saveResolutionDocuments_fail(t("Something-went-wrong")));
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
+
+              localStorage.removeItem("resolutionID");
+              dispatch(createResolutionModal(false));
+              dispatch(updateResolutionModal(false));
+              if (Number(resolutionView) === 1) {
+                dispatch(getResolutions(navigate, Number(currentView), t));
+              } else {
+                dispatch(getVoterResolution(navigate, Number(currentView), t));
+              }
+            }
+          } else {
+            dispatch(saveResolutionDocuments_fail(t("Something-went-wrong")));
+            dispatch(updateResolutionDataRoom_fail(""));
+            dispatch(saveFiles_fail(""));
+
+            localStorage.removeItem("resolutionID");
+            dispatch(createResolutionModal(false));
+            dispatch(updateResolutionModal(false));
+            if (Number(resolutionView) === 1) {
+              dispatch(getResolutions(navigate, Number(currentView), t));
+            } else {
+              dispatch(getVoterResolution(navigate, Number(currentView), t));
+            }
+          }
+        } else {
+          dispatch(saveResolutionDocuments_fail(t("Something-went-wrong")));
+          dispatch(updateResolutionDataRoom_fail(""));
+          dispatch(saveFiles_fail(""));
+          localStorage.removeItem("resolutionID");
+          dispatch(createResolutionModal(false));
+          dispatch(updateResolutionModal(false));
+
+          if (Number(resolutionView) === 1) {
+            dispatch(getResolutions(navigate, Number(currentView), t));
+          } else {
+            dispatch(getVoterResolution(navigate, Number(currentView), t));
+          }
+        }
+      })
+      .catch(() => {
+        dispatch(saveResolutionDocuments_fail(t("Something-went-wrong")));
+        dispatch(updateResolutionDataRoom_fail(""));
+        localStorage.removeItem("resolutionID");
+        dispatch(saveFiles_fail(""));
+
+        dispatch(createResolutionModal(false));
+        dispatch(updateResolutionModal(false));
+        if (Number(resolutionView) === 1) {
+          dispatch(getResolutions(navigate, Number(currentView), t));
+        } else {
+          dispatch(getVoterResolution(navigate, Number(currentView), t));
+        }
+      });
+  };
+};
 
 const getAllVoting_Init = () => {
   return {
     type: actions.GET_ALL_VOTING_METHOD_INIT,
   };
 };
+
 const getAllVoting_Success = (response, message) => {
   console.log(response, message, "actionaction");
   return {
@@ -30,12 +543,15 @@ const getAllVoting_Success = (response, message) => {
     message: message,
   };
 };
+
 const getAllVoting_Fail = (message) => {
   return {
     type: actions.GET_ALL_VOTING_METHOD_FAIL,
     message: message,
   };
 };
+
+// Get All Voting Methods Api
 const getAllVotingMethods = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -90,11 +606,13 @@ const getAllVotingMethods = (navigate, t) => {
       });
   };
 };
+
 const getAllResolutionStatus_Init = () => {
   return {
     type: actions.GET_ALL_RESOLUTION_STATUS_INIT,
   };
 };
+
 const getAllResolutionStatus_Success = (response, message) => {
   console.log(response, message, "actionaction111");
   return {
@@ -103,12 +621,15 @@ const getAllResolutionStatus_Success = (response, message) => {
     message: message,
   };
 };
+
 const getAllResolutionStatus_Fail = (message) => {
   return {
     type: actions.GET_ALL_RESOLUTION_STATUS_FAIL,
     message: message,
   };
 };
+
+// Get All Resolution Status Api
 const getAllResolutionStatus = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -163,6 +684,7 @@ const getAllResolutionStatus = (navigate, t) => {
       });
   };
 };
+
 const getResolutions_Init = () => {
   return {
     type: actions.GET_RESOLUTIONS_INIT,
@@ -175,12 +697,15 @@ const getResolutions_Success = (response, message) => {
     message: message,
   };
 };
+
 const getResolutions_Fail = (message) => {
   return {
     type: actions.GET_RESOLUTIONS_FAIL,
     message: message,
   };
 };
+
+// Get Resolutions
 const getResolutions = (
   navigate,
   id,
@@ -272,28 +797,23 @@ const createResolution_Init = () => {
     type: actions.SCHEDULE_RESOLUTION_INIT,
   };
 };
+
 const createResolution_Success = (response, message) => {
   return {
     type: actions.SCHEDULE_RESOLUTION_SUCCESS,
     response: response,
   };
 };
+
 const createResolution_Fail = (message) => {
   return {
     type: actions.SCHEDULE_RESOLUTION_FAIL,
     message: message,
   };
 };
-const createResolution = (
-  navigate,
-  Data,
-  voters,
-  nonVoter,
-  tasksAttachments,
-  t,
-  no,
-  circulated
-) => {
+
+// Create Resolution Api
+const createResolution = (navigate, Data, voters, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(createResolution_Init());
@@ -311,41 +831,40 @@ const createResolution = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            createResolution(
-              navigate,
-              Data,
-              voters,
-              nonVoter,
-              tasksAttachments,
-              t,
-              no,
-              circulated
-            )
-          );
+          dispatch(createResolution(navigate, Data, voters, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_ScheduleResolution_01".toLowerCase()
             ) {
-              await dispatch(
-                createResolution_Success(
-                  response.data.responseResult.resolutionID
-                )
-              );
-              dispatch(
-                updateResolution(
-                  navigate,
-                  response.data.responseResult.resolutionID,
-                  voters,
-                  nonVoter,
-                  tasksAttachments,
-                  t,
-                  no,
-                  circulated
-                )
-              );
+              // await dispatch(
+              //   createResolution_Success(
+              //     response.data.responseResult.resolutionID
+              //   )
+              // );
+              let newArr = [];
+              await voters.map((data, index) => newArr.push(data.FK_UID));
+              let NewData = {
+                ResolutionID: Number(response.data.responseResult.resolutionID),
+                ResolutionTitle: Data.ResolutionModel.Title,
+                IsUpdateFlow: false,
+                VotersList: newArr,
+              };
+
+              await dispatch(updateResolutionDataRoomApi(navigate, t, NewData));
+              // dispatch(
+              //   updateResolution(
+              //     navigate,
+              //     response.data.responseResult.resolutionID,
+              //     voters,
+              //     nonVoter,
+              //     tasksAttachments,
+              //     t,
+              //     no,
+              //     circulated
+              //   )
+              // );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_ScheduleResolution_02".toLowerCase()
@@ -365,18 +884,16 @@ const createResolution = (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_ScheduleResolution_05".toLowerCase()
             ) {
-              dispatch(
-                updateResolution(
-                  navigate,
-                  response.data.responseResult.resolutionID,
-                  voters,
-                  nonVoter,
-                  tasksAttachments,
-                  t,
-                  no,
-                  circulated
-                )
-              );
+              let newArr = [];
+              await voters.map((data, index) => newArr.push(data.FK_UID));
+              let NewData = {
+                ResolutionID: Number(response.data.responseResult.resolutionID),
+                ResolutionTitle: Data.ResolutionModel.Title,
+                IsUpdateFlow: true,
+                VotersList: newArr,
+              };
+
+              await dispatch(updateResolutionDataRoomApi(navigate, t, NewData));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_ScheduleResolution_06".toLowerCase()
@@ -426,6 +943,7 @@ const createResolution = (
       });
   };
 };
+
 const updateResolution_Init = () => {
   return {
     type: actions.ADD_UPDATE_DETAILS_RESOLUTION_INIT,
@@ -443,6 +961,8 @@ const updateResolution_Fail = (message) => {
     message: message,
   };
 };
+
+// Update Resolution Api
 const updateResolution = (
   navigate,
   resolutionID,
@@ -450,11 +970,8 @@ const updateResolution = (
   nonVoter,
   tasksAttachments,
   t,
-  no,
   circulated
 ) => {
-  let currentView = localStorage.getItem("ButtonTab");
-  let resolutionView = localStorage.getItem("resolutionView");
   let Data2 = {
     IsCirculate: circulated === 2 ? true : false,
     FK_ResolutionID: JSON.parse(resolutionID),
@@ -490,12 +1007,11 @@ const updateResolution = (
               nonVoter,
               tasksAttachments,
               t,
-              no,
               circulated
             )
           );
         } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
+          if (response.data.responseResult.isExecuted) {
             if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_01".toLowerCase()
@@ -505,13 +1021,19 @@ const updateResolution = (
                   t("Resolution-circulated-successfully")
                 )
               );
-              await dispatch(createResolutionModal(false));
-              await dispatch(updateResolutionModal(false));
-              if (Number(resolutionView) === 1) {
-                dispatch(getResolutions(navigate, Number(currentView), t));
-              } else {
-                dispatch(getVoterResolution(navigate, Number(currentView), t));
+              let newArr = [];
+              if (tasksAttachments.length > 0) {
+                tasksAttachments.forEach((data, index) => {
+                  newArr.push({
+                    PK_FileID: Number(data.OriginalAttachmentName),
+                  });
+                });
               }
+              let Data = {
+                ResolutionID: Data2.FK_ResolutionID,
+                UpdateFileList: newArr,
+              };
+              dispatch(saveResolutionDocumentsApi(navigate, t, Data));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()
@@ -519,6 +1041,8 @@ const updateResolution = (
               dispatch(
                 updateResolution_Fail(t("Failed-to-update-resolution-status"))
               );
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()
@@ -529,13 +1053,26 @@ const updateResolution = (
                   t("Resolution-details-updated-successfully")
                 )
               );
-              dispatch(createResolutionModal(false));
-              dispatch(updateResolutionModal(false));
-              if (Number(resolutionView) === 1) {
-                dispatch(getResolutions(navigate, Number(currentView), t));
-              } else {
-                dispatch(getVoterResolution(navigate, Number(currentView), t));
+              let newArr = [];
+              if (tasksAttachments.length > 0) {
+                tasksAttachments.forEach((data, index) => {
+                  newArr.push({
+                    PK_FileID: Number(data.OriginalAttachmentName),
+                  });
+                });
               }
+              let Data = {
+                ResolutionID: Data2.FK_ResolutionID,
+                UpdateFileList: newArr,
+              };
+              dispatch(saveResolutionDocumentsApi(navigate, t, Data));
+              // dispatch(createResolutionModal(false));
+              // dispatch(updateResolutionModal(false));
+              // if (Number(resolutionView) === 1) {
+              //   dispatch(getResolutions(navigate, Number(currentView), t));
+              // } else {
+              //   dispatch(getVoterResolution(navigate, Number(currentView), t));
+              // }
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_04".toLowerCase()
@@ -543,21 +1080,37 @@ const updateResolution = (
               dispatch(
                 updateResolution_Fail(t("Please-add-at-least-one-voter"))
               );
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_05".toLowerCase()
             ) {
               dispatch(updateResolution_Fail(t("Something-went-wrong")));
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
+
+              localStorage.removeItem("resolutionID");
             }
           } else {
             dispatch(updateResolution_Fail(t("Something-went-wrong")));
+            dispatch(updateResolutionDataRoom_fail(""));
+            dispatch(saveFiles_fail(""));
+
+            localStorage.removeItem("resolutionID");
           }
         } else {
           dispatch(updateResolution_Fail(t("Something-went-wrong")));
+          dispatch(updateResolutionDataRoom_fail(""));
+          dispatch(saveFiles_fail(""));
+
+          localStorage.removeItem("resolutionID");
         }
       })
       .catch((response) => {
         dispatch(updateResolution_Fail(t("Something-went-wrong")));
+        dispatch(updateResolutionDataRoom_fail(""));
+        dispatch(saveFiles_fail(""));
       });
   };
 };
@@ -579,6 +1132,7 @@ const getResolutionById_Fail = (message) => {
     message: message,
   };
 };
+// Get Resolution by Resolution ID Api
 const getResolutionbyResolutionID = (navigate, id, t, no) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
@@ -662,6 +1216,7 @@ const getResolutionResult_Fail = (message) => {
     message: message,
   };
 };
+// Get Resolution Result Api
 const getResolutionResult = (navigate, id, t, setResultresolution) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
@@ -741,6 +1296,7 @@ const getVotesDetail_Fail = (message) => {
     message: message,
   };
 };
+// Get Voting Details
 const getVotesDetails = (navigate, id, t, setVoteresolution) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
@@ -819,6 +1375,7 @@ const cancelResolution_Fail = (message) => {
     message: message,
   };
 };
+// Cancel Resolution Api
 const cancelResolutionApi = (
   navigate,
   id,
@@ -912,6 +1469,8 @@ const closeResolution_Fail = (message) => {
     message: message,
   };
 };
+
+// Close Reolution Api
 const closeResolutionApi = (
   navigate,
   ResolutionID,
@@ -1013,6 +1572,7 @@ const updateVote_Fail = (message) => {
     message: message,
   };
 };
+// Update Vote Api
 const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let resolutionView = localStorage.getItem("resolutionView");
@@ -1094,6 +1654,7 @@ const getVoterResolution_fail = (message) => {
     message: message,
   };
 };
+// Get Voter Resolution Api
 const getVoterResolution = (
   navigate,
   id,
@@ -1198,12 +1759,14 @@ const createResolutionModal = (value) => {
     payload: value,
   };
 };
+
 const updateResolutionModal = (value) => {
   return {
     type: actions.UPDATE_RESOLUTION_MODAL,
     payload: value,
   };
 };
+
 const viewResolutionModal = (value) => {
   return {
     type: actions.VIEW_RESOLUTION_MODAL,
@@ -1224,6 +1787,7 @@ const resolutionMQTTCancelled = (response) => {
     response: response,
   };
 };
+
 const resolutionMQTTClosed = (response) => {
   return {
     type: actions.CLOSED_RESOLUTION_MQTT,
@@ -1233,6 +1797,8 @@ const resolutionMQTTClosed = (response) => {
 
 export {
   viewResolutionModal,
+  saveFilesResolutionApi,
+  uploadDocumentsResolutionApi,
   updateResolutionModal,
   createResolutionModal,
   getAllVotingMethods,

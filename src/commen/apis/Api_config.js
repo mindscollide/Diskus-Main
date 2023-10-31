@@ -1008,7 +1008,26 @@ const saveMeetingAttendance = {
   RequestMethod: "ServiceManager.SaveMeetingAttendanceReport",
 };
 
+const updateResolutionDataRoomMapRM = {
+  RequestMethod: "ServiceManager.UpdateResolutionDataRoomMap",
+};
+
+const saveResolutionDocumentsRM = {
+  RequestMethod: "ServiceManager.SaveResolutionDocuments",
+};
+
+const setMeetingProposedDatesResponse = {
+  RequestMethod: "ServiceManager.SetMeetingProposedDatesResponse",
+};
+
+const CreateUpdateCommitteeDatarRoomRM = {
+  RequestMethod: "ServiceManager.CreateUpdateCommiteeDataRoomMap",
+};
+
 export {
+  CreateUpdateCommitteeDatarRoomRM,
+  saveResolutionDocumentsRM,
+  updateResolutionDataRoomMapRM,
   updateGeneralAccessRM,
   checkFileLinkRM,
   requestAccessRM,
@@ -1279,4 +1298,5 @@ export {
   //Aun attendance
   getAllAttendanceMeeting,
   saveMeetingAttendance,
+  setMeetingProposedDatesResponse,
 };

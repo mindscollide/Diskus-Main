@@ -21,6 +21,23 @@ import {
   realtimeCommitteeStatusResponse,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
+import {
+  GetAllUsers,
+  GetAllUsersGroupsRoomsList,
+  GetGroupMessages,
+  activeChat,
+} from "../../store/actions/Talk_action";
+import {
+  recentChatFlag,
+  headerShowHideStatus,
+  footerShowHideStatus,
+  createShoutAllScreen,
+  addNewChatScreen,
+  footerActionStatus,
+  createGroupScreen,
+  chatBoxActiveFlag,
+  activeChatBoxGS,
+} from "../../store/actions/Talk_Feature_actions";
 import Card from "../../components/elements/Card/Card";
 import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +46,12 @@ import { Plus } from "react-bootstrap-icons";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const Committee = () => {
-  const { CommitteeReducer, LanguageReducer } = useSelector((state) => state);
+  const {
+    CommitteeReducer,
+    LanguageReducer,
+    talkStateData,
+    talkFeatureStates,
+  } = useSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,7 +70,11 @@ const Committee = () => {
   const [modalsure, setModalsure] = useState(false);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
-  const creatorID = localStorage.getItem("userID");
+  //Current User ID
+  let currentUserId = localStorage.getItem("userID");
+
+  //Current Organization
+  let currentOrganizationId = localStorage.getItem("organizationID");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -56,15 +82,13 @@ const Committee = () => {
   const [mapgroupsData, setMapGroupData] = useState(null);
 
   useEffect(() => {
-    try {
-      if (currentPage !== null && currentPage !== undefined) {
-        dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
-      } else {
-        localStorage.removeItem("CoArcurrentPage");
-        localStorage.setItem("CocurrentPage", 1);
-        dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
-      }
-    } catch {}
+    if (currentPage !== null) {
+      dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
+    } else {
+      localStorage.removeItem("CoArcurrentPage");
+      localStorage.setItem("CocurrentPage", 1);
+      dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
+    }
   }, []);
 
   useEffect(() => {
@@ -209,6 +233,68 @@ const Committee = () => {
     );
   };
 
+  const discussionGroupChat = (data) => {
+    if (data.talkGroupID !== 0) {
+      console.log("discussionGroupChat", data);
+      dispatch(createShoutAllScreen(false));
+      dispatch(addNewChatScreen(false));
+      dispatch(footerActionStatus(false));
+      dispatch(createGroupScreen(false));
+      dispatch(chatBoxActiveFlag(false));
+      dispatch(recentChatFlag(true));
+      dispatch(activeChatBoxGS(true));
+      dispatch(chatBoxActiveFlag(true));
+      dispatch(headerShowHideStatus(true));
+      dispatch(footerShowHideStatus(true));
+      let chatGroupData = {
+        UserID: parseInt(currentUserId),
+        ChannelID: currentOrganizationId,
+        GroupID: data.talkGroupID,
+        NumberOfMessages: 50,
+        OffsetMessage: 0,
+      };
+      dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      dispatch(
+        GetAllUsers(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+      dispatch(
+        GetAllUsersGroupsRoomsList(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+      let allChatMessages =
+        talkStateData.AllUserChats.AllUserChatsData.allMessages;
+      const foundRecord = allChatMessages.find(
+        (item) => item.id === data.talkGroupID
+      );
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+      }
+      localStorage.setItem("activeOtoChatID", data.talkGroupID);
+    } else {
+      setOpen({
+        ...open,
+        flag: true,
+        message: "No Talk Group Created",
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+    }
+  };
+
   const handlechange = (value) => {
     localStorage.setItem("CocurrentPage", value);
     dispatch(getAllCommitteesByUserIdActions(navigate, t, value));
@@ -343,6 +429,16 @@ const Committee = () => {
                                     data.committeeID,
                                     data.committeeStatusID
                                   )
+                                }
+                                handleClickDiscussion={
+                                  data.talkGroupID !== 0
+                                    ? () => discussionGroupChat(data)
+                                    : null
+                                }
+                                discussionMenuClass={
+                                  data.talkGroupID !== 0
+                                    ? "discussion-menu"
+                                    : "discussion-menu disabled"
                                 }
                                 titleOnCLick={() => viewTitleModal(data)}
                                 associatedTags={data.listofGroups}

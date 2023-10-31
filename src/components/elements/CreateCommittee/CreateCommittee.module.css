@@ -15,7 +15,7 @@ body[dir="rtl"] .details-class-Create-Committee {
 }
 
 .scroll-bar-createCommittee {
-  height: 30vh !important;
+  height: 24vh !important;
   overflow-x: hidden !important;
 }
 
@@ -156,8 +156,11 @@ body[dir="rtl"] .ADD-Committee-btn {
 }
 
 .scrollbar-addmember-createcommittee {
-  height: 40vh !important;
+  height: 14vh !important;
   overflow-x: hidden !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
 }
 
 .scrollbar-addmember-createcommittee::-webkit-scrollbar {
@@ -276,5 +279,110 @@ body[dir="rtl"] .Committee_error_coloumn {
 }
 
 .create_committee_title::placeholder {
-  color: #E1E1E1 !important;
+  color: #e1e1e1 !important;
+}
+
+.Attachments_Heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6 !important;
+}
+
+.Choose_file_style {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 3px !important;
+}
+
+.ant-upload-text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .ant-upload-text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.dragdrop_attachment_create_resolution {
+  height: auto !important;
+  border: 1px dashed #49dbdb !important;
+}
+
+.Outer_Border-Line {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 10px 10px !important;
+}
+
+.Outer_Box {
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  margin-bottom: 10px !important;
+  border-radius: 4px !important;
+  width: 100% !important;
+}
+
+.filesStyles {
+  width: 100% !important;
+  display: flex !important;
+  gap: 35px !important;
+}
+
+.Leftpolygon {
+  background: none;
+  border: none;
+  display: flex !important;
+  align-items: center !important;
+}
+
+body[dir="rtl"] .Leftpolygon {
+  transform: rotate(180deg) !important;
+}
+
+.Leftpolygon:hover,
+.Leftpolygon:active,
+.Leftpolygon:focus,
+.Leftpolygon:focus-visible {
+  background: none !important;
+  border: none !important;
+}
+
+.FileName {
+  font-size: 10px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratRegular";
+  display: inline-block !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  width: 100px !important;
+}
+
+.backGround_name_Icon {
+  background: #fff;
+}
+
+.Bottom {
+  border: 1px solid #e1e1e1 !important;
+  width: 100% !important;
+}
+
+.IconPDF {
+  margin-left: 10px !important;
+}
+
+.IconTextClass {
+  display: flex;
+  text-align: center !important;
+  align-items: center !important;
+  gap: 7px !important;
+}
+
+.Crossicon_Class {
+  cursor: pointer !important;
+  position: absolute !important;
+  top: -7px !important;
+  right: -4px !important;
 }

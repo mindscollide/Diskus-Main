@@ -58,6 +58,74 @@ const StarredMessagesList = () => {
 
   useEffect(() => {
     if (
+      talkStateData.talkSocketDataStarUnstar.socketStarMessage !== null &&
+      talkStateData.talkSocketDataStarUnstar.socketStarMessage !== undefined &&
+      talkStateData.talkSocketDataStarUnstar.socketStarMessage.length !== 0
+    ) {
+      const starredMessage =
+        talkStateData.talkSocketDataStarUnstar.socketStarMessage
+      if (starredMessage.messageType === 'O') {
+        let allMessages = talkStateData.AllMessagesData.oneToOneMessages
+        const matchingMessages = allMessages.filter(
+          (message) => message.messageID === starredMessage.messageID,
+        )
+
+        const messagesWithSameMessageID = matchingMessages
+
+        let updatedStarredMessage = {
+          messageID: messagesWithSameMessageID[0].messageID,
+          senderID: messagesWithSameMessageID[0].senderID,
+          receiverID: messagesWithSameMessageID[0].receiverID,
+          messageBody: messagesWithSameMessageID[0].messageBody,
+          senderName: messagesWithSameMessageID[0].senderName,
+          receiverName: messagesWithSameMessageID[0].receiverName,
+          isFlag: messagesWithSameMessageID[0].isFlag,
+          sentDate: messagesWithSameMessageID[0].sentDate,
+          receivedDate: messagesWithSameMessageID[0].receivedDate,
+          seenDate: messagesWithSameMessageID[0].seenDate,
+          currDate: messagesWithSameMessageID[0].currDate,
+          fileGeneratedName: messagesWithSameMessageID[0].fileGeneratedName,
+          fileName: messagesWithSameMessageID[0].fileName,
+          attachmentLocation: messagesWithSameMessageID[0].attachmentLocation,
+          messageType: messagesWithSameMessageID[0].messageType,
+        }
+
+        const updatedData = [updatedStarredMessage, ...allStarredMessagesData]
+        setAllStarredMessagesData(updatedData)
+      } else if (starredMessage.messageType === 'G') {
+        let allMessages = talkStateData.AllMessagesData.groupMessages
+        const matchingMessages = allMessages.filter(
+          (message) => message.messageID === starredMessage.messageID,
+        )
+
+        const messagesWithSameMessageID = matchingMessages
+
+        let updatedStarredMessage = {
+          messageID: messagesWithSameMessageID[0].messageID,
+          senderID: messagesWithSameMessageID[0].senderID,
+          receiverID: messagesWithSameMessageID[0].receiverID,
+          messageBody: messagesWithSameMessageID[0].messageBody,
+          senderName: messagesWithSameMessageID[0].senderName,
+          receiverName: messagesWithSameMessageID[0].receiverName,
+          isFlag: messagesWithSameMessageID[0].isFlag,
+          sentDate: messagesWithSameMessageID[0].sentDate,
+          receivedDate: messagesWithSameMessageID[0].receivedDate,
+          seenDate: messagesWithSameMessageID[0].seenDate,
+          currDate: messagesWithSameMessageID[0].currDate,
+          fileGeneratedName: messagesWithSameMessageID[0].fileGeneratedName,
+          fileName: messagesWithSameMessageID[0].fileName,
+          attachmentLocation: messagesWithSameMessageID[0].attachmentLocation,
+          messageType: messagesWithSameMessageID[0].messageType,
+        }
+
+        const updatedData = [updatedStarredMessage, ...allStarredMessagesData]
+        setAllStarredMessagesData(updatedData)
+      }
+    }
+  }, [talkStateData.talkSocketDataStarUnstar.socketStarMessage])
+
+  useEffect(() => {
+    if (
       talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !== null &&
       talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !==
         undefined &&
