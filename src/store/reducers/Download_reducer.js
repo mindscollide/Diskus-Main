@@ -45,6 +45,9 @@ const downloadReducer = (state = initialState, action) => {
     case actions.DOWNLOAD_DOCUMENT_FILE_FAIL:
       return { ...state, Loading: false };
 
+    // case actions.DOWNLOAD_ATTENDANCE_REPORT_INIT:
+    //   return { ...state, Loading: false };
+
     default:
       return { ...state };
   }

@@ -116,4 +116,57 @@ const DownloadFile = (navigate, data, t) => {
   };
 };
 
+// const download Report Attendance Init
+// const attendanceDownloadInit = () => {
+//   return {
+//     type: actions.DOWNLOAD_ATTENDANCE_REPORT_INIT,
+//   };
+// };
+
+// const download Report Attendance main API
+// const downloadAttendanceReportApi = () => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   let form = new FormData();
+//   // form.append("RequestMethod", downlaodStatusWiseReportApi.RequestMethod);
+//   form.append("RequestData", JSON.stringify());
+//   return (dispatch) => {
+//     console.log("reportDownloadStatusWiseApi");
+//     dispatch(attendanceDownloadInit());
+//     axios({
+//       method: "post",
+//       // url: downloadReportApi,
+//       data: form,
+//       headers: {
+//         _token: token,
+//         "Content-Disposition": "attachment; filename=template.xlsx",
+//         "Content-Type":
+//           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+//       },
+//       responseType: "arraybuffer",
+//     })
+//       .then(async (response) => {
+//         console.log("downloadAttendanceReportApi", response);
+
+//         if (response.status === 417) {
+//           await dispatch(RefreshToken());
+//           dispatch(downloadAttendanceReportApi());
+//         } else if (response.status === 200) {
+//           const url = window.URL.createObjectURL(new Blob([response.data]));
+//           console.log("downloadAttendanceReportApi", url);
+//           const link = document.createElement("a");
+//           link.href = url;
+//           link.setAttribute("download", "download-Attendance-Report.xlsx");
+//           document.body.appendChild(link);
+//           link.click();
+
+//           dispatch(DownloadLoaderStart(false));
+//         }
+//       })
+//       .catch((response) => {
+//         console.log("downloadAttendanceReportApi", response);
+//         dispatch(downloadFail(response));
+//       });
+//   };
+// };
+
 export { DownloadFile };
