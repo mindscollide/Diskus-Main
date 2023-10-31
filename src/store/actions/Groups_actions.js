@@ -12,6 +12,8 @@ import {
   getAllOrganizationGroupTypes,
   updateGroupRequestMethod,
   CreateUpdateGroupDataRoadMap,
+  uploadDocumentsRequestMethod,
+  saveFilesRequestMethod,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
 import { Data } from "emoji-mart";
@@ -1204,6 +1206,214 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
   };
 };
 
+// Upload Documents Init
+const uploadDocument_init = () => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+  };
+};
+
+// Upload Documents Success
+const uploadDocument_success = (response, message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Upload Documents Fail
+const uploadDocument_fail = (message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Upload Documents API for Resolution
+const uploadDocumentsGroupsApi = (navigate, t, data, folderID, newFolder) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return async (dispatch) => {
+    dispatch(uploadDocument_init());
+    let form = new FormData();
+    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(uploadDocumentsGroupsApi(navigate, t, data, folderID));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                saveFilesGroupsApi(
+                  navigate,
+                  t,
+                  response.data.responseResult,
+                  folderID,
+                  newFolder
+                )
+              );
+              await dispatch(
+                uploadDocument_success(
+                  response.data.responseResult,
+                  t("Document-uploaded-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(uploadDocument_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(uploadDocument_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(uploadDocument_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Save Files Init
+const saveFiles_init = () => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_INIT,
+  };
+};
+
+// Save Files Success
+const saveFiles_success = (response, message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Save Files Fail
+const saveFiles_fail = (message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Save Files API for Resolution
+const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+  let Data = {
+    FolderID: folderID !== null ? folderID : 0,
+    Files: [
+      {
+        DisplayFileName: data.displayFileName,
+        DiskusFileName: JSON.parse(data.diskusFileName),
+        ShareAbleLink: data.shareAbleLink,
+        FK_UserID: JSON.parse(creatorID),
+        FK_OrganizationID: JSON.parse(organizationID),
+      },
+    ],
+    UserID: JSON.parse(creatorID),
+    Type: 0,
+  };
+  return async (dispatch) => {
+    dispatch(saveFiles_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(saveFilesGroupsApi(navigate, t, data, newFolder));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                )
+            ) {
+              let newData = {
+                DisplayAttachmentName: data.displayFileName,
+                OriginalAttachmentName:
+                  response.data.responseResult.fileID.toString(),
+              };
+              newFolder.push(newData);
+              await dispatch(
+                saveFiles_success(newData, t("Files-saved-successfully"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(saveFiles_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(saveFiles_fail(t("Something-went-wrong")));
+        }
+        console.log(response);
+      })
+      .catch(() => {
+        dispatch(saveFiles_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getGroups,
   getAllGroups,
@@ -1219,4 +1429,6 @@ export {
   groupLoader,
   getArcheivedGroups,
   CreateUpdateDataRoadMapApiFunc,
+  uploadDocumentsGroupsApi,
+  saveFilesGroupsApi,
 };

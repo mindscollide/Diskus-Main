@@ -25,6 +25,7 @@ import {
   createGroup,
   getGroupMembersRoles,
   getOrganizationGroupTypes,
+  uploadDocumentsGroupsApi,
 } from "../../../store/actions/Groups_actions";
 import { render } from "@testing-library/react";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
@@ -49,10 +50,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
+  const [fileSize, setFileSize] = useState(0);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [erorbar, setErrorBar] = useState(false);
+  const [fileForSend, setFileForSend] = useState([]);
   const [attendees, setAttendees] = useState([]);
   const [createGroupDetails, setCreateGroupDetails] = useState({
     Title: "",
@@ -67,6 +70,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const GroupeTitle = useRef(null);
   const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
+  const [folderID, setFolderID] = useState(0);
   const [participantRoleName, setParticipantRoleName] = useState(t("Regular"));
   const participantOptions = [t("Head"), t("Regular")];
   const [groupTypeOptions, setGroupTypeOptions] = useState([]);
@@ -241,58 +245,58 @@ const CreateGroup = ({ setCreategrouppage }) => {
     }
   }, [meetingAttendeesList]);
 
-  // Add Attendees Hanlder
   const handleAddAttendees = () => {
-    let newMeetingAttendees = [...meetingAttendees];
-    let newGroupMembers = [...groupMembers];
-    if (taskAssignedTo != 0 && attendees.length > 0) {
+    // Create new copies of state variables to avoid state mutations
+    const newMeetingAttendees = [...meetingAttendees];
+    const newGroupMembers = [...groupMembers];
+
+    // Check if there's a selected user and a role
+    if (taskAssignedTo !== 0 && attendees.length > 0) {
       setOpen({
         flag: true,
-        message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
+        message: t("You can add data from only one form option at a time"),
       });
-      setAttendees([]);
-      setTaskAssignedTo(0);
-      setParticipantRoleName("");
-      setTaskAssignedToInput("");
-    } else if (participantRoleName === "") {
+    } else if (!participantRoleName) {
       setOpen({
         flag: true,
-        message: t("Please-select-group-member-type-also"),
+        message: t("Please select a group member type as well"),
       });
-    } else if (taskAssignedTo != 0) {
-      let foundIndex = meetingAttendees.findIndex(
+    } else if (taskAssignedTo !== 0) {
+      const foundIndex = newMeetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
       );
-      console.log("taskAssignedTo", foundIndex);
+
       if (foundIndex === -1) {
-        let roleID;
-        participantRoles.map((data, index) => {
-          if (data.label === participantRoleName) {
-            roleID = data.id;
-            newMeetingAttendees.push({
-              FK_UID: taskAssignedTo, //userid
-              FK_GRMRID: data.id, //group member role id
-              FK_GRID: 0, //group id
-            });
-            setMeetingAttendees(newMeetingAttendees);
-          }
-          setCreateGroupDetails({
-            ...createGroupDetails,
-            GroupMembers: newMeetingAttendees,
-          });
+        // Find the role ID based on the selected role name
+        const roleID = participantOptionsWithIDs.find(
+          (data) => data.label === participantRoleName
+        )?.id;
+
+        // Add the new attendee to the meeting attendees list
+        newMeetingAttendees.push({
+          FK_UID: taskAssignedTo,
+          FK_GRMRID: roleID,
+          FK_GRID: 0,
         });
-        if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.map((data, index) => {
-            console.log("groupMembers", groupMembers);
-            if (data.pK_UID === taskAssignedTo) {
-              newGroupMembers.push({
-                data,
-                role: roleID,
-              });
-              setGroupMembers(newGroupMembers);
-            }
-          });
-        }
+
+        // Update the state with the new attendees and role
+        setMeetingAttendees(newMeetingAttendees);
+        setCreateGroupDetails({
+          ...createGroupDetails,
+          GroupMembers: newMeetingAttendees,
+        });
+
+        // Find the selected user's data and role
+        const selectedUser = meetingAttendeesList.find(
+          (data) => data.pK_UID === taskAssignedTo
+        );
+        const role = roleID ? roleID : 0;
+        newGroupMembers.push({ data: selectedUser, role });
+
+        // Update the group members list
+        setGroupMembers(newGroupMembers);
+
+        // Clear input fields and reset state
         setTaskAssignedTo(0);
         setParticipantRoleName("");
         setTaskAssignedToInput("");
@@ -300,7 +304,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       } else {
         setOpen({
           flag: true,
-          message: t("User-already-exist"),
+          message: t("User already exists"),
         });
         setTaskAssignedTo(0);
         setParticipantRoleName("");
@@ -309,79 +313,67 @@ const CreateGroup = ({ setCreategrouppage }) => {
       }
     } else if (attendees.length > 0) {
       let check = false;
-      let participantOptionsWithID =
-        participantOptionsWithIDs &&
-        participantOptionsWithIDs.find(
-          (data, index) => data.label === participantRoleName
-        );
-      console.log("found2found2found2", attendees);
-      groupMembers.map((data, index) => {
-        attendees.map((data2, index) => {
-          console.log(
-            "found2found2found2",
-            data,
-            data2,
-            data.data.pK_UID,
-            data2.FK_UID
-          );
+      const participantOptionsWithID = participantOptionsWithIDs.find(
+        (data) => data.label === participantRoleName
+      );
+
+      groupMembers.forEach((data) => {
+        attendees.forEach((data2) => {
           if (data.data.pK_UID === data2) {
             check = true;
           }
         });
       });
-      if (check === true) {
-        console.log("found2found2found2");
 
+      if (check === true) {
         setOpen({
           flag: true,
-          message: t("User-already-exist"),
+          message: t("User already exists"),
         });
         setAttendees([]);
         setTaskAssignedTo(0);
         setParticipantRoleName("");
         setTaskAssignedToInput("");
+      } else if (participantOptionsWithID !== undefined) {
+        attendees.forEach((dataID) => {
+          newMeetingAttendees.push({
+            FK_UID: dataID,
+            FK_GRMRID: participantOptionsWithID.id,
+            FK_GRID: 0,
+          });
+
+          const selectedUser = meetingAttendeesList.find(
+            (data) => data.pK_UID === dataID
+          );
+          const role = participantOptionsWithID.id;
+          newGroupMembers.push({ data: selectedUser, role });
+        });
+
+        // Update the state with new attendees, group members, and role
+        setMeetingAttendees(newMeetingAttendees);
+        setGroupMembers(newGroupMembers);
+        setCreateGroupDetails({
+          ...createGroupDetails,
+          GroupMembers: newMeetingAttendees,
+        });
+
+        // Clear input fields and reset state
+        setAttendees([]);
+        setParticipantRoleName("");
       } else {
-        if (participantOptionsWithID !== undefined) {
-          attendees.map((dataID, index) => {
-            newMeetingAttendees.push({
-              FK_UID: dataID, //userid
-              FK_GRMRID: participantOptionsWithID.id, //group member role id
-              FK_GRID: 0, //group id
-            });
-            setMeetingAttendees(newMeetingAttendees);
-            meetingAttendeesList.map((data, index) => {
-              console.log("meetingAttendeesmeetingAttendees", data);
-              if (data.pK_UID === dataID) {
-                console.log("meetingAttendeesmeetingAttendees", data);
-                newGroupMembers.push({
-                  data,
-                  role: participantOptionsWithID.id,
-                });
-                setGroupMembers(newGroupMembers);
-              }
-            });
-            setCreateGroupDetails({
-              ...createGroupDetails,
-              GroupMembers: newMeetingAttendees,
-            });
-            setAttendees([]);
-            setParticipantRoleName("");
-          });
-        } else {
-          setOpen({
-            flag: true,
-            message: t("Please-select-group-member-type-also"),
-          });
-          setTaskAssignedTo(0);
-          setParticipantRoleName("");
-          setTaskAssignedToInput("");
-          setAttendees([]);
-        }
+        setOpen({
+          flag: true,
+          message: t("Please select a group member type as well"),
+        });
+        setTaskAssignedTo(0);
+        setParticipantRoleName("");
+        setTaskAssignedToInput("");
+        setAttendees([]);
       }
     } else {
       setOpen({
         flag: true,
-        message: t("Please-select-atleast-one-members"),
+        message: t("Please select at least one member"),
       });
       setTaskAssignedTo(0);
       setParticipantRoleName("");
@@ -550,9 +542,98 @@ const CreateGroup = ({ setCreategrouppage }) => {
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
-      console.log(data.file.originFileObj.name, "customRequestcustomRequest");
-      const File = data.file.originFileObj.name;
-      setFileAttachments([...fileAttachments, File]);
+      let fileSizeArr;
+      if (fileAttachments.length > 9) {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+      } else if (fileAttachments.length > 0) {
+        let flag = false;
+        let sizezero;
+        let size;
+        fileAttachments.map((arData, index) => {
+          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+            flag = true;
+          }
+        });
+        if (data.file.size > 10485760) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else if (flag === true) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-already-exists"),
+            }),
+            3000
+          );
+        } else {
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size,
+          };
+          setFileAttachments([...fileAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+        }
+      } else {
+        let sizezero;
+        let size;
+        if (data.file.size > 10485760) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else {
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size,
+          };
+          setFileAttachments([...fileAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+        }
+      }
     },
     onDrop(e) {},
     customRequest() {},
@@ -577,6 +658,26 @@ const CreateGroup = ({ setCreategrouppage }) => {
     updatedFies.splice(index, 1);
     setFileAttachments(updatedFies);
   };
+
+  const GroupsDocumentCallUpload = async (folderID) => {
+    let newfile = [];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      console.log(newData, "newDatanewDatanewData");
+      await dispatch(
+        uploadDocumentsGroupsApi(navigate, t, newData, folderID, newfile)
+      );
+    });
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+  };
+
+  useEffect(() => {
+    if (GroupsReducer.FolderID !== 0) {
+      setFolderID(GroupsReducer.FolderID);
+      let folderIDCreated = GroupsReducer.FolderID;
+      GroupsDocumentCallUpload(folderIDCreated);
+    }
+  }, [GroupsReducer.FolderID]);
 
   return (
     <>
@@ -1268,7 +1369,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                       styles["FileName"]
                                                     }
                                                   >
-                                                    {data}
+                                                    {data.DisplayAttachmentName}
                                                   </span>
                                                 </Col>
                                               </Row>
