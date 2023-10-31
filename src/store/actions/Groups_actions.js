@@ -11,6 +11,7 @@ import {
   getAllOrganizationGroupRoles,
   getAllOrganizationGroupTypes,
   updateGroupRequestMethod,
+  CreateUpdateGroupDataRoadMap,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
 
@@ -21,7 +22,7 @@ const clearMessagesGroup = () => {
 };
 const getGroup_Init = () => {
   return {
-    type: actions.GET_GROUPS_BYUSERID_INIT
+    type: actions.GET_GROUPS_BYUSERID_INIT,
   };
 };
 
@@ -36,7 +37,7 @@ const getGroup_Success = (response, message) => {
 const getGroup_Fail = (message) => {
   return {
     type: actions.GET_GROUPS_BYUSERID_FAIL,
-    message: message
+    message: message,
   };
 };
 
@@ -51,11 +52,11 @@ const getGroups = (navigate, t, currentPage) => {
     Title: "",
     PageNumber: currentPage,
     Length: 8,
-    Status: 0
+    Status: 0,
   };
 
   return (dispatch) => {
-    dispatch(groupLoader(true))
+    dispatch(groupLoader(true));
     // dispatch(getArchivedGroups_init())
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
@@ -84,7 +85,7 @@ const getGroups = (navigate, t, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_01".toLowerCase()
                 )
             ) {
-              dispatch(groupLoader(false))
+              dispatch(groupLoader(false));
               // if (id === 1) {
               //   dispatch(getArchivedGroups_success(
               //     response.data.responseResult,
@@ -106,7 +107,7 @@ const getGroups = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
-              dispatch(groupLoader(false))
+              dispatch(groupLoader(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -115,7 +116,7 @@ const getGroups = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
-              dispatch(groupLoader(false))
+              dispatch(groupLoader(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -124,7 +125,7 @@ const getGroups = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
-              dispatch(groupLoader(false))
+              dispatch(groupLoader(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -133,7 +134,7 @@ const getGroups = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
-              dispatch(groupLoader(false))
+              dispatch(groupLoader(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -142,54 +143,53 @@ const getGroups = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(getGroup_Fail(t("Something-went-wrong")));
-              dispatch(groupLoader(false))
+              dispatch(groupLoader(false));
               console.log(response, "response");
             }
           } else {
             console.log(response, "response");
             dispatch(getGroup_Fail(t("Something-went-wrong")));
-            dispatch(groupLoader(false))
+            dispatch(groupLoader(false));
           }
         } else {
           console.log(response, "response");
           dispatch(getGroup_Fail(t("Something-went-wrong")));
-          dispatch(groupLoader(false))
+          dispatch(groupLoader(false));
         }
       })
       .catch((response) => {
         console.log(response, "response");
         dispatch(getGroup_Fail(t("Something-went-wrong")));
-        dispatch(groupLoader(false))
+        dispatch(groupLoader(false));
       });
   };
 };
 
 const groupLoader = (action) => {
-  console.log(action, "groupLoadergroupLoadergroupLoader")
+  console.log(action, "groupLoadergroupLoadergroupLoader");
   return {
     type: actions.GROUP_LOADER_STATE,
-    response: action
-  }
-}
+    response: action,
+  };
+};
 const getArchivedGroups_init = () => {
   return {
-    type: actions.ARCHEIVED_GROUPS_INIT
-  }
-}
+    type: actions.ARCHEIVED_GROUPS_INIT,
+  };
+};
 const getArchivedGroups_success = (response, message) => {
   return {
     type: actions.ARCHEIVED_GROUPS_SUCCESS,
     response: response,
-    message: message
-  }
-}
+    message: message,
+  };
+};
 const getArchivedGroups_fail = (message) => {
   return {
     type: actions.ARCHEIVED_GROUPS_FAIL,
-    message: message
-  }
-
-}
+    message: message,
+  };
+};
 
 const getArcheivedGroups = (navigate, t, currentPage) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -202,11 +202,11 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
     Title: "",
     PageNumber: currentPage,
     Length: 8,
-    Status: 1
+    Status: 1,
   };
 
   return (dispatch) => {
-    dispatch(getArchivedGroups_init())
+    dispatch(getArchivedGroups_init());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getGroupsByUserIdRequestMethod.RequestMethod);
@@ -232,9 +232,12 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_01".toLowerCase()
                 )
             ) {
-              dispatch(getArchivedGroups_success(
-                response.data.responseResult,
-                t("Data-available")))
+              dispatch(
+                getArchivedGroups_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -293,7 +296,6 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
       });
   };
 };
-
 
 const getbyGroupID_Init = () => {
   return {
@@ -455,7 +457,7 @@ const createGroup_Fail = (message) => {
 };
 const createGroup = (navigate, Data, t, setCreategrouppage) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(createGroup_Init());
     let form = new FormData();
@@ -491,7 +493,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                   t("Data-available")
                 )
               );
-              dispatch(getGroups(navigate, t, currentPage,));
+              dispatch(getGroups(navigate, t, currentPage));
               setCreategrouppage(false);
             } else if (
               response.data.responseResult.responseMessage
@@ -751,7 +753,7 @@ const updateGroup_Fail = (message) => {
 };
 const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(updateGroup_Init());
     let form = new FormData();
@@ -867,7 +869,7 @@ const updateGroupStatus_Fail = (message) => {
 };
 const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(updateGroupStatus_Init());
     let form = new FormData();
@@ -1033,6 +1035,162 @@ const getAllGroups = (navigate, t) => {
   };
 };
 
+//Group Data RoadMap
+const methodCreateUpdateDataRoadMapInit = () => {
+  return {
+    types: actions.CREAT_UPDATE_GROUP_ROADMAP_INIT,
+  };
+};
+
+const methodCreateUpdateDataRoadMapSuccess = (response, message) => {
+  return {
+    types: actions.CREAT_UPDATE_GROUP_ROADMAP_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const methodCreateUpdateDataRoadMapFailed = (message) => {
+  return {
+    types: actions.CREAT_UPDATE_GROUP_ROADMAP_SUCCESS,
+    message: message,
+  };
+};
+
+const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(methodCreateUpdateDataRoadMapInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", CreateUpdateGroupDataRoadMap.RequestMethod);
+    axios({
+      method: "post",
+      url: getGroupsApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(CreateUpdateDataRoadMapApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                methodCreateUpdateDataRoadMapSuccess(
+                  response.data.responseResult,
+                  t(" Folder-mapped-with-data-room")
+                )
+              );
+              dispatch(getGroups(navigate, t, currentPage));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                methodCreateUpdateDataRoadMapFailed(
+                  t("Failed-to-save-or-map-folder")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                methodCreateUpdateDataRoadMapSuccess(
+                  response.data.responseResult,
+                  t(" Folder-mapped-with-data-room")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                methodCreateUpdateDataRoadMapFailed(
+                  t("Unable-to-update-folder")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_05".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                methodCreateUpdateDataRoadMapSuccess(
+                  response.data.responseResult,
+                  t("New-mapping-created.")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                methodCreateUpdateDataRoadMapFailed(
+                  t("Failed-to-create-new-mapping")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateGroupDataRoomMap_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          methodCreateUpdateDataRoadMapFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   getGroups,
   getAllGroups,
@@ -1046,5 +1204,6 @@ export {
   updateGroup,
   updateGroupStatus,
   groupLoader,
-  getArcheivedGroups
+  getArcheivedGroups,
+  CreateUpdateDataRoadMapApiFunc,
 };
