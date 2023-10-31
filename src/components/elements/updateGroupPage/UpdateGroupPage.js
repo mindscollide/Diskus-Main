@@ -22,9 +22,11 @@ import Groups from "../../../container/Groups/Groups";
 import { useDispatch, useSelector } from "react-redux";
 import {
   RetriveDocumentsGroupsApiFunc,
+  SaveGroupsDocumentsApiFunc,
   getGroupMembersRoles,
   getOrganizationGroupTypes,
   updateGroup,
+  uploadDocumentsGroupsApi,
 } from "../../../store/actions/Groups_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
@@ -37,6 +39,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const creatorID = JSON.parse(localStorage.getItem("userID"));
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [fileAttachments, setFileAttachments] = useState([]);
+  const [fileForSend, setFileForSend] = useState([]);
   const navigate = useNavigate();
   const [viewUpdateGroup, setViewUpdateGroup] = useState(true);
   const { t } = useTranslation();
@@ -50,6 +53,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
+  const [fileSize, setFileSize] = useState(0);
+  const [folderID, setFolderID] = useState(0);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [attendees, setAttendees] = useState([]);
@@ -71,6 +76,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const participantOptions = [t("Head"), t("Regular")];
   const [groupTypeOptions, setGroupTypeOptions] = useState([]);
   const [participantRoles, setParticipantRoles] = useState([]);
+  const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [groupTypeValue, setGroupTypeValue] = useState("");
   const [organizationGroupType, setOrganizationGroupType] = useState([]);
   // for Participant id's
@@ -569,9 +575,98 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
-      console.log(data.file.originFileObj.name, "customRequestcustomRequest");
-      const File = data.file.originFileObj.name;
-      setFileAttachments([...fileAttachments, File]);
+      let fileSizeArr;
+      if (fileAttachments.length > 9) {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+      } else if (fileAttachments.length > 0) {
+        let flag = false;
+        let sizezero;
+        let size;
+        fileAttachments.map((arData, index) => {
+          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+            flag = true;
+          }
+        });
+        if (data.file.size > 10485760) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else if (flag === true) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-already-exists"),
+            }),
+            3000
+          );
+        } else {
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size,
+          };
+          setFileAttachments([...fileAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+        }
+      } else {
+        let sizezero;
+        let size;
+        if (data.file.size > 10485760) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else {
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size,
+          };
+          setFileAttachments([...fileAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+        }
+      }
     },
     onDrop(e) {},
     customRequest() {},
@@ -612,14 +707,55 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupsReducer.groupDocuments !== null &&
       GroupsReducer.groupDocuments !== undefined
     ) {
-      let retirveArray = [];
-      GroupsReducer.groupDocuments.data.map((docsData, docsDataindex) => {
-        console.log(docsData, "docsDatadocsDatadocsDatassss");
-        retirveArray.push(docsData);
-      });
-      setFileAttachments(retirveArray);
+      console.log(GroupsReducer.groupDocuments, "groupDocumentsgroupDocuments");
+      if (GroupsReducer.groupDocuments.data.length > 0) {
+        setFolderID(GroupsReducer.groupDocuments.folderID);
+        let retirveArray = [];
+        let PrevIds = [];
+        GroupsReducer.groupDocuments.data.map((docsData, docsDataindex) => {
+          console.log(docsData, "docsDatadocsDatadocsDatassss");
+          retirveArray.push({
+            pK_FileID: docsData.pK_FileID,
+            DisplayAttachmentName: docsData.displayFileName,
+            fk_UserID: docsData.fK_UserID,
+          });
+          PrevIds.push({
+            pK_FileID: docsData.pK_FileID,
+            DisplayAttachmentName: docsData.displayFileName,
+          });
+        });
+        setPreviousFileIDs(PrevIds);
+        setFileAttachments(retirveArray);
+      }
     }
   }, [GroupsReducer.groupDocuments]);
+
+  const GroupsDocumentCallUpload = async (folderID) => {
+    let newfile = [...previousFileIDs];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsGroupsApi(navigate, t, newData, folderID, newfile)
+      );
+    });
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+
+    let Data = {
+      GroupID: Number(GroupDetails.GroupID),
+      UpdateFileList: newfile.map((data, index) => {
+        return { PK_FileID: Number(data.pK_FileID) };
+      }),
+    };
+    dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t));
+  };
+
+  useEffect(() => {
+    if (GroupsReducer.FolderID !== 0) {
+      console.log(GroupsReducer.FolderID.folderID, "GroupsDocumentCallUpload");
+      let folderIDCreated = GroupsReducer.FolderID.folderID;
+      GroupsDocumentCallUpload(folderIDCreated);
+    }
+  }, [GroupsReducer.FolderID]);
 
   return (
     <>
@@ -1264,7 +1400,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             >
                               {fileAttachments.length > 0
                                 ? fileAttachments.map((data, index) => {
-                                    console.log(data, "datadatadata");
+                                    console.log(data, "positionposition");
                                     return (
                                       <>
                                         <Col
@@ -1328,7 +1464,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                       styles["FileName"]
                                                     }
                                                   >
-                                                    {data.displayFileName}
+                                                    {data.DisplayAttachmentName}
                                                   </span>
                                                 </Col>
                                               </Row>

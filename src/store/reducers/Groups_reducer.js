@@ -282,6 +282,7 @@ const GroupsReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        FolderID: 0,
         ResponseMessage: action.message,
       };
     }

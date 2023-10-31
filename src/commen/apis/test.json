@@ -1,17 +1,6 @@
 {
-  "TalkRequest": {
-    "ChannelID": 302,
-    "Message": {
-      "SenderID": "802",
-      "ReceiverID": "780",
-      "Body": "ZXC",
-      "MessageActivity": "Direct Message",
-      "FileName": "",
-      "FileGeneratedName": "",
-      "Extension": "",
-      "AttachmentLocation": "",
-      "UID": "3Cylsu99nR5pEN_20231030083405075_802_780",
-      "MessageID": 0
-    }
-  }
+  "GroupID": 275,
+  "GroupTitle": "After applying all apis  udpated ",
+  "IsUpdateFlow": true,
+  "GroupMembers": [983, 985, 987]
 }

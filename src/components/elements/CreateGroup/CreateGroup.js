@@ -671,21 +671,13 @@ const CreateGroup = ({ setCreategrouppage }) => {
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
 
-    console.log(newfile, "newfilenewfilenewfile");
-
-    let newFileID = [];
-    newfile.map((data, index) => {
-      console.log(data, "datadatadata");
-      newFileID.push(data.OriginalAttachmentName);
-    });
-
     let groupID = localStorage.getItem("groupID");
 
     let Data = {
       GroupID: Number(groupID),
       UpdateFileList: newfile.map((data, index) => {
         console.log(data, "datadatadata");
-        return { PK_FileID: Number(data.OriginalAttachmentName) };
+        return { PK_FileID: data.pK_FileID };
       }),
     };
     dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t));
@@ -694,8 +686,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
   useEffect(() => {
     if (GroupsReducer.FolderID !== 0) {
       console.log(GroupsReducer.FolderID.folderID, "GroupsDocumentCallUpload");
-      setFolderID(GroupsReducer.FolderID.folderID);
-      let folderIDCreated = GroupsReducer.FolderID.folderID;
+      setFolderID(GroupsReducer.FolderID);
+      let folderIDCreated = GroupsReducer.FolderID;
       GroupsDocumentCallUpload(folderIDCreated);
     }
   }, [GroupsReducer.FolderID]);

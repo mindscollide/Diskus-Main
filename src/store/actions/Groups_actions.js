@@ -512,8 +512,8 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               };
               console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
               dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
-              dispatch(getGroups(navigate, t, currentPage));
-              setCreategrouppage(false);
+              // dispatch(getGroups(navigate, t, currentPage));
+              // setCreategrouppage(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -808,17 +808,19 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                   t("Group-updated")
                 )
               );
-              // console.log(response.data.responseResult, "updatedupdated");
-              // let newData = {
-              //   GroupID: response.data.responseResult.groupID,
-              //   GroupTitle: Data.GroupDetails.title,
-              //   IsUpdateFlow: false,
-              //   GroupMembers: Data.GroupMembers.map(
-              //     (data, index) => data.FK_UID
-              //   ),
-              // };
-              // console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
-              // dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
+              console.log(response.data.responseResult, "updatedupdated");
+              let groupID = localStorage.getItem("groupID");
+
+              let newData = {
+                GroupID: Number(groupID),
+                GroupTitle: Data.GroupDetails.title,
+                IsUpdateFlow: true,
+                GroupMembers: Data.GroupMembers.map(
+                  (data, index) => data.FK_UID
+                ),
+              };
+              console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
+              dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
               // dispatch(getGroups(navigate, t, currentPage));
               // setViewUpdateGroup(false);
               console.log("Group-updated");
@@ -1124,8 +1126,8 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
             ) {
               await dispatch(
                 methodCreateUpdateDataRoadMapSuccess(
-                  response.data.responseResult,
-                  t(" Folder-mapped-with-data-room")
+                  response.data.responseResult.folderID,
+                  t("Folder-mapped-with-data-room")
                 )
               );
             } else if (
@@ -1392,9 +1394,8 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
                 )
             ) {
               let newData = {
+                pK_FileID: response.data.responseResult.fileID,
                 DisplayAttachmentName: data.displayFileName,
-                OriginalAttachmentName:
-                  response.data.responseResult.fileID.toString(),
               };
               newFolder.push(newData);
               await dispatch(
