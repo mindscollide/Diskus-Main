@@ -185,6 +185,24 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
 
   console.log(fileAttachments, "fileAttachmentsfileAttachments");
 
+  const handleDoubleCLickFile = (data) => {
+    let ext = data.DisplayAttachmentName.split(".").pop();
+    let pdfData = {
+      taskId: data.pK_FileID,
+      commingFrom: 4,
+      fileName: data.DisplayAttachmentName,
+      attachmentID: data.pK_FileID,
+    };
+    const pdfDataJson = JSON.stringify(pdfData);
+    if (ext === "pdf") {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
+
   useEffect(() => {
     if (
       GroupsReducer.groupDocuments !== null &&
@@ -481,7 +499,10 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
                               </>
                             )}
 
-                            <section className={styles["Outer_Box"]}>
+                            <section
+                              className={styles["Outer_Box"]}
+                              onDoubleClick={() => handleDoubleCLickFile(data)}
+                            >
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <img
