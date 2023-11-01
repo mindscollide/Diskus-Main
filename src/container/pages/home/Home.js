@@ -1174,6 +1174,8 @@ const Home = () => {
                       <img
                         src={NoRecentActivity}
                         className="recent-activity-icon"
+                        alt=""
+                        draggable="false"
                       />
                     }
                     subTitle={t("No-activity")}
@@ -1468,6 +1470,7 @@ const Home = () => {
                       onClick={handleClickNoteModal}
                       className="cursor-pointer"
                       alt=""
+                      draggable="false"
                     />
                   </Col>
                 </Row>
@@ -1525,6 +1528,7 @@ const Home = () => {
                                         width="17.26px"
                                         height="16.62px"
                                         alt=""
+                                        draggable="false"
                                         className={
                                           styles[
                                             "starIcon-In-Collapse-material"
@@ -1537,6 +1541,7 @@ const Home = () => {
                                         width="17.34px"
                                         height="16.62px"
                                         alt=""
+                                        draggable="false"
                                         className={
                                           styles[
                                             "starIcon-In-Collapse-material"
@@ -1552,6 +1557,7 @@ const Home = () => {
                                           width="17.46px"
                                           height="16.05px"
                                           alt=""
+                                          draggable="false"
                                         />
                                       </span>
                                     )}
@@ -1597,6 +1603,7 @@ const Home = () => {
                             src={NotesMainEmpty}
                             width={150}
                             alt=""
+                            draggable="false"
                             height={150}
                           />
                           <p className="emptystateNotesDashboard">
@@ -1641,6 +1648,8 @@ const Home = () => {
                           src={VerificationFailedIcon}
                           width={60}
                           className={"allowModalIcon"}
+                          alt=""
+                          draggable="false"
                         />
                       </Col>
                     </Row>

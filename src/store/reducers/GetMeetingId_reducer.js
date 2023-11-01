@@ -51,9 +51,6 @@ const meetingIdReducer = (state = initialState, action) => {
 
     case actions.ALL_MEETINGS_SOCKET: {
       console.log("allMeetingsSocket", action.response);
-      // let GetAllMeetingSocketIdArray = action.response.map((item, index) => {
-      //   return { ...item, key: index };
-      // });
       return {
         ...state,
         allMeetingsSocketData: action.response,

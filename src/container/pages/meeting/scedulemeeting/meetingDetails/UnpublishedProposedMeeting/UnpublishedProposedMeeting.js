@@ -41,12 +41,27 @@ import {
 
 const UnpublishedProposedMeeting = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { t } = useTranslation();
-  const { NewMeetingreducer } = useSelector((state) => state);
-  const [rows, setRow] = useState([]);
-  const [totalRecords, setTotalRecords] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
+
+  const searchMeetings = useSelector(
+    (state) => state.NewMeetingreducer.searchMeetings
+  );
+
+  const sceduleproposedMeeting = useSelector(
+    (state) => state.NewMeetingreducer.sceduleproposedMeeting
+  );
+
+  const deleteMeetingModal = useSelector(
+    (state) => state.NewMeetingreducer.deleteMeetingModal
+  );
+
+  const allMeetingsSocketData = useSelector(
+    (state) => state.meetingIdReducer.allMeetingsSocketData
+  );
+
+  const [rows, setRow] = useState([]);
+  let currentUserId = localStorage.getItem("userID");
 
   const handleDeleteMeetingModal = () => {
     dispatch(showDeleteMeetingModal(true));
@@ -55,6 +70,7 @@ const UnpublishedProposedMeeting = () => {
   const enableScedulePrposedMeetingModal = () => {
     dispatch(showSceduleProposedMeeting(true));
   };
+
   // Empty text data
   const emptyText = () => {
     return (
@@ -78,6 +94,31 @@ const UnpublishedProposedMeeting = () => {
       },
       sorter: (a, b) => {
         return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
+      },
+    },
+    {
+      title: t("Status"),
+      dataIndex: "status",
+      key: "status",
+      width: "120px",
+      filters: [
+        {
+          text: t("Proposed"),
+          value: "12",
+        },
+        {
+          text: t("Unpublished"),
+          value: "11",
+        },
+      ],
+      defaultFilteredValue: ["11", "12"],
+      filterIcon: (filtered) => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
+      onFilter: (value, record) =>
+        record.status.toLowerCase().includes(value.toLowerCase()),
+      render: (text, record) => {
+        return StatusValue(t, record.status);
       },
     },
     {
@@ -121,10 +162,95 @@ const UnpublishedProposedMeeting = () => {
       },
     },
     {
+      title: t("Propose-date-poll"),
+      dataIndex: "MeetingPoll",
+      key: "MeetingPoll",
+      width: "100px",
+      render: (text, record) => {
+        let maxValue = record.meetingPoll?.totalNoOfDirectors;
+        let value = +record.meetingPoll?.totalNoOfDirectorsVoted;
+        if (record.meetingPoll) {
+          return (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  {value === maxValue ? (
+                    <img
+                      src={rspvGreenIcon}
+                      height="17.06px"
+                      width="17.06px"
+                      alt=""
+                    />
+                  ) : (
+                    <span className={styles["RatioClass"]}>
+                      {record.meetingPoll?.totalNoOfDirectorsVoted}/
+                      {record.meetingPoll?.totalNoOfDirectors}
+                    </span>
+                  )}
+
+                  {/* <img src={rspvGreenIcon} height="17.06px" width="17.06px" />  */}
+                </Col>
+              </Row>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={"newMeetingProgressbar"}
+                >
+                  {value === maxValue ? (
+                    <ProgressBar
+                      variant=""
+                      className="custom-progress"
+                      now={100}
+                    />
+                  ) : (
+                    <ProgressBar
+                      now={value}
+                      max={maxValue}
+                      className={"newMeetingProgressbar"}
+                    />
+                  )}
+                </Col>
+              </Row>
+            </>
+          );
+        }
+      },
+    },
+    {
+      title: t("Send-reponse-by"),
+      dataIndex: "responseDeadLine",
+      key: "responseDeadLine",
+      width: "100px",
+      render: (text, record) => {
+        return (
+          <span className="d-flex justify-content-center">
+            {convertDateinGMT(text)}
+          </span>
+        );
+      },
+    },
+    {
       dataIndex: "Edit",
       key: "Edit",
       width: "90px",
       render: (text, record) => {
+        const isParticipant = record.meetingAttendees.some(
+          (attendee) =>
+            attendee.user.pK_UID === currentUserId &&
+            attendee.meetingAttendeeRole.role === "Participants"
+        );
+        const isAgendaContributor = record.meetingAttendees.some(
+          (attendee) =>
+            attendee.user.pK_UID === currentUserId &&
+            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+        );
         return (
           <>
             <Row>
@@ -134,26 +260,55 @@ const UnpublishedProposedMeeting = () => {
                 lg={12}
                 className="d-flex  align-items-center gap-4"
               >
-                <img
-                  src={deleteIcon}
-                  className="cursor-pointer"
-                  width="17.03px"
-                  height="17.03px"
-                  alt=""
-                />
-                <img
-                  src={EditIcon}
-                  className="cursor-pointer"
-                  width="17.03px"
-                  height="17.03px"
-                  alt=""
-                />
-
-                {/* <img src={EditIcon} width="17.03px" height="17.03px" alt="" /> */}
-                <Button
-                  text="Publish Meeting"
-                  className={styles["publish_meeting_btn"]}
-                />
+                {isParticipant ? null : isAgendaContributor ? (
+                  <img
+                    src={EditIcon}
+                    className="cursor-pointer"
+                    width="17.03px"
+                    height="17.03px"
+                    alt=""
+                    draggable="false"
+                  />
+                ) : (
+                  <>
+                    <img
+                      src={deleteIcon}
+                      className="cursor-pointer"
+                      width="17.03px"
+                      height="17.03px"
+                      alt=""
+                      draggable="false"
+                    />
+                    <img
+                      src={EditIcon}
+                      className="cursor-pointer"
+                      width="17.03px"
+                      height="17.03px"
+                      alt=""
+                      draggable="false"
+                    />
+                  </>
+                )}
+                {record.status === "11" ? (
+                  isParticipant ? null : isAgendaContributor ? null : (
+                    <Button
+                      text={t("Publish-meeting")}
+                      className={styles["publish_meeting_btn"]}
+                    />
+                  )
+                ) : record.status === "12" ? (
+                  isParticipant ? (
+                    <Button
+                      text={t("View-poll")}
+                      className={styles["publish_meeting_btn"]}
+                    />
+                  ) : (
+                    <Button
+                      text={t("View-poll")}
+                      className={styles["publish_meeting_btn"]}
+                    />
+                  )
+                ) : null}
               </Col>
             </Row>
           </>
@@ -163,55 +318,97 @@ const UnpublishedProposedMeeting = () => {
   ];
 
   useEffect(() => {
+    if (Object.keys(allMeetingsSocketData).length > 0) {
+      let tableRowsData = [...rows];
+      var foundIndex = tableRowsData.findIndex(
+        (x) => x.pK_MDID === allMeetingsSocketData.pK_MDID
+      );
+      if (foundIndex !== -1) {
+        const newState = tableRowsData.map((obj, index) => {
+          // 👇️ if id equals 2 replace object
+          if (foundIndex === index) {
+            return allMeetingsSocketData;
+          }
+
+          // 👇️ otherwise return object as is
+          return obj;
+        });
+        setRow(newState);
+      } else {
+        setRow([allMeetingsSocketData, ...rows]);
+      }
+    }
+  }, [allMeetingsSocketData]);
+  useEffect(() => {
     try {
-      if (
-        NewMeetingreducer.searchMeetings !== null &&
-        NewMeetingreducer.searchMeetings !== undefined
-      ) {
-        setTotalRecords(NewMeetingreducer.searchMeetings.totalRecords);
+      if (searchMeetings !== null && searchMeetings !== undefined) {
         if (
-          NewMeetingreducer.searchMeetings.meetings !== null &&
-          NewMeetingreducer.searchMeetings.meetings !== undefined &&
-          NewMeetingreducer.searchMeetings.meetings.length > 0
+          searchMeetings.meetings !== null &&
+          searchMeetings.meetings !== undefined &&
+          searchMeetings.meetings.length > 0
         ) {
           let newRowData = [];
-          NewMeetingreducer.searchMeetings.meetings.map((data, index) => {
-            newRowData.push({
-              dateOfMeeting: data.dateOfMeeting,
-              host: data.host,
-              isAttachment: data.isAttachment,
-              isChat: data.isChat,
-              isVideoCall: data.isVideoCall,
-              isQuickMeeting: data.isQuickMeeting,
-              meetingAgenda: data.meetingAgenda,
-              meetingAttendees: data.meetingAttendees,
-              meetingEndTime: data.meetingEndTime,
-              meetingStartTime: data.meetingStartTime,
-              meetingURL: data.meetingURL,
-              orignalProfilePictureName: data.orignalProfilePictureName,
-              pK_MDID: data.pK_MDID,
-              meetingPoll: {
-                totalNoOfDirectors: data.meetingPoll.totalNoOfDirectors,
-                totalNoOfDirectorsVoted:
-                  data.meetingPoll.totalNoOfDirectorsVoted,
-              },
-              responseDeadLine: data.responseDeadLine,
-              status: data.status,
-              title: data.title,
-              key: index,
-            });
+          searchMeetings.meetings.forEach((data, index) => {
+            // Filter and map meeting attendees based on your conditions
+            const filteredAttendees = data.meetingAttendees.filter(
+              (attendee) => {
+                if (
+                  (data.status === "11" &&
+                    Number(attendee.user.pK_UID) === Number(currentUserId) &&
+                    (attendee.meetingAttendeeRole.role === "Organizer" ||
+                      attendee.meetingAttendeeRole.role ===
+                        "Agenda Contributor")) ||
+                  (data.status === "12" &&
+                    Number(attendee.user.pK_UID) === Number(currentUserId))
+                ) {
+                  return true;
+                }
+                return false;
+              }
+            );
+
+            // If there are attendees that meet the criteria, include the meeting
+            if (filteredAttendees.length > 0) {
+              newRowData.push({
+                dateOfMeeting: data.dateOfMeeting,
+                host: data.host,
+                isAttachment: data.isAttachment,
+                isChat: data.isChat,
+                isVideoCall: data.isVideoCall,
+                isQuickMeeting: data.isQuickMeeting,
+                meetingAgenda: data.meetingAgenda,
+                meetingAttendees: filteredAttendees, // Use filtered attendees here
+                meetingEndTime: data.meetingEndTime,
+                meetingStartTime: data.meetingStartTime,
+                meetingURL: data.meetingURL,
+                orignalProfilePictureName: data.orignalProfilePictureName,
+                pK_MDID: data.pK_MDID,
+                meetingPoll: {
+                  totalNoOfDirectors: data.meetingPoll.totalNoOfDirectors,
+                  totalNoOfDirectorsVoted:
+                    data.meetingPoll.totalNoOfDirectorsVoted,
+                },
+                responseDeadLine: data.responseDeadLine,
+                status: data.status,
+                title: data.title,
+                key: index,
+              });
+            }
           });
           setRow(newRowData);
+        } else {
+          setRow([]);
         }
-      } else {
-        setRow([]);
       }
-    } catch {}
-  }, [NewMeetingreducer.searchMeetings]);
+    } catch (error) {
+      // Handle errors here
+    }
+  }, [searchMeetings]);
 
   const scroll = {
     y: 800, // Set the desired height for the vertical scroll
   };
+
   return (
     <section>
       <Row>
@@ -239,8 +436,8 @@ const UnpublishedProposedMeeting = () => {
           />
         </Col>
       </Row>
-      {NewMeetingreducer.sceduleproposedMeeting && <SceduleProposedmeeting />}
-      {NewMeetingreducer.deleteMeetingModal && <DeleteMeetingModal />}
+      {sceduleproposedMeeting && <SceduleProposedmeeting />}
+      {deleteMeetingModal && <DeleteMeetingModal />}
     </section>
   );
 };
