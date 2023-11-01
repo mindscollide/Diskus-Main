@@ -1087,5 +1087,11 @@
   "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time": "Proposed dates should be in increasing order of date and start time",
   "Not-more-than-5-dates-are-allowed": "Not More Than 5 Dates Are Allowed",
   "Publish-meeting": "Publish meeting",
-  "Propose-date-poll":"Propose Date Poll"
+  "Propose-date-poll": "Propose Date Poll",
+  "Update-successfully": "Update successfully",
+  "Failed-to-created-new-mapping": "Failed to created new mapping",
+  "New-mapped-created": "New mapped created",
+  "Failed-to-save-or-map-folder": "Failed to save or map folder",
+  "Committee-detail": "Committee detail",
+  "Task-later": "Task later"
 }

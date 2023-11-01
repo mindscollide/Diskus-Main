@@ -23,7 +23,7 @@ import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
-const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
+const Polls = ({ setSceduleMeeting, setPolls, setAttendance, view }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -59,15 +59,18 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   };
 
   useEffect(() => {
-    let Data = {
-      MeetingID: currentMeetingID,
-      OrganizationID: Number(OrganizationID),
-      CreatorName: "",
-      PollTitle: "",
-      PageNumber: 1,
-      Length: 50,
-    };
-    dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
+    if (view === 2) {
+    } else {
+      let Data = {
+        MeetingID: currentMeetingID,
+        OrganizationID: Number(OrganizationID),
+        CreatorName: "",
+        PollTitle: "",
+        PageNumber: 1,
+        Length: 50,
+      };
+      dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
+    }
   }, []);
 
   useEffect(() => {
@@ -341,7 +344,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         <>
           <section>
             {createpoll ? (
-              <Createpolls setCreatepoll={setCreatepoll} />
+              <Createpolls setCreatepoll={setCreatepoll} view={view} />
             ) : votePolls ? (
               <CastVotePollsMeeting setvotePolls={setvotePolls} />
             ) : editPolls ? (

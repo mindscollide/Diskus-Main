@@ -15,7 +15,8 @@ body[dir="rtl"] .details-class-Create-Committee {
 }
 
 .scroll-bar-createCommittee {
-  height: 24vh !important;
+  height: 100%;
+  max-height: 41vh;
   overflow-x: hidden !important;
 }
 

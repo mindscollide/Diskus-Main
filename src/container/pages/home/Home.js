@@ -1144,6 +1144,7 @@ const Home = () => {
                           height={210}
                           width={250}
                           alt=""
+                          draggable="false"
                         />
                       }
                       title={t("No-task")}
@@ -1520,47 +1521,49 @@ const Home = () => {
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className="d-flex gap-2 align-items-center"
+                                    className="d-flex gap-2 align-items-center justify-content-between"
                                   >
-                                    {data.isStarred ? (
-                                      <img
-                                        src={hollowstar}
-                                        width="17.26px"
-                                        height="16.62px"
-                                        alt=""
-                                        draggable="false"
-                                        className={
-                                          styles[
-                                            "starIcon-In-Collapse-material"
-                                          ]
-                                        }
-                                      />
-                                    ) : (
-                                      <img
-                                        src={StarIcon}
-                                        width="17.34px"
-                                        height="16.62px"
-                                        alt=""
-                                        draggable="false"
-                                        className={
-                                          styles[
-                                            "starIcon-In-Collapse-material"
-                                          ]
-                                        }
-                                      />
-                                    )}
-                                    {/* <Star /> */}
-                                    {data.isAttachment && (
-                                      <span>
+                                    <span className="d-flex gap-2">
+                                      {data.isStarred ? (
                                         <img
-                                          src={IconAttachment}
-                                          width="17.46px"
-                                          height="16.05px"
+                                          src={hollowstar}
+                                          width="17.26px"
+                                          height="16.62px"
                                           alt=""
                                           draggable="false"
+                                          className={
+                                            styles[
+                                              "starIcon-In-Collapse-material"
+                                            ]
+                                          }
                                         />
-                                      </span>
-                                    )}
+                                      ) : (
+                                        <img
+                                          src={StarIcon}
+                                          width="17.34px"
+                                          height="16.62px"
+                                          alt=""
+                                          draggable="false"
+                                          className={
+                                            styles[
+                                              "starIcon-In-Collapse-material"
+                                            ]
+                                          }
+                                        />
+                                      )}
+                                      {/* <Star /> */}
+                                      {data.isAttachment && (
+                                        <span>
+                                          <img
+                                            src={IconAttachment}
+                                            width="17.46px"
+                                            height="16.05px"
+                                            alt=""
+                                            draggable="false"
+                                          />
+                                        </span>
+                                      )}
+                                    </span>
                                     {/* <img src={IconAttachment} alt="" /> */}
                                     <span className="DataTimeDay">
                                       {_justShowDateformat(

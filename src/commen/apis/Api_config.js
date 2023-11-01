@@ -1023,8 +1023,39 @@ const setMeetingProposedDatesResponse = {
 const CreateUpdateCommitteeDatarRoomRM = {
   RequestMethod: "ServiceManager.CreateUpdateCommiteeDataRoomMap",
 };
+const saveCommitteeDocumentsRM = {
+  RequestMethod: "ServiceManager.SaveCommitteeDocuments",
+};
+
+const reteriveCommitteeDocumentsRM = {
+  RequestMethod: "ServiceManager.ReteriveCommitteeDocuments",
+};
+
+//Aun work on Get meetingMaterial
+const getAllMeetingMaterial = {
+  RequestMethod: "ServiceManager.GetAllMeetingMaterial",
+};
+
+//Aun working on download Attendance Report
+const downloadMeetingAttendanceReport = {
+  RequestMethod: "ServiceManager.DownloadMeetingAttendanceReportExcel",
+};
+
+const CreateUpdateGroupDataRoadMap = {
+  RequestMethod: "ServiceManager.CreateUpdateGroupDataRoomMap",
+};
+
+const SaveTheGroupsDocuments = {
+  RequestMethod: "ServiceManager.SaveGroupsDocuments",
+};
+
+const RetrieveGroupDocuments = {
+  RequestMethod: "ServiceManager.ReteriveGroupDocuments",
+};
 
 export {
+  saveCommitteeDocumentsRM,
+  reteriveCommitteeDocumentsRM,
   CreateUpdateCommitteeDatarRoomRM,
   saveResolutionDocumentsRM,
   updateResolutionDataRoomMapRM,
@@ -1294,9 +1325,14 @@ export {
   SetMeetingPolls,
   SettingMeetingProposedDates,
   getAllPropsedMeetingdates,
-
   //Aun attendance
   getAllAttendanceMeeting,
   saveMeetingAttendance,
   setMeetingProposedDatesResponse,
+  //Aun MeetingMaterial
+  getAllMeetingMaterial,
+  downloadMeetingAttendanceReport,
+  CreateUpdateGroupDataRoadMap,
+  SaveTheGroupsDocuments,
+  RetrieveGroupDocuments,
 };

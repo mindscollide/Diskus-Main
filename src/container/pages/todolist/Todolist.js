@@ -827,6 +827,7 @@ const TodoList = () => {
     getTodosStatus.UpdateTodoStatusMessage,
     getTodosStatus.UpdateTodoStatus,
   ]);
+
   const scroll = {
     y: "58vh",
     scrollbar: {
@@ -836,6 +837,7 @@ const TodoList = () => {
       // Other scrollbar options
     },
   };
+
   return (
     <>
       <div className="todolistContainer">

@@ -1,132 +1,135 @@
-.View-Group-heading {
+.View-Committee-heading {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
   color: #6172d6 !important;
 }
 
-body[dir="rtl"] .View-Group-heading {
+body[dir="rtl"] .View-Committee-heading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.View-group-Subheading {
+.View-Committee-Subheading {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
   color: #6172d6 !important;
 }
 
-body[dir="rtl"] .View-group-Subheading {
+body[dir="rtl"] .View-Committee-Subheading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.Management-Heading-View-Group {
+.Management-Heading-View-Committee {
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
   color: #5a5a5a;
 }
 
-body[dir="rtl"] .Management-Heading-View-Group {
+body[dir="rtl"] .Management-Heading-View-Committee {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-.paragraph-content-View-Group {
-  font-size: 16px !important;
-  font-family: "MontserratSemiBold";
-  color: #5a5a5a;
 }
 
-body[dir="rtl"] .paragraph-content-View-Group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-.Create-group-Head-Heading {
+.View-Committee-Head-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
 }
 
-body[dir="rtl"] .Create-group-Head-Heading {
+body[dir="rtl"] .View-Committee-Head-Heading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
-.group-head-info {
+
+.ViewCommittee-head-info {
   line-height: 15px !important;
 }
 
-.name-create-group {
+.name-ViewCommittee-group {
   color: #5a5a5a;
   font-size: 12px !important;
-  font-family: "MontserratSemiBold";
 }
 
-body[dir="rtl"] .name-create-group {
+body[dir="rtl"] .name-ViewCommittee-group {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.Designation-create-group {
+.paragraph-content-View-Committee {
+  color: #5a5a5a;
+  font-size: 16px !important;
+}
+
+body[dir="rtl"] .paragraph-content-View-Committee {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Designation-ViewCommittee-group {
   color: #5a5a5a;
   font-size: 10px !important;
-  font-family: "MontserratSemiBold";
 }
 
-body[dir="rtl"] .Designation-create-group {
+body[dir="rtl"] .Designation-ViewCommittee-group {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.email-create-group {
-  font-family: "MontserratSemiBold";
+.email-ViewCommittee-group {
+  color: #5a5a5a;
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
 }
 
-body[dir="rtl"] .email-create-group {
+body[dir="rtl"] .email-ViewCommittee-group {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
-.members-create-group-page {
+.members-ViewCommittee-group-page {
   font-size: 20px !important;
-  font-family: "MontserratSemiBold";
   color: #6172d6 !important;
 }
 
-body[dir="rtl"] .members-create-group-page {
+body[dir="rtl"] .members-ViewCommittee-group-page {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.scroll-bar-creategroup {
+.scroll-bar-ViewGroup {
   height: 39vh !important;
   overflow-x: hidden !important;
 }
 
-.scroll-bar-creategroup::-webkit-scrollbar {
+.scroll-bar-ViewGroup::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
 
-.scroll-bar-creategroup::-webkit-scrollbar-thumb {
+.scroll-bar-ViewGroup::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
 }
 
-.View-group-paper {
+.View-Committee-paper {
   height: auto !important;
   width: 100% !important;
-  padding: 60px 40px !important;
+  padding: 30px 40px 20px 40px !important;
+  /* margin-top: 8px !important; */
 }
 
-.Close-ViewGroup-btn {
+.Close-ViewCommittee-btn {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-body[dir="rtl"] .Close-ViewGroup-btn {
+
+body[dir="rtl"] .Close-ViewCommittee-btn {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.Close-ViewGroup-btn:is(:hover, :active, :visited, :focus, :focus-visible) {
+.Close-ViewCommittee-btn:hover,
+.Close-ViewCommittee-btn:active,
+.Close-ViewCommittee-btn:focus,
+.Close-ViewCommittee-btn:focus-visible {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
@@ -134,6 +137,9 @@ body[dir="rtl"] .Close-ViewGroup-btn {
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: none !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 .ant-upload-text {
@@ -184,28 +190,9 @@ body[dir="rtl"] .ant-upload-text {
   border: 1px solid #e1e1e1 !important;
   margin-bottom: 10px !important;
   border-radius: 4px !important;
-  margin: 5px !important;
+  position: relative;
+  margin: 5px;
 }
-
-.Scroller_files {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  height: 39vh !important;
-  overflow-x: hidden !important;
-}
-
-.Scroller_files::-webkit-scrollbar {
-  width: 0.5rem;
-  border-radius: 20px;
-  background-color: #f2f2f2;
-}
-
-.Scroller_files::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #ccc;
-  margin-left: -15px;
-}
-
 .Crossicon_Class {
   cursor: pointer !important;
   position: absolute !important;

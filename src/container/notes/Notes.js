@@ -243,8 +243,12 @@ const Notes = () => {
   const toggleAcordion = (notesID) => {
     console.log(notesID, "notesIDnotesIDnotesID");
     // setExpanded((prev) => (prev === notesID ? true : false));
-    setExpand(!isExpand);
-    setExpanded(notesID);
+    if (isExpanded === notesID) {
+      setExpanded(false);
+    } else {
+      setExpanded(notesID);
+    }
+    // setExpand(!isExpand);
   };
 
   console.log(isExpanded, "isExpandedisExpandedisExpanded");
@@ -321,8 +325,7 @@ const Notes = () => {
                         id="panel1a-header"
                         className={styles["notes_accordion"]}
                         expanded={
-                          isExpanded === JSON.parse(data?.pK_NotesID) &&
-                          isExpand
+                          isExpanded === JSON.parse(data?.pK_NotesID)
                             ? true
                             : false
                         }
@@ -339,8 +342,7 @@ const Notes = () => {
                               toggleAcordion(JSON.parse(data?.pK_NotesID)),
                           }}
                           expandIcon={
-                            isExpanded === JSON.parse(data?.pK_NotesID) &&
-                            isExpand ? (
+                            isExpanded === JSON.parse(data?.pK_NotesID) ? (
                               <img
                                 draggable="false"
                                 src={MinusExpand}
