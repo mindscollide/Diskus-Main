@@ -169,6 +169,10 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
     Date: "",
     Title: "",
     HostName: "",
+    UserID: createrID,
+    PageNumber: meetingPageCurrent,
+    Length: meetingpageRow,
+    PublishedMeetings: true,
   };
   return (dispatch) => {
     dispatch(ScheculeMeetingInit());
