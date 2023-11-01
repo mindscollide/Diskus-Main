@@ -1511,10 +1511,10 @@ const SaveGroupsDocumentsApiFunc = (
                 )
               );
               dispatch(methodCreateUpdateDataRoadMapFailed(""));
-              dispatch(getGroups(navigate, t, currentPage));
               setCreategrouppage(false);
               setViewGroupPage(false);
               localStorage.removeItem("groupID");
+              dispatch(getGroups(navigate, t, currentPage));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
