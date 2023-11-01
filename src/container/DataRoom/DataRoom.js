@@ -891,9 +891,11 @@ const DataRoom = () => {
       dataIndex: "fileSize",
       key: "fileSize",
       width: "90px",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         if (record.isFolder) {
+          return <Dash />;
         } else {
           return <span className={styles["ownerName"]}>{text}</span>;
         }
