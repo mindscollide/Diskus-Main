@@ -95,3 +95,25 @@
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
 }
+
+.agenda-name-title {
+  font-family: "MontserratSemiBold-600" !important;
+  color: #6172d6 !important;
+  font-size: 12px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 5px;
+}
+
+.docx-name-title {
+  font-family: "MontserratSemiBold-600" !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  margin-top: 5px;
+}

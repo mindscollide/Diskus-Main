@@ -2363,12 +2363,8 @@ const OtoMessageRetryFlag = (response) => {
 //Insert OTO Messages
 const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
   let token = JSON.parse(localStorage.getItem('token'))
-  console.log('InsertOTOMessages RequestData', object, fileUploadData)
-
-  let unsentMessageObject =
-    JSON.parse(localStorage.getItem('unsentMessage')) || []
-  let messageUnsent = []
-
+  let messageSendDataLS = JSON.parse(localStorage.getItem('messageArray')) || []
+  console.log('InsertOTOMessages', object, fileUploadData)
   return async (dispatch) => {
     dispatch(OTOMessageSendInit())
     let form = new FormData()
@@ -2384,13 +2380,10 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
       },
     })
       .then(async (response) => {
-        console.log('InsertOTOMessages ThenResponse', response)
         if (response.data.responseCode === 417) {
-          console.log('InsertOTOMessages 417Response', response)
           await dispatch(RefreshToken(navigate, t))
           dispatch(InsertOTOMessages(navigate, object, fileUploadData, t, flag))
         } else if (response.data.responseCode === 200) {
-          console.log('InsertOTOMessages 200Response', response)
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
@@ -2399,13 +2392,46 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                   'Talk_TalkServiceManager_InsertOTOMessages_01'.toLowerCase(),
                 )
             ) {
-              console.log('InsertOTOMessages 01Response', response)
+              console.log(
+                'messageSendDataLSmessageSendDataLS',
+                messageSendDataLS,
+              )
               await dispatch(
                 OTOMessageSendSuccess(
                   t('OTO-message-inserted'),
                   response.data.responseResult.talkResponse,
                 ),
               )
+              console.log(
+                'messageSendDataLSmessageSendDataLS',
+                messageSendDataLS,
+              ) // Replace with the actual object you want to remove
+              messageSendDataLS = messageSendDataLS.filter(
+                (obj) =>
+                  obj.TalkRequest.Message.UID !==
+                  object.TalkRequest.Message.UID,
+              )
+              localStorage.setItem(
+                'messageArray',
+                JSON.stringify(messageSendDataLS),
+              )
+              console.log(
+                'messageSendDataLSmessageSendDataLS',
+                messageSendDataLS,
+              )
+              if (flag === undefined) {
+                console.log('LocalStorageManagement Interval')
+                dispatch(OtoMessageRetryFlag(false))
+              } else if (
+                flag === 0 ||
+                flag === 4 ||
+                flag === 8 ||
+                flag === 12 ||
+                flag === 16
+              ) {
+                dispatch(OtoMessageRetryFlag(false))
+              }
+              console.log('LocalStorageManagement Interval')
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2419,18 +2445,29 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                   response.data.responseResult.talkResponse,
                 ),
               )
-              if (unsentMessageObject) {
-                messageUnsent = [...unsentMessageObject]
-                messageUnsent.push(object.TalkRequest.Message.UID)
-              } else {
-                messageUnsent = object.TalkRequest.Message.UID
-              }
-
-              localStorage.setItem(
-                'unsentMessage',
-                JSON.stringify(messageUnsent),
+              messageSendDataLS = messageSendDataLS.filter(
+                (obj) =>
+                  obj.TalkRequest.Message.UID !==
+                  object.TalkRequest.Message.UID,
               )
-              console.log('InsertOTOMessages 02Response', response)
+              localStorage.setItem(
+                'messageArray',
+                JSON.stringify(messageSendDataLS),
+              )
+              if (flag === undefined) {
+                console.log('LocalStorageManagement Interval')
+
+                dispatch(OtoMessageRetryFlag(false))
+              } else if (
+                flag === 0 ||
+                flag === 4 ||
+                flag === 8 ||
+                flag === 12 ||
+                flag === 16
+              ) {
+                dispatch(OtoMessageRetryFlag(false))
+              }
+              console.log('LocalStorageManagement Interval')
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2444,18 +2481,29 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                   response.data.responseResult.talkResponse,
                 ),
               )
-              if (unsentMessageObject) {
-                messageUnsent = [...unsentMessageObject]
-                messageUnsent.push(object.TalkRequest.Message.UID)
-              } else {
-                messageUnsent = object.TalkRequest.Message.UID
-              }
-
-              localStorage.setItem(
-                'unsentMessage',
-                JSON.stringify(messageUnsent),
+              messageSendDataLS = messageSendDataLS.filter(
+                (obj) =>
+                  obj.TalkRequest.Message.UID !==
+                  object.TalkRequest.Message.UID,
               )
-              console.log('InsertOTOMessages 03Response', response)
+              localStorage.setItem(
+                'messageArray',
+                JSON.stringify(messageSendDataLS),
+              )
+              if (flag === undefined) {
+                console.log('LocalStorageManagement Interval')
+
+                dispatch(OtoMessageRetryFlag(false))
+              } else if (
+                flag === 0 ||
+                flag === 4 ||
+                flag === 8 ||
+                flag === 12 ||
+                flag === 16
+              ) {
+                dispatch(OtoMessageRetryFlag(false))
+              }
+              console.log('LocalStorageManagement Interval')
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2469,18 +2517,29 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                   response.data.responseResult.talkResponse,
                 ),
               )
-              if (unsentMessageObject) {
-                messageUnsent = [...unsentMessageObject]
-                messageUnsent.push(object.TalkRequest.Message.UID)
-              } else {
-                messageUnsent = object.TalkRequest.Message.UID
-              }
-
-              localStorage.setItem(
-                'unsentMessage',
-                JSON.stringify(messageUnsent),
+              messageSendDataLS = messageSendDataLS.filter(
+                (obj) =>
+                  obj.TalkRequest.Message.UID !==
+                  object.TalkRequest.Message.UID,
               )
-              console.log('InsertOTOMessages 04Response', response)
+              localStorage.setItem(
+                'messageArray',
+                JSON.stringify(messageSendDataLS),
+              )
+              if (flag === undefined) {
+                console.log('LocalStorageManagement Interval')
+
+                dispatch(OtoMessageRetryFlag(false))
+              } else if (
+                flag === 0 ||
+                flag === 4 ||
+                flag === 8 ||
+                flag === 12 ||
+                flag === 16
+              ) {
+                dispatch(OtoMessageRetryFlag(false))
+              }
+              console.log('LocalStorageManagement Interval')
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2489,55 +2548,52 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                 )
             ) {
               await dispatch(OTOMessageSendFail(t('Something-went-wrong')))
-              if (unsentMessageObject) {
-                messageUnsent = [...unsentMessageObject]
-                messageUnsent.push(object.TalkRequest.Message.UID)
-              } else {
-                messageUnsent = object.TalkRequest.Message.UID
-              }
+              console.log('LocalStorageManagement Interval')
 
-              localStorage.setItem(
-                'unsentMessage',
-                JSON.stringify(messageUnsent),
-              )
-              console.log('InsertOTOMessages 05Response', response)
+              if (flag === undefined) {
+                dispatch(OtoMessageRetryFlag(true))
+              } else if (flag === 16) {
+                dispatch(OtoMessageRetryFlag(false))
+              }
+              console.log('LocalStorageManagement Interval')
+
+              console.log('OTOMessageSendFailOTOMessageSendFail')
             }
           } else {
             await dispatch(OTOMessageSendFail(t('Something-went-wrong')))
-            console.log('InsertOTOMessages ElseChecks', response)
-            if (unsentMessageObject) {
-              messageUnsent = [...unsentMessageObject]
-              messageUnsent.push(object.TalkRequest.Message.UID)
-            } else {
-              messageUnsent = object.TalkRequest.Message.UID
-            }
+            console.log('LocalStorageManagement Interval')
 
-            localStorage.setItem('unsentMessage', JSON.stringify(messageUnsent))
+            if (flag === undefined) {
+              dispatch(OtoMessageRetryFlag(true))
+            } else if (flag === 16) {
+              dispatch(OtoMessageRetryFlag(false))
+            }
+            console.log('LocalStorageManagement Interval')
           }
         } else {
           await dispatch(OTOMessageSendFail(t('Something-went-wrong')))
-          console.log('InsertOTOMessages ElseChecks', response)
-          if (unsentMessageObject) {
-            messageUnsent = [...unsentMessageObject]
-            messageUnsent.push(object.TalkRequest.Message.UID)
-          } else {
-            messageUnsent = object.TalkRequest.Message.UID
-          }
+          console.log('LocalStorageManagement Interval')
 
-          localStorage.setItem('unsentMessage', JSON.stringify(messageUnsent))
+          if (flag === undefined) {
+            dispatch(OtoMessageRetryFlag(true))
+          } else if (flag === 16) {
+            dispatch(OtoMessageRetryFlag(false))
+          }
+          console.log('LocalStorageManagement Interval')
+          console.log('OTOMessageSendFailOTOMessageSendFail')
         }
       })
       .catch((response) => {
+        console.log('OTOMessageSendFailOTOMessageSendFail')
         dispatch(OTOMessageSendFail(t('Something-went-wrong')))
-        if (unsentMessageObject) {
-          messageUnsent = [...unsentMessageObject]
-          messageUnsent.push(object.TalkRequest.Message.UID)
-        } else {
-          messageUnsent = object.TalkRequest.Message.UID
-        }
+        console.log('LocalStorageManagement Interval')
 
-        localStorage.setItem('unsentMessage', JSON.stringify(messageUnsent))
-        console.log('InsertOTOMessages CatchResponse', response)
+        if (flag === undefined) {
+          dispatch(OtoMessageRetryFlag(true))
+        } else if (flag === 16) {
+          dispatch(OtoMessageRetryFlag(false))
+        }
+        console.log('LocalStorageManagement Interval')
       })
   }
 }
