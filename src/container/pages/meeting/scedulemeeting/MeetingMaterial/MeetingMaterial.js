@@ -272,7 +272,7 @@ const MeetingMaterial = ({
   // Api request on useEffect
   useEffect(() => {
     let meetingMaterialData = {
-      MeetingID: 1785,
+      MeetingID: meetingMaterialID,
     };
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
   }, []);
