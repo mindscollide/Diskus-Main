@@ -75,7 +75,14 @@ const UnpublishedProposedMeeting = () => {
   const emptyText = () => {
     return (
       <ResultMessage
-        icon={<img src={NoMeetingsIcon} alt="" className="nodata-table-icon" />}
+        icon={
+          <img
+            src={NoMeetingsIcon}
+            alt=""
+            draggable="false"
+            className="nodata-table-icon"
+          />
+        }
         title={t("No-new-meetings")}
         subTitle={t("Anything-important-thats-needs-discussion")}
       />
@@ -185,6 +192,7 @@ const UnpublishedProposedMeeting = () => {
                       height="17.06px"
                       width="17.06px"
                       alt=""
+                      draggable="false"
                     />
                   ) : (
                     <span className={styles["RatioClass"]}>
