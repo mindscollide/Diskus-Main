@@ -1,17 +1,21 @@
 {
-  "TalkRequest": {
-    "ChannelID": 302,
-    "Message": {
-      "SenderID": "802",
-      "ReceiverID": "780",
-      "Body": "ZXC",
-      "MessageActivity": "Direct Message",
-      "FileName": "",
-      "FileGeneratedName": "",
-      "Extension": "",
-      "AttachmentLocation": "",
-      "UID": "3Cylsu99nR5pEN_20231030083405075_802_780",
-      "MessageID": 0
-    }
+  "MeetingDetails": {
+    "MeetingTitle": "asdasd",
+    "MeetingType": { "PK_MTID": 4, "Type": "Board Meetings" },
+    "Location": "ass",
+    "Description": "dasd",
+    "IsVideoChat": true,
+    "IsTalkGroup": true,
+    "OrganizationId": 417,
+    "MeetingDates": [
+      { "MeetingDate": "20231102", "StartTime": "085636", "EndTime": "105638" }
+    ],
+    "MeetingReminders": [1, 2, 3],
+    "Notes": "asdadadad",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": [3],
+    "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
+    "MeetingStatusID": 11
   }
 }

@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import Newprofile from "../../../assets/images/newprofile.png";
+import featherupload from "../../../assets/images/featherupload.svg";
+import Leftploygon from "../../../assets/images/Polygon 3.svg";
+import file_image from "../../../assets/images/file_image.svg";
+import pdfIcon from "../../../assets/images/pdf_icon.svg";
+import Rightploygon from "../../../assets/images/Polygon right.svg";
 import { Paper } from "@material-ui/core";
 import {
   TextField,
@@ -17,17 +21,25 @@ import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import Groups from "../../../container/Groups/Groups";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  RetriveDocumentsGroupsApiFunc,
+  SaveGroupsDocumentsApiFunc,
   getGroupMembersRoles,
   getOrganizationGroupTypes,
   updateGroup,
+  uploadDocumentsGroupsApi,
 } from "../../../store/actions/Groups_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import CustomModal from "../modal/Modal";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
+import { Upload } from "antd";
+
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
+  const { Dragger } = Upload;
   const creatorID = JSON.parse(localStorage.getItem("userID"));
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
+  const [fileAttachments, setFileAttachments] = useState([]);
+  const [fileForSend, setFileForSend] = useState([]);
   const navigate = useNavigate();
   const [viewUpdateGroup, setViewUpdateGroup] = useState(true);
   const { t } = useTranslation();
@@ -41,6 +53,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
+  const [fileSize, setFileSize] = useState(0);
+  const [folderID, setFolderID] = useState(0);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [attendees, setAttendees] = useState([]);
@@ -62,6 +76,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const participantOptions = [t("Head"), t("Regular")];
   const [groupTypeOptions, setGroupTypeOptions] = useState([]);
   const [participantRoles, setParticipantRoles] = useState([]);
+  const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [groupTypeValue, setGroupTypeValue] = useState("");
   const [organizationGroupType, setOrganizationGroupType] = useState([]);
   // for Participant id's
@@ -554,6 +569,206 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     }
   }, [GroupsReducer.getGroupByGroupIdResponse, meetingAttendeesList]);
 
+  const props = {
+    name: "file",
+    multiple: true,
+    showUploadList: false,
+    onChange(data) {
+      const { status } = data.file;
+      let fileSizeArr;
+      if (fileAttachments.length > 9) {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+      } else if (fileAttachments.length > 0) {
+        let flag = false;
+        let sizezero;
+        let size;
+        fileAttachments.map((arData, index) => {
+          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+            flag = true;
+          }
+        });
+        if (data.file.size > 10485760) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else if (flag === true) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-already-exists"),
+            }),
+            3000
+          );
+        } else {
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size,
+          };
+          setFileAttachments([...fileAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+        }
+      } else {
+        let sizezero;
+        let size;
+        if (data.file.size > 10485760) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else {
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size,
+          };
+          setFileAttachments([...fileAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+        }
+      }
+    },
+    onDrop(e) {},
+    customRequest() {},
+  };
+
+  console.log(fileAttachments, "fileAttachmentsfileAttachments");
+
+  //Sliders For Attachments
+
+  const SlideLeft = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft - 300;
+  };
+
+  const Slideright = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft + 300;
+  };
+
+  const handleRemoveFile = (data) => {
+    setFileForSend((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) => fileSend.name !== data.DisplayAttachmentName
+      )
+    );
+
+    setPreviousFileIDs((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+
+    setFileAttachments((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+  };
+  console.log(
+    { fileAttachments, previousFileIDs, fileForSend },
+    "fileForSendfileForSendfileForSend"
+  );
+
+  useEffect(() => {
+    if (
+      GroupsReducer.groupDocuments !== null &&
+      GroupsReducer.groupDocuments !== undefined
+    ) {
+      console.log(GroupsReducer.groupDocuments, "groupDocumentsgroupDocuments");
+      if (GroupsReducer.groupDocuments.data.length > 0) {
+        setFolderID(GroupsReducer.groupDocuments.folderID);
+        let retirveArray = [];
+        let PrevIds = [];
+        GroupsReducer.groupDocuments.data.map((docsData, docsDataindex) => {
+          console.log(docsData, "docsDatadocsDatadocsDatassss");
+          retirveArray.push({
+            pK_FileID: docsData.pK_FileID,
+            DisplayAttachmentName: docsData.displayFileName,
+            fk_UserID: docsData.fK_UserID,
+          });
+          PrevIds.push({
+            pK_FileID: docsData.pK_FileID,
+            DisplayAttachmentName: docsData.displayFileName,
+          });
+        });
+        setPreviousFileIDs(PrevIds);
+        setFileAttachments(retirveArray);
+      }
+    }
+  }, [GroupsReducer.groupDocuments]);
+
+  const GroupsDocumentCallUpload = async (folderID) => {
+    let newfile = [...previousFileIDs];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsGroupsApi(navigate, t, newData, folderID, newfile)
+      );
+    });
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+
+    let Data = {
+      GroupID: Number(GroupDetails.GroupID),
+      UpdateFileList: newfile.map((data, index) => {
+        return { PK_FileID: Number(data.pK_FileID) };
+      }),
+    };
+    dispatch(
+      SaveGroupsDocumentsApiFunc(navigate, Data, t, setUpdateComponentpage)
+    );
+  };
+
+  useEffect(() => {
+    if (GroupsReducer.FolderID !== 0) {
+      let folderIDCreated = GroupsReducer.FolderID.folderID;
+      console.log("folderIDCreatedfolderIDCreated", folderIDCreated);
+      GroupsDocumentCallUpload(folderIDCreated);
+    }
+  }, [GroupsReducer.FolderID]);
+
   return (
     <>
       <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -575,7 +790,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
-                    <Col lg={8} md={8} sm={8}>
+                    <Col lg={6} md={6} sm={6}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["details-class"]}>
@@ -685,11 +900,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col lg={2} md={2} sm={2}></Col>
+                        <Col lg={1} md={1} sm={1}></Col>
                         <Col
-                          lg={4}
-                          md={4}
-                          sm={4}
+                          lg={5}
+                          md={5}
+                          sm={5}
                           className="group-type-select-field CreateMeetingReminder m-0 select-participant-box"
                         >
                           <SelectBox
@@ -738,97 +953,103 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 2) {
                                   return (
-                                    <Col lg={4} md={4} sm={12}>
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data.data.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={12}
-                                          className={styles["group-head-info"]}
-                                        >
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="mt-1"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "name-create-group"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "Designation-create-group"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.designation}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "email-create-group"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <a>
-                                                      {data.data.emailAddress}
-                                                    </a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        {/* {data.data.pK_UID !== GroupDetails.CreatorID && ( */}
-                                        <>
-                                          <Col
-                                            lg={2}
-                                            md={2}
-                                            sm={12}
-                                            className="mt-0  d-flex justify-content-center"
-                                          >
+                                    <Col lg={6} md={6} sm={6}>
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
                                             <img
-                                              src={CrossIcon}
-                                              className="cursor-pointer"
-                                              width={18}
-                                              onClick={() =>
-                                                removeMemberHandler(
-                                                  data.data.pK_UID
-                                                )
-                                              }
+                                              src={`data:image/jpeg;base64,${data.data.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
                                               draggable="false"
                                             />
                                           </Col>
-                                        </>
-                                        {/* )} */}
-                                      </Row>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={12}
+                                            className={
+                                              styles["group-head-info"]
+                                            }
+                                          >
+                                            <Row>
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
+                                                className="mt-1"
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "name-create-group"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.name}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Designation-create-group"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.designation}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "email-create-group"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <a>
+                                                        {data.data.emailAddress}
+                                                      </a>
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          {/* {data.data.pK_UID !== GroupDetails.CreatorID && ( */}
+                                          <>
+                                            <Col
+                                              lg={2}
+                                              md={2}
+                                              sm={12}
+                                              className="mt-0  d-flex justify-content-center"
+                                            >
+                                              <img
+                                                src={CrossIcon}
+                                                className="cursor-pointer"
+                                                width={18}
+                                                onClick={() =>
+                                                  removeMemberHandler(
+                                                    data.data.pK_UID
+                                                  )
+                                                }
+                                                draggable="false"
+                                              />
+                                            </Col>
+                                          </>
+                                          {/* )} */}
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 }
@@ -859,93 +1080,99 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 1) {
                                   return (
-                                    <Col lg={4} md={4} sm={12}>
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img
-                                            src={`data:image/jpeg;base64,${data.data.displayProfilePictureName}`}
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={12}
-                                          className={styles["group-head-info"]}
-                                        >
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="mt-1"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "name-create-group"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "Designation-create-group"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data.data.designation}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "email-create-group"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <a>
-                                                      {data.data.emailAddress}
-                                                    </a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          <img
-                                            src={CrossIcon}
-                                            width={18}
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
+                                    <Col lg={6} md={6} sm={6}>
+                                      <section
+                                        className={styles["Outer_Border-Line"]}
+                                      >
+                                        <Row>
+                                          <Col lg={3} md={3} sm={12}>
+                                            <img
+                                              src={`data:image/jpeg;base64,${data.data.displayProfilePictureName}`}
+                                              width={50}
+                                              height={50}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={12}
+                                            className={
+                                              styles["group-head-info"]
                                             }
-                                            draggable="false"
-                                          />
-                                        </Col>
-                                      </Row>
+                                          >
+                                            <Row>
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
+                                                className="mt-1"
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "name-create-group"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.name}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Designation-create-group"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {data.data.designation}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "email-create-group"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <a>
+                                                        {data.data.emailAddress}
+                                                      </a>
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              width={18}
+                                              className="cursor-pointer"
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
                                     </Col>
                                   );
                                 }
@@ -965,8 +1192,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                       </Row>
                       {/* till this point the scroll will be applied  */}
                     </Col>
-                    <Col lg={1} md={1} sm={1}></Col>
-                    <Col lg={3} md={3} sm={3}>
+                    <Col lg={6} md={6} sm={6}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <Row>
@@ -996,9 +1222,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           </Row>
                           <Row className="mt-3">
                             <Col
-                              lg={8}
-                              md={8}
-                              sm={8}
+                              lg={10}
+                              md={10}
+                              sm={10}
                               className="group-select-field CreateMeetingReminder "
                             >
                               <SelectBox
@@ -1010,10 +1236,10 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               />
                             </Col>
                             <Col
-                              lg={4}
-                              md={4}
-                              sm={4}
-                              className=" d-flex justify-content-start  "
+                              lg={2}
+                              md={2}
+                              sm={2}
+                              className=" d-flex justify-content-end  "
                             >
                               <Button
                                 className={styles["ADD-Group-btn"]}
@@ -1032,13 +1258,18 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 styles["scrollbar-addmember-creategroup"]
                               }
                             >
-                              <Row className="mt-4">
-                                <Col lg={12} md={12} sm={12}>
-                                  {meetingAttendeesList.length > 0
-                                    ? meetingAttendeesList.map(
-                                        (attendeelist, index) => {
-                                          return (
-                                            <Row className="d-flex gap-2 my-3">
+                              {meetingAttendeesList.length > 0
+                                ? meetingAttendeesList.map(
+                                    (attendeelist, index) => {
+                                      return (
+                                        <>
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={6}
+                                            className="mt-3"
+                                          >
+                                            <Row className="d-flex gap-2 ">
                                               <Col lg={2} md={2} sm={12}>
                                                 <img
                                                   // src={Newprofile}
@@ -1133,15 +1364,181 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                 />
                                               </Col>
                                             </Row>
-                                          );
-                                        }
-                                      )
-                                    : null}
-                                </Col>
-                              </Row>
+                                          </Col>
+                                        </>
+                                      );
+                                    }
+                                  )
+                                : null}
                             </Col>
                           </Row>
                           {/* at this point it is ending  */}
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["Attachments_Heading"]}>
+                            {"Attachment"}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row className="mt-1">
+                        <Col lg={1} md={1} sm={1} className="mt-4">
+                          {fileAttachments.length > 2 ? (
+                            <>
+                              <Button
+                                icon={
+                                  <img
+                                    src={Leftploygon}
+                                    width="20px"
+                                    height="15px"
+                                    draggable="false"
+                                  />
+                                }
+                                onClick={SlideLeft}
+                                className={styles["Leftpolygon"]}
+                              />
+                            </>
+                          ) : null}
+                        </Col>
+                        <Col lg={10} md={10} sm={10}>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="ScrolllerFiles_Committees"
+                              id="Slider"
+                            >
+                              {fileAttachments.length > 0
+                                ? fileAttachments.map((data, index) => {
+                                    console.log(data, "positionposition");
+                                    return (
+                                      <>
+                                        <Col
+                                          lg={4}
+                                          md={4}
+                                          sm={12}
+                                          className="position-relative gap-2"
+                                        >
+                                          <span
+                                            className={
+                                              styles["Crossicon_Class"]
+                                            }
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              height="12.68px"
+                                              width="12.68px"
+                                              onClick={() =>
+                                                handleRemoveFile(data)
+                                              }
+                                            />
+                                          </span>
+                                          <section
+                                            className={styles["Outer_Box"]}
+                                          >
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <img
+                                                  src={file_image}
+                                                  width={"100%"}
+                                                  alt=""
+                                                  draggable="false"
+                                                />
+                                              </Col>
+                                            </Row>
+
+                                            <section
+                                              className={
+                                                styles["backGround_name_Icon"]
+                                              }
+                                            >
+                                              <Row className="mb-2">
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className={
+                                                    styles["IconTextClass"]
+                                                  }
+                                                >
+                                                  <img
+                                                    src={pdfIcon}
+                                                    height="10px"
+                                                    width="10px"
+                                                    className={
+                                                      styles["IconPDF"]
+                                                    }
+                                                  />
+                                                  <span
+                                                    className={
+                                                      styles["FileName"]
+                                                    }
+                                                  >
+                                                    {data.DisplayAttachmentName}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </section>
+                                          </section>
+                                        </Col>
+                                      </>
+                                    );
+                                  })
+                                : null}
+                            </Col>
+                          </Row>
+                        </Col>
+                        <Col lg={1} md={1} sm={1} className="mt-4">
+                          {fileAttachments.length > 2 ? (
+                            <>
+                              <Button
+                                icon={
+                                  <img
+                                    src={Rightploygon}
+                                    width="20px"
+                                    height="15px"
+                                    draggable="false"
+                                  />
+                                }
+                                onClick={Slideright}
+                                className={styles["Leftpolygon"]}
+                              />
+                            </>
+                          ) : null}
+                        </Col>
+                      </Row>
+                      <Row className="mt-2">
+                        <Col lg={12} md={12} sm={12}>
+                          <Dragger
+                            {...props}
+                            className={
+                              styles["dragdrop_attachment_create_resolution"]
+                            }
+                          >
+                            <p className="ant-upload-drag-icon">
+                              <span
+                                className={styles["create_resolution_dragger"]}
+                              >
+                                <img
+                                  src={featherupload}
+                                  width="18.87px"
+                                  height="18.87px"
+                                  draggable="false"
+                                />
+                              </span>
+                            </p>
+                            <p className={styles["ant-upload-text"]}>
+                              {t("Drag-&-drop-or")}
+                              <span className={styles["Choose_file_style"]}>
+                                {t("Choose-file")}
+                              </span>
+                              <span className={styles["here_text"]}>
+                                {t("Here")}
+                              </span>
+                            </p>
+                          </Dragger>
                         </Col>
                       </Row>
                       <Row>
