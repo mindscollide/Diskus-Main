@@ -8,6 +8,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { useDispatch } from "react-redux";
 import {
+  getMeetingMaterialAPI,
   showAdvancePermissionModal,
   showMainAgendaItemRemovedModal,
   showVoteAgendaModal,
@@ -35,6 +36,7 @@ import Key from "../../../../../assets/images/KEY.svg";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ParentAgenda = ({
   data,
@@ -46,9 +48,11 @@ const ParentAgenda = ({
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
 }) => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let currentMeetingID = localStorage.getItem("meetingID");
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);
@@ -121,6 +125,10 @@ const ParentAgenda = ({
 
   const openAdvancePermissionModal = () => {
     dispatch(showAdvancePermissionModal(true));
+    let meetingMaterialData = {
+      MeetingID: Number(currentMeetingID),
+    };
+    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
   };
 
   const openVoteMOdal = () => {

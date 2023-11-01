@@ -119,6 +119,8 @@ const AdvancePersmissionModal = () => {
     setMemberData(updatedMemberData);
   };
 
+  const handleGetAllMeetingMaterialApiFunction = () => {};
+
   return (
     <>
       <section>
@@ -143,7 +145,13 @@ const AdvancePersmissionModal = () => {
                   sm={12}
                   className="d-flex gap-2 align-items-center"
                 >
-                  <img src={Key} height="23.51px" width="23.49px" />
+                  <img
+                    src={Key}
+                    height="23.51px"
+                    width="23.49px"
+                    className="cursor-pointer"
+                    onClick={handleGetAllMeetingMaterialApiFunction}
+                  />
                   <span className={styles["Advance_setting_heading"]}>
                     {t("Advanced-permission-settings")}
                   </span>
