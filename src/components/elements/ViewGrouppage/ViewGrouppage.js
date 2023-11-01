@@ -235,7 +235,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
     );
   };
 
-  const handleViewSave = async (folderID) => {
+  const handleViewSave = async () => {
     let newfile = [...previousFileIDs];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
