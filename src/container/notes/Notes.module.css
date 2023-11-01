@@ -180,9 +180,10 @@ body[dir="rtl"] .MinusIcon {
   color: #6172d6 !important;
 }
 
-/* .editIcon-In-Collapse-material {
-  z-index: 1 !important;
-} */
+.editIcon-In-Collapse-material {
+  /* z-index: 1 !important; */
+  cursor: pointer !important;
+}
 
 .editIconBox {
   position: absolute !important;

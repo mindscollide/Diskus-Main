@@ -312,6 +312,42 @@ const Committee = () => {
     setChangeStatusModal(true);
   };
 
+  const handleClickMeetingTab = (data) => {
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
+  const handlePollsClickTab = (data) => {
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
+  const handleTasksClickTab = (data) => {
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
   useEffect(() => {
     if (
       CommitteeReducer.ResponseMessage !== "" &&
@@ -423,6 +459,15 @@ const Committee = () => {
                                 CardID={data.committeeID}
                                 StatusID={data.committeeStatusID}
                                 CardHeading={data.committeesTitle}
+                                handleMeetingClickOption={() => {
+                                  handleClickMeetingTab(data);
+                                }}
+                                handleTasksClickOption={() => {
+                                  handleTasksClickTab(data);
+                                }}
+                                handlePollsClickOption={() => {
+                                  handlePollsClickTab(data);
+                                }}
                                 creatorId={data.creatorID}
                                 groupState={false}
                                 onClickFunction={() =>
