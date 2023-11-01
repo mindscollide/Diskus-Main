@@ -20,6 +20,7 @@ import {
   sendNotification,
   setMeetingProposedDatesResponse,
   getAllMeetingMaterial,
+  MeetingAgendaLock,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { meetingApi, pollApi } from "../../commen/apis/Api_ends_points";
@@ -2318,6 +2319,99 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData) => {
       })
       .catch((response) => {
         dispatch(meetingMaterialFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const showUpdateMeetingAgendaLockStatusInit = () => {
+  return {
+    type: actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_INIT,
+  };
+};
+
+const showUpdateMeetingAgendaLockStatusSuccess = (response, message) => {
+  return {
+    type: actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showUpdateMeetingAgendaLockStatusFailed = (message) => {
+  return {
+    type: actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_FAILED,
+    message: message,
+  };
+};
+
+const UpateMeetingStatusLockApiFunc = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showUpdateMeetingAgendaLockStatusInit());
+    let form = new FormData();
+    form.append("RequestMethod", MeetingAgendaLock.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("responseresponseresponse", response);
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(UpateMeetingStatusLockApiFunc(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "responseresponseresponse");
+            if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_01"
+            ) {
+              dispatch(
+                showUpdateMeetingAgendaLockStatusSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Status-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_02"
+            ) {
+              dispatch(
+                showUpdateMeetingAgendaLockStatusFailed(
+                  response.data.responseResult.responseMessage,
+                  t("status  Not Updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_03"
+            ) {
+              dispatch(
+                showUpdateMeetingAgendaLockStatusFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              showUpdateMeetingAgendaLockStatusFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            showUpdateMeetingAgendaLockStatusFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          showUpdateMeetingAgendaLockStatusFailed(t("Something-went-wrong"))
+        );
       });
   };
 };

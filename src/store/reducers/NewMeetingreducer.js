@@ -858,6 +858,29 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
     default: {
       return { ...state };
     }

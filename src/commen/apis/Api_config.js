@@ -1053,6 +1053,10 @@ const RetrieveGroupDocuments = {
   RequestMethod: "ServiceManager.ReteriveGroupDocuments",
 };
 
+const MeetingAgendaLock = {
+  RequestMethod: "ServiceManager.UpdateMeetingAgendaLockStatus",
+};
+
 export {
   saveCommitteeDocumentsRM,
   reteriveCommitteeDocumentsRM,
@@ -1335,4 +1339,5 @@ export {
   CreateUpdateGroupDataRoadMap,
   SaveTheGroupsDocuments,
   RetrieveGroupDocuments,
+  MeetingAgendaLock,
 };

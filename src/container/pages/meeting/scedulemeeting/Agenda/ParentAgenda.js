@@ -34,6 +34,7 @@ import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import Key from "../../../../../assets/images/KEY.svg";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import { getRandomUniqueNumber } from "./drageFunction";
+import { useSelector } from "react-redux";
 
 const ParentAgenda = ({
   data,
@@ -46,8 +47,8 @@ const ParentAgenda = ({
   setSubajendaRemoval,
 }) => {
   const { t } = useTranslation();
+  const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
-
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);
@@ -148,6 +149,12 @@ const ParentAgenda = ({
   const apllyLockOnParentAgenda = (parentIndex) => {
     const exists = mainLock.some((item) => {
       if (item === parentIndex) {
+        //Agenda Lock Api Applied
+        // let Data = {
+        //   AgendaID: "1223",
+        //   Islocked: true,
+        // };
+        // dispatch(UpateMeetingStatusLockApiFunc(navigate, t, Data));
         return true;
       }
       return false;
