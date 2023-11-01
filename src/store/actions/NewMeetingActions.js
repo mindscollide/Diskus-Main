@@ -21,6 +21,7 @@ import {
   setMeetingProposedDatesResponse,
   getAllMeetingMaterial,
   MeetingAgendaLock,
+  GetAllUserAgendaRights,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { meetingApi, pollApi } from "../../commen/apis/Api_ends_points";
@@ -2384,7 +2385,7 @@ const UpateMeetingStatusLockApiFunc = (navigate, t, Data) => {
               dispatch(
                 showUpdateMeetingAgendaLockStatusFailed(
                   response.data.responseResult.responseMessage,
-                  t("status  Not Updated")
+                  t("status-not-updated")
                 )
               );
             } else if (
@@ -2412,6 +2413,93 @@ const UpateMeetingStatusLockApiFunc = (navigate, t, Data) => {
         dispatch(
           showUpdateMeetingAgendaLockStatusFailed(t("Something-went-wrong"))
         );
+      });
+  };
+};
+
+const showGetAllUserAgendaRightsInit = () => {
+  return {
+    type: actions.GET_ALL_AGENDA_RIGHTS_INIT,
+  };
+};
+
+const showGetAllUserAgendaRightsSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_AGENDA_RIGHTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showGetAllUserAgendaRightsFailed = (message) => {
+  return {
+    type: actions.GET_ALL_AGENDA_RIGHTS_FAILED,
+    message: message,
+  };
+};
+
+const GetAllUserAgendaRightsApiFunc = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showGetAllUserAgendaRightsInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllUserAgendaRights.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("responseresponseresponse", response);
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "responseresponseresponse");
+            if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetAllUserAgendaRights_01"
+            ) {
+              dispatch(
+                showGetAllUserAgendaRightsSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetAllUserAgendaRights_02"
+            ) {
+              dispatch(
+                showGetAllUserAgendaRightsFailed(
+                  response.data.responseResult.responseMessage,
+                  t("No-record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetAllUserAgendaRights_03"
+            ) {
+              dispatch(
+                showGetAllUserAgendaRightsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              showGetAllUserAgendaRightsFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(showGetAllUserAgendaRightsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(showGetAllUserAgendaRightsFailed(t("Something-went-wrong")));
       });
   };
 };
@@ -2483,4 +2571,5 @@ export {
   GetAllProposedMeetingDateApiFunc,
   SetMeetingResponseApiFunc,
   getMeetingMaterialAPI,
+  GetAllUserAgendaRightsApiFunc,
 };

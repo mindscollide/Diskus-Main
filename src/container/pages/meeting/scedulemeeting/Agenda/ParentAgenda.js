@@ -126,7 +126,8 @@ const ParentAgenda = ({
   const openAdvancePermissionModal = () => {
     dispatch(showAdvancePermissionModal(true));
     let meetingMaterialData = {
-      MeetingID: Number(currentMeetingID),
+      // MeetingID: Number(currentMeetingID),
+      MeetingID: 1785,
     };
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
   };

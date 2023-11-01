@@ -1573,5 +1573,7 @@
   "Document-name": "Document Name",
   "Absent": "Absent",
   "Present": "Present",
-  "Remote": "Remote"
+  "Remote": "Remote",
+  "status-not-updated": "status Not Updated",
+  "Status-updated": "Status Updated"
 }

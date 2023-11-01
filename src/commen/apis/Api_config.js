@@ -1057,6 +1057,10 @@ const MeetingAgendaLock = {
   RequestMethod: "ServiceManager.UpdateMeetingAgendaLockStatus",
 };
 
+const GetAllUserAgendaRights = {
+  RequestMethod: "ServiceManager.GetAllUserAgendaRights",
+};
+
 export {
   saveCommitteeDocumentsRM,
   reteriveCommitteeDocumentsRM,
@@ -1340,4 +1344,5 @@ export {
   SaveTheGroupsDocuments,
   RetrieveGroupDocuments,
   MeetingAgendaLock,
+  GetAllUserAgendaRights,
 };

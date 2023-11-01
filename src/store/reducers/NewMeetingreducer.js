@@ -62,6 +62,7 @@ const initialState = {
   getAllProposedDates: [],
   meetingResponse: [],
   meetingMaterial: [],
+  agendaRights: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -874,6 +875,30 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_ALL_AGENDA_RIGHTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_AGENDA_RIGHTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        agendaRights: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_ALL_AGENDA_RIGHTS_FAILED: {
       return {
         ...state,
         Loading: false,
