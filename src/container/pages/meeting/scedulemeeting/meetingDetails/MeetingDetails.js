@@ -326,8 +326,7 @@ const MeetingDetails = ({
       meetingDetails.Description !== "" &&
       newArr.length > 0 &&
       newReminderData.length > 0 &&
-      meetingDetails.Notes !== "" &&
-      meetingDetails.Link !== ""
+      meetingDetails.Notes !== ""
     ) {
       console.log("test");
       let data = {
@@ -398,8 +397,7 @@ const MeetingDetails = ({
       meetingDetails.Description !== "" &&
       newArr.length > 0 &&
       newReminderData.length > 0 &&
-      meetingDetails.Notes !== "" &&
-      meetingDetails.Link != ""
+      meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       // Check if RecurringOptions.value is defined and use it
@@ -476,8 +474,7 @@ const MeetingDetails = ({
       meetingDetails.Description !== "" &&
       newArr.length > 0 &&
       newReminderData.length > 0 &&
-      meetingDetails.Notes !== "" &&
-      meetingDetails.Link != ""
+      meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       let data = {
