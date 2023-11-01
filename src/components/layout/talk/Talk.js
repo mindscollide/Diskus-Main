@@ -253,7 +253,6 @@ const Talk = () => {
       dispatch(videoChatPanel(false))
       // dispatch(participantPopup(false))
     }
-    console.log('This Event got Clicked')
   }
 
   useEffect(() => {
@@ -389,7 +388,7 @@ const Talk = () => {
           </svg>
         </div>
       </div>
-      <div className="talk_Icon" onClick={showsubTalkIcons}>
+      <div className="talk_Icon cursor-pointer" onClick={showsubTalkIcons}>
         <span className={totalValue === 0 ? '' : 'talk-count total'}>
           {totalValue === 0 ? '' : totalValue}
         </span>

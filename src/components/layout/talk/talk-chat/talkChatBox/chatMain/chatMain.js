@@ -5,6 +5,7 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import moment from 'moment'
 import { Row, Col, Container, Form } from 'react-bootstrap'
+import Keywords from 'react-keywords'
 import { Checkbox } from 'antd'
 import { Spin } from 'antd'
 import {
@@ -16,8 +17,10 @@ import {
   groupUpdationFunction,
 } from '../../functions/oneToOneMessage'
 import {
+  GetAllUsers,
   InsertOTOMessages,
   DeleteSingleMessage,
+  GetAllUsersGroupsRoomsList,
   InsertPrivateGroupMessages,
   InsertBroadcastMessages,
   GetAllPrivateGroupMembers,
@@ -30,6 +33,7 @@ import {
   ResetShoutAllCreated,
   DeleteShout,
   UpdateShoutAll,
+  OtoMessageRetryFlag,
   DownloadChat,
   EmailChat,
   pushChatData,
@@ -41,13 +45,19 @@ import {
 import {
   normalizeVideoPanelFlag,
   videoChatPanel,
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  leaveCallModal,
+  participantPopup,
   videoChatMessagesFlag,
 } from '../../../../../../store/actions/VideoFeature_actions'
 import {
+  GetAllVideoCallUsers,
   InitiateVideoCall,
   getVideoRecipentData,
   groupCallRecipients,
   callRequestReceivedMQTT,
+  LeaveCall,
 } from '../../../../../../store/actions/VideoMain_actions'
 import { resetCloseChatFlags } from '../../../../../../store/actions/Talk_Feature_actions'
 import {
@@ -86,6 +96,7 @@ import DownloadIcon from '../../../../../../assets/images/Download-Icon.png'
 import DocumentIcon from '../../../../../../assets/images/Document-Icon.png'
 import DropDownIcon from '../../../../../../assets/images/dropdown-icon.png'
 import DropDownChatIcon from '../../../../../../assets/images/dropdown-icon-chatmessage.png'
+import UploadContact from '../../../../../../assets/images/Upload-Contact.png'
 import UploadDocument from '../../../../../../assets/images/Upload-Document.png'
 import UploadPicVid from '../../../../../../assets/images/Upload-PicVid.png'
 import UploadSticker from '../../../../../../assets/images/Upload-Sticker.png'
@@ -119,13 +130,18 @@ const ChatMainBody = ({ chatMessageClass }) => {
   //Translation
   const { t } = useTranslation()
 
+  //Current language
+  let lang = localStorage.getItem('i18nextLng')
+
   // Using dispatch To Call APIs
   const dispatch = useDispatch()
 
   //Getting api result from the reducer
-  const { talkStateData } = useSelector((state) => state)
+  const { talkFeatureStates, talkStateData } = useSelector((state) => state)
   //Current Date Time in variable
   var currentDateToday = moment().format('YYYYMMDD')
+
+  const date = new Date()
 
   //CURRENT DATE TIME UTC
   let currentDateTime = new Date()
@@ -158,6 +174,11 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }`
   }
 
+  const [chatOpen, setChatOpen] = useState(false)
+
+  //Generate Unique ID
+  const [guID, setGUID] = useState('')
+
   //Scroll down state
   const chatMessages = useRef()
 
@@ -174,8 +195,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
   //File Thumbnail States
   const [file, setFile] = useState('')
 
+  console.log('file', file)
+
   //Input Chat Autofocus state
   const [inputChat, setInputChat] = useState(true)
+
+  //search group user states
+  const [searchGroupUserValue, setSearchGroupUserValue] = useState('')
+
+  //search shout all user states
+  const [searchShoutAllUserValue, setSearchShoutAllUserValue] = useState('')
+
+  //Loading State
+  const [isLoading, setIsLoading] = useState(true)
 
   //File Upload
   const [tasksAttachments, setTasksAttachments] = useState({
@@ -187,9 +219,30 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [emojiActive, setEmojiActive] = useState(false)
   const emojiMenuRef = useRef()
 
+  //Add User Chat States
+  const [addNewChat, setAddNewChat] = useState(false)
+
+  //Create Group States
+  const [activeCreateGroup, setActiveCreateGroup] = useState(false)
+
+  //Create Shout All
+  const [activeCreateShoutAll, setActiveCreateShoutAll] = useState(false)
+
+  //Global Search Filter
+  const [globalSearchFilter, setGlobalSearchFilter] = useState(false)
+
   //Dropdown state of chat menu (Dot wali)
   const [chatMenuActive, setChatMenuActive] = useState(false)
   const chatMenuRef = useRef(null)
+
+  //Dropdown state of chat head menu (Dropdown icon wali)
+  const [chatHeadMenuActive, setChatHeadMenuActive] = useState(false)
+
+  //Enable Chat feature Options
+  const [chatFeatures, setChatFeatures] = useState(false)
+
+  //Create Group Participant Check
+  const [noParticipant, setNoParticipant] = useState(false)
 
   //Menus of the state
   const [save, setSave] = useState(false)
@@ -199,11 +252,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [messageInfo, setMessageInfo] = useState(false)
   const [showGroupInfo, setShowGroupInfo] = useState(false)
   const [showGroupEdit, setShowGroupEdit] = useState(false)
+  const [showShoutEdit, setShowShoutEdit] = useState(false)
 
   //Popup Options
   const [todayCheckState, setTodayCheckState] = useState(false)
   const [allCheckState, setAllCheckState] = useState(false)
   const [customCheckState, setCustomCheckState] = useState(false)
+
+  //Checkbox of sender receiver
+  const [senderCheckbox, setSenderCheckbox] = useState(false)
+  // const [receiverCheckbox, setReceiverCheckbox] = useState(false);
 
   //reveal checkboxes state
   const [showCheckboxes, setShowCheckboxes] = useState(false)
@@ -215,6 +273,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
     EndDate: '',
   })
 
+  //delete chat
+  const [deleteChat, setDeleteChat] = useState(false)
+
   //Upload Options
   const [uploadOptions, setUploadOptions] = useState(false)
 
@@ -223,6 +284,30 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   //Reply Option
   const [replyFeature, setReplyFeature] = useState(false)
+
+  //Blocked Users State
+  const [blockedUsersData, setBlockedUsersData] = useState([])
+
+  // Chat Filter Options
+  const chatFilterOptions = [
+    { className: 'talk-chat-filter', label: 'Recent Chats', value: 1 },
+    { className: 'talk-chat-filter', label: 'Private Message', value: 2 },
+    { className: 'talk-chat-filter', label: 'Private Group', value: 3 },
+    // { className: 'talk-chat-filter', label: 'Meetings Group', value: 4 },
+    { className: 'talk-chat-filter', label: 'Starred Message', value: 5 },
+    { className: 'talk-chat-filter', label: 'Shout All', value: 6 },
+    // { className: 'talk-chat-filter', label: 'Hashtag', value: 7 },
+    { className: 'talk-chat-filter', label: 'Blocked User', value: 8 },
+  ]
+
+  // for   select Chat Filter Name
+  const [chatFilterName, setChatFilterName] = useState(chatFilterOptions[0])
+
+  //Chat Filter State
+  const [chatFilter, setChatFilter] = useState({
+    value: chatFilterOptions[0].value,
+    label: chatFilterOptions[0].label,
+  })
 
   //All Messages State
   const [allMessages, setAllMessages] = useState([])
@@ -242,6 +327,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   //messages checked
   const [messagesChecked, setMessagesChecked] = useState([])
+
+  //group users checked
+  const [groupUsersChecked, setGroupUsersChecked] = useState([])
+
+  //Group Name State for Creation/Modification
+  const [groupNameValue, setGroupNameValue] = useState('')
+
+  //Shout Name State for Creation/Modification
+  const [shoutNameValue, setShoutNameValue] = useState('')
 
   //forward users checked
   const [forwardUsersChecked, setForwardUsersChecked] = useState([])
@@ -303,6 +397,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const [searchUserShoutValue, setSearchUserShoutValue] = useState('')
 
+  //message click data
+  const [messageClickData, setMessageClickData] = useState([])
+
+  //Unread Message Count State MQTT
+  const [mqttUnreadMessageData, setMqttUnreadMessageData] = useState([])
+
   const [showEditGroupField, setShowEditGroupField] = useState(false)
 
   const [showEditShoutField, setShowEditShoutField] = useState(false)
@@ -311,6 +411,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [showChatSearch, setShowChatSearch] = useState(false)
 
   const [searchChatWord, setSearchChatWord] = useState('')
+  // const [filteredMessages, setFilteredMessages] = useState(allMessages)
 
   //Notification States
   var min = 10000
@@ -365,6 +466,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
       })
     } catch {}
   }, [talkStateData.ActiveChatData])
+
+  //Single Message Entire Data
+  useEffect(() => {
+    if (
+      talkStateData.activeMessageIdData !== undefined &&
+      talkStateData.activeMessageIdData !== null &&
+      talkStateData.activeMessageIdData.length !== 0
+    ) {
+      setMessageClickData(talkStateData?.activeMessageIdData)
+    }
+  }, [talkStateData?.activeMessageIdData])
 
   //Setting state data of global response all chat to chatdata
   useEffect(() => {
@@ -477,6 +589,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       .groupUsers,
   ])
 
+  //Auto store in state
   // Broadcast EDIT IDHAR HOGA
   useEffect(() => {
     let shoutMembersData =
@@ -533,8 +646,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const [uploadFileTalk, setUploadFileTalk] = useState({})
 
+  console.log('Task Attachments', tasksAttachments)
+
   const handleFileUpload = (data, uploadType) => {
+    // Your common logic for file upload
+
+    // Different logic for the specific upload type
     if (uploadType === 'document') {
+      // Handle document upload
+      console.log('function fileUploadTalk')
       const uploadFilePath = data.target.value
       const uploadedFile = data.target.files[0]
       var ext = uploadedFile.name.split('.').pop()
@@ -587,6 +707,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setUploadOptions(false)
       setUploadFileTalk(uploadedFile)
     } else if (uploadType === 'image') {
+      // Handle image upload
+      console.log('function fileUploadTalkImage')
       const uploadFilePath = data.target.value
       const uploadedFile = data.target.files[0]
       var ext = uploadedFile.name.split('.').pop()
@@ -631,13 +753,20 @@ const ChatMainBody = ({ chatMessageClass }) => {
           }
         }
       }
+      // file.push({
+      //   DisplayAttachmentName: uploadedFile.name,
+      //   OriginalAttachmentName: uploadFilePath,
+      // })
       setFile(URL.createObjectURL(data.target.files[0]))
+      // setTasksAttachments({ ['TasksAttachments']: file })
       setUploadOptions(false)
       setUploadFileTalk(uploadedFile)
     }
   }
 
   const deleteFilefromAttachments = (data, index) => {
+    // let searchIndex = tasksAttachments.TasksAttachments
+    // searchIndex.splice(index, 1)
     setTasksAttachments({
       ...tasksAttachments,
       ['TasksAttachments']: [],
@@ -649,6 +778,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const closeChat = () => {
     dispatch(videoChatMessagesFlag(false))
     dispatch(resetCloseChatFlags())
+    setChatOpen(false)
     setSave(false)
     setPrint(false)
     setEmail(false)
@@ -664,11 +794,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
       EndDate: '',
     })
     setEndDatedisable(true)
+    setDeleteChat(false)
     setShowGroupEdit(false)
     setShowEditGroupField(false)
     setShowEditShoutField(false)
     setEmojiActive(false)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
+    setGlobalSearchFilter(false)
     setChatMenuActive(false)
+    setChatHeadMenuActive(false)
+    setChatFeatures(false)
+    setNoParticipant(false)
     setDeleteMessage(false)
     setMessageInfo(false)
     setShowGroupInfo(false)
@@ -676,10 +814,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setTodayCheckState(false)
     setAllCheckState(false)
     setCustomCheckState(false)
+    setSenderCheckbox(false)
     setShowCheckboxes(false)
     setDeleteFlag(false)
     setForwardFlag(false)
     setEndDatedisable(false)
+    setDeleteChat(false)
     setUploadOptions(false)
     setChatFeatureActive(0)
     setReplyFeature(false)
@@ -737,6 +877,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   // for save chat
   const modalHandlerSave = async (data) => {
+    console.log('modalHandlerSave', data)
     setSave(true)
     setPrint(false)
     setEmail(false)
@@ -804,6 +945,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setAllCheckState(false)
   }
 
+  console.log(
+    'todayCheckState',
+    todayCheckState,
+    allCheckState,
+    customCheckState,
+  )
+
   const downloadChat = () => {
     let Data = {
       TalkRequest: {
@@ -845,6 +993,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     }
     dispatch(DownloadChat(Data, t, navigate))
+    console.log('downloadChat', Data)
     setSave(false)
     setTodayCheckState(false)
     setAllCheckState(false)
@@ -892,6 +1041,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     }
     dispatch(DownloadChat(Data, t, navigate))
+    console.log('downloadChat', Data)
     setPrint(false)
     setTodayCheckState(false)
     setAllCheckState(false)
@@ -939,6 +1089,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     }
     dispatch(EmailChat(Data, t, navigate))
+    console.log('downloadChat', Data)
     setEmail(false)
     setTodayCheckState(false)
     setAllCheckState(false)
@@ -962,11 +1113,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
       EndDate: '',
     })
     setEndDatedisable(true)
+    setDeleteChat(false)
     setShowGroupEdit(false)
     setShowEditGroupField(false)
     setShowEditShoutField(false)
     setEmojiActive(false)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
+    setGlobalSearchFilter(false)
     setChatMenuActive(false)
+    setChatHeadMenuActive(false)
+    setChatFeatures(false)
+    setNoParticipant(false)
     setDeleteMessage(false)
     setMessageInfo(false)
     setShowGroupInfo(false)
@@ -974,16 +1133,24 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setTodayCheckState(false)
     setAllCheckState(false)
     setCustomCheckState(false)
+    setSenderCheckbox(false)
     setShowCheckboxes(false)
     setDeleteFlag(false)
     setForwardFlag(false)
     setEndDatedisable(false)
+    setDeleteChat(false)
     setUploadOptions(false)
     setChatFeatureActive(0)
     setReplyFeature(false)
     setShowChatSearch(false)
     setForwardUsersChecked([])
     setMessagesChecked([])
+    setGroupNameValue('')
+    setShoutNameValue('')
+    setSearchGroupUserValue('')
+    setSearchShoutAllUserValue('')
+    setGroupUsersChecked([])
+    setShowShoutEdit(false)
     localStorage.setItem('activeChatID', null)
   }
 
@@ -993,6 +1160,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setDeleteFlag(false)
     setForwardFlag(false)
     setForwardUsersChecked([])
+    setGroupUsersChecked([])
     setMessagesChecked([])
   }
 
@@ -1023,10 +1191,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
         [name]: DateSendingFormat(value),
       })
     }
+    console.log('Custom Dates', chatDateState.StartDate, chatDateState.EndDate)
   }
 
   //Show upload options or Hide
   const showUploadOptions = () => {
+    console.log('Upload Option Clicked')
     if (uploadOptions === false && talkStateData.ActiveChatData.isBlock === 0) {
       setUploadOptions(true)
     } else {
@@ -1066,12 +1236,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
   //Selected Option of the chat
   const chatFeatureSelected = (record, id) => {
     dispatch(activeMessage(record))
+    console.log('chatFeatureSelected', record, id)
     if (chatFeatureActive === id) {
       setChatFeatureActive(0)
     } else {
       setChatFeatureActive(id)
     }
   }
+  console.log('chatFeatureSelected', chatFeatureActive)
 
   //Onclick Of Reply Feature
   const replyFeatureHandler = (record) => {
@@ -1168,6 +1340,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   //mark starred message handler
   const markUnmarkStarMessageHandler = (record) => {
+    setMessageClickData(record)
     let Data = {
       UserID: parseInt(currentUserId),
       MessageID: record.messageID,
@@ -1177,6 +1350,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(MarkStarredUnstarredMessage(navigate, Data, t))
   }
 
+  // on change checkbox receiver
   const messagesCheckedHandler = (data, id, index) => {
     if (messagesChecked.includes(data)) {
       let messageIndex = messagesChecked.findIndex(
@@ -1288,6 +1462,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setForwardFlag(false)
     forwardUsersChecked?.map((user) => {
       let { id, type } = user
+      console.log('Forward Messages', id, type, user)
       if (type == 'U') {
         messagesChecked?.map((message) =>
           dispatch(
@@ -1361,6 +1536,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const deleteMultipleMessagesButton = () => {
     const messageIDs = messagesChecked.map((obj) => obj.messageID)
     const messageDeleteIDs = messageIDs.join('$')
+    console.log('Messages Checked For Deletion', messageDeleteIDs)
     let Data = {
       TalkRequest: {
         UserID: Number(currentUserId),
@@ -1387,6 +1563,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
     setDeleteFlag(false)
     setShowCheckboxes(false)
+    console.log('Messages Checked For Deletion', Data)
   }
 
   const modalHandlerGroupEdit = () => {
@@ -1520,6 +1697,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     }
     dispatch(GetActiveUsersByBroadcastID(navigate, Data, t))
+    setShowShoutEdit(true)
     setChatMenuActive(false)
   }
 
@@ -1532,6 +1710,10 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setSearchChatWord('')
     }
   }
+
+  const highlight = (txt) => (
+    <span style={{ background: 'red', color: '#fff' }}>{txt}</span>
+  )
 
   //All Messages State
   useEffect(() => {
@@ -1603,6 +1785,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
       const filteredData = originalCopy.filter((message) =>
         message.messageBody.toLowerCase().includes(searchedKeyword),
       )
+      console.log('filteredData', filteredData)
+      console.log('searchedKeyword', searchedKeyword)
       setAllMessages(filteredData)
     } else {
       // If the search keyword is empty, reset to the original messages
@@ -1700,7 +1884,430 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setSearchChatWord('')
   }
 
+  console.log('All Messages State', allMessages)
+
+  // //Socket Insert Broadcast Message
+  // useEffect(() => {
+  //   if (
+  //     talkStateData.talkSocketInsertBroadcastMessage
+  //       .MessageSendBroadcastResponseData !== null &&
+  //     talkStateData.talkSocketInsertBroadcastMessage
+  //       .MessageSendBroadcastResponseData !== undefined &&
+  //     talkStateData.talkSocketInsertBroadcastMessage
+  //       .MessageSendBroadcastResponseData.length !== 0
+  //   ) {
+  //     try {
+  //       if (talkStateData.ActiveChatData.messageType === 'B') {
+  //         if (
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != undefined &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != null &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != 0 &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != '' &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != '0' &&
+  //           talkStateData.ActiveChatData.id ===
+  //             talkStateData.talkSocketInsertBroadcastMessage
+  //               .MessageSendBroadcastResponseData.data[0].receiverID
+  //         ) {
+  //           let mqttInsertBroadcastMessageData =
+  //             talkStateData.talkSocketInsertBroadcastMessage
+  //               .MessageSendBroadcastResponseData.data[0]
+  //           let insertMqttBroadcastMessageData = {
+  //             messageID: mqttInsertBroadcastMessageData.messageID,
+  //             senderID: mqttInsertBroadcastMessageData.senderID,
+  //             receiverID: mqttInsertBroadcastMessageData.receiverID,
+  //             messageBody: mqttInsertBroadcastMessageData.messageBody,
+  //             senderName: mqttInsertBroadcastMessageData.senderName,
+  //             isFlag: 0,
+  //             sentDate: mqttInsertBroadcastMessageData.sentDate,
+  //             currDate: mqttInsertBroadcastMessageData.currDate,
+  //             fileGeneratedName:
+  //               mqttInsertBroadcastMessageData.fileGeneratedName,
+  //             fileName: mqttInsertBroadcastMessageData.fileName,
+  //             shoutAll: mqttInsertBroadcastMessageData.shoutAll,
+  //             frMessages: mqttInsertBroadcastMessageData.frMessages,
+  //             messageCount: 0,
+  //             attachmentLocation:
+  //               mqttInsertBroadcastMessageData.attachmentLocation,
+  //           }
+  //           let newBroadcastMessageChat = {
+  //             id: mqttInsertBroadcastMessageData.receiverID,
+  //             fullName: mqttInsertBroadcastMessageData.broadcastName,
+  //             imgURL: 'O.jpg',
+  //             messageBody: mqttInsertBroadcastMessageData.messageBody,
+  //             messageDate: mqttInsertBroadcastMessageData.sentDate,
+  //             notiCount: 0,
+  //             messageType: 'B',
+  //             isOnline: true,
+  //             companyName: 'Tresmark',
+  //             sentDate: mqttInsertBroadcastMessageData.sentDate,
+  //             receivedDate: '',
+  //             seenDate: '',
+  //             attachmentLocation:
+  //               mqttInsertBroadcastMessageData.attachmentLocation,
+  //             senderID: parseInt(messageSendData.SenderID),
+  //             admin: mqttInsertBroadcastMessageData.admin,
+  //           }
+
+  //           if (Object.keys(insertMqttBroadcastMessageData) !== null) {
+  //             if (
+  //               insertMqttBroadcastMessageData !== undefined &&
+  //               insertMqttBroadcastMessageData !== null &&
+  //               insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               insertMqttBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               allMessages[allMessages.length - 1].messageBody !== undefined &&
+  //               insertMqttBroadcastMessageData.messageBody ===
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               if (
+  //                 talkStateData.ActiveChatData.id ===
+  //                   insertMqttBroadcastMessageData.receiverID ||
+  //                 talkStateData.ActiveChatData.id ===
+  //                   insertMqttBroadcastMessageData.senderID
+  //               ) {
+  //                 setAllMessages((prevState) => {
+  //                   const updatedMessages = [...prevState]
+  //                   updatedMessages[
+  //                     updatedMessages.length - 1
+  //                   ] = insertMqttBroadcastMessageData
+  //                   return updatedMessages
+  //                 })
+  //                 let updatedArray = [...allChatData]
+  //                 if (
+  //                   updatedArray.length > 0 &&
+  //                   updatedArray[0].hasOwnProperty('messageBody')
+  //                 ) {
+  //                   updatedArray[0] = newBroadcastMessageChat
+  //                 }
+  //                 setAllChatData(updatedArray)
+
+  //                 // allMessages.push(insertMqttBroadcastMessageData)
+  //                 // setAllMessages([...allMessages])
+  //               }
+  //             } else if (
+  //               insertMqttBroadcastMessageData !== undefined &&
+  //               insertMqttBroadcastMessageData !== null &&
+  //               insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               insertMqttBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               insertMqttBroadcastMessageData.messageBody !==
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               setAllMessages([...allMessages, insertMqttBroadcastMessageData])
+  //               let updatedArray = [...allChatData]
+  //               if (
+  //                 updatedArray.length > 0 &&
+  //                 updatedArray[0].hasOwnProperty('messageBody') &&
+  //                 updatedArray[0].messageBody === allChatData[0].messageBody
+  //               ) {
+  //                 updatedArray[0] = newBroadcastMessageChat
+  //               }
+  //               setAllChatData(updatedArray)
+  //             }
+  //           } else {
+  //             let allMessages =
+  //               talkStateData.BroadcastMessages.BroadcastMessagesData
+  //                 .broadcastMessages
+  //             if (allMessages != undefined) {
+  //               let allBroadcastMessagesArr = []
+  //               allMessages.map((messagesData) => {
+  //                 allBroadcastMessagesArr.push({
+  //                   attachmentLocation: messagesData.attachmentLocation,
+  //                   currDate: messagesData.currDate,
+  //                   fileGeneratedName: messagesData.fileGeneratedName,
+  //                   fileName: messagesData.fileName,
+  //                   frMessages: messagesData.frMessages,
+  //                   isFlag: messagesData.isFlag,
+  //                   messageBody: messagesData.messageBody,
+  //                   messageCount: messagesData.messageCount,
+  //                   messageID: messagesData.messageID,
+  //                   receiverID: messagesData.receiverID,
+  //                   senderID: messagesData.senderID,
+  //                   senderName: messagesData.senderName,
+  //                   sentDate: messagesData.sentDate,
+  //                   shoutAll: messagesData.shoutAll,
+  //                 })
+  //               })
+  //               setAllMessages([...allBroadcastMessagesArr])
+  //             }
+  //             // }
+  //           }
+  //         } else if (
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != undefined &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != null &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != 0 &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != '' &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != '0' &&
+  //           parseInt(currentUserId) !==
+  //             talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+  //               .senderID
+  //         ) {
+  //           let mqttInsertBroadcastMessageData =
+  //             talkStateData.talkSocketInsertBroadcastMessage
+  //               .MessageSendBroadcastResponseData.data[0]
+  //           let insertMqttBroadcastMessageData = {
+  //             messageID: mqttInsertBroadcastMessageData.messageID,
+  //             senderID: mqttInsertBroadcastMessageData.senderID,
+  //             receiverID: mqttInsertBroadcastMessageData.receiverID,
+  //             messageBody: mqttInsertBroadcastMessageData.messageBody,
+  //             senderName: mqttInsertBroadcastMessageData.senderName,
+  //             isFlag: 0,
+  //             sentDate: mqttInsertBroadcastMessageData.sentDate,
+  //             currDate: mqttInsertBroadcastMessageData.currDate,
+  //             fileGeneratedName:
+  //               mqttInsertBroadcastMessageData.fileGeneratedName,
+  //             fileName: mqttInsertBroadcastMessageData.fileName,
+  //             shoutAll: mqttInsertBroadcastMessageData.shoutAll,
+  //             frMessages: mqttInsertBroadcastMessageData.frMessages,
+  //             messageCount: 0,
+  //             attachmentLocation:
+  //               mqttInsertBroadcastMessageData.attachmentLocation,
+  //           }
+
+  //           let newBroadcastMessageChat = {
+  //             id: mqttInsertBroadcastMessageData.receiverID,
+  //             fullName: mqttInsertBroadcastMessageData.broadcastName,
+  //             imgURL: 'O.jpg',
+  //             messageBody: mqttInsertBroadcastMessageData.messageBody,
+  //             messageDate: mqttInsertBroadcastMessageData.sentDate,
+  //             notiCount: 0,
+  //             messageType: 'B',
+  //             isOnline: true,
+  //             companyName: 'Tresmark',
+  //             sentDate: mqttInsertBroadcastMessageData.sentDate,
+  //             receivedDate: '',
+  //             seenDate: '',
+  //             attachmentLocation:
+  //               mqttInsertBroadcastMessageData.attachmentLocation,
+  //             senderID: parseInt(messageSendData.SenderID),
+  //             admin: mqttInsertBroadcastMessageData.admin,
+  //           }
+
+  //           if (Object.keys(insertMqttBroadcastMessageData) !== null) {
+  //             if (
+  //               insertMqttBroadcastMessageData !== undefined &&
+  //               insertMqttBroadcastMessageData !== null &&
+  //               insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               insertMqttBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               allMessages[allMessages.length - 1].messageBody !== undefined &&
+  //               insertMqttBroadcastMessageData.messageBody ===
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               if (
+  //                 talkStateData.ActiveChatData.id ===
+  //                   insertMqttBroadcastMessageData.receiverID ||
+  //                 talkStateData.ActiveChatData.id ===
+  //                   insertMqttBroadcastMessageData.senderID
+  //               ) {
+  //                 setAllMessages((prevState) => {
+  //                   const updatedMessages = [...prevState]
+  //                   updatedMessages[
+  //                     updatedMessages.length - 1
+  //                   ] = insertMqttBroadcastMessageData
+  //                   return updatedMessages
+  //                 })
+  //                 let updatedArray = [...allChatData]
+  //                 if (
+  //                   updatedArray.length > 0 &&
+  //                   updatedArray[0].hasOwnProperty('messageBody')
+  //                 ) {
+  //                   updatedArray[0] = newBroadcastMessageChat
+  //                 }
+  //                 setAllChatData(updatedArray)
+  //               }
+  //             } else if (
+  //               insertMqttBroadcastMessageData !== undefined &&
+  //               insertMqttBroadcastMessageData !== null &&
+  //               insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               insertMqttBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               insertMqttBroadcastMessageData.messageBody !==
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               setAllMessages([...allMessages, insertMqttBroadcastMessageData])
+  //               let updatedArray = [...allChatData]
+  //               if (
+  //                 updatedArray.length > 0 &&
+  //                 updatedArray[0].hasOwnProperty('messageBody') &&
+  //                 updatedArray[0].messageBody === allChatData[0].messageBody
+  //               ) {
+  //                 updatedArray[0] = newBroadcastMessageChat
+  //               }
+  //               setAllChatData(updatedArray)
+  //             }
+  //           } else {
+  //             let allMessages =
+  //               talkStateData.BroadcastMessages.BroadcastMessagesData
+  //                 .broadcastMessages
+  //             if (allMessages != undefined) {
+  //               let allBroadcastMessagesArr = []
+  //               allMessages.map((messagesData) => {
+  //                 allBroadcastMessagesArr.push({
+  //                   attachmentLocation: messagesData.attachmentLocation,
+  //                   currDate: messagesData.currDate,
+  //                   fileGeneratedName: messagesData.fileGeneratedName,
+  //                   fileName: messagesData.fileName,
+  //                   frMessages: messagesData.frMessages,
+  //                   isFlag: messagesData.isFlag,
+  //                   messageBody: messagesData.messageBody,
+  //                   messageCount: messagesData.messageCount,
+  //                   messageID: messagesData.messageID,
+  //                   receiverID: messagesData.receiverID,
+  //                   senderID: messagesData.senderID,
+  //                   senderName: messagesData.senderName,
+  //                   sentDate: messagesData.sentDate,
+  //                   shoutAll: messagesData.shoutAll,
+  //                 })
+  //               })
+  //               setAllMessages([...allBroadcastMessagesArr])
+  //             }
+  //             // }
+  //           }
+  //         } else if (
+  //           talkStateData.ActiveChatData.messageType === '' &&
+  //           talkStateData.ActiveChatData.id === 0
+  //         ) {
+  //           let mqttInsertBroadcastMessageData =
+  //             talkStateData.talkSocketInsertBroadcastMessage
+  //               .MessageSendBroadcastResponseData.data[0]
+
+  //           let newBroadcastMessageChat = {
+  //             id: mqttInsertBroadcastMessageData.receiverID,
+  //             fullName: mqttInsertBroadcastMessageData.broadcastName,
+  //             imgURL: 'O.jpg',
+  //             messageBody: mqttInsertBroadcastMessageData.messageBody,
+  //             messageDate: mqttInsertBroadcastMessageData.sentDate,
+  //             notiCount: 0,
+  //             messageType: 'B',
+  //             isOnline: true,
+  //             companyName: 'Tresmark',
+  //             sentDate: mqttInsertBroadcastMessageData.sentDate,
+  //             receivedDate: '',
+  //             seenDate: '',
+  //             attachmentLocation:
+  //               mqttInsertBroadcastMessageData.attachmentLocation,
+  //             senderID: parseInt(messageSendData.SenderID),
+  //             admin: mqttInsertBroadcastMessageData.admin,
+  //           }
+
+  //           if (Object.keys(mqttInsertBroadcastMessageData) !== null) {
+  //             if (
+  //               mqttInsertBroadcastMessageData !== undefined &&
+  //               mqttInsertBroadcastMessageData !== null &&
+  //               mqttInsertBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               mqttInsertBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               allMessages[allMessages.length - 1].messageBody !== undefined &&
+  //               mqttInsertBroadcastMessageData.messageBody ===
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               let updatedArray = [...allChatData]
+  //               if (
+  //                 updatedArray.length > 0 &&
+  //                 updatedArray[0].hasOwnProperty('messageBody')
+  //               ) {
+  //                 updatedArray[0] = newBroadcastMessageChat
+  //               }
+  //               setAllChatData(updatedArray)
+  //             } else if (
+  //               mqttInsertBroadcastMessageData !== undefined &&
+  //               mqttInsertBroadcastMessageData !== null &&
+  //               mqttInsertBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               mqttInsertBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               mqttInsertBroadcastMessageData.messageBody !==
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               let updatedArray = [...allChatData]
+  //               if (
+  //                 updatedArray.length > 0 &&
+  //                 updatedArray[0].hasOwnProperty('messageBody') &&
+  //                 updatedArray[0].messageBody === allChatData[0].messageBody
+  //               ) {
+  //                 updatedArray[0] = newBroadcastMessageChat
+  //               }
+  //               setAllChatData(updatedArray)
+  //             }
+  //           } else {
+  //             let allMessages =
+  //               talkStateData.BroadcastMessages.BroadcastMessagesData
+  //                 .broadcastMessages
+  //             if (allMessages != undefined) {
+  //               let allBroadcastMessagesArr = []
+  //               allMessages.map((messagesData) => {
+  //                 allBroadcastMessagesArr.push({
+  //                   attachmentLocation: messagesData.attachmentLocation,
+  //                   currDate: messagesData.currDate,
+  //                   fileGeneratedName: messagesData.fileGeneratedName,
+  //                   fileName: messagesData.fileName,
+  //                   frMessages: messagesData.frMessages,
+  //                   isFlag: messagesData.isFlag,
+  //                   messageBody: messagesData.messageBody,
+  //                   messageCount: messagesData.messageCount,
+  //                   messageID: messagesData.messageID,
+  //                   receiverID: messagesData.receiverID,
+  //                   senderID: messagesData.senderID,
+  //                   senderName: messagesData.senderName,
+  //                   sentDate: messagesData.sentDate,
+  //                   shoutAll: messagesData.shoutAll,
+  //                 })
+  //               })
+  //               setAllMessages([...allBroadcastMessagesArr])
+  //             }
+  //             // }
+  //           }
+  //         }
+  //       }
+  //     } catch {}
+  //   }
+  // }, [
+  //   talkStateData.talkSocketInsertBroadcastMessage
+  //     .MessageSendBroadcastResponseData,
+  // ])
+
   //Blocking a User MQTT
+
   useEffect(() => {
     if (
       talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !== null &&
@@ -1731,6 +2338,26 @@ const ChatMainBody = ({ chatMessageClass }) => {
       if (talkStateData.ActiveChatData.id === mqttBlockedUserData.blockUserID) {
         dispatch(activeChat(activeChatData))
       }
+      // let blockedUsersDataForMqtt = {
+      //   fullName: '',
+      //   id: mqttBlockedUserData.blockUserID,
+      //   imgURL: 'null',
+      // }
+      // if (Object.keys(blockedUsersDataForMqtt) !== null) {
+      //   setChatFilter({
+      //     ...chatFilter,
+      //     value: 8,
+      //     label: 'Blocked User',
+      //   })
+      //   setChatFilterName('Blocked User')
+      //   blockedUsersData.push(blockedUsersDataForMqtt)
+      //   setBlockedUsersData([...blockedUsersData])
+      // }
+      // else {
+      //   setBlockedUsersData(
+      //     talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+      //   )
+      // }
     }
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser])
 
@@ -1770,8 +2397,29 @@ const ChatMainBody = ({ chatMessageClass }) => {
       ) {
         dispatch(activeChat(activeChatData))
       }
+      // let blockedUsersDataForMqtt = {
+      //   fullName: '',
+      //   id: mqttBlockedUserData.blockUserID,
+      //   imgURL: 'null',
+      // }
+      // if (Object.keys(blockedUsersDataForMqtt) !== null) {
+      //   setBlockedUsersData(
+      //     blockedUsersData.filter(
+      //       (item) => item.id !== blockedUsersDataForMqtt.id,
+      //     ),
+      //   )
+      //   // blockedUsersData.push(blockedUsersDataForMqtt)
+      //   // setBlockedUsersData([...blockedUsersData])
+      // } else {
+      //   setBlockedUsersData(
+      //     talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+      //   )
+      // }
     }
-  }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser])
+  }, [
+    // talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+    talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser,
+  ])
 
   //Marking a message as Starred
   useEffect(() => {
@@ -1881,6 +2529,17 @@ const ChatMainBody = ({ chatMessageClass }) => {
     talkStateData?.talkSocketUnreadMessageCount?.unreadMessageData,
   ])
 
+  // console.log(
+  //   'acknowledgedMessage',
+  //   talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse,
+  //   acknowledgedMessage,
+  //   talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse.data,
+  //   talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse.data
+  //     .length,
+  //   typeof talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse
+  //     .data,
+  // )
+
   //MQTT Message Status Update
   useEffect(() => {
     if (
@@ -1932,20 +2591,16 @@ const ChatMainBody = ({ chatMessageClass }) => {
   // Generate the unique ID
   const uniqueId = generateGUID()
 
+  console.log('uploadFileTalk', uploadFileTalk)
+
   //Send Chat
   const sendChat = async () => {
     if (
-      messageSendData.Body !== '' ||
-      messageSendData.Body === '' ||
+      (messageSendData.Body !== '' && uploadFileTalk !== {}) ||
+      (messageSendData.Body === '' && uploadFileTalk !== {}) ||
       messageSendData.Body !== ''
     ) {
-      let otoMessageLocal = JSON.parse(
-        localStorage.getItem('singleMessageObject'),
-      )
-
       if (talkStateData.ActiveChatData.messageType === 'O') {
-        let Message = []
-
         let Data = {
           TalkRequest: {
             ChannelID: parseInt(currentOrganizationId),
@@ -1955,15 +2610,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
             },
           },
         }
-
-        if (otoMessageLocal) {
-          Message = [...otoMessageLocal]
-          Message.push(Data)
-        } else {
-          Message.push(Data)
-        }
-
-        localStorage.setItem('singleMessageObject', JSON.stringify(Message))
 
         dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t))
 
@@ -2032,8 +2678,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       }
 
       if (talkStateData.ActiveChatData.messageType === 'G') {
-        let Message = []
-
         let Data = {
           TalkRequest: {
             ChannelID: parseInt(currentOrganizationId),
@@ -2043,15 +2687,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
             },
           },
         }
-
-        if (otoMessageLocal) {
-          Message = [...otoMessageLocal]
-          Message.push(Data)
-        } else {
-          Message.push(Data)
-        }
-
-        localStorage.setItem('singleMessageObject', JSON.stringify(Message))
 
         dispatch(InsertPrivateGroupMessages(navigate, Data, uploadFileTalk, t))
 
@@ -2110,8 +2745,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         })
         setAllMessages((prevMessages) => [...prevMessages, newMessageGroup])
       } else if (talkStateData.ActiveChatData.messageType === 'B') {
-        let Message = []
-
         let Data = {
           TalkRequest: {
             ChannelID: parseInt(currentOrganizationId),
@@ -2121,15 +2754,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
             },
           },
         }
-
-        if (otoMessageLocal) {
-          Message = [...otoMessageLocal]
-          Message.push(Data)
-        } else {
-          Message.push(Data)
-        }
-
-        localStorage.setItem('singleMessageObject', JSON.stringify(Message))
 
         dispatch(InsertBroadcastMessages(navigate, Data, uploadFileTalk, t))
 
@@ -2207,18 +2831,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   }
 
-  let unsentMessageObject =
-    JSON.parse(localStorage.getItem('unsentMessage')) || []
-  let checkunsentMessageObject = []
-  useEffect(() => {
-    if (Object.keys(unsentMessageObject).length > 0) {
-      if (checkunsentMessageObject !== unsentMessageObject) {
-        checkunsentMessageObject = unsentMessageObject
-        console.log('unsentMessageObject', unsentMessageObject)
-      }
-    }
-  }, [unsentMessageObject])
-
   //New MQTT Message SEnding UseEffect
   useEffect(() => {
     if (
@@ -2228,21 +2840,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       let mqttResponseSingleMessage =
         talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-
-      const uidToMatch = mqttResponseSingleMessage.uid
-
-      const existingMessages =
-        JSON.parse(localStorage.getItem('singleMessageObject')) || []
-
-      const updatedMessages = existingMessages.filter((message) => {
-        return message.TalkRequest.Message.UID !== uidToMatch
-      })
-
-      localStorage.setItem(
-        'singleMessageObject',
-        JSON.stringify(updatedMessages),
-      )
-
       if (
         talkStateData.ActiveChatData.id ===
         talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
@@ -2574,6 +3171,457 @@ const ChatMainBody = ({ chatMessageClass }) => {
       .MessageSendBroadcastResponseData,
   ])
 
+  // //Socket Insert Broadcast Message
+  // useEffect(() => {
+  //   if (
+  //     talkStateData.talkSocketInsertBroadcastMessage
+  //       .MessageSendBroadcastResponseData !== null &&
+  //     talkStateData.talkSocketInsertBroadcastMessage
+  //       .MessageSendBroadcastResponseData !== undefined &&
+  //     talkStateData.talkSocketInsertBroadcastMessage
+  //       .MessageSendBroadcastResponseData.length !== 0
+  //   ) {
+  //     try {
+  //       if (talkStateData.ActiveChatData.messageType === 'B') {
+  //         if (
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != undefined &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != null &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != 0 &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != '' &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != '0' &&
+  //           talkStateData.ActiveChatData.id ===
+  //             talkStateData.talkSocketInsertBroadcastMessage
+  //               .MessageSendBroadcastResponseData.data[0].receiverID
+  //         ) {
+  //           let mqttInsertBroadcastMessageData =
+  //             talkStateData.talkSocketInsertBroadcastMessage
+  //               .MessageSendBroadcastResponseData.data[0]
+  //           let insertMqttBroadcastMessageData = {
+  //             messageID: mqttInsertBroadcastMessageData.messageID,
+  //             senderID: mqttInsertBroadcastMessageData.senderID,
+  //             receiverID: mqttInsertBroadcastMessageData.receiverID,
+  //             messageBody: mqttInsertBroadcastMessageData.messageBody,
+  //             senderName: mqttInsertBroadcastMessageData.senderName,
+  //             isFlag: 0,
+  //             sentDate: mqttInsertBroadcastMessageData.sentDate,
+  //             currDate: mqttInsertBroadcastMessageData.currDate,
+  //             fileGeneratedName:
+  //               mqttInsertBroadcastMessageData.fileGeneratedName,
+  //             fileName: mqttInsertBroadcastMessageData.fileName,
+  //             shoutAll: mqttInsertBroadcastMessageData.shoutAll,
+  //             frMessages: mqttInsertBroadcastMessageData.frMessages,
+  //             messageCount: 0,
+  //             attachmentLocation:
+  //               mqttInsertBroadcastMessageData.attachmentLocation,
+  //           }
+  //           if (Object.keys(insertMqttBroadcastMessageData) !== null) {
+  //             if (
+  //               insertMqttBroadcastMessageData !== undefined &&
+  //               insertMqttBroadcastMessageData !== null &&
+  //               insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               insertMqttBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               allMessages[allMessages.length - 1].messageBody !== undefined &&
+  //               insertMqttBroadcastMessageData.messageBody ===
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               if (
+  //                 talkStateData.ActiveChatData.id ===
+  //                   insertMqttBroadcastMessageData.receiverID ||
+  //                 talkStateData.ActiveChatData.id ===
+  //                   insertMqttBroadcastMessageData.senderID
+  //               ) {
+  //                 setAllMessages((prevState) => {
+  //                   const updatedMessages = [...prevState]
+  //                   updatedMessages[
+  //                     updatedMessages.length - 1
+  //                   ] = insertMqttBroadcastMessageData
+  //                   return updatedMessages
+  //                 })
+  //               }
+  //             } else if (
+  //               insertMqttBroadcastMessageData !== undefined &&
+  //               insertMqttBroadcastMessageData !== null &&
+  //               insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               insertMqttBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               insertMqttBroadcastMessageData.messageBody !==
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               setAllMessages([...allMessages, insertMqttBroadcastMessageData])
+  //             }
+  //           } else {
+  //             let allMessages =
+  //               talkStateData.BroadcastMessages.BroadcastMessagesData
+  //                 .broadcastMessages
+  //             if (allMessages != undefined) {
+  //               let allBroadcastMessagesArr = []
+  //               allMessages.map((messagesData) => {
+  //                 allBroadcastMessagesArr.push({
+  //                   attachmentLocation: messagesData.attachmentLocation,
+  //                   currDate: messagesData.currDate,
+  //                   fileGeneratedName: messagesData.fileGeneratedName,
+  //                   fileName: messagesData.fileName,
+  //                   frMessages: messagesData.frMessages,
+  //                   isFlag: messagesData.isFlag,
+  //                   messageBody: messagesData.messageBody,
+  //                   messageCount: messagesData.messageCount,
+  //                   messageID: messagesData.messageID,
+  //                   receiverID: messagesData.receiverID,
+  //                   senderID: messagesData.senderID,
+  //                   senderName: messagesData.senderName,
+  //                   sentDate: messagesData.sentDate,
+  //                   shoutAll: messagesData.shoutAll,
+  //                 })
+  //               })
+  //               setAllMessages([...allBroadcastMessagesArr])
+  //             }
+  //             // }
+  //           }
+  //         } else if (
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != undefined &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != null &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != 0 &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != '' &&
+  //           talkStateData.talkSocketInsertBroadcastMessage
+  //             .MessageSendBroadcastResponseData.data[0].senderID != '0' &&
+  //           parseInt(currentUserId) !==
+  //             talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+  //               .senderID
+  //         ) {
+  //           let mqttInsertBroadcastMessageData =
+  //             talkStateData.talkSocketInsertBroadcastMessage
+  //               .MessageSendBroadcastResponseData.data[0]
+  //           let insertMqttBroadcastMessageData = {
+  //             messageID: mqttInsertBroadcastMessageData.messageID,
+  //             senderID: mqttInsertBroadcastMessageData.senderID,
+  //             receiverID: mqttInsertBroadcastMessageData.receiverID,
+  //             messageBody: mqttInsertBroadcastMessageData.messageBody,
+  //             senderName: mqttInsertBroadcastMessageData.senderName,
+  //             isFlag: 0,
+  //             sentDate: mqttInsertBroadcastMessageData.sentDate,
+  //             currDate: mqttInsertBroadcastMessageData.currDate,
+  //             fileGeneratedName:
+  //               mqttInsertBroadcastMessageData.fileGeneratedName,
+  //             fileName: mqttInsertBroadcastMessageData.fileName,
+  //             shoutAll: mqttInsertBroadcastMessageData.shoutAll,
+  //             frMessages: mqttInsertBroadcastMessageData.frMessages,
+  //             messageCount: 0,
+  //             attachmentLocation:
+  //               mqttInsertBroadcastMessageData.attachmentLocation,
+  //           }
+  //           if (Object.keys(insertMqttBroadcastMessageData) !== null) {
+  //             if (
+  //               insertMqttBroadcastMessageData !== undefined &&
+  //               insertMqttBroadcastMessageData !== null &&
+  //               insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               insertMqttBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               allMessages[allMessages.length - 1].messageBody !== undefined &&
+  //               insertMqttBroadcastMessageData.messageBody ===
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               if (
+  //                 talkStateData.ActiveChatData.id ===
+  //                   insertMqttBroadcastMessageData.receiverID ||
+  //                 talkStateData.ActiveChatData.id ===
+  //                   insertMqttBroadcastMessageData.senderID
+  //               ) {
+  //                 setAllMessages((prevState) => {
+  //                   const updatedMessages = [...prevState]
+  //                   updatedMessages[
+  //                     updatedMessages.length - 1
+  //                   ] = insertMqttBroadcastMessageData
+  //                   return updatedMessages
+  //                 })
+  //               }
+  //             } else if (
+  //               insertMqttBroadcastMessageData !== undefined &&
+  //               insertMqttBroadcastMessageData !== null &&
+  //               insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               insertMqttBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               insertMqttBroadcastMessageData.messageBody !==
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               setAllMessages([...allMessages, insertMqttBroadcastMessageData])
+  //             }
+  //           } else {
+  //             let allMessages =
+  //               talkStateData.BroadcastMessages.BroadcastMessagesData
+  //                 .broadcastMessages
+  //             if (allMessages != undefined) {
+  //               let allBroadcastMessagesArr = []
+  //               allMessages.map((messagesData) => {
+  //                 allBroadcastMessagesArr.push({
+  //                   attachmentLocation: messagesData.attachmentLocation,
+  //                   currDate: messagesData.currDate,
+  //                   fileGeneratedName: messagesData.fileGeneratedName,
+  //                   fileName: messagesData.fileName,
+  //                   frMessages: messagesData.frMessages,
+  //                   isFlag: messagesData.isFlag,
+  //                   messageBody: messagesData.messageBody,
+  //                   messageCount: messagesData.messageCount,
+  //                   messageID: messagesData.messageID,
+  //                   receiverID: messagesData.receiverID,
+  //                   senderID: messagesData.senderID,
+  //                   senderName: messagesData.senderName,
+  //                   sentDate: messagesData.sentDate,
+  //                   shoutAll: messagesData.shoutAll,
+  //                 })
+  //               })
+  //               setAllMessages([...allBroadcastMessagesArr])
+  //             }
+  //             // }
+  //           }
+  //         } else if (
+  //           talkStateData.ActiveChatData.messageType === '' &&
+  //           talkStateData.ActiveChatData.id === 0
+  //         ) {
+  //           let mqttInsertBroadcastMessageData =
+  //             talkStateData.talkSocketInsertBroadcastMessage
+  //               .MessageSendBroadcastResponseData.data[0]
+
+  //           let newBroadcastMessageChat = {
+  //             id: mqttInsertBroadcastMessageData.receiverID,
+  //             fullName: mqttInsertBroadcastMessageData.broadcastName,
+  //             imgURL: 'O.jpg',
+  //             messageBody: mqttInsertBroadcastMessageData.messageBody,
+  //             messageDate: mqttInsertBroadcastMessageData.sentDate,
+  //             notiCount: 0,
+  //             messageType: 'B',
+  //             isOnline: true,
+  //             companyName: 'Tresmark',
+  //             sentDate: mqttInsertBroadcastMessageData.sentDate,
+  //             receivedDate: '',
+  //             seenDate: '',
+  //             attachmentLocation:
+  //               mqttInsertBroadcastMessageData.attachmentLocation,
+  //             senderID: parseInt(messageSendData.SenderID),
+  //             admin: mqttInsertBroadcastMessageData.admin,
+  //           }
+
+  //           if (Object.keys(mqttInsertBroadcastMessageData) !== null) {
+  //             if (
+  //               mqttInsertBroadcastMessageData !== undefined &&
+  //               mqttInsertBroadcastMessageData !== null &&
+  //               mqttInsertBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               mqttInsertBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               allMessages[allMessages.length - 1].messageBody !== undefined &&
+  //               mqttInsertBroadcastMessageData.messageBody ===
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //             } else if (
+  //               mqttInsertBroadcastMessageData !== undefined &&
+  //               mqttInsertBroadcastMessageData !== null &&
+  //               mqttInsertBroadcastMessageData.hasOwnProperty('messageBody') &&
+  //               mqttInsertBroadcastMessageData.messageBody !== undefined &&
+  //               allMessages.length > 0 &&
+  //               allMessages[allMessages.length - 1] !== undefined &&
+  //               allMessages[allMessages.length - 1] !== null &&
+  //               allMessages[allMessages.length - 1].hasOwnProperty(
+  //                 'messageBody',
+  //               ) &&
+  //               mqttInsertBroadcastMessageData.messageBody !==
+  //                 allMessages[allMessages.length - 1].messageBody
+  //             ) {
+  //               let updatedArray = [...allChatData]
+  //               if (
+  //                 updatedArray.length > 0 &&
+  //                 updatedArray[0].hasOwnProperty('messageBody') &&
+  //                 updatedArray[0].messageBody === allChatData[0].messageBody
+  //               ) {
+  //                 updatedArray[0] = newBroadcastMessageChat
+  //               }
+  //               setAllChatData(updatedArray)
+  //             }
+  //           } else {
+  //             let allMessages =
+  //               talkStateData.BroadcastMessages.BroadcastMessagesData
+  //                 .broadcastMessages
+  //             if (allMessages != undefined) {
+  //               let allBroadcastMessagesArr = []
+  //               allMessages.map((messagesData) => {
+  //                 allBroadcastMessagesArr.push({
+  //                   attachmentLocation: messagesData.attachmentLocation,
+  //                   currDate: messagesData.currDate,
+  //                   fileGeneratedName: messagesData.fileGeneratedName,
+  //                   fileName: messagesData.fileName,
+  //                   frMessages: messagesData.frMessages,
+  //                   isFlag: messagesData.isFlag,
+  //                   messageBody: messagesData.messageBody,
+  //                   messageCount: messagesData.messageCount,
+  //                   messageID: messagesData.messageID,
+  //                   receiverID: messagesData.receiverID,
+  //                   senderID: messagesData.senderID,
+  //                   senderName: messagesData.senderName,
+  //                   sentDate: messagesData.sentDate,
+  //                   shoutAll: messagesData.shoutAll,
+  //                 })
+  //               })
+  //               setAllMessages([...allBroadcastMessagesArr])
+  //             }
+  //             // }
+  //           }
+  //         }
+  //       }
+  //     } catch {}
+  //     // try {
+  //     //   if (
+  //     //     talkStateData.talkSocketInsertBroadcastMessage
+  //     //       .MessageSendBroadcastResponseData.data[0].senderID != undefined &&
+  //     //     talkStateData.talkSocketInsertBroadcastMessage
+  //     //       .MessageSendBroadcastResponseData.data[0].senderID != null &&
+  //     //     talkStateData.talkSocketInsertBroadcastMessage
+  //     //       .MessageSendBroadcastResponseData.data[0].senderID != 0 &&
+  //     //     talkStateData.talkSocketInsertBroadcastMessage
+  //     //       .MessageSendBroadcastResponseData.data[0].senderID != '' &&
+  //     //     talkStateData.talkSocketInsertBroadcastMessage
+  //     //       .MessageSendBroadcastResponseData.data[0].senderID != '0' &&
+  //     //     talkStateData.ActiveChatData.id ===
+  //     //       talkStateData.talkSocketInsertBroadcastMessage
+  //     //         .MessageSendBroadcastResponseData.data[0].receiverID
+  //     //   ) {
+  //     //     let mqttInsertBroadcastMessageData =
+  //     //       talkStateData.talkSocketInsertBroadcastMessage
+  //     //         .MessageSendBroadcastResponseData.data[0]
+  //     //     let insertMqttBroadcastMessageData = {
+  //     //       messageID: mqttInsertBroadcastMessageData.messageID,
+  //     //       senderID: mqttInsertBroadcastMessageData.senderID,
+  //     //       receiverID: mqttInsertBroadcastMessageData.receiverID,
+  //     //       messageBody: mqttInsertBroadcastMessageData.messageBody,
+  //     //       senderName: mqttInsertBroadcastMessageData.senderName,
+  //     //       isFlag: 0,
+  //     //       sentDate: mqttInsertBroadcastMessageData.sentDate,
+  //     //       currDate: mqttInsertBroadcastMessageData.currDate,
+  //     //       fileGeneratedName: mqttInsertBroadcastMessageData.fileGeneratedName,
+  //     //       fileName: mqttInsertBroadcastMessageData.fileName,
+  //     //       shoutAll: mqttInsertBroadcastMessageData.shoutAll,
+  //     //       frMessages: mqttInsertBroadcastMessageData.frMessages,
+  //     //       messageCount: 0,
+  //     //       attachmentLocation:
+  //     //         mqttInsertBroadcastMessageData.attachmentLocation,
+  //     //       uid: mqttInsertBroadcastMessageData.attachmentLocation,
+  //     //     }
+  //     //     setAllMessages((prevAllMessages) => {
+  //     //       const updatedMessages = prevAllMessages.map((message) => {
+  //     //         if (message.uid === insertMqttBroadcastMessageData.uid) {
+  //     //           return {
+  //     //             ...message,
+  //     //             ...insertMqttBroadcastMessageData,
+  //     //           }
+  //     //         }
+  //     //         return message
+  //     //       })
+
+  //     //       const isUIDInArray = updatedMessages.some(
+  //     //         (message) => message.uid === insertMqttBroadcastMessageData.uid,
+  //     //       )
+  //     //       if (!isUIDInArray) {
+  //     //         updatedMessages.push(insertMqttBroadcastMessageData)
+  //     //       }
+
+  //     //       return updatedMessages
+  //     //     })
+  //     //   } else if (
+  //     //     talkStateData.talkSocketInsertBroadcastMessage
+  //     //       .MessageSendBroadcastResponseData.data[0].senderID != undefined &&
+  //     //     talkStateData.talkSocketInsertBroadcastMessage
+  //     //       .MessageSendBroadcastResponseData.data[0].senderID != null &&
+  //     //     talkStateData.talkSocketInsertBroadcastMessage
+  //     //       .MessageSendBroadcastResponseData.data[0].senderID != 0 &&
+  //     //     talkStateData.talkSocketInsertBroadcastMessage
+  //     //       .MessageSendBroadcastResponseData.data[0].senderID != '' &&
+  //     //     talkStateData.talkSocketInsertBroadcastMessage
+  //     //       .MessageSendBroadcastResponseData.data[0].senderID != '0' &&
+  //     //     parseInt(currentUserId) !==
+  //     //       talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+  //     //         .senderID
+  //     //   ) {
+  //     //     let mqttInsertBroadcastMessageData =
+  //     //       talkStateData.talkSocketInsertBroadcastMessage
+  //     //         .MessageSendBroadcastResponseData.data[0]
+  //     //     let insertMqttBroadcastMessageData = {
+  //     //       messageID: mqttInsertBroadcastMessageData.messageID,
+  //     //       senderID: mqttInsertBroadcastMessageData.senderID,
+  //     //       receiverID: mqttInsertBroadcastMessageData.receiverID,
+  //     //       messageBody: mqttInsertBroadcastMessageData.messageBody,
+  //     //       senderName: mqttInsertBroadcastMessageData.senderName,
+  //     //       isFlag: 0,
+  //     //       sentDate: mqttInsertBroadcastMessageData.sentDate,
+  //     //       currDate: mqttInsertBroadcastMessageData.currDate,
+  //     //       fileGeneratedName: mqttInsertBroadcastMessageData.fileGeneratedName,
+  //     //       fileName: mqttInsertBroadcastMessageData.fileName,
+  //     //       shoutAll: mqttInsertBroadcastMessageData.shoutAll,
+  //     //       frMessages: mqttInsertBroadcastMessageData.frMessages,
+  //     //       messageCount: 0,
+  //     //       attachmentLocation:
+  //     //         mqttInsertBroadcastMessageData.attachmentLocation,
+  //     //       uid: mqttInsertBroadcastMessageData.attachmentLocation,
+  //     //     }
+  //     //     setAllMessages((prevAllMessages) => {
+  //     //       const updatedMessages = prevAllMessages.map((message) => {
+  //     //         if (message.uid === insertMqttBroadcastMessageData.uid) {
+  //     //           return {
+  //     //             ...message,
+  //     //             ...insertMqttBroadcastMessageData,
+  //     //           }
+  //     //         }
+  //     //         return message
+  //     //       })
+
+  //     //       const isUIDInArray = updatedMessages.some(
+  //     //         (message) => message.uid === insertMqttBroadcastMessageData.uid,
+  //     //       )
+  //     //       if (!isUIDInArray) {
+  //     //         updatedMessages.push(insertMqttBroadcastMessageData)
+  //     //       }
+
+  //     //       return updatedMessages
+  //     //     })
+  //     //   }
+  //     // } catch {}
+  //   }
+  // }, [
+  //   talkStateData.talkSocketInsertBroadcastMessage
+  //     .MessageSendBroadcastResponseData,
+  // ])
+
   const handleOutsideClick = (event) => {
     if (
       chatMenuRef.current &&
@@ -2596,6 +3644,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       setUploadOptions(false)
     }
+    // if (
+    //   chatMessageRefs.current &&
+    //   !chatMessageRefs.current.contains(event.target) &&
+    //   chatFeatureActive
+    // ) {
+    //   setChatFeatureActive(0)
+    // }
 
     // Close the menu if the clicked element is not within the menu
     if (!event.target.closest('.chatmessage-box-icons')) {
@@ -2656,6 +3711,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       },
     }
     dispatch(UpdateShoutAll(Data, t, navigate))
+    setShowShoutEdit(false)
   }
 
   //Group Modification
@@ -2680,6 +3736,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       GroupID: record.id,
     }
     dispatch(LeaveGroup(navigate, data, t))
+    setChatHeadMenuActive(false)
   }
 
   const leaveGroupHandlerChat = (record) => {
@@ -2691,6 +3748,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setChatMenuActive(false)
     dispatch(videoChatMessagesFlag(false))
     dispatch(resetCloseChatFlags())
+    setChatOpen(false)
     setSave(false)
     setPrint(false)
     setEmail(false)
@@ -2706,11 +3764,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
       EndDate: '',
     })
     setEndDatedisable(true)
+    setDeleteChat(false)
     setShowGroupEdit(false)
     setShowEditGroupField(false)
     setShowEditShoutField(false)
     setEmojiActive(false)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
+    setGlobalSearchFilter(false)
     setChatMenuActive(false)
+    setChatHeadMenuActive(false)
+    setChatFeatures(false)
+    setNoParticipant(false)
     setDeleteMessage(false)
     setMessageInfo(false)
     setShowGroupInfo(false)
@@ -2718,10 +3784,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setTodayCheckState(false)
     setAllCheckState(false)
     setCustomCheckState(false)
+    setSenderCheckbox(false)
     setShowCheckboxes(false)
     setDeleteFlag(false)
     setForwardFlag(false)
     setEndDatedisable(false)
+    setDeleteChat(false)
     setUploadOptions(false)
     setChatFeatureActive(0)
     setReplyFeature(false)
@@ -2762,12 +3830,82 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(ResetShoutAllCreated())
   }, [talkStateData.CreateShoutAllList.CreateShoutAllListResponseMessage])
 
+  let messageSendDataLS = JSON.parse(localStorage.getItem('messageArray')) || []
+
+  const [isRetryAttemptComplete, setIsRetryAttemptComplete] = useState(false)
+
+  const storeDataInAPI = async (counter, flag) => {
+    try {
+      console.log('LocalStorageManagement Interval', counter)
+      let newMessageData = [...messageSendDataLS]
+      let dataItem
+      if (flag) {
+        for (let i = 0; i < newMessageData.length; i++) {
+          dataItem = newMessageData[i]
+          console.log('LocalStorageManagement Interval', i)
+
+          console.log('LocalStorageManagement dataItem', dataItem)
+          await dispatch(
+            InsertOTOMessages(navigate, dataItem, uploadFileTalk, t, counter),
+          )
+        }
+      } else {
+      }
+
+      console.log('Maximum retries reached. Stopping API calls.', counter)
+      // Check if maximum retries reached
+      if (counter >= 16) {
+        console.log('Maximum retries reached. Stopping API calls.')
+        setIsRetryAttemptComplete(true)
+      }
+
+      // Increment retry count
+    } catch (error) {
+      console.error('LocalStorageManagement Error', error)
+      // Handle error if needed
+    }
+  }
+
+  //Current MQTT Connection State
+  let currentMqttState = localStorage.getItem('MqttConnectionState')
+
+  console.log('mqttState', currentMqttState)
+
+  useEffect(() => {}, [currentMqttState])
+
+  useEffect(() => {
+    let interval
+    if (talkStateData.OtoMessageFlag === true) {
+      let counter = 0
+      interval = setInterval(() => {
+        console.log('LocalStorageManagement Interval')
+
+        storeDataInAPI(counter, false)
+        counter += 4
+        if (counter >= 20) {
+          clearInterval(interval)
+          dispatch(OtoMessageRetryFlag(false))
+        }
+      }, 4000)
+    }
+    return () => {
+      clearInterval(interval)
+    }
+  }, [talkStateData.OtoMessageFlag])
+
   const removeFileFunction = () => {
     setFile('')
     chatMessages.current?.scrollIntoView({ behavior: 'auto' })
   }
 
+  console.log('All Messages State', allMessages)
+
+  // console.log('All Group Messages', allMessages)
+
+  // console.log('All Broadcast messages', allMessages)
+
   useEffect(() => {
+    // Check the condition to trigger the link
     if (
       talkStateData.DownloadChatData.DownloadChatResponse !== null &&
       talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
@@ -2818,6 +3956,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   useEffect(() => {}, [activeCall])
 
   const initiateOtoCall = () => {
+    console.log('InitiateOTOCall', talkStateData.ActiveChatData)
     let recipientData = {
       userID: talkStateData.ActiveChatData.id,
       userName: talkStateData.ActiveChatData.fullName,
@@ -2856,6 +3995,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(videoChatPanel(false))
     // dispatch(videoChatMessagesFlag(false))
     dispatch(resetCloseChatFlags())
+    setChatOpen(false)
     setSave(false)
     setPrint(false)
     setEmail(false)
@@ -2871,11 +4011,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
       EndDate: '',
     })
     setEndDatedisable(true)
+    setDeleteChat(false)
     setShowGroupEdit(false)
     setShowEditGroupField(false)
     setShowEditShoutField(false)
     setEmojiActive(false)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
+    setGlobalSearchFilter(false)
     setChatMenuActive(false)
+    setChatHeadMenuActive(false)
+    setChatFeatures(false)
+    setNoParticipant(false)
     setDeleteMessage(false)
     setMessageInfo(false)
     setShowGroupInfo(false)
@@ -2883,10 +4031,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setTodayCheckState(false)
     setAllCheckState(false)
     setCustomCheckState(false)
+    setSenderCheckbox(false)
     setShowCheckboxes(false)
     setDeleteFlag(false)
     setForwardFlag(false)
     setEndDatedisable(false)
+    setDeleteChat(false)
     setUploadOptions(false)
     setChatFeatureActive(0)
     setReplyFeature(false)
@@ -2951,6 +4101,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     dispatch(normalizeVideoPanelFlag(true))
     dispatch(videoChatPanel(false))
     dispatch(resetCloseChatFlags())
+    setChatOpen(false)
     setSave(false)
     setPrint(false)
     setEmail(false)
@@ -2966,11 +4117,19 @@ const ChatMainBody = ({ chatMessageClass }) => {
       EndDate: '',
     })
     setEndDatedisable(true)
+    setDeleteChat(false)
     setShowGroupEdit(false)
     setShowEditGroupField(false)
     setShowEditShoutField(false)
     setEmojiActive(false)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
+    setGlobalSearchFilter(false)
     setChatMenuActive(false)
+    setChatHeadMenuActive(false)
+    setChatFeatures(false)
+    setNoParticipant(false)
     setDeleteMessage(false)
     setMessageInfo(false)
     setShowGroupInfo(false)
@@ -2978,10 +4137,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
     setTodayCheckState(false)
     setAllCheckState(false)
     setCustomCheckState(false)
+    setSenderCheckbox(false)
     setShowCheckboxes(false)
     setDeleteFlag(false)
     setForwardFlag(false)
     setEndDatedisable(false)
+    setDeleteChat(false)
     setUploadOptions(false)
     setChatFeatureActive(0)
     setReplyFeature(false)
@@ -2996,77 +4157,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
   }
 
   console.log('talkStateData', talkStateData)
-
-  const retrySendingMessage = (data) => {
-    console.log('Function Clicked', data)
-  }
-
-  const deleteSingleMessageLocal = (data) => {
-    let otoMessageLocal = JSON.parse(
-      localStorage.getItem('singleMessageObject'),
-    )
-    let objectRemoved = false
-
-    if (Array.isArray(otoMessageLocal)) {
-      for (let i = 0; i < otoMessageLocal.length; i++) {
-        if (otoMessageLocal[i].TalkRequest.Message.UID === data.uid) {
-          otoMessageLocal.splice(i, 1)
-          objectRemoved = true // Set the flag to true if the object is removed
-          break // Exit the loop once the object is found
-        }
-      }
-
-      if (objectRemoved) {
-        const updatedState = allMessages.filter((item) => item.uid !== data.uid)
-        setAllMessages(updatedState)
-        localStorage.setItem(
-          'singleMessageObject',
-          JSON.stringify(otoMessageLocal),
-        )
-      }
-
-      console.log('Function Clicked', data)
-    } else {
-      console.error('localStorage is not an array or is null.')
-    }
-  }
-
-  let otoMessageLocal = JSON.parse(localStorage.getItem('singleMessageObject'))
-
-  // Initialize a flag to track whether a match is found
-  const renderDivCodeArray = otoMessageLocal.map((localStorageObj) => {
-    const localStorageUID = localStorageObj.TalkRequest.Message.UID
-
-    // Check if there is a match for the current localStorageObj in stateData
-    const isMatchFound = allMessages.some(
-      (stateObj) => stateObj.uid === localStorageUID,
-    )
-
-    // Conditional rendering based on the flag
-    if (isMatchFound) {
-      return (
-        <div className="options-rd" key={localStorageUID}>
-          <span
-            onClick={() =>
-              retrySendingMessage(localStorageObj, localStorageUID)
-            }
-            className="option-r"
-          >
-            Retry
-          </span>
-          <span
-            onClick={() =>
-              deleteSingleMessageLocal(localStorageObj, localStorageUID)
-            }
-            className="option-d"
-          >
-            Delete
-          </span>
-        </div>
-      )
-    }
-    return null // Set to null to hide the div when no match is found
-  })
 
   return (
     <>
@@ -3095,6 +4185,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                         ) : talkStateData.ActiveChatData.messageType === 'B' ? (
                           <img draggable="false" src={ShoutIcon} width={20} />
                         ) : null}
+                        {/* <span className="user-active-status"></span> */}
                       </div>
                     </Col>
                     <Col lg={6} md={6} sm={12}>
@@ -3105,7 +4196,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     {activeCall === true ? (
                       <Col lg={1} md={1} sm={12}></Col>
                     ) : null}
-                    <Col lg={1} md={1} sm={12}></Col>
+                    <Col lg={1} md={1} sm={12}>
+                      {' '}
+                      {/* <div className="chat-box-security">
+                        <img draggable="false" src={SecurityIcon} />
+                      </div> */}
+                    </Col>
                     <Col lg={1} md={1} sm={12}>
                       {' '}
                       <div className="chat-box-icons">
@@ -3313,6 +4409,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
             </Row>
             {showChatSearch === true ? (
               <>
+                {/* <div className="chat-searchfield"> */}
                 <Row>
                   <Col className="p-0">
                     <div className="chat-searchfield">
@@ -3339,6 +4436,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                     </div>
                   </Col>
                 </Row>
+                {/* </div> */}
               </>
             ) : null}
 
@@ -3360,7 +4458,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
                           ? 'chat-section searchField'
                           : 'chat-section'
                       }
-                      key={Math.random()}
                     >
                       <>
                         {file === '' ? (
@@ -3414,11 +4511,15 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               className="dropdown-icon"
                                               src={DropDownIcon}
                                             />
+                                            {/* {dropeDownModalChat(messageData)} */}
                                             {chatFeatureActive != 0 &&
                                             Number(chatFeatureActive) ===
                                               Number(messageData.messageID) ? (
                                               <>
                                                 <div className="dropdown-menus-chatmessage">
+                                                  {console.log(
+                                                    'chatFeatureSelected',
+                                                  )}
                                                   <span
                                                     onClick={() =>
                                                       replyFeatureHandler(
@@ -3723,31 +4824,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               </div>
                                             </div>
                                           </div>
-                                          {renderDivCodeArray}
-                                          {/* <div className="options-rd">
-                                            <span
-                                              onClick={() =>
-                                                retrySendingMessage(
-                                                  messageData,
-                                                  messageData.messageID,
-                                                )
-                                              }
-                                              className="option-r"
-                                            >
-                                              Retry
-                                            </span>
-                                            <span
-                                              onClick={() =>
-                                                deleteSingleMessageLocal(
-                                                  messageData,
-                                                  messageData.messageID,
-                                                )
-                                              }
-                                              className="option-d"
-                                            >
-                                              Delete
-                                            </span>
-                                          </div> */}
                                         </div>
                                         {showCheckboxes === true ? (
                                           <Checkbox
@@ -5268,6 +6344,31 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 />
                                 {uploadOptions === true ? (
                                   <div className="upload-options">
+                                    {/* <div className="file-upload-options">
+                                      <label
+                                        className="image-upload"
+                                        htmlFor="document-upload"
+                                      >
+                                        <img
+                                          draggable="false"
+                                          src={UploadContact}
+                                          alt=""
+                                        />
+                                      </label>
+                                      <input
+                                        id="document-upload"
+                                        type="file"
+                                        onChange={(event) =>
+                                          handleFileUpload(event, 'document')
+                                        }
+                                        onClick={(event) => {
+                                          event.target.value = null
+                                        }}
+                                        maxfilesize={10000000}
+                                        accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
+                                        style={{ display: 'none' }}
+                                      />
+                                    </div> */}
                                     <div className="file-upload-options">
                                       <label
                                         className="image-upload"
