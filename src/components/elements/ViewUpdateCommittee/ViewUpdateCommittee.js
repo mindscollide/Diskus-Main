@@ -91,7 +91,24 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
       )
     );
   };
-  console.log(fileForSend, filesSending, fileAttachments);
+
+  const handleDoubleCLickFile = (data) => {
+    let ext = data.DisplayAttachmentName.split(".").pop();
+    let pdfData = {
+      taskId: data.pK_FileID,
+      commingFrom: 4,
+      fileName: data.DisplayAttachmentName,
+      attachmentID: data.pK_FileID,
+    };
+    const pdfDataJson = JSON.stringify(pdfData);
+    if (ext === "pdf") {
+      window.open(
+        `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
   useEffect(() => {
     if (
       CommitteeReducer.getCommitteeByCommitteeID !== null &&
@@ -749,7 +766,12 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                         return (
                           <>
                             <Col lg={4} md={4} sm={4}>
-                              <section className={styles["Outer_Box"]}>
+                              <section
+                                className={styles["Outer_Box"]}
+                                onDoubleClick={() =>
+                                  handleDoubleCLickFile(data)
+                                }
+                              >
                                 {Number(data.fk_UserID) ===
                                   Number(currentUserID) && (
                                   <span className={styles["Crossicon_Class"]}>

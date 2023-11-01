@@ -1562,5 +1562,9 @@
   "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time": "Proposed dates should be in increasing order of date and start time",
   "Not-more-than-5-dates-are-allowed": "Not More Than 5 Dates Are Allowed",
   "Folder-mapped-with-dataroom": "Folder mapped with dataroom",
-  "Unable-to-update-folder": "Unable to update folder"
+  "Unable-to-update-folder": "Unable to update folder",
+  "Update-successfully": "Update successfully",
+  "Failed-to-created-new-mapping": "Failed to created new mapping",
+  "New-mapped-created": "New mapped created",
+  "Failed-to-save-or-map-folder": "Failed to save or map folder"
 }

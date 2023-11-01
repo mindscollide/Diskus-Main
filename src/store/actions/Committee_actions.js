@@ -85,6 +85,9 @@ const uploadDocumentsCommitteesApi = (
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
+              dispatch(
+                uploadDocument_success(response.data.responseResult, "")
+              );
               await dispatch(
                 saveFilesCommitteesApi(
                   navigate,
@@ -173,7 +176,7 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
     Type: 0,
   };
   return async (dispatch) => {
-    // dispatch(saveFiles_init())
+    dispatch(saveFiles_init());
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -1059,7 +1062,7 @@ const updateCommittee_Fail = (message) => {
 
 const updateCommittee = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
+  // let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
   return (dispatch) => {
     dispatch(updatecommittee_Init());
     let form = new FormData();
@@ -1077,7 +1080,7 @@ const updateCommittee = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(updateCommittee(navigate, Data, t, setUpdateComponentpage));
+          dispatch(updateCommittee(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {

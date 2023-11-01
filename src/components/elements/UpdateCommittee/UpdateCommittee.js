@@ -698,6 +698,10 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     );
   };
 
+  const handleDoubleCLickFile = () => {
+    console.log("Hello");
+  };
+
   useEffect(() => {
     if (CommitteeReducer.createUpdateCommitteeDataroom !== 0) {
       let folderIdCreated = CommitteeReducer.createUpdateCommitteeDataroom;
@@ -1786,6 +1790,9 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                           </span>
                                           <section
                                             className={styles["Outer_Box"]}
+                                            onDoubleClick={
+                                              handleDoubleCLickFile
+                                            }
                                           >
                                             <Row>
                                               <Col lg={12} md={12} sm={12}>
