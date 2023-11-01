@@ -2032,3 +2032,32 @@ span.background-close-search {
   justify-content: center;
   background: linear-gradient(to left, #4ADEDE 0%, #6172D6 100%) !important;
 }
+
+.options-rd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.option-r {
+  cursor: pointer;
+  text-decoration: none;
+  color: #6172d6;
+  font-weight: bold;
+  transition: text-decoration 0.2s;
+}
+
+.option-d {
+  cursor: pointer;
+  text-decoration: none;
+  color: #ff0000;
+  font-weight: bold;
+  transition: text-decoration 0.2s;
+}
+
+/* Underline on hover */
+.option-r:hover,
+.option-d:hover {
+  text-decoration: underline;
+}
