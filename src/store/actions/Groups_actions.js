@@ -381,6 +381,10 @@ const getbyGroupID = (
                   t("Data-available")
                 )
               );
+              let newData = {
+                GroupID: Number(GroupId),
+              };
+              dispatch(RetriveDocumentsGroupsApiFunc(navigate, newData, t));
               console.log(response, "response12123123");
               if (no === 1) {
                 setViewGroupPage(true);
@@ -512,8 +516,6 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
               };
               console.log({ newData }, "CreateUpdateDataRoadMapApiFunc");
               dispatch(CreateUpdateDataRoadMapApiFunc(navigate, newData, t));
-              // dispatch(getGroups(navigate, t, currentPage));
-              // setCreategrouppage(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -809,10 +811,9 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                 )
               );
               console.log(response.data.responseResult, "updatedupdated");
-              let groupID = localStorage.getItem("groupID");
 
               let newData = {
-                GroupID: Number(groupID),
+                GroupID: Data.GroupDetails.PK_GRID,
                 GroupTitle: Data.GroupDetails.title,
                 IsUpdateFlow: true,
                 GroupMembers: Data.GroupMembers.map(
@@ -1084,7 +1085,7 @@ const methodCreateUpdateDataRoadMapSuccess = (response, message) => {
 
 const methodCreateUpdateDataRoadMapFailed = (message) => {
   return {
-    type: actions.CREAT_UPDATE_GROUP_ROADMAP_SUCCESS,
+    type: actions.CREAT_UPDATE_GROUP_ROADMAP_FAILED,
     message: message,
   };
 };
@@ -1457,7 +1458,7 @@ const showSaveGroupDocsFailed = (message) => {
 
 //SAVE GROUPS DOCUMENTS API
 
-const SaveGroupsDocumentsApiFunc = (navigate, Data, t) => {
+const SaveGroupsDocumentsApiFunc = (navigate, Data, t, setCreategrouppage) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -1477,7 +1478,9 @@ const SaveGroupsDocumentsApiFunc = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t));
+          dispatch(
+            SaveGroupsDocumentsApiFunc(navigate, Data, t, setCreategrouppage)
+          );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -1495,6 +1498,10 @@ const SaveGroupsDocumentsApiFunc = (navigate, Data, t) => {
                   t("Update-successful")
                 )
               );
+              dispatch(methodCreateUpdateDataRoadMapFailed(""));
+              dispatch(getGroups(navigate, t, currentPage));
+              setCreategrouppage(false);
+              localStorage.removeItem("groupID");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1503,19 +1510,27 @@ const SaveGroupsDocumentsApiFunc = (navigate, Data, t) => {
                 )
             ) {
               dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
+              dispatch(methodCreateUpdateDataRoadMapFailed(""));
+              localStorage.removeItem("groupID");
             }
           } else {
             console.log(response, "response");
             dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
+            dispatch(methodCreateUpdateDataRoadMapFailed(""));
+            localStorage.removeItem("groupID");
           }
         } else {
           console.log(response, "response");
           dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
+          dispatch(methodCreateUpdateDataRoadMapFailed(""));
+          localStorage.removeItem("groupID");
         }
       })
       .catch((response) => {
         console.log(response, "response");
         dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
+        dispatch(methodCreateUpdateDataRoadMapFailed(""));
+        localStorage.removeItem("groupID");
       });
   };
 };

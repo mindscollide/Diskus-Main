@@ -680,7 +680,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
         return { PK_FileID: data.pK_FileID };
       }),
     };
-    dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t));
+    dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t, setCreategrouppage));
   };
 
   useEffect(() => {

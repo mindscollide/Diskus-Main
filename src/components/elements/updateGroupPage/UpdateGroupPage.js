@@ -686,21 +686,31 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     Slider.scrollLeft = Slider.scrollLeft + 300;
   };
 
-  const handleRemoveFile = (index) => {
-    const updatedFies = [...fileAttachments];
-    updatedFies.splice(index, 1);
-    setFileAttachments(updatedFies);
+  const handleRemoveFile = (data) => {
+    setFileForSend((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) => fileSend.name !== data.DisplayAttachmentName
+      )
+    );
+
+    setPreviousFileIDs((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+
+    setFileAttachments((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
   };
-
-  //Retrive Documents
-
-  useEffect(() => {
-    let groupID = localStorage.getItem("groupID");
-    let Data = {
-      GroupID: Number(groupID),
-    };
-    dispatch(RetriveDocumentsGroupsApiFunc(navigate, Data, t));
-  }, []);
+  console.log(
+    { fileAttachments, previousFileIDs, fileForSend },
+    "fileForSendfileForSendfileForSend"
+  );
 
   useEffect(() => {
     if (
@@ -746,13 +756,15 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t));
+    dispatch(
+      SaveGroupsDocumentsApiFunc(navigate, Data, t, setUpdateComponentpage)
+    );
   };
 
   useEffect(() => {
     if (GroupsReducer.FolderID !== 0) {
-      console.log(GroupsReducer.FolderID.folderID, "GroupsDocumentCallUpload");
       let folderIDCreated = GroupsReducer.FolderID.folderID;
+      console.log("folderIDCreatedfolderIDCreated", folderIDCreated);
       GroupsDocumentCallUpload(folderIDCreated);
     }
   }, [GroupsReducer.FolderID]);
@@ -1419,7 +1431,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                               height="12.68px"
                                               width="12.68px"
                                               onClick={() =>
-                                                handleRemoveFile(index)
+                                                handleRemoveFile(data)
                                               }
                                             />
                                           </span>
