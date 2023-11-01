@@ -1024,6 +1024,16 @@ const CreateUpdateCommitteeDatarRoomRM = {
   RequestMethod: "ServiceManager.CreateUpdateCommiteeDataRoomMap",
 };
 
+//Aun work on Get meetingMaterial
+const getAllMeetingMaterial = {
+  RequestMethod: "ServiceManager.GetAllMeetingMaterial",
+};
+
+//Aun working on download Attendance Report
+const downloadMeetingAttendanceReport = {
+  RequestMethod: "ServiceManager.DownloadMeetingAttendanceReportExcel",
+};
+
 export {
   CreateUpdateCommitteeDatarRoomRM,
   saveResolutionDocumentsRM,
@@ -1294,9 +1304,11 @@ export {
   SetMeetingPolls,
   SettingMeetingProposedDates,
   getAllPropsedMeetingdates,
-
   //Aun attendance
   getAllAttendanceMeeting,
   saveMeetingAttendance,
   setMeetingProposedDatesResponse,
+  //Aun MeetingMaterial
+  getAllMeetingMaterial,
+  downloadMeetingAttendanceReport,
 };

@@ -1531,5 +1531,10 @@
   "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time": "Proposed dates should be in increasing order of date and start time",
   "Not-more-than-5-dates-are-allowed": "Not More Than 5 Dates Are Allowed",
   "Folder-mapped-with-dataroom": "Folder mapped with dataroom",
-  "Unable-to-update-folder": "Unable to update folder"
+  "Unable-to-update-folder": "Unable to update folder",
+  "Agenda-name": "Agenda Name",
+  "Document-name": "Document Name",
+  "Absent": "Absent",
+  "Present": "Present",
+  "Remote": "Remote"
 }

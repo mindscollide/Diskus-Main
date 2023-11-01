@@ -61,6 +61,7 @@ const initialState = {
   setMeetingProposeDate: [],
   getAllProposedDates: [],
   meetingResponse: [],
+  meetingMaterial: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -827,6 +828,32 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    // Aun Work on Meeting Material Init
+    case actions.GET_ALL_MEETING_MATERIAL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_MATERIAL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        meetingMaterial: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_ALL_MEETING_MATERIAL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        meetingMaterial: [],
         ResponseMessage: action.ResponseMessage,
       };
     }

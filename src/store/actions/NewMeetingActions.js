@@ -19,6 +19,7 @@ import {
   searchUserMeetings,
   sendNotification,
   setMeetingProposedDatesResponse,
+  getAllMeetingMaterial,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { meetingApi, pollApi } from "../../commen/apis/Api_ends_points";
@@ -2229,6 +2230,98 @@ const SetMeetingResponseApiFunc = (Data, navigate, t) => {
   };
 };
 
+//Aun work on meeting Material Init
+const meetingMaterialInit = () => {
+  return {
+    type: actions.GET_ALL_MEETING_MATERIAL_INIT,
+  };
+};
+
+//Aun work on meeting Material Success
+const meetingMaterialSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_MEETING_MATERIAL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//Aun work on meeting Material Fail
+const meetingMaterialFail = (message) => {
+  return {
+    type: actions.GET_ALL_MEETING_MATERIAL_FAIL,
+    message: message,
+  };
+};
+
+//Aun work on meeting Material Main API
+const getMeetingMaterialAPI = (navigate, t, meetingMaterialData) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(meetingMaterialInit());
+    let form = new FormData();
+    form.append("RequestMethod", getAllMeetingMaterial.RequestMethod);
+    form.append("RequestData", JSON.stringify(meetingMaterialData));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("responseresponseresponse", response);
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "responseresponseresponse");
+            if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetAllMeetingMaterial_01"
+            ) {
+              dispatch(
+                meetingMaterialSuccess(
+                  response.data.responseResult.parentAgendas,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetAllMeetingMaterial_02"
+            ) {
+              dispatch(
+                meetingMaterialFail(
+                  response.data.responseResult.responseMessage,
+                  t("No-records-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetAllMeetingMaterial_03"
+            ) {
+              dispatch(
+                meetingMaterialFail(
+                  response.data.responseResult.responseMessage,
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(meetingMaterialFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(meetingMaterialFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(meetingMaterialFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -2295,4 +2388,5 @@ export {
   setProposedMeetingDateApiFunc,
   GetAllProposedMeetingDateApiFunc,
   SetMeetingResponseApiFunc,
+  getMeetingMaterialAPI,
 };
