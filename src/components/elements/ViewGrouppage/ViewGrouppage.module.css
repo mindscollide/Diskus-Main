@@ -205,3 +205,10 @@ body[dir="rtl"] .ant-upload-text {
   background: #ccc;
   margin-left: -15px;
 }
+
+.Crossicon_Class {
+  cursor: pointer !important;
+  position: absolute !important;
+  top: -7px !important;
+  right: -4px !important;
+}

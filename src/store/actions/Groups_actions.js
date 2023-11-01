@@ -1458,7 +1458,13 @@ const showSaveGroupDocsFailed = (message) => {
 
 //SAVE GROUPS DOCUMENTS API
 
-const SaveGroupsDocumentsApiFunc = (navigate, Data, t, setCreategrouppage) => {
+const SaveGroupsDocumentsApiFunc = (
+  navigate,
+  Data,
+  t,
+  setCreategrouppage,
+  setViewGroupPage
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -1479,7 +1485,13 @@ const SaveGroupsDocumentsApiFunc = (navigate, Data, t, setCreategrouppage) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            SaveGroupsDocumentsApiFunc(navigate, Data, t, setCreategrouppage)
+            SaveGroupsDocumentsApiFunc(
+              navigate,
+              Data,
+              t,
+              setCreategrouppage,
+              setViewGroupPage
+            )
           );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
@@ -1501,6 +1513,7 @@ const SaveGroupsDocumentsApiFunc = (navigate, Data, t, setCreategrouppage) => {
               dispatch(methodCreateUpdateDataRoadMapFailed(""));
               dispatch(getGroups(navigate, t, currentPage));
               setCreategrouppage(false);
+              setViewGroupPage(false);
               localStorage.removeItem("groupID");
             } else if (
               response.data.responseResult.responseMessage

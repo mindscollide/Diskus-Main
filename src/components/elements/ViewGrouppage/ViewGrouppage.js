@@ -16,17 +16,25 @@ import {
   SelectBox,
   InputSearchFilter,
 } from "./../../../components/elements";
+import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
-import { RetriveDocumentsGroupsApiFunc } from "../../../store/actions/Groups_actions";
+import {
+  RetriveDocumentsGroupsApiFunc,
+  SaveGroupsDocumentsApiFunc,
+  uploadDocumentsGroupsApi,
+} from "../../../store/actions/Groups_actions";
 const ViewGrouppage = ({ setViewGroupPage }) => {
+  let userID = localStorage.getItem("userID");
+  console.log(userID, "userIDuserIDuserID");
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [fileAttachments, setFileAttachments] = useState([]);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
+
   const [folderID, setFolderID] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [fileSize, setFileSize] = useState(0);
@@ -42,6 +50,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
     GroupStatus: null,
     GroupType: null,
     isTalk: false,
+    GroupID: 0,
   });
 
   const { GroupsReducer } = useSelector((state) => state);
@@ -63,6 +72,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
         GroupStatus: groupDetails.groupStatus,
         GroupType: groupDetails.groupType,
         isTalk: groupDetails.isTalk,
+        GroupID: groupDetails.groupID,
       });
     }
   }, [GroupsReducer]);
@@ -122,6 +132,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
             fileSize: data.file.originFileObj.size,
+            fk_UserID: Number(userID),
           };
           setFileAttachments([...fileAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
@@ -158,6 +169,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
             fileSize: data.file.originFileObj.size,
+            fk_UserID: Number(userID),
           };
           setFileAttachments([...fileAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
@@ -169,16 +181,9 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
     onDrop(e) {},
     customRequest() {},
   };
+  console.log(fileAttachments, "fileAttachmentsfileAttachments1212");
 
   console.log(fileAttachments, "fileAttachmentsfileAttachments");
-
-  useEffect(() => {
-    let groupID = localStorage.getItem("groupID");
-    let Data = {
-      GroupID: Number(groupID),
-    };
-    dispatch(RetriveDocumentsGroupsApiFunc(navigate, Data, t));
-  }, []);
 
   useEffect(() => {
     if (
@@ -207,6 +212,47 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
       }
     }
   }, [GroupsReducer.groupDocuments]);
+
+  const handleRemoveFile = (data) => {
+    setFileForSend((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) => fileSend.name !== data.DisplayAttachmentName
+      )
+    );
+
+    setPreviousFileIDs((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+
+    setFileAttachments((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+  };
+
+  const handleViewSave = async (folderID) => {
+    let newfile = [...previousFileIDs];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsGroupsApi(navigate, t, newData, folderID, newfile)
+      );
+    });
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+
+    let Data = {
+      GroupID: Number(viewGroupDetails.GroupID),
+      UpdateFileList: newfile.map((data, index) => {
+        return { PK_FileID: Number(data.pK_FileID) };
+      }),
+    };
+    dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t, setViewGroupPage));
+  };
 
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -413,10 +459,28 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
               <Col lg={12} md={12} sm={12} className={styles["Scroller_files"]}>
                 {fileAttachments.length > 0
                   ? fileAttachments.map((data, index) => {
-                      console.log(data, "datadatadata");
+                      console.log(data, "fileAttachmentsfileAttachments");
                       return (
                         <>
-                          <Col lg={4} md={4} sm={4}>
+                          <Col
+                            lg={4}
+                            md={4}
+                            sm={4}
+                            className="position-relative gap-2 mt-2"
+                          >
+                            {Number(data.fk_UserID) === Number(userID) && (
+                              <>
+                                <span className={styles["Crossicon_Class"]}>
+                                  <img
+                                    src={CrossIcon}
+                                    height="12.68px"
+                                    width="12.68px"
+                                    onClick={() => handleRemoveFile(data)}
+                                  />
+                                </span>
+                              </>
+                            )}
+
                             <section className={styles["Outer_Box"]}>
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
@@ -462,11 +526,21 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
           </Col>
         </Row>
         <Row className="mt-4">
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-end gap-2"
+          >
             <Button
               className={styles["Close-ViewGroup-btn"]}
               text={t("Close")}
               onClick={() => setViewGroupPage(false)}
+            />
+            <Button
+              className={styles["Close-ViewGroup-btn"]}
+              text={t("Save")}
+              onClick={handleViewSave}
             />
           </Col>
         </Row>
