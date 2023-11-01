@@ -1034,6 +1034,18 @@ const downloadMeetingAttendanceReport = {
   RequestMethod: "ServiceManager.DownloadMeetingAttendanceReportExcel",
 };
 
+const CreateUpdateGroupDataRoadMap = {
+  RequestMethod: "ServiceManager.CreateUpdateGroupDataRoomMap",
+};
+
+const SaveTheGroupsDocuments = {
+  RequestMethod: "ServiceManager.SaveGroupsDocuments",
+};
+
+const RetrieveGroupDocuments = {
+  RequestMethod: "ServiceManager.ReteriveGroupDocuments",
+};
+
 export {
   CreateUpdateCommitteeDatarRoomRM,
   saveResolutionDocumentsRM,
@@ -1311,4 +1323,7 @@ export {
   //Aun MeetingMaterial
   getAllMeetingMaterial,
   downloadMeetingAttendanceReport,
+  CreateUpdateGroupDataRoadMap,
+  SaveTheGroupsDocuments,
+  RetrieveGroupDocuments,
 };
