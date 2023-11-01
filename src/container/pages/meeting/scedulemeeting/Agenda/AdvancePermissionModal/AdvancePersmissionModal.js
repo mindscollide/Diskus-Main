@@ -226,7 +226,7 @@ const AdvancePersmissionModal = () => {
                                         </span>
                                       </span>
 
-                                      <img
+                                      {/* <img
                                         src={
                                           sidebarindex === index &&
                                           expandmenuIntroduction === true
@@ -239,7 +239,7 @@ const AdvancePersmissionModal = () => {
                                         onClick={() => {
                                           handleExpandIntroduction(index);
                                         }}
-                                      />
+                                      /> */}
                                     </section>
                                     <section
                                       className={
@@ -249,7 +249,7 @@ const AdvancePersmissionModal = () => {
                                           : styles["Hidden"]
                                       }
                                     >
-                                      {sidebarindex === index &&
+                                      {/* {sidebarindex === index &&
                                       expandmenuIntroduction === true ? (
                                         <>
                                           <Row className="mt-2">
@@ -340,7 +340,7 @@ const AdvancePersmissionModal = () => {
                                             )}
                                           </Row>
                                         </>
-                                      ) : null}
+                                      ) : null} */}
                                       <Row className="mt-2">
                                         {data?.SubAgendaOptions?.map(
                                           (SubAgendaData, SubAgendaIndex) => {
@@ -383,10 +383,8 @@ const AdvancePersmissionModal = () => {
                                                         }
                                                       >
                                                         <span>
-                                                          {index}
-                                                          <span>
-                                                            .{SubAgendaData + 1}
-                                                          </span>
+                                                          {index + 1}.
+                                                          {SubAgendaIndex + 1}
                                                         </span>
                                                         <span
                                                           className={
@@ -400,7 +398,7 @@ const AdvancePersmissionModal = () => {
                                                           }
                                                         </span>
                                                       </span>
-                                                      <img
+                                                      {/* <img
                                                         src={
                                                           subAgendaExpand
                                                             ? Minus
@@ -416,9 +414,9 @@ const AdvancePersmissionModal = () => {
                                                         onClick={
                                                           subAgendaExpandFunction
                                                         }
-                                                      />
+                                                      /> */}
                                                     </section>
-                                                    {subAgendaExpand ? (
+                                                    {/* {subAgendaExpand ? (
                                                       <>
                                                         <Row className="mt-2">
                                                           <section
@@ -503,7 +501,7 @@ const AdvancePersmissionModal = () => {
                                                           </section>
                                                         </Row>
                                                       </>
-                                                    ) : null}
+                                                    ) : null} */}
                                                   </section>
                                                 </Col>
                                               </>
