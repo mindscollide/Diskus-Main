@@ -1023,6 +1023,13 @@ const setMeetingProposedDatesResponse = {
 const CreateUpdateCommitteeDatarRoomRM = {
   RequestMethod: "ServiceManager.CreateUpdateCommiteeDataRoomMap",
 };
+const saveCommitteeDocumentsRM = {
+  RequestMethod: "ServiceManager.SaveCommitteeDocuments",
+};
+
+const reteriveCommitteeDocumentsRM = {
+  RequestMethod: "ServiceManager.ReteriveCommitteeDocuments",
+};
 
 //Aun work on Get meetingMaterial
 const getAllMeetingMaterial = {
@@ -1047,6 +1054,8 @@ const RetrieveGroupDocuments = {
 };
 
 export {
+  saveCommitteeDocumentsRM,
+  reteriveCommitteeDocumentsRM,
   CreateUpdateCommitteeDatarRoomRM,
   saveResolutionDocumentsRM,
   updateResolutionDataRoomMapRM,

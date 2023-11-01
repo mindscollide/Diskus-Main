@@ -1,0 +1,201 @@
+.View-Committee-heading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+}
+
+body[dir="rtl"] .View-Committee-heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.View-Committee-Subheading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+}
+
+body[dir="rtl"] .View-Committee-Subheading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Management-Heading-View-Committee {
+  font-size: 30px !important;
+  color: #5a5a5a;
+}
+
+body[dir="rtl"] .Management-Heading-View-Committee {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.View-Committee-Head-Heading {
+  font-size: 20px !important;
+  color: #6172d6 !important;
+}
+
+body[dir="rtl"] .View-Committee-Head-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.ViewCommittee-head-info {
+  line-height: 15px !important;
+}
+
+.name-ViewCommittee-group {
+  color: #5a5a5a;
+  font-size: 12px !important;
+}
+
+body[dir="rtl"] .name-ViewCommittee-group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.paragraph-content-View-Committee {
+  color: #5a5a5a;
+  font-size: 16px !important;
+}
+
+body[dir="rtl"] .paragraph-content-View-Committee {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Designation-ViewCommittee-group {
+  color: #5a5a5a;
+  font-size: 10px !important;
+}
+
+body[dir="rtl"] .Designation-ViewCommittee-group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.email-ViewCommittee-group {
+  color: #5a5a5a;
+  color: #6172d6;
+  text-decoration: underline !important;
+  font-size: 10px !important;
+}
+
+body[dir="rtl"] .email-ViewCommittee-group {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.members-ViewCommittee-group-page {
+  font-size: 20px !important;
+  color: #6172d6 !important;
+}
+
+body[dir="rtl"] .members-ViewCommittee-group-page {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.scroll-bar-ViewGroup {
+  height: 39vh !important;
+  overflow-x: hidden !important;
+}
+
+.scroll-bar-ViewGroup::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scroll-bar-ViewGroup::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.View-Committee-paper {
+  height: auto !important;
+  width: 100% !important;
+  padding: 30px 40px 20px 40px !important;
+  /* margin-top: 8px !important; */
+}
+
+.Close-ViewCommittee-btn {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold";
+  border-radius: 4px !important;
+  border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body[dir="rtl"] .Close-ViewCommittee-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Close-ViewCommittee-btn:hover,
+.Close-ViewCommittee-btn:active,
+.Close-ViewCommittee-btn:focus,
+.Close-ViewCommittee-btn:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: none !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.ant-upload-text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .ant-upload-text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Choose_file_style {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 3px !important;
+}
+
+.FileName {
+  font-size: 10px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratRegular";
+  display: inline-block !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  width: 100px !important;
+}
+
+.IconPDF {
+  margin-left: 10px !important;
+}
+
+.IconTextClass {
+  display: flex;
+  text-align: center !important;
+  align-items: center !important;
+  gap: 7px !important;
+}
+
+.backGround_name_Icon {
+  background: #fff;
+}
+
+.Outer_Box {
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  margin-bottom: 10px !important;
+  border-radius: 4px !important;
+  position: relative;
+  margin: 5px;
+}
+.Crossicon_Class {
+  cursor: pointer !important;
+  position: absolute !important;
+  top: -7px !important;
+  right: -4px !important;
+}

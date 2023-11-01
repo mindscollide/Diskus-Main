@@ -83,7 +83,9 @@ const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
-          dispatch(saveFilesResolutionApi(navigate, t, data, newFolder));
+          dispatch(
+            saveFilesResolutionApi(navigate, t, data, folderID, newFolder)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

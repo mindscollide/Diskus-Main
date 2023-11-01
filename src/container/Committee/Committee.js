@@ -50,6 +50,7 @@ const Committee = () => {
     CommitteeReducer,
     LanguageReducer,
     talkStateData,
+    DataRoomReducer,
     talkFeatureStates,
   } = useSelector((state) => state);
   const { t } = useTranslation();
@@ -311,6 +312,42 @@ const Committee = () => {
     setChangeStatusModal(true);
   };
 
+  const handleClickMeetingTab = (data) => {
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
+  const handlePollsClickTab = (data) => {
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
+  const handleTasksClickTab = (data) => {
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
   useEffect(() => {
     if (
       CommitteeReducer.ResponseMessage !== "" &&
@@ -422,6 +459,15 @@ const Committee = () => {
                                 CardID={data.committeeID}
                                 StatusID={data.committeeStatusID}
                                 CardHeading={data.committeesTitle}
+                                handleMeetingClickOption={() => {
+                                  handleClickMeetingTab(data);
+                                }}
+                                handleTasksClickOption={() => {
+                                  handleTasksClickTab(data);
+                                }}
+                                handlePollsClickOption={() => {
+                                  handlePollsClickTab(data);
+                                }}
                                 creatorId={data.creatorID}
                                 groupState={false}
                                 onClickFunction={() =>
@@ -563,7 +609,11 @@ const Committee = () => {
           </>
         )}
       </div>
-      {CommitteeReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {CommitteeReducer.Loading ||
+      LanguageReducer.Loading ||
+      DataRoomReducer.Loading ? (
+        <Loader />
+      ) : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {showModal ? (
         <ModalArchivedCommittee
