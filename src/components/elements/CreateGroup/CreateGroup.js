@@ -522,18 +522,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
 
   const checkAttendeeBox = (data, id, index) => {
-    console.log("found2found2found2", attendees);
-
     if (attendees.includes(id)) {
-      let attendIndex = attendees.findIndex((data, index) => data === id);
-      console.log("found2found2found2", attendIndex);
-      if (attendIndex !== -1) {
-        attendees.splice(attendIndex, 1);
-        setAttendees([...attendees]);
-      }
+      setAttendees((prevFiles) =>
+        prevFiles.filter((attnedeeID) => attnedeeID !== id)
+      );
     } else {
-      attendees.push(id);
-      setAttendees([...attendees]);
+      setAttendees([...attendees, id]);
     }
   };
 
