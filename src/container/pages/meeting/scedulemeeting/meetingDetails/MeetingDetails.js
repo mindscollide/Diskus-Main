@@ -402,6 +402,12 @@ const MeetingDetails = ({
       meetingDetails.Link != ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+      // Check if RecurringOptions.value is defined and use it
+      let recurringMeetingID =
+        meetingDetails.RecurringOptions.value !== 0
+          ? meetingDetails.RecurringOptions.value
+          : 1;
+
       let data = {
         MeetingDetails: {
           MeetingTitle: meetingDetails.MeetingTitle,
@@ -416,7 +422,7 @@ const MeetingDetails = ({
           Notes: meetingDetails.Notes,
           AllowRSVP: meetingDetails.AllowRSPV,
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
-          ReucurringMeetingID: meetingDetails.RecurringOptions.value,
+          ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
           MeetingStatusID: 11,
         },
