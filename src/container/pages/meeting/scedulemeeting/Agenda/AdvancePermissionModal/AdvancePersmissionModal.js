@@ -72,6 +72,7 @@ const AdvancePersmissionModal = () => {
 
   // Function to handle role selection
   const handleRoleSelect = (selectedOption) => {
+    console.log(selectedOption, "selectedOptionselectedOption");
     setSelectedRole(selectedOption.value);
   };
 
@@ -80,7 +81,7 @@ const AdvancePersmissionModal = () => {
     if (selectedRole === "All") {
       return true; // Show all members if 'All' is selected
     } else {
-      return member.userRole.role === selectedRole;
+      return member.userRole.role.toLowerCase() === selectedRole.toLowerCase();
     }
   });
 
@@ -106,15 +107,17 @@ const AdvancePersmissionModal = () => {
       NewMeetingreducer.agendaRights !== undefined
     ) {
       console.log(NewMeetingreducer.agendaRights, "agendaRights");
-      let agendaUserRightsarray = [];
-      NewMeetingreducer.agendaRights.agendaUserRights.map(
-        (agendaRightsData, agendaRightsIndex) => {
-          console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
-          agendaUserRightsarray.push(agendaRightsData);
-          setSelectedRole(agendaRightsData.userRole.role);
-        }
-      );
-      setMembers(agendaUserRightsarray);
+      if (NewMeetingreducer.agendaRights.agendaUserRights.length > 0) {
+        let agendaUserRightsarray = [];
+        NewMeetingreducer.agendaRights.agendaUserRights.map(
+          (agendaRightsData, agendaRightsIndex) => {
+            console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
+            agendaUserRightsarray.push(agendaRightsData);
+            setSelectedRole(agendaRightsData.userRole.role);
+          }
+        );
+        setMembers(agendaUserRightsarray);
+      }
     }
   }, [NewMeetingreducer.agendaRights]);
 
