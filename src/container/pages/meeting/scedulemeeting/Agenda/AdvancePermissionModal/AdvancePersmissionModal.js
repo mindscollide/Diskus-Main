@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import {
+  GetAllUserAgendaRightsApiFunc,
   showAdvancePermissionConfirmation,
   showAdvancePermissionModal,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -125,8 +126,16 @@ const AdvancePersmissionModal = () => {
   console.log(members, "membersmembers");
   console.log(members, "membersmembers");
   console.log(selectedRole, "selectedRoleselectedRole");
+
   const handleGetAllMeetingMaterialApiFunction = () => {};
 
+  //SideBar Options Click
+  const handleOptionsClickSideBar = () => {
+    let NewData = {
+      AgendaID: "1222",
+    };
+    dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+  };
   return (
     <>
       <section>
@@ -232,10 +241,12 @@ const AdvancePersmissionModal = () => {
                                           styles["Heading_introductions"]
                                         }
                                       >
-                                        <span>
+                                        <span
+                                          onClick={handleOptionsClickSideBar}
+                                        >
                                           {index + 1}
                                           <span>.</span>
-                                        </span>
+                                        </span>{" "}
                                         <span
                                           className={
                                             styles["Heading_introductions"]
@@ -405,20 +416,23 @@ const AdvancePersmissionModal = () => {
                                                           ]
                                                         }
                                                       >
-                                                        <span>
-                                                          {index + 1}.
-                                                          {SubAgendaIndex + 1}{" "}
-                                                        </span>
                                                         <span
                                                           className={
                                                             styles[
-                                                              "Heading_introductions_"
+                                                              "Heading_introductions"
                                                             ]
                                                           }
-                                                        >
-                                                          {
-                                                            SubAgendaData.agendaName
+                                                          onClick={
+                                                            handleOptionsClickSideBar
                                                           }
+                                                        >
+                                                          {index + 1}.
+                                                          {SubAgendaIndex + 1}{" "}
+                                                          <span>
+                                                            {
+                                                              SubAgendaData.agendaName
+                                                            }
+                                                          </span>
                                                         </span>
                                                       </span>
                                                       {/* <img
