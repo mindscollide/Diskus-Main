@@ -20,6 +20,9 @@ import {
   sendNotification,
   setMeetingProposedDatesResponse,
   getAllMeetingMaterial,
+  MeetingAgendaLock,
+  GetAllUserAgendaRights,
+  saveUserAttachmentPermission,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { meetingApi, pollApi } from "../../commen/apis/Api_ends_points";
@@ -2260,7 +2263,8 @@ const meetingMaterialFail = (message) => {
 };
 
 //Aun work on meeting Material Main API
-const getMeetingMaterialAPI = (navigate, t, meetingMaterialData) => {
+const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
+  console.log(rows, "getMeetingMaterialAPI");
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(meetingMaterialInit());
@@ -2293,6 +2297,15 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData) => {
                   t("Record-found")
                 )
               );
+              let newID;
+              rows.map((data, index) => {
+                newID = data.ID;
+              });
+              let NewData = {
+                AgendaID: "1222",
+              };
+              console.log(NewData, "newIDnewIDnewID");
+              dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_02"
@@ -2323,6 +2336,277 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData) => {
       })
       .catch((response) => {
         dispatch(meetingMaterialFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const showUpdateMeetingAgendaLockStatusInit = () => {
+  return {
+    type: actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_INIT,
+  };
+};
+
+const showUpdateMeetingAgendaLockStatusSuccess = (response, message) => {
+  return {
+    type: actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showUpdateMeetingAgendaLockStatusFailed = (message) => {
+  return {
+    type: actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_FAILED,
+    message: message,
+  };
+};
+
+const UpateMeetingStatusLockApiFunc = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showUpdateMeetingAgendaLockStatusInit());
+    let form = new FormData();
+    form.append("RequestMethod", MeetingAgendaLock.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("responseresponseresponse", response);
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(UpateMeetingStatusLockApiFunc(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "responseresponseresponse");
+            if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_01"
+            ) {
+              dispatch(
+                showUpdateMeetingAgendaLockStatusSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Status-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_02"
+            ) {
+              dispatch(
+                showUpdateMeetingAgendaLockStatusFailed(
+                  response.data.responseResult.responseMessage,
+                  t("status-not-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_03"
+            ) {
+              dispatch(
+                showUpdateMeetingAgendaLockStatusFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              showUpdateMeetingAgendaLockStatusFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            showUpdateMeetingAgendaLockStatusFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          showUpdateMeetingAgendaLockStatusFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+const showGetAllUserAgendaRightsInit = () => {
+  return {
+    type: actions.GET_ALL_AGENDA_RIGHTS_INIT,
+  };
+};
+
+const showGetAllUserAgendaRightsSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_AGENDA_RIGHTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showGetAllUserAgendaRightsFailed = (message) => {
+  return {
+    type: actions.GET_ALL_AGENDA_RIGHTS_FAILED,
+    message: message,
+  };
+};
+
+const GetAllUserAgendaRightsApiFunc = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showGetAllUserAgendaRightsInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllUserAgendaRights.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("responseresponseresponse", response);
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "responseresponseresponse");
+            if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetAllUserAgendaRights_01"
+            ) {
+              dispatch(
+                showGetAllUserAgendaRightsSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetAllUserAgendaRights_02"
+            ) {
+              dispatch(
+                showGetAllUserAgendaRightsFailed(
+                  response.data.responseResult.responseMessage,
+                  t("No-record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetAllUserAgendaRights_03"
+            ) {
+              dispatch(
+                showGetAllUserAgendaRightsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              showGetAllUserAgendaRightsFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(showGetAllUserAgendaRightsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(showGetAllUserAgendaRightsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+const SaveUserAttachmentPermissionsInit = () => {
+  return {
+    type: actions.SAVE_USER_ATTACHMENT_PERMISSION_INIT,
+  };
+};
+
+const SaveUserAttachmentPermissionsSuccess = (response, message) => {
+  return {
+    type: actions.SAVE_USER_ATTACHMENT_PERMISSION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const SaveUserAttachmentPermissionsFailed = (message) => {
+  return {
+    type: actions.SAVE_USER_ATTACHMENT_PERMISSION_SUCCESS,
+    message: message,
+  };
+};
+
+const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(SaveUserAttachmentPermissionsInit());
+    let form = new FormData();
+    form.append("RequestMethod", saveUserAttachmentPermission.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("responseresponseresponse", response);
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "responseresponseresponse");
+            if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_01"
+            ) {
+              dispatch(
+                SaveUserAttachmentPermissionsSuccess(
+                  response.data.responseResult,
+                  t("Record-saved")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_02 "
+            ) {
+              dispatch(
+                SaveUserAttachmentPermissionsFailed(
+                  response.data.responseResult.responseMessage,
+                  t("No-record-saved")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_03"
+            ) {
+              dispatch(
+                SaveUserAttachmentPermissionsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              SaveUserAttachmentPermissionsFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            SaveUserAttachmentPermissionsFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          SaveUserAttachmentPermissionsFailed(t("Something-went-wrong"))
+        );
       });
   };
 };
@@ -2394,5 +2678,7 @@ export {
   GetAllProposedMeetingDateApiFunc,
   SetMeetingResponseApiFunc,
   getMeetingMaterialAPI,
+  GetAllUserAgendaRightsApiFunc,
+  SaveUserAttachmentsPermissionApiFunc,
   showCancelViewModalmeetingDeitals,
 };

@@ -217,7 +217,6 @@ const NewMeeting = () => {
     });
     setSearchMeeting(false);
   };
-
   const HandleCloseSearchModalMeeting = () => {
     setSearchFeilds({
       ...searchFields,
@@ -253,7 +252,6 @@ const NewMeeting = () => {
       });
     }
   };
-
   const openSceduleMeetingPage = () => {
     setSceduleMeeting(true);
   };
@@ -315,7 +313,6 @@ const NewMeeting = () => {
   const EndMeetingModal = () => {
     dispatch(showEndMeetingModal(true));
   };
-
   //Modal For End Meeting
   const EndForAllModal = () => {
     dispatch(showEndMeetingForAll(true));
@@ -965,11 +962,11 @@ const NewMeeting = () => {
         />
       ) : viewAdvanceMeetingModal ? (
         <></>
+      ) : (
         // <ViewMeetingModal
         //   advanceMeetingModalID={advanceMeetingModalID}
         //   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
         // />
-      ) : (
         <>
           <Row className="mt-2">
             <Col

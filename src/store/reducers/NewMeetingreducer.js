@@ -62,7 +62,9 @@ const initialState = {
   getAllProposedDates: [],
   meetingResponse: [],
   meetingMaterial: [],
-  cancelViewModalMeetingDetails:false,
+  agendaRights: null,
+  attachmentsPermission: [],
+  cancelViewModalMeetingDetails: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -427,7 +429,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         cancelViewModalMeetingDetails: action.response,
       };
     }
-    
+
     case actions.CANCEL_BUTTON_MODAL_ORGANIZER: {
       return {
         ...state,
@@ -862,6 +864,78 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         meetingMaterial: [],
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_ALL_AGENDA_RIGHTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_AGENDA_RIGHTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        agendaRights: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_ALL_AGENDA_RIGHTS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        agendaRights: null,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SAVE_USER_ATTACHMENT_PERMISSION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_USER_ATTACHMENT_PERMISSION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        attachmentsPermission: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SAVE_USER_ATTACHMENT_PERMISSION_FAILED: {
+      return {
+        ...state,
+        Loading: false,
         ResponseMessage: action.ResponseMessage,
       };
     }

@@ -1053,6 +1053,18 @@ const RetrieveGroupDocuments = {
   RequestMethod: "ServiceManager.ReteriveGroupDocuments",
 };
 
+const MeetingAgendaLock = {
+  RequestMethod: "ServiceManager.UpdateMeetingAgendaLockStatus",
+};
+
+const GetAllUserAgendaRights = {
+  RequestMethod: "ServiceManager.GetAllUserAgendaRights",
+};
+
+const saveUserAttachmentPermission = {
+  RequestMethod: "ServiceManager.SaveUserAttachmentPermission",
+};
+
 const getPollbyCommitteeIdRM = {
   RequestMethod: "ServiceManager.GetPollsByComitteeID",
 };
@@ -1369,6 +1381,9 @@ export {
   CreateUpdateGroupDataRoadMap,
   SaveTheGroupsDocuments,
   RetrieveGroupDocuments,
+  MeetingAgendaLock,
+  GetAllUserAgendaRights,
+  saveUserAttachmentPermission,
   getPollByGroupIDApi,
   setGroupPollsApi,
 };

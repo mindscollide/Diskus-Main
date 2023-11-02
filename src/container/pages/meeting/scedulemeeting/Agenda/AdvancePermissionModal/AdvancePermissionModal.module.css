@@ -259,6 +259,14 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   color: #5a5a5a !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
+  cursor: pointer !important;
+}
+
+.Heading_introductions:is(:hover, :active, :focus, :focus-visible) {
+  color: #6172d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  cursor: pointer !important;
 }
 
 .Heading_introductions_Of_SubAgenda {
