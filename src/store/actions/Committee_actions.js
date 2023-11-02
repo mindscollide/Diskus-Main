@@ -1564,7 +1564,16 @@ const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
       });
   };
 };
+
+const viewDetailsCommitteeID = (response) => {
+  return {
+    type: actions.COMMITTEEID_VIEWDETAILS,
+    response: response,
+  };
+};
+
 export {
+  viewDetailsCommitteeID,
   saveCommitteeDocumentsApi,
   reteriveCommitteeDocumentsApi,
   createUpdateCommitteeApi,
