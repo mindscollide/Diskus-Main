@@ -1,4 +1,4 @@
-.Minustes_Buttons_Import {
+/* .Minustes_Buttons_Import {
   padding: 12px 30px !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
@@ -237,4 +237,29 @@
 
 .AgendaIconStyles {
   margin-top: 8px !important;
+} */
+
+.Add-note-QuillRow {
+  position: relative;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.modal-Note-Title-Input :focus {
+  border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .modal-Note-Title-Input {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.quill-height-addNote {
+  border-top: 1px solid lightgrey;
+  height: 18vh !important;
+  border-radius: 3px !important;
+  position: relative;
+}
+
+.quill-height-addNote .ql-toolbar.ql-snow {
+  color: #a2a2a2 !important;
 }
