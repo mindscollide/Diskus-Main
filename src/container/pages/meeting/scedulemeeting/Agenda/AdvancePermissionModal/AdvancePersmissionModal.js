@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AdvancePermissionModal.module.css";
 import { Modal, Button, Switch } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -29,73 +29,14 @@ const AdvancePersmissionModal = () => {
   const [subAgendaExpand, setsubAgendaExpand] = useState(false);
   // Initialize state for members data
   const [memberData, setMemberData] = useState([]);
-  const [sidebarOptions, setsidebarOptions] = useState([
-    {
-      title: t("Introduction"),
-      IntroductionFiles: [
-        {
-          name: "Axis.Diskus.Com",
-        },
-        {
-          name: "Axis.Diskus.Com",
-        },
-        {
-          name: "Axis.Diskus.Com",
-        },
-        {
-          name: "Axis.Diskus.Com",
-        },
-        {
-          name: "Axis.Diskus.Com",
-        },
-      ],
-      SubAgendaOptions: [
-        { SubTitle: "Get New Agenda For You Knowledge and we are" },
-      ],
-    },
-    {
-      title: t("Ceo-report"),
-      IntroductionFiles: [],
-    },
-    {
-      title: t("Finance-summary"),
-      IntroductionFiles: [],
-    },
-    {
-      title: t("Functional-review"),
-      IntroductionFiles: [],
-    },
-    {
-      title: t("Closing-report"),
-      IntroductionFiles: [],
-    },
-  ]);
+  const [sidebarOptions, setsidebarOptions] = useState([]);
   const options = [
     { value: "All", label: "All" },
     { value: "organizer", label: "organizer" },
     { value: "participant", label: "participant" },
     { value: "Agenda Contributor", label: "Agenda Contributor" },
   ];
-  const [members, setMembers] = useState([
-    {
-      Name: "Saif Ul Islam",
-    },
-    {
-      Name: "Owais Wajid Khan",
-    },
-    {
-      Name: "Aun Naqvi",
-    },
-    {
-      Name: "Ali Raza Mamdani",
-    },
-    {
-      Name: "Syed Ali Raza",
-    },
-    {
-      Name: "Huzeifa Jahangir",
-    },
-  ]);
+  const [members, setMembers] = useState([]);
   const OpenConfirmation = () => {
     dispatch(showAdvancePermissionModal(false));
     dispatch(showAdvancePermissionConfirmation(true));
@@ -118,6 +59,42 @@ const AdvancePersmissionModal = () => {
     // Update the state with the new data
     setMemberData(updatedMemberData);
   };
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.meetingMaterial !== null &&
+      NewMeetingreducer.meetingMaterial !== undefined
+    ) {
+      let newData = [];
+      NewMeetingreducer.meetingMaterial.map(
+        (meetingMaterialData, meetingMaterialIndex) => {
+          console.log(meetingMaterialData, "meetingMatingMaterialData");
+          newData.push(meetingMaterialData);
+        }
+      );
+      setsidebarOptions(newData);
+    }
+  }, [NewMeetingreducer.meetingMaterial]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.agendaRights !== null &&
+      NewMeetingreducer.agendaRights !== undefined
+    ) {
+      console.log(NewMeetingreducer.agendaRights, "agendaRights");
+      let agendaUserRightsarray = [];
+      NewMeetingreducer.agendaRights.agendaUserRights.map(
+        (agendaRightsData, agendaRightsIndex) => {
+          console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
+          agendaUserRightsarray.push(agendaRightsData);
+        }
+      );
+      setMembers(agendaUserRightsarray);
+    }
+  }, [NewMeetingreducer.agendaRights]);
+
+  console.log(sidebarOptions, "newDatanewDatanewDatanewData");
+  console.log(members, "membersmembers");
 
   const handleGetAllMeetingMaterialApiFunction = () => {};
 
@@ -202,6 +179,7 @@ const AdvancePersmissionModal = () => {
                       <Row className="mt-2">
                         {sidebarOptions.length > 0
                           ? sidebarOptions.map((data, index) => {
+                              console.log(data, "indexindex");
                               const isLastItem =
                                 index === sidebarOptions.length - 1;
 
@@ -230,7 +208,7 @@ const AdvancePersmissionModal = () => {
                                             styles["Heading_introductions"]
                                           }
                                         >
-                                          {data.title}
+                                          {data.agendaName}
                                         </span>
                                       </span>
 
@@ -350,8 +328,12 @@ const AdvancePersmissionModal = () => {
                                         </>
                                       ) : null} */}
                                       <Row className="mt-2">
-                                        {data?.SubAgendaOptions?.map(
+                                        {data?.childAgendas?.map(
                                           (SubAgendaData, SubAgendaIndex) => {
+                                            console.log(
+                                              SubAgendaData,
+                                              "SubAgendaDataSubAgendaData"
+                                            );
                                             return (
                                               <>
                                                 <Col
@@ -392,7 +374,7 @@ const AdvancePersmissionModal = () => {
                                                       >
                                                         <span>
                                                           {index + 1}.
-                                                          {SubAgendaIndex + 1}
+                                                          {SubAgendaIndex + 1}{" "}
                                                         </span>
                                                         <span
                                                           className={
@@ -402,7 +384,7 @@ const AdvancePersmissionModal = () => {
                                                           }
                                                         >
                                                           {
-                                                            SubAgendaData.SubTitle
+                                                            SubAgendaData.agendaName
                                                           }
                                                         </span>
                                                       </span>

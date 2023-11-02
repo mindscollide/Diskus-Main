@@ -2296,7 +2296,7 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
                 newID = data.ID;
               });
               let NewData = {
-                AgendaID: newID,
+                AgendaID: "1222",
               };
               console.log(NewData, "newIDnewIDnewID");
               dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
