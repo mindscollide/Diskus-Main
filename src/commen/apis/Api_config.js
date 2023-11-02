@@ -1053,7 +1053,12 @@ const RetrieveGroupDocuments = {
   RequestMethod: "ServiceManager.ReteriveGroupDocuments",
 };
 
+const getPollbyCommitteeIdRM = {
+  RequestMethod: "ServiceManager.GetPollsByComitteeID",
+};
+
 export {
+  getPollbyCommitteeIdRM,
   saveCommitteeDocumentsRM,
   reteriveCommitteeDocumentsRM,
   CreateUpdateCommitteeDatarRoomRM,

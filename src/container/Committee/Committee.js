@@ -19,6 +19,7 @@ import {
   getallcommitteebyuserid_clear,
   getCommitteesbyCommitteeId,
   realtimeCommitteeStatusResponse,
+  viewDetailsCommitteeID,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import {
@@ -68,9 +69,11 @@ const Committee = () => {
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [marketingTeamModal, setMarketingTeamModal] = useState(false);
   const [committeeID, setCommitteeID] = useState(0);
+  const [viewCommitteeTab, setViewCommitteeViewTab] = useState(0);
   const [modalsure, setModalsure] = useState(false);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
+  const [ViewcommitteeID, setViewCommitteeID] = useState(0);
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
 
@@ -313,6 +316,11 @@ const Committee = () => {
   };
 
   const handleClickMeetingTab = (data) => {
+    setViewCommitteeViewTab(4);
+    localStorage.setItem("ViewCommitteeID", data.committeeID);
+    setViewGroupPage(true);
+    // dispatch(viewDetailsCommitteeID(data.committeeID));
+    // setViewCommitteeID(data.committeeID);
     // dispatch(
     //   getCommitteesbyCommitteeId(
     //     navigate,
@@ -325,6 +333,11 @@ const Committee = () => {
     // );
   };
   const handlePollsClickTab = (data) => {
+    // setViewCommitteeID(data.committeeID);
+    localStorage.setItem("ViewCommitteeID", data.committeeID);
+    setViewCommitteeViewTab(3);
+    setViewGroupPage(true);
+    // dispatch(viewDetailsCommitteeID(data.committeeID));
     // dispatch(
     //   getCommitteesbyCommitteeId(
     //     navigate,
@@ -337,6 +350,12 @@ const Committee = () => {
     // );
   };
   const handleTasksClickTab = (data) => {
+    setViewCommitteeViewTab(2);
+    setViewGroupPage(true);
+    localStorage.setItem("ViewCommitteeID", data.committeeID);
+    // dispatch(viewDetailsCommitteeID(data.committeeID));
+    // setViewCommitteeID(data.committeeID);
+
     // dispatch(
     //   getCommitteesbyCommitteeId(
     //     navigate,
@@ -387,7 +406,11 @@ const Committee = () => {
           </>
         ) : ViewGroupPage ? (
           <>
-            <ViewUpdateCommittee setViewGroupPage={setViewGroupPage} />
+            <ViewUpdateCommittee
+              setViewGroupPage={setViewGroupPage}
+              viewCommitteeTab={viewCommitteeTab}
+              ViewcommitteeID={ViewcommitteeID}
+            />
           </>
         ) : (
           <>

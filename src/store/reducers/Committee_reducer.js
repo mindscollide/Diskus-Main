@@ -327,6 +327,12 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+    case actions.COMMITTEEID_VIEWDETAILS: {
+      return {
+        ...state,
+        committeeID: action.payload,
+      };
+    }
 
     default:
       return { ...state };
