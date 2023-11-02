@@ -60,6 +60,10 @@ import {
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
+import {
+  getTaskCommitteeIDApi,
+  setTasksByCommitteeApi,
+} from "../../../store/actions/Polls_actions";
 
 const CreateTodoCommittee = () => {
   //For Localization
@@ -72,6 +76,7 @@ const CreateTodoCommittee = () => {
     assignees,
     getTodosStatus,
     socketTodoStatusData,
+    PollsReducer,
     LanguageReducer,
     uploadReducer,
   } = state;
@@ -104,42 +109,50 @@ const CreateTodoCommittee = () => {
   const [tableFilterOptions, setTableFilterOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
-
-  console.log("socketTodoStatusData", socketTodoStatusData);
+  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+  console.log("socketTodoStatusData", PollsReducer);
 
   // GET TODOS STATUS
   useEffect(() => {
     dispatch(getTodoStatus(navigate, t));
-    if (todoListPageSize !== null && todoListCurrentPage !== null) {
-      dispatch(
-        SearchTodoListApi(
-          navigate,
-          searchData,
-          todoListCurrentPage,
-          todoListPageSize,
-          t
-        )
-      );
-    } else {
-      localStorage.setItem("todoListPage", 1);
-      localStorage.setItem("todoListRow", 50);
-      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
+
+    if (ViewCommitteeID !== null) {
+      let newData = {
+        CommitteeID: Number(ViewCommitteeID),
+      };
+      dispatch(getTaskCommitteeIDApi(navigate, t, newData));
     }
-    return () => {
-      localStorage.removeItem("todoListPage");
-      localStorage.removeItem("todoListRow");
-    };
+    // if (todoListPageSize !== null && todoListCurrentPage !== null) {
+
+    //   dispatch(
+    //     getTaskCommitteeIDApi(
+    //       navigate,
+    //       searchData,
+    //       todoListCurrentPage,
+    //       todoListPageSize,
+    //       t
+    //     )
+    //   );
+    // } else {
+    //   localStorage.setItem("todoListPage", 1);
+    //   localStorage.setItem("todoListRow", 50);
+    //   dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
+    // }
+    // return () => {
+    //   localStorage.removeItem("todoListPage");
+    //   localStorage.removeItem("todoListRow");
+    // };
   }, []);
 
   //get todolist reducer
   useEffect(() => {
     if (
-      toDoListReducer.SearchTodolist !== null &&
-      toDoListReducer.SearchTodolist !== undefined
+      PollsReducer.getTodoCommitteeTask !== null &&
+      PollsReducer.getTodoCommitteeTask !== undefined
     ) {
-      setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
-      if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
-        let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
+      // setTotalRecords(PollsReducer.SearchTodolist.totalRecords);
+      if (PollsReducer.getTodoCommitteeTask.toDoLists.length > 0) {
+        let dataToSort = [...PollsReducer.getTodoCommitteeTask.toDoLists];
         const sortedTasks = dataToSort.sort((taskA, taskB) => {
           const deadlineA = taskA?.deadlineDateTime;
           const deadlineB = taskB?.deadlineDateTime;
@@ -155,35 +168,7 @@ const CreateTodoCommittee = () => {
     } else {
       setRowToDo([]);
     }
-  }, [toDoListReducer.SearchTodolist]);
-
-  useEffect(() => {
-    if (
-      toDoListReducer.SocketTodoActivityData !== null &&
-      toDoListReducer.SocketTodoActivityData !== undefined
-    ) {
-      // setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
-      let dataToSort = [toDoListReducer.SocketTodoActivityData, ...rowsToDo];
-      const sortedTasks = dataToSort.sort((taskA, taskB) => {
-        const deadlineA = taskA?.deadlineDateTime;
-        const deadlineB = taskB?.deadlineDateTime;
-
-        // Compare the deadlineDateTime values as numbers for sorting
-        return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
-      });
-      setRowToDo(sortedTasks);
-    } else {
-      let dataToSort = [...rowsToDo];
-      const sortedTasks = dataToSort.sort((taskA, taskB) => {
-        const deadlineA = taskA?.deadlineDateTime;
-        const deadlineB = taskB?.deadlineDateTime;
-
-        // Compare the deadlineDateTime values as numbers for sorting
-        return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
-      });
-      setRowToDo(sortedTasks);
-    }
-  }, [toDoListReducer.SocketTodoActivityData]);
+  }, [PollsReducer.getTodoCommitteeTask]);
 
   // SET STATUS VALUES
   useEffect(() => {
@@ -210,99 +195,12 @@ const CreateTodoCommittee = () => {
     setShow(true);
   };
 
-  // for Socket Update meeting status update
-  useEffect(() => {
-    if (
-      toDoListReducer.socketTodoStatusData &&
-      Object.keys(toDoListReducer.socketTodoStatusData).length > 0
-    ) {
-      let tableRowsData = [...rowsToDo];
-      var foundIndex = tableRowsData.findIndex(
-        (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid
-      );
-      if (foundIndex !== -1) {
-        if (Number(toDoListReducer.socketTodoStatusData.todoStatusID) === 6) {
-          let removeDeleteIndex = tableRowsData.filter(
-            (data, index) =>
-              data.pK_TID !== toDoListReducer.socketTodoStatusData.todoid
-          );
-          setRowToDo(removeDeleteIndex);
-        } else {
-          let newArr = tableRowsData.map((rowObj, index) => {
-            if (index === foundIndex) {
-              let statusID = toDoListReducer.socketTodoStatusData.todoStatusID;
-              const newData = {
-                ...rowObj,
-                status: {
-                  pK_TSID: statusID,
-                  status:
-                    statusID === 1
-                      ? "In Progress"
-                      : statusID === 2
-                      ? "Pending"
-                      : statusID === 3
-                      ? "Upcoming"
-                      : statusID === 4
-                      ? "Cancelled"
-                      : statusID === 5
-                      ? "Completed"
-                      : statusID === 6
-                      ? "Deleted"
-                      : null,
-                },
-              };
-              return newData;
-            }
-            return rowObj;
-          });
-          setRowToDo(newArr);
-        }
-      }
-    }
-  }, [toDoListReducer.socketTodoStatusData]);
-
-  const ShowHide = () => {
-    setExpand(!isExpand);
-    setSearchData({
-      Date: "",
-      Title: "",
-      AssignedToName: "",
-      UserID: parseInt(0),
-    });
-  };
-
   // for view modal  handler
   const viewModalHandler = (id) => {
     let Data = { ToDoListID: id };
     dispatch(
       ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
     );
-  };
-
-  // for search Date handler
-  const tableTodoChange = (pagination, filters, sorter) => {
-    let newArrData = [];
-    let todoStatus = filters.status;
-    if (
-      todoStatus !== null &&
-      todoStatus !== undefined &&
-      todoStatus.length > 0
-    ) {
-      todoStatus.map((statusValue, index) => {
-        let newArr = toDoListReducer.SearchTodolist.toDoLists.filter(
-          (data, index) => {
-            return data.status.status === statusValue;
-          }
-        );
-        if (newArr.length > 0) {
-          setRowToDo(newArr);
-        } else {
-          setRowToDo([]);
-        }
-      });
-    } else if (todoStatus === null) {
-      setRowToDo(toDoListReducer.SearchTodolist.toDoLists);
-    }
   };
 
   const deleteTodolist = async (record) => {
@@ -590,19 +488,6 @@ const CreateTodoCommittee = () => {
     },
   ];
 
-  useEffect(() => {
-    setViewFlagToDo(false);
-    if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
-      if (modalsflag === true) {
-        setUpdateFlagToDo(true);
-        setModalsflag(false);
-      } else {
-        console.log("setViewFlagToDosetViewFlagToDo");
-        // setViewFlagToDo(true);
-      }
-    }
-  }, [toDoListReducer.ToDoDetails]);
-
   // for search Date handler
   const searchHandlerDate = (e) => {
     setSearchData({
@@ -620,88 +505,69 @@ const CreateTodoCommittee = () => {
     dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false));
   };
 
-  // for search handler
-  const searchHandler = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "Title") {
-      setSearchData({
-        ...searchData,
-        [name]: value.trimStart(),
-        UserID: parseInt(createrID),
-      });
-    } else if (name === "AssignedToName") {
-      setSearchData({
-        ...searchData,
-        [name]: value.trimStart(),
-        UserID: parseInt(createrID),
-      });
-    }
-  };
+  // const paginationChangeHandlerTodo = async (current, pageSize) => {
+  //   localStorage.setItem("todoListPage", current);
+  //   localStorage.setItem("todoListRow", pageSize);
+  //   dispatch(SearchTodoListApi(navigate, searchData, current, pageSize, t));
+  // };
 
-  const paginationChangeHandlerTodo = async (current, pageSize) => {
-    localStorage.setItem("todoListPage", current);
-    localStorage.setItem("todoListRow", pageSize);
-    dispatch(SearchTodoListApi(navigate, searchData, current, pageSize, t));
-  };
+  // // for search
+  // const search = (e) => {
+  //   e.preventDefault();
+  //   if (
+  //     searchData.Date === "" &&
+  //     searchData.Title === "" &&
+  //     searchData.AssignedToName === ""
+  //   ) {
+  //     let newData = {
+  //       Date: "",
+  //       Title: "",
+  //       AssignedToName: "",
+  //       UserID: parseInt(createrID),
+  //     };
+  //     dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+  //   } else {
+  //     // make notification for if input fields is empty here
+  //     let newData = {
+  //       Date: searchData.Date,
+  //       Title: searchData.Title,
+  //       AssignedToName: searchData.AssignedToName,
+  //       UserID: parseInt(createrID),
+  //     };
+  //     dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+  //     setSearchData({
+  //       Date: "",
+  //       Title: "",
+  //       AssignedToName: "",
+  //       UserID: parseInt(createrID),
+  //     });
+  //   }
+  // };
 
-  // for search
-  const search = (e) => {
-    e.preventDefault();
-    if (
-      searchData.Date === "" &&
-      searchData.Title === "" &&
-      searchData.AssignedToName === ""
-    ) {
-      let newData = {
-        Date: "",
-        Title: "",
-        AssignedToName: "",
-        UserID: parseInt(createrID),
-      };
-      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
-    } else {
-      // make notification for if input fields is empty here
-      let newData = {
-        Date: searchData.Date,
-        Title: searchData.Title,
-        AssignedToName: searchData.AssignedToName,
-        UserID: parseInt(createrID),
-      };
-      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
-      setSearchData({
-        Date: "",
-        Title: "",
-        AssignedToName: "",
-        UserID: parseInt(createrID),
-      });
-    }
-  };
-
-  const resetSearchBar = (e) => {
-    e.preventDefault();
-    let newData = {
-      Date: "",
-      Title: "",
-      AssignedToName: "",
-      UserID: parseInt(createrID),
-    };
-    localStorage.setItem("todoListPage", 1);
-    dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
-    setSearchData({
-      Date: "",
-      Title: "",
-      AssignedToName: "",
-      UserID: parseInt(0),
-    });
-  };
+  // const resetSearchBar = (e) => {
+  //   e.preventDefault();
+  //   let newData = {
+  //     Date: "",
+  //     Title: "",
+  //     AssignedToName: "",
+  //     UserID: parseInt(createrID),
+  //   };
+  //   localStorage.setItem("todoListPage", 1);
+  //   dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+  //   setSearchData({
+  //     Date: "",
+  //     Title: "",
+  //     AssignedToName: "",
+  //     UserID: parseInt(0),
+  //   });
+  // };
 
   useEffect(() => {
     if (
-      toDoListReducer.ResponseMessage != "" &&
-      toDoListReducer.ResponseMessage != undefined &&
-      toDoListReducer.ResponseMessage != t("Record-found") &&
-      toDoListReducer.ResponseMessage !== t("No-records-found")
+      PollsReducer.ResponseMessage !== "" &&
+      PollsReducer.ResponseMessage !== undefined &&
+      PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -717,30 +583,8 @@ const CreateTodoCommittee = () => {
       }, 3000);
 
       dispatch(clearResponce());
-    } else if (
-      assignees.ResponseMessage !== "" &&
-      assignees.ResponseMessage !== t("Record-found") &&
-      assignees.ResponseMessage !== t("No-records-found")
-    ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: assignees.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(clearResponseMessage());
-    } else {
-      dispatch(clearResponce());
-      dispatch(clearResponseMessage());
     }
-  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [PollsReducer.ResponseMessage, assignees.ResponseMessage]);
 
   useEffect(() => {
     if (removeTodo !== 0) {
