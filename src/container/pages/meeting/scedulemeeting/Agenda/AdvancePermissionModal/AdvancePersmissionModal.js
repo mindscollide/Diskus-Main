@@ -30,7 +30,13 @@ const AdvancePersmissionModal = () => {
   const [selectedRole, setSelectedRole] = useState("All");
   const [subAgendaExpand, setsubAgendaExpand] = useState(false);
   // Initialize state for members data
-  const [memberData, setMemberData] = useState([]);
+  const [memberData, setMemberData] = useState([
+    {
+      userName: "",
+      canView: false,
+      canModify: false,
+    },
+  ]);
   const [sidebarOptions, setsidebarOptions] = useState([]);
   const options = [
     { value: "All", label: "All" },
@@ -54,6 +60,7 @@ const AdvancePersmissionModal = () => {
   };
 
   const handleSwitchChangeView = (index, field) => {
+    console.log(field, "fieldfieldfield");
     // Create a copy of the memberData array
     const updatedMemberData = [...memberData];
     // Update the specific field for the member at the given index
@@ -78,13 +85,17 @@ const AdvancePersmissionModal = () => {
   };
 
   // Function to filter members based on the selected role
-  const filteredMembers = members.filter((member) => {
-    if (selectedRole === "All") {
-      return true; // Show all members if 'All' is selected
-    } else {
-      return member.userRole.role.toLowerCase() === selectedRole.toLowerCase();
-    }
-  });
+  const filteredMembers =
+    members &&
+    members.filter((member) => {
+      if (selectedRole === "All") {
+        return true; // Show all members if 'All' is selected
+      } else {
+        return (
+          member.userRole?.role?.toLowerCase() === selectedRole?.toLowerCase()
+        );
+      }
+    });
 
   //SideBar Options Click
   const handleOptionsClickSideBar = (index, agendaID) => {
@@ -119,24 +130,30 @@ const AdvancePersmissionModal = () => {
   }, [NewMeetingreducer.meetingMaterial]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.agendaRights !== null &&
-      NewMeetingreducer.agendaRights !== undefined
-    ) {
-      console.log(NewMeetingreducer.agendaRights, "agendaRights");
-      let agendaUserRightsarray = [];
-      NewMeetingreducer.agendaRights.agendaUserRights.map(
-        (agendaRightsData, agendaRightsIndex) => {
-          console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
-          agendaUserRightsarray.push(agendaRightsData);
-          setSelectedRole(agendaRightsData.userRole.role);
-        }
-      );
-      setMembers(agendaUserRightsarray);
-    }
-  }, [NewMeetingreducer.agendaRights]);
+    try {
+      if (
+        NewMeetingreducer.agendaRights !== null &&
+        NewMeetingreducer.agendaRights !== undefined
+      ) {
+        if (NewMeetingreducer.agendaRights?.agendaUserRights?.length > 0) {
+          let agendaUserRightsarray = [];
+          let getUserrightsdetails =
+            NewMeetingreducer.agendaRights.agendaUserRights;
 
-  const handleGetAllMeetingMaterialApiFunction = () => {};
+          getUserrightsdetails.map((agendaRightsData, agendaRightsIndex) => {
+            agendaUserRightsarray.push({
+              userName: agendaRightsData.userName,
+              canView: agendaRightsData.canView,
+              canModify: agendaRightsData.canModify,
+              userRole: agendaRightsData.userRole,
+            });
+          });
+          setMembers(agendaUserRightsarray);
+        }
+        console.log(NewMeetingreducer, "agendaRightsagendaRights");
+      }
+    } catch {}
+  }, [NewMeetingreducer.agendaRights]);
 
   return (
     <>
@@ -167,7 +184,6 @@ const AdvancePersmissionModal = () => {
                     height="23.51px"
                     width="23.49px"
                     className="cursor-pointer"
-                    onClick={handleGetAllMeetingMaterialApiFunction}
                   />
                   <span className={styles["Advance_setting_heading"]}>
                     {t("Advanced-permission-settings")}
