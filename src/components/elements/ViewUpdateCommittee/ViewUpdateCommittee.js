@@ -28,6 +28,8 @@ import Polls from "../../../container/Committee/ViewPolls/Polls/Polls";
 import CommitteeTodo from "../../../container/Committee/ViewTodo/CommitteeTodo.js";
 const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [currentView, setCurrentView] = useState(
@@ -46,7 +48,6 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
     }
   }, [ViewCommitteeID]);
 
-  const { t } = useTranslation();
   return (
     <>
       <section className="MontserratSemiBold-600 color-5a5a5a">

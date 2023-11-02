@@ -1056,8 +1056,11 @@ const RetrieveGroupDocuments = {
 const getPollbyCommitteeIdRM = {
   RequestMethod: "ServiceManager.GetPollsByComitteeID",
 };
-
+const setCommitteePollsRM = {
+  RequestMethod: "ServiceManager.SetCommitteePolls",
+};
 export {
+  setCommitteePollsRM,
   getPollbyCommitteeIdRM,
   saveCommitteeDocumentsRM,
   reteriveCommitteeDocumentsRM,

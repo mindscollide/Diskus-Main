@@ -23,6 +23,7 @@ const initialState = {
   realtimePollsUpdate: null,
   pollingSocket: null,
   getPollByCommitteeID: null,
+  setCommitteePoll: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -328,6 +329,28 @@ const PollsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getPollByCommitteeID: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SETCOMMITTEEPOLL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SETCOMMITTEEPOLL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setCommitteePoll: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SETCOMMITTEEPOLL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setCommitteePoll: null,
         ResponseMessage: action.message,
       };
     }

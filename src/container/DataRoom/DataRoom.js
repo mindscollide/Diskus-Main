@@ -2973,7 +2973,7 @@ const DataRoom = () => {
                                         ? false
                                         : true
                                     }
-                                    height={"55vh"}
+                                    height={"58vh"}
                                     endMessage=""
                                     loader={
                                       getAllData.length <= totalRecords && (
@@ -2982,7 +2982,7 @@ const DataRoom = () => {
                                             sm={12}
                                             md={12}
                                             lg={12}
-                                            className="d-flex justify-content-center mt-2"
+                                            className="d-flex justify-content-center my-3"
                                           >
                                             <Spin indicator={antIcon} />
                                           </Col>
@@ -3016,7 +3016,7 @@ const DataRoom = () => {
                                         ? false
                                         : true
                                     }
-                                    height={"57vh"}
+                                    height={"58vh"}
                                     endMessage=""
                                     loader={
                                       getAllData.length <= totalRecords && (
@@ -3025,7 +3025,7 @@ const DataRoom = () => {
                                             sm={12}
                                             md={12}
                                             lg={12}
-                                            className="d-flex justify-content-center mt-2"
+                                            className="d-flex justify-content-center my-3"
                                           >
                                             <Spin indicator={antIcon} />
                                           </Col>
