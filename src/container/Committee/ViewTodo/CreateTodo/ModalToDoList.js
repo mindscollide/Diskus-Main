@@ -531,7 +531,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         //   TaskAssignedTo,
         //   TasksAttachments,
         // }
-        dispatch(CreateToDoList(navigate, Data, t));
+        dispatch(CreateToDoList(navigate, Data, t, 1));
         setShow(false);
         setTask({
           ...task,
@@ -573,7 +573,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             TasksAttachments,
           };
         }
-        dispatch(CreateToDoList(navigate, Data, t));
+        dispatch(CreateToDoList(navigate, Data, t, 1));
         setShow(false);
         setTask({
           ...task,
@@ -1058,7 +1058,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     <Button
                       onClick={() => setIsCreateTodo(true)}
                       className={"cancelButton_createTodo"}
-                      text={"Cancel"}
+                      text={t("Cancel")}
                     />
                     <Button
                       onClick={() => {
@@ -1066,7 +1066,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         setIsCreateTodo(true);
                       }}
                       className={"todocreate-createbtn"}
-                      text={"Close"}
+                      text={t("Close")}
                     />
                   </Col>
                 </Row>

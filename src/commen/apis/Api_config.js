@@ -1101,7 +1101,7 @@ const setGroupTaskApi = {
 };
 
 const getTaskByCommitteeIDApi = {
-  RequestMethod: " ServiceManager.GetTasksByCommitteeID",
+  RequestMethod: "ServiceManager.GetTasksByCommitteeID",
 };
 
 const setCommitteeTaskApi = {

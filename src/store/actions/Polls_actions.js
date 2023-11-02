@@ -1720,13 +1720,13 @@ const getTaskCommitteeIdFail = (message) => {
   };
 };
 
-const getTaskCommitteeIDApi = (navigate, t) => {
+const getTaskCommitteeIDApi = (navigate, t, newData) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(getTaskCommitteeIdInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(newData));
     form.append("RequestMethod", getTaskByCommitteeIDApi.RequestMethod);
     axios({
       method: "post",
@@ -1811,13 +1811,13 @@ const setTaskCommitteeFail = (message) => {
   };
 };
 
-const setTasksByCommitteeApi = (navigate, t) => {
+const setTasksByCommitteeApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(setTaskCommitteeInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", setCommitteeTaskApi.RequestMethod);
     axios({
       method: "post",
@@ -1837,7 +1837,7 @@ const setTasksByCommitteeApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetGroupTasks_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1846,11 +1846,17 @@ const setTasksByCommitteeApi = (navigate, t) => {
                   t("Record-found")
                 )
               );
+              let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+              let Data = {
+                CommitteeID: Number(ViewCommitteeID),
+              };
+              dispatch(getTaskCommitteeIDApi(navigate, t, Data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetGroupTasks_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_02".toLowerCase()
                 )
             ) {
               dispatch(setTaskCommitteeFail(t("No-records-found")));
@@ -1858,7 +1864,7 @@ const setTasksByCommitteeApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetGroupTasks_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_03".toLowerCase()
                 )
             ) {
               dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
