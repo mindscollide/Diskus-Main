@@ -285,16 +285,16 @@ const ModalShareFile = ({
   };
 
   const openAccessRequestModalClick = () => {
-    if (fileData.Files.length > 0) {
-      // setShareFile(false);
-      let ShareFilesData = { FileID: Number(folderId), Files: fileData.Files };
-      dispatch(shareFilesApi(navigate, ShareFilesData, t, setShareFile));
-    } else {
-      setOpen({
-        flag: true,
-        message: t("Atleast-one-user-should-be-selected-to-share-the-document"),
-      });
-    }
+    // if (fileData.Files.length > 0) {
+    // setShareFile(false);
+    let ShareFilesData = { FileID: Number(folderId), Files: fileData.Files };
+    dispatch(shareFilesApi(navigate, ShareFilesData, t, setShareFile));
+    // } else {
+    //   setOpen({
+    //     flag: true,
+    //     message: t("Atleast-one-user-should-be-selected-to-share-the-document"),
+    //   });
+    // }
   };
 
   const handleAddMember = () => {
