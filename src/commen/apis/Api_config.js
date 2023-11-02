@@ -1057,6 +1057,14 @@ const getPollbyCommitteeIdRM = {
   RequestMethod: "ServiceManager.GetPollsByComitteeID",
 };
 
+const getPollByGroupIDApi = {
+  RequestMethod: "ServiceManager.GetPollsByGroupID",
+};
+
+const setGroupPollsApi = {
+  RequestMethod: "ServiceManager.SetGroupPolls",
+};
+
 export {
   getPollbyCommitteeIdRM,
   saveCommitteeDocumentsRM,
@@ -1340,4 +1348,6 @@ export {
   CreateUpdateGroupDataRoadMap,
   SaveTheGroupsDocuments,
   RetrieveGroupDocuments,
+  getPollByGroupIDApi,
+  setGroupPollsApi,
 };

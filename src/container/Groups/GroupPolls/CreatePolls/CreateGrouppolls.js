@@ -237,142 +237,13 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
     }
   }, []);
 
-  useEffect(() => {
-    let pollMeetingData = NewMeetingreducer.getMeetingusers;
-    if (view !== 2) {
-      if (pollMeetingData !== undefined && pollMeetingData !== null) {
-        let newmembersArray = [];
-        // if (Object.keys(pollMeetingData).length > 0) {
-        if (pollMeetingData.meetingOrganizers.length > 0) {
-          pollMeetingData.meetingOrganizers.map(
-            (MorganizerData, MorganizerIndex) => {
-              let MeetingOrganizerData = {
-                value: MorganizerData.userID,
-                label: (
-                  <>
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
-                          <img
-                            src={GroupIcon}
-                            height="16.45px"
-                            width="18.32px"
-                            draggable="false"
-                            alt=""
-                          />
-                          <span className={styles["NameDropDown"]}>
-                            {MorganizerData.userName}
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
-                  </>
-                ),
-                type: 1,
-              };
-              newmembersArray.push(MeetingOrganizerData);
-            }
-          );
-        }
-        if (pollMeetingData.meetingAgendaContributors.length > 0) {
-          pollMeetingData.meetingAgendaContributors.map(
-            (meetAgendaContributor, meetAgendaContributorIndex) => {
-              let MeetingAgendaContributorData = {
-                value: meetAgendaContributor.userID,
-                label: (
-                  <>
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
-                          <img
-                            src={GroupIcon}
-                            height="16.45px"
-                            alt=""
-                            width="18.32px"
-                            draggable="false"
-                          />
-                          <span className={styles["NameDropDown"]}>
-                            {meetAgendaContributor.userName}
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
-                  </>
-                ),
-                type: 2,
-              };
-              newmembersArray.push(MeetingAgendaContributorData);
-            }
-          );
-        }
-        if (pollMeetingData.meetingParticipants.length > 0) {
-          pollMeetingData.meetingParticipants.map(
-            (meetParticipants, meetParticipantsIndex) => {
-              let MeetingParticipantsData = {
-                value: meetParticipants.userID,
-                label: (
-                  <>
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
-                          <img
-                            src={GroupIcon}
-                            height="16.45px"
-                            width="18.32px"
-                            alt=""
-                            draggable="false"
-                          />
-                          <span className={styles["NameDropDown"]}>
-                            {meetParticipants.userName}
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
-                  </>
-                ),
-                type: 3,
-              };
-              newmembersArray.push(MeetingParticipantsData);
-            }
-          );
-        }
-        // }
-        console.log(newmembersArray, "pollMeetingDatapollMeetingData");
-
-        setmemberSelect(newmembersArray);
-      }
-    }
-
-    //  else {
-    //   if (view === 2 && view !== undefined && view !== null) {
-    //   } else {
-    //     setmemberSelect([]);
-    //   }
-    // }
-  }, [NewMeetingreducer.getMeetingusers, view]);
-
   // for selection of data
   const handleSelectValue = (value) => {
     setSelectedsearch(value);
   };
 
   const handleAddUsers = () => {
-    let pollsData = NewMeetingreducer.getMeetingusers;
+    let getUserDetails = GroupsReducer.getGroupByGroupIdResponse.groupMembers;
     console.log(pollsData, "pollsDatapollsData");
     let tem = [...members];
     let newarr = [];
@@ -385,8 +256,8 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
               "seledtedDataseledtedDataseledtedDataseledtedData"
             );
             if (seledtedData.type === 1) {
-              let check1 = pollsData.meetingOrganizers.find(
-                (data, index) => data.userID === seledtedData.value
+              let check1 = getUserDetails.find(
+                (data, index) => data.pK_UID === seledtedData.value
               );
               console.log(check1, "check1check1");
               if (check1 !== undefined) {
@@ -401,14 +272,14 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                   newarr.map((morganizer, index) => {
                     console.log(morganizer, "UserIDUserID");
                     let check2 = newarr.find(
-                      (data, index) => data.UserID === morganizer.userID
+                      (data, index) => data.UserID === morganizer.pK_UID
                     );
                     if (check2 !== undefined) {
                       console.log(check2, "check2check2");
                     } else {
                       let newUser = {
                         userName: morganizer.userName,
-                        userID: morganizer.userID,
+                        userID: morganizer.pK_UID,
                         displayPicture:
                           morganizer.userProfilePicture
                             .displayProfilePictureName,
@@ -419,73 +290,6 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                   });
                 }
               }
-            } else if (seledtedData.type === 2) {
-              let check1 = pollsData.meetingAgendaContributors.find(
-                (data, index) => data.userID === seledtedData.value
-              );
-              console.log(check1, "check1check1");
-              if (check1 !== undefined) {
-                console.log(check1, "check1check1");
-                newarr.push(check1);
-                console.log(newarr, "newarrnewarr");
-
-                let meetingOrganizers = check1;
-                console.log(meetingOrganizers, "check1check1");
-
-                if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
-                    console.log(morganizer, "UserIDUserID");
-                    let check2 = newarr.find(
-                      (data, index) => data.UserID === morganizer.userID
-                    );
-                    if (check2 !== undefined) {
-                      console.log(check2, "check2check2");
-                    } else {
-                      let newUser = {
-                        userName: morganizer.userName,
-                        userID: morganizer.userID,
-                        displayPicture:
-                          morganizer.userProfilePicture
-                            .displayProfilePictureName,
-                      };
-                      tem.push(newUser);
-                      console.log(tem, "temtemtemtemtem");
-                    }
-                  });
-                }
-              }
-            } else if (seledtedData.type === 3) {
-              let check1 = pollsData.meetingParticipants.find(
-                (data, index) => data.userID === seledtedData.value
-              );
-              if (check1 !== undefined) {
-                newarr.push(check1);
-
-                let meetingOrganizers = check1;
-
-                if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
-                    console.log(morganizer, "UserIDUserID");
-                    let check2 = newarr.find(
-                      (data, index) => data.UserID === morganizer.userID
-                    );
-                    if (check2 !== undefined) {
-                      console.log(check2, "check2check2");
-                    } else {
-                      let newUser = {
-                        userName: morganizer.userName,
-                        userID: morganizer.userID,
-                        displayPicture:
-                          morganizer.userProfilePicture
-                            .displayProfilePictureName,
-                      };
-                      tem.push(newUser);
-                      console.log(tem, "temtemtemtemtem");
-                    }
-                  });
-                }
-              }
-            } else {
             }
           });
         } catch {
@@ -539,7 +343,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
         PollAnswers: optionsListData,
       };
 
-      await dispatch(SavePollsApi(navigate, data, t));
+      await dispatch(SavePollsApi(navigate, data, t, 4));
       setCreatepoll(false);
     } else {
       // setError(true);

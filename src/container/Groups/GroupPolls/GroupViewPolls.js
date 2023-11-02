@@ -24,6 +24,7 @@ import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../commen/functions/date_formater";
+import { getPollsByGroupMainApi } from "../../../store/actions/Polls_actions";
 const GroupViewPolls = ({
   setSceduleMeeting,
   setPolls,
@@ -33,7 +34,9 @@ const GroupViewPolls = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, GroupsReducer } = useSelector((state) => state);
+  const { NewMeetingreducer, GroupsReducer, PollsReducer } = useSelector(
+    (state) => state
+  );
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
@@ -42,6 +45,8 @@ const GroupViewPolls = ({
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
+  let ViewGroupID = localStorage.getItem("ViewGroupID");
+
   console.log(GroupsReducer, "GroupsReducerGroupsReducerGroupsReducer");
   const enableAfterSavedViewPolls = () => {
     setafterViewPolls(true);
@@ -65,29 +70,26 @@ const GroupViewPolls = ({
   };
 
   useEffect(() => {
-    if (view === 2) {
-    } else {
-      let Data = {
-        MeetingID: currentMeetingID,
-        OrganizationID: Number(OrganizationID),
-        CreatorName: "",
-        PollTitle: "",
-        PageNumber: 1,
-        Length: 50,
-      };
-      dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
-    }
+    let Data = {
+      GroupID: Number(ViewGroupID),
+      OrganizationID: Number(OrganizationID),
+      CreatorName: "",
+      PollTitle: "",
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(getPollsByGroupMainApi(navigate, t, Data));
   }, []);
 
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.getPollsMeetingID !== undefined &&
-        NewMeetingreducer.getPollsMeetingID !== null
+        PollsReducer.getPollByGroupID !== undefined &&
+        PollsReducer.getPollByGroupID !== null
       ) {
-        let pollsData = NewMeetingreducer.getPollsMeetingID.polls;
+        let pollsData = PollsReducer.getPollByGroupID.polls;
         let newPollsArray = [];
-        pollsData.map((data, index) => {
+        pollsData.forEach((data, index) => {
           console.log(data, "datadatadatadata");
           newPollsArray.push(data);
         });
@@ -95,7 +97,7 @@ const GroupViewPolls = ({
         setPollsRows(newPollsArray);
       }
     } catch {}
-  }, [NewMeetingreducer.getPollsMeetingID]);
+  }, [PollsReducer.getPollByGroupID]);
 
   console.log(pollsRows, "pollsRowspollsRowspollsRows");
 
@@ -115,7 +117,7 @@ const GroupViewPolls = ({
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      width: "70px",
+      width: "120px",
       filters: [
         {
           text: t("Published"),

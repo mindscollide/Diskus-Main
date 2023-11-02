@@ -31,23 +31,18 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const ViewGroupID = useSelector((state) => state.GroupsReducer.groupID);
+  let ViewGroupID = localStorage.getItem("ViewGroupID");
 
   console.log("currentTabcurrentTab", currentTab);
   const [currentViewGroup, setCurrentViewGroup] = useState(
     viewGroupTab !== undefined && viewGroupTab !== 0 ? viewGroupTab : 1
   );
 
-  // useEffect(() => {
-  //   if (ViewGroupID !== 0) {
-  //     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-  //     let Data = {
-  //       CommitteeID: Number(ViewGroupID),
-  //       OrganizationId: OrganizationID,
-  //     };
-  //     dispatch(getbyGroupID(navigate, Data, t));
-  //   }
-  // }, [ViewGroupID]);
+  useEffect(() => {
+    if (ViewGroupID !== 0) {
+      dispatch(getbyGroupID(navigate, ViewGroupID, t));
+    }
+  }, [ViewGroupID]);
 
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -105,7 +100,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
         ) : currentViewGroup === 2 ? (
           <>
             <ViewGroupTodo />
-            <Row className="my-3">
+            <Row className="my-3 ">
               <Col
                 sm={12}
                 md={12}

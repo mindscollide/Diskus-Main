@@ -1575,5 +1575,6 @@
   "Document-name": "Document Name",
   "Absent": "Absent",
   "Present": "Present",
-  "Remote": "Remote"
+  "Remote": "Remote",
+  "Group-detail": "Group detail"
 }

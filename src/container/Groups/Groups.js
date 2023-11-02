@@ -55,6 +55,7 @@ const Groups = () => {
   const navigate = useNavigate();
 
   const [viewGroupTab, setViewGroupTab] = useState(0);
+  const [ViewGroupID, setViewGroupID] = useState(0);
 
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [ViewGroupPage, setViewGroupPage] = useState(true);
@@ -127,6 +128,7 @@ const Groups = () => {
 
   const handleClickMeetingTab = (data) => {
     setViewGroupTab(4);
+    localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
     // dispatch(getbyGroupID(data.groupID));
     // dispatch(
@@ -143,6 +145,7 @@ const Groups = () => {
 
   const handlePollsClickTab = (data) => {
     setViewGroupTab(3);
+    localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
     // dispatch(getbyGroupID(data.groupID));
     // dispatch(
@@ -158,6 +161,7 @@ const Groups = () => {
   };
   const handleTasksClickTab = (data) => {
     setViewGroupTab(2);
+    localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
     // dispatch(getbyGroupID(data.groupID));
     // dispatch(
@@ -216,6 +220,8 @@ const Groups = () => {
   };
 
   const viewTitleModal = (data) => {
+    localStorage.setItem("ViewGroupID", data.groupID);
+
     dispatch(
       getbyGroupID(
         navigate,
@@ -389,6 +395,7 @@ const Groups = () => {
             <ViewGrouppage
               setViewGroupPage={setViewGroupPage}
               viewGroupTab={viewGroupTab}
+              ViewGroupID={ViewGroupID}
             />
           </>
         ) : (

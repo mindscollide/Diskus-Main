@@ -23,6 +23,8 @@ const initialState = {
   realtimePollsUpdate: null,
   pollingSocket: null,
   getPollByCommitteeID: null,
+  getPollByGroupID: null,
+  setGroupsPolls: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -331,6 +333,55 @@ const PollsReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.GET_POLLS_BY_GROUPID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_POLLS_BY_GROUPID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getPollByGroupID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_POLLS_BY_GROUPID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getPollByGroupID: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SET_GROUP_POLLS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SET_GROUP_POLLS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setGroupsPolls: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SET_GROUP_POLLS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setGroupsPolls: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     default: {
       return { ...state };
     }
