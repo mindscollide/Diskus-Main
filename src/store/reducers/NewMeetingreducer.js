@@ -62,7 +62,7 @@ const initialState = {
   getAllProposedDates: [],
   meetingResponse: [],
   meetingMaterial: [],
-  agendaRights: [],
+  agendaRights: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -902,6 +902,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        agendaRights: null,
         ResponseMessage: action.ResponseMessage,
       };
     }

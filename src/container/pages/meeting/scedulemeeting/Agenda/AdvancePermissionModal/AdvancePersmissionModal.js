@@ -59,25 +59,34 @@ const AdvancePersmissionModal = () => {
     setsubAgendaExpand(!subAgendaExpand);
   };
 
-  const handleSwitchChangeView = (index, field) => {
-    console.log(field, "fieldfieldfield");
-    // Create a copy of the memberData array
-    const updatedMemberData = [...memberData];
-    // Update the specific field for the member at the given index
-    updatedMemberData[index][field] = !updatedMemberData[index][field];
-    // Update the state with the new data
-    setMemberData(updatedMemberData);
+  const handleSwitchChangeView = (checked, data) => {
+    setMembers((prev) => {
+      return prev.map((memberdata, index) => {
+        if (memberdata.userID === data.userID) {
+          return {
+            ...memberdata,
+            canView: checked,
+          };
+        }
+        return memberdata;
+      });
+    });
   };
 
-  const handleSwitchChangeModify = (index, field) => {
-    // Create a copy of the memberData array
-    const updatedMemberData = [...memberData];
-    // Update the specific field for the member at the given index
-    updatedMemberData[index][field] = !updatedMemberData[index][field];
-    // Update the state with the new data
-    setMemberData(updatedMemberData);
+  const handleSwitchChangeModify = (checked, data) => {
+    setMembers((prev) => {
+      return prev.map((memberdata, index) => {
+        if (memberdata.userID === data.userID) {
+          return {
+            ...memberdata,
+            canModify: checked,
+          };
+        }
+        return memberdata;
+      });
+    });
   };
-
+  console.log(members, "membersmembersmembers");
   // Function to handle role selection
   const handleRoleSelect = (selectedOption) => {
     console.log(selectedOption, "selectedOptionselectedOption");
@@ -85,17 +94,6 @@ const AdvancePersmissionModal = () => {
   };
 
   // Function to filter members based on the selected role
-  const filteredMembers =
-    members &&
-    members.filter((member) => {
-      if (selectedRole === "All") {
-        return true; // Show all members if 'All' is selected
-      } else {
-        return (
-          member.userRole?.role?.toLowerCase() === selectedRole?.toLowerCase()
-        );
-      }
-    });
 
   //SideBar Options Click
   const handleOptionsClickSideBar = (index, agendaID) => {
@@ -146,6 +144,7 @@ const AdvancePersmissionModal = () => {
               canView: agendaRightsData.canView,
               canModify: agendaRightsData.canModify,
               userRole: agendaRightsData.userRole,
+              userID: agendaRightsData.userID,
             });
           });
           setMembers(agendaUserRightsarray);
@@ -621,75 +620,94 @@ const AdvancePersmissionModal = () => {
                         </Col>
                       </Row>
                       <Row>
-                        {filteredMembers.map((data, index) => {
-                          console.log(data, "isLastItemisLastItem");
-                          const isLastItem = index === members.length - 1;
+                        {members
+                          .filter((member) => {
+                            if (selectedRole === "All") {
+                              return true;
+                            } else {
+                              return (
+                                member.userRole?.role?.toLowerCase() ===
+                                selectedRole?.toLowerCase()
+                              );
+                            }
+                          })
+                          .map((data, index) => {
+                            console.log(data, "isLastItemisLastItem");
+                            const isLastItem = index === members.length - 1;
 
-                          return (
-                            <>
-                              <Col lg={6} md={6} sm={6} className="mt-3">
-                                <Row>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span
-                                      className={
-                                        styles["Names_advance_permission"]
-                                      }
+                            return (
+                              <>
+                                <Col lg={6} md={6} sm={6} className="mt-3">
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <span
+                                        className={
+                                          styles["Names_advance_permission"]
+                                        }
+                                      >
+                                        {data.userName}
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col lg={3} md={3} sm={3}>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="m-3"
                                     >
-                                      {data.userName}
-                                    </span>
-                                  </Col>
-                                </Row>
-                              </Col>
-                              <Col lg={3} md={3} sm={3}>
-                                <Row>
-                                  <Col lg={12} md={12} sm={12} className="m-3">
-                                    <Switch
-                                      checkedValue={data.canView}
-                                      className={
-                                        styles[
-                                          "AdvancePermission_switches_View"
-                                        ]
-                                      }
-                                      onChange={() =>
-                                        handleSwitchChangeView(
-                                          index,
-                                          "switchView"
-                                        )
-                                      }
-                                    />
-                                  </Col>
-                                </Row>
-                              </Col>
-                              <Col lg={3} md={3} sm={3}>
-                                <Row>
-                                  <Col lg={12} md={12} sm={12} className="m-3">
-                                    <Switch
-                                      checkedValue={data.canModify}
-                                      className={
-                                        styles["AdvancePermission_switches"]
-                                      }
-                                      onChange={() =>
-                                        handleSwitchChangeModify(
-                                          index,
-                                          "switch"
-                                        )
-                                      }
-                                    />
-                                  </Col>
-                                </Row>
-                              </Col>
-                              {!isLastItem && (
-                                <Row>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span
-                                      className={styles["Bottom_line_names"]}
-                                    ></span>
-                                  </Col>
-                                </Row>
-                              )}
-                            </>
-                          );
-                        })}
+                                      <Switch
+                                        checkedValue={data.canView}
+                                        value={memberData.canView}
+                                        className={
+                                          styles[
+                                            "AdvancePermission_switches_View"
+                                          ]
+                                        }
+                                        onChange={(checked) =>
+                                          handleSwitchChangeView(checked, data)
+                                        }
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col lg={3} md={3} sm={3}>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="m-3"
+                                    >
+                                      <Switch
+                                        checkedValue={data.canModify}
+                                        className={
+                                          styles["AdvancePermission_switches"]
+                                        }
+                                        onChange={(checked) =>
+                                          handleSwitchChangeModify(
+                                            checked,
+                                            data
+                                          )
+                                        }
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                {!isLastItem && (
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <span
+                                        className={styles["Bottom_line_names"]}
+                                      ></span>
+                                    </Col>
+                                  </Row>
+                                )}
+                              </>
+                            );
+                          })}
                       </Row>
                     </Col>
                   </Row>
