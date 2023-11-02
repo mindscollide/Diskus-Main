@@ -26,6 +26,7 @@ const AdvancePersmissionModal = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
   const [sidebarindex, setSidebarindex] = useState(0);
+  const [selectedRole, setSelectedRole] = useState("All");
   const [subAgendaExpand, setsubAgendaExpand] = useState(false);
   // Initialize state for members data
   const [memberData, setMemberData] = useState([]);
@@ -69,6 +70,20 @@ const AdvancePersmissionModal = () => {
     setMemberData(updatedMemberData);
   };
 
+  // Function to handle role selection
+  const handleRoleSelect = (selectedOption) => {
+    setSelectedRole(selectedOption.value);
+  };
+
+  // Function to filter members based on the selected role
+  const filteredMembers = members.filter((member) => {
+    if (selectedRole === "All") {
+      return true; // Show all members if 'All' is selected
+    } else {
+      return member.userRole.role === selectedRole;
+    }
+  });
+
   useEffect(() => {
     if (
       NewMeetingreducer.meetingMaterial !== null &&
@@ -96,6 +111,7 @@ const AdvancePersmissionModal = () => {
         (agendaRightsData, agendaRightsIndex) => {
           console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
           agendaUserRightsarray.push(agendaRightsData);
+          setSelectedRole(agendaRightsData.userRole.role);
         }
       );
       setMembers(agendaUserRightsarray);
@@ -104,7 +120,8 @@ const AdvancePersmissionModal = () => {
 
   console.log(sidebarOptions, "newDatanewDatanewDatanewData");
   console.log(members, "membersmembers");
-
+  console.log(members, "membersmembers");
+  console.log(selectedRole, "selectedRoleselectedRole");
   const handleGetAllMeetingMaterialApiFunction = () => {};
 
   return (
@@ -160,6 +177,10 @@ const AdvancePersmissionModal = () => {
                       <Select
                         options={options}
                         classNamePrefix={"AdvancePermission"}
+                        onChange={handleRoleSelect}
+                        value={options.find(
+                          (option) => option.value === selectedRole
+                        )}
                       />
                     </Col>
                   </Row>
@@ -557,7 +578,7 @@ const AdvancePersmissionModal = () => {
                         </Col>
                       </Row>
                       <Row>
-                        {members.map((data, index) => {
+                        {filteredMembers.map((data, index) => {
                           console.log(data, "isLastItemisLastItem");
                           const isLastItem = index === members.length - 1;
 
