@@ -767,12 +767,7 @@ const showCancelModalmeetingDeitals = (response) => {
     response: response,
   };
 };
-const showCancelViewModalmeetingDeitals = (response) => {
-  return {
-    type: actions.CANCEL_VIEW_BUTTON_MODAL_MEETING_DETIALS_TAB,
-    response: response,
-  };
-};
+
 const showCancelModalOrganizers = (response) => {
   return {
     type: actions.CANCEL_BUTTON_MODAL_ORGANIZER,
@@ -2610,7 +2605,13 @@ const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
       });
   };
 };
-
+const showCancelViewModalmeetingDeitals = (response) => {
+  console.log("handleCancelMeetingButton", response);
+  return {
+    type: actions.CANCEL_VIEW_BUTTON_MODAL_MEETING_DETIALS_TAB,
+    response: response,
+  };
+};
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,

@@ -2,27 +2,23 @@ import React from "react";
 import styles from "./CancelButtonModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
-import { showCancelModalmeetingDeitals } from "../../../../../../store/actions/NewMeetingActions";
+import { showCancelViewModalmeetingDeitals } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 const CancelButtonModal = ({
-  setSceduleMeeting,
+  setViewAdvanceMeetingModal,
   setMeetingDetails,
-  setRows,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleNOFunctionality = () => {
-    dispatch(showCancelModalmeetingDeitals(false));
+    dispatch(showCancelViewModalmeetingDeitals(false));
   };
 
   const handleYesFunctionality = () => {
-    localStorage.removeItem("meetingID");
     setMeetingDetails({
       MeetingTitle: "",
       MeetingType: 0,
@@ -52,18 +48,8 @@ const CancelButtonModal = ({
       Location: "",
       IsVideoCall: false,
     });
-    setRows([
-      {
-        selectedOption: "",
-        dateForView: "",
-        startDate: "",
-        startTime: "",
-        endDate: "",
-        endTime: "",
-      },
-    ]);
-    setSceduleMeeting(false);
-    dispatch(showCancelModalmeetingDeitals(false));
+    setViewAdvanceMeetingModal(false);
+    dispatch(showCancelViewModalmeetingDeitals(false));
   };
 
   return (
@@ -72,11 +58,11 @@ const CancelButtonModal = ({
       <section>
         <Modal
           show={NewMeetingreducer.cancelModalMeetingDetails}
-          setShow={dispatch(showCancelModalmeetingDeitals)}
+          setShow={dispatch(showCancelViewModalmeetingDeitals)}
           modalHeaderClassName={"d-block"}
           modalFooterClassName={"d-block"}
           onHide={() => {
-            dispatch(showCancelModalmeetingDeitals(false));
+            dispatch(showCancelViewModalmeetingDeitals(false));
           }}
           ModalBody={
             <>

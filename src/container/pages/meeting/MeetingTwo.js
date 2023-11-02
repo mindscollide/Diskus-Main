@@ -74,7 +74,7 @@ import ModalUpdate from "../../modalUpdate/ModalUpdate";
 import ModalView from "../../modalView/ModalView";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import ViewParticipantsDates from "./scedulemeeting/Participants/ViewParticipantsDates/ViewParticipantsDates";
-// import ViewMeetingModal from "./viewMeetings/ViewMeeting";
+import ViewMeetingModal from "./viewMeetings/ViewMeetingModal";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -961,12 +961,12 @@ const NewMeeting = () => {
           setViewProposeDatePoll={setViewProposeDatePoll}
         />
       ) : viewAdvanceMeetingModal ? (
-        <></>
+        <ViewMeetingModal
+          advanceMeetingModalID={advanceMeetingModalID}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+        />
       ) : (
-        // <ViewMeetingModal
-        //   advanceMeetingModalID={advanceMeetingModalID}
-        //   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-        // />
+        
         <>
           <Row className="mt-2">
             <Col
