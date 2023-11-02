@@ -23,7 +23,7 @@ import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
-import { searchPollsByCommitteeIDapi } from "../../../../store/actions/Polls_actions";
+import { GetPollsByCommitteeIDapi } from "../../../../store/actions/Polls_actions";
 const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -72,7 +72,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       PageNumber: 1,
       Length: 50,
     };
-    dispatch(searchPollsByCommitteeIDapi(navigate, t, Data));
+    dispatch(GetPollsByCommitteeIDapi(navigate, t, Data));
   }, []);
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      width: "70px",
+      width: "120px",
       filters: [
         {
           text: t("Published"),
@@ -273,6 +273,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                                 height="21.59px"
                                 alt=""
                                 draggable="false"
+                                onClick={handleEditPollsMeeting}
                               />
                             </Tooltip>
                           </Col>

@@ -47,6 +47,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage }) => {
 
   const closebtn = async () => {
     setViewGroupPage(false);
+    localStorage.removeItem("ViewCommitteeID");
   };
 
   const handleSave = async () => {
