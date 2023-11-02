@@ -57,6 +57,7 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
 
   useEffect(() => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
+      console.log(GroupsReducer, "getGroupByGroupIdResponse");
       let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
       let groupHeadsData = groupDetails.groupMembers.filter(
         (data, index) => data.groupRole.groupRoleID === 2

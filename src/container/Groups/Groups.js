@@ -53,6 +53,9 @@ const Groups = () => {
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [viewGroupTab, setViewGroupTab] = useState(0);
+
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [ViewGroupPage, setViewGroupPage] = useState(true);
   const [creategrouppage, setCreategrouppage] = useState(false);
@@ -121,6 +124,53 @@ const Groups = () => {
       }
     }
   }, [GroupsReducer.realtimeGroupStatus]);
+
+  const handleClickMeetingTab = (data) => {
+    setViewGroupTab(4);
+    setViewGroupPage(true);
+    // dispatch(getbyGroupID(data.groupID));
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
+
+  const handlePollsClickTab = (data) => {
+    setViewGroupTab(3);
+    setViewGroupPage(true);
+    // dispatch(getbyGroupID(data.groupID));
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
+  const handleTasksClickTab = (data) => {
+    setViewGroupTab(2);
+    setViewGroupPage(true);
+    // dispatch(getbyGroupID(data.groupID));
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
 
   useEffect(() => {
     if (GroupsReducer.realtimeGroupCreateResponse !== null) {
@@ -336,7 +386,10 @@ const Groups = () => {
           </>
         ) : ViewGroupPage ? (
           <>
-            <ViewGrouppage setViewGroupPage={setViewGroupPage} />
+            <ViewGrouppage
+              setViewGroupPage={setViewGroupPage}
+              viewGroupTab={viewGroupTab}
+            />
           </>
         ) : (
           <>
@@ -395,6 +448,15 @@ const Groups = () => {
                                 CardID={data.groupID}
                                 StatusID={data.groupStatusID}
                                 associatedTags={data.listOfCommittees}
+                                handleMeetingClickOption={() => {
+                                  handleClickMeetingTab(data);
+                                }}
+                                handleTasksClickOption={() => {
+                                  handleTasksClickTab(data);
+                                }}
+                                handlePollsClickOption={() => {
+                                  handlePollsClickTab(data);
+                                }}
                                 creatorId={data.creatorID}
                                 flag={false}
                                 Icon={

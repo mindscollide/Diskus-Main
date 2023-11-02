@@ -318,6 +318,7 @@ const Committee = () => {
     setViewCommitteeViewTab(4);
     setViewGroupPage(true);
     dispatch(viewDetailsCommitteeID(data.committeeID));
+    console.log(viewDetailsCommitteeID, "vdgvwcvcwghvc");
     // dispatch(
     //   getCommitteesbyCommitteeId(
     //     navigate,
