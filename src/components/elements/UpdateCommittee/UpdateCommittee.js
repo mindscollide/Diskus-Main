@@ -24,7 +24,9 @@ import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import {
   getCommitteeMembersRole,
   getCommitteeTypes,
+  saveCommitteeDocumentsApi,
   updateCommittee,
+  uploadDocumentsCommitteesApi,
 } from "../../../store/actions/Committee_actions";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
@@ -41,9 +43,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const [attendees, setAttendees] = useState([]);
   const [membersData, setMembersData] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
-  console.log(groupMembers, "groupMembersgroupMembers");
+  const [fileSize, setFileSize] = useState(0);
+  const [fileForSend, setFileForSend] = useState([]);
   const [erorbar, setErrorBar] = useState(false);
+  const [folderID, setFolderId] = useState(0);
   const [fileAttachments, setFileAttachments] = useState([]);
+  const [filesSending, setFilesSending] = useState([]);
   const [committeeTypesOptions, setCommitteeTypesOptions] = useState([]);
   const [committeeTypesValues, setCommitteeTypesValues] = useState([]);
   const [committeeMemberRolesOptions, setCommitteeMemberRolesOptions] =
@@ -185,7 +190,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     setOnclickFlag(false);
-    if (e.target.value.trimStart() != "") {
+    if (e.target.value.trimStart() !== "") {
       setTaskAssignedToInput(e.target.value.trimStart());
     } else {
       setTaskAssignedToInput("");
@@ -196,14 +201,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
 
   const checkAttendeeBox = (data, id, index) => {
     if (attendees.includes(id)) {
-      let attendIndex = attendees.findIndex((data, index) => data === id);
-      if (attendIndex !== -1) {
-        attendees.splice(attendIndex, 1);
-        setAttendees([...attendees]);
-      }
+      setAttendees((prevFiles) =>
+        prevFiles.filter((attnedeeID) => attnedeeID !== id)
+      );
     } else {
-      attendees.push(id);
-      setAttendees([...attendees]);
+      setAttendees([...attendees, id]);
     }
   };
 
@@ -427,7 +429,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           },
           CommitteeMembers: membersData,
         };
-        dispatch(updateCommittee(navigate, Data, t, setUpdateComponentpage));
+        dispatch(updateCommittee(navigate, Data, t));
       }
     } else {
       setErrorBar(true);
@@ -507,21 +509,138 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     }
   }, [CommitteeReducer.getCommitteeByCommitteeID, meetingAttendeesList]);
 
+  useEffect(() => {
+    if (
+      CommitteeReducer.reteriveCommitteeDocuments !== null &&
+      CommitteeReducer.reteriveCommitteeDocuments !== undefined
+    ) {
+      if (CommitteeReducer.reteriveCommitteeDocuments.data.length > 0) {
+        let newfolderID = CommitteeReducer.reteriveCommitteeDocuments.folderID;
+        let filesArr = CommitteeReducer.reteriveCommitteeDocuments.data;
+        let newArr = [];
+        let fileSend = [];
+        setFolderId(newfolderID);
+        filesArr.forEach((fileData, index) => {
+          newArr.push({
+            pK_FileID: fileData.pK_FileID,
+            DisplayAttachmentName: fileData.displayFileName,
+            fk_UserID: fileData.fK_UserID,
+          });
+          fileSend.push({
+            pK_FileID: fileData.pK_FileID,
+            DisplayAttachmentName: fileData.displayFileName,
+          });
+        });
+        setFileAttachments(newArr);
+        setFilesSending(fileSend);
+      }
+    }
+  }, [CommitteeReducer.reteriveCommitteeDocuments]);
+
   const props = {
     name: "file",
+    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
-      console.log(data.file.originFileObj.name, "customRequestcustomRequest");
-      const File = data.file.originFileObj.name;
-      setFileAttachments([...fileAttachments, File]);
+      let fileSizeArr;
+      if (fileAttachments.length > 9) {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+      } else if (fileAttachments.length > 0) {
+        let flag = false;
+        let sizezero;
+        let size;
+        fileAttachments.map((arData, index) => {
+          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+            flag = true;
+          }
+        });
+        if (data.file.size > 10485760) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else if (flag === true) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-already-exists"),
+            }),
+            3000
+          );
+        } else {
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size,
+          };
+          setFileAttachments([...fileAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+        }
+      } else {
+        let sizezero;
+        let size;
+        if (data.file.size > 10485760) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else {
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size,
+          };
+          setFileAttachments([...fileAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+        }
+      }
     },
     onDrop(e) {},
     customRequest() {},
   };
-
-  console.log(fileAttachments, "fileAttachmentsfileAttachments");
 
   //Sliders For Attachments
 
@@ -535,11 +654,60 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     Slider.scrollLeft = Slider.scrollLeft + 300;
   };
 
-  const handleRemoveFile = (index) => {
-    const updatedFies = [...fileAttachments];
-    updatedFies.splice(index, 1);
-    setFileAttachments(updatedFies);
+  const handleRemoveFile = (data) => {
+    setFileForSend((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) => fileSend.name !== data.DisplayAttachmentName
+      )
+    );
+
+    setFilesSending((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+
+    setFileAttachments((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
   };
+
+  const documentsUploadCall = async (folderID) => {
+    let newFolder = [...filesSending];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsCommitteesApi(navigate, t, newData, folderID, newFolder)
+      );
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+
+    let newData = {
+      CommitteeID: Number(committeeData.committeeID),
+      UpdateFileList: newFolder.map((data, index) => {
+        return { PK_FileID: data.pK_FileID };
+      }),
+    };
+    await dispatch(
+      saveCommitteeDocumentsApi(navigate, t, newData, setUpdateComponentpage)
+    );
+  };
+
+  const handleDoubleCLickFile = () => {
+    console.log("Hello");
+  };
+
+  useEffect(() => {
+    if (CommitteeReducer.createUpdateCommitteeDataroom !== 0) {
+      let folderIdCreated = CommitteeReducer.createUpdateCommitteeDataroom;
+      documentsUploadCall(folderIdCreated);
+    }
+  }, [CommitteeReducer.createUpdateCommitteeDataroom]);
 
   return (
     <>
@@ -1616,12 +1784,15 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                               height="12.68px"
                                               width="12.68px"
                                               onClick={() =>
-                                                handleRemoveFile(index)
+                                                handleRemoveFile(data)
                                               }
                                             />
                                           </span>
                                           <section
                                             className={styles["Outer_Box"]}
+                                            onDoubleClick={
+                                              handleDoubleCLickFile
+                                            }
                                           >
                                             <Row>
                                               <Col lg={12} md={12} sm={12}>
@@ -1661,7 +1832,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                       styles["FileName"]
                                                     }
                                                   >
-                                                    {data}
+                                                    {data.DisplayAttachmentName}
                                                   </span>
                                                 </Col>
                                               </Row>

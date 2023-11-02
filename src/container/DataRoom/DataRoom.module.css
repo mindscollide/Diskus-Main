@@ -948,12 +948,13 @@ body[dir="rtl"] .dataroom_searchinput2 {
 }
 .fileRow {
   /* gap: 5px; */
-  /* display: flex; */
-  overflow: hidden;
-  width: auto;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: block;
+  display: flex;
+  align-items: center;
+  overflow: hidden !important;
+  width: 100% !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  /* display: inline-flex; */
   max-width: 300px !important;
 }
 

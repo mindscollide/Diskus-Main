@@ -19,6 +19,7 @@ import {
   getallcommitteebyuserid_clear,
   getCommitteesbyCommitteeId,
   realtimeCommitteeStatusResponse,
+  viewDetailsCommitteeID,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import {
@@ -50,6 +51,7 @@ const Committee = () => {
     CommitteeReducer,
     LanguageReducer,
     talkStateData,
+    DataRoomReducer,
     talkFeatureStates,
   } = useSelector((state) => state);
   const { t } = useTranslation();
@@ -67,9 +69,11 @@ const Committee = () => {
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [marketingTeamModal, setMarketingTeamModal] = useState(false);
   const [committeeID, setCommitteeID] = useState(0);
+  const [viewCommitteeTab, setViewCommitteeViewTab] = useState(0);
   const [modalsure, setModalsure] = useState(false);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
+  const [ViewcommitteeID, setViewCommitteeID] = useState(0);
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
 
@@ -311,6 +315,58 @@ const Committee = () => {
     setChangeStatusModal(true);
   };
 
+  const handleClickMeetingTab = (data) => {
+    setViewCommitteeViewTab(4);
+    localStorage.setItem("ViewCommitteeID", data.committeeID);
+    setViewGroupPage(true);
+    // dispatch(viewDetailsCommitteeID(data.committeeID));
+    // setViewCommitteeID(data.committeeID);
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
+  const handlePollsClickTab = (data) => {
+    // setViewCommitteeID(data.committeeID);
+    localStorage.setItem("ViewCommitteeID", data.committeeID);
+    setViewCommitteeViewTab(3);
+    setViewGroupPage(true);
+    // dispatch(viewDetailsCommitteeID(data.committeeID));
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
+  const handleTasksClickTab = (data) => {
+    setViewCommitteeViewTab(2);
+    setViewGroupPage(true);
+    localStorage.setItem("ViewCommitteeID", data.committeeID);
+    // dispatch(viewDetailsCommitteeID(data.committeeID));
+    // setViewCommitteeID(data.committeeID);
+
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID
+    //   )
+    // );
+  };
   useEffect(() => {
     if (
       CommitteeReducer.ResponseMessage !== "" &&
@@ -350,7 +406,11 @@ const Committee = () => {
           </>
         ) : ViewGroupPage ? (
           <>
-            <ViewUpdateCommittee setViewGroupPage={setViewGroupPage} />
+            <ViewUpdateCommittee
+              setViewGroupPage={setViewGroupPage}
+              viewCommitteeTab={viewCommitteeTab}
+              ViewcommitteeID={ViewcommitteeID}
+            />
           </>
         ) : (
           <>
@@ -422,6 +482,15 @@ const Committee = () => {
                                 CardID={data.committeeID}
                                 StatusID={data.committeeStatusID}
                                 CardHeading={data.committeesTitle}
+                                handleMeetingClickOption={() => {
+                                  handleClickMeetingTab(data);
+                                }}
+                                handleTasksClickOption={() => {
+                                  handleTasksClickTab(data);
+                                }}
+                                handlePollsClickOption={() => {
+                                  handlePollsClickTab(data);
+                                }}
                                 creatorId={data.creatorID}
                                 groupState={false}
                                 onClickFunction={() =>
@@ -563,7 +632,11 @@ const Committee = () => {
           </>
         )}
       </div>
-      {CommitteeReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {CommitteeReducer.Loading ||
+      LanguageReducer.Loading ||
+      DataRoomReducer.Loading ? (
+        <Loader />
+      ) : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {showModal ? (
         <ModalArchivedCommittee

@@ -1460,10 +1460,6 @@ const Dashboard = () => {
       }
     }
     if (data.action.toLowerCase() === "Notes".toLowerCase()) {
-      console.log("hello", data);
-      console.log("hello", data.payload);
-      console.log("hello", data.payload.message);
-
       if (
         data.payload.message.toLowerCase() ===
         "NEW_NOTES_CREATION".toLowerCase()
@@ -1499,7 +1495,7 @@ const Dashboard = () => {
       let userID = localStorage.getItem("userID");
       mqttConnection(userID);
     }
-    if (newClient != null) {
+    if (newClient !== null) {
       console.log("onMessageArrived 1");
 
       newClient.onConnectionLost = onConnectionLost;
@@ -1512,7 +1508,7 @@ const Dashboard = () => {
   ]);
 
   useEffect(() => {
-    if (Blur != undefined) {
+    if (Blur !== undefined) {
       console.log("Blur", Blur);
       setActivateBlur(true);
     } else {
@@ -1583,7 +1579,9 @@ const Dashboard = () => {
           {/* <Content className="MainContainer"> */}
           <Layout className="positionRelative">
             <NotificationBar
-              iconName={<img src={IconMetroAttachment} draggable="false" />}
+              iconName={
+                <img src={IconMetroAttachment} alt="" draggable="false" />
+              }
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
               setNotification={setNotification}

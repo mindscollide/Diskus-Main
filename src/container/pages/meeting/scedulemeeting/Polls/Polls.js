@@ -27,7 +27,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, CommitteeReducer } = useSelector((state) => state);
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);

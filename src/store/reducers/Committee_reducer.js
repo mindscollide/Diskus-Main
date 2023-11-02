@@ -12,26 +12,34 @@ const initialState = {
   updateCommitteeResponse: null,
   realtimeCommitteeCreateResponse: null,
   realtimeCommitteeStatus: null,
-  ArcheivedCommittees: null
+  ArcheivedCommittees: null,
+  createUpdateCommitteeDataroom: 0,
+  savecommitteedocuments: null,
+  reteriveCommitteeDocuments: null,
+  committeeID: 0,
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
   switch (action.type) {
+    // case actions.COMMIITTEEID: {
+    //   return {
+    //     ...state,
+    //     committeeID: action.response,
+    //   };
+    // }
     case actions.GET_ALL_COMMITTEES_BY_USERID_INIT: {
       return {
         ...state,
         Loading: true,
-        GetAllCommitteesByUserIDResponse: null,
       };
     }
 
     case actions.GET_ALL_COMMITTEES_BY_USERID_SUCCESS: {
-
       return {
         ...state,
         Loading: false,
         GetAllCommitteesByUserIDResponse: action.response,
-        ResponseMessage: action.message
+        ResponseMessage: action.message,
       };
     }
 
@@ -40,31 +48,31 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetAllCommitteesByUserIDResponse: null,
-        ResponseMessage: action.message
+        ResponseMessage: action.message,
       };
     }
     case actions.GET_COMMITTEE_BYCOMMITTEEID_INIT: {
       return {
         ...state,
         Loading: true,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.GET_COMMITTEE_BYCOMMITTEEID_SUCCESS: {
       return {
         ...state,
         Loading: false,
         getCommitteeByCommitteeID: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.GET_COMMITTEE_BYCOMMITTEEID_FAIL: {
       return {
         ...state,
         Loading: false,
         getCommitteeByCommitteeID: null,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.CLEAR_MESSAGE_RESPONSE_COMMITTEE: {
       return {
@@ -85,6 +93,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         CreateCommitteeResponse: action.response,
+        committeeID: action.committeeID,
         ResponseMessage: action.message,
       };
     }
@@ -92,6 +101,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        committeeID: 0,
         CreateCommitteeResponse: null,
         ResponseMessage: action.message,
       };
@@ -99,137 +109,137 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
     case actions.GET_ALL_COMMITTEE_TYPES_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.GET_ALL_COMMITTEE_TYPES_SUCCESS: {
       return {
         ...state,
         Loading: false,
         getCommitteeTypes: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.GET_ALL_COMMITTEE_TYPES_FAIL: {
       return {
         ...state,
         Loading: false,
         getCommitteeTypes: null,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.GET_COMMITTEE_MEMBERS_ROLES_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.GET_COMMITTEE_MEMBERS_ROLES_SUCCESS: {
       return {
         ...state,
         Loading: false,
         getCommitteeMembersRoles: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.GET_COMMITTEE_MEMBERS_ROLES_FAIL: {
       return {
         ...state,
         Loading: false,
         getCommitteeMembersRoles: null,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.UPDATE_COMMITTEE_STATUS_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.UPDATE_COMMITTEE_STATUS_SUCCESS: {
       return {
         ...state,
         Loading: false,
         updateCommitteeStatus: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.UPDATE_COMMITTEE_STATUS_FAIL: {
       return {
         ...state,
         Loading: false,
         updateCommitteeStatus: null,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.UPDATE_COMMITTEE_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.UPDATE_COMMITTEE_SUCCESS: {
       return {
         ...state,
         Loading: false,
         updateCommitteeResponse: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.UPDATE_COMMITTEE_FAIL: {
       return {
         ...state,
         Loading: false,
         updateCommitteeResponse: null,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.REALTIME_COMMITTEES_RESPONSE: {
       return {
         ...state,
         realtimeCommitteeCreateResponse: action.response,
-      }
+      };
     }
     case actions.REALTIME_COMMITTEES_STATUS_RESPONSE: {
       return {
         ...state,
-        realtimeCommitteeStatus: action.response
-      }
+        realtimeCommitteeStatus: action.response,
+      };
     }
     case actions.COMMITTEE_GROUP_MAPPING_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.COMMITTEE_GROUP_MAPPING_SUCCESS: {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.COMMITTEE_GROUP_MAPPING_FAIL: {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.ARCHEIVED_COMMITTES_INIT: {
       return {
         ...state,
         Loading: true,
-        ArcheivedCommittees: null
-      }
+        ArcheivedCommittees: null,
+      };
     }
     case actions.ARCHEIVED_COMMITTES_SUCCESS: {
       return {
         ...state,
         Loading: false,
         ArcheivedCommittees: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     // case actions.ARCHEIVED_COMMITTES_SUCCESS: {
     //   return {
@@ -245,9 +255,85 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ArcheivedCommittees: null,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
+    case actions.CREATEUPDATECOMMITTEEDATAROOM_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.CREATEUPDATECOMMITTEEDATAROOM_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        createUpdateCommitteeDataroom: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CREATEUPDATECOMMITTEEDATAROOM_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        createUpdateCommitteeDataroom: 0,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVECOMMMITTEEDOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVECOMMMITTEEDOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        savecommitteedocuments: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVECOMMMITTEEDOCUMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        savecommitteedocuments: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.RETERIVECOMMITTEEDOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.RETERIVECOMMITTEEDOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        reteriveCommitteeDocuments: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.RETERIVECOMMITTEEDOCUMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        reteriveCommitteeDocuments: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.COMMITTEEID_VIEWDETAILS: {
+      return {
+        ...state,
+        committeeID: action.payload,
+      };
+    }
+
     default:
       return { ...state };
   }

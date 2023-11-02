@@ -7,84 +7,6 @@ body[dir="rtl"] .View-Committee-heading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.View-Committee-Subheading {
-  font-size: 30px !important;
-  color: #6172d6 !important;
-}
-
-body[dir="rtl"] .View-Committee-Subheading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
-.Management-Heading-View-Committee {
-  font-size: 30px !important;
-  color: #5a5a5a;
-}
-
-body[dir="rtl"] .Management-Heading-View-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
-.View-Committee-Head-Heading {
-  font-size: 20px !important;
-  color: #6172d6 !important;
-}
-
-body[dir="rtl"] .View-Committee-Head-Heading {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
-.ViewCommittee-head-info {
-  line-height: 15px !important;
-}
-
-.name-ViewCommittee-group {
-  color: #5a5a5a;
-  font-size: 12px !important;
-}
-
-body[dir="rtl"] .name-ViewCommittee-group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
-.paragraph-content-View-Committee {
-  color: #5a5a5a;
-  font-size: 16px !important;
-}
-
-body[dir="rtl"] .paragraph-content-View-Committee {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
-.Designation-ViewCommittee-group {
-  color: #5a5a5a;
-  font-size: 10px !important;
-}
-
-body[dir="rtl"] .Designation-ViewCommittee-group {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
-.email-ViewCommittee-group {
-  color: #5a5a5a;
-  color: #6172d6;
-  text-decoration: underline !important;
-  font-size: 10px !important;
-}
-
-body[dir="rtl"] .email-ViewCommittee-group {
-  font-family: "IBMPlexSansArabic-Regular" !important;
-}
-
-.members-ViewCommittee-group-page {
-  font-size: 20px !important;
-  color: #6172d6 !important;
-}
-
-body[dir="rtl"] .members-ViewCommittee-group-page {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
 .scroll-bar-ViewGroup {
   height: 39vh !important;
   overflow-x: hidden !important;
@@ -103,10 +25,10 @@ body[dir="rtl"] .members-ViewCommittee-group-page {
 }
 
 .View-Committee-paper {
-  height: auto !important;
+  min-height: 79vh !important;
   width: 100% !important;
-  padding: 60px 60px !important;
-  /* margin-top: 8px !important; */
+  padding: 30px 40px 20px 40px !important;
+  height: 100%;
 }
 
 .Close-ViewCommittee-btn {
@@ -141,53 +63,54 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   justify-content: center !important;
   align-items: center !important;
 }
-
-.ant-upload-text {
-  font-size: 12px !important;
-  color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
-}
-
-body[dir="rtl"] .ant-upload-text {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
-.Choose_file_style {
-  font-size: 12px !important;
-  color: #6172d6 !important;
-  font-family: "MontserratSemiBold";
-  margin-left: 3px !important;
-}
-
-.FileName {
-  font-size: 10px !important;
-  color: #5a5a5a !important;
-  font-family: "MontserratRegular";
-  display: inline-block !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  text-overflow: ellipsis !important;
-  width: 100px !important;
-}
-
-.IconPDF {
-  margin-left: 10px !important;
-}
-
-.IconTextClass {
-  display: flex;
-  text-align: center !important;
-  align-items: center !important;
-  gap: 7px !important;
-}
-
-.backGround_name_Icon {
-  background: #fff;
-}
-
-.Outer_Box {
-  height: auto !important;
-  border: 1px solid #e1e1e1 !important;
-  margin-bottom: 10px !important;
+.View-committee-details,
+.View-committee-details:disabled {
+  font-size: 16px !important;
+  border: 1px solid #808080;
   border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  background: #fff !important;
+  color: #545454;
+}
+
+.View-committee-details_active,
+.View-committee-details_active:disabled {
+  font-size: 16px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  color: #fff !important;
+}
+
+.View-committee-details:hover,
+.View-committee-details:active,
+.View-committee-details:focus,
+.View-committee-details:focus-visible {
+  font-size: 16px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  color: #fff !important;
+}
+
+.closeBtn-view-committee {
+  font-size: 16px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 12px 30px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.closeBtn-view-committee:is(:active, :hover, :focus, :focus-visible, :visited) {
+  font-size: 16px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 12px 30px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
 }

@@ -2,8 +2,11 @@ import * as actions from "../action_types";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
-import { settingApi } from "../../commen/apis/Api_ends_points";
-import { downloadDocument } from "../../commen/apis/Api_config";
+import { settingApi, meetingApi } from "../../commen/apis/Api_ends_points";
+import {
+  downloadDocument,
+  downloadMeetingAttendanceReport,
+} from "../../commen/apis/Api_config";
 import Helper from "../../commen/functions/history_logout";
 
 const ShowNotification = (message) => {
@@ -124,17 +127,17 @@ const DownloadFile = (navigate, data, t) => {
 // };
 
 // const download Report Attendance main API
-// const downloadAttendanceReportApi = () => {
+// const downloadAttendanceReportApi = (navigate, t) => {
 //   let token = JSON.parse(localStorage.getItem("token"));
 //   let form = new FormData();
-//   // form.append("RequestMethod", downlaodStatusWiseReportApi.RequestMethod);
+//   form.append("RequestMethod", downloadMeetingAttendanceReport.RequestMethod);
 //   form.append("RequestData", JSON.stringify());
 //   return (dispatch) => {
 //     console.log("reportDownloadStatusWiseApi");
 //     dispatch(attendanceDownloadInit());
 //     axios({
 //       method: "post",
-//       // url: downloadReportApi,
+//       url: meetingApi,
 //       data: form,
 //       headers: {
 //         _token: token,
@@ -148,8 +151,8 @@ const DownloadFile = (navigate, data, t) => {
 //         console.log("downloadAttendanceReportApi", response);
 
 //         if (response.status === 417) {
-//           await dispatch(RefreshToken());
-//           dispatch(downloadAttendanceReportApi());
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(downloadAttendanceReportApi(navigate, t));
 //         } else if (response.status === 200) {
 //           const url = window.URL.createObjectURL(new Blob([response.data]));
 //           console.log("downloadAttendanceReportApi", url);
