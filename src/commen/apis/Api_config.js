@@ -1061,6 +1061,10 @@ const GetAllUserAgendaRights = {
   RequestMethod: "ServiceManager.GetAllUserAgendaRights",
 };
 
+const saveUserAttachmentPermission = {
+  RequestMethod: "ServiceManager.SaveUserAttachmentPermission",
+};
+
 export {
   saveCommitteeDocumentsRM,
   reteriveCommitteeDocumentsRM,
@@ -1345,4 +1349,5 @@ export {
   RetrieveGroupDocuments,
   MeetingAgendaLock,
   GetAllUserAgendaRights,
+  saveUserAttachmentPermission,
 };

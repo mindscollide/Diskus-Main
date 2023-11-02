@@ -7,6 +7,7 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import {
   GetAllUserAgendaRightsApiFunc,
+  SaveUserAttachmentsPermissionApiFunc,
   showAdvancePermissionConfirmation,
   showAdvancePermissionModal,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -109,6 +110,24 @@ const AdvancePersmissionModal = () => {
       AgendaID: agendaID,
     };
     dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+  };
+
+  const handleSaveAdvancedPermissionModal = () => {
+    let newarray = [];
+    members.map((data, index) => {
+      console.log(data, "UserAttachmentPermissions");
+      newarray.push({
+        UserID: data.userID,
+        CanView: data.canView,
+        CanModify: data.canModify,
+      });
+    });
+    let Data = {
+      AgendaID: "1223",
+      UserAttachmentPermissions: newarray,
+    };
+    console.log(Data, "AgendaIDAgendaID");
+    dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
   };
 
   useEffect(() => {
@@ -734,7 +753,11 @@ const AdvancePersmissionModal = () => {
                     className={styles["Cancel_Button"]}
                     onClick={OpenConfirmation}
                   />
-                  <Button text={t("Save")} className={styles["Save_Button"]} />
+                  <Button
+                    text={t("Save")}
+                    className={styles["Save_Button"]}
+                    onClick={handleSaveAdvancedPermissionModal}
+                  />
                 </Col>
               </Row>
             </>

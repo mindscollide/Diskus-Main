@@ -63,6 +63,7 @@ const initialState = {
   meetingResponse: [],
   meetingMaterial: [],
   agendaRights: null,
+  attachmentsPermission: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -903,6 +904,30 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         agendaRights: null,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SAVE_USER_ATTACHMENT_PERMISSION_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_USER_ATTACHMENT_PERMISSION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        attachmentsPermission: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SAVE_USER_ATTACHMENT_PERMISSION_FAILED: {
+      return {
+        ...state,
+        Loading: false,
         ResponseMessage: action.ResponseMessage,
       };
     }
