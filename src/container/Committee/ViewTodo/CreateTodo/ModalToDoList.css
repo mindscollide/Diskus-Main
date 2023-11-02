@@ -1,0 +1,225 @@
+/* @media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 600px !important;
+    min-height: auto !important;
+  }
+} */
+
+.headertodoCreateModal {
+  border-bottom: none;
+  height: 20px;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+.margin-top--20 {
+  margin-top: -20px;
+}
+
+.MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] {
+  padding: 2px;
+}
+
+.dropdown-row-assignee {
+  position: relative;
+}
+
+.todolist-remove-assignee-icon {
+  position: absolute;
+  top: 10px;
+  z-index: 1;
+  right: 40px;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.todolist-remove-assignee-icon .remove {
+  width: 20px;
+  height: 20px;
+}
+
+.modaltodolist-attachment-icon {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 100px;
+  width: 90px;
+  position: relative;
+}
+
+.modaltodolist-attachment-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  white-space: nowrap !important;
+}
+
+.bodytodoCreateModal {
+  max-height: 470px !important;
+  height: auto;
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  margin: 0 15px;
+}
+
+.todoModalCreateModal {
+  max-width: 500px !important;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: center;
+  padding: 0 !important;
+}
+
+.todoModalCreateModal::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5em;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.todoModalCreateModal::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.bodytodoCreateModal::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.bodytodoCreateModal::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.headertodoCreateModal {
+  height: 5% !important;
+}
+
+.headertodoCreateModal button {
+  margin: 10px 0px 0 20px !important;
+}
+
+.footertodoCreateModal {
+  margin: 10px 10px;
+  /* height : 5%; */
+  /* height : 80px !important; */
+  min-height: 20% !important;
+  max-height: 20% !important;
+  display: block;
+}
+
+body[dir="rtl"] .footertodoCreateModal {
+  margin: 10px 27px !important;
+}
+
+.attachmentCon {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  flex-direction: column !important;
+}
+
+.attachmentCon label {
+  line-height: 15px !important;
+}
+
+.todocreate-createbtn {
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+  border: none !important;
+}
+
+.todocreate-createbtn:focus,
+.todocreate-createbtn:active,
+.todocreate-createbtn:hover,
+.todocreate-createbtn:target,
+.todocreate-createbtn:visited {
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+  border: none !important;
+}
+
+/* .todomodalcreatemodal {
+  width: 700px !important;
+} */
+/* .modal-content {
+  width: 700px !important;
+}  */
+.modaldialogTodoCreate {
+  --bs-modal-margin: 0px !important;
+}
+
+.modaldialogTodoCreate .modal-dialog {
+  max-width: 600px !important;
+  width: auto !important;
+}
+
+body[dir="rtl"] .ArabicFontSemiBold {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Confirmationmodal_body_text {
+  padding: 0 20px !important;
+  text-align: center;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+  font-size: 16px;
+}
+
+.cancelButton_createTodo {
+  background-color: #fff !important;
+  color: #5a5a5a !important;
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+  border: 1px solid #e1e1e1 !important;
+}
+
+.create_todo_assignee {
+  max-height: 7vh !important;
+  overflow-y: auto;
+}
+.Create_TodoBtn_Button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratMedium-500";
+  display: flex;
+  align-items: center !important;
+  gap: 5px;
+  border: none;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+}
+
+.Create_TodoBtn_Button:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratMedium-500" !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  border: none !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
