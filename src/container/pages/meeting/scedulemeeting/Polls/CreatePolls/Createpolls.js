@@ -46,12 +46,15 @@ const Createpolls = ({ setCreatepoll, view }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const { NewMeetingreducer, PollsReducer, CommitteeReducer } = useSelector(
+    (state) => state
+  );
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [memberSelect, setmemberSelect] = useState([]);
+  console.log(memberSelect, "memberSelectmemberSelectmemberSelect");
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [pollsData, setPollsData] = useState({
     Title: "",
@@ -181,6 +184,54 @@ const Createpolls = ({ setCreatepoll, view }) => {
       date: DateDate,
     });
   };
+  useEffect(() => {
+    if (view === 2) {
+      if (
+        CommitteeReducer.getCommitteeByCommitteeID !== null &&
+        CommitteeReducer.getCommitteeByCommitteeID !== undefined
+      ) {
+        let newArr = [];
+        let getUserDetails =
+          CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
+        getUserDetails.forEach((data, index) => {
+          newArr.push({
+            value: data.pK_UID,
+            label: (
+              <>
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {data.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              </>
+            ),
+            type: 1,
+          });
+        });
+        setmemberSelect(newArr);
+      }
+    }
+  }, [
+    CommitteeReducer.getCommitteeByCommitteeID,
+    CommitteeReducer.committeeID,
+    view,
+  ]);
 
   useEffect(() => {
     if (view === 2) {
@@ -194,11 +245,11 @@ const Createpolls = ({ setCreatepoll, view }) => {
 
   useEffect(() => {
     let pollMeetingData = NewMeetingreducer.getMeetingusers;
-    console.log(pollMeetingData, "pollMeetingDatapollMeetingData");
-    if (pollMeetingData !== undefined && pollMeetingData !== null) {
-      let newmembersArray = [];
-      if (Object.keys(pollMeetingData).length > 0) {
-        if (Object.keys(pollMeetingData.meetingAgendaContributors).length > 0) {
+    if (view !== 2) {
+      if (pollMeetingData !== undefined && pollMeetingData !== null) {
+        let newmembersArray = [];
+        // if (Object.keys(pollMeetingData).length > 0) {
+        if (pollMeetingData.meetingOrganizers.length > 0) {
           pollMeetingData.meetingOrganizers.map(
             (MorganizerData, MorganizerIndex) => {
               let MeetingOrganizerData = {
@@ -218,6 +269,7 @@ const Createpolls = ({ setCreatepoll, view }) => {
                             height="16.45px"
                             width="18.32px"
                             draggable="false"
+                            alt=""
                           />
                           <span className={styles["NameDropDown"]}>
                             {MorganizerData.userName}
@@ -233,7 +285,7 @@ const Createpolls = ({ setCreatepoll, view }) => {
             }
           );
         }
-        if (Object.keys(pollMeetingData.meetingAgendaContributors).length > 0) {
+        if (pollMeetingData.meetingAgendaContributors.length > 0) {
           pollMeetingData.meetingAgendaContributors.map(
             (meetAgendaContributor, meetAgendaContributorIndex) => {
               let MeetingAgendaContributorData = {
@@ -251,6 +303,7 @@ const Createpolls = ({ setCreatepoll, view }) => {
                           <img
                             src={GroupIcon}
                             height="16.45px"
+                            alt=""
                             width="18.32px"
                             draggable="false"
                           />
@@ -268,7 +321,7 @@ const Createpolls = ({ setCreatepoll, view }) => {
             }
           );
         }
-        if (Object.keys(pollMeetingData.meetingParticipants).length > 0) {
+        if (pollMeetingData.meetingParticipants.length > 0) {
           pollMeetingData.meetingParticipants.map(
             (meetParticipants, meetParticipantsIndex) => {
               let MeetingParticipantsData = {
@@ -287,6 +340,7 @@ const Createpolls = ({ setCreatepoll, view }) => {
                             src={GroupIcon}
                             height="16.45px"
                             width="18.32px"
+                            alt=""
                             draggable="false"
                           />
                           <span className={styles["NameDropDown"]}>
@@ -303,12 +357,20 @@ const Createpolls = ({ setCreatepoll, view }) => {
             }
           );
         }
+        // }
+        console.log(newmembersArray, "pollMeetingDatapollMeetingData");
+
+        setmemberSelect(newmembersArray);
       }
-      setmemberSelect(newmembersArray);
-    } else {
-      setmemberSelect([]);
     }
-  }, [NewMeetingreducer.getMeetingusers]);
+
+    //  else {
+    //   if (view === 2 && view !== undefined && view !== null) {
+    //   } else {
+    //     setmemberSelect([]);
+    //   }
+    // }
+  }, [NewMeetingreducer.getMeetingusers, view]);
 
   // for selection of data
   const handleSelectValue = (value) => {

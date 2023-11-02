@@ -4,7 +4,6 @@ import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.s
 import FileIcon, { defaultStyles } from "react-file-icon";
 import {
   createConvert,
-  removeDashesFromDate,
   RemoveTimeDashes,
 } from "../../commen/functions/date_formater";
 import moment from "moment";
@@ -16,47 +15,32 @@ import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import MeetingVideoChatIcon from "../../assets/images/newElements/Icon feather-video1.png";
 import MeetingVideoChatIconActive from "../../assets/images/newElements/Icon feather-video.png";
-import currentUserImage from "../../assets/images/avatar.png";
 import {
   TextField,
   Button,
   Modal,
   Checkbox,
-  TimePickers,
-  CustomDatePicker,
   SelectBox,
   Accordian,
   EmployeeCard,
   Notification,
   InputSearchFilter,
-  Loader,
-  MultiDatePicker,
 } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
-import userImage from "../../assets/images/user.png";
 import { Row, Col, Container } from "react-bootstrap";
-import { CameraVideo, Plus } from "react-bootstrap-icons";
 import CustomUpload from "../../components/elements/upload/Upload";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  allAssignessList,
   ScheduleNewMeeting,
-  HideNotification,
   GetAllReminders,
-  meetingLoaderDashboard,
 } from "../../store/actions/Get_List_Of_Assignees";
 import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar";
 import {
   FileUploadToDo,
-  ResetAllFilesUpload,
 } from "../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
-import TextFieldTime from "../../components/elements/input_field_time/Input_field";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-// import ClockIcon from "react-multi-date-picker/icons";
-import { settingApi } from "../../commen/apis/Api_ends_points";
-import { UPDATE_RESOLUTION_BY_RESOLUTION_ID_FAIL } from "../../store/action_types";
 
 const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   //For Localization
