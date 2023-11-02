@@ -1,0 +1,111 @@
+.Heading_vewPolls_Published {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+}
+
+.Messege_span_Class {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratMedium-500" !important;
+  padding: 0px 10px !important;
+}
+
+.Scroller_View_Published_Polls {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_View_Published_Polls::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_View_Published_Polls::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Date_Heading {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+}
+
+.Date_Fetched {
+  color: #5a5a5a !important;
+  font-size: 20px !important;
+  font-family: "MontserratMedium-500" !important;
+}
+
+.Multiple_Answers_zstyles {
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+}
+
+.Participants {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+}
+
+.Partipants_box {
+  width: 100% !important;
+  height: 50px !important;
+  border: 1px solid #a2a2a2;
+  border-radius: 4px !important;
+  padding: 8px 20px !important;
+}
+
+.Participants_name {
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+}
+
+.Profile_Style {
+  border-radius: 50% !important;
+}
+
+.Close_button_View {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Close_button_View:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ViewVotes_button_View {
+  padding: 12px 30px !important;
+  border: none;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ViewVotes_button_View:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}

@@ -24,26 +24,19 @@ import {
   uploadDocumentsCommitteesApi,
 } from "../../../store/actions/Committee_actions";
 import ViewCommitteeDetails from "../../../container/Committee/ViewCommittee/ViewCommittee";
-import Polls from "../../../container/pages/meeting/scedulemeeting/Polls/Polls";
+import Polls from "../../../container/Committee/ViewPolls/Polls/Polls";
 import CommitteeTodo from "../../../container/Committee/ViewTodo/CommitteeTodo.js";
 const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
-  console.log(
-    viewCommitteeTab,
-    "viewCommitteeTabviewCommitteeTabviewCommitteeTab"
-  );
-  const ViewCommitteeID = useSelector(
-    (state) => state.CommitteeReducer.committeeID
-  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [currentView, setCurrentView] = useState(
     viewCommitteeTab !== undefined && viewCommitteeTab !== 0
       ? viewCommitteeTab
       : 1
   );
-  console.log("ViewCommitteeIDViewCommitteeIDViewCommitteeID", ViewCommitteeID);
   useEffect(() => {
-    if (ViewCommitteeID !== 0) {
+    if (ViewCommitteeID !== null) {
       let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
       let Data = {
         CommitteeID: Number(ViewCommitteeID),
@@ -128,7 +121,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
           ) : // <TableToDo />
           currentView === 3 ? (
             <>
-              <Polls view={2} />
+              <Polls />
               <Row>
                 <Col
                   sm={12}
