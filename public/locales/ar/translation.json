@@ -1544,5 +1544,6 @@
   "Document-name": "Document Name",
   "Absent": "Absent",
   "Present": "Present",
-  "Remote": "Remote"
+  "Remote": "Remote",
+  "Meeting-view":"Meeting View"
 }

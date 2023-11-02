@@ -1,0 +1,194 @@
+.MainHeading_Create_Action {
+  color: #6172d6 !important;
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold";
+  display: inline-block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
+  width: 96% !important;
+}
+
+.SubHeading {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  font-size: 12px !important;
+}
+
+.Steric {
+  color: #f16b6b;
+}
+
+.Save_Button_Polls_meeting {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none;
+  color: #fff;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Save_Button_Polls_meeting:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none;
+  color: #fff;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_Button_Polls_meeting {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  border: 1px solid#E1E1E1;
+  color: #5a5a5a;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_Button_Polls_meeting:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid#E1E1E1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ClassImage {
+  margin-left: 13px !important;
+}
+
+.Choose_file_style-Meeting {
+  color: #bbbbbb !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ant-upload-text-Meetings {
+  color: #bbbbbb !important;
+  font-size: 22px !important;
+  margin: 0;
+  padding: 0;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Namepartipants {
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+}
+
+.ProfileImages {
+  border-radius: 50% !important;
+}
+
+.OverAll_padding {
+  padding: 0px 40px !important;
+}
+
+.OverAll_padding_Third {
+  padding: 0px 30px !important;
+  overflow-x: hidden !important;
+}
+
+.label_Styles {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  cursor: pointer;
+}
+
+.CrossIconClass {
+  cursor: pointer !important;
+  z-index: 1 !important;
+}
+
+.BottomLine {
+  border: 1px solid #e1e1e1;
+  width: 100% !important;
+  margin-top: 6px !important;
+  padding-right: 10px !important;
+}
+
+.box_For_File {
+  width: 248px !important;
+  height: 54.4px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 0px 10px !important;
+  z-index: 1;
+}
+
+.FileName {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-family: "Montserrat";
+  display: inline-block !important;
+  width: 150px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  z-index: 1;
+}
+
+.errorMessage-inLogin {
+  margin: 2px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-family: "MontserratMedium-500";
+}
+
+body[dir="rtl"] .errorMessage-inLogin {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 0px;
+  color: #f16b6b;
+}
+
+.option {
+  overflow-x: hidden !important;
+}
+
+.Scroller_Actions_Page {
+  height: 13vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_Actions_Page::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Actions_Page::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Create_Task_main_Scroller {
+  height: 55vh !important;
+  overflow-x: hidden !important;
+}
+
+.Create_Task_main_Scroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Create_Task_main_Scroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

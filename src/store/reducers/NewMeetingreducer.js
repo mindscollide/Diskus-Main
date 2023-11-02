@@ -62,6 +62,7 @@ const initialState = {
   getAllProposedDates: [],
   meetingResponse: [],
   meetingMaterial: [],
+  cancelViewModalMeetingDetails:false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -420,6 +421,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.CANCEL_VIEW_BUTTON_MODAL_MEETING_DETIALS_TAB: {
+      return {
+        ...state,
+        cancelViewModalMeetingDetails: action.response,
+      };
+    }
+    
     case actions.CANCEL_BUTTON_MODAL_ORGANIZER: {
       return {
         ...state,

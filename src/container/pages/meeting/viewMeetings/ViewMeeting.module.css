@@ -1,0 +1,48 @@
+.Scedule_newMeeting_Heading {
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5f78d6;
+}
+
+.Scedule_meeting_paper {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 78vh !important;
+  padding: 10px 40px !important;
+  margin-bottom: 20px !important;
+}
+
+.Schedule_meetings_options,
+.Schedule_meetings_options:disabled {
+  font-size: 16px !important;
+  border: 1px solid #808080;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  background: #fff !important;
+  color: #545454;
+}
+
+.Schedule_meetings_options_active,
+.Schedule_meetings_options_active:disabled {
+  font-size: 16px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  color: #fff !important;
+}
+
+.Schedule_meetings_options:hover,
+.Schedule_meetings_options:active,
+.Schedule_meetings_options:focus,
+.Schedule_meetings_options:focus-visible {
+  font-size: 16px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  color: #fff !important;
+}
+
+.Meetin_Details_Scroller {
+}

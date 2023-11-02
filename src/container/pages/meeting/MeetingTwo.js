@@ -74,6 +74,8 @@ import ModalUpdate from "../../modalUpdate/ModalUpdate";
 import ModalView from "../../modalView/ModalView";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import ViewParticipantsDates from "./scedulemeeting/Participants/ViewParticipantsDates/ViewParticipantsDates";
+// import ViewMeetingModal from "./viewMeetings/ViewMeeting";
+
 const NewMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -126,6 +128,8 @@ const NewMeeting = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
+  const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
+  const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
 
   //  Call all search meetings api
   useEffect(() => {
@@ -349,19 +353,24 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingCurrentView", 2);
   };
 
-  const handleViewMeeting = async (id) => {
-    let Data = { MeetingID: id };
-    await dispatch(
-      ViewMeeting(
-        navigate,
-        Data,
-        t,
-        setViewFlag,
-        setEditFlag,
-        setCalendarViewModal,
-        1
-      )
-    );
+  const handleViewMeeting = async (id, isQuickMeeting) => {
+    if (isQuickMeeting) {
+      let Data = { MeetingID: id };
+      await dispatch(
+        ViewMeeting(
+          navigate,
+          Data,
+          t,
+          setViewFlag,
+          setEditFlag,
+          setCalendarViewModal,
+          1
+        )
+      );
+    } else {
+      setAdvanceMeetingModalID(id);
+      setViewAdvanceMeetingModal(true);
+    }
   };
 
   const handleEditMeeting = async (id, isQuick, isAgendaContributor) => {
@@ -726,7 +735,7 @@ const NewMeeting = () => {
         const isQuickMeeting = record.isQuickMeeting;
         console.log("isQuickMeeting", isQuickMeeting);
         console.log("isQuickMeeting", record);
-        
+
         if (isQuickMeeting) {
           if (isOrganiser) {
             return (
@@ -954,6 +963,12 @@ const NewMeeting = () => {
         <ViewParticipantsDates
           setViewProposeDatePoll={setViewProposeDatePoll}
         />
+      ) : viewAdvanceMeetingModal ? (
+        <></>
+        // <ViewMeetingModal
+        //   advanceMeetingModalID={advanceMeetingModalID}
+        //   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+        // />
       ) : (
         <>
           <Row className="mt-2">

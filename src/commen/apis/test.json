@@ -1,0 +1,1137 @@
+[
+  {
+      "pK_MDID": 1676,
+      "title": "FAFAFAFAF",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231009",
+      "meetingStartTime": "223650",
+      "meetingEndTime": "225150",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1676,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1676,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1676,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 930,
+                  "name": "sheikh",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1676,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 931,
+                  "name": "umair",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1676,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1676,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 930,
+                  "name": "sheikh",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1676,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 931,
+                  "name": "umair",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": true,
+      "isChat": true,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1678,
+      "title": "asdasdasd",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231009",
+      "meetingStartTime": "225118",
+      "meetingEndTime": "230618",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1678,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": false,
+      "isChat": false,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1680,
+      "title": "FFFF",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231009",
+      "meetingStartTime": "230005",
+      "meetingEndTime": "231505",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1680,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1680,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1680,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 930,
+                  "name": "sheikh",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1680,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 931,
+                  "name": "umair",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": false,
+      "isChat": false,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1850,
+      "title": "test ",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231101",
+      "meetingStartTime": "123022",
+      "meetingEndTime": "124522",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1850,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1850,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 931,
+                  "name": "umair",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1850,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 930,
+                  "name": "sheikh",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 4,
+                  "role": "Agenda Contributor",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": true,
+      "isChat": true,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1840,
+      "title": "ccxzcz",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231101",
+      "meetingStartTime": "050930",
+      "meetingEndTime": "052430",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1840,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": true,
+      "isChat": true,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1880,
+      "title": "11111",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231117",
+      "meetingStartTime": "130001",
+      "meetingEndTime": "131501",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1880,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": false,
+      "isChat": false,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1854,
+      "title": "test 2 test 2",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231102",
+      "meetingStartTime": "130703",
+      "meetingEndTime": "132203",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1854,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": true,
+      "isChat": true,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1870,
+      "title": "talh check ",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231102",
+      "meetingStartTime": "101257",
+      "meetingEndTime": "102757",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1870,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1870,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 931,
+                  "name": "umair",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 2,
+                  "role": "Participant",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": true,
+      "isChat": true,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1868,
+      "title": "testnew 123",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231102",
+      "meetingStartTime": "030240",
+      "meetingEndTime": "031740",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1868,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": true,
+      "isChat": true,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1869,
+      "title": "test p 123",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231102",
+      "meetingStartTime": "040240",
+      "meetingEndTime": "041740",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1869,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1869,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 931,
+                  "name": "umair",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 2,
+                  "role": "Participant",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": true,
+      "isChat": true,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1855,
+      "title": "test 123",
+      "status": "11",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231104",
+      "meetingStartTime": "094717",
+      "meetingEndTime": "100217",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1855,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1855,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 930,
+                  "name": "sheikh",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1855,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 931,
+                  "name": "umair",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 4,
+                  "role": "Agenda Contributor",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": true,
+      "isChat": true,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1879,
+      "title": "testing proposed meeting",
+      "status": "12",
+      "host": "Huzeifa",
+      "dateOfMeeting": "20231108",
+      "meetingStartTime": "123936",
+      "meetingEndTime": "125436",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20231005070359559.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1879,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1879,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 931,
+                  "name": "umair",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 2,
+                  "role": "Participant",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": false,
+      "isChat": true,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  },
+  {
+      "pK_MDID": 1881,
+      "title": "ccxzcz 123",
+      "status": "12",
+      "host": "umair",
+      "dateOfMeeting": "20231108",
+      "meetingStartTime": "125723",
+      "meetingEndTime": "131223",
+      "meetingURL": "",
+      "orignalProfilePictureName": "20230919103323386.jpg",
+      "meetingAttendees": [
+          {
+              "pK_MDID": 1881,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 931,
+                  "name": "umair",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 1,
+                  "role": "Organizer",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          },
+          {
+              "pK_MDID": 1881,
+              "isPrimaryOrganizer": false,
+              "agendaListRightsAll": false,
+              "isContributorNotified": false,
+              "fK_ParticipantRoleID": 0,
+              "title": null,
+              "user": {
+                  "pK_UID": 932,
+                  "name": "Huzeifa",
+                  "designation": null,
+                  "orignalProfilePictureName": null,
+                  "displayProfilePictureName": null,
+                  "organization": null,
+                  "emailAddress": null,
+                  "mobileNumber": null,
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "meetingAttendeeRole": {
+                  "pK_MARID": 2,
+                  "role": "Participant",
+                  "creationDate": null,
+                  "creationTime": null
+              },
+              "attendeeAvailability": null
+          }
+      ],
+      "isVideoCall": false,
+      "isChat": false,
+      "isAttachment": false,
+      "isQuickMeeting": false,
+      "responseDeadLine": "20231101",
+      "attendanceReportAvaliable": false,
+      "meetingPoll": {
+          "totalNoOfDirectors": 7,
+          "totalNoOfDirectorsVoted": 2
+      },
+      "meetingAgenda": [],
+      "talkGroupID": 0
+  }
+]
