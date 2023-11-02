@@ -1565,10 +1565,10 @@ const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
   };
 };
 
-const viewDetailsCommitteeID = (response) => {
+const viewDetailsCommitteeID = (id) => {
   return {
     type: actions.COMMITTEEID_VIEWDETAILS,
-    response: response,
+    payload: id,
   };
 };
 

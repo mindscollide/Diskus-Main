@@ -330,7 +330,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
     case actions.COMMITTEEID_VIEWDETAILS: {
       return {
         ...state,
-        committeeID: action.response,
+        committeeID: action.payload,
       };
     }
 

@@ -10,7 +10,7 @@ import {
   Checkbox,
   Notification,
   Loader,
-} from "../../../../../../components/elements";
+} from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -19,34 +19,36 @@ import { Col, Row } from "react-bootstrap";
 import {
   regexOnlyForNumberNCharacters,
   validateInput,
-} from "../../../../../../commen/functions/regex";
-import WhiteCrossIcon from "../../../../../../assets/images/PollCrossIcon.svg";
-import plusFaddes from "../../../../../../assets/images/NewBluePLus.svg";
+} from "../../../../../commen/functions/regex";
+import WhiteCrossIcon from "../../../../../assets/images/PollCrossIcon.svg";
+import plusFaddes from "../../../../../assets/images/NewBluePLus.svg";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { useRef } from "react";
 import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import Profile from "../../../../../../assets/images/newprofile.png";
-import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
-import RedCross from "../../../../../../assets/images/CrossIcon.svg";
+import Profile from "../../../../../assets/images/newprofile.png";
+import GroupIcon from "../../../../../assets/images/groupdropdown.svg";
+import RedCross from "../../../../../assets/images/CrossIcon.svg";
 import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
 import {
   GetAllMeetingUserApiFunc,
   showUnsavedPollsMeeting,
-} from "../../../../../../store/actions/NewMeetingActions";
+} from "../../../../../store/actions/NewMeetingActions";
 import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
-import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
-import { SavePollsApi } from "../../../../../../store/actions/Polls_actions";
+import { multiDatePickerDateChangIntoUTC } from "../../../../../commen/functions/date_formater";
+import { SavePollsApi } from "../../../../../store/actions/Polls_actions";
 
 const Createpolls = ({ setCreatepoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer, PollsReducer } = useSelector((state) => state);
+  const { NewMeetingreducer, PollsReducer, CommitteeReducer } = useSelector(
+    (state) => state
+  );
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -85,7 +87,7 @@ const Createpolls = ({ setCreatepoll }) => {
   });
 
   const [members, setMembers] = useState([]);
-
+  console.log(members, "membersmembersmembers");
   const HandleCancelFunction = (index) => {
     let optionscross = [...options];
     optionscross.splice(index, 1);
@@ -182,135 +184,185 @@ const Createpolls = ({ setCreatepoll }) => {
       date: DateDate,
     });
   };
-
   useEffect(() => {
-    let Data = {
-      MeetingID: currentMeetingID,
-    };
-    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-  }, []);
-
-  useEffect(() => {
-    let pollMeetingData = NewMeetingreducer.getMeetingusers;
-    if (pollMeetingData !== undefined && pollMeetingData !== null) {
-      let newmembersArray = [];
-      // if (Object.keys(pollMeetingData).length > 0) {
-      if (pollMeetingData.meetingOrganizers.length > 0) {
-        pollMeetingData.meetingOrganizers.map(
-          (MorganizerData, MorganizerIndex) => {
-            let MeetingOrganizerData = {
-              value: MorganizerData.userID,
-              label: (
-                <>
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={GroupIcon}
-                          height="16.45px"
-                          width="18.32px"
-                          draggable="false"
-                          alt=""
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {MorganizerData.userName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                </>
-              ),
-              type: 1,
-            };
-            newmembersArray.push(MeetingOrganizerData);
-          }
-        );
-      }
-      if (pollMeetingData.meetingAgendaContributors.length > 0) {
-        pollMeetingData.meetingAgendaContributors.map(
-          (meetAgendaContributor, meetAgendaContributorIndex) => {
-            let MeetingAgendaContributorData = {
-              value: meetAgendaContributor.userID,
-              label: (
-                <>
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={GroupIcon}
-                          height="16.45px"
-                          alt=""
-                          width="18.32px"
-                          draggable="false"
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {meetAgendaContributor.userName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                </>
-              ),
-              type: 2,
-            };
-            newmembersArray.push(MeetingAgendaContributorData);
-          }
-        );
-      }
-      if (pollMeetingData.meetingParticipants.length > 0) {
-        pollMeetingData.meetingParticipants.map(
-          (meetParticipants, meetParticipantsIndex) => {
-            let MeetingParticipantsData = {
-              value: meetParticipants.userID,
-              label: (
-                <>
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={GroupIcon}
-                          height="16.45px"
-                          width="18.32px"
-                          alt=""
-                          draggable="false"
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {meetParticipants.userName}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                </>
-              ),
-              type: 3,
-            };
-            newmembersArray.push(MeetingParticipantsData);
-          }
-        );
-      }
-      // }
-      console.log(newmembersArray, "pollMeetingDatapollMeetingData");
-
-      setmemberSelect(newmembersArray);
-    } else {
-      setmemberSelect([]);
+    if (
+      CommitteeReducer.getCommitteeByCommitteeID !== null &&
+      CommitteeReducer.getCommitteeByCommitteeID !== undefined
+    ) {
+      let newArr = [];
+      let getUserDetails =
+        CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
+      getUserDetails.forEach((data, index) => {
+        newArr.push({
+          value: data.pK_UID,
+          label: (
+            <>
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span className={styles["NameDropDown"]}>
+                      {data.userName}
+                    </span>
+                  </Col>
+                </Row>
+              </>
+            </>
+          ),
+          type: 1,
+        });
+      });
+      setmemberSelect(newArr);
     }
-  }, [NewMeetingreducer.getMeetingusers]);
+  }, [CommitteeReducer.getCommitteeByCommitteeID]);
+
+  // useEffect(() => {
+
+  //     // let Data = {
+  //     //   MeetingID: currentMeetingID,
+  //     // };
+  //     // dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+  // }, []);
+
+  // useEffect(() => {
+  //   let pollMeetingData = NewMeetingreducer.getMeetingusers;
+  //   if (view !== 2) {
+  //     if (pollMeetingData !== undefined && pollMeetingData !== null) {
+  //       let newmembersArray = [];
+  //       // if (Object.keys(pollMeetingData).length > 0) {
+  //       if (pollMeetingData.meetingOrganizers.length > 0) {
+  //         pollMeetingData.meetingOrganizers.map(
+  //           (MorganizerData, MorganizerIndex) => {
+  //             let MeetingOrganizerData = {
+  //               value: MorganizerData.userID,
+  //               label: (
+  //                 <>
+  //                   <>
+  //                     <Row>
+  //                       <Col
+  //                         lg={12}
+  //                         md={12}
+  //                         sm={12}
+  //                         className="d-flex gap-2 align-items-center"
+  //                       >
+  //                         <img
+  //                           src={GroupIcon}
+  //                           height="16.45px"
+  //                           width="18.32px"
+  //                           draggable="false"
+  //                           alt=""
+  //                         />
+  //                         <span className={styles["NameDropDown"]}>
+  //                           {MorganizerData.userName}
+  //                         </span>
+  //                       </Col>
+  //                     </Row>
+  //                   </>
+  //                 </>
+  //               ),
+  //               type: 1,
+  //             };
+  //             newmembersArray.push(MeetingOrganizerData);
+  //           }
+  //         );
+  //       }
+  //       if (pollMeetingData.meetingAgendaContributors.length > 0) {
+  //         pollMeetingData.meetingAgendaContributors.map(
+  //           (meetAgendaContributor, meetAgendaContributorIndex) => {
+  //             let MeetingAgendaContributorData = {
+  //               value: meetAgendaContributor.userID,
+  //               label: (
+  //                 <>
+  //                   <>
+  //                     <Row>
+  //                       <Col
+  //                         lg={12}
+  //                         md={12}
+  //                         sm={12}
+  //                         className="d-flex gap-2 align-items-center"
+  //                       >
+  //                         <img
+  //                           src={GroupIcon}
+  //                           height="16.45px"
+  //                           alt=""
+  //                           width="18.32px"
+  //                           draggable="false"
+  //                         />
+  //                         <span className={styles["NameDropDown"]}>
+  //                           {meetAgendaContributor.userName}
+  //                         </span>
+  //                       </Col>
+  //                     </Row>
+  //                   </>
+  //                 </>
+  //               ),
+  //               type: 2,
+  //             };
+  //             newmembersArray.push(MeetingAgendaContributorData);
+  //           }
+  //         );
+  //       }
+  //       if (pollMeetingData.meetingParticipants.length > 0) {
+  //         pollMeetingData.meetingParticipants.map(
+  //           (meetParticipants, meetParticipantsIndex) => {
+  //             let MeetingParticipantsData = {
+  //               value: meetParticipants.userID,
+  //               label: (
+  //                 <>
+  //                   <>
+  //                     <Row>
+  //                       <Col
+  //                         lg={12}
+  //                         md={12}
+  //                         sm={12}
+  //                         className="d-flex gap-2 align-items-center"
+  //                       >
+  //                         <img
+  //                           src={GroupIcon}
+  //                           height="16.45px"
+  //                           width="18.32px"
+  //                           alt=""
+  //                           draggable="false"
+  //                         />
+  //                         <span className={styles["NameDropDown"]}>
+  //                           {meetParticipants.userName}
+  //                         </span>
+  //                       </Col>
+  //                     </Row>
+  //                   </>
+  //                 </>
+  //               ),
+  //               type: 3,
+  //             };
+  //             newmembersArray.push(MeetingParticipantsData);
+  //           }
+  //         );
+  //       }
+  //       // }
+  //       console.log(newmembersArray, "pollMeetingDatapollMeetingData");
+
+  //       setmemberSelect(newmembersArray);
+  //     }
+  //   }
+
+  //   //  else {
+  //   //   if (view === 2 && view !== undefined && view !== null) {
+  //   //   } else {
+  //   //     setmemberSelect([]);
+  //   //   }
+  //   // }
+  // }, [NewMeetingreducer.getMeetingusers, view]);
 
   // for selection of data
   const handleSelectValue = (value) => {
@@ -318,126 +370,42 @@ const Createpolls = ({ setCreatepoll }) => {
   };
 
   const handleAddUsers = () => {
-    let pollsData = NewMeetingreducer.getMeetingusers;
-    console.log(pollsData, "pollsDatapollsData");
+    let getUserDetails = [
+      ...CommitteeReducer.getCommitteeByCommitteeID.committeMembers,
+    ];
     let tem = [...members];
     let newarr = [];
     try {
       if (Object.keys(selectedsearch).length > 0) {
         try {
-          selectedsearch.map((seledtedData, index) => {
-            console.log(
-              seledtedData,
-              "seledtedDataseledtedDataseledtedDataseledtedData"
+          selectedsearch.forEach((seledtedData, index) => {
+            let check1 = getUserDetails.find(
+              (data, index) => data.pK_UID === seledtedData.value
             );
-            if (seledtedData.type === 1) {
-              let check1 = pollsData.meetingOrganizers.find(
-                (data, index) => data.userID === seledtedData.value
-              );
-              console.log(check1, "check1check1");
-              if (check1 !== undefined) {
-                console.log(check1, "check1check1");
-                newarr.push(check1);
-                console.log(newarr, "newarrnewarr");
 
-                let meetingOrganizers = check1;
-                console.log(meetingOrganizers, "check1check1");
+            if (check1 !== undefined) {
+              newarr.push(check1);
 
-                if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
-                    console.log(morganizer, "UserIDUserID");
-                    let check2 = newarr.find(
-                      (data, index) => data.UserID === morganizer.userID
-                    );
-                    if (check2 !== undefined) {
-                      console.log(check2, "check2check2");
-                    } else {
-                      let newUser = {
-                        userName: morganizer.userName,
-                        userID: morganizer.userID,
-                        displayPicture:
-                          morganizer.userProfilePicture
-                            .displayProfilePictureName,
-                      };
-                      tem.push(newUser);
-                      console.log(tem, "temtemtemtemtem");
-                    }
-                  });
-                }
+              if (newarr.length > 0) {
+                newarr.forEach((morganizer, index) => {
+                  let check2 = newarr.find(
+                    (data, index) => data.UserID === morganizer.pK_UID
+                  );
+                  if (check2 !== undefined) {
+                  } else {
+                    let newUser = {
+                      userName: morganizer.userName,
+                      userID: morganizer.pK_UID,
+                      displayPicture:
+                        morganizer.userProfilePicture.displayProfilePictureName,
+                    };
+                    tem.push(newUser);
+                  }
+                });
               }
-            } else if (seledtedData.type === 2) {
-              let check1 = pollsData.meetingAgendaContributors.find(
-                (data, index) => data.userID === seledtedData.value
-              );
-              console.log(check1, "check1check1");
-              if (check1 !== undefined) {
-                console.log(check1, "check1check1");
-                newarr.push(check1);
-                console.log(newarr, "newarrnewarr");
-
-                let meetingOrganizers = check1;
-                console.log(meetingOrganizers, "check1check1");
-
-                if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
-                    console.log(morganizer, "UserIDUserID");
-                    let check2 = newarr.find(
-                      (data, index) => data.UserID === morganizer.userID
-                    );
-                    if (check2 !== undefined) {
-                      console.log(check2, "check2check2");
-                    } else {
-                      let newUser = {
-                        userName: morganizer.userName,
-                        userID: morganizer.userID,
-                        displayPicture:
-                          morganizer.userProfilePicture
-                            .displayProfilePictureName,
-                      };
-                      tem.push(newUser);
-                      console.log(tem, "temtemtemtemtem");
-                    }
-                  });
-                }
-              }
-            } else if (seledtedData.type === 3) {
-              let check1 = pollsData.meetingParticipants.find(
-                (data, index) => data.userID === seledtedData.value
-              );
-              if (check1 !== undefined) {
-                newarr.push(check1);
-
-                let meetingOrganizers = check1;
-
-                if (newarr.length > 0) {
-                  newarr.map((morganizer, index) => {
-                    console.log(morganizer, "UserIDUserID");
-                    let check2 = newarr.find(
-                      (data, index) => data.UserID === morganizer.userID
-                    );
-                    if (check2 !== undefined) {
-                      console.log(check2, "check2check2");
-                    } else {
-                      let newUser = {
-                        userName: morganizer.userName,
-                        userID: morganizer.userID,
-                        displayPicture:
-                          morganizer.userProfilePicture
-                            .displayProfilePictureName,
-                      };
-                      tem.push(newUser);
-                      console.log(tem, "temtemtemtemtem");
-                    }
-                  });
-                }
-              }
-            } else {
             }
           });
-        } catch {
-          console.log("error in add");
-        }
-        console.log("members check", tem);
+        } catch {}
         const uniqueData = new Set(tem.map(JSON.stringify));
         // Convert the Set back to an array of objects
         const result = Array.from(uniqueData).map(JSON.parse);
@@ -458,17 +426,17 @@ const Createpolls = ({ setCreatepoll }) => {
     let users = [];
     let optionsListData = [];
     if (
-      pollsData.date != "" &&
-      pollsData.Title != "" &&
+      pollsData.date !== "" &&
+      pollsData.Title !== "" &&
       Object.keys(members).length > 0 &&
       Object.keys(options).length >= 2 &&
       allValuesNotEmpty
     ) {
-      members.map((userdata, index) => {
+      members.forEach((userdata, index) => {
         users.push(userdata.userID);
       });
-      options.map((optionData, index) => {
-        if (optionData.value != "") {
+      options.forEach((optionData, index) => {
+        if (optionData.value !== "") {
           optionsListData.push(optionData.value);
         }
       });

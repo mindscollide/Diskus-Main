@@ -9,6 +9,7 @@ import {
   updatePolls,
   viewvotes,
   deltePolls,
+  getPollbyCommitteeIdRM,
 } from "../../commen/apis/Api_config";
 import { pollApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -318,7 +319,7 @@ const savePolls_fail = (message) => {
 };
 
 // Save polls Api
-const SavePollsApi = (navigate, Data, t) => {
+const SavePollsApi = (navigate, Data, t, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(savePolls_init());
@@ -350,34 +351,41 @@ const SavePollsApi = (navigate, Data, t) => {
                   t("Poll-created")
                 )
               );
-              let userID = localStorage.getItem("userID");
-              let organizationID = localStorage.getItem("organizationID");
-              let data = {
-                UserID: parseInt(userID),
-                OrganizationID: parseInt(organizationID),
-                CreatorName: "",
-                PollTitle: "",
-                PageNumber: 1,
-                Length: 50,
-              };
-              await dispatch(searchPollsApi(navigate, t, data));
-              dispatch(setCreatePollModal(false));
-              let currentMeetingID = Number(localStorage.getItem("meetingID"));
-              let Data = {
-                MeetingID: currentMeetingID,
-                PollID: response.data.responseResult.pollID,
-              };
-              dispatch(SetMeetingPollsApiFunc(Data, navigate, t));
-              let OrganizationID = localStorage.getItem("organizationID");
-              let Data1 = {
-                MeetingID: currentMeetingID,
-                OrganizationID: Number(OrganizationID),
-                CreatorName: "",
-                PollTitle: "",
-                PageNumber: 1,
-                Length: 50,
-              };
-              dispatch(GetAllPollsByMeetingIdApiFunc(Data1, navigate, t));
+              if (value === 1) {
+                let userID = localStorage.getItem("userID");
+                let organizationID = localStorage.getItem("organizationID");
+                let data = {
+                  UserID: parseInt(userID),
+                  OrganizationID: parseInt(organizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                await dispatch(searchPollsApi(navigate, t, data));
+                dispatch(setCreatePollModal(false));
+              } else if (value === 2) {
+                let currentMeetingID = Number(
+                  localStorage.getItem("meetingID")
+                );
+                let Data = {
+                  MeetingID: currentMeetingID,
+                  PollID: response.data.responseResult.pollID,
+                };
+                dispatch(SetMeetingPollsApiFunc(Data, navigate, t));
+                //  let OrganizationID = localStorage.getItem("organizationID");
+                //  let Data1 = {
+                //    MeetingID: currentMeetingID,
+                //    OrganizationID: Number(OrganizationID),
+                //    CreatorName: "",
+                //    PollTitle: "",
+                //    PageNumber: 1,
+                //    Length: 50,
+                //  };
+                //  dispatch(GetAllPollsByMeetingIdApiFunc(Data1, navigate, t));
+              } else if (value === 3) {
+              } else if (value === 4) {
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1118,6 +1126,98 @@ const updatePollsApi = (navigate, Data, t) => {
   };
 };
 
+const searchPollsByCommitteeID_init = () => {
+  return {
+    type: actions.GETPOLLSBYCOMMITEEID_INIT,
+  };
+};
+const searchPollsByCommitteeID_success = (response, message) => {
+  return {
+    type: actions.GETPOLLSBYCOMMITEEID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const searchPollsByCommitteeID_fail = (message) => {
+  return {
+    type: actions.GETPOLLSBYCOMMITEEID_FAIL,
+    message: message,
+  };
+};
+// search Polls
+const searchPollsByCommitteeIDapi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(searchPollsByCommitteeID_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", getPollbyCommitteeIdRM.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(searchPollsApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByComitteeID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                searchPollsByCommitteeID_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByComitteeID_02".toLowerCase()
+                )
+            ) {
+              dispatch(searchPollsByCommitteeID_fail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByComitteeID_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                searchPollsByCommitteeID_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                searchPollsByCommitteeID_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(searchPollsByCommitteeID_fail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(searchPollsByCommitteeID_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(searchPollsByCommitteeID_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   searchPollsApi,
   SavePollsApi,
@@ -1137,4 +1237,5 @@ export {
   setDeltePollModal,
   UpdatePollStatusByPollIdApi,
   notifyPollingSocket,
+  searchPollsByCommitteeIDapi,
 };

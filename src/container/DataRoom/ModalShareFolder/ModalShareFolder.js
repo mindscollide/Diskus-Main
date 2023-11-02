@@ -291,19 +291,19 @@ const ModalShareFolder = ({
   };
 
   const openAccessRequestModalClick = () => {
-    if (folderData.Folders.length > 0) {
-      let ShareFolderData = {
-        FolderID: Number(folderId),
-        Folders: folderData.Folders,
-      };
+    // if (folderData.Folders.length > 0) {
+    let ShareFolderData = {
+      FolderID: Number(folderId),
+      Folders: folderData.Folders,
+    };
 
-      dispatch(shareFoldersApi(navigate, ShareFolderData, t, setSharefolder));
-    } else {
-      setOpen({
-        flag: true,
-        message: t("Atleast-one-user-should-be-selected-to-share-the-folder"),
-      });
-    }
+    dispatch(shareFoldersApi(navigate, ShareFolderData, t, setSharefolder));
+    // } else {
+    //   setOpen({
+    //     flag: true,
+    //     message: t("Atleast-one-user-should-be-selected-to-share-the-folder"),
+    //   });
+    // }
   };
 
   const handleAddMember = () => {

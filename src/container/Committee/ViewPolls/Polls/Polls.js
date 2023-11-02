@@ -3,37 +3,42 @@ import styles from "./Polls.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BinIcon from "../../../../../assets/images/bin.svg";
+import BinIcon from "../../../../assets/images/bin.svg";
 import { Pagination, Tooltip } from "antd";
 import { useSelector } from "react-redux";
-import addmore from "../../../../../assets/images/addmore.png";
+import addmore from "../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
-import { Button, Table } from "../../../../../components/elements";
-import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+import { Button, Table } from "../../../../components/elements";
+import EditIcon from "../../../../assets/images/Edit-Icon.png";
 import { ChevronDown } from "react-bootstrap-icons";
-import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg";
+import emtystate from "../../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "./CreatePolls/Createpolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import {
   GetAllPollsByMeetingIdApiFunc,
   showCancelPolls,
   showUnsavedPollsMeeting,
-} from "../../../../../store/actions/NewMeetingActions";
+} from "../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
-import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
+import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
+import { searchPollsByCommitteeIDapi } from "../../../../store/actions/Polls_actions";
 const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, CommitteeReducer } = useSelector((state) => state);
+  const { NewMeetingreducer, PollsReducer, CommitteeReducer } = useSelector(
+    (state) => state
+  );
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
   const [pollsRows, setPollsRows] = useState([]);
   const [afterViewPolls, setafterViewPolls] = useState(false);
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
 
@@ -60,25 +65,25 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      CommitteeID: Number(ViewCommitteeID),
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
       PageNumber: 1,
       Length: 50,
     };
-    dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
+    dispatch(searchPollsByCommitteeIDapi(navigate, t, Data));
   }, []);
 
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.getPollsMeetingID !== undefined &&
-        NewMeetingreducer.getPollsMeetingID !== null
+        PollsReducer.getPollByCommitteeID !== undefined &&
+        PollsReducer.getPollByCommitteeID !== null
       ) {
-        let pollsData = NewMeetingreducer.getPollsMeetingID.polls;
+        let pollsData = PollsReducer.getPollByCommitteeID.polls;
         let newPollsArray = [];
-        pollsData.map((data, index) => {
+        pollsData.forEach((data, index) => {
           console.log(data, "datadatadatadata");
           newPollsArray.push(data);
         });
@@ -86,7 +91,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         setPollsRows(newPollsArray);
       }
     } catch {}
-  }, [NewMeetingreducer.getPollsMeetingID]);
+  }, [PollsReducer.getPollByCommitteeID]);
 
   console.log(pollsRows, "pollsRowspollsRowspollsRows");
 
