@@ -1,0 +1,119 @@
+.MeetinMaterial_Heading {
+  color: #5f78d6 !important;
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Bottom_Line {
+  width: 98% !important;
+  border: 1px solid #e1e1e1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-top: 8px !important;
+}
+
+.File_Structure {
+  height: 54.4px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  width: 226px !important;
+  margin-left: 10px !important;
+  margin-top: 5px !important;
+}
+
+.Meeting_file_name {
+  font-size: 16px !important;
+  font-family: "Montserrat";
+  color: #5a5a5a !important;
+  display: inline-block !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 125px !important;
+}
+
+.Scroller {
+  height: 55vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+.meeting_material_row {
+  border-bottom: 2px solid #e1e1e1 !important;
+  padding: 10px 0;
+}
+.meeting_material_row:last-child {
+  border: none !important;
+}
+
+.Cancel_Classname {
+  padding: 12px 30px !important ;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_Classname:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important ;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Save_Classname {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Save_Classname:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.agenda-name-title {
+  font-family: "MontserratSemiBold-600" !important;
+  color: #6172d6 !important;
+  font-size: 12px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 5px;
+}
+
+.docx-name-title {
+  font-family: "MontserratSemiBold-600" !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  margin-top: 5px;
+}

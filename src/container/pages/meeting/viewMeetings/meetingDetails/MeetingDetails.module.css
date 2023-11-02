@@ -1,0 +1,265 @@
+.Meeting_type_heading {
+  color: #6172d6;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Button_not_active {
+  height: 39px !important;
+  width: 39px !important;
+  background: #fff !important;
+  border: 1px solid #bbbbbb !important;
+  border-radius: 4px !important;
+  position: relative !important;
+}
+
+.Button_not_active:hover,
+.Button_not_active:active,
+.Button_not_active:focus,
+.Button_not_active:focus-visible {
+  height: 39px !important;
+  width: 39px !important;
+  background: #fff !important;
+  border: 1px solid #bbbbbb !important;
+  border-radius: 4px !important;
+}
+
+.Camera_icon {
+  margin-left: -4px !important;
+}
+
+body[dir="rtl"] .Camera_icon {
+  margin-right: -7px !important;
+}
+
+.Camera_icon_active_IconStyles {
+  margin-left: -2px !important;
+  margin-top: 2px !important;
+}
+
+body[dir="rtl"] .Camera_icon_active_IconStyles {
+  margin-right: -7px !important;
+}
+
+.Camera_icon_Active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  height: 39px !important;
+  width: 39px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  position: relative;
+}
+
+body[rtl] .Camera_icon_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+.Camera_icon_Active:is(:hover, :active, :focus, :focus-visible) {
+  background: #6172d6;
+  height: 39px !important;
+  width: 39px !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Create_group_chat_heading {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Scedule_heading {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5f78d6;
+}
+
+.Scroller_meeting {
+  height: 13vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_meeting::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_meeting::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Cross_icon_class {
+  /* position: absolute !important; */
+  /* right: 43%; */
+  margin: 0;
+  padding: 0;
+  cursor: pointer !important;
+}
+
+.Add_Dates_Btn_Class {
+  border: 1px dotted #ccc !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  height: 39px !important;
+  width: 100%;
+}
+
+.Add_dates_label {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratMedium-500" !important;
+}
+
+.Plus_Button_class {
+  height: 39px !important;
+  width: 39px;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Plus_Button_class:hover,
+.Plus_Button_class:active,
+.Plus_Button_class:focus,
+.Plus_Button_class:focus-visible {
+  height: 39px !important;
+  width: 39px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Frequency_heading {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Plus_Button_class {
+  margin-top: 4px !important;
+}
+
+.Notify_heading {
+  color: #5a5a5a !important;
+  color: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.reccurring_heading {
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Published,
+.Published:disabled {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  border: 1px solid#E1E1E1;
+  color: #5a5a5a;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Published:hover,
+.Published:active,
+.Published:focus,
+.Published:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid#E1E1E1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Update_Next {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6;
+  border: none;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Update_Next:hover,
+.Update_Next:active,
+.Update_Next:focus,
+.Update_Next:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.errorMessage-inLogin {
+  margin: 2px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-family: "MontserratMedium-500";
+}
+
+body[dir="rtl"] .errorMessage-inLogin {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 0px;
+  color: #f16b6b;
+}
+
+.steric {
+  color: #f16b6b !important;
+}
+
+.White_Icon_class {
+  margin-left: -3.5px !important;
+  margin-top: 1px !important;
+}
+
+body[dir="rtl"] .White_Icon_class {
+  margin-right: -4.5px !important;
+  margin-top: 1px !important;
+}
+
+.Scroller_meeting_detials {
+  height: 52vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_meeting_detials::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_meeting_detials::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.UnpublishedMeetingButton {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.checkEmailSpinner {
+  position: absolute !important;
+  left: 9px !important;
+  height: 20px !important;
+  width: 20px !important;
+  top: 9.6px !important;
+}
