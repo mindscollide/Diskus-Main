@@ -10,6 +10,8 @@ import {
   TextField,
   Notification,
 } from "../../../components/elements";
+
+import { Row, Col } from "react-bootstrap";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 
 const ViewGroupTodo = () => {
@@ -299,6 +301,11 @@ const ViewGroupTodo = () => {
 
   return (
     <>
+      <Row>
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Button text={"Create-Todo"} />
+        </Col>
+      </Row>
       <TableToDo
         column={columnsToDo}
         rows={[]}
