@@ -13,7 +13,10 @@ import {
   getPollByGroupIDApi,
   setGroupPollsApi,
   setCommitteePollsRM,
-  setTaskGroupIDApi,
+  getTaskGroupIDApi,
+  setGroupTaskApi,
+  getTaskByCommitteeIDApi,
+  setCommitteeTaskApi,
 } from "../../commen/apis/Api_config";
 import { pollApi, toDoListApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -1542,7 +1545,7 @@ const getTasksByGroupIDApi = (navigate, t) => {
     dispatch(getTaskGroupIdInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify());
-    form.append("RequestMethod", setTaskGroupIDApi.RequestMethod);
+    form.append("RequestMethod", getTaskGroupIDApi.RequestMethod);
     axios({
       method: "post",
       url: toDoListApi,
@@ -1561,7 +1564,7 @@ const getTasksByGroupIDApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetPollsByGroupID_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetTasksByGroupID_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1574,32 +1577,305 @@ const getTasksByGroupIDApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetPollsByGroupID_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetTasksByGroupID_02".toLowerCase()
                 )
             ) {
-              dispatch(getPollsByGroupFail(t("No-records-found")));
+              dispatch(getTaskGroupIdFail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Polls_PollsServiceManager_GetPollsByGroupID_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_GetTasksByGroupID_03".toLowerCase()
                 )
             ) {
-              dispatch(getPollsByGroupFail(t("Something-went-wrong")));
+              dispatch(getTaskGroupIdFail(t("Something-went-wrong")));
             } else {
-              dispatch(getPollsByGroupFail(t("Something-went-wrong")));
+              dispatch(getTaskGroupIdFail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(getPollsByGroupFail(t("Something-went-wrong")));
+            dispatch(getTaskGroupIdFail(t("Something-went-wrong")));
           }
         } else {
           console.log(response, "response");
-          dispatch(getPollsByGroupFail(t("Something-went-wrong")));
+          dispatch(getTaskGroupIdFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         console.log(response, "response");
-        dispatch(getPollsByGroupFail(t("Something-went-wrong")));
+        dispatch(getTaskGroupIdFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// FOR SET GROUP BY TASK IN POLLS
+const setTaskGroupInit = () => {
+  return {
+    type: actions.SET_TASK_GROUP_INIT,
+  };
+};
+
+const setTaskGroupSuccess = (response, message) => {
+  return {
+    type: actions.SET_TASK_GROUP_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const setTaskGroupFail = (message) => {
+  return {
+    type: actions.SET_TASK_GROUP_FAIL,
+    message: message,
+  };
+};
+
+const setTasksByGroupApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(setTaskGroupInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify());
+    form.append("RequestMethod", setGroupTaskApi.RequestMethod);
+    axios({
+      method: "post",
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(setTasksByGroupApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_SetGroupTasks_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                setTaskGroupSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_SetGroupTasks_02".toLowerCase()
+                )
+            ) {
+              dispatch(setTaskGroupFail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_SetGroupTasks_03".toLowerCase()
+                )
+            ) {
+              dispatch(setTaskGroupFail(t("Something-went-wrong")));
+            } else {
+              dispatch(setTaskGroupFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(setTaskGroupFail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(setTaskGroupFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(setTaskGroupFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// FOR GET GROUP BY TASK IN POLLS
+const getTaskCommitteeIdInit = () => {
+  return {
+    type: actions.GET_TASK_BY_COMMITTEE_INIT,
+  };
+};
+
+const getTaskCommitteeIdSuccess = (response, message) => {
+  return {
+    type: actions.GET_TASK_BY_COMMITTEE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getTaskCommitteeIdFail = (message) => {
+  return {
+    type: actions.GET_TASK_BY_COMMITTEE_FAIL,
+    message: message,
+  };
+};
+
+const getTaskCommitteeIDApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(getTaskCommitteeIdInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify());
+    form.append("RequestMethod", getTaskByCommitteeIDApi.RequestMethod);
+    axios({
+      method: "post",
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getTaskCommitteeIDApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetTasksByCommitteeID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getTaskCommitteeIdSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetTasksByCommitteeID_02".toLowerCase()
+                )
+            ) {
+              dispatch(getTaskCommitteeIdFail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetTasksByCommitteeID_03".toLowerCase()
+                )
+            ) {
+              dispatch(getTaskCommitteeIdFail(t("Something-went-wrong")));
+            } else {
+              dispatch(getTaskCommitteeIdFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getTaskCommitteeIdFail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(getTaskCommitteeIdFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(getTaskCommitteeIdFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// FOR SET GROUP BY TASK IN POLLS
+const setTaskCommitteeInit = () => {
+  return {
+    type: actions.SET_TASK_COMMITTEE_INIT,
+  };
+};
+
+const setTaskCommitteeSuccess = (response, message) => {
+  return {
+    type: actions.SET_TASK_COMMITTEE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const setTaskCommitteeFail = (message) => {
+  return {
+    type: actions.SET_TASK_COMMITTEE_FAIL,
+    message: message,
+  };
+};
+
+const setTasksByCommitteeApi = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(setTaskCommitteeInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify());
+    form.append("RequestMethod", setCommitteeTaskApi.RequestMethod);
+    axios({
+      method: "post",
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(setTasksByCommitteeApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_SetGroupTasks_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                setTaskCommitteeSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_SetGroupTasks_02".toLowerCase()
+                )
+            ) {
+              dispatch(setTaskCommitteeFail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_SetGroupTasks_03".toLowerCase()
+                )
+            ) {
+              dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
+            } else {
+              dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
       });
   };
 };
@@ -1626,4 +1902,8 @@ export {
   getPollsByGroupMainApi,
   setGroupPollsMainApi,
   GetPollsByCommitteeIDapi,
+  getTasksByGroupIDApi,
+  setTasksByGroupApi,
+  getTaskCommitteeIDApi,
+  setTasksByCommitteeApi,
 };
