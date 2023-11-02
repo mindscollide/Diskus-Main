@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   Button,
   Switch,
   TextField,
   Table,
+  Notification,
 } from "../../../../../../components/elements";
 import { Checkbox } from "antd";
 import styles from "./VoteModal.module.css";
@@ -17,6 +18,14 @@ import {
   showVoteAgendaModal,
   showVoteConfirmationModal,
 } from "../../../../../../store/actions/NewMeetingActions";
+import { GetAllMeetingOrganizers } from "../../../../../../store/actions/MeetingOrganizers_action";
+import {
+  GetAgendaVotingDetails,
+  SaveAgendaVoting,
+  GetAllVotingResultDisplay,
+  clearResponseMessage,
+} from "../../../../../../store/actions/MeetingAgenda_action";
+import { GetAllSavedparticipantsAPI } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
 import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
@@ -28,12 +37,47 @@ const VoteModal = ({ setenableVotingPage }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+
+  const { NewMeetingreducer, MeetingAgendaReducer, MeetingOrganizersReducer } =
+    useSelector((state) => state);
   const [addOptions, setAddOptions] = useState(false);
-  const [saveOptions, setSaveOptions] = useState([{ text: "" }]);
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
+
+  const [agendaDetails, setAgendaDetails] = useState({
+    agendaId: "",
+    agendaVotingID: 2,
+    isvotingClosed: false,
+    userID: 0,
+    voteQuestion: "",
+    organizerUserID: 0,
+    organizerUserName: "",
+    votingResultDisplay: "",
+    votingResultDisplayID: 0,
+  });
+
+  const [organizers, setOrganizers] = useState([]);
+
+  const [votingResultDisplayData, setVotingResultDisplayData] = useState([]);
+
+  const [agendaVotingDetails, setAgendaVotingDetails] = useState([]);
+
+  const [meetingParticipants, setMeetingParticipants] = useState([]);
+
+  const [saveOptions, setSaveOptions] = useState([
+    { votingAnswer: "Pending", votingAnswerID: 0, agendaID: 1222 },
+    { votingAnswer: "Yes", votingAnswerID: 1, agendaID: 1222 },
+    { votingAnswer: "No", votingAnswerID: 2, agendaID: 1222 },
+  ]);
+
   const [error, setError] = useState(false);
   const [voteModalAttrbutes, setVoteModalAttrbutes] = useState({
-    VoteQuestion: "",
+    voteQuestion: "",
     Answer: "",
     OptionsAdded: "",
     SelectOrganizers: 0,
@@ -41,111 +85,21 @@ const VoteModal = ({ setenableVotingPage }) => {
     YesAnswer: "Yes",
     NOAnswer: "No",
     AbstainAnswer: "Abstain",
+    Pending: "Pending",
   });
+
   const plusButtonFunc = () => {
     setAddOptions(true);
   };
   const cancelButtonFunc = () => {
     setAddOptions(false);
   };
-  const data = [
-    {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muhammad Saif</label>,
-      Role: <label className="column-boldness">Content Writer</label>,
-      Email: <label className="column-boldness">muhammadsaif@gmail.com</label>,
-      Button: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-center"
-            >
-              <img
-                src={redcrossIcon}
-                height="21.79px"
-                width="21.79px"
-                className="cursor-pointer"
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
-  const [rowsData, setRowsData] = useState(data);
-  const MeetingColoumns = [
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Name",
-      key: "Name",
-      width: "100px",
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Role")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Role",
-      key: "Role",
-      width: "100px",
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Email")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Email",
-      key: "Email",
-      width: "150px",
-    },
-    {
-      title: (
-        <>
-          <Button
-            text={
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Add_more_Class"]}
-                  >
-                    <span>{t("Add-more")}</span>
-                  </Col>
-                </Row>
-              </>
-            }
-            className={styles["Add_more_Btn"]}
-          />
-        </>
-      ),
-      dataIndex: "Button",
-      key: "Button",
-      width: "80px",
-    },
-  ];
+
+  const deleteRow = (recordToDelete) => {
+    setMeetingParticipants((prevRowsData) =>
+      prevRowsData.filter((record) => record !== recordToDelete)
+    );
+  };
 
   const SlideLeft = () => {
     var Slider = document.getElementById("Slider");
@@ -158,210 +112,35 @@ const VoteModal = ({ setenableVotingPage }) => {
   };
 
   const AddOptions = () => {
-    setAddOptions(false);
-    setSaveOptions([...saveOptions, saveOptions.text]);
+    const optionExists = saveOptions.some(
+      (option) => option.votingAnswer === saveOptions.votingAnswer
+    );
+
+    if (!optionExists) {
+      setAddOptions(false);
+      setSaveOptions([
+        ...saveOptions,
+        {
+          votingAnswer: saveOptions.votingAnswer,
+          votingAnswerID: 0,
+          agendaID: 1222,
+        },
+      ]);
+      setAddOptions(false);
+    } else {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Cannot add option with same name"),
+        }),
+        3000
+      );
+    }
   };
 
   const handleSaveOption = (index) => {
     console.log("Saved option:", saveOptions[index].text);
   };
-
-  const optionsIndividualOpenCloseVoting = [
-    {
-      value: "memebers",
-      label: (
-        <>
-          <Row>
-            <Col lg={1} md={1} sm={1} className="">
-              <Checkbox></Checkbox>
-            </Col>
-            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
-              <img
-                src={profile}
-                width="17px"
-                height="17px"
-                className={styles["Image_profile"]}
-              />
-              <span className={styles["Participant_names"]}>Oliver Davis</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "memebers",
-      label: (
-        <>
-          <Row>
-            <Col lg={1} md={1} sm={1} className="">
-              <Checkbox></Checkbox>
-            </Col>
-            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
-              <img
-                src={profile}
-                width="17px"
-                height="17px"
-                className={styles["Image_profile"]}
-              />
-              <span className={styles["Participant_names"]}>Oliver Davis</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "memebers",
-      label: (
-        <>
-          <Row>
-            <Col lg={1} md={1} sm={1} className="">
-              <Checkbox></Checkbox>
-            </Col>
-            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
-              <img
-                src={profile}
-                width="17px"
-                height="17px"
-                className={styles["Image_profile"]}
-              />
-              <span className={styles["Participant_names"]}>Oliver Davis</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "memebers",
-      label: (
-        <>
-          <Row>
-            <Col lg={1} md={1} sm={1} className="">
-              <Checkbox></Checkbox>
-            </Col>
-            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
-              <img
-                src={profile}
-                width="17px"
-                height="17px"
-                className={styles["Image_profile"]}
-              />
-              <span className={styles["Participant_names"]}>Oliver Davis</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "memebers",
-      label: (
-        <>
-          <Row>
-            <Col lg={1} md={1} sm={1} className="">
-              <Checkbox></Checkbox>
-            </Col>
-            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
-              <img
-                src={profile}
-                width="17px"
-                height="17px"
-                className={styles["Image_profile"]}
-              />
-              <span className={styles["Participant_names"]}>Oliver Davis</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "memebers",
-      label: (
-        <>
-          <Row>
-            <Col lg={1} md={1} sm={1} className="">
-              <Checkbox></Checkbox>
-            </Col>
-            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
-              <img
-                src={profile}
-                width="17px"
-                height="17px"
-                className={styles["Image_profile"]}
-              />
-              <span className={styles["Participant_names"]}>Oliver Davis</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "memebers",
-      label: (
-        <>
-          <Row>
-            <Col lg={1} md={1} sm={1} className="">
-              <Checkbox></Checkbox>
-            </Col>
-            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
-              <img
-                src={profile}
-                width="17px"
-                height="17px"
-                className={styles["Image_profile"]}
-              />
-              <span className={styles["Participant_names"]}>Oliver Davis</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "memebers",
-      label: (
-        <>
-          <Row>
-            <Col lg={1} md={1} sm={1} className="">
-              <Checkbox></Checkbox>
-            </Col>
-            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
-              <img
-                src={profile}
-                width="17px"
-                height="17px"
-                className={styles["Image_profile"]}
-              />
-              <span className={styles["Participant_names"]}>Oliver Davis</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
-  const options = [
-    {
-      value: "ShowCount",
-      label: (
-        <>
-          <span>{t("Show-count")}</span>
-        </>
-      ),
-    },
-    {
-      value: "ShowPercentage",
-      label: (
-        <>
-          <span>{t("Show-percentage")}</span>
-        </>
-      ),
-    },
-    {
-      value: "VoteBymembers",
-      label: (
-        <>
-          <span>{t("Vote-by-members")}</span>
-        </>
-      ),
-    },
-  ];
 
   const openConfirmationModal = () => {
     dispatch(showVoteAgendaModal(false));
@@ -369,46 +148,46 @@ const VoteModal = ({ setenableVotingPage }) => {
   };
 
   const handleCrossBtn = (index) => {
-    let optionscross = [...saveOptions];
-    optionscross.splice(optionscross, index);
-    setSaveOptions(optionscross);
-  };
-
-  const handleVoteSaveModal = () => {
-    dispatch(showVoteAgendaModal(false));
-    setenableVotingPage(true);
-    // Enable Error state by Here
-    // setError(true);
+    // Create a copy of the saveOptions array
+    const updatedSaveOptions = [...saveOptions];
+    // Remove the object at the specified index
+    updatedSaveOptions.splice(index, 1);
+    // Update the state with the modified array
+    setSaveOptions(updatedSaveOptions);
   };
 
   const dropDownSelectOrganizers = (e) => {
-    setVoteModalAttrbutes({
-      ...voteModalAttrbutes,
-      SelectOrganizers: e.value,
+    console.log("e.target dropdown", e);
+    setAgendaDetails({
+      ...agendaDetails,
+      organizerUserID: e.value,
+      organizerUserName: e.label,
     });
   };
 
   const dropDownSelectOptions = (e) => {
-    setVoteModalAttrbutes({
-      ...voteModalAttrbutes,
-      SelectOptions: e.value,
+    console.log("e.target dropdown", e);
+    setAgendaDetails({
+      ...agendaDetails,
+      votingResultDisplayID: e.value,
+      votingResultDisplay: e.label,
     });
   };
 
-  const HandleChange = (e, index) => {
+  const handleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "description") {
       let valueCheck = validateInput(value);
       if (valueCheck !== "") {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          VoteQuestion: valueCheck,
+        setAgendaDetails({
+          ...agendaDetails,
+          voteQuestion: valueCheck,
         });
       } else {
-        setVoteModalAttrbutes({
-          ...voteModalAttrbutes,
-          VoteQuestion: "",
+        setAgendaDetails({
+          ...agendaDetails,
+          voteQuestion: "",
         });
       }
     }
@@ -468,22 +247,17 @@ const VoteModal = ({ setenableVotingPage }) => {
         });
       }
     }
-  };
-
-  const HandleChangeOptions = (e, index) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "OptionsAdded") {
+    if (name === "Pending") {
       let valueCheck = validateInput(value);
       if (valueCheck !== "") {
-        setSaveOptions({
-          ...saveOptions,
-          Options: valueCheck,
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          Pending: valueCheck,
         });
       } else {
-        setSaveOptions({
-          ...saveOptions,
-          Options: "",
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          Pending: "",
         });
       }
     }
@@ -494,21 +268,412 @@ const VoteModal = ({ setenableVotingPage }) => {
     let value = e.target.value;
     console.log(value, "handleOptionTextChangehandleOptionTextChange");
     const updatedOptions = [...saveOptions];
-    updatedOptions.text = value;
+    updatedOptions.votingAnswer = value;
     console.log(updatedOptions, "updatedOptionsupdatedOptions");
     setSaveOptions(updatedOptions);
   };
+
+  const handleChangeVotingAnswer = (e, index) => {
+    const updatedSaveOptions = [...saveOptions];
+    updatedSaveOptions[index].votingAnswer = e.target.value;
+    setSaveOptions(updatedSaveOptions);
+  };
+
+  const handleVotingChange = () => {
+    setAgendaDetails({
+      ...agendaDetails,
+      isvotingClosed: !agendaDetails.isvotingClosed,
+    });
+  };
+
+  useEffect(() => {
+    let dataForAgendaDetails = {
+      AgendaVotingID: 4,
+      MeetingID: currentMeetingID,
+    };
+    let dataForAllOrganizers = { MeetingID: currentMeetingID };
+    let dataForAllMeetingParticipants = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(
+      GetAllSavedparticipantsAPI(dataForAllMeetingParticipants, navigate, t)
+    );
+
+    dispatch(GetAllMeetingOrganizers(dataForAllOrganizers, navigate, t));
+    dispatch(GetAgendaVotingDetails(dataForAgendaDetails, navigate, t));
+    dispatch(GetAllVotingResultDisplay(navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
+      MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
+      MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
+    ) {
+      setAgendaVotingDetails(
+        MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails
+      );
+    } else {
+      setAgendaVotingDetails([]);
+    }
+  }, [MeetingAgendaReducer.MeetingAgendaVotingDetailsData]);
+
+  console.log("agendaVotingDetails", agendaVotingDetails);
+
+  useEffect(() => {
+    setAgendaDetails({
+      ...agendaDetails,
+      votingResultDisplay: agendaVotingDetails?.votingResultDisplay?.result,
+      votingResultDisplayID:
+        agendaVotingDetails?.votingResultDisplay?.votingResultDisplayID,
+      agendaId: agendaVotingDetails?.agendaId,
+      agendaVotingID: agendaVotingDetails?.agendaVotingID,
+      isvotingClosed: agendaVotingDetails?.isvotingClosed,
+      userID: agendaVotingDetails?.userID,
+      voteQuestion: agendaVotingDetails?.voteQuestion,
+    });
+    const newSaveOptions = [...saveOptions];
+    let votingAnswerData = agendaVotingDetails.votingAnswers;
+
+    if (Array.isArray(votingAnswerData)) {
+      votingAnswerData.forEach((item) => {
+        if (
+          !newSaveOptions.some(
+            (option) => option.votingAnswer === item.votingAnswer
+          )
+        ) {
+          newSaveOptions.push({
+            votingAnswer: item.votingAnswer,
+            votingAnswerID: item.votingAnswerID,
+            agendaID: item.agendaID,
+          });
+        }
+      });
+      setSaveOptions(newSaveOptions);
+    } else {
+      setSaveOptions(saveOptions);
+    }
+  }, [agendaVotingDetails]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.getAllSavedparticipants !== undefined &&
+      NewMeetingreducer.getAllSavedparticipants !== null &&
+      NewMeetingreducer.getAllSavedparticipants.length !== 0
+    ) {
+      setMeetingParticipants(NewMeetingreducer.getAllSavedparticipants);
+    } else {
+      setMeetingParticipants([]);
+    }
+  }, [NewMeetingreducer.getAllSavedparticipants]);
+
+  const MeetingColoumns = [
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span>{t("Name")}</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "userName",
+      key: "userName",
+      width: "100px",
+    },
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span>{t("Role")}</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "participantRole",
+      key: "participantRole",
+      width: "100px",
+      render: (text, record) => {
+        return <>{text.participantRole}</>;
+      },
+    },
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span>{t("Email")}</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "emailAddress",
+      key: "emailAddress",
+      width: "150px",
+    },
+    {
+      title: (
+        <>
+          <Button
+            text={
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Add_more_Class"]}
+                  >
+                    <span>{t("Add-more")}</span>
+                  </Col>
+                </Row>
+              </>
+            }
+            className={styles["Add_more_Btn"]}
+          />
+        </>
+      ),
+      dataIndex: "userID",
+      key: "userID",
+      width: "80px",
+      render: (text, record) => {
+        if (record.userID) {
+          return (
+            <>
+              <img
+                src={redcrossIcon}
+                height="21.79px"
+                width="21.79px"
+                className="cursor-pointer"
+                draggable={false}
+                onClick={() => deleteRow(record)}
+              />
+            </>
+          );
+        }
+      },
+    },
+  ];
+
+  useEffect(() => {
+    if (
+      MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
+      MeetingOrganizersReducer.AllMeetingOrganizersData !== null &&
+      MeetingOrganizersReducer.AllMeetingOrganizersData.length !== 0
+    ) {
+      setOrganizers(
+        MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers
+      );
+    }
+  }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
+
+  useEffect(() => {
+    if (
+      MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
+      MeetingOrganizersReducer.AllMeetingOrganizersData !== null &&
+      MeetingOrganizersReducer.AllMeetingOrganizersData.length !== 0 &&
+      MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
+      MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
+      MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
+    ) {
+      console.log(
+        "matchedOrganizer",
+        MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers,
+        MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails
+          .userID
+      );
+      const matchedOrganizer =
+        MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers.find(
+          (obj) =>
+            obj.userID ===
+            MeetingAgendaReducer.MeetingAgendaVotingDetailsData
+              .agendaVotingDetails.userID
+        );
+      console.log("matchedOrganizer", matchedOrganizer);
+      if (matchedOrganizer !== undefined) {
+        setAgendaDetails({
+          ...agendaDetails,
+          organizerUserID: matchedOrganizer.userID,
+          organizerUserName: (
+            <>
+              <Row>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <img
+                    src={`data:image/jpeg;base64,${matchedOrganizer.userProfilePicture.displayProfilePictureName}`}
+                    width="17px"
+                    height="17px"
+                    className={styles["Image_profile"]}
+                  />
+                  <span className={styles["Participant_names"]}>
+                    {matchedOrganizer.userName}
+                  </span>
+                </Col>
+              </Row>
+            </>
+          ),
+        });
+      }
+    }
+  }, [
+    MeetingAgendaReducer.MeetingAgendaVotingDetailsData,
+    MeetingOrganizersReducer.AllMeetingOrganizersData,
+  ]);
+
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.VotingResultDisplayData !== undefined &&
+      MeetingAgendaReducer.VotingResultDisplayData !== null &&
+      MeetingAgendaReducer.VotingResultDisplayData.length !== 0
+    ) {
+      setVotingResultDisplayData(
+        MeetingAgendaReducer.VotingResultDisplayData.votingResultDisplays
+      );
+    }
+  }, [MeetingAgendaReducer.VotingResultDisplayData]);
+
+  const optionsIndividualOpenCloseVoting = organizers.map((organizer) => ({
+    value: organizer.userID,
+    label: (
+      <>
+        <Row>
+          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+            <img
+              src={`data:image/jpeg;base64,${organizer.userProfilePicture.displayProfilePictureName}`}
+              width="17px"
+              height="17px"
+              className={styles["Image_profile"]}
+            />
+            <span className={styles["Participant_names"]}>
+              {organizer.userName}
+            </span>
+          </Col>
+        </Row>
+      </>
+    ),
+  }));
+
+  const options = votingResultDisplayData.map((votingResults) => ({
+    value: votingResults.votingResultDisplayID,
+    label: (
+      <>
+        <span>{votingResults.result}</span>
+      </>
+    ),
+  }));
+
+  const handleVoteSaveModal = () => {
+    console.log(
+      "Length Check",
+      Object.keys(agendaVotingDetails).length,
+      typeof agendaVotingDetails
+    );
+    let votingOptionData = saveOptions.map((item) => ({
+      AgendaID: "1222",
+      VotingAnswer: item.votingAnswer,
+      VotingAnswerID: item.votingAnswerID,
+    }));
+    let participantData = meetingParticipants.map((item) => ({
+      AgendaID: "1222",
+      UserID: item.userID,
+      AgendaVotingID: 0,
+    }));
+
+    console.log("votingOptionData", typeof votingOptionData);
+    if (Object.keys(votingOptionData).length >= 2) {
+      let Data = {
+        AgendaVoting: {
+          AgendaVotingID:
+            Object.keys(agendaVotingDetails).length > 0
+              ? agendaDetails.agendaVotingID
+              : 0,
+          AgendaID: "1222",
+          VoteQuestion: agendaDetails.voteQuestion,
+          VotingResultDisplayID: agendaDetails.votingResultDisplayID,
+          IsVotingClosed: agendaVotingDetails.isvotingClosed,
+          UserID: agendaDetails.organizerUserID,
+          IsAddFlow: Object.keys(agendaVotingDetails).length > 0 ? false : true,
+          VotingAnswers: votingOptionData,
+          AgendaVotingParticipants: participantData,
+        },
+      };
+
+      console.log("Save Agenda Voting Data", Data);
+      dispatch(SaveAgendaVoting(Data, navigate, t));
+      dispatch(showVoteAgendaModal(false));
+    } else {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Voting options should be 2 or more than 2"),
+        }),
+        3000
+      );
+    }
+  };
+
+  const closeVotingModal = () => {
+    dispatch(showVoteAgendaModal(false));
+    setAgendaDetails({
+      ...agendaDetails,
+      agendaId: "",
+      agendaVotingID: 2,
+      isvotingClosed: false,
+      userID: 0,
+      voteQuestion: "",
+      organizerUserID: 0,
+      organizerUserName: "",
+      votingResultDisplay: "",
+      votingResultDisplayID: 0,
+    });
+    setOrganizers([]);
+    setVotingResultDisplayData([]);
+    setMeetingParticipants([]);
+    setSaveOptions(
+      { votingAnswer: "Pending", votingAnswerID: 0, agendaID: 1222 },
+      { votingAnswer: "Yes", votingAnswerID: 1, agendaID: 1222 },
+      { votingAnswer: "No", votingAnswerID: 2, agendaID: 1222 }
+    );
+  };
+
+  useEffect(() => {
+    if (MeetingAgendaReducer.ResponseMessage === "Record saved") {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Record-saved"),
+        }),
+        3000
+      );
+    } else if (MeetingAgendaReducer.ResponseMessage === "Record Updated") {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Record-updated"),
+        }),
+        3000
+      );
+    }
+    dispatch(clearResponseMessage(""));
+  }, [MeetingAgendaReducer.ResponseMessage]);
+
+  console.log("MeetingAgendaReducer", MeetingAgendaReducer);
+
+  console.log("MeetingOrganizersReducer", MeetingOrganizersReducer);
+
+  console.log("NewMeetingreducer", NewMeetingreducer);
+
+  console.log("AgendaDetailsAgendaDetails", agendaDetails);
 
   return (
     <section>
       <Modal
         show={NewMeetingreducer.voteAgendaModal}
-        setShow={dispatch(showVoteAgendaModal)}
+        setShow={closeVotingModal}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
-        onHide={() => {
-          dispatch(showVoteAgendaModal(false));
-        }}
+        onHide={closeVotingModal}
         size={"lg"}
         ModalTitle={
           <>
@@ -530,7 +695,10 @@ const VoteModal = ({ setenableVotingPage }) => {
                     <span className={styles["Vote_switch_heading"]}>
                       {t("Voting") + ":"}
                     </span>
-                    <Switch />
+                    <Switch
+                      onChange={handleVotingChange}
+                      checkedValue={agendaDetails.isvotingClosed}
+                    />
                   </Col>
                 </Row>
               </Col>
@@ -549,10 +717,6 @@ const VoteModal = ({ setenableVotingPage }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Vote_title"]}>
-                      Get new computers from Techno City Mall. Also, Get a ne...
-                      Get new computers from Techno City Mall. Also, Get a ne...
-                      Get new computers from Techno City Mall. Also, Get a ne...
-                      Get new computers from Techno City Mall. Also, Get a ne...
                       Get new computers from Techno City Mall. Also, Get a ne...
                     </span>
                   </Col>
@@ -575,20 +739,20 @@ const VoteModal = ({ setenableVotingPage }) => {
                       labelClass={"d-none"}
                       type="text"
                       as={"textarea"}
-                      value={voteModalAttrbutes.VoteQuestion}
+                      value={agendaDetails.voteQuestion}
                       maxLength={500}
                       name={"description"}
                       rows="2"
-                      placeholder={t("Description")}
+                      placeholder={t("Question")}
                       required={true}
-                      change={HandleChange}
+                      change={handleChange}
                     />
                   </Col>
                   <Row>
                     <Col>
                       <p
                         className={
-                          error && voteModalAttrbutes.VoteQuestion === ""
+                          error && agendaDetails.voteQuestion === ""
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
                         }
@@ -612,7 +776,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                         <TextField
                           labelClass={"d-none"}
                           applyClass={"NewMeetingFileds"}
-                          value={saveOptions.text}
+                          value={saveOptions.votingAnswer}
                           change={(e) => handleOptionTextChange(e)}
                         />
                       </Col>
@@ -684,7 +848,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col lg={10} md={10} sm={10}>
+                        <Col lg={10} md={10} sm={10} key={Math.random()}>
                           <Row>
                             <Col
                               lg={12}
@@ -692,67 +856,56 @@ const VoteModal = ({ setenableVotingPage }) => {
                               sm={12}
                               className="d-flex gap-2 "
                             >
-                              <TextField
-                                labelClass={"d-none"}
-                                applyClass={"NewMeetingFileds"}
-                                width={"145px"}
-                                name={"YesAnswers"}
-                                value={voteModalAttrbutes.YesAnswer}
-                                change={HandleChange}
-                              />
-                              <TextField
-                                labelClass={"d-none"}
-                                applyClass={"NewMeetingFileds"}
-                                width={"145px"}
-                                name={"NOAnswers"}
-                                value={voteModalAttrbutes.NOAnswer}
-                                change={HandleChange}
-                              />
-                              <TextField
-                                labelClass={"d-none"}
-                                applyClass={"NewMeetingFileds"}
-                                width={"145px"}
-                                name={"AbstainAnswers"}
-                                value={voteModalAttrbutes.AbstainAnswer}
-                                change={HandleChange}
-                              />
-
                               {saveOptions.length > 0
                                 ? saveOptions.map((data, index) => {
                                     return (
-                                      <>
-                                        <>
-                                          {index === 0 ? null : (
-                                            <>
-                                              <span className="position-relative">
-                                                <TextField
-                                                  labelClass={"d-none"}
-                                                  applyClass={
-                                                    "NewMeetingFileds_withIcon"
-                                                  }
-                                                  width={"145px"}
-                                                  value={data}
-                                                  name={"OptionsAdded"}
-                                                  iconClassName={
-                                                    styles["ResCrossIcon"]
-                                                  }
-                                                  inputicon={
-                                                    <img
-                                                      src={redcrossIcon}
-                                                      height="21.79px"
-                                                      width="21.79px"
-                                                      className="cursor-pointer"
-                                                      onClick={() =>
-                                                        handleCrossBtn(index)
-                                                      }
-                                                    />
-                                                  }
-                                                />
-                                              </span>
-                                            </>
-                                          )}
-                                        </>
-                                      </>
+                                      <span
+                                        className="position-relative"
+                                        key={index}
+                                      >
+                                        {data.votingAnswer === "Pending" ? (
+                                          <TextField
+                                            labelClass={"d-none"}
+                                            applyClass={
+                                              "NewMeetingFileds_withIcon"
+                                            }
+                                            width={"145px"}
+                                            value={data.votingAnswer}
+                                            name={"OptionsAdded"}
+                                            iconClassName={
+                                              styles["ResCrossIcon"]
+                                            }
+                                            disable={true}
+                                          />
+                                        ) : (
+                                          <TextField
+                                            labelClass={"d-none"}
+                                            applyClass={
+                                              "NewMeetingFileds_withIcon"
+                                            }
+                                            change={(e) =>
+                                              handleChangeVotingAnswer(e, index)
+                                            }
+                                            width={"145px"}
+                                            value={data.votingAnswer}
+                                            name={"OptionsAdded"}
+                                            iconClassName={
+                                              styles["ResCrossIcon"]
+                                            }
+                                            inputicon={
+                                              <img
+                                                src={redcrossIcon}
+                                                height="21.79px"
+                                                width="21.79px"
+                                                className="cursor-pointer"
+                                                onClick={() =>
+                                                  handleCrossBtn(index)
+                                                }
+                                              />
+                                            }
+                                          />
+                                        )}
+                                      </span>
                                     );
                                   })
                                 : null}
@@ -794,6 +947,10 @@ const VoteModal = ({ setenableVotingPage }) => {
                         <Select
                           options={optionsIndividualOpenCloseVoting}
                           onChange={dropDownSelectOrganizers}
+                          value={{
+                            value: agendaDetails.organizerUserID,
+                            label: agendaDetails.organizerUserName,
+                          }}
                           classNamePrefix={"SelectOrganizersSelect_active"}
                         />
                       </Col>
@@ -827,6 +984,10 @@ const VoteModal = ({ setenableVotingPage }) => {
                           options={options}
                           classNamePrefix={"SelectOptions_drop_active"}
                           onChange={dropDownSelectOptions}
+                          value={{
+                            value: agendaDetails.votingResultDisplayID,
+                            label: agendaDetails.votingResultDisplay,
+                          }}
                         />
                       </Col>
                       <Row>
@@ -858,22 +1019,9 @@ const VoteModal = ({ setenableVotingPage }) => {
                       column={MeetingColoumns}
                       scroll={{ y: "62vh" }}
                       pagination={false}
-                      className="NewMeeting_table"
-                      rows={rowsData}
+                      className="NewMeeting_table AgendaVoting"
+                      rows={meetingParticipants}
                     />
-                    <Row>
-                      <Col>
-                        <p
-                          className={
-                            error && rowsData.length <= 0
-                              ? ` ${styles["errorMessage-inLogin"]} `
-                              : `${styles["errorMessage-inLogin_hidden"]}`
-                          }
-                        >
-                          {t("Please-add-members")}
-                        </p>
-                      </Col>
-                    </Row>
                   </Col>
                 </Row>
               </Col>
@@ -904,6 +1052,7 @@ const VoteModal = ({ setenableVotingPage }) => {
           </>
         }
       />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </section>
   );
 };

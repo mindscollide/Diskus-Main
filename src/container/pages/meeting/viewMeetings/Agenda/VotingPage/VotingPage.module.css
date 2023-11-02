@@ -1,0 +1,165 @@
+.OuterBoxForVoting {
+  height: auto;
+  min-height: 84px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  width: 100% !important;
+  padding: 8px 10px !important;
+}
+
+.HeadingVotes {
+  display: inline-block !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  width: 100% !important;
+  color: #6172d6 !important;
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.startVotingButton {
+  width: 114px !important;
+  height: 25 !important;
+  background: #81db86 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.startVotingButton:is(:hover, :active, :focus, :focus-visible) {
+  width: 114px !important;
+  height: 25 !important;
+  background: #81db86 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.CastYourVoteButton {
+  width: 136px !important;
+  height: 25 !important;
+  background: #81db86 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.CastYourVoteButton:is(:hover, :active, :focus, :focus-visible) {
+  width: 136px !important;
+  height: 25 !important;
+  background: #81db86 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.EndVotingButton {
+  width: 114px !important;
+  height: 25 !important;
+  background: #f16b6b !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.EndVotingButton:is(:hover, :active, :focus, :focus-visible) {
+  width: 114px !important;
+  height: 25 !important;
+  background: #f16b6b !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ViewVoteButton {
+  width: 114px !important;
+  height: 25 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ViewVoteButton:is(:hover, :active, :focus, :focus-visible) {
+  width: 114px !important;
+  height: 25 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ScrollerForVotes {
+  height: 50vh !important;
+  overflow-x: hidden !important;
+}
+
+.ScrollerForVotes::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.ScrollerForVotes::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Next_button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Next_button:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Next_button:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}

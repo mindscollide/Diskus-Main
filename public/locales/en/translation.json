@@ -1563,6 +1563,8 @@
   "Not-more-than-5-dates-are-allowed": "Not More Than 5 Dates Are Allowed",
   "Folder-mapped-with-dataroom": "Folder mapped with dataroom",
   "Unable-to-update-folder": "Unable to update folder",
+  "Publish-meeting": "Publish meeting",
+  "Propose-date-poll": "Propose Date Poll",
   "Update-successfully": "Update successfully",
   "Failed-to-created-new-mapping": "Failed to created new mapping",
   "New-mapped-created": "New mapped created",
@@ -1575,5 +1577,7 @@
   "Present": "Present",
   "Remote": "Remote",
   "status-not-updated": "status Not Updated",
-  "Status-updated": "Status Updated"
+  "Status-updated": "Status Updated",
+  "Meeting-view": "Meeting View",
+  "Group-detail": "Group detail"
 }

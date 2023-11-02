@@ -64,6 +64,7 @@ const initialState = {
   meetingMaterial: [],
   agendaRights: null,
   attachmentsPermission: [],
+  cancelViewModalMeetingDetails: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -419,6 +420,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         cancelModalMeetingDetails: action.response,
+      };
+    }
+
+    case actions.CANCEL_VIEW_BUTTON_MODAL_MEETING_DETIALS_TAB: {
+      return {
+        ...state,
+        cancelViewModalMeetingDetails: action.response,
       };
     }
 

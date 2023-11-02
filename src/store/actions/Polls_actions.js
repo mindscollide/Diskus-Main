@@ -9,6 +9,10 @@ import {
   updatePolls,
   viewvotes,
   deltePolls,
+  getPollbyCommitteeIdRM,
+  getPollByGroupIDApi,
+  setGroupPollsApi,
+  setCommitteePollsRM,
 } from "../../commen/apis/Api_config";
 import { pollApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -318,7 +322,8 @@ const savePolls_fail = (message) => {
 };
 
 // Save polls Api
-const SavePollsApi = (navigate, Data, t) => {
+const SavePollsApi = (navigate, Data, t, value) => {
+  console.log("tsteasdasdtsteasdasdtsteasdasd", value);
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(savePolls_init());
@@ -350,34 +355,66 @@ const SavePollsApi = (navigate, Data, t) => {
                   t("Poll-created")
                 )
               );
-              let userID = localStorage.getItem("userID");
-              let organizationID = localStorage.getItem("organizationID");
-              let data = {
-                UserID: parseInt(userID),
-                OrganizationID: parseInt(organizationID),
-                CreatorName: "",
-                PollTitle: "",
-                PageNumber: 1,
-                Length: 50,
-              };
-              await dispatch(searchPollsApi(navigate, t, data));
-              dispatch(setCreatePollModal(false));
-              let currentMeetingID = Number(localStorage.getItem("meetingID"));
-              let Data = {
-                MeetingID: currentMeetingID,
-                PollID: response.data.responseResult.pollID,
-              };
-              dispatch(SetMeetingPollsApiFunc(Data, navigate, t));
-              let OrganizationID = localStorage.getItem("organizationID");
-              let Data1 = {
-                MeetingID: currentMeetingID,
-                OrganizationID: Number(OrganizationID),
-                CreatorName: "",
-                PollTitle: "",
-                PageNumber: 1,
-                Length: 50,
-              };
-              dispatch(GetAllPollsByMeetingIdApiFunc(Data1, navigate, t));
+              if (value === 1) {
+                let userID = localStorage.getItem("userID");
+                let organizationID = localStorage.getItem("organizationID");
+                let data = {
+                  UserID: parseInt(userID),
+                  OrganizationID: parseInt(organizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                await dispatch(searchPollsApi(navigate, t, data));
+                dispatch(setCreatePollModal(false));
+              } else if (value === 2) {
+                let currentMeetingID = Number(
+                  localStorage.getItem("meetingID")
+                );
+                let Data = {
+                  MeetingID: currentMeetingID,
+                  PollID: response.data.responseResult.pollID,
+                };
+                await dispatch(SetMeetingPollsApiFunc(Data, navigate, t));
+                let OrganizationID = localStorage.getItem("organizationID");
+                let Data1 = {
+                  MeetingID: currentMeetingID,
+                  OrganizationID: Number(OrganizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(GetAllPollsByMeetingIdApiFunc(Data1, navigate, t));
+              } else if (value === 3) {
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                let Data = {
+                  CommitteeID: Number(ViewCommitteeID),
+                  PollID: Number(response.data.responseResult.pollID),
+                };
+                await dispatch(setCommitteePollsApi(navigate, t, Data));
+                let OrganizationID = localStorage.getItem("organizationID");
+
+                let newData = {
+                  CommitteeID: Number(ViewCommitteeID),
+                  OrganizationID: Number(OrganizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(GetPollsByCommitteeIDapi(navigate, t, newData));
+              } else if (value === 4) {
+                console.log("tsteasdasd");
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+                let Data = {
+                  GroupID: Number(ViewGroupID),
+                  PollID: response.data.responseResult.pollID,
+                };
+                dispatch(setGroupPollsMainApi(navigate, t, Data));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1118,6 +1155,363 @@ const updatePollsApi = (navigate, Data, t) => {
   };
 };
 
+const searchPollsByCommitteeID_init = () => {
+  return {
+    type: actions.GETPOLLSBYCOMMITEEID_INIT,
+  };
+};
+const searchPollsByCommitteeID_success = (response, message) => {
+  return {
+    type: actions.GETPOLLSBYCOMMITEEID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const searchPollsByCommitteeID_fail = (message) => {
+  return {
+    type: actions.GETPOLLSBYCOMMITEEID_FAIL,
+    message: message,
+  };
+};
+// search Polls
+const GetPollsByCommitteeIDapi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(searchPollsByCommitteeID_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", getPollbyCommitteeIdRM.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(searchPollsApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByComitteeID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                searchPollsByCommitteeID_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByComitteeID_02".toLowerCase()
+                )
+            ) {
+              dispatch(searchPollsByCommitteeID_fail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByComitteeID_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                searchPollsByCommitteeID_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                searchPollsByCommitteeID_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(searchPollsByCommitteeID_fail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(searchPollsByCommitteeID_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(searchPollsByCommitteeID_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const getPollsByGroupInit = () => {
+  return {
+    type: actions.GET_POLLS_BY_GROUPID_INIT,
+  };
+};
+
+const getPollsByGroupSuccess = (response, message) => {
+  return {
+    type: actions.GET_POLLS_BY_GROUPID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getPollsByGroupFail = (message) => {
+  return {
+    type: actions.GET_POLLS_BY_GROUPID_FAIL,
+    message: message,
+  };
+};
+
+const getPollsByGroupMainApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(getPollsByGroupInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getPollByGroupIDApi.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getPollsByGroupMainApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByGroupID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getPollsByGroupSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByGroupID_02".toLowerCase()
+                )
+            ) {
+              dispatch(getPollsByGroupFail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_GetPollsByGroupID_03".toLowerCase()
+                )
+            ) {
+              dispatch(getPollsByGroupFail(t("Something-went-wrong")));
+            } else {
+              dispatch(getPollsByGroupFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getPollsByGroupFail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(getPollsByGroupFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(getPollsByGroupFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const setGroupInit = () => {
+  return {
+    type: actions.SET_GROUP_POLLS_INIT,
+  };
+};
+
+const setGroupSuccess = (response, message) => {
+  return {
+    type: actions.SET_GROUP_POLLS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const setGroupFail = (message) => {
+  return {
+    type: actions.SET_GROUP_POLLS_FAIL,
+    message: message,
+  };
+};
+
+const setGroupPollsMainApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(setGroupInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", setGroupPollsApi.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(setGroupPollsMainApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_SetGroupPolls_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                setGroupSuccess(response.data.responseResult, t("Record-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_SetGroupPolls_02".toLowerCase()
+                )
+            ) {
+              dispatch(setGroupFail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_SetGroupPolls_03".toLowerCase()
+                )
+            ) {
+              dispatch(setGroupFail(t("Something-went-wrong")));
+            } else {
+              dispatch(setGroupFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(setGroupFail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(setGroupFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(setGroupFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const setCommitteePolls_init = () => {
+  return {
+    type: actions.SETCOMMITTEEPOLL_INIT,
+  };
+};
+const setCommitteePolls_success = (response, message) => {
+  return {
+    type: actions.SETCOMMITTEEPOLL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const setCommitteePolls_fail = (message) => {
+  return {
+    type: actions.SETCOMMITTEEPOLL_FAIL,
+    message: message,
+  };
+};
+
+const setCommitteePollsApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(setCommitteePolls_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", setCommitteePollsRM.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(searchPollsApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_SetCommitteePolls_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                setCommitteePolls_success(
+                  response.data.responseResult,
+                  t("Record-save")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_SetCommitteePolls_02".toLowerCase()
+                )
+            ) {
+              dispatch(setCommitteePolls_fail(t("No-records-save")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_SetCommitteePolls_03".toLowerCase()
+                )
+            ) {
+              dispatch(setCommitteePolls_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(setCommitteePolls_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(setCommitteePolls_fail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(setCommitteePolls_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(setCommitteePolls_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   searchPollsApi,
   SavePollsApi,
@@ -1137,4 +1531,7 @@ export {
   setDeltePollModal,
   UpdatePollStatusByPollIdApi,
   notifyPollingSocket,
+  getPollsByGroupMainApi,
+  setGroupPollsMainApi,
+  GetPollsByCommitteeIDapi,
 };

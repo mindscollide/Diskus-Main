@@ -3,7 +3,11 @@ import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
 import Newprofile from "../../../assets/images/newprofile.png";
 import { Paper } from "@material-ui/core";
-import { Button, Notification } from "./../../../components/elements";
+import {
+  Button,
+  Notification,
+  TableToDo,
+} from "./../../../components/elements";
 import { useTranslation } from "react-i18next";
 import pdfIcon from "../../../assets/images/pdf_icon.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
@@ -15,17 +19,35 @@ import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import { Upload } from "antd";
 import {
+  getCommitteesbyCommitteeId,
   saveCommitteeDocumentsApi,
   uploadDocumentsCommitteesApi,
 } from "../../../store/actions/Committee_actions";
 import ViewCommitteeDetails from "../../../container/Committee/ViewCommittee/ViewCommittee";
-import Polls from "../../../container/pages/meeting/scedulemeeting/Polls/Polls";
-
-const ViewUpdateCommittee = ({ setViewGroupPage, currentTab }) => {
-  console.log("currentTabcurrentTab", currentTab);
-  const [currentView, setCurrentView] = useState(1);
-
+import Polls from "../../../container/Committee/ViewPolls/Polls/Polls";
+import CommitteeTodo from "../../../container/Committee/ViewTodo/CommitteeTodo.js";
+const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+  const [currentView, setCurrentView] = useState(
+    viewCommitteeTab !== undefined && viewCommitteeTab !== 0
+      ? viewCommitteeTab
+      : 1
+  );
+  useEffect(() => {
+    if (ViewCommitteeID !== null) {
+      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let Data = {
+        CommitteeID: Number(ViewCommitteeID),
+        OrganizationId: OrganizationID,
+      };
+      dispatch(getCommitteesbyCommitteeId(navigate, Data, t));
+    }
+  }, [ViewCommitteeID]);
+
   return (
     <>
       <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -49,7 +71,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, currentTab }) => {
                 onClick={() => setCurrentView(1)}
               />
               <Button
-                text={t("Task-later")}
+                text={t("Task")}
                 className={
                   currentView === 2
                     ? styles["View-committee-details_active"]
@@ -80,11 +102,60 @@ const ViewUpdateCommittee = ({ setViewGroupPage, currentTab }) => {
           {currentView === 1 ? (
             <ViewCommitteeDetails setViewGroupPage={setViewGroupPage} />
           ) : currentView === 2 ? (
-            "Task Later"
-          ) : currentView === 3 ? (
-            <Polls view={2} />
+            <>
+              <CommitteeTodo />
+              <Row className="my-3">
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="d-flex justify-content-end"
+                >
+                  <Button
+                    text={t("Close")}
+                    className={styles["closeBtn-view-committee"]}
+                    onClick={() => setViewGroupPage(false)}
+                  />
+                </Col>
+              </Row>
+            </>
+          ) : // <TableToDo />
+          currentView === 3 ? (
+            <>
+              <Polls />
+              <Row>
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="d-flex justify-content-end"
+                >
+                  <Button
+                    text={t("Close")}
+                    className={styles["closeBtn-view-committee"]}
+                    onClick={() => setViewGroupPage(false)}
+                  />
+                </Col>
+              </Row>
+            </>
           ) : currentView === 4 ? (
-            "Meeting"
+            <>
+              "Meeting"
+              <Row>
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="d-flex justify-content-end"
+                >
+                  <Button
+                    text={t("Close")}
+                    className={styles["closeBtn-view-committee"]}
+                    onClick={() => setViewGroupPage(false)}
+                  />
+                </Col>
+              </Row>
+            </>
           ) : null}
         </Paper>
       </section>

@@ -1086,6 +1086,8 @@
   "NOTES-RECENT-ACTIVITY": "The notes has been created [Notes Title]",
   "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time": "Proposed dates should be in increasing order of date and start time",
   "Not-more-than-5-dates-are-allowed": "Not More Than 5 Dates Are Allowed",
+  "Publish-meeting": "Publish meeting",
+  "Propose-date-poll": "Propose Date Poll",
   "Update-successfully": "Update successfully",
   "Failed-to-created-new-mapping": "Failed to created new mapping",
   "New-mapped-created": "New mapped created",
@@ -1093,5 +1095,6 @@
   "Committee-detail": "Committee detail",
   "Task-later": "Task later",
   "status-not-updated": "status Not Updated",
-  "Status-updated": "Status Updated"
+  "Status-updated": "Status Updated",
+  "Meeting-view": "Meeting View"
 }

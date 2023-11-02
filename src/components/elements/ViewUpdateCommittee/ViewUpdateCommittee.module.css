@@ -25,7 +25,7 @@ body[dir="rtl"] .View-Committee-heading {
 }
 
 .View-Committee-paper {
-  max-height: 87vh !important;
+  min-height: 79vh !important;
   width: 100% !important;
   padding: 30px 40px 20px 40px !important;
   height: 100%;
@@ -94,10 +94,22 @@ body[dir="rtl"] .Close-ViewCommittee-btn {
   font-family: "MontserratSemiBold-600" !important;
   color: #fff !important;
 }
-.View-committee-CloseBtn {
+
+.closeBtn-view-committee {
   font-size: 16px !important;
-  border: 1px solid #808080;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
+  padding: 12px 30px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.closeBtn-view-committee:is(:active, :hover, :focus, :focus-visible, :visited) {
+  font-size: 16px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 12px 30px !important;
   font-family: "MontserratSemiBold-600" !important;
   background: #fff !important;
   color: #5a5a5a !important;
