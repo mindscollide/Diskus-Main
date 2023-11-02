@@ -1072,6 +1072,14 @@ const saveAgendaVoting = {
   RequestMethod: "ServiceManager.SaveAgendaVoting",
 };
 
+const getPollByGroupIDApi = {
+  RequestMethod: "ServiceManager.GetPollsByGroupID",
+};
+
+const setGroupPollsApi = {
+  RequestMethod: "ServiceManager.SetGroupPolls",
+};
+
 export {
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
@@ -1361,4 +1369,6 @@ export {
   CreateUpdateGroupDataRoadMap,
   SaveTheGroupsDocuments,
   RetrieveGroupDocuments,
+  getPollByGroupIDApi,
+  setGroupPollsApi,
 };

@@ -1611,7 +1611,8 @@ const Dashboard = () => {
             MeetingOrganizersReducer.LoadingMeetingOrganizer ||
             MeetingOrganizersReducer.Loading ||
             PollsReducer.Loading ||
-            CommitteeReducer.Loading  || MeetingAgendaReducer.Loading? ? (
+            CommitteeReducer.Loading ||
+            MeetingAgendaReducer.Loading ? (
               <Loader />
             ) : null}
           </Layout>

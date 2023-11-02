@@ -333,7 +333,7 @@ const getbyGroupID = (
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
-    GroupID: JSON.parse(GroupId),
+    GroupID: Number(GroupId),
     OrganizationID: JSON.parse(OrganizationID),
   };
   return (dispatch) => {
