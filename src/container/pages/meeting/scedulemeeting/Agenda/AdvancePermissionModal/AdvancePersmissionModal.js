@@ -51,7 +51,16 @@ const AdvancePersmissionModal = () => {
     setsubAgendaExpand(!subAgendaExpand);
   };
 
-  const handleSwitchChange = (index, field) => {
+  const handleSwitchChangeView = (index, field) => {
+    // Create a copy of the memberData array
+    const updatedMemberData = [...memberData];
+    // Update the specific field for the member at the given index
+    updatedMemberData[index][field] = !updatedMemberData[index][field];
+    // Update the state with the new data
+    setMemberData(updatedMemberData);
+  };
+
+  const handleSwitchChangeModify = (index, field) => {
     // Create a copy of the memberData array
     const updatedMemberData = [...memberData];
     // Update the specific field for the member at the given index
@@ -549,6 +558,7 @@ const AdvancePersmissionModal = () => {
                       </Row>
                       <Row>
                         {members.map((data, index) => {
+                          console.log(data, "isLastItemisLastItem");
                           const isLastItem = index === members.length - 1;
 
                           return (
@@ -561,7 +571,7 @@ const AdvancePersmissionModal = () => {
                                         styles["Names_advance_permission"]
                                       }
                                     >
-                                      {data.Name}
+                                      {data.userName}
                                     </span>
                                   </Col>
                                 </Row>
@@ -570,13 +580,17 @@ const AdvancePersmissionModal = () => {
                                 <Row>
                                   <Col lg={12} md={12} sm={12} className="m-3">
                                     <Switch
+                                      checkedValue={data.canView}
                                       className={
                                         styles[
                                           "AdvancePermission_switches_View"
                                         ]
                                       }
                                       onChange={() =>
-                                        handleSwitchChange(index, "switchView")
+                                        handleSwitchChangeView(
+                                          index,
+                                          "switchView"
+                                        )
                                       }
                                     />
                                   </Col>
@@ -586,11 +600,15 @@ const AdvancePersmissionModal = () => {
                                 <Row>
                                   <Col lg={12} md={12} sm={12} className="m-3">
                                     <Switch
+                                      checkedValue={data.canModify}
                                       className={
                                         styles["AdvancePermission_switches"]
                                       }
                                       onChange={() =>
-                                        handleSwitchChange(index, "switch")
+                                        handleSwitchChangeModify(
+                                          index,
+                                          "switch"
+                                        )
                                       }
                                     />
                                   </Col>
