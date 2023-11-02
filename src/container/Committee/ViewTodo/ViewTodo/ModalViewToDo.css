@@ -1,0 +1,315 @@
+.modalviewpic {
+  width: 40px;
+  height: 40px;
+  margin: 0 0 0 0;
+}
+
+.todo-modal-userName {
+  color: #6172d6;
+  font-weight: bold;
+  font-size: 1rem;
+  /* margin-left: 5px; */
+}
+
+.todo-modal-assignee-title {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.taskcreatorinfo {
+  margin-top: 8px !important;
+  max-height: 17% !important;
+  overflow-y: auto;
+  height: 17% !important;
+}
+
+.taskcreatorinfo::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.taskcreatorinfo::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+/* change color blue to this */
+.todo-modal-title {
+  color: #6172d6;
+  font-size: 18px;
+  font-weight: 600 !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 7px;
+}
+
+.todo-modal-content p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.todo-modal-label {
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+}
+
+.todo-modal-inputField {
+  font-size: 0.8rem;
+}
+
+.todo-modal-textfield {
+  background: #0275d8 !important;
+}
+
+textarea {
+  font-size: 0.8rem !important;
+}
+
+.modalBodyClassName {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.todoModalViewFiles {
+  max-width: 100% !important;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: center;
+  padding: 0;
+  /* margin: 0 10px 0 10px; */
+  /* flex-wrap   : wrap; */
+}
+
+.todoModalViewFiles::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5em;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+}
+
+.todoModalViewFiles::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.todview-modal {
+  --bs-modal-margin: 0px !important;
+}
+
+p.todoModalFileAttach {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  color: #000 !important;
+  margin: 10px 0px;
+}
+
+.comment-view {
+  resize: none !important;
+  overflow-y: auto;
+}
+
+.sender {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+.fade.modal.show {
+  display: block;
+  /* padding-left: 17px; */
+  /* height: auto; */
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* .ViewModalEmployeeCard label.todo-employee-name-card {
+    margin-left: -45px;
+    margin-top : 30px;
+} */
+
+.ViewModalEmployeeCard .col-lg-4.col-md-4.col-sm-12.col-12 {
+  text-align: right !important;
+}
+
+.modalTodoViewFooter {
+  border-top: none !important;
+  /* height: 0% !important;
+  max-height: 0% !important;
+  min-height: 0% !important; */
+  display: block;
+}
+
+.modalTodoViewBody {
+  max-height: 75vh !important;
+  padding: 0px 30px !important;
+  overflow-y: auto;
+}
+
+.modalTodoViewBody::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.modalTodoViewBody::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.comment-Height.row {
+  height: 30vh !important;
+  overflow: hidden auto;
+  margin-top: 15px;
+  max-height: 160px !important;
+}
+
+.comment-Height::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.comment-Height::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.timeClass {
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  color: #fff;
+}
+
+.timeClass.Participant {
+  position: absolute;
+  right: 20px !important;
+  left: auto !important;
+  bottom: 0;
+  color: #505050 !important;
+}
+
+p.AssignedToDoView {
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+body[dir="rtl"] p.AssignedToDoView {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.DateTimeViewTodo p {
+  text-align: right;
+  color: #505050;
+  font-size: 12px;
+  margin-bottom: 0;
+  margin-top: 21px;
+}
+
+body[dir="rtl"] .DateTimeViewTodo p {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.comment-Height .form-control:disabled {
+  border: none !important;
+  border-radius: 3px;
+  background-color: #f5f5f5;
+  padding-bottom: 0px;
+}
+
+textarea.comment-view.text-right.form-control {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  padding-bottom: 10px;
+  text-align: left !important;
+}
+
+.InputFieldStyle input {
+  border-radius: 4px;
+  height: 35px;
+}
+
+.comment-enter-button {
+  background: #6172d6 !important;
+  height: 100%;
+  text-align: center;
+  border-radius: 4px;
+  margin-left: 6px;
+  width: 40px;
+}
+
+.modalTodoViewHeader button.btn-close {
+  margin-top: 15px !important;
+  font-weight: 100 !important;
+  font-size: 11px;
+  color: #707070 !important;
+}
+
+form.relative-position-form {
+  position: relative !important;
+}
+
+.fileIconBoxView {
+  width: 80px;
+  text-align: center;
+}
+
+label.MontserratSemiBold-600.todo-employee-name-card {
+  color: #6172d6 !important;
+}
+
+body[dir="rtl"] label.MontserratSemiBold-600.todo-employee-name-card {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Modal-todo-view1 {
+  overflow: hidden !important;
+  word-wrap: break-word !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+}
+
+.Modal-todo-view-discription1 {
+  overflow: hidden !important;
+  word-wrap: break-word !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+}
+
+.crossIconTodoComment {
+  position: absolute;
+  right: 8px;
+  top: 15px;
+  cursor: pointer !important;
+}
+.crossIconTodoComment_disable {
+  position: absolute;
+  right: 8px;
+  top: 15px;
+  cursor: default !important;
+  filter: grayscale(0.5);
+  pointer-events: none;
+}
+.deleteCommentSpinner {
+  position: absolute !important;
+  top: 14px !important;
+  cursor: pointer !important;
+  right: 9px !important;
+}
+.view_todo_assignees {
+  max-height: 9vh !important;
+  overflow-y: auto;
+  display: flex;
+  align-items: flex-start;
+}
