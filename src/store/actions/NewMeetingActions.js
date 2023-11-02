@@ -2257,7 +2257,8 @@ const meetingMaterialFail = (message) => {
 };
 
 //Aun work on meeting Material Main API
-const getMeetingMaterialAPI = (navigate, t, meetingMaterialData) => {
+const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
+  console.log(rows, "getMeetingMaterialAPI");
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(meetingMaterialInit());
@@ -2290,6 +2291,15 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData) => {
                   t("Record-found")
                 )
               );
+              let newID;
+              rows.map((data, index) => {
+                newID = data.ID;
+              });
+              let NewData = {
+                AgendaID: newID,
+              };
+              console.log(NewData, "newIDnewIDnewID");
+              dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_02"

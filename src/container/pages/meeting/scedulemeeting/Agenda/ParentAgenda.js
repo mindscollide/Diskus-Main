@@ -50,6 +50,7 @@ const ParentAgenda = ({
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  console.log(rows, "rowsrowsrows");
   const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentMeetingID = localStorage.getItem("meetingID");
@@ -129,7 +130,7 @@ const ParentAgenda = ({
       // MeetingID: Number(currentMeetingID),
       MeetingID: 1785,
     };
-    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
+    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   };
 
   const openVoteMOdal = () => {
