@@ -25,6 +25,7 @@ const initialState = {
   getPollByCommitteeID: null,
   getPollByGroupID: null,
   setGroupsPolls: null,
+  setCommitteePoll: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -382,6 +383,28 @@ const PollsReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.SETCOMMITTEEPOLL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SETCOMMITTEEPOLL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setCommitteePoll: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SETCOMMITTEEPOLL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setCommitteePoll: null,
+        ResponseMessage: action.message,
+      };
+    }
     default: {
       return { ...state };
     }

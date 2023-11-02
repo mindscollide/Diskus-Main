@@ -98,7 +98,9 @@ const Dashboard = () => {
     assignees,
     NewMeetingreducer,
     MeetingOrganizersReducer,
+    MeetingAgendaReducer,
     PollsReducer,
+    CommitteeReducer,
   } = useSelector((state) => state);
   // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate();
@@ -1608,7 +1610,8 @@ const Dashboard = () => {
             assignees.Loading ||
             MeetingOrganizersReducer.LoadingMeetingOrganizer ||
             MeetingOrganizersReducer.Loading ||
-            PollsReducer.Loading ? (
+            PollsReducer.Loading ||
+            CommitteeReducer.Loading  || MeetingAgendaReducer.Loading? ? (
               <Loader />
             ) : null}
           </Layout>

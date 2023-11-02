@@ -1,73 +1,91 @@
 export const oneToOneMessages = (setAllOtoMessages, allotomessages) => {
   let allMessagesArr = []
-  allotomessages.map((messagesData) => {
-    if (
-      messagesData.frMessages !== 'Direct Message' &&
-      messagesData.frMessages.length > 0 &&
-      messagesData.frMessages !== undefined &&
-      typeof messagesData.frMessages !== 'object'
-    ) {
-      messagesData.frMessages = messagesData.frMessages.split('|')
-    }
-    allMessagesArr.push({
-      attachmentLocation: messagesData.attachmentLocation,
-      blockCount: messagesData.blockCount,
-      broadcastName: messagesData.broadcastName,
-      currDate: messagesData.currDate,
-      fileGeneratedName: messagesData.fileGeneratedName,
-      fileName: messagesData.fileName,
-      frMessages: messagesData.frMessages,
-      isFlag: messagesData.isFlag,
-      messageBody: messagesData.messageBody,
-      messageCount: messagesData.messageCount,
-      messageID: messagesData.messageID,
-      messageStatus: messagesData.messageStatus,
-      receivedDate: messagesData.receivedDate,
-      receiverID: messagesData.receiverID,
-      receiverName: messagesData.receiverName,
-      seenDate: messagesData.seenDate,
-      senderID: messagesData.senderID,
-      senderName: messagesData.senderName,
-      sentDate: messagesData.sentDate,
-      shoutAll: messagesData.shoutAll,
-      uid: messagesData.uid,
-      sourceMessageBody: messagesData.sourceMessageBody,
-      sourceMessageId: messagesData.sourceMessageId,
+  if (
+    allotomessages !== undefined &&
+    allotomessages !== null &&
+    allotomessages.length !== 0
+  ) {
+    allotomessages.map((messagesData) => {
+      if (
+        messagesData.frMessages !== 'Direct Message' &&
+        messagesData.frMessages.length > 0 &&
+        messagesData.frMessages !== undefined &&
+        typeof messagesData.frMessages !== 'object'
+      ) {
+        messagesData.frMessages = messagesData.frMessages.split('|')
+      }
+      allMessagesArr.push({
+        attachmentLocation: messagesData.attachmentLocation,
+        blockCount: messagesData.blockCount,
+        broadcastName: messagesData.broadcastName,
+        currDate: messagesData.currDate,
+        fileGeneratedName: messagesData.fileGeneratedName,
+        fileName: messagesData.fileName,
+        frMessages: messagesData.frMessages,
+        isFlag: messagesData.isFlag,
+        messageBody: messagesData.messageBody,
+        messageCount: messagesData.messageCount,
+        messageID: messagesData.messageID,
+        messageStatus: messagesData.messageStatus,
+        receivedDate: messagesData.receivedDate,
+        receiverID: messagesData.receiverID,
+        receiverName: messagesData.receiverName,
+        seenDate: messagesData.seenDate,
+        senderID: messagesData.senderID,
+        senderName: messagesData.senderName,
+        sentDate: messagesData.sentDate,
+        shoutAll: messagesData.shoutAll,
+        uid: messagesData.uid,
+        sourceMessageBody: messagesData.sourceMessageBody,
+        sourceMessageId: messagesData.sourceMessageId,
+        isRetry: false,
+      })
     })
-  })
+  } else {
+    allMessagesArr = []
+  }
   return setAllOtoMessages([...allMessagesArr])
 }
 
 export const groupMessages = (allGroupMessagesReducer, setAllGroupMessages) => {
   let allGroupMessagesArr = []
-  allGroupMessagesReducer.map((messagesData) => {
-    if (
-      messagesData.frMessages !== 'Direct Message' &&
-      messagesData.frMessages.length > 0 &&
-      messagesData.frMessages !== undefined &&
-      typeof messagesData.frMessages !== 'object'
-    ) {
-      messagesData.frMessages = messagesData.frMessages.split('|')
-    }
-    allGroupMessagesArr.push({
-      attachmentLocation: messagesData.attachmentLocation,
-      currDate: messagesData.currDate,
-      fileGeneratedName: messagesData.fileGeneratedName,
-      fileName: messagesData.fileName,
-      frMessages: messagesData.frMessages,
-      isFlag: messagesData.isFlag,
-      messageBody: messagesData.messageBody,
-      messageCount: messagesData.messageCount,
-      messageID: messagesData.messageID,
-      receiverID: messagesData.receiverID,
-      senderID: messagesData.senderID,
-      senderName: messagesData.senderName,
-      sentDate: messagesData.sentDate,
-      shoutAll: messagesData.shoutAll,
-      sourceMessageBody: messagesData.sourceMessageBody,
-      sourceMessageId: messagesData.sourceMessageId,
+  if (
+    allGroupMessagesReducer !== undefined &&
+    allGroupMessagesReducer !== null &&
+    allGroupMessagesReducer.length !== 0
+  ) {
+    allGroupMessagesReducer.map((messagesData) => {
+      if (
+        messagesData.frMessages !== 'Direct Message' &&
+        messagesData.frMessages.length > 0 &&
+        messagesData.frMessages !== undefined &&
+        typeof messagesData.frMessages !== 'object'
+      ) {
+        messagesData.frMessages = messagesData.frMessages.split('|')
+      }
+      allGroupMessagesArr.push({
+        attachmentLocation: messagesData.attachmentLocation,
+        currDate: messagesData.currDate,
+        fileGeneratedName: messagesData.fileGeneratedName,
+        fileName: messagesData.fileName,
+        frMessages: messagesData.frMessages,
+        isFlag: messagesData.isFlag,
+        messageBody: messagesData.messageBody,
+        messageCount: messagesData.messageCount,
+        messageID: messagesData.messageID,
+        receiverID: messagesData.receiverID,
+        senderID: messagesData.senderID,
+        senderName: messagesData.senderName,
+        sentDate: messagesData.sentDate,
+        shoutAll: messagesData.shoutAll,
+        sourceMessageBody: messagesData.sourceMessageBody,
+        sourceMessageId: messagesData.sourceMessageId,
+        isRetryFlag: false,
+      })
     })
-  })
+  } else {
+    allGroupMessagesArr = []
+  }
   return setAllGroupMessages([...allGroupMessagesArr])
 }
 

@@ -1056,6 +1056,21 @@ const RetrieveGroupDocuments = {
 const getPollbyCommitteeIdRM = {
   RequestMethod: "ServiceManager.GetPollsByComitteeID",
 };
+const setCommitteePollsRM = {
+  RequestMethod: "ServiceManager.SetCommitteePolls",
+};
+
+const getAgendaVotingDetails = {
+  RequestMethod: "ServiceManager.GetAgendaVotingDetails",
+};
+
+const getAllVotingResultDisplay = {
+  RequestMethod: "ServiceManager.GetAllVotingResultDisplay",
+};
+
+const saveAgendaVoting = {
+  RequestMethod: "ServiceManager.SaveAgendaVoting",
+};
 
 const getPollByGroupIDApi = {
   RequestMethod: "ServiceManager.GetPollsByGroupID",
@@ -1066,6 +1081,7 @@ const setGroupPollsApi = {
 };
 
 export {
+  setCommitteePollsRM,
   getPollbyCommitteeIdRM,
   saveCommitteeDocumentsRM,
   reteriveCommitteeDocumentsRM,
@@ -1342,6 +1358,11 @@ export {
   getAllAttendanceMeeting,
   saveMeetingAttendance,
   setMeetingProposedDatesResponse,
+
+  //Agenda Voting
+  getAgendaVotingDetails,
+  getAllVotingResultDisplay,
+  saveAgendaVoting,
   //Aun MeetingMaterial
   getAllMeetingMaterial,
   downloadMeetingAttendanceReport,

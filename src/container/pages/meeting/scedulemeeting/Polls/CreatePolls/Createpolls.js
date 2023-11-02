@@ -485,7 +485,7 @@ const Createpolls = ({ setCreatepoll }) => {
         PollAnswers: optionsListData,
       };
 
-      await dispatch(SavePollsApi(navigate, data, t));
+      await dispatch(SavePollsApi(navigate, data, t, 2));
       setCreatepoll(false);
     } else {
       // setError(true);

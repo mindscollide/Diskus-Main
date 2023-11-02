@@ -25,6 +25,7 @@ import {
   RealtimeNotificationReducer,
   OrganizationBillingReducer,
   MeetingOrganizersReducer,
+  MeetingAgendaReducer,
   DataRoomReducer,
   PollsReducer,
   NewMeetingReducer,
@@ -85,7 +86,7 @@ const AppReducer = combineReducers({
   VideoMainReducer: VideoMainReducer,
   webViewer: webViewerReducer,
   MeetingOrganizersReducer: MeetingOrganizersReducer,
-
+  MeetingAgendaReducer: MeetingAgendaReducer,
   //Attendance Meeting Reducer aun
   attendanceMeetingReducer: attendanceMeetingReducer,
 });
