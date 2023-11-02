@@ -59,7 +59,7 @@ const AdvancePersmissionModal = () => {
     setsubAgendaExpand(!subAgendaExpand);
   };
 
-  const handleSwitchChangeView = (checked, data) => {
+  const handleSwitchChangeView = (checked, data, index) => {
     setMembers((prev) => {
       return prev.map((memberdata, index) => {
         if (memberdata.userID === data.userID) {
@@ -73,7 +73,7 @@ const AdvancePersmissionModal = () => {
     });
   };
 
-  const handleSwitchChangeModify = (checked, data) => {
+  const handleSwitchChangeModify = (checked, data, index) => {
     setMembers((prev) => {
       return prev.map((memberdata, index) => {
         if (memberdata.userID === data.userID) {
@@ -667,7 +667,11 @@ const AdvancePersmissionModal = () => {
                                           ]
                                         }
                                         onChange={(checked) =>
-                                          handleSwitchChangeView(checked, data)
+                                          handleSwitchChangeView(
+                                            checked,
+                                            data,
+                                            index
+                                          )
                                         }
                                       />
                                     </Col>
@@ -689,7 +693,8 @@ const AdvancePersmissionModal = () => {
                                         onChange={(checked) =>
                                           handleSwitchChangeModify(
                                             checked,
-                                            data
+                                            data,
+                                            index
                                           )
                                         }
                                       />
