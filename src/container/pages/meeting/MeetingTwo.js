@@ -73,6 +73,7 @@ import ModalMeeting from "../../modalmeeting/ModalMeeting";
 import ModalUpdate from "../../modalUpdate/ModalUpdate";
 import ModalView from "../../modalView/ModalView";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
+import ViewParticipantsDates from "./scedulemeeting/Participants/ViewParticipantsDates/ViewParticipantsDates";
 const NewMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -124,6 +125,7 @@ const NewMeeting = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
+  const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
 
   //  Call all search meetings api
   useEffect(() => {
@@ -362,7 +364,8 @@ const NewMeeting = () => {
     );
   };
 
-  const handleEditMeeting = async (id, isQuick) => {
+  const handleEditMeeting = async (id, isQuick, isAgendaContributor) => {
+    console.log("handleEditMeeting", id, isQuick);
     let Data = { MeetingID: id };
     if (isQuick) {
       await dispatch(
@@ -376,6 +379,8 @@ const NewMeeting = () => {
           2
         )
       );
+    } else if (isAgendaContributor) {
+    } else {
     }
   };
 
@@ -489,6 +494,11 @@ const NewMeeting = () => {
       key: "Chat",
       width: "36px",
       render: (text, record) => {
+        const isOrganiser = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Organizer"
+        );
         return (
           <>
             <Row>
@@ -569,7 +579,7 @@ const NewMeeting = () => {
                     }
                   ></span>
                 )}
-                {record.status === "9" && (
+                {record.status === "9" && isOrganiser && (
                   <Tooltip placement="topLeft" title={t("member")}>
                     <img
                       src={member}
@@ -594,13 +604,13 @@ const NewMeeting = () => {
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
-            (attendee.user.pK_UID === currentUserId &&
-              attendee.meetingAttendeeRole.role === "Participants") ||
+            (Number(attendee.user.pK_UID) === Number(currentUserId) &&
+              attendee.meetingAttendeeRole.role === "Participant") ||
             attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
-            attendee.user.pK_UID === currentUserId &&
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
         if (record.status === "1") {
@@ -619,27 +629,18 @@ const NewMeeting = () => {
           }
         } else if (record.status === "2") {
           if (isParticipant) {
-            return (
-              <Button
-                text={t("Join-meeting")}
-                className={styles["joining-Meeting"]}
-              />
-            );
+            <Button
+              text={t("Join-meeting")}
+              className={styles["joining-Meeting"]}
+            />;
           } else if (isOrganiser) {
             <Button
-              text={t("End-meeting")}
+              text={t("Join-meeting")}
               className={styles["joining-Meeting"]}
             />;
           }
-        } else if (record.status === "3") {
-        } else if (record.status === "4") {
-        } else if (record.status === "5") {
-        } else if (record.status === "6") {
-        } else if (record.status === "7") {
-        } else if (record.status === "8") {
-        } else if (record.status === "9") {
         } else if (record.status === "10") {
-          if (record.host.toLowerCase().includes("OrganizerName".toLowerCase)) {
+          if (isOrganiser) {
             return (
               <Button
                 text={t("End-Meeting")}
@@ -647,7 +648,7 @@ const NewMeeting = () => {
                 onClick={EndMeetingModal}
               />
             );
-          } else {
+          } else if (isParticipant) {
             return (
               <Button
                 text={t("Leave-meeting")}
@@ -656,9 +657,6 @@ const NewMeeting = () => {
               />
             );
           }
-        } else if (record.status === "11") {
-        } else if (record.status === "12") {
-        } else if (record.status === "13") {
         }
         // return (
         //   <>
@@ -709,26 +707,26 @@ const NewMeeting = () => {
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
-            attendee.user.pK_UID === currentUserId &&
-            attendee.meetingAttendeeRole.role === "Participants"
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Participant"
         );
 
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
-            attendee.user.pK_UID === currentUserId &&
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
 
         const isAgendaContributor = record.meetingAttendees.some(
           (attendee) =>
-            attendee.user.pK_UID === currentUserId &&
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
 
-        const isQuickMeeting = record.meetingAttendees.some(
-          (attendee) => attendee.isQuickMeeting === true
-        );
-
+        const isQuickMeeting = record.isQuickMeeting;
+        console.log("isQuickMeeting", isQuickMeeting);
+        console.log("isQuickMeeting", record);
+        
         if (isQuickMeeting) {
           if (isOrganiser) {
             return (
@@ -746,7 +744,8 @@ const NewMeeting = () => {
                         onClick={() =>
                           handleEditMeeting(
                             record.pK_MDID,
-                            record.isQuickMeeting
+                            record.isQuickMeeting,
+                            isAgendaContributor
                           )
                         }
                       />
@@ -775,7 +774,8 @@ const NewMeeting = () => {
                         onClick={() =>
                           handleEditMeeting(
                             record.pK_MDID,
-                            record.isQuickMeeting
+                            record.isQuickMeeting,
+                            isAgendaContributor
                           )
                         }
                       />
@@ -800,7 +800,8 @@ const NewMeeting = () => {
                         onClick={() =>
                           handleEditMeeting(
                             record.pK_MDID,
-                            record.isQuickMeeting
+                            record.isQuickMeeting,
+                            isAgendaContributor
                           )
                         }
                       />
@@ -949,6 +950,10 @@ const NewMeeting = () => {
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
         <SceduleMeeting setSceduleMeeting={setSceduleMeeting} />
+      ) : viewProposeDatePoll ? (
+        <ViewParticipantsDates
+          setViewProposeDatePoll={setViewProposeDatePoll}
+        />
       ) : (
         <>
           <Row className="mt-2">
@@ -998,12 +1003,6 @@ const NewMeeting = () => {
                   </Dropdown>
                 </Col>
               </Row>
-              {/* <Button
-                text={t("Schedule-a-meeting")}
-                className={styles["Newmeeting_Scehedule_meet"]}
-                icon={<Plus width={20} height={20} fontWeight={800} />}
-                onClick={openSceduleMeetingPage}
-              /> */}
             </Col>
             <Col
               sm={12}
@@ -1174,7 +1173,10 @@ const NewMeeting = () => {
                   </Col>
                 </Row>
                 {Number(currentView) === 2 ? (
-                  <UnpublishedProposedMeeting />
+                  <UnpublishedProposedMeeting
+                    viewProposeDatePoll={viewProposeDatePoll}
+                    setViewProposeDatePoll={setViewProposeDatePoll}
+                  />
                 ) : Number(currentView) === 1 ? (
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>

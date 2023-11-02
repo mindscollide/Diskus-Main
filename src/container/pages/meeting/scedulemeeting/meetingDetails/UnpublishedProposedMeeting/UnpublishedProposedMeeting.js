@@ -38,30 +38,31 @@ import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
+import { UpdateOrganizersMeeting } from "../../../../../../store/actions/MeetingOrganizers_action";
 
-const UnpublishedProposedMeeting = () => {
+const UnpublishedProposedMeeting = ({
+  setViewProposeDatePoll,
+  viewProposeDatePoll,
+}) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  let currentLanguage = localStorage.getItem("i18nextLng");
-
+  const navigate = useNavigate();
+  let currentUserId = localStorage.getItem("userID");
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
-
   const sceduleproposedMeeting = useSelector(
     (state) => state.NewMeetingreducer.sceduleproposedMeeting
   );
-
   const deleteMeetingModal = useSelector(
     (state) => state.NewMeetingreducer.deleteMeetingModal
   );
-
   const allMeetingsSocketData = useSelector(
     (state) => state.meetingIdReducer.allMeetingsSocketData
   );
 
   const [rows, setRow] = useState([]);
-  let currentUserId = localStorage.getItem("userID");
+  const [publishState, setPublishState] = useState(null);
 
   const handleDeleteMeetingModal = () => {
     dispatch(showDeleteMeetingModal(true));
@@ -87,6 +88,21 @@ const UnpublishedProposedMeeting = () => {
         subTitle={t("Anything-important-thats-needs-discussion")}
       />
     );
+  };
+
+  const viewProposeDatePollHandler = (
+    isParticipant,
+    isAgendaContributor,
+    isOrganiser,
+    id
+  ) => {
+    if (isParticipant) {
+      setViewProposeDatePoll(true);
+      localStorage.setItem("viewProposeDatePollMeetingID", id);
+    } else if (isAgendaContributor) {
+    } else {
+      alert("View Not Available");
+    }
   };
 
   const MeetingColoumns = [
@@ -251,14 +267,23 @@ const UnpublishedProposedMeeting = () => {
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
-            attendee.user.pK_UID === currentUserId &&
-            attendee.meetingAttendeeRole.role === "Participants"
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Participant"
         );
         const isAgendaContributor = record.meetingAttendees.some(
           (attendee) =>
-            attendee.user.pK_UID === currentUserId &&
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
+        const isOrganiser = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Organizer"
+        );
+        let apiData = {
+          MeetingID: Number(record.pK_MDID),
+          StatusID: 1,
+        };
         return (
           <>
             <Row>
@@ -302,6 +327,17 @@ const UnpublishedProposedMeeting = () => {
                     <Button
                       text={t("Publish-meeting")}
                       className={styles["publish_meeting_btn"]}
+                      onClick={() =>
+                        dispatch(
+                          UpdateOrganizersMeeting(
+                            navigate,
+                            apiData,
+                            t,
+                            2,
+                            setPublishState
+                          )
+                        )
+                      }
                     />
                   )
                 ) : record.status === "12" ? (
@@ -309,11 +345,27 @@ const UnpublishedProposedMeeting = () => {
                     <Button
                       text={t("View-poll")}
                       className={styles["publish_meeting_btn"]}
+                      onClick={() =>
+                        viewProposeDatePollHandler(
+                          true,
+                          false,
+                          false,
+                          record.pK_MDID
+                        )
+                      }
                     />
-                  ) : (
+                  ) : isAgendaContributor ? null : (
                     <Button
                       text={t("View-poll")}
                       className={styles["publish_meeting_btn"]}
+                      onClick={() =>
+                        viewProposeDatePollHandler(
+                          false,
+                          false,
+                          true,
+                          record.pK_MDID
+                        )
+                      }
                     />
                   )
                 ) : null}
@@ -347,6 +399,7 @@ const UnpublishedProposedMeeting = () => {
       }
     }
   }, [allMeetingsSocketData]);
+
   useEffect(() => {
     try {
       if (searchMeetings !== null && searchMeetings !== undefined) {
@@ -413,6 +466,15 @@ const UnpublishedProposedMeeting = () => {
     }
   }, [searchMeetings]);
 
+  useEffect(() => {
+    if (publishState) {
+      const filteredArray = rows.filter(
+        (item) => item.pK_MDID !== publishState
+      );
+      setRow(filteredArray);
+      setPublishState(null);
+    }
+  }, [publishState]);
   const scroll = {
     y: 800, // Set the desired height for the vertical scroll
   };

@@ -5,7 +5,6 @@ import {
   Checkbox,
   Notification,
 } from "../../../../../../components/elements";
-import BackArrow from "../../../../../../assets/images/Back Arrow.svg";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -13,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { Paper } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import {
+  GetAllMeetingDetailsApiFunc,
   GetAllProposedMeetingDateApiFunc,
   SetMeetingResponseApiFunc,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -24,20 +24,33 @@ import {
 } from "../../../../../../commen/functions/date_formater";
 import moment from "moment";
 
-const ViewParticipantsDates = () => {
+const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
+  );
+  const getAllProposedDates = useSelector(
+    (state) => state.NewMeetingreducer.getAllProposedDates
+  );
   const [deadline, setDeadline] = useState("");
   const [prposedData, setPrposedData] = useState([]);
   const [sendProposedData, setSendProposedData] = useState([]);
   const [checkedObjects, setCheckedObjects] = useState([]);
   const [noneOfAbove, setNoneOfAbove] = useState([]);
+  const [meetingDeatils, setMeetingDeatils] = useState({
+    MeetingTitle: "",
+    MeetingType: "",
+    MeetingLocation: "",
+    MeetingDiscription: "",
+  });
   const [selectAll, setSelectAll] = useState(false);
   console.log(checkedObjects, "checkedObjectscheckedObjectscheckedObjects");
   let currentLanguage = localStorage.getItem("i18nextLng");
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  let currentMeetingID = Number(
+    localStorage.getItem("viewProposeDatePollMeetingID")
+  );
 
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
@@ -46,87 +59,104 @@ const ViewParticipantsDates = () => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: Number(currentMeetingID),
     };
-    dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+
+    if (currentMeetingID > 0) {
+      dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+      dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+    } else {
+    }
+    return () => {
+      localStorage.removeItem("viewProposeDatePollMeetingID");
+    };
   }, []);
+  //Fetching All Saved Data
+  useEffect(() => {
+    try {
+    } catch {}
+    if (
+      getAllMeetingDetails !== null &&
+      getAllMeetingDetails !== undefined
+    ) {
+      console.log(getAllMeetingDetails, "getAllMeetingDetails");
+
+      setMeetingDeatils({
+        MeetingTitle: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
+        MeetingType:
+          getAllMeetingDetails.advanceMeetingDetails.meetingType.type,
+        MeetingLocation: getAllMeetingDetails.advanceMeetingDetails.location,
+        MeetingDiscription:
+          getAllMeetingDetails.advanceMeetingDetails.description,
+      });
+    }
+  }, [getAllMeetingDetails]);
 
   useEffect(() => {
     try {
-      if (
-        NewMeetingreducer.getAllProposedDates !== null &&
-        NewMeetingreducer.getAllProposedDates !== undefined
-      ) {
+      if (getAllProposedDates !== null && getAllProposedDates !== undefined) {
         console.log(
-          NewMeetingreducer.getAllProposedDates,
+          getAllProposedDates,
           "NewMeetingreducergetAllProposedDates"
         );
-        let deadline = NewMeetingreducer.getAllProposedDates.deadLineDate;
+        let deadline = getAllProposedDates.deadLineDate;
         setDeadline(deadline);
         let datesarry = [];
-        NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
-          (data, index) => {
-            console.log(data, "getAllProposedDatesgetAllProposedDates");
-            if (
-              data.proposedDate === "10000101" &&
-              data.endTime === "000000" &&
-              data.startTime === "000000"
-            ) {
-            } else {
-              datesarry.push({
-                endTime: resolutionResultTable(
-                  data.proposedDate + data.endTime
-                ),
-                proposedDate: resolutionResultTable(
-                  data.proposedDate + data.startTime
-                ),
-                proposedDateID: data.proposedDateID,
-                startTime: resolutionResultTable(
-                  data.proposedDate + data.startTime
-                ),
-                EndtimeSend: data.endTime,
-                ProposedDateSend: data.proposedDate,
-                proposedDateIDSend: data.proposedDateID,
-                StartTimeSend: data.startTime,
-              });
-            }
-          }
-        );
-        //For Sending  Date
-
-        let SenddataObject = [];
-
-        NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
-          (data, index) => {
-            SenddataObject.push({
+        getAllProposedDates.meetingProposedDates.map((data, index) => {
+          console.log(data, "getAllProposedDatesgetAllProposedDates");
+          if (
+            data.proposedDate === "10000101" &&
+            data.endTime === "000000" &&
+            data.startTime === "000000"
+          ) {
+          } else {
+            datesarry.push({
+              endTime: resolutionResultTable(data.proposedDate + data.endTime),
+              proposedDate: resolutionResultTable(
+                data.proposedDate + data.startTime
+              ),
+              proposedDateID: data.proposedDateID,
+              startTime: resolutionResultTable(
+                data.proposedDate + data.startTime
+              ),
               EndtimeSend: data.endTime,
               ProposedDateSend: data.proposedDate,
               proposedDateIDSend: data.proposedDateID,
               StartTimeSend: data.startTime,
             });
           }
-        );
+        });
+        //For Sending  Date
+
+        let SenddataObject = [];
+
+        getAllProposedDates.meetingProposedDates.map((data, index) => {
+          SenddataObject.push({
+            EndtimeSend: data.endTime,
+            ProposedDateSend: data.proposedDate,
+            proposedDateIDSend: data.proposedDateID,
+            StartTimeSend: data.startTime,
+          });
+        });
 
         let DefaultDate = [];
         //For Sending Default Date
-        NewMeetingreducer.getAllProposedDates.meetingProposedDates.map(
-          (data, index) => {
-            console.log(data, "datadatadata");
-            if (
-              data.proposedDate === "10000101" &&
-              data.endTime === "000000" &&
-              data.startTime === "000000"
-            ) {
-              DefaultDate.push({
-                EndtimeSend: data.endTime,
-                ProposedDateSend: data.proposedDate,
-                proposedDateIDSend: data.proposedDateID,
-                StartTimeSend: data.startTime,
-              });
-            } else {
-            }
+        getAllProposedDates.meetingProposedDates.map((data, index) => {
+          console.log(data, "datadatadata");
+          if (
+            data.proposedDate === "10000101" &&
+            data.endTime === "000000" &&
+            data.startTime === "000000"
+          ) {
+            DefaultDate.push({
+              EndtimeSend: data.endTime,
+              ProposedDateSend: data.proposedDate,
+              proposedDateIDSend: data.proposedDateID,
+              StartTimeSend: data.startTime,
+            });
+          } else {
           }
-        );
+        });
         setNoneOfAbove(DefaultDate);
         setPrposedData(datesarry);
         setSendProposedData(SenddataObject);
@@ -134,10 +164,8 @@ const ViewParticipantsDates = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [NewMeetingreducer.getAllProposedDates]);
+  }, [getAllProposedDates]);
 
-  // console.log(prposedData, "prposedDataprposedData");
-  console.log(noneOfAbove, "prposedDataprposedData");
   const handleCheckboxChange = (data) => {
     if (checkedObjects.includes(data)) {
       setCheckedObjects(checkedObjects.filter((obj) => obj !== data));
@@ -160,7 +188,6 @@ const ViewParticipantsDates = () => {
     if (selectAll) {
       let defaultarr = [];
       noneOfAbove.forEach((data, index) => {
-        console.log(data, "ProposedDate");
         defaultarr.push({
           ProposedDateID: data.proposedDateIDSend,
           ProposedDate: data.ProposedDateSend,
@@ -172,7 +199,7 @@ const ViewParticipantsDates = () => {
         MeetingID: currentMeetingID,
         ProposedDates: defaultarr,
       };
-      console.log(Data, "DataDataDataData");
+
       dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
     } else {
       let newarr = [];
@@ -202,13 +229,6 @@ const ViewParticipantsDates = () => {
           sm={12}
           className="d-flex align-items-center align-items-center gap-3"
         >
-          <img
-            draggable={false}
-            src={BackArrow}
-            width="20.5px"
-            height="18.13px"
-            className="cursor-pointer"
-          />
           <span className={styles["Prposed_Meeting_heading"]}>
             {t("Propose-meeting-date")}
           </span>
@@ -220,39 +240,22 @@ const ViewParticipantsDates = () => {
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Heading_prposed_meeting"]}>
-                  IT Departmental Meeting lorem. Aenean posuere libero vel ipsum
-                  digniss IT Departmental Meeting lorem. Aenean posuere libero
-                  vel ipsum digniss
+                  {meetingDeatils.MeetingTitle}
                 </span>
               </Col>
             </Row>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Staff_meeting_Heading"]}>
-                  Staff Meeting <span>(Conference Room)</span>
+                  {meetingDeatils.MeetingType}
+                  <span>({meetingDeatils.MeetingLocation})</span>
                 </span>
               </Col>
             </Row>
             <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <p className={styles["Paragraph_Styles"]}>
-                  Description fits in here. Proin at malesuada lorem. Aenean
-                  posuere libero vel ipsum dignissim ultricies viverra non
-                  tellus. Fusce aliquet finibus nisl, et hendrerit nisl
-                  dignissim at. Praesent luctus rutrum lacinia. Nulla lacinia
-                  feugiat sagittis. Aenean at magna aliquet, dignissim ligula
-                  quis, ornare ante. Interdum et malesuada fames ac ante ipsum
-                  primis in faucibus. Ut diam dui, iaculis nec dui vel, commodo
-                  dapibus libero.Vivamus interdum purus sed pellentesque
-                  ultricies. Nullam ut nulla libero. Nam libero urna, pharetra
-                  et dignissim in, malesuada at urna. Aliquam erat volutpat.
-                  Curabitur molestie congue ipsum vitae luctus. Cras sed dolor
-                  eget turpis condimentum maximus et sit amet ipsum. Suspendisse
-                  non nulla vitae metus tincidunt vulputate. Aenean malesuada
-                  lacinia ipsum, vitae porta ex elementum ac. Nulla vestibulum
-                  cursus felis, vel molestie nibh mollis sit amet. Suspendisse
-                  nec dui semper, lobortis est nec, aliquet felis. Etiam sed
-                  odio in diam faucibus pretium.
+                  {meetingDeatils.MeetingDiscription}
                 </p>
               </Col>
             </Row>
@@ -388,6 +391,7 @@ const ViewParticipantsDates = () => {
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Button_ProposedMeeting"]}
+                  onClick={() => setViewProposeDatePoll(false)}
                 />
               </Col>
             </Row>
