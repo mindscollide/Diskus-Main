@@ -1080,6 +1080,10 @@ const setGroupPollsApi = {
   RequestMethod: "ServiceManager.SetGroupPolls",
 };
 
+const setTaskGroupIDApi = {
+  RequestMethod: "ServiceManager.GetTasksByGroupID",
+};
+
 export {
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
@@ -1371,4 +1375,5 @@ export {
   RetrieveGroupDocuments,
   getPollByGroupIDApi,
   setGroupPollsApi,
+  setTaskGroupIDApi,
 };
