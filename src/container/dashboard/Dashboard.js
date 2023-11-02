@@ -98,6 +98,7 @@ const Dashboard = () => {
     assignees,
     NewMeetingreducer,
     MeetingOrganizersReducer,
+    MeetingAgendaReducer,
     PollsReducer,
     CommitteeReducer,
   } = useSelector((state) => state);
@@ -1610,7 +1611,7 @@ const Dashboard = () => {
             MeetingOrganizersReducer.LoadingMeetingOrganizer ||
             MeetingOrganizersReducer.Loading ||
             PollsReducer.Loading ||
-            CommitteeReducer.Loading ? (
+            CommitteeReducer.Loading  || MeetingAgendaReducer.Loading? ? (
               <Loader />
             ) : null}
           </Layout>

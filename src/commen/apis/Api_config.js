@@ -1059,6 +1059,19 @@ const getPollbyCommitteeIdRM = {
 const setCommitteePollsRM = {
   RequestMethod: "ServiceManager.SetCommitteePolls",
 };
+
+const getAgendaVotingDetails = {
+  RequestMethod: "ServiceManager.GetAgendaVotingDetails",
+};
+
+const getAllVotingResultDisplay = {
+  RequestMethod: "ServiceManager.GetAllVotingResultDisplay",
+};
+
+const saveAgendaVoting = {
+  RequestMethod: "ServiceManager.SaveAgendaVoting",
+};
+
 export {
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
@@ -1337,6 +1350,11 @@ export {
   getAllAttendanceMeeting,
   saveMeetingAttendance,
   setMeetingProposedDatesResponse,
+
+  //Agenda Voting
+  getAgendaVotingDetails,
+  getAllVotingResultDisplay,
+  saveAgendaVoting,
   //Aun MeetingMaterial
   getAllMeetingMaterial,
   downloadMeetingAttendanceReport,
