@@ -36,8 +36,8 @@ import {
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 
-import ModalToDoList from "./CreateTodo/ModalToDoList";
-import ModalViewToDo from "./ViewTodo/ModalViewToDo";
+import ModalToDoList from "../../todolistModal/ModalToDoList";
+import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
 import {
   cleareMessage,
@@ -61,7 +61,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 
-const CreateTodoCommittee = () => {
+const TodoList = () => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -418,7 +418,7 @@ const CreateTodoCommittee = () => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       className: "deadLineTodo",
-      width: "220px",
+      width: "180px",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
@@ -829,7 +829,7 @@ const CreateTodoCommittee = () => {
   ]);
 
   const scroll = {
-    y: "64vh",
+    y: "58vh",
     scrollbar: {
       // You can adjust the width and distance as needed
       verticalWidth: 20, // Width of the vertical scrollbar
@@ -837,53 +837,178 @@ const CreateTodoCommittee = () => {
       // Other scrollbar options
     },
   };
-  const emptyText = () => {
-    return (
-      <Row>
-        <Col
-          sm={12}
-          md={12}
-          lg={12}
-          className="d-flex flex-column align-items-center"
-        >
-          <img src={TodoMessageIcon1} alt="" />
-          <span className="mt-4"> {t("No-Task")}</span>
-        </Col>
-      </Row>
-    );
-  };
 
   return (
     <>
-      <div className="todolistContainer_Committee">
-        <Row className="my-3">
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end ">
+      <div className="todolistContainer">
+        <Row className="d-flex justify-content-start align-items-center   mt-3">
+          <Col md={2} sm={4} lg={2} className="todolist-heading-size">
+            {t("Todo-list")}
+          </Col>
+
+          <Col lg={2} md={2} sm={4} className="todolist-create-btn">
             <Button
+              className={"btn btn-primary"}
+              icon={<Plus width={20} height={20} fontWeight={800} />}
+              variant={"Primary"}
               text={t("Create-to-do-list")}
               onClick={modalHandler}
-              icon={<Plus width={20} height={20} fontWeight={800} />}
-              className={"Create_TodoBtn_Button"}
             />
+          </Col>
+          <Col
+            md={8}
+            lg={8}
+            sm={4}
+            className="todo-list-field todolist-search-row "
+          >
+            <Search
+              width="24px"
+              height="24px"
+              className="search-Icon toExpandSearch Meeting"
+              onClick={ShowHide}
+            />
+            {isExpand && (
+              <>
+                {currentLanguage === "ar" ? (
+                  <div className="expandableMenuSearch">
+                    <Form className="d-flex">
+                      {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
+                      <TextField
+                        width="180px"
+                        name="AssignedToName"
+                        value={searchData.AssignedToName}
+                        className="mx-2 "
+                        placeholder={t("Assigned-to")}
+                        labelClass="textFieldSearch"
+                        change={searchHandler}
+                      />
+                      <TextField
+                        width="250px"
+                        name="Title"
+                        value={searchData.Title}
+                        // className="mx-4"
+                        placeholder={t("Task")}
+                        labelClass="textFieldSearch"
+                        change={searchHandler}
+                      />
+
+                      <Button
+                        className="btn btn-primary meeting search me-3"
+                        variant={"Primary"}
+                        text={<ArrowLeft />}
+                        type="submit"
+                        onClick={search}
+                      />
+                      <Button
+                        className="btn  btn-primary meeting search"
+                        variant={"Primary"}
+                        type="reset"
+                        text={<ArrowCounterclockwise />}
+                        onClick={resetSearchBar}
+                      />
+                    </Form>
+                  </div>
+                ) : (
+                  <div className="expandableMenuSearch">
+                    <Form className="d-flex">
+                      {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
+                      <TextField
+                        applyClass="form-control2"
+                        width="250px"
+                        name="Title"
+                        value={searchData.Title}
+                        className="mx-2"
+                        placeholder={t("Task")}
+                        labelClass="textFieldSearch"
+                        change={searchHandler}
+                      />
+                      <TextField
+                        applyClass="form-control2"
+                        width="180px"
+                        name="AssignedToName"
+                        value={searchData.AssignedToName}
+                        className="mx-2"
+                        placeholder={t("Assigned-to")}
+                        labelClass="textFieldSearch"
+                        change={searchHandler}
+                      />
+                      <Button
+                        className="btn btn-primary meeting search me-3"
+                        variant={"Primary"}
+                        text={<ArrowRight />}
+                        onClick={search}
+                      />
+                      <Button
+                        className="btn  btn-primary meeting search"
+                        variant={"Primary"}
+                        type="reset"
+                        text={<ArrowCounterclockwise />}
+                        onClick={resetSearchBar}
+                      />
+                    </Form>
+                  </div>
+                )}
+              </>
+            )}
           </Col>
         </Row>
         <Row>
           <Col>
             <Row className="row-scroll-todolist">
               <Col className="">
-                <TableToDo
-                  sortDirections={["descend", "ascend"]}
-                  column={columnsToDo}
-                  className={"ToDo"}
-                  rows={rowsToDo}
-                  scroll={scroll}
-                  // onChange={tableTodoChange}
-                  pagination={false}
-                  locale={{
-                    emptyText: emptyText(), // Set your custom empty text here
-                  }}
-                />
-
-                {/* {rowsToDo.length > 0 && (
+                {rowsToDo.length > 0 &&
+                rowsToDo !== undefined &&
+                rowsToDo !== null ? (
+                  <TableToDo
+                    sortDirections={["descend", "ascend"]}
+                    column={columnsToDo}
+                    className={"ToDo"}
+                    rows={rowsToDo}
+                    scroll={scroll}
+                    // onChange={tableTodoChange}
+                    pagination={false}
+                  />
+                ) : (
+                  <Paper>
+                    <ResultMessage
+                      icon={
+                        <img
+                          draggable="false"
+                          src={TodoMessageIcon1}
+                          width={250}
+                          alt=""
+                        />
+                      }
+                      title="No-Task"
+                      className="NoTaskTodo"
+                    />
+                  </Paper>
+                )}
+                {rowsToDo.length > 0 && (
                   <Row className="">
                     <Col
                       lg={12}
@@ -924,7 +1049,7 @@ const CreateTodoCommittee = () => {
                       </Row>
                     </Col>
                   </Row>
-                )} */}
+                )}
               </Col>
             </Row>
           </Col>
@@ -943,16 +1068,22 @@ const CreateTodoCommittee = () => {
           viewFlagToDo={viewFlagToDo}
           setViewFlagToDo={setViewFlagToDo}
         />
+      ) : updateFlagToDo ? (
+        <ModalUpdateToDo
+          updateFlagToDo={updateFlagToDo}
+          setUpdateFlagToDo={setUpdateFlagToDo}
+          setModalsflag={setModalsflag}
+        />
       ) : null}
-      {/* <Notification setOpen={setOpen} open={open.open} message={open.message} /> */}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
-      {/* {toDoListReducer.Loading ||
+      {toDoListReducer.Loading ||
       todoStatus.Loading ||
       LanguageReducer.Loading ||
       uploadReducer.Loading ? (
         <Loader />
-      ) : null} */}
+      ) : null}
     </>
   );
 };
-export default CreateTodoCommittee;
+export default TodoList;
