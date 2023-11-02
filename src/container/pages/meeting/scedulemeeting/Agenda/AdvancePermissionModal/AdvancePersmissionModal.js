@@ -86,6 +86,22 @@ const AdvancePersmissionModal = () => {
     }
   });
 
+  //SideBar Options Click
+  const handleOptionsClickSideBar = (index, agendaID) => {
+    let NewData = {
+      AgendaID: agendaID,
+    };
+    dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+  };
+
+  //SideBar Options Click MainAgenda
+  const handleOptionsClickSideBarMainAgenda = (index, agendaID) => {
+    let NewData = {
+      AgendaID: agendaID,
+    };
+    dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+  };
+
   useEffect(() => {
     if (
       NewMeetingreducer.meetingMaterial !== null &&
@@ -108,34 +124,20 @@ const AdvancePersmissionModal = () => {
       NewMeetingreducer.agendaRights !== undefined
     ) {
       console.log(NewMeetingreducer.agendaRights, "agendaRights");
-      if (NewMeetingreducer.agendaRights.agendaUserRights.length > 0) {
-        let agendaUserRightsarray = [];
-        NewMeetingreducer.agendaRights.agendaUserRights.map(
-          (agendaRightsData, agendaRightsIndex) => {
-            console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
-            agendaUserRightsarray.push(agendaRightsData);
-            setSelectedRole(agendaRightsData.userRole.role);
-          }
-        );
-        setMembers(agendaUserRightsarray);
-      }
+      let agendaUserRightsarray = [];
+      NewMeetingreducer.agendaRights.agendaUserRights.map(
+        (agendaRightsData, agendaRightsIndex) => {
+          console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
+          agendaUserRightsarray.push(agendaRightsData);
+          setSelectedRole(agendaRightsData.userRole.role);
+        }
+      );
+      setMembers(agendaUserRightsarray);
     }
   }, [NewMeetingreducer.agendaRights]);
 
-  console.log(sidebarOptions, "newDatanewDatanewDatanewData");
-  console.log(members, "membersmembers");
-  console.log(members, "membersmembers");
-  console.log(selectedRole, "selectedRoleselectedRole");
-
   const handleGetAllMeetingMaterialApiFunction = () => {};
 
-  //SideBar Options Click
-  const handleOptionsClickSideBar = () => {
-    let NewData = {
-      AgendaID: "1222",
-    };
-    dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
-  };
   return (
     <>
       <section>
@@ -241,15 +243,19 @@ const AdvancePersmissionModal = () => {
                                           styles["Heading_introductions"]
                                         }
                                       >
-                                        <span
-                                          onClick={handleOptionsClickSideBar}
-                                        >
+                                        <span>
                                           {index + 1}
                                           <span>.</span>
                                         </span>{" "}
                                         <span
                                           className={
                                             styles["Heading_introductions"]
+                                          }
+                                          onClick={() =>
+                                            handleOptionsClickSideBarMainAgenda(
+                                              index,
+                                              data.agendaID
+                                            )
                                           }
                                         >
                                           {data.agendaName}
@@ -422,13 +428,17 @@ const AdvancePersmissionModal = () => {
                                                               "Heading_introductions"
                                                             ]
                                                           }
-                                                          onClick={
-                                                            handleOptionsClickSideBar
-                                                          }
                                                         >
                                                           {index + 1}.
                                                           {SubAgendaIndex + 1}{" "}
-                                                          <span>
+                                                          <span
+                                                            onClick={() =>
+                                                              handleOptionsClickSideBar(
+                                                                index,
+                                                                SubAgendaData.agendaID
+                                                              )
+                                                            }
+                                                          >
                                                             {
                                                               SubAgendaData.agendaName
                                                             }
