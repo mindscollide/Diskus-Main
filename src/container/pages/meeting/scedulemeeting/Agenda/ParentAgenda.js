@@ -8,6 +8,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { useDispatch } from "react-redux";
 import {
+  getMeetingMaterialAPI,
   showAdvancePermissionModal,
   showMainAgendaItemRemovedModal,
   showVoteAgendaModal,
@@ -34,6 +35,8 @@ import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import Key from "../../../../../assets/images/KEY.svg";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import { getRandomUniqueNumber } from "./drageFunction";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ParentAgenda = ({
   data,
@@ -45,9 +48,12 @@ const ParentAgenda = ({
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
 }) => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
+  console.log(rows, "rowsrowsrows");
+  const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
-
+  let currentMeetingID = localStorage.getItem("meetingID");
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);
@@ -120,6 +126,11 @@ const ParentAgenda = ({
 
   const openAdvancePermissionModal = () => {
     dispatch(showAdvancePermissionModal(true));
+    let meetingMaterialData = {
+      // MeetingID: Number(currentMeetingID),
+      MeetingID: 1785,
+    };
+    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   };
 
   const openVoteMOdal = () => {
@@ -148,6 +159,12 @@ const ParentAgenda = ({
   const apllyLockOnParentAgenda = (parentIndex) => {
     const exists = mainLock.some((item) => {
       if (item === parentIndex) {
+        //Agenda Lock Api Applied
+        // let Data = {
+        //   AgendaID: "1223",
+        //   Islocked: true,
+        // };
+        // dispatch(UpateMeetingStatusLockApiFunc(navigate, t, Data));
         return true;
       }
       return false;

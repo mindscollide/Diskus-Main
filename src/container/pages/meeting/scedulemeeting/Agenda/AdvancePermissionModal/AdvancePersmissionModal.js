@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AdvancePermissionModal.module.css";
 import { Modal, Button, Switch } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import {
+  GetAllUserAgendaRightsApiFunc,
+  SaveUserAttachmentsPermissionApiFunc,
   showAdvancePermissionConfirmation,
   showAdvancePermissionModal,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -26,76 +28,24 @@ const AdvancePersmissionModal = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
   const [sidebarindex, setSidebarindex] = useState(0);
+  const [selectedRole, setSelectedRole] = useState("All");
   const [subAgendaExpand, setsubAgendaExpand] = useState(false);
   // Initialize state for members data
-  const [memberData, setMemberData] = useState([]);
-  const [sidebarOptions, setsidebarOptions] = useState([
+  const [memberData, setMemberData] = useState([
     {
-      title: t("Introduction"),
-      IntroductionFiles: [
-        {
-          name: "Axis.Diskus.Com",
-        },
-        {
-          name: "Axis.Diskus.Com",
-        },
-        {
-          name: "Axis.Diskus.Com",
-        },
-        {
-          name: "Axis.Diskus.Com",
-        },
-        {
-          name: "Axis.Diskus.Com",
-        },
-      ],
-      SubAgendaOptions: [
-        { SubTitle: "Get New Agenda For You Knowledge and we are" },
-      ],
-    },
-    {
-      title: t("Ceo-report"),
-      IntroductionFiles: [],
-    },
-    {
-      title: t("Finance-summary"),
-      IntroductionFiles: [],
-    },
-    {
-      title: t("Functional-review"),
-      IntroductionFiles: [],
-    },
-    {
-      title: t("Closing-report"),
-      IntroductionFiles: [],
+      userName: "",
+      canView: false,
+      canModify: false,
     },
   ]);
+  const [sidebarOptions, setsidebarOptions] = useState([]);
   const options = [
     { value: "All", label: "All" },
     { value: "organizer", label: "organizer" },
     { value: "participant", label: "participant" },
     { value: "Agenda Contributor", label: "Agenda Contributor" },
   ];
-  const [members, setMembers] = useState([
-    {
-      Name: "Saif Ul Islam",
-    },
-    {
-      Name: "Owais Wajid Khan",
-    },
-    {
-      Name: "Aun Naqvi",
-    },
-    {
-      Name: "Ali Raza Mamdani",
-    },
-    {
-      Name: "Syed Ali Raza",
-    },
-    {
-      Name: "Huzeifa Jahangir",
-    },
-  ]);
+  const [members, setMembers] = useState([]);
   const OpenConfirmation = () => {
     dispatch(showAdvancePermissionModal(false));
     dispatch(showAdvancePermissionConfirmation(true));
@@ -110,14 +60,118 @@ const AdvancePersmissionModal = () => {
     setsubAgendaExpand(!subAgendaExpand);
   };
 
-  const handleSwitchChange = (index, field) => {
-    // Create a copy of the memberData array
-    const updatedMemberData = [...memberData];
-    // Update the specific field for the member at the given index
-    updatedMemberData[index][field] = !updatedMemberData[index][field];
-    // Update the state with the new data
-    setMemberData(updatedMemberData);
+  const handleSwitchChangeView = (checked, data, index) => {
+    setMembers((prev) => {
+      return prev.map((memberdata, index) => {
+        if (memberdata.userID === data.userID) {
+          return {
+            ...memberdata,
+            canView: checked,
+          };
+        }
+        return memberdata;
+      });
+    });
   };
+
+  const handleSwitchChangeModify = (checked, data, index) => {
+    setMembers((prev) => {
+      return prev.map((memberdata, index) => {
+        if (memberdata.userID === data.userID) {
+          return {
+            ...memberdata,
+            canModify: checked,
+          };
+        }
+        return memberdata;
+      });
+    });
+  };
+  console.log(members, "membersmembersmembers");
+  // Function to handle role selection
+  const handleRoleSelect = (selectedOption) => {
+    console.log(selectedOption, "selectedOptionselectedOption");
+    setSelectedRole(selectedOption.value);
+  };
+
+  // Function to filter members based on the selected role
+
+  //SideBar Options Click
+  const handleOptionsClickSideBar = (index, agendaID) => {
+    let NewData = {
+      AgendaID: agendaID,
+    };
+    dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+  };
+
+  //SideBar Options Click MainAgenda
+  const handleOptionsClickSideBarMainAgenda = (index, agendaID) => {
+    let NewData = {
+      AgendaID: agendaID,
+    };
+    dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+  };
+
+  const handleSaveAdvancedPermissionModal = () => {
+    let newarray = [];
+    members.map((data, index) => {
+      console.log(data, "UserAttachmentPermissions");
+      newarray.push({
+        UserID: data.userID,
+        CanView: data.canView,
+        CanModify: data.canModify,
+      });
+    });
+    let Data = {
+      AgendaID: "1223",
+      UserAttachmentPermissions: newarray,
+    };
+    console.log(Data, "AgendaIDAgendaID");
+    dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
+  };
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.meetingMaterial !== null &&
+      NewMeetingreducer.meetingMaterial !== undefined
+    ) {
+      let newData = [];
+      NewMeetingreducer.meetingMaterial.map(
+        (meetingMaterialData, meetingMaterialIndex) => {
+          console.log(meetingMaterialData, "meetingMatingMaterialData");
+          newData.push(meetingMaterialData);
+        }
+      );
+      setsidebarOptions(newData);
+    }
+  }, [NewMeetingreducer.meetingMaterial]);
+
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.agendaRights !== null &&
+        NewMeetingreducer.agendaRights !== undefined
+      ) {
+        if (NewMeetingreducer.agendaRights?.agendaUserRights?.length > 0) {
+          let agendaUserRightsarray = [];
+          let getUserrightsdetails =
+            NewMeetingreducer.agendaRights.agendaUserRights;
+
+          getUserrightsdetails.map((agendaRightsData, agendaRightsIndex) => {
+            agendaUserRightsarray.push({
+              userName: agendaRightsData.userName,
+              canView: agendaRightsData.canView,
+              canModify: agendaRightsData.canModify,
+              userRole: agendaRightsData.userRole,
+              userID: agendaRightsData.userID,
+            });
+          });
+          setMembers(agendaUserRightsarray);
+        }
+        console.log(NewMeetingreducer, "agendaRightsagendaRights");
+      }
+    } catch {}
+  }, [NewMeetingreducer.agendaRights]);
 
   return (
     <>
@@ -143,7 +197,12 @@ const AdvancePersmissionModal = () => {
                   sm={12}
                   className="d-flex gap-2 align-items-center"
                 >
-                  <img src={Key} height="23.51px" width="23.49px" />
+                  <img
+                    src={Key}
+                    height="23.51px"
+                    width="23.49px"
+                    className="cursor-pointer"
+                  />
                   <span className={styles["Advance_setting_heading"]}>
                     {t("Advanced-permission-settings")}
                   </span>
@@ -166,6 +225,10 @@ const AdvancePersmissionModal = () => {
                       <Select
                         options={options}
                         classNamePrefix={"AdvancePermission"}
+                        onChange={handleRoleSelect}
+                        value={options.find(
+                          (option) => option.value === selectedRole
+                        )}
                       />
                     </Col>
                   </Row>
@@ -194,6 +257,7 @@ const AdvancePersmissionModal = () => {
                       <Row className="mt-2">
                         {sidebarOptions.length > 0
                           ? sidebarOptions.map((data, index) => {
+                              console.log(data, "indexindex");
                               const isLastItem =
                                 index === sidebarOptions.length - 1;
 
@@ -216,17 +280,23 @@ const AdvancePersmissionModal = () => {
                                         <span>
                                           {index + 1}
                                           <span>.</span>
-                                        </span>
+                                        </span>{" "}
                                         <span
                                           className={
                                             styles["Heading_introductions"]
                                           }
+                                          onClick={() =>
+                                            handleOptionsClickSideBarMainAgenda(
+                                              index,
+                                              data.agendaID
+                                            )
+                                          }
                                         >
-                                          {data.title}
+                                          {data.agendaName}
                                         </span>
                                       </span>
 
-                                      <img
+                                      {/* <img
                                         src={
                                           sidebarindex === index &&
                                           expandmenuIntroduction === true
@@ -239,7 +309,7 @@ const AdvancePersmissionModal = () => {
                                         onClick={() => {
                                           handleExpandIntroduction(index);
                                         }}
-                                      />
+                                      /> */}
                                     </section>
                                     <section
                                       className={
@@ -249,7 +319,7 @@ const AdvancePersmissionModal = () => {
                                           : styles["Hidden"]
                                       }
                                     >
-                                      {sidebarindex === index &&
+                                      {/* {sidebarindex === index &&
                                       expandmenuIntroduction === true ? (
                                         <>
                                           <Row className="mt-2">
@@ -340,10 +410,14 @@ const AdvancePersmissionModal = () => {
                                             )}
                                           </Row>
                                         </>
-                                      ) : null}
+                                      ) : null} */}
                                       <Row className="mt-2">
-                                        {data?.SubAgendaOptions?.map(
+                                        {data?.childAgendas?.map(
                                           (SubAgendaData, SubAgendaIndex) => {
+                                            console.log(
+                                              SubAgendaData,
+                                              "SubAgendaDataSubAgendaData"
+                                            );
                                             return (
                                               <>
                                                 <Col
@@ -382,25 +456,30 @@ const AdvancePersmissionModal = () => {
                                                           ]
                                                         }
                                                       >
-                                                        <span>
-                                                          {index}
-                                                          <span>
-                                                            .{SubAgendaData + 1}
-                                                          </span>
-                                                        </span>
                                                         <span
                                                           className={
                                                             styles[
-                                                              "Heading_introductions_"
+                                                              "Heading_introductions"
                                                             ]
                                                           }
                                                         >
-                                                          {
-                                                            SubAgendaData.SubTitle
-                                                          }
+                                                          {index + 1}.
+                                                          {SubAgendaIndex + 1}{" "}
+                                                          <span
+                                                            onClick={() =>
+                                                              handleOptionsClickSideBar(
+                                                                index,
+                                                                SubAgendaData.agendaID
+                                                              )
+                                                            }
+                                                          >
+                                                            {
+                                                              SubAgendaData.agendaName
+                                                            }
+                                                          </span>
                                                         </span>
                                                       </span>
-                                                      <img
+                                                      {/* <img
                                                         src={
                                                           subAgendaExpand
                                                             ? Minus
@@ -416,9 +495,9 @@ const AdvancePersmissionModal = () => {
                                                         onClick={
                                                           subAgendaExpandFunction
                                                         }
-                                                      />
+                                                      /> */}
                                                     </section>
-                                                    {subAgendaExpand ? (
+                                                    {/* {subAgendaExpand ? (
                                                       <>
                                                         <Row className="mt-2">
                                                           <section
@@ -503,7 +582,7 @@ const AdvancePersmissionModal = () => {
                                                           </section>
                                                         </Row>
                                                       </>
-                                                    ) : null}
+                                                    ) : null} */}
                                                   </section>
                                                 </Col>
                                               </>
@@ -560,66 +639,99 @@ const AdvancePersmissionModal = () => {
                         </Col>
                       </Row>
                       <Row>
-                        {members.map((data, index) => {
-                          const isLastItem = index === members.length - 1;
+                        {members
+                          .filter((member) => {
+                            if (selectedRole === "All") {
+                              return true;
+                            } else {
+                              return (
+                                member.userRole?.role?.toLowerCase() ===
+                                selectedRole?.toLowerCase()
+                              );
+                            }
+                          })
+                          .map((data, index) => {
+                            console.log(data, "isLastItemisLastItem");
+                            const isLastItem = index === members.length - 1;
 
-                          return (
-                            <>
-                              <Col lg={6} md={6} sm={6} className="mt-3">
-                                <Row>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span
-                                      className={
-                                        styles["Names_advance_permission"]
-                                      }
+                            return (
+                              <>
+                                <Col lg={6} md={6} sm={6} className="mt-3">
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <span
+                                        className={
+                                          styles["Names_advance_permission"]
+                                        }
+                                      >
+                                        {data.userName}
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col lg={3} md={3} sm={3}>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="m-3"
                                     >
-                                      {data.Name}
-                                    </span>
-                                  </Col>
-                                </Row>
-                              </Col>
-                              <Col lg={3} md={3} sm={3}>
-                                <Row>
-                                  <Col lg={12} md={12} sm={12} className="m-3">
-                                    <Switch
-                                      className={
-                                        styles[
-                                          "AdvancePermission_switches_View"
-                                        ]
-                                      }
-                                      onChange={() =>
-                                        handleSwitchChange(index, "switchView")
-                                      }
-                                    />
-                                  </Col>
-                                </Row>
-                              </Col>
-                              <Col lg={3} md={3} sm={3}>
-                                <Row>
-                                  <Col lg={12} md={12} sm={12} className="m-3">
-                                    <Switch
-                                      className={
-                                        styles["AdvancePermission_switches"]
-                                      }
-                                      onChange={() =>
-                                        handleSwitchChange(index, "switch")
-                                      }
-                                    />
-                                  </Col>
-                                </Row>
-                              </Col>
-                              {!isLastItem && (
-                                <Row>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span
-                                      className={styles["Bottom_line_names"]}
-                                    ></span>
-                                  </Col>
-                                </Row>
-                              )}
-                            </>
-                          );
-                        })}
+                                      <Switch
+                                        checkedValue={data.canView}
+                                        value={memberData.canView}
+                                        className={
+                                          styles[
+                                            "AdvancePermission_switches_View"
+                                          ]
+                                        }
+                                        onChange={(checked) =>
+                                          handleSwitchChangeView(
+                                            checked,
+                                            data,
+                                            index
+                                          )
+                                        }
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col lg={3} md={3} sm={3}>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="m-3"
+                                    >
+                                      <Switch
+                                        checkedValue={data.canModify}
+                                        className={
+                                          styles["AdvancePermission_switches"]
+                                        }
+                                        onChange={(checked) =>
+                                          handleSwitchChangeModify(
+                                            checked,
+                                            data,
+                                            index
+                                          )
+                                        }
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                {!isLastItem && (
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <span
+                                        className={styles["Bottom_line_names"]}
+                                      ></span>
+                                    </Col>
+                                  </Row>
+                                )}
+                              </>
+                            );
+                          })}
                       </Row>
                     </Col>
                   </Row>
@@ -641,7 +753,11 @@ const AdvancePersmissionModal = () => {
                     className={styles["Cancel_Button"]}
                     onClick={OpenConfirmation}
                   />
-                  <Button text={t("Save")} className={styles["Save_Button"]} />
+                  <Button
+                    text={t("Save")}
+                    className={styles["Save_Button"]}
+                    onClick={handleSaveAdvancedPermissionModal}
+                  />
                 </Col>
               </Row>
             </>

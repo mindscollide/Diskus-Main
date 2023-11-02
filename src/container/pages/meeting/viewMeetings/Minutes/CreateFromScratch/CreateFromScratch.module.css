@@ -1,0 +1,191 @@
+.Box_Minutes {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 92px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  position: relative !important;
+  margin-left: 12px !important;
+  margin-top: 15px !important;
+}
+
+.Title_File {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+}
+
+.Date_Minutes_And_time {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+}
+
+.Uploaded_heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.RedCrossClass {
+  position: absolute !important;
+  right: -6px;
+  top: -4px;
+  cursor: pointer !important;
+}
+
+.Show_more_Styles {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+  text-decoration: underline;
+  cursor: pointer !important;
+}
+
+.Name {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+}
+
+.Profile_minutes {
+  border-radius: 50% !important;
+}
+
+.Line_heigh {
+  margin-top: 7px !important;
+  line-height: 15px !important;
+}
+
+.quill-height-addNote {
+  border-top: 1px solid lightgrey;
+  height: 18vh !important;
+  border-radius: 3px !important;
+  position: relative;
+}
+
+.quill-height-addNote .ql-toolbar.ql-snow {
+  color: #a2a2a2 !important;
+}
+
+.Add-note-QuillRow {
+  position: relative;
+  margin-top: 20px !important;
+  margin-bottom: 10px !important;
+}
+
+.RedCrossForEdit {
+  position: absolute !important;
+  right: 7px !important;
+  top: -7px !important;
+}
+
+.RedCrossForEdit_AfterSave {
+  position: absolute !important;
+  right: 14px !important;
+  top: -7px !important;
+}
+
+.CancelButtonOnSaveAgendaImport {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.CancelButtonOnSaveAgendaImport:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.SaveButtonOnSaveAgendaImport {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.SaveButtonOnSaveAgendaImport:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.CreateAnotherScratchBtn {
+  color: #5f78d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  width: 100% !important;
+  height: 39px !important;
+  border: 1px dashed #e1e1e1 !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.CreateAnotherScratchBtn:is(:hover, :active, :focus, :focus-visible) {
+  color: #5f78d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  width: 100% !important;
+  height: 39px !important;
+  border: 1px dashed #e1e1e1 !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.Scroller {
+  height: 30vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.CreateFromScratchScroller {
+  height: 50vh !important;
+  overflow-x: hidden !important;
+}
+
+.SaveCreateFromScratch {
+  padding-right: 25px !important;
+}
+
+.CreateFromScratchScroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.CreateFromScratchScroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

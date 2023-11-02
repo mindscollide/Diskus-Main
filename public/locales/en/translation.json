@@ -1576,5 +1576,8 @@
   "Absent": "Absent",
   "Present": "Present",
   "Remote": "Remote",
+  "status-not-updated": "status Not Updated",
+  "Status-updated": "Status Updated",
+  "Meeting-view": "Meeting View",
   "Group-detail": "Group detail"
 }
