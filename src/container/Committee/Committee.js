@@ -632,11 +632,7 @@ const Committee = () => {
           </>
         )}
       </div>
-      {CommitteeReducer.Loading ||
-      LanguageReducer.Loading ||
-      DataRoomReducer.Loading ? (
-        <Loader />
-      ) : null}
+      {LanguageReducer.Loading || DataRoomReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {showModal ? (
         <ModalArchivedCommittee
