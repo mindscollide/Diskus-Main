@@ -1548,5 +1548,7 @@
   "status-not-updated": "status Not Updated",
   "Status-updated": "Status Updated",
   "Meeting-view": "Meeting View",
-  "Group-detail": "Group detail"
+  "Group-detail": "Group detail",
+  "RSVP-allowed-and-notify": "RSVP allowed and notify meeting organizer when members RSVP",
+  "RSVP-not-allowed": "RSVP not allowed "
 }

@@ -2,68 +2,25 @@ import React from "react";
 import styles from "./CancelButtonModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
-import { showCancelModalmeetingDeitals } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 const CancelButtonModal = ({
-  setSceduleMeeting,
+  setCancelModalView,
+  cancelModalView,
+  setViewAdvanceMeetingModal,
   setMeetingDetails,
-  setRows,
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleNOFunctionality = () => {
-    dispatch(showCancelModalmeetingDeitals(false));
+    setCancelModalView(false);
   };
 
   const handleYesFunctionality = () => {
-    localStorage.removeItem("meetingID");
-    setMeetingDetails({
-      MeetingTitle: "",
-      MeetingType: 0,
-      Location: "",
-      Description: "",
-      Link: "",
-      ReminderFrequency: {
-        value: 0,
-        label: "",
-      },
-      ReminderFrequencyTwo: {
-        value: 0,
-        label: "",
-      },
-      ReminderFrequencyThree: {
-        value: 0,
-        label: "",
-      },
-      Notes: "",
-      groupChat: false,
-      AllowRSPV: false,
-      NotifyMeetingOrganizer: false,
-      RecurringOptions: {
-        value: 0,
-        label: "",
-      },
-      Location: "",
-      IsVideoCall: false,
-    });
-    setRows([
-      {
-        selectedOption: "",
-        dateForView: "",
-        startDate: "",
-        startTime: "",
-        endDate: "",
-        endTime: "",
-      },
-    ]);
-    setSceduleMeeting(false);
-    dispatch(showCancelModalmeetingDeitals(false));
+    setMeetingDetails(false);
+    setViewAdvanceMeetingModal(false);
+    setCancelModalView(false);
   };
 
   return (
@@ -71,12 +28,12 @@ const CancelButtonModal = ({
       {" "}
       <section>
         <Modal
-          show={NewMeetingreducer.cancelModalMeetingDetails}
-          setShow={dispatch(showCancelModalmeetingDeitals)}
+          show={cancelModalView}
+          setShow={setCancelModalView(true)}
           modalHeaderClassName={"d-block"}
           modalFooterClassName={"d-block"}
           onHide={() => {
-            dispatch(showCancelModalmeetingDeitals(false));
+            setCancelModalView(false);
           }}
           ModalBody={
             <>
