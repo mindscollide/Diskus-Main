@@ -31,6 +31,7 @@ import {
   RetriveGeneralMinutesDocuments,
   getAllGeneralMiintuesDocument,
   DeleteGeneralMinutes,
+  UpdateGeneralMinutes,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -3472,6 +3473,100 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t) => {
   };
 };
 
+//Update General meeting
+
+const showUpdateMinutesInit = () => {
+  return {
+    type: actions.UPDATE_GENERAL_MINUTES_INIT,
+  };
+};
+
+const showUpdateMinutesSuccess = (resposne, message) => {
+  return {
+    type: actions.UPDATE_GENERAL_MINUTES_SUCCESS,
+    resposne: resposne,
+    message: message,
+  };
+};
+
+const showUpdateMinutesFailed = (message) => {
+  return {
+    type: actions.UPDATE_GENERAL_MINUTES_FAILED,
+    message: message,
+  };
+};
+
+const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showUpdateMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", UpdateGeneralMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showUpdateMinutesSuccess(
+                  response.data.responseResult,
+                  t("Response-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_02".toLowerCase()
+                )
+            ) {
+              dispatch(showUpdateMinutesFailed(t("No-record-update")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_03".toLowerCase()
+                )
+            ) {
+              dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -3549,4 +3644,5 @@ export {
   SaveMinutesDocumentsApiFunc,
   DocumentsOfMeetingGenralMinutesApiFunc,
   DeleteGeneralMinutesApiFunc,
+  UpdateMinutesGeneralApiFunc,
 };

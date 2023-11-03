@@ -152,7 +152,7 @@ const Minutes = ({ setMinutes }) => {
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [expandedFiles, setExpandedFiles] = useState([]);
-  console.log(messages, "messagesmessagesmessages");
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -211,37 +211,26 @@ const Minutes = ({ setMinutes }) => {
     try {
       if (
         NewMeetingreducer.generalMinutes !== null &&
-        NewMeetingreducer.generalMinutes !== undefined &&
-        NewMeetingreducer.generalMinutesDocument !== undefined &&
-        NewMeetingreducer.generalMinutesDocument !== null
+        NewMeetingreducer.generalMinutes
       ) {
         console.log(
           NewMeetingreducer.generalMinutes,
           "generalMinutesgeneralMinutes"
         );
-        let getDocumentDetail = NewMeetingreducer.generalMinutesDocument.data;
         if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
-          let newarr;
-          NewMeetingreducer.generalMinutes.meetingMinutes.forEach(
-            (data, index) => {
-              if (data.minutesAttachmets.length > 0) {
-                data.minutesAttachmets.map((newData, index) => {
-                  newarr = getDocumentDetail.filter((newData2, index) => {
-                    return newData.fileID === newData2.pK_FileID;
-                  });
-                });
-              }
-              // newarr.push(data);
-            }
-          );
+          let newarr = [];
+          NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
+            console.log(data, "meetingMinutesmeetingMinutes");
+            newarr.push(data);
+            data.minutesAttachmets.map((attachmentDoc, attachmentIndex) => {
+              console.log(attachmentDoc, "attachmentDocattachmentDoc");
+            });
+          });
           setMessages(newarr);
         }
       }
     } catch {}
-  }, [
-    NewMeetingreducer.generalMinutes,
-    NewMeetingreducer.generalMinutesDocument,
-  ]);
+  }, [NewMeetingreducer.generalMinutes]);
 
   useEffect(() => {
     try {
@@ -265,32 +254,34 @@ const Minutes = ({ setMinutes }) => {
 
   console.log(messages, "messagesmessagesmessages");
   console.log(expandedFiles, "expandedFilesexpandedFiles");
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
-  //       NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
-  //     ) {
-  //       console.log(
-  //         NewMeetingreducer.generalminutesDocumentForMeeting,
-  //         "NewMeetingreducergeneralminutesDocumentForMeeting"
-  //       );
-  //       if (
-  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
-  //       ) {
-  //         let FileID;
-  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
-  //           (docs, index) => {
-  //             docs.files.map((filedata, index) => {
-  //               console.log(filedata, "filedatafiledata");
-  //               FileID = filedata.pK_FileID;
-  //             });
-  //           }
-  //         );
-  //       }
-  //     }
-  //   } catch {}
-  // }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
+
+  // all Meeting Document
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
+        NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
+      ) {
+        console.log(
+          NewMeetingreducer.generalminutesDocumentForMeeting,
+          "NewMeetingreducergeneralminutesDocumentForMeeting"
+        );
+        if (
+          NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
+        ) {
+          let FileID;
+          NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
+            (docs, index) => {
+              docs.files.map((filedata, index) => {
+                console.log(filedata, "filedatafiledata");
+                FileID = filedata.pK_FileID;
+              });
+            }
+          );
+        }
+      }
+    } catch {}
+  }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
@@ -904,6 +895,7 @@ const Minutes = ({ setMinutes }) => {
                                     src={downArrow}
                                     width="18.71px"
                                     height="9.36px"
+                                    className="cursor-pointer"
                                     onClick={handleExpandShowFiles}
                                   />
                                 </Col>
