@@ -2014,6 +2014,7 @@ const setTasksByCommitteeApi = (navigate, t, data) => {
   };
 };
 
+// Delete Committees Polls
 const deleteCommitteePoll_init = () => {
   return {
     type: actions.DELETECOMMITTEEPOLLS_INIT,
@@ -2070,12 +2071,18 @@ const deleteCommitteePollApi = (navigate, t, data) => {
                   t("Record-deleted")
                 )
               );
-              // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
-              // let Data = {
-              //   CommitteeID: Number(ViewCommitteeID),
-              // };
-              // dispatch(getTaskCommitteeIDApi(navigate, t, Data));
+              let OrganizationID = localStorage.getItem("organizationID");
+              let Data = {
+                CommitteeID: Number(ViewCommitteeID),
+                OrganizationID: Number(OrganizationID),
+                CreatorName: "",
+                PollTitle: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(GetPollsByCommitteeIDapi(navigate, t, Data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2109,6 +2116,7 @@ const deleteCommitteePollApi = (navigate, t, data) => {
   };
 };
 
+// Delete Group Polls
 const deleteGroupPoll_init = () => {
   return {
     type: actions.DELETEMEETINGPOLLS_INIT,
@@ -2162,12 +2170,17 @@ const deleteGroupPollApi = (navigate, t, data) => {
                   t("Record-deleted")
                 )
               );
-              // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-
-              // let Data = {
-              //   CommitteeID: Number(ViewCommitteeID),
-              // };
-              // dispatch(getTaskCommitteeIDApi(navigate, t, Data));
+              let OrganizationID = localStorage.getItem("organizationID");
+              let ViewGroupID = localStorage.getItem("ViewGroupID");
+              let Data = {
+                GroupID: Number(ViewGroupID),
+                OrganizationID: Number(OrganizationID),
+                CreatorName: "",
+                PollTitle: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(getPollsByGroupMainApi(navigate, t, Data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2202,6 +2215,7 @@ const deleteGroupPollApi = (navigate, t, data) => {
   };
 };
 
+// Delete Meeting Polls
 const deleteMeetingPoll_init = () => {
   return {
     type: actions.DELETEMEETINGPOLLS_INIT,
@@ -2255,12 +2269,18 @@ const deleteMeetingPollApi = (navigate, t, data) => {
                   t("Record-deleted")
                 )
               );
-              // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              let currentMeetingID = Number(localStorage.getItem("meetingID"));
+              let OrganizationID = localStorage.getItem("organizationID");
 
-              // let Data = {
-              //   CommitteeID: Number(ViewCommitteeID),
-              // };
-              // dispatch(getTaskCommitteeIDApi(navigate, t, Data));
+              let Data = {
+                MeetingID: currentMeetingID,
+                OrganizationID: Number(OrganizationID),
+                CreatorName: "",
+                PollTitle: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

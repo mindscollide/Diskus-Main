@@ -25,6 +25,7 @@ import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../commen/functions/date_formater";
 import {
+  deleteGroupPollApi,
   getPollsByGroupMainApi,
   getPollsByPollIdApi,
 } from "../../../store/actions/Polls_actions";
@@ -98,6 +99,8 @@ const GroupViewPolls = ({
         });
         console.log(newPollsArray, "newPollsArraynewPollsArray");
         setPollsRows(newPollsArray);
+      } else {
+        setPollsRows([]);
       }
     } catch {}
   }, [PollsReducer.getPollByGroupID]);
@@ -109,6 +112,14 @@ const GroupViewPolls = ({
     };
     dispatch(getPollsByPollIdApi(navigate, data, 0, t, setEditPolls));
     // dispatch(showunsavedEditPollsMeetings(false));
+  };
+
+  const handleDeletePoll = (record) => {
+    let data = {
+      PollID: record.pollID,
+      GroupID: parseInt(ViewGroupID),
+    };
+    dispatch(deleteGroupPollApi(navigate, t, data));
   };
 
   console.log(pollsRows, "pollsRowspollsRowspollsRows");
@@ -309,6 +320,7 @@ const GroupViewPolls = ({
                                 width="21.59px"
                                 height="21.59px"
                                 draggable="false"
+                                onClick={() => handleDeletePoll(record)}
                               />
                             </Tooltip>
                           </Col>
@@ -339,6 +351,7 @@ const GroupViewPolls = ({
                             width="21.59px"
                             height="21.59px"
                             draggable="false"
+                            onClick={() => handleDeletePoll(record)}
                           />
                         </Tooltip>
                       </Col>

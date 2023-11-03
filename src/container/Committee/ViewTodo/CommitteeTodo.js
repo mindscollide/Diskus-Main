@@ -33,6 +33,7 @@ import {
   searchTodoListByUser,
   clearResponce,
   SearchTodoListApi,
+  deleteCommitteeTaskApi,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 
@@ -64,6 +65,7 @@ import {
   getTaskCommitteeIDApi,
   setTasksByCommitteeApi,
 } from "../../../store/actions/Polls_actions";
+import { deleteCommitteeTaskRM } from "../../../commen/apis/Api_config";
 
 const CreateTodoCommittee = () => {
   //For Localization
@@ -184,24 +186,11 @@ const CreateTodoCommittee = () => {
   };
 
   const deleteTodolist = async (record) => {
-    await dispatch(
-      updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false, 1)
-    );
-    // if (todoListPageSize !== null && todoListCurrentPage !== null) {
-    //   dispatch(
-    //     SearchTodoListApi(
-    //       navigate,
-    //       searchData,
-    //       todoListCurrentPage,
-    //       todoListPageSize,
-    //       t
-    //     )
-    //   );
-    // } else {
-    //   localStorage.setItem("todoListPage", 1);
-    //   localStorage.setItem("todoListRow", 50);
-    //   dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
-    // }
+    let data = {
+      FK_TID: record.pK_TID,
+      CommitteeID: ViewCommitteeID,
+    };
+    dispatch(deleteCommitteeTaskApi(navigate, t, data));
   };
 
   const columnsToDo = [
