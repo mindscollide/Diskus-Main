@@ -37,7 +37,6 @@ const Card = ({
   handlePollsClickOption,
   handleTasksClickOption,
 }) => {
-  console.log(profile, "profileprofile");
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
     { key: t("In-active"), value: 1 },
