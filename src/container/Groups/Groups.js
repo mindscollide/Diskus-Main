@@ -221,7 +221,7 @@ const Groups = () => {
 
   const viewTitleModal = (data) => {
     localStorage.setItem("ViewGroupID", data.groupID);
-
+    setViewGroupTab(1);
     dispatch(
       getbyGroupID(
         navigate,
