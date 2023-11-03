@@ -1132,6 +1132,10 @@ const DeleteGeneralMinutes = {
   RequestMethod: "ServiceManager.DeleteGeneralMinute",
 };
 
+const UpdateGeneralMinutes = {
+  RequestMethod: "ServiceManager.UpdateGeneralMinute",
+};
+
 export {
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
@@ -1436,4 +1440,5 @@ export {
   getTaskByCommitteeIDApi,
   setCommitteeTaskApi,
   DeleteGeneralMinutes,
+  UpdateGeneralMinutes,
 };

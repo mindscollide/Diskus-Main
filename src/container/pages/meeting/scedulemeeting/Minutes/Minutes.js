@@ -26,6 +26,8 @@ import {
   uploadDocumentsMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
 import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
+import downArrow from "../../../../../assets/images/whitedown.png";
+import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 // import { message, Upload } from "antd";
@@ -149,7 +151,8 @@ const Minutes = ({ setMinutes }) => {
   const [folderID, setFolderID] = useState(0);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
-
+  const [expandedFiles, setExpandedFiles] = useState([]);
+  console.log(messages, "messagesmessagesmessages");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -208,52 +211,86 @@ const Minutes = ({ setMinutes }) => {
     try {
       if (
         NewMeetingreducer.generalMinutes !== null &&
-        NewMeetingreducer.generalMinutes
+        NewMeetingreducer.generalMinutes !== undefined &&
+        NewMeetingreducer.generalMinutesDocument !== undefined &&
+        NewMeetingreducer.generalMinutesDocument !== null
       ) {
         console.log(
           NewMeetingreducer.generalMinutes,
           "generalMinutesgeneralMinutes"
         );
+        let getDocumentDetail = NewMeetingreducer.generalMinutesDocument.data;
         if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
-          let newarr = [];
-          NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
-            console.log(data, "meetingMinutesmeetingMinutes");
-            newarr.push(data);
-          });
+          let newarr;
+          NewMeetingreducer.generalMinutes.meetingMinutes.forEach(
+            (data, index) => {
+              if (data.minutesAttachmets.length > 0) {
+                data.minutesAttachmets.map((newData, index) => {
+                  newarr = getDocumentDetail.filter((newData2, index) => {
+                    return newData.fileID === newData2.pK_FileID;
+                  });
+                });
+              }
+              // newarr.push(data);
+            }
+          );
           setMessages(newarr);
         }
       }
     } catch {}
-  }, [NewMeetingreducer.generalMinutes]);
-
-  console.log(messages, "messagesmessagesmessages");
+  }, [
+    NewMeetingreducer.generalMinutes,
+    NewMeetingreducer.generalMinutesDocument,
+  ]);
 
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
-        NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
+        NewMeetingreducer.generalMinutesDocument !== undefined &&
+        NewMeetingreducer.generalMinutesDocument !== null
       ) {
         console.log(
-          NewMeetingreducer.generalminutesDocumentForMeeting,
-          "NewMeetingreducergeneralminutesDocumentForMeeting"
+          NewMeetingreducer.generalMinutesDocument,
+          "generalMinutesDocument"
         );
-        if (
-          NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
-        ) {
-          let FileID;
-          NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
-            (docs, index) => {
-              docs.files.map((filedata, index) => {
-                console.log(filedata, "filedatafiledata");
-                FileID = filedata.pK_FileID;
-              });
-            }
-          );
-        }
+        let files = [];
+        NewMeetingreducer.generalMinutesDocument.data.map((data, index) => {
+          console.log(data, "undefinedundefined");
+          files.push(data);
+        });
+        setExpandedFiles(files);
       }
     } catch {}
-  }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
+  }, [NewMeetingreducer.generalMinutesDocument]);
+
+  console.log(messages, "messagesmessagesmessages");
+  console.log(expandedFiles, "expandedFilesexpandedFiles");
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
+  //       NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
+  //     ) {
+  //       console.log(
+  //         NewMeetingreducer.generalminutesDocumentForMeeting,
+  //         "NewMeetingreducergeneralminutesDocumentForMeeting"
+  //       );
+  //       if (
+  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
+  //       ) {
+  //         let FileID;
+  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
+  //           (docs, index) => {
+  //             docs.files.map((filedata, index) => {
+  //               console.log(filedata, "filedatafiledata");
+  //               FileID = filedata.pK_FileID;
+  //             });
+  //           }
+  //         );
+  //       }
+  //     }
+  //   } catch {}
+  // }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
@@ -518,6 +555,20 @@ const Minutes = ({ setMinutes }) => {
     );
   };
 
+  const handleResetBtnFunc = () => {
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+    setFileAttachments([]);
+  };
+
+  const handleExpandShowFiles = () => {};
+
   return (
     <section>
       <Row className="mt-3">
@@ -573,6 +624,7 @@ const Minutes = ({ setMinutes }) => {
                   <Button
                     text={t("Reset")}
                     className={styles["Previous_Button"]}
+                    onClick={handleResetBtnFunc}
                   />
 
                   <Button
@@ -756,7 +808,7 @@ const Minutes = ({ setMinutes }) => {
                               className={styles["Box_Minutes"]}
                             >
                               <Row>
-                                <Col lg={9} md={9} sm={9}>
+                                <Col lg={8} md={8} sm={8}>
                                   <Row className="mt-3">
                                     <Col lg={12} md={12} sm={12}>
                                       <span className={styles["Title_File"]}>
@@ -846,6 +898,14 @@ const Minutes = ({ setMinutes }) => {
                                       />
                                     </Col>
                                   </Row>
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={downArrow}
+                                    width="18.71px"
+                                    height="9.36px"
+                                    onClick={handleExpandShowFiles}
+                                  />
                                 </Col>
                               </Row>
                               <img
