@@ -131,6 +131,7 @@ const NewMeeting = () => {
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
+  const [viewAdvanceMeetingModalUnpublish, setViewAdvanceMeetingModalUnpublish] = useState(false);
 
   //  Call all search meetings api
   useEffect(() => {
@@ -969,8 +970,15 @@ const NewMeeting = () => {
         <ViewMeetingModal
           advanceMeetingModalID={advanceMeetingModalID}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          unPublish={false}
         />
-      ) : (
+      ) : viewAdvanceMeetingModalUnpublish ? (
+        <ViewMeetingModal
+          advanceMeetingModalID={advanceMeetingModalID}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
+          unPublish={true}
+        />
+      ):(
         <>
           <Row className="mt-2">
             <Col
@@ -1192,6 +1200,8 @@ const NewMeeting = () => {
                   <UnpublishedProposedMeeting
                     viewProposeDatePoll={viewProposeDatePoll}
                     setViewProposeDatePoll={setViewProposeDatePoll}
+                    setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+                    setViewAdvanceMeetingModalUnpublish={setViewAdvanceMeetingModalUnpublish}
                   />
                 ) : Number(currentView) === 1 ? (
                   <Row className="mt-2">
