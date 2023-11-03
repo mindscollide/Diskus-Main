@@ -39,11 +39,15 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   );
 
   useEffect(() => {
-    if (ViewGroupID !== 0) {
+    if (ViewGroupID !== null) {
       dispatch(getbyGroupID(navigate, ViewGroupID, t));
     }
-  }, [ViewGroupID]);
+  }, []);
 
+  const handleClose = () => {
+    localStorage.removeItem("ViewGroupID");
+    setViewGroupPage(false);
+  };
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">
       <Row className="mt-3">
@@ -110,7 +114,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
                 <Button
                   text={t("Close")}
                   className={styles["closeBtn-view-Group"]}
-                  onClick={() => setViewGroupPage(false)}
+                  onClick={handleClose}
                 />
               </Col>
             </Row>
@@ -128,7 +132,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
                 <Button
                   text={t("Close")}
                   className={styles["closeBtn-view-Group"]}
-                  onClick={() => setViewGroupPage(false)}
+                  onClick={handleClose}
                 />
               </Col>
             </Row>
