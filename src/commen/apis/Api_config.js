@@ -1084,6 +1084,18 @@ const saveAgendaVoting = {
   RequestMethod: "ServiceManager.SaveAgendaVoting",
 };
 
+const getAgendaAndVotingInfo = {
+  RequestMethod: "ServiceManager.GetAgendaAndVotingInfo",
+};
+
+const casteVoteForAgenda = {
+  RequestMethod: "ServiceManager.CasteVoteForAgenda",
+};
+
+const viewAgendaVotingResults = {
+  RequestMethod: "ServiceManager.ViewAgendaVotingResults",
+};
+
 const getPollByGroupIDApi = {
   RequestMethod: "ServiceManager.GetPollsByGroupID",
 };
@@ -1415,6 +1427,9 @@ export {
   getAgendaVotingDetails,
   getAllVotingResultDisplay,
   saveAgendaVoting,
+  getAgendaAndVotingInfo,
+  casteVoteForAgenda,
+  viewAgendaVotingResults,
   //Aun MeetingMaterial
   getAllMeetingMaterial,
   downloadMeetingAttendanceReport,

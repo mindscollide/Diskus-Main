@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { TextField } from "../../../../../components/elements";
+import styles from "./Agenda.module.css";
 
 const Urls = ({ data, index, setRows, rows }) => {
   const { t } = useTranslation();
@@ -20,14 +21,9 @@ const Urls = ({ data, index, setRows, rows }) => {
   return (
     <Row key={index + 5} className="mt-3 mb-2">
       <Col lg={12} md={12} sm={12}>
-        <TextField
-          applyClass={"AgendaTextField"}
-          labelClass={"d-none"}
-          placeholder={t("Enter-url")}
-          name={"UrlMainAgenda"}
-          value={data.urlFieldMain}
-          change={(e) => handleMainAgendaAdditionalFieldChange(index, e)}
-        />
+        <span className={styles["URLTitle_Heading"]}>
+          https://www.youtube.com/watch
+        </span>
       </Col>
     </Row>
   );

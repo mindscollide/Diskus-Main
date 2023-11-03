@@ -25,14 +25,23 @@ import ParentAgenda from "./ParentAgenda";
 import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
+import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 
-const Agenda = ({ setSceduleMeeting }) => {
+const Agenda = ({
+  setSceduleMeeting,
+  setParticipants,
+  setAgenda,
+  setMeetingMaterial,
+  setViewAdvanceMeetingModal,
+  advanceMeetingModalID,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { NewMeetingreducer } = useSelector((state) => state);
   const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
+  const [cancelModalView, setCancelModalView] = useState(false);
 
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
 
@@ -121,6 +130,20 @@ const Agenda = ({ setSceduleMeeting }) => {
     dispatch(showCancelModalAgenda(true));
   };
 
+  const handleCancelBtn = () => {
+    setCancelModalView(true);
+  };
+
+  const handlePreviousBtn = () => {
+    setAgenda(false);
+    setParticipants(true);
+  };
+
+  const handleNextBtn = () => {
+    setAgenda(false);
+    setMeetingMaterial(true);
+  };
+
   return (
     <>
       {savedViewAgenda ? (
@@ -142,12 +165,7 @@ const Agenda = ({ setSceduleMeeting }) => {
                   sm={12}
                   className={styles["Scroller_Agenda"]}
                 >
-                  <Droppable
-                    //  key={`main-agenda-${rows.ID}`}
-                    //  droppableId={`main-agenda-${rows.ID}`}
-                    droppableId="board"
-                    type="PARENT"
-                  >
+                  <Droppable droppableId="board" type="PARENT">
                     {(provided) => (
                       <div ref={provided.innerRef} {...provided.droppableProps}>
                         {rows.length > 0
@@ -170,16 +188,6 @@ const Agenda = ({ setSceduleMeeting }) => {
                                     }
                                     setSubajendaRemoval={setSubajendaRemoval}
                                   />
-                                  {/* Line Seperator */}
-                                  <Row className="mt-3">
-                                    <Col lg={12} md={12} sm={12}>
-                                      <img
-                                        draggable={false}
-                                        src={line}
-                                        className={styles["LineStyles"]}
-                                      />
-                                    </Col>
-                                  </Row>
                                 </>
                               );
                             })
@@ -192,37 +200,6 @@ const Agenda = ({ setSceduleMeeting }) => {
                 </Col>
               </Row>
             </DragDropContext>
-            {/* Seperator For Footer */}
-            <Row className="mt-3">
-              <Col lg={12} md={12} sm={12}>
-                <Button
-                  text={
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-center gap-2 align-items-center"
-                        >
-                          <img
-                            draggable={false}
-                            src={plusFaddes}
-                            height="10.77px"
-                            width="10.77px"
-                          />
-                          <span className={styles["Add_Agen_Heading"]}>
-                            {t("Add-agenda")}
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
-                  }
-                  className={styles["AddMoreBtnAgenda"]}
-                  onClick={addRow}
-                />
-              </Col>
-            </Row>
             <Row className="mt-4">
               <Col
                 lg={12}
@@ -231,26 +208,19 @@ const Agenda = ({ setSceduleMeeting }) => {
                 className="d-flex justify-content-end gap-2"
               >
                 <Button
-                  text={t("Import-previous-agenda")}
-                  className={styles["Agenda_Buttons"]}
-                  onClick={handlePreviousAgenda}
-                />
-                <Button
                   text={t("Cancel")}
-                  className={styles["Agenda_Buttons"]}
-                  onClick={EnableAgendaView}
+                  className={styles["Cancel_Button_Organizers_view"]}
+                  onClick={handleCancelBtn}
                 />
-                <Button text={t("Save")} className={styles["Agenda_Buttons"]} />
-
                 <Button
-                  text={t("Save-and-publish")}
-                  className={styles["Agenda_Buttons"]}
+                  text={t("Previous")}
+                  className={styles["Next_Button_Organizers_view"]}
+                  onClick={handlePreviousBtn}
                 />
-
                 <Button
-                  text={t("Save-and-next")}
-                  className={styles["Save_Agenda_btn"]}
-                  onClick={handleSavedViewAgenda}
+                  text={t("Next")}
+                  className={styles["Next_Button_Organizers_view"]}
+                  onClick={handleNextBtn}
                 />
               </Col>
             </Row>
@@ -287,6 +257,14 @@ const Agenda = ({ setSceduleMeeting }) => {
       {NewMeetingreducer.importPreviousAgendaModal && <ImportPrevious />}
       {NewMeetingreducer.cancelAgenda && (
         <CancelAgenda setSceduleMeeting={setSceduleMeeting} />
+      )}
+      {cancelModalView && (
+        <CancelButtonModal
+          setCancelModalView={setCancelModalView}
+          cancelModalView={cancelModalView}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          setMeetingDetails={setAgenda}
+        />
       )}
     </>
   );

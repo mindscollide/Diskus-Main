@@ -637,6 +637,11 @@ const VoteModal = ({ setenableVotingPage }) => {
     );
   };
 
+  const castVotePage = () => {
+    setenableVotingPage(true);
+    dispatch(showVoteAgendaModal(false));
+  };
+
   useEffect(() => {
     if (MeetingAgendaReducer.ResponseMessage === "Record saved") {
       setTimeout(
@@ -1041,6 +1046,11 @@ const VoteModal = ({ setenableVotingPage }) => {
                   text={t("Cancel")}
                   className={styles["Cancel_Vote_Modal"]}
                   onClick={openConfirmationModal}
+                />
+                <Button
+                  text={t("CastVotePage")}
+                  className={styles["Cancel_Vote_Modal"]}
+                  onClick={castVotePage}
                 />
                 <Button
                   text={t("Save")}
