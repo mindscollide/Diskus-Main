@@ -18,12 +18,17 @@ import {
   GetAllPollsByMeetingIdApiFunc,
   showCancelPolls,
   showUnsavedPollsMeeting,
+  showunsavedEditPollsMeetings,
 } from "../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
-import { GetPollsByCommitteeIDapi } from "../../../../store/actions/Polls_actions";
+import {
+  GetPollsByCommitteeIDapi,
+  getPollsByPollIdApi,
+} from "../../../../store/actions/Polls_actions";
+
 const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -50,8 +55,17 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     setvotePolls(true);
   };
 
-  const handleEditPollsMeeting = () => {
-    setEditPolls(true);
+  const handleEditPollsMeeting = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(getPollsByPollIdApi(navigate, data, 0, t, setEditPolls));
+    dispatch(showunsavedEditPollsMeetings(false));
+
+    // dispatch(showUnsavedPollsMeeting(false));
+    setCreatepoll(false);
+    // setEditPolls(true);
   };
 
   const handleCacnelbutton = () => {
@@ -273,7 +287,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                                 height="21.59px"
                                 alt=""
                                 draggable="false"
-                                onClick={handleEditPollsMeeting}
+                                onClick={() => handleEditPollsMeeting(record)}
                               />
                             </Tooltip>
                           </Col>
@@ -308,6 +322,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                             height="21.59px"
                             alt=""
                             draggable="false"
+                            onClick={() => handleEditPollsMeeting(record)}
                           />
                         </Tooltip>
                       </Col>
@@ -338,7 +353,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(true);
   };
-
+  console.log("editPollseditPolls", editPolls);
   return (
     <>
       {afterViewPolls ? (
@@ -386,42 +401,6 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                             </Col>
                           </Row>
                         </section>
-                        <Row className="mt-5">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end gap-2"
-                          >
-                            <Button
-                              text={t("Clone-meeting")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={enableAfterSavedViewPolls}
-                            />
-
-                            <Button
-                              text={t("Cancel")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={handleCacnelbutton}
-                            />
-
-                            <Button
-                              text={t("Save")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-
-                            <Button
-                              text={t("Save-and-publish")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-
-                            <Button
-                              text={t("Save-and-next")}
-                              className={styles["Save_Button_Polls_meeting"]}
-                              onClick={handleSaveAndnext}
-                            />
-                          </Col>
-                        </Row>
                       </>
                     ) : (
                       <>

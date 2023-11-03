@@ -36,8 +36,8 @@ import {
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 
-import ModalToDoList from "./CreateTodo/ModalToDoList";
-import ModalViewToDo from "./ViewTodo/ModalViewToDo";
+import ModalToDoList from "../../todolistModal/ModalToDoList";
+import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
 import {
   cleareMessage,
@@ -60,12 +60,8 @@ import {
 } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
-import {
-  getTaskCommitteeIDApi,
-  setTasksByCommitteeApi,
-} from "../../../store/actions/Polls_actions";
 
-const CreateTodoCommittee = () => {
+const TodoList = () => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -76,7 +72,6 @@ const CreateTodoCommittee = () => {
     assignees,
     getTodosStatus,
     socketTodoStatusData,
-    PollsReducer,
     LanguageReducer,
     uploadReducer,
   } = state;
@@ -109,30 +104,42 @@ const CreateTodoCommittee = () => {
   const [tableFilterOptions, setTableFilterOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
-  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-  console.log("socketTodoStatusData", PollsReducer);
+
+  console.log("socketTodoStatusData", socketTodoStatusData);
 
   // GET TODOS STATUS
   useEffect(() => {
     dispatch(getTodoStatus(navigate, t));
-
-    if (ViewCommitteeID !== null) {
-      let newData = {
-        CommitteeID: Number(ViewCommitteeID),
-      };
-      dispatch(getTaskCommitteeIDApi(navigate, t, newData));
+    if (todoListPageSize !== null && todoListCurrentPage !== null) {
+      dispatch(
+        SearchTodoListApi(
+          navigate,
+          searchData,
+          todoListCurrentPage,
+          todoListPageSize,
+          t
+        )
+      );
+    } else {
+      localStorage.setItem("todoListPage", 1);
+      localStorage.setItem("todoListRow", 50);
+      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
     }
+    return () => {
+      localStorage.removeItem("todoListPage");
+      localStorage.removeItem("todoListRow");
+    };
   }, []);
 
   //get todolist reducer
   useEffect(() => {
     if (
-      PollsReducer.getTodoCommitteeTask !== null &&
-      PollsReducer.getTodoCommitteeTask !== undefined
+      toDoListReducer.SearchTodolist !== null &&
+      toDoListReducer.SearchTodolist !== undefined
     ) {
-      // setTotalRecords(PollsReducer.SearchTodolist.totalRecords);
-      if (PollsReducer.getTodoCommitteeTask.toDoLists.length > 0) {
-        let dataToSort = [...PollsReducer.getTodoCommitteeTask.toDoLists];
+      setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
+      if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
+        let dataToSort = [...toDoListReducer.SearchTodolist.toDoLists];
         const sortedTasks = dataToSort.sort((taskA, taskB) => {
           const deadlineA = taskA?.deadlineDateTime;
           const deadlineB = taskB?.deadlineDateTime;
@@ -148,14 +155,42 @@ const CreateTodoCommittee = () => {
     } else {
       setRowToDo([]);
     }
-  }, [PollsReducer.getTodoCommitteeTask]);
+  }, [toDoListReducer.SearchTodolist]);
+
+  useEffect(() => {
+    if (
+      toDoListReducer.SocketTodoActivityData !== null &&
+      toDoListReducer.SocketTodoActivityData !== undefined
+    ) {
+      // setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
+      let dataToSort = [toDoListReducer.SocketTodoActivityData, ...rowsToDo];
+      const sortedTasks = dataToSort.sort((taskA, taskB) => {
+        const deadlineA = taskA?.deadlineDateTime;
+        const deadlineB = taskB?.deadlineDateTime;
+
+        // Compare the deadlineDateTime values as numbers for sorting
+        return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+      });
+      setRowToDo(sortedTasks);
+    } else {
+      let dataToSort = [...rowsToDo];
+      const sortedTasks = dataToSort.sort((taskA, taskB) => {
+        const deadlineA = taskA?.deadlineDateTime;
+        const deadlineB = taskB?.deadlineDateTime;
+
+        // Compare the deadlineDateTime values as numbers for sorting
+        return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
+      });
+      setRowToDo(sortedTasks);
+    }
+  }, [toDoListReducer.SocketTodoActivityData]);
 
   // SET STATUS VALUES
   useEffect(() => {
     let optionsArr = [];
     let newOptionsFilter = [];
     if (todoStatus.Response !== null && todoStatus.Response !== "") {
-      todoStatus.Response.forEach((data, index) => {
+      todoStatus.Response.map((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
           status: data.status,
@@ -175,6 +210,67 @@ const CreateTodoCommittee = () => {
     setShow(true);
   };
 
+  // for Socket Update meeting status update
+  useEffect(() => {
+    if (
+      toDoListReducer.socketTodoStatusData &&
+      Object.keys(toDoListReducer.socketTodoStatusData).length > 0
+    ) {
+      let tableRowsData = [...rowsToDo];
+      var foundIndex = tableRowsData.findIndex(
+        (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid
+      );
+      if (foundIndex !== -1) {
+        if (Number(toDoListReducer.socketTodoStatusData.todoStatusID) === 6) {
+          let removeDeleteIndex = tableRowsData.filter(
+            (data, index) =>
+              data.pK_TID !== toDoListReducer.socketTodoStatusData.todoid
+          );
+          setRowToDo(removeDeleteIndex);
+        } else {
+          let newArr = tableRowsData.map((rowObj, index) => {
+            if (index === foundIndex) {
+              let statusID = toDoListReducer.socketTodoStatusData.todoStatusID;
+              const newData = {
+                ...rowObj,
+                status: {
+                  pK_TSID: statusID,
+                  status:
+                    statusID === 1
+                      ? "In Progress"
+                      : statusID === 2
+                      ? "Pending"
+                      : statusID === 3
+                      ? "Upcoming"
+                      : statusID === 4
+                      ? "Cancelled"
+                      : statusID === 5
+                      ? "Completed"
+                      : statusID === 6
+                      ? "Deleted"
+                      : null,
+                },
+              };
+              return newData;
+            }
+            return rowObj;
+          });
+          setRowToDo(newArr);
+        }
+      }
+    }
+  }, [toDoListReducer.socketTodoStatusData]);
+
+  const ShowHide = () => {
+    setExpand(!isExpand);
+    setSearchData({
+      Date: "",
+      Title: "",
+      AssignedToName: "",
+      UserID: parseInt(0),
+    });
+  };
+
   // for view modal  handler
   const viewModalHandler = (id) => {
     let Data = { ToDoListID: id };
@@ -183,25 +279,49 @@ const CreateTodoCommittee = () => {
     );
   };
 
+  // for search Date handler
+  const tableTodoChange = (pagination, filters, sorter) => {
+    let newArrData = [];
+    let todoStatus = filters.status;
+    if (
+      todoStatus !== null &&
+      todoStatus !== undefined &&
+      todoStatus.length > 0
+    ) {
+      todoStatus.map((statusValue, index) => {
+        let newArr = toDoListReducer.SearchTodolist.toDoLists.filter(
+          (data, index) => {
+            return data.status.status === statusValue;
+          }
+        );
+        if (newArr.length > 0) {
+          setRowToDo(newArr);
+        } else {
+          setRowToDo([]);
+        }
+      });
+    } else if (todoStatus === null) {
+      setRowToDo(toDoListReducer.SearchTodolist.toDoLists);
+    }
+  };
+
   const deleteTodolist = async (record) => {
-    await dispatch(
-      updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false, 1)
-    );
-    // if (todoListPageSize !== null && todoListCurrentPage !== null) {
-    //   dispatch(
-    //     SearchTodoListApi(
-    //       navigate,
-    //       searchData,
-    //       todoListCurrentPage,
-    //       todoListPageSize,
-    //       t
-    //     )
-    //   );
-    // } else {
-    //   localStorage.setItem("todoListPage", 1);
-    //   localStorage.setItem("todoListRow", 50);
-    //   dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
-    // }
+    await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false));
+    if (todoListPageSize !== null && todoListCurrentPage !== null) {
+      dispatch(
+        SearchTodoListApi(
+          navigate,
+          searchData,
+          todoListCurrentPage,
+          todoListPageSize,
+          t
+        )
+      );
+    } else {
+      localStorage.setItem("todoListPage", 1);
+      localStorage.setItem("todoListRow", 50);
+      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
+    }
   };
 
   const columnsToDo = [
@@ -298,7 +418,7 @@ const CreateTodoCommittee = () => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       className: "deadLineTodo",
-      width: "220px",
+      width: "180px",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
@@ -457,7 +577,7 @@ const CreateTodoCommittee = () => {
         if (parseInt(record?.pK_UID) === parseInt(createrID)) {
           return (
             <i
-              className="meeting-editbutton cursor-pointer"
+              className="meeting-editbutton"
               onClick={(e) => deleteTodolist(index)}
             >
               <img draggable="false" src={del} alt="" />
@@ -469,6 +589,19 @@ const CreateTodoCommittee = () => {
       },
     },
   ];
+
+  useEffect(() => {
+    setViewFlagToDo(false);
+    if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
+      if (modalsflag === true) {
+        setUpdateFlagToDo(true);
+        setModalsflag(false);
+      } else {
+        console.log("setViewFlagToDosetViewFlagToDo");
+        // setViewFlagToDo(true);
+      }
+    }
+  }, [toDoListReducer.ToDoDetails]);
 
   // for search Date handler
   const searchHandlerDate = (e) => {
@@ -484,77 +617,96 @@ const CreateTodoCommittee = () => {
     if (e === 6) {
       setRemoveTodo(statusdata);
     }
-    dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false, 1));
+    dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false));
   };
 
-  // const paginationChangeHandlerTodo = async (current, pageSize) => {
-  //   localStorage.setItem("todoListPage", current);
-  //   localStorage.setItem("todoListRow", pageSize);
-  //   dispatch(SearchTodoListApi(navigate, searchData, current, pageSize, t));
-  // };
+  // for search handler
+  const searchHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "Title") {
+      setSearchData({
+        ...searchData,
+        [name]: value.trimStart(),
+        UserID: parseInt(createrID),
+      });
+    } else if (name === "AssignedToName") {
+      setSearchData({
+        ...searchData,
+        [name]: value.trimStart(),
+        UserID: parseInt(createrID),
+      });
+    }
+  };
 
-  // // for search
-  // const search = (e) => {
-  //   e.preventDefault();
-  //   if (
-  //     searchData.Date === "" &&
-  //     searchData.Title === "" &&
-  //     searchData.AssignedToName === ""
-  //   ) {
-  //     let newData = {
-  //       Date: "",
-  //       Title: "",
-  //       AssignedToName: "",
-  //       UserID: parseInt(createrID),
-  //     };
-  //     dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
-  //   } else {
-  //     // make notification for if input fields is empty here
-  //     let newData = {
-  //       Date: searchData.Date,
-  //       Title: searchData.Title,
-  //       AssignedToName: searchData.AssignedToName,
-  //       UserID: parseInt(createrID),
-  //     };
-  //     dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
-  //     setSearchData({
-  //       Date: "",
-  //       Title: "",
-  //       AssignedToName: "",
-  //       UserID: parseInt(createrID),
-  //     });
-  //   }
-  // };
+  const paginationChangeHandlerTodo = async (current, pageSize) => {
+    localStorage.setItem("todoListPage", current);
+    localStorage.setItem("todoListRow", pageSize);
+    dispatch(SearchTodoListApi(navigate, searchData, current, pageSize, t));
+  };
 
-  // const resetSearchBar = (e) => {
-  //   e.preventDefault();
-  //   let newData = {
-  //     Date: "",
-  //     Title: "",
-  //     AssignedToName: "",
-  //     UserID: parseInt(createrID),
-  //   };
-  //   localStorage.setItem("todoListPage", 1);
-  //   dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
-  //   setSearchData({
-  //     Date: "",
-  //     Title: "",
-  //     AssignedToName: "",
-  //     UserID: parseInt(0),
-  //   });
-  // };
+  // for search
+  const search = (e) => {
+    e.preventDefault();
+    if (
+      searchData.Date === "" &&
+      searchData.Title === "" &&
+      searchData.AssignedToName === ""
+    ) {
+      let newData = {
+        Date: "",
+        Title: "",
+        AssignedToName: "",
+        UserID: parseInt(createrID),
+      };
+      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+    } else {
+      // make notification for if input fields is empty here
+      let newData = {
+        Date: searchData.Date,
+        Title: searchData.Title,
+        AssignedToName: searchData.AssignedToName,
+        UserID: parseInt(createrID),
+      };
+      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+      setSearchData({
+        Date: "",
+        Title: "",
+        AssignedToName: "",
+        UserID: parseInt(createrID),
+      });
+    }
+  };
+
+  const resetSearchBar = (e) => {
+    e.preventDefault();
+    let newData = {
+      Date: "",
+      Title: "",
+      AssignedToName: "",
+      UserID: parseInt(createrID),
+    };
+    localStorage.setItem("todoListPage", 1);
+    dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+    setSearchData({
+      Date: "",
+      Title: "",
+      AssignedToName: "",
+      UserID: parseInt(0),
+    });
+  };
 
   useEffect(() => {
     if (
-      PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== undefined &&
-      PollsReducer.ResponseMessage !== t("Record-found") &&
-      PollsReducer.ResponseMessage !== t("No-records-found")
+      toDoListReducer.ResponseMessage != "" &&
+      toDoListReducer.ResponseMessage != undefined &&
+      toDoListReducer.ResponseMessage != t("Record-found") &&
+      toDoListReducer.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
         open: true,
-        message: PollsReducer.ResponseMessage,
+        message: toDoListReducer.ResponseMessage,
       });
       setTimeout(() => {
         setOpen({
@@ -565,8 +717,30 @@ const CreateTodoCommittee = () => {
       }, 3000);
 
       dispatch(clearResponce());
+    } else if (
+      assignees.ResponseMessage !== "" &&
+      assignees.ResponseMessage !== t("Record-found") &&
+      assignees.ResponseMessage !== t("No-records-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: assignees.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(clearResponseMessage());
+    } else {
+      dispatch(clearResponce());
+      dispatch(clearResponseMessage());
     }
-  }, [PollsReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
 
   useEffect(() => {
     if (removeTodo !== 0) {
@@ -655,7 +829,7 @@ const CreateTodoCommittee = () => {
   ]);
 
   const scroll = {
-    y: "64vh",
+    y: "58vh",
     scrollbar: {
       // You can adjust the width and distance as needed
       verticalWidth: 20, // Width of the vertical scrollbar
@@ -663,53 +837,178 @@ const CreateTodoCommittee = () => {
       // Other scrollbar options
     },
   };
-  const emptyText = () => {
-    return (
-      <Row>
-        <Col
-          sm={12}
-          md={12}
-          lg={12}
-          className="d-flex flex-column align-items-center"
-        >
-          <img src={TodoMessageIcon1} alt="" />
-          <span className="mt-4"> {t("No-Task")}</span>
-        </Col>
-      </Row>
-    );
-  };
 
   return (
     <>
-      <div className="todolistContainer_Committee">
-        <Row className="my-3">
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end ">
+      <div className="todolistContainer">
+        <Row className="d-flex justify-content-start align-items-center   mt-3">
+          <Col md={2} sm={4} lg={2} className="todolist-heading-size">
+            {t("Todo-list")}
+          </Col>
+
+          <Col lg={2} md={2} sm={4} className="todolist-create-btn">
             <Button
+              className={"btn btn-primary"}
+              icon={<Plus width={20} height={20} fontWeight={800} />}
+              variant={"Primary"}
               text={t("Create-to-do-list")}
               onClick={modalHandler}
-              icon={<Plus width={20} height={20} fontWeight={800} />}
-              className={"Create_TodoBtn_Button"}
             />
+          </Col>
+          <Col
+            md={8}
+            lg={8}
+            sm={4}
+            className="todo-list-field todolist-search-row "
+          >
+            <Search
+              width="24px"
+              height="24px"
+              className="search-Icon toExpandSearch Meeting"
+              onClick={ShowHide}
+            />
+            {isExpand && (
+              <>
+                {currentLanguage === "ar" ? (
+                  <div className="expandableMenuSearch">
+                    <Form className="d-flex">
+                      {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
+                      <TextField
+                        width="180px"
+                        name="AssignedToName"
+                        value={searchData.AssignedToName}
+                        className="mx-2 "
+                        placeholder={t("Assigned-to")}
+                        labelClass="textFieldSearch"
+                        change={searchHandler}
+                      />
+                      <TextField
+                        width="250px"
+                        name="Title"
+                        value={searchData.Title}
+                        // className="mx-4"
+                        placeholder={t("Task")}
+                        labelClass="textFieldSearch"
+                        change={searchHandler}
+                      />
+
+                      <Button
+                        className="btn btn-primary meeting search me-3"
+                        variant={"Primary"}
+                        text={<ArrowLeft />}
+                        type="submit"
+                        onClick={search}
+                      />
+                      <Button
+                        className="btn  btn-primary meeting search"
+                        variant={"Primary"}
+                        type="reset"
+                        text={<ArrowCounterclockwise />}
+                        onClick={resetSearchBar}
+                      />
+                    </Form>
+                  </div>
+                ) : (
+                  <div className="expandableMenuSearch">
+                    <Form className="d-flex">
+                      {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
+                      <TextField
+                        applyClass="form-control2"
+                        width="250px"
+                        name="Title"
+                        value={searchData.Title}
+                        className="mx-2"
+                        placeholder={t("Task")}
+                        labelClass="textFieldSearch"
+                        change={searchHandler}
+                      />
+                      <TextField
+                        applyClass="form-control2"
+                        width="180px"
+                        name="AssignedToName"
+                        value={searchData.AssignedToName}
+                        className="mx-2"
+                        placeholder={t("Assigned-to")}
+                        labelClass="textFieldSearch"
+                        change={searchHandler}
+                      />
+                      <Button
+                        className="btn btn-primary meeting search me-3"
+                        variant={"Primary"}
+                        text={<ArrowRight />}
+                        onClick={search}
+                      />
+                      <Button
+                        className="btn  btn-primary meeting search"
+                        variant={"Primary"}
+                        type="reset"
+                        text={<ArrowCounterclockwise />}
+                        onClick={resetSearchBar}
+                      />
+                    </Form>
+                  </div>
+                )}
+              </>
+            )}
           </Col>
         </Row>
         <Row>
           <Col>
             <Row className="row-scroll-todolist">
               <Col className="">
-                <TableToDo
-                  sortDirections={["descend", "ascend"]}
-                  column={columnsToDo}
-                  className={"ToDo"}
-                  rows={rowsToDo}
-                  scroll={scroll}
-                  // onChange={tableTodoChange}
-                  pagination={false}
-                  locale={{
-                    emptyText: emptyText(), // Set your custom empty text here
-                  }}
-                />
-
-                {/* {rowsToDo.length > 0 && (
+                {rowsToDo.length > 0 &&
+                rowsToDo !== undefined &&
+                rowsToDo !== null ? (
+                  <TableToDo
+                    sortDirections={["descend", "ascend"]}
+                    column={columnsToDo}
+                    className={"ToDo"}
+                    rows={rowsToDo}
+                    scroll={scroll}
+                    // onChange={tableTodoChange}
+                    pagination={false}
+                  />
+                ) : (
+                  <Paper>
+                    <ResultMessage
+                      icon={
+                        <img
+                          draggable="false"
+                          src={TodoMessageIcon1}
+                          width={250}
+                          alt=""
+                        />
+                      }
+                      title="No-Task"
+                      className="NoTaskTodo"
+                    />
+                  </Paper>
+                )}
+                {rowsToDo.length > 0 && (
                   <Row className="">
                     <Col
                       lg={12}
@@ -750,7 +1049,7 @@ const CreateTodoCommittee = () => {
                       </Row>
                     </Col>
                   </Row>
-                )} */}
+                )}
               </Col>
             </Row>
           </Col>
@@ -769,16 +1068,22 @@ const CreateTodoCommittee = () => {
           viewFlagToDo={viewFlagToDo}
           setViewFlagToDo={setViewFlagToDo}
         />
+      ) : updateFlagToDo ? (
+        <ModalUpdateToDo
+          updateFlagToDo={updateFlagToDo}
+          setUpdateFlagToDo={setUpdateFlagToDo}
+          setModalsflag={setModalsflag}
+        />
       ) : null}
-      {/* <Notification setOpen={setOpen} open={open.open} message={open.message} /> */}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
-      {/* {toDoListReducer.Loading ||
+      {toDoListReducer.Loading ||
       todoStatus.Loading ||
       LanguageReducer.Loading ||
       uploadReducer.Loading ? (
         <Loader />
-      ) : null} */}
+      ) : null}
     </>
   );
 };
-export default CreateTodoCommittee;
+export default TodoList;

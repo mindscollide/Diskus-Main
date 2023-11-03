@@ -1112,6 +1112,22 @@ const getAllGeneralMiintuesDocument = {
   RequestMethod: "ServiceManager.GetAllGeneralMiuteDocumentsForMeeting",
 };
 
+const getTaskGroupIDApi = {
+  RequestMethod: "ServiceManager.GetTasksByGroupID",
+};
+
+const setGroupTaskApi = {
+  RequestMethod: "ServiceManager.SetGroupTasks",
+};
+
+const getTaskByCommitteeIDApi = {
+  RequestMethod: "ServiceManager.GetTasksByCommitteeID",
+};
+
+const setCommitteeTaskApi = {
+  RequestMethod: "ServiceManager.SetCommitteeTasks",
+};
+
 export {
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
@@ -1411,4 +1427,8 @@ export {
   SaveGeneralWiseSavingDocuments,
   RetriveGeneralMinutesDocuments,
   getAllGeneralMiintuesDocument,
+  getTaskGroupIDApi,
+  setGroupTaskApi,
+  getTaskByCommitteeIDApi,
+  setCommitteeTaskApi,
 };

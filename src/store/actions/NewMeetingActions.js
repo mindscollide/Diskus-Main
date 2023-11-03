@@ -778,12 +778,7 @@ const showCancelModalmeetingDeitals = (response) => {
     response: response,
   };
 };
-const showCancelViewModalmeetingDeitals = (response) => {
-  return {
-    type: actions.CANCEL_VIEW_BUTTON_MODAL_MEETING_DETIALS_TAB,
-    response: response,
-  };
-};
+
 const showCancelModalOrganizers = (response) => {
   return {
     type: actions.CANCEL_BUTTON_MODAL_ORGANIZER,
@@ -3419,7 +3414,6 @@ export {
   getMeetingMaterialAPI,
   GetAllUserAgendaRightsApiFunc,
   SaveUserAttachmentsPermissionApiFunc,
-  showCancelViewModalmeetingDeitals,
   getAllGeneralMinutesApiFunc,
   ADDGeneralMinutesApiFunc,
   uploadDocumentsMeetingMinutesApi,

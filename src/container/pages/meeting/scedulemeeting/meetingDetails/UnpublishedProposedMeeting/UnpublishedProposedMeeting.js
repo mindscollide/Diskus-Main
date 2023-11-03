@@ -186,7 +186,7 @@ const UnpublishedProposedMeeting = ({
     },
     {
       title: t("Propose-date-poll"),
-      dataIndex: "MeetingPoll",
+      dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
       width: "110px",
       render: (text, record) => {
@@ -445,9 +445,9 @@ const UnpublishedProposedMeeting = ({
                 orignalProfilePictureName: data.orignalProfilePictureName,
                 pK_MDID: data.pK_MDID,
                 meetingPoll: {
-                  totalNoOfDirectors: data.meetingPoll.totalNoOfDirectors,
+                  totalNoOfDirectors: data.proposedMeetingDetail.totalNoOfDirectors,
                   totalNoOfDirectorsVoted:
-                    data.meetingPoll.totalNoOfDirectorsVoted,
+                    data.proposedMeetingDetail.totalNoOfDirectorsVoted,
                 },
                 responseDeadLine: data.responseDeadLine,
                 status: data.status,

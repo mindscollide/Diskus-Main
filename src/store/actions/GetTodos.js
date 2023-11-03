@@ -4,6 +4,7 @@ import { toDoListApi } from "../../commen/apis/Api_ends_points";
 import { todosStatus, updateTodoStatus } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { GetTodoListByUser, SearchTodoListApi } from "./ToDoList_action";
+import { getTaskCommitteeIDApi, getTasksByGroupIDApi } from "./Polls_actions";
 
 const getTodoStatusInit = () => {
   return {
@@ -107,14 +108,13 @@ const getTodoStatus = (navigate, t) => {
   };
 };
 
-const updateTodoStatusFunc = (navigate, value, data, t, flag) => {
-  console.log(value, data, "updateTodoStatus");
+const updateTodoStatusFunc = (navigate, statusID, data, t, flag, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
-  let meetingPage = localStorage.getItem("todoListPage")
-  let meetingRow = localStorage.getItem("todoListRow")
+  let meetingPage = localStorage.getItem("todoListPage");
+  let meetingRow = localStorage.getItem("todoListRow");
   let Data = {
-    TaskStatusID: value,
+    TaskStatusID: statusID,
     TaskID: data,
     UserID: userID,
   };
@@ -134,7 +134,9 @@ const updateTodoStatusFunc = (navigate, value, data, t, flag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(updateTodoStatusFunc(navigate, value, data, t, flag));
+          dispatch(
+            updateTodoStatusFunc(navigate, statusID, data, t, flag, value)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -144,30 +146,62 @@ const updateTodoStatusFunc = (navigate, value, data, t, flag) => {
                   "ToDoList_ToDoListServiceManager_UpdateTaskStatus_01".toLowerCase()
                 )
             ) {
-              let createrID = localStorage.getItem("userID");
-
-              await dispatch(getTodoStatus(navigate, t));
-              if (flag === false) {
+              if (value === 1) {
                 await dispatch(
                   updateTodoStatusSuccess(
                     t("The-record-has-been-updated-successfully"),
                     false
                   )
                 );
-              } else {
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+                if (ViewCommitteeID !== null) {
+                  let newData = {
+                    CommitteeID: Number(ViewCommitteeID),
+                  };
+                  dispatch(getTaskCommitteeIDApi(navigate, t, newData));
+                }
+              } else if (value === 2) {
                 await dispatch(
                   updateTodoStatusSuccess(
                     t("The-record-has-been-updated-successfully"),
-                    true
+                    false
                   )
                 );
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+                if (ViewGroupID !== null) {
+                  let newData = {
+                    GroupID: Number(ViewGroupID),
+                  };
+                  dispatch(getTasksByGroupIDApi(navigate, t, newData));
+                }
+              } else {
+                if (flag === false) {
+                  await dispatch(
+                    updateTodoStatusSuccess(
+                      t("The-record-has-been-updated-successfully"),
+                      false
+                    )
+                  );
+                } else {
+                  await dispatch(
+                    updateTodoStatusSuccess(
+                      t("The-record-has-been-updated-successfully"),
+                      true
+                    )
+                  );
+                }
+                let data2 = {
+                  Date: "",
+                  Title: "",
+                  AssignedToName: "",
+                };
+                dispatch(
+                  SearchTodoListApi(navigate, data2, meetingPage, meetingRow, t)
+                );
               }
-              let data2 = {
-                Date: "",
-                Title: "",
-                AssignedToName: "",
-              };
-              dispatch(SearchTodoListApi(navigate, data2, meetingPage, meetingRow, t));
+              // await dispatch(getTodoStatus(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
