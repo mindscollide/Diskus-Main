@@ -8,6 +8,7 @@ import member from "../../../../../../assets/images/member.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
 import deleteIcon from "../../../../../../assets/images/delete_dataroom.svg";
+import OrganizerViewModal from "../../../scedulemeeting/Organizers/OrganizerViewModal/OrganizerViewModal";
 
 import { Tooltip } from "antd";
 import successfullPolls from "../../../../../../assets/images/successfull-polls.svg";
@@ -15,6 +16,7 @@ import { ChevronDown, Plus } from "react-bootstrap-icons";
 import { Progress } from "antd";
 import {
   Button,
+  Notification,
   ResultMessage,
   Table,
 } from "../../../../../../components/elements";
@@ -43,6 +45,7 @@ import { UpdateOrganizersMeeting } from "../../../../../../store/actions/Meeting
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
+  setViewProposeOrganizerPoll,
   viewProposeDatePoll,
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModalUnpublish,
@@ -51,6 +54,10 @@ const UnpublishedProposedMeeting = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   let currentUserId = localStorage.getItem("userID");
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -66,6 +73,7 @@ const UnpublishedProposedMeeting = ({
 
   const [rows, setRow] = useState([]);
   const [publishState, setPublishState] = useState(null);
+  const [organizerViewModal, setOrganizerViewModal] = useState(false);
 
   const handleDeleteMeetingModal = () => {
     dispatch(showDeleteMeetingModal(true));
@@ -103,8 +111,14 @@ const UnpublishedProposedMeeting = ({
       setViewProposeDatePoll(true);
       localStorage.setItem("viewProposeDatePollMeetingID", id);
     } else if (isAgendaContributor) {
-    } else {
-      alert("View Not Available");
+    } else if (isOrganiser) {
+      console.log("viewProposeDatePollHandlerviewProposeDatePollHandler");
+      setOpen({
+        ...open,
+        flag: true,
+        message: t("View-not-available"),
+      });
+      // setViewProposeOrganizerPoll(true);
     }
   };
   const handleOpenViewModal = async (data) => {
@@ -563,8 +577,10 @@ const UnpublishedProposedMeeting = ({
           />
         </Col>
       </Row>
+      {organizerViewModal && <OrganizerViewModal />}
       {sceduleproposedMeeting && <SceduleProposedmeeting />}
       {deleteMeetingModal && <DeleteMeetingModal />}
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </section>
   );
 };

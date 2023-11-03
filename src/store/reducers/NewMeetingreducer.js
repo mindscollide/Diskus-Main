@@ -68,6 +68,7 @@ const initialState = {
   generalMinutes: [],
   generalMinutesDocument: [],
   generalminutesDocumentForMeeting: [],
+  userWiseMeetingProposed: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1050,6 +1051,31 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_USER_WISE_PROPOSED_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_USER_WISE_PROPOSED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        userWiseMeetingProposed: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_USER_WISE_PROPOSED_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        userWiseMeetingProposed: [],
         ResponseMessage: action.ResponseMessage,
       };
     }
