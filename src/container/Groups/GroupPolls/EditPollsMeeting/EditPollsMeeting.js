@@ -631,13 +631,13 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                         {data.userName}
                                       </span>
                                     </Col>
-                                    {checkForPollStatus ? null : (
-                                      <Col
-                                        lg={2}
-                                        md={2}
-                                        sm={2}
-                                        className="d-flex align-items-center"
-                                      >
+                                    <Col
+                                      lg={2}
+                                      md={2}
+                                      sm={2}
+                                      className="d-flex align-items-center"
+                                    >
+                                      {checkForPollStatus ? null : (
                                         <img
                                           draggable={false}
                                           src={RedCross}
@@ -647,8 +647,8 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                           className="cursor-pointer"
                                           onClick={() => RemoveMembers(index)}
                                         />
-                                      </Col>
-                                    )}
+                                      )}
+                                    </Col>
                                   </Row>
                                 </section>
                               </Col>

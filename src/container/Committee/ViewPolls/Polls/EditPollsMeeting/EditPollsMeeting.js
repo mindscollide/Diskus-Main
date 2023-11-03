@@ -656,15 +656,17 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                       sm={2}
                                       className="d-flex align-items-center"
                                     >
-                                      <img
-                                        draggable={false}
-                                        src={RedCross}
-                                        height="14px"
-                                        alt=""
-                                        width="14px"
-                                        className="cursor-pointer"
-                                        onClick={() => RemoveMembers(index)}
-                                      />
+                                      {checkForPollStatus ? null : (
+                                        <img
+                                          draggable={false}
+                                          src={RedCross}
+                                          height="14px"
+                                          alt=""
+                                          width="14px"
+                                          className="cursor-pointer"
+                                          onClick={() => RemoveMembers(index)}
+                                        />
+                                      )}
                                     </Col>
                                   </Row>
                                 </section>
