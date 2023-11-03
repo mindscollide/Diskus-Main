@@ -66,7 +66,6 @@ const Organizers = ({
     open: false,
     message: "",
   });
-  console.log("handleCancelOrganizer rowsData", rowsData);
 
   const handleCancelOrganizer = () => {
     setCancelModalView(true);
@@ -164,7 +163,6 @@ const Organizers = ({
       key: "isOrganizerNotified",
       width: "180px",
       render: (text, record) => {
-        console.log("RSVP", text, record);
         if (record.isOrganizerNotified === true) {
           return (
             <Row>
@@ -244,7 +242,6 @@ const Organizers = ({
       );
 
       setRowsData(updatedMeetingOrganizers);
-      console.log("updated Rows Data", updatedMeetingOrganizers);
     }
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
 
@@ -304,10 +301,8 @@ const Organizers = ({
           });
         }
       });
-
       // Set the updated rowsData
       setRowsData(updatedRowsData);
-      console.log("updated Rows Data", updatedRowsData);
     }
   }, [MeetingOrganizersReducer.MeetingOrganizersData]);
 

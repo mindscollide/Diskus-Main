@@ -26,7 +26,6 @@ const AgendaContributers = ({
   const [cancelModalView, setCancelModalView] = useState(false);
 
   const [rowsData, setRowsData] = useState([]);
-  console.log("handleCancelOrganizer rowsData", rowsData);
 
   useEffect(() => {
     let getAllData = {
@@ -49,7 +48,6 @@ const AgendaContributers = ({
 
       let newArr = [];
       agendaContributorData.forEach((AgConData, index) => {
-        console.log(AgConData, "AgConDataAgConDataAgConData");
         newArr.push({
           userName: AgConData.userName,
           userID: AgConData.userID,
@@ -134,7 +132,6 @@ const AgendaContributers = ({
       key: "isContributedNotified",
       width: "180px",
       render: (text, record) => {
-        console.log("RSVP", text, record);
         if (record.isContributedNotified === true) {
           return (
             <Row>
