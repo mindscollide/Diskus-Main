@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Minutes.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,7 @@ import AgendaImport from "./AgendaimportMinutes/AgendaImport";
 import profile from "../../../../../assets/images/newprofile.png";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+import { getAllGeneralMinutesApiFunc } from "../../../../../store/actions/NewMeetingActions";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 // import { message, Upload } from "antd";
@@ -153,6 +154,7 @@ const Minutes = ({ setMinutes }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const date = new Date();
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -183,6 +185,13 @@ const Minutes = ({ setMinutes }) => {
       handlers: {},
     },
   };
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: currentMeetingID,
+    };
+    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
+  }, []);
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
@@ -360,7 +369,6 @@ const Minutes = ({ setMinutes }) => {
       // Clear the editor
       editorRef.current.getEditor().setText("");
 
-      // You can also clear the Description field state if needed
       setAddNoteFields({
         ...addNoteFields,
         Description: {

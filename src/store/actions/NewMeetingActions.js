@@ -24,6 +24,7 @@ import {
   GetAllUserAgendaRights,
   saveUserAttachmentPermission,
   getGeneralMinutes,
+  SaveminutesGeneral,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { meetingApi, pollApi } from "../../commen/apis/Api_ends_points";
@@ -2698,6 +2699,91 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
   };
 };
 
+// ADD General Minutes
+
+const ShowADDGeneralMinutesInit = () => {
+  return {
+    type: actions.GET_ADD_GENERAL_MINUTES_INIT,
+  };
+};
+
+const ShowADDGeneralMinutesSuccess = (response, message) => {
+  return {
+    type: actions.GET_ADD_GENERAL_MINUTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const ShowADDGeneralMinutesFailed = (message) => {
+  return {
+    type: actions.GET_ADD_GENERAL_MINUTES_FAILED,
+    message: message,
+  };
+};
+
+const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(ShowADDGeneralMinutesInit());
+    let form = new FormData();
+    form.append("RequestMethod", SaveminutesGeneral.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("responseresponseresponse", response);
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "responseresponseresponse");
+            if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_AddGeneralMinute_01"
+            ) {
+              dispatch(
+                ShowADDGeneralMinutesSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Record-saved")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_AddGeneralMinute_02"
+            ) {
+              dispatch(
+                ShowADDGeneralMinutesFailed(
+                  response.data.responseResult.responseMessage,
+                  t("No-record-saved")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_AddGeneralMinute_03"
+            ) {
+              dispatch(ShowADDGeneralMinutesFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(ShowADDGeneralMinutesFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(ShowADDGeneralMinutesFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(ShowADDGeneralMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -2768,4 +2854,5 @@ export {
   GetAllUserAgendaRightsApiFunc,
   SaveUserAttachmentsPermissionApiFunc,
   showCancelViewModalmeetingDeitals,
+  getAllGeneralMinutesApiFunc,
 };

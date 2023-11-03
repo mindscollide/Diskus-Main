@@ -1096,6 +1096,9 @@ const getGeneralMinutes = {
   RequestMethod: "ServiceManager.GetMeetingGeneralMinutes",
 };
 
+const SaveminutesGeneral = {
+  RequestMethod: "ServiceManager.AddGeneralMinute",
+};
 export {
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
@@ -1391,4 +1394,5 @@ export {
   getPollByGroupIDApi,
   setGroupPollsApi,
   getGeneralMinutes,
+  SaveminutesGeneral,
 };
