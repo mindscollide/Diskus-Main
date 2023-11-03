@@ -792,13 +792,13 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               await dispatch(setviewpollModal(false));
               await dispatch(setVotePollModal(true));
             }
-            setEditPolls(true);
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
                 t("Record-found")
               )
             );
+            setEditPolls(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

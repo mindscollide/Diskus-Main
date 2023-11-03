@@ -116,7 +116,14 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       width: "300px",
       render: (text, record) => {
         console.log(record, "recordrecordrecordrecord");
-        return <span className={styles["DateClass"]}>{text}</span>;
+        return (
+          <span
+            className={styles["DateClass"]}
+            onClick={() => navigate("/DisKus/polling")}
+          >
+            {text}
+          </span>
+        );
       },
     },
 
@@ -205,7 +212,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() => {}}
+                  onClick={() => navigate("/DisKus/polling")}
                 />
               );
             } else if (record.voteStatus === "Voted") {
