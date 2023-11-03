@@ -24,6 +24,7 @@ const ViewMeetingDetails = ({
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
+  const [meetingStatus, setMeetingStatus] = useState(0);
   const [rows, setRows] = useState([
     {
       selectedOption: "",
@@ -34,6 +35,7 @@ const ViewMeetingDetails = ({
       endTime: "",
     },
   ]);
+  console.log("meetingStatus", meetingStatus);
   //For Custom language datepicker
   const [open, setOpen] = useState({
     flag: false,
@@ -117,7 +119,10 @@ const ViewMeetingDetails = ({
       let getmeetingDates = MeetingData.meetingDates;
       let getmeetingRecurrance = MeetingData.meetingRecurrance;
       let getmeetingReminders = MeetingData.meetingReminders;
-      let getmeetingStatus = MeetingData.meetingStatus;
+      let getmeetingStatus = MeetingData.meetingStatus.status;
+      console.log("meetingStatus", MeetingData);
+      console.log("meetingStatus", getmeetingStatus);
+      setMeetingStatus(Number(getmeetingStatus));
       let getmeetingType = MeetingData.meetingType;
       let wasPublishedFlag = MeetingData.wasMeetingPublished;
       setMeetingDetailsData({
@@ -194,14 +199,17 @@ const ViewMeetingDetails = ({
   }, [NewMeetingreducer.getAllMeetingDetails]);
   return (
     <section>
-      <Row className="mt-3">
-        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-          <Button
-            text={t("Leave-meeting")}
-            className={styles["LeaveMeetinButton"]}
-          />
-        </Col>
-      </Row>
+      {meetingStatus === 2 && (
+        <Row className="mt-3">
+          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+            <Button
+              text={t("Leave-meeting")}
+              className={styles["LeaveMeetinButton"]}
+            />
+          </Col>
+        </Row>
+      )}
+
       <Row>
         <Col
           lg={12}

@@ -533,9 +533,8 @@ const UnpublishedProposedMeeting = ({
       setPublishState(null);
     }
   }, [publishState]);
-  const scroll = {
-    y: 800, // Set the desired height for the vertical scroll
-  };
+
+
 
   return (
     <section>
