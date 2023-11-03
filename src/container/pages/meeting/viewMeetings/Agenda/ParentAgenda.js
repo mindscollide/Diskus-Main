@@ -6,11 +6,14 @@ import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "../../../../../components/elements";
 import {
   showAdvancePermissionModal,
   showMainAgendaItemRemovedModal,
   showVoteAgendaModal,
+  showCastVoteAgendaModal,
+  showviewVotesAgenda,
 } from "../../../../../store/actions/NewMeetingActions";
 import styles from "./Agenda.module.css";
 import Cast from "../../../../../assets/images/CAST.svg";
@@ -26,6 +29,8 @@ import Lock from "../../../../../assets/images/LOCK.svg";
 import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import Key from "../../../../../assets/images/KEY.svg";
 import { getRandomUniqueNumber } from "./drageFunction";
+import ViewVoteModal from "../../scedulemeeting/Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
+import CastVoteAgendaModal from "../../scedulemeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 
 const ParentAgenda = ({
   data,
@@ -39,6 +44,8 @@ const ParentAgenda = ({
 }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
+
+  const { NewMeetingreducer } = useSelector((state) => state);
 
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
@@ -205,6 +212,14 @@ const ParentAgenda = ({
     }
   }, [currentLanguage]);
 
+  const EnableViewVoteModal = () => {
+    dispatch(showviewVotesAgenda(true));
+  };
+
+  const EnableCastVoteModal = () => {
+    dispatch(showCastVoteAgendaModal(true));
+  };
+
   return (
     <Draggable
       key={data.ID}
@@ -273,11 +288,27 @@ const ParentAgenda = ({
                   <Col lg={11} md={11} sm={11}>
                     <section className={styles["SectionInnerClass"]}>
                       <Row key={index + 2} className="mt-4">
-                        <Col lg={12} md={12} sm={12}>
+                        <Col lg={6} md={6} sm={12}>
                           <span className={styles["AgendaTitle_Heading"]}>
                             1. Get new computers from Techno City Mall. Also,
                             Get a new graphics card for the designer.
                           </span>
+                        </Col>
+                        <Col lg={6} md={6} sm={12} className="text-end">
+                          <Button
+                            text={t("Start-voting")}
+                            className={styles["startVotingButton"]}
+                          />
+                          <Button
+                            text={t("Cast-your-vote")}
+                            className={styles["CastYourVoteButton"]}
+                            onClick={EnableCastVoteModal}
+                          />
+                          <Button
+                            text={t("View-votes")}
+                            className={styles["ViewVoteButton"]}
+                            onClick={EnableViewVoteModal}
+                          />
                         </Col>
                       </Row>
                       <Row className="mt-2">
@@ -310,6 +341,15 @@ const ParentAgenda = ({
                                   12:15 PM - 12:15 PM
                                 </span>
                               </div>
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={styles["ParaGraph_SavedMeeting"]}
+                              >
+                                Description
+                              </span>
                             </Col>
                           </Row>
                           <Row key={index + 3} className="mt-3">
@@ -353,7 +393,7 @@ const ParentAgenda = ({
                                 </Radio>
                               </Radio.Group>
                             </Col>
-                            <Col
+                            {/* <Col
                               lg={6}
                               md={6}
                               sm={6}
@@ -399,7 +439,7 @@ const ParentAgenda = ({
                                 height="26.72px"
                                 onClick={() => lockFunctionActive(index)}
                               />
-                            </Col>
+                            </Col> */}
                           </Row>
                           <Droppable
                             droppableId={`parent-${data.ID}-parent-attachments`}
@@ -556,6 +596,8 @@ const ParentAgenda = ({
               openVoteMOdal={openVoteMOdal}
             />
           }
+          {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
+          {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
           {/* sub Ajenda Button */}
           {/* <Row className="mt-3">
             <Col lg={12} md={12} sm={12}>

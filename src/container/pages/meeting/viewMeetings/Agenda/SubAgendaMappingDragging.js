@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
-import { TextField } from "../../../../../components/elements";
+import { TextField, Button } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
@@ -9,7 +9,11 @@ import profile from "../../../../../assets/images/newprofile.png";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import { useTranslation } from "react-i18next";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { showAgenItemsRemovedModal } from "../../../../../store/actions/NewMeetingActions";
+import {
+  showAgenItemsRemovedModal,
+  showCastVoteAgendaModal,
+  showviewVotesAgenda,
+} from "../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import desh from "../../../../../assets/images/desh.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
@@ -257,6 +261,14 @@ const SubAgendaMappingDragging = ({
     }
   }, [currentLanguage]);
 
+  const EnableViewVoteModal = () => {
+    dispatch(showviewVotesAgenda(true));
+  };
+
+  const EnableCastVoteModal = () => {
+    dispatch(showCastVoteAgendaModal(true));
+  };
+
   return (
     <>
       {data.subAgenda.length > 0 &&
@@ -350,7 +362,7 @@ const SubAgendaMappingDragging = ({
                                         className={styles["SubAgendaSection"]}
                                       >
                                         <Row className="mt-2 mb-2">
-                                          <Col lg={12} md={12} sm={12}>
+                                          <Col lg={6} md={6} sm={12}>
                                             <span
                                               className={
                                                 styles["AgendaTitle_Heading"]
@@ -360,6 +372,33 @@ const SubAgendaMappingDragging = ({
                                               City Mall. Also, Get a new
                                               graphics card for the designer.
                                             </span>
+                                          </Col>
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={12}
+                                            className="text-end"
+                                          >
+                                            <Button
+                                              text={t("Start-voting")}
+                                              className={
+                                                styles["startVotingButton"]
+                                              }
+                                            />
+                                            <Button
+                                              text={t("Cast-your-vote")}
+                                              className={
+                                                styles["CastYourVoteButton"]
+                                              }
+                                              onClick={EnableCastVoteModal}
+                                            />
+                                            <Button
+                                              text={t("View-votes")}
+                                              className={
+                                                styles["ViewVoteButton"]
+                                              }
+                                              onClick={EnableViewVoteModal}
+                                            />
                                           </Col>
                                         </Row>
 
@@ -424,6 +463,19 @@ const SubAgendaMappingDragging = ({
                                                       12:15 PM - 12:15 PM
                                                     </span>
                                                   </div>
+                                                </Col>
+                                              </Row>
+                                              <Row className="mt-2">
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                        "ParaGraph_SavedMeeting"
+                                                      ]
+                                                    }
+                                                  >
+                                                    Description
+                                                  </span>
                                                 </Col>
                                               </Row>
                                               <Row className="mt-3">
@@ -499,7 +551,7 @@ const SubAgendaMappingDragging = ({
                                                     </Radio>
                                                   </Radio.Group>
                                                 </Col>
-                                                <Col
+                                                {/* <Col
                                                   lg={6}
                                                   md={6}
                                                   sm={6}
@@ -587,7 +639,7 @@ const SubAgendaMappingDragging = ({
                                                       }
                                                     }}
                                                   />
-                                                </Col>
+                                                </Col> */}
                                               </Row>
                                               <Droppable
                                                 droppableId={`subAgendaID-${subAgendaData.SubAgendaID}-parent-${data.ID}-attachments`}
