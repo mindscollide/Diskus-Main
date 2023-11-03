@@ -294,9 +294,28 @@ const UpdateOrganizersMeeting = (
                   let requestDataForMeetingDetails = {
                     MeetingID: Number(Data.MeetingID),
                   };
-                  await dispatch(GetAllMeetingDetailsApiFunc(requestDataForMeetingDetails, navigate, t));
+                  await dispatch(
+                    GetAllMeetingDetailsApiFunc(
+                      requestDataForMeetingDetails,
+                      navigate,
+                      t
+                    )
+                  );
                   setAdvanceMeetingModalID(Data.MeetingID);
                   setPublishState(true);
+                } else if (route === 3) {
+                  let requestDataForMeetingDetails = {
+                    MeetingID: Number(Data.MeetingID),
+                  };
+                  await dispatch(
+                    GetAllMeetingDetailsApiFunc(
+                      requestDataForMeetingDetails,
+                      navigate,
+                      t
+                    )
+                  );
+                  setAdvanceMeetingModalID(null);
+                  setPublishState(false);
                 } else {
                   setPublishState(Data.MeetingID);
                 }

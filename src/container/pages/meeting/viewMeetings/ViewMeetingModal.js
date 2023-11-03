@@ -24,7 +24,9 @@ import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
+  setAdvanceMeetingModalID,
   unPublish,
+  isOrganisers
 }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -298,6 +300,8 @@ const ViewMeetingModal = ({
                     setmeetingDetails={setmeetingDetails}
                     advanceMeetingModalID={advanceMeetingModalID}
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                    setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+                    isOrganisers={isOrganisers}
                   />
                 )}
                 {organizers && (

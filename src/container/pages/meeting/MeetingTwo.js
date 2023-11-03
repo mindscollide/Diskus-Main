@@ -124,6 +124,7 @@ const NewMeeting = () => {
     OrganizerName: "",
     DateView: "",
   });
+  const [isOrganisers, setIsOrganisers] = useState(false);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -655,17 +656,19 @@ const NewMeeting = () => {
                     <Button
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
-                      onClick={() =>
-                        dispatch(
-                          UpdateOrganizersMeeting(
-                            navigate,
-                            startMeetingRequest,
-                            t,
-                            3,
-                            setViewAdvanceMeetingModal,
-                            setAdvanceMeetingModalID
-                          )
-                        )
+                      onClick={
+                        (() =>
+                          dispatch(
+                            UpdateOrganizersMeeting(
+                              navigate,
+                              startMeetingRequest,
+                              t,
+                              3,
+                              setViewAdvanceMeetingModal,
+                              setAdvanceMeetingModalID
+                            )
+                          ),
+                        setIsOrganisers(isOrganiser))
                       }
                     />
                   </Col>
@@ -964,7 +967,9 @@ const NewMeeting = () => {
         <ViewMeetingModal
           advanceMeetingModalID={advanceMeetingModalID}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           unPublish={false}
+          isOrganisers={isOrganisers}
         />
       ) : viewAdvanceMeetingModalUnpublish ? (
         <ViewMeetingModal
