@@ -187,8 +187,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
   const handleAddAttendees = () => {
     console.log("taskAssignedTo", taskAssignedTo);
-
-    if (taskAssignedTo != 0 && attendees.length > 0) {
+    const newMeetingAttendees = [...membersData];
+    const newGroupMembers = [...groupMembers];
+    if (taskAssignedTo !== 0 && attendees.length > 0) {
       console.log("taskAssignedTo", taskAssignedTo);
 
       setOpen({
@@ -199,7 +200,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       setTaskAssignedTo(0);
       setParticipantRoleName("");
       setTaskAssignedToInput("");
-    } else if (taskAssignedTo != 0) {
+    } else if (taskAssignedTo !== 0) {
       var foundIndex = membersData.findIndex(
         (x) => x.FK_UID === taskAssignedTo
       );
@@ -219,37 +220,28 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
             if (data.label === participantRoleName) {
               roleID = data.id;
-              console.log("taskAssignedTo12", roleID);
-
-              membersData.push({
+              newMeetingAttendees.push({
                 FK_UID: taskAssignedTo, //userid
                 FK_GRMRID: data.id, //group member role id
                 FK_GRID: 0, //group id
               });
-              console.log("taskAssignedTo12", membersData);
-
-              setMembersData([...membersData]);
+              setMembersData(newMeetingAttendees);
             }
             setGroupDetails({
               ...GroupDetails,
-              GroupMembers: membersData,
+              GroupMembers: newMeetingAttendees,
             });
           });
           if (meetingAttendeesList.length > 0) {
             meetingAttendeesList.map((data, index) => {
-              console.log("taskAssignedTo13", meetingAttendeesList);
-              console.log("taskAssignedTo13", data);
-
               if (data.pK_UID === taskAssignedTo) {
-                console.log("taskAssignedTo13", data.pK_UID);
-
-                groupMembers.push({
+                newGroupMembers.push({
                   data,
                   role: roleID,
                 });
-                console.log("taskAssignedTo13", groupMembers);
+                console.log("taskAssignedTo13", newGroupMembers);
 
-                setGroupMembers([...groupMembers]);
+                setGroupMembers(newGroupMembers);
               }
             });
           }
@@ -279,7 +271,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         );
       attendees.map((data, index) => {
         membersData.map((data2, index) => {
-          console.log("found2found2found2", data, data2, data === data2.FK_UID);
           if (data === data2.FK_UID) {
             check = true;
           }
@@ -294,27 +285,25 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         setParticipantRoleName("");
       } else {
         if (participantOptionsWithID !== undefined) {
-          attendees.map((dataID, index) => {
-            membersData.push({
+          attendees.forEach((dataID, index) => {
+            newMeetingAttendees.push({
               FK_UID: dataID, //userid
               FK_GRMRID: participantOptionsWithID.id, //group member role id
               FK_GRID: 0, //group id
             });
-            setMembersData([...membersData]);
-            meetingAttendeesList.map((data, index) => {
-              console.log("meetingAttendeesmeetingAttendees", data);
+            setMembersData(newMeetingAttendees);
+            meetingAttendeesList.forEach((data, index) => {
               if (data.pK_UID === dataID) {
-                console.log("meetingAttendeesmeetingAttendees", data);
-                groupMembers.push({
+                newGroupMembers.push({
                   data,
                   role: participantOptionsWithID.id,
                 });
-                setGroupMembers([...groupMembers]);
+                setGroupMembers(newGroupMembers);
               }
             });
             setGroupDetails({
               ...GroupDetails,
-              GroupMembers: membersData,
+              GroupMembers: newMeetingAttendees,
             });
             setAttendees([]);
             setParticipantRoleName("");

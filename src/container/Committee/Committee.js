@@ -109,14 +109,16 @@ const Committee = () => {
           CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.length >
           0
         ) {
-          // let newArr = [];
-          let copyData =
-            CommitteeReducer.GetAllCommitteesByUserIDResponse?.committees;
+          let copyData = [
+            ...CommitteeReducer.GetAllCommitteesByUserIDResponse?.committees,
+          ];
+          // Create a new copy of committeeMembers array for each committee
+          const updatedCommittees = copyData.map((committee) => ({
+            ...committee,
+            committeeMembers: [...committee.committeeMembers],
+          }));
 
-          // copyData.forEach((data, index) => {
-          //   newArr.push(data);
-          // });
-          setGetCommitteeData(copyData);
+          setGetCommitteeData(updatedCommittees);
         } else {
           setGetCommitteeData([]);
         }
@@ -202,6 +204,8 @@ const Committee = () => {
   };
 
   const viewTitleModal = (data) => {
+    setViewCommitteeViewTab(1);
+
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       CommitteeID: JSON.parse(data.committeeID),

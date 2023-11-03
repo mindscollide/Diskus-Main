@@ -112,8 +112,9 @@ const CreateTodoCommittee = () => {
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   console.log("socketTodoStatusData", PollsReducer);
 
-  const initalApiCall = async () => {
-    await dispatch(getTodoStatus(navigate, t));
+  // GET TODOS STATUS
+  useEffect(() => {
+    dispatch(getTodoStatus(navigate, t));
 
     if (ViewCommitteeID !== null) {
       let newData = {
@@ -121,30 +122,6 @@ const CreateTodoCommittee = () => {
       };
       dispatch(getTaskCommitteeIDApi(navigate, t, newData));
     }
-  };
-  // GET TODOS STATUS
-  useEffect(() => {
-    initalApiCall();
-    // if (todoListPageSize !== null && todoListCurrentPage !== null) {
-
-    //   dispatch(
-    //     getTaskCommitteeIDApi(
-    //       navigate,
-    //       searchData,
-    //       todoListCurrentPage,
-    //       todoListPageSize,
-    //       t
-    //     )
-    //   );
-    // } else {
-    //   localStorage.setItem("todoListPage", 1);
-    //   localStorage.setItem("todoListRow", 50);
-    //   dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
-    // }
-    // return () => {
-    //   localStorage.removeItem("todoListPage");
-    //   localStorage.removeItem("todoListRow");
-    // };
   }, []);
 
   //get todolist reducer
@@ -178,7 +155,7 @@ const CreateTodoCommittee = () => {
     let optionsArr = [];
     let newOptionsFilter = [];
     if (todoStatus.Response !== null && todoStatus.Response !== "") {
-      todoStatus.Response.map((data, index) => {
+      todoStatus.Response.forEach((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
           status: data.status,
