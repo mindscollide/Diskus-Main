@@ -112,7 +112,7 @@ const Createpolls = ({ setCreatepoll }) => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
-        if (options[lastIndex].value != "") {
+        if (options[lastIndex].value !== "") {
           const randomNumber = Math.floor(Math.random() * 100) + 1;
           let newOptions = { name: randomNumber, value: "" };
           setOptions([...options, newOptions]);

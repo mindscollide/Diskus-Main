@@ -1077,7 +1077,12 @@ const TodoList = () => {
       ) : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
-      {LanguageReducer.Loading || uploadReducer.Loading ? <Loader /> : null}
+      {toDoListReducer.Loading ||
+      todoStatus.Loading ||
+      LanguageReducer.Loading ||
+      uploadReducer.Loading ? (
+        <Loader />
+      ) : null}
     </>
   );
 };

@@ -1092,6 +1092,22 @@ const setGroupPollsApi = {
   RequestMethod: "ServiceManager.SetGroupPolls",
 };
 
+const getTaskGroupIDApi = {
+  RequestMethod: "ServiceManager.GetTasksByGroupID",
+};
+
+const setGroupTaskApi = {
+  RequestMethod: "ServiceManager.SetGroupTasks",
+};
+
+const getTaskByCommitteeIDApi = {
+  RequestMethod: "ServiceManager.GetTasksByCommitteeID",
+};
+
+const setCommitteeTaskApi = {
+  RequestMethod: "ServiceManager.SetCommitteeTasks",
+};
+
 export {
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
@@ -1386,4 +1402,8 @@ export {
   saveUserAttachmentPermission,
   getPollByGroupIDApi,
   setGroupPollsApi,
+  getTaskGroupIDApi,
+  setGroupTaskApi,
+  getTaskByCommitteeIDApi,
+  setCommitteeTaskApi,
 };
