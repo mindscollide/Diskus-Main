@@ -8,6 +8,7 @@ import member from "../../../../../../assets/images/member.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
 import deleteIcon from "../../../../../../assets/images/delete_dataroom.svg";
+import OrganizerViewModal from "../../../scedulemeeting/Organizers/OrganizerViewModal/OrganizerViewModal";
 
 import { Tooltip } from "antd";
 import successfullPolls from "../../../../../../assets/images/successfull-polls.svg";
@@ -101,6 +102,7 @@ const UnpublishedProposedMeeting = ({
       localStorage.setItem("viewProposeDatePollMeetingID", id);
     } else if (isAgendaContributor) {
     } else {
+      // <OrganizerViewModal />;
       alert("View Not Available");
     }
   };
@@ -445,7 +447,8 @@ const UnpublishedProposedMeeting = ({
                 orignalProfilePictureName: data.orignalProfilePictureName,
                 pK_MDID: data.pK_MDID,
                 meetingPoll: {
-                  totalNoOfDirectors: data.proposedMeetingDetail.totalNoOfDirectors,
+                  totalNoOfDirectors:
+                    data.proposedMeetingDetail.totalNoOfDirectors,
                   totalNoOfDirectorsVoted:
                     data.proposedMeetingDetail.totalNoOfDirectorsVoted,
                 },

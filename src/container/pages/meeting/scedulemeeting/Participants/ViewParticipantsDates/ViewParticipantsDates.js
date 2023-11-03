@@ -74,10 +74,7 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   useEffect(() => {
     try {
     } catch {}
-    if (
-      getAllMeetingDetails !== null &&
-      getAllMeetingDetails !== undefined
-    ) {
+    if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
       console.log(getAllMeetingDetails, "getAllMeetingDetails");
 
       setMeetingDeatils({

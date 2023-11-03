@@ -101,7 +101,7 @@ const UnpublishedProposedMeeting = ({
       localStorage.setItem("viewProposeDatePollMeetingID", id);
     } else if (isAgendaContributor) {
     } else {
-      alert("View Not Available");
+      // alert("View Not Available");
     }
   };
 
