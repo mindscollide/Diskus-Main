@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./EditPollsMeeting.module.css";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -32,19 +32,25 @@ import { showunsavedEditPollsMeetings } from "../../../../../store/actions/NewMe
 const EditPollsMeeting = ({ setEditPolls }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, PollsReducer, CommitteeReducer } = useSelector(
+    (state) => state
+  );
   const [meetingDate, setMeetingDate] = useState("");
   const [updatePolls, setupdatePolls] = useState({
     Title: "",
     AllowMultipleAnswers: false,
-    dateL: "",
+    date: "",
   });
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
+  const [memberSelect, setmemberSelect] = useState([]);
+  const [selectedsearch, setSelectedsearch] = useState([]);
+  const [members, setMembers] = useState([]);
 
   const [options, setOptions] = useState([
     {
@@ -65,33 +71,6 @@ const EditPollsMeeting = ({ setEditPolls }) => {
     flag: false,
     message: "",
   });
-
-  const [members, setMembers] = useState([
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-    {
-      name: "SAIF UL ISLAM",
-    },
-  ]);
 
   const HandleCancelFunction = (index) => {
     let optionscross = [...options];
@@ -182,6 +161,125 @@ const EditPollsMeeting = ({ setEditPolls }) => {
     });
   };
 
+  const handleSelectValue = (value) => {
+    setSelectedsearch(value);
+  };
+
+  const handleAddUsers = () => {
+    let getUserDetails = [
+      ...CommitteeReducer.getCommitteeByCommitteeID.committeMembers,
+    ];
+    let tem = [...members];
+    let newarr = [];
+    try {
+      if (Object.keys(selectedsearch).length > 0) {
+        try {
+          selectedsearch.forEach((seledtedData, index) => {
+            let check1 = getUserDetails.find(
+              (data, index) => data.pK_UID === seledtedData.value
+            );
+
+            if (check1 !== undefined) {
+              newarr.push(check1);
+
+              if (newarr.length > 0) {
+                newarr.forEach((morganizer, index) => {
+                  let check2 = newarr.find(
+                    (data, index) => data.UserID === morganizer.pK_UID
+                  );
+                  if (check2 !== undefined) {
+                  } else {
+                    let newUser = {
+                      userName: morganizer.userName,
+                      userID: morganizer.pK_UID,
+                      displayPicture:
+                        morganizer.userProfilePicture.displayProfilePictureName,
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          });
+        } catch {}
+        const uniqueData = new Set(tem.map(JSON.stringify));
+        // Convert the Set back to an array of objects
+        const result = Array.from(uniqueData).map(JSON.parse);
+        setMembers(result);
+        setSelectedsearch([]);
+      } else {
+        // setopen notionation work here
+      }
+    } catch {}
+  };
+
+  useEffect(() => {
+    if (
+      CommitteeReducer.getCommitteeByCommitteeID !== null &&
+      CommitteeReducer.getCommitteeByCommitteeID !== undefined
+    ) {
+      let newArr = [];
+      let getUserDetails =
+        CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
+      getUserDetails.forEach((data, index) => {
+        newArr.push({
+          value: data.pK_UID,
+          label: (
+            <>
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-2 align-items-center"
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
+                    />
+                    <span className={styles["NameDropDown"]}>
+                      {data.userName}
+                    </span>
+                  </Col>
+                </Row>
+              </>
+            </>
+          ),
+          type: 1,
+        });
+      });
+      setmemberSelect(newArr);
+    }
+  }, [CommitteeReducer.getCommitteeByCommitteeID]);
+  useEffect(() => {
+    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      let pollsDetailsData = PollsReducer.Allpolls.poll;
+      let pollMembers = [];
+
+      setupdatePolls({
+        ...updatePolls,
+        Title: pollsDetailsData.pollDetails.pollTitle,
+        AllowMultipleAnswers: pollsDetailsData.pollDetails.allowMultipleAnswers,
+      });
+
+      if (pollsDetailsData.pollParticipants.length > 0) {
+        pollsDetailsData.pollParticipants.forEach((particpantData, index) => {
+          pollMembers.push({
+            userName: particpantData.userName,
+            userID: particpantData.pK_UID,
+            displayPicture:
+              particpantData.profilePicture.displayProfilePictureName,
+            emailAddress: particpantData.emailAddress,
+          });
+        });
+        setMembers(pollMembers);
+      }
+    }
+  }, [PollsReducer.Allpolls]);
   return (
     <section>
       <Row>
@@ -362,12 +460,16 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                   <Select
                     classNamePrefix={"Polls_Meeting"}
                     closeMenuOnSelect={false}
+                    options={memberSelect}
                     components={animatedComponents}
                     isMulti
+                    value={selectedsearch}
+                    onChange={handleSelectValue}
                   />
                   <Button
                     text={t("ADD")}
                     className={styles["ADD_Btn_CreatePool_Modal"]}
+                    onClick={handleAddUsers}
                   />
                 </Col>
               </Row>

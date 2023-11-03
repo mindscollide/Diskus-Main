@@ -231,6 +231,8 @@ const CreateToDoList = (navigate, object, t, value) => {
               await dispatch(
                 ShowNotification(t("The-record-has-been-saved-successfully"))
               );
+              dispatch(SetLoaderFalse());
+
               if (value === 1) {
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
@@ -726,8 +728,6 @@ const searchTodoList_fail = (message) => {
 const SearchTodoListApi = (navigate, searchData, page, size, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
-  let meetingPage = JSON.parse(localStorage.getItem("todoListPage"));
-  let meetingRow = JSON.parse(localStorage.getItem("todoListRow"));
   let Data = {
     Date:
       searchData !== null && searchData !== undefined ? searchData?.Date : "",

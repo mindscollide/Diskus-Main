@@ -711,7 +711,7 @@ const getAllPollsByPollsIDFailed = (message) => {
   };
 };
 
-const getPollsByPollIdApi = (navigate, data, check, t) => {
+const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
@@ -785,6 +785,7 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setviewpollModal(false));
               await dispatch(setVotePollModal(true));
             }
+            setEditPolls(true)
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
