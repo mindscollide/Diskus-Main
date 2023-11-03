@@ -46,7 +46,6 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
     MeetingDiscription: "",
   });
   const [selectAll, setSelectAll] = useState(false);
-  console.log(checkedObjects, "checkedObjectscheckedObjectscheckedObjects");
   let currentMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID")
   );
@@ -74,10 +73,7 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   useEffect(() => {
     try {
     } catch {}
-    if (
-      getAllMeetingDetails !== null &&
-      getAllMeetingDetails !== undefined
-    ) {
+    if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
       console.log(getAllMeetingDetails, "getAllMeetingDetails");
 
       setMeetingDeatils({

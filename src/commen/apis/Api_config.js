@@ -1140,6 +1140,10 @@ const setCommitteeTaskApi = {
   RequestMethod: "ServiceManager.SetCommitteeTasks",
 };
 
+const getUserWiseProposeDate = {
+  RequestMethod: "ServiceManager.GetUserWiseProposedDates",
+};
+
 export {
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
@@ -1446,4 +1450,5 @@ export {
   setGroupTaskApi,
   getTaskByCommitteeIDApi,
   setCommitteeTaskApi,
+  getUserWiseProposeDate,
 };

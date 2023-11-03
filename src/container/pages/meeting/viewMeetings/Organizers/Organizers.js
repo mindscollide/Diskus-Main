@@ -68,7 +68,6 @@ const Organizers = ({
   });
 
   const handleCancelOrganizer = () => {
-    console.log("handleCancelOrganizer");
     setCancelModalView(true);
   };
 
@@ -108,13 +107,7 @@ const Organizers = ({
       dataIndex: "organizerTitle",
       key: "organizerTitle",
       width: "250px",
-      render: (text, record) => (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            {inputValues[record.userID]}
-          </Col>
-        </Row>
-      ),
+      render: (text) => <label className="column-boldness">{text}</label>,
     },
 
     {
@@ -170,7 +163,6 @@ const Organizers = ({
       key: "isOrganizerNotified",
       width: "180px",
       render: (text, record) => {
-        console.log("RSVP", text, record);
         if (record.isOrganizerNotified === true) {
           return (
             <Row>
@@ -180,23 +172,13 @@ const Organizers = ({
                 sm={7}
                 className="d-flex justify-content-center"
               >
-                {record.disabledNotification === true ? (
-                  <img
-                    draggable={false}
-                    src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                ) : (
-                  <img
-                    draggable={false}
-                    src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                )}
+                <img
+                  draggable={false}
+                  src={greenMailIcon}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
               </Col>
             </Row>
           );
@@ -209,23 +191,13 @@ const Organizers = ({
                 sm={7}
                 className="d-flex justify-content-center"
               >
-                {record.disabledNotification === true ? (
-                  <img
-                    draggable={false}
-                    src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                ) : (
-                  <img
-                    draggable={false}
-                    src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                )}
+                <img
+                  draggable={false}
+                  src={redMailIcon}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
               </Col>
             </Row>
           );
@@ -270,7 +242,6 @@ const Organizers = ({
       );
 
       setRowsData(updatedMeetingOrganizers);
-      console.log("updated Rows Data", updatedMeetingOrganizers);
     }
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
 
@@ -330,10 +301,8 @@ const Organizers = ({
           });
         }
       });
-
       // Set the updated rowsData
       setRowsData(updatedRowsData);
-      console.log("updated Rows Data", updatedRowsData);
     }
   }, [MeetingOrganizersReducer.MeetingOrganizersData]);
 
@@ -427,13 +396,13 @@ const Organizers = ({
                   />
 
                   <Button
-                    text={"Previous"}
-                    className={styles["Cancel_Organization"]}
+                    text={t("Previous")}
+                    className={styles["publish_button_Organization"]}
                     onClick={previousTabOrganizer}
                   />
 
                   <Button
-                    text={"Next"}
+                    text={t("Next")}
                     className={styles["publish_button_Organization"]}
                     onClick={nextTabOrganizer}
                   />
