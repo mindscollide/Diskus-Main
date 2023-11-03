@@ -441,14 +441,11 @@ body[dir="rtl"] .Leftpolygon {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   position: relative !important;
-  margin-left: 12px !important;
-  margin-top: 15px !important;
 }
 
 .ScrollerMinutes {
   height: 15vh !important;
   overflow-x: hidden !important;
-  margin-top: 10px !important;
 }
 
 .ScrollerMinutes::-webkit-scrollbar {
@@ -461,8 +458,4 @@ body[dir="rtl"] .Leftpolygon {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
-}
-
-.Sizing_Saved_Minutes {
-  padding: 0px 20px !important;
 }

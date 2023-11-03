@@ -416,133 +416,24 @@ const Minutes = ({ setMinutes }) => {
                   />
                 </Col>
               </Row>
-              {/* Mapping of The Create Minutes */}
+              {/* Button For Saving the The Minutes  */}
               <Row className="mt-5">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className={styles["ScrollerMinutes"]}
+                  className="d-flex gap-2 justify-content-end"
                 >
-                  {messages.length > 0
-                    ? messages.map((data, index) => {
-                        return (
-                          <>
-                            <section className={styles["Sizing_Saved_Minutes"]}>
-                              <Row className="mt-5">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className={styles["Box_Minutes"]}
-                                >
-                                  <Row>
-                                    <Col lg={6} md={6} sm={6}>
-                                      <Row className="mt-3">
-                                        <Col lg={12} md={12} sm={12}>
-                                          <span
-                                            className={styles["Title_File"]}
-                                          >
-                                            {expanded ? (
-                                              <>{data.substring(0, 190)}...</>
-                                            ) : (
-                                              <>{data}</>
-                                            )}
+                  <Button
+                    text={t("Cancel")}
+                    className={styles["Previous_Button"]}
+                  />
 
-                                            <span
-                                              className={
-                                                styles["Show_more_Styles"]
-                                              }
-                                              onClick={toggleExpansion}
-                                            >
-                                              {expanded
-                                                ? t("See-more")
-                                                : t("See-less")}
-                                            </span>
-                                          </span>
-                                        </Col>
-                                      </Row>
-                                      <Row className="mt-1">
-                                        <Col lg={12} md={12} sm={12}>
-                                          <span
-                                            className={
-                                              styles["Date_Minutes_And_time"]
-                                            }
-                                          >
-                                            4:00pm, 18th May, 2020
-                                          </span>
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                    <Col lg={6} md={6} sm={6} className="mt-4">
-                                      <Row className="d-flex justify-content-end">
-                                        <Col lg={2} md={2} sm={2}>
-                                          <img
-                                            draggable={false}
-                                            src={profile}
-                                            height="30px"
-                                            width="30px"
-                                            className={
-                                              styles["Profile_minutes"]
-                                            }
-                                          />
-                                        </Col>
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={6}
-                                          className={styles["Line_heigh"]}
-                                        >
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles["Uploaded_heading"]
-                                                }
-                                              >
-                                                {t("Uploaded-by")}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span className={styles["Name"]}>
-                                                Mehtab Ahmed
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={3}
-                                          md={3}
-                                          sm={3}
-                                          className="d-flex justify-content-start align-items-center"
-                                        >
-                                          <img
-                                            draggable={false}
-                                            src={EditIcon}
-                                            height="21.55px"
-                                            width="21.55px"
-                                            className="cursor-pointer"
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                  <img
-                                    draggable={false}
-                                    src={RedCroseeIcon}
-                                    height="20.76px"
-                                    width="20.76px"
-                                    className={styles["RedCrossClass"]}
-                                  />
-                                </Col>
-                              </Row>
-                            </section>
-                          </>
-                        );
-                      })
-                    : null}
+                  <Button
+                    text={t("Save")}
+                    className={styles["Button_General"]}
+                    onClick={handleAddClick}
+                  />
                 </Col>
               </Row>
             </Col>
@@ -699,6 +590,120 @@ const Minutes = ({ setMinutes }) => {
               </Row>
             </Col>
           </Row>
+          {/* Mapping of The Create Minutes */}
+          <Row className="mt-2">
+            <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
+              {messages.length > 0
+                ? messages.map((data, index) => {
+                    return (
+                      <>
+                        <Row className="mt-5">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["Box_Minutes"]}
+                          >
+                            <Row>
+                              <Col lg={6} md={6} sm={6}>
+                                <Row className="mt-3">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span className={styles["Title_File"]}>
+                                      {expanded ? (
+                                        <>{data.substring(0, 190)}...</>
+                                      ) : (
+                                        <>{data}</>
+                                      )}
+
+                                      <span
+                                        className={styles["Show_more_Styles"]}
+                                        onClick={toggleExpansion}
+                                      >
+                                        {expanded
+                                          ? t("See-more")
+                                          : t("See-less")}
+                                      </span>
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row className="mt-1">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["Date_Minutes_And_time"]
+                                      }
+                                    >
+                                      4:00pm, 18th May, 2020
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </Col>
+                              <Col lg={6} md={6} sm={6} className="mt-4">
+                                <Row className="d-flex justify-content-end">
+                                  <Col lg={2} md={2} sm={2}>
+                                    <img
+                                      draggable={false}
+                                      src={profile}
+                                      height="30px"
+                                      width="30px"
+                                      className={styles["Profile_minutes"]}
+                                    />
+                                  </Col>
+                                  <Col
+                                    lg={6}
+                                    md={6}
+                                    sm={6}
+                                    className={styles["Line_heigh"]}
+                                  >
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span
+                                          className={styles["Uploaded_heading"]}
+                                        >
+                                          {t("Uploaded-by")}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span className={styles["Name"]}>
+                                          Mehtab Ahmed
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                  <Col
+                                    lg={3}
+                                    md={3}
+                                    sm={3}
+                                    className="d-flex justify-content-start align-items-center"
+                                  >
+                                    <img
+                                      draggable={false}
+                                      src={EditIcon}
+                                      height="21.55px"
+                                      width="21.55px"
+                                      className="cursor-pointer"
+                                    />
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                            <img
+                              draggable={false}
+                              src={RedCroseeIcon}
+                              height="20.76px"
+                              width="20.76px"
+                              className={styles["RedCrossClass"]}
+                            />
+                          </Col>
+                        </Row>
+                      </>
+                    );
+                  })
+                : null}
+            </Col>
+          </Row>
           <Row className="mt-3">
             <Col
               lg={12}
@@ -710,11 +715,7 @@ const Minutes = ({ setMinutes }) => {
                 text={t("Previous")}
                 className={styles["Previous_Button"]}
               />
-              <Button
-                text={t("ADD")}
-                className={styles["Button_General"]}
-                onClick={handleAddClick}
-              />
+              <Button text={t("Next")} className={styles["Button_General"]} />
             </Col>
           </Row>
         </>
