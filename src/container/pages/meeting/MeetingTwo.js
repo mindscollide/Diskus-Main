@@ -50,6 +50,7 @@ import NewEndMeetingModal from "./NewEndMeetingModal/NewEndMeetingModal";
 import { useSelector } from "react-redux";
 import {
   clearMeetingState,
+  GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
   showEndMeetingForAll,
   showEndMeetingModal,
@@ -366,6 +367,10 @@ const NewMeeting = () => {
       );
     } else {
       setAdvanceMeetingModalID(id);
+      let Data = {
+        MeetingID: Number(id),
+      };
+      await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
       setViewAdvanceMeetingModal(true);
     }
   };
@@ -877,38 +882,39 @@ const NewMeeting = () => {
     try {
       if (searchMeetings !== null && searchMeetings !== undefined) {
         setTotalRecords(searchMeetings.totalRecords);
-        if (
-          searchMeetings.meetings !== null &&
-          searchMeetings.meetings !== undefined &&
-          searchMeetings.meetings.length > 0
-        ) {
+        if (Object.keys(searchMeetings.meetings).length > 0) {
           let newRowData = [];
           searchMeetings.meetings.map((data, index) => {
-            newRowData.push({
-              dateOfMeeting: data.dateOfMeeting,
-              host: data.host,
-              isAttachment: data.isAttachment,
-              isChat: data.isChat,
-              isVideoCall: data.isVideoCall,
-              isQuickMeeting: data.isQuickMeeting,
-              meetingAgenda: data.meetingAgenda,
-              meetingAttendees: data.meetingAttendees,
-              meetingEndTime: data.meetingEndTime,
-              meetingStartTime: data.meetingStartTime,
-              meetingURL: data.meetingURL,
-              orignalProfilePictureName: data.orignalProfilePictureName,
-              pK_MDID: data.pK_MDID,
-              meetingPoll: {
-                totalNoOfDirectors: data.meetingPoll.totalNoOfDirectors,
-                totalNoOfDirectorsVoted:
-                  data.meetingPoll.totalNoOfDirectorsVoted,
-              },
-              responseDeadLine: data.responseDeadLine,
-              status: data.status,
-              title: data.title,
-              talkGroupID: data.talkGroupID,
-              key: index,
-            });
+            try {
+              newRowData.push({
+                dateOfMeeting: data.dateOfMeeting,
+                host: data.host,
+                isAttachment: data.isAttachment,
+                isChat: data.isChat,
+                isVideoCall: data.isVideoCall,
+                isQuickMeeting: data.isQuickMeeting,
+                meetingAgenda: data.meetingAgenda,
+                meetingAttendees: data.meetingAttendees,
+                meetingEndTime: data.meetingEndTime,
+                meetingStartTime: data.meetingStartTime,
+                meetingURL: data.meetingURL,
+                orignalProfilePictureName: data.orignalProfilePictureName,
+                pK_MDID: data.pK_MDID,
+                meetingPoll: {
+                  totalNoOfDirectors:
+                    data.proposedMeetingDetail.totalNoOfDirectors,
+                  totalNoOfDirectorsVoted:
+                    data.proposedMeetingDetail.totalNoOfDirectorsVoted,
+                },
+                responseDeadLine: data.responseDeadLine,
+                status: data.status,
+                title: data.title,
+                talkGroupID: data.talkGroupID,
+                key: index,
+              });
+            } catch {
+              console.log("rowsrowsrowsrowsrows error", newRowData);
+            }
           });
           setRow(newRowData);
         }
@@ -917,7 +923,6 @@ const NewMeeting = () => {
       }
     } catch {}
   }, [searchMeetings]);
-
   // Empty text data
   const emptyText = () => {
     return (
@@ -966,7 +971,6 @@ const NewMeeting = () => {
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
         />
       ) : (
-        
         <>
           <Row className="mt-2">
             <Col

@@ -2605,13 +2605,7 @@ const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
       });
   };
 };
-const showCancelViewModalmeetingDeitals = (response) => {
-  console.log("handleCancelMeetingButton", response);
-  return {
-    type: actions.CANCEL_VIEW_BUTTON_MODAL_MEETING_DETIALS_TAB,
-    response: response,
-  };
-};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -2681,5 +2675,4 @@ export {
   getMeetingMaterialAPI,
   GetAllUserAgendaRightsApiFunc,
   SaveUserAttachmentsPermissionApiFunc,
-  showCancelViewModalmeetingDeitals,
 };

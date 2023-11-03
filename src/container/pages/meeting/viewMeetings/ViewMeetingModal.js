@@ -26,8 +26,6 @@ const ViewMeetingModal = ({
   setViewAdvanceMeetingModal,
 }) => {
   const { t } = useTranslation();
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
-  console.log(currentMeetingID, "currentMeetingIDcurrentMeetingID");
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
@@ -299,41 +297,29 @@ const ViewMeetingModal = ({
                 )}
                 {organizers && (
                   <Organizers
-                    setorganizers={setorganizers}
                     setmeetingDetails={setmeetingDetails}
+                    setorganizers={setorganizers}
+                    advanceMeetingModalID={advanceMeetingModalID}
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                     setAgendaContributors={setAgendaContributors}
-                    setParticipants={setParticipants}
-                    setAgenda={setAgenda}
-                    setMinutes={setMinutes}
-                    setactionsPage={setactionsPage}
-                    setAttendance={setAttendance}
-                    setPolls={setPolls}
-                    setMeetingMaterial={setMeetingMaterial}
-                    advanceMeetingModalID={advanceMeetingModalID}
                   />
                 )}
                 {agendaContributors && (
                   <AgendaContributers
                     setorganizers={setorganizers}
-                    setmeetingDetails={setmeetingDetails}
-                    setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                     setAgendaContributors={setAgendaContributors}
                     setParticipants={setParticipants}
-                    setAgenda={setAgenda}
-                    setMinutes={setMinutes}
-                    setactionsPage={setactionsPage}
-                    setAttendance={setAttendance}
-                    setPolls={setPolls}
-                    setMeetingMaterial={setMeetingMaterial}
+                    setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                    advanceMeetingModalID={advanceMeetingModalID}
                   />
                 )}
                 {participants && (
                   <Participants
                     setParticipants={setParticipants}
                     setAgenda={setAgenda}
-                    setProposedMeetingDates={setProposedMeetingDates}
+                    setAgendaContributors={setAgendaContributors}
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                    advanceMeetingModalID={advanceMeetingModalID}
                   />
                 )}
 

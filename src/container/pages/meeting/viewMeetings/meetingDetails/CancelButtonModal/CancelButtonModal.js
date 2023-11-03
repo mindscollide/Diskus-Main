@@ -4,52 +4,23 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
-import { showCancelViewModalmeetingDeitals } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 const CancelButtonModal = ({
+  setCancelModalView,
+  cancelModalView,
   setViewAdvanceMeetingModal,
   setMeetingDetails,
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleNOFunctionality = () => {
-    dispatch(showCancelViewModalmeetingDeitals(false));
+    setCancelModalView(false);
   };
 
   const handleYesFunctionality = () => {
-    setMeetingDetails({
-      MeetingTitle: "",
-      MeetingType: 0,
-      Location: "",
-      Description: "",
-      Link: "",
-      ReminderFrequency: {
-        value: 0,
-        label: "",
-      },
-      ReminderFrequencyTwo: {
-        value: 0,
-        label: "",
-      },
-      ReminderFrequencyThree: {
-        value: 0,
-        label: "",
-      },
-      Notes: "",
-      groupChat: false,
-      AllowRSPV: false,
-      NotifyMeetingOrganizer: false,
-      RecurringOptions: {
-        value: 0,
-        label: "",
-      },
-      Location: "",
-      IsVideoCall: false,
-    });
+    setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);
-    dispatch(showCancelViewModalmeetingDeitals(false));
+    setCancelModalView(false);
   };
 
   return (
@@ -57,12 +28,12 @@ const CancelButtonModal = ({
       {" "}
       <section>
         <Modal
-          show={NewMeetingreducer.cancelModalMeetingDetails}
-          setShow={dispatch(showCancelViewModalmeetingDeitals)}
+          show={cancelModalView}
+          setShow={setCancelModalView(true)}
           modalHeaderClassName={"d-block"}
           modalFooterClassName={"d-block"}
           onHide={() => {
-            dispatch(showCancelViewModalmeetingDeitals(false));
+            setCancelModalView(false);
           }}
           ModalBody={
             <>

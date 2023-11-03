@@ -3,64 +3,31 @@ import styles from "./Organizers.module.css";
 import {
   Button,
   Table,
-  TextField,
-  Switch,
-  Loader,
   Notification,
 } from "../../../../../components/elements";
-import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-import addmore from "../../../../../assets/images/addmore.png";
-import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
-import rspvAbstainIcon from "../../../../../assets/images/rspvAbstain.svg";
-import CrossResolution from "../../../../../assets/images/resolutions/cross_icon_resolution.svg";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
-import mail from "../../../../../assets/images/mail.svg";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
-import { Tooltip } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  showAddUserModal,
-  showCancelModalOrganizers,
-  showCrossConfirmationModal,
-  showNotifyOrganizors,
-  sendRecentNotificationOrganizerModal,
-} from "../../../../../store/actions/NewMeetingActions";
-import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
-import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
-import NotifyOrganizers from "./NotifyOrganizers/NotifyOrganizers";
-import SendNotificationOrganizer from "./NotifyOrganizers/SendRecentNotification";
 import OrganizersViewPage from "./OrganizerViewPage/OrganizersViewPage";
 import {
-  SaveMeetingOrganizers,
   clearResponseMessage,
-  UpdateOrganizersMeeting,
   GetAllMeetingOrganizers,
-  meetingOrganizers,
-  selectedMeetingOrganizers,
   saveMeetingFlag,
   editMeetingFlag,
-  notificationSendData,
 } from "../../../../../store/actions/MeetingOrganizers_action";
-import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
+import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 
 const Organizers = ({
   setAgendaContributors,
   setmeetingDetails,
   setorganizers,
-  setParticipants,
-  setAgenda,
-  setMinutes,
-  setactionsPage,
-  setAttendance,
-  setPolls,
-  setMeetingMaterial,
-  setSceduleMeeting,
   advanceMeetingModalID,
+  setViewAdvanceMeetingModal,
 }) => {
   const { t } = useTranslation();
 
@@ -73,8 +40,7 @@ const Organizers = ({
   let currentUserName = localStorage.getItem("name");
 
   const [viewOrganizers, setviewOrganizers] = useState(false);
-
-  const [editState, setEditState] = useState(false);
+  const [cancelModalView, setCancelModalView] = useState(false);
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
@@ -102,7 +68,8 @@ const Organizers = ({
   });
 
   const handleCancelOrganizer = () => {
-    setSceduleMeeting(false);
+    console.log("handleCancelOrganizer");
+    setCancelModalView(true);
   };
 
   useEffect(() => {
@@ -180,11 +147,18 @@ const Organizers = ({
               src={rspvGreenIcon}
               height="30px"
               width="30px"
+              alt=""
             />
           );
         } else {
           return (
-            <img draggable={false} src={NORSVP} height="30px" width="30px" />
+            <img
+              draggable={false}
+              src={NORSVP}
+              height="30px"
+              width="30px"
+              alt=""
+            />
           );
         }
       },
@@ -212,6 +186,7 @@ const Organizers = ({
                     src={greenMailIcon}
                     height="30px"
                     width="30px"
+                    alt=""
                   />
                 ) : (
                   <img
@@ -219,6 +194,7 @@ const Organizers = ({
                     src={greenMailIcon}
                     height="30px"
                     width="30px"
+                    alt=""
                   />
                 )}
               </Col>
@@ -239,6 +215,7 @@ const Organizers = ({
                     src={redMailIcon}
                     height="30px"
                     width="30px"
+                    alt=""
                   />
                 ) : (
                   <img
@@ -246,31 +223,12 @@ const Organizers = ({
                     src={redMailIcon}
                     height="30px"
                     width="30px"
+                    alt=""
                   />
                 )}
               </Col>
             </Row>
           );
-        }
-      },
-    },
-    {
-      // title: t('RSVP'),
-      dataIndex: "isDeletable",
-      key: "isDeletable",
-      width: "120px",
-      render: (text, record) => {
-        if (record.isDeletable === true) {
-          return (
-            <img
-              draggable={false}
-              src={CrossResolution}
-              height="30px"
-              width="30px"
-            />
-          );
-        } else {
-          return null;
         }
       },
     },
@@ -280,36 +238,14 @@ const Organizers = ({
     setAgendaContributors(false);
     setmeetingDetails(true);
     setorganizers(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
     setRowsData([]);
-    dispatch(saveMeetingFlag(false));
-    dispatch(editMeetingFlag(false));
   };
 
   const nextTabOrganizer = () => {
-    // setviewOrganizers(!viewOrganizers)
-    // let Data = { meetingID: advanceMeetingModalID, StatusID: 1 };
-    // dispatch(UpdateOrganizersMeeting(navigate, Data, t));
-    // setRowsData([]);
     setAgendaContributors(true);
     setmeetingDetails(false);
     setorganizers(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
     setRowsData([]);
-    dispatch(saveMeetingFlag(false));
-    dispatch(editMeetingFlag(false));
   };
 
   useEffect(() => {
@@ -510,14 +446,13 @@ const Organizers = ({
 
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
-      {NewMeetingreducer.adduserModal && <ModalOrganizor />}
-      {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
-      {NewMeetingreducer.notifyOrganizors && <NotifyOrganizers />}
-      {NewMeetingreducer.sendNotificationOrganizerModal === true ? (
-        <SendNotificationOrganizer />
-      ) : null}
-      {NewMeetingreducer.cancelModalOrganizer && (
-        <CancelModalOrganizer setSceduleMeeting={setSceduleMeeting} />
+      {cancelModalView && (
+        <CancelButtonModal
+          setCancelModalView={setCancelModalView}
+          cancelModalView={cancelModalView}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          setMeetingDetails={setorganizers}
+        />
       )}
     </>
   );
