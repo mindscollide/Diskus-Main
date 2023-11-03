@@ -356,14 +356,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       setTaskAssignedToInput("");
     }
   };
-  console.log(groupMembers, "MemberData");
-  console.log(meetingAttendees, "MemberData");
-  console.log(createCommitteeDetails, "MemberData");
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     setOnclickFlag(false);
-    if (e.target.value.trimStart() != "") {
+    if (e.target.value.trimStart() !== "") {
       setTaskAssignedToInput(e.target.value.trimStart());
     } else {
       setTaskAssignedToInput("");
