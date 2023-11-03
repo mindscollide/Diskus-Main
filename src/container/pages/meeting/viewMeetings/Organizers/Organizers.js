@@ -66,9 +66,9 @@ const Organizers = ({
     open: false,
     message: "",
   });
+  console.log("handleCancelOrganizer rowsData", rowsData);
 
   const handleCancelOrganizer = () => {
-    console.log("handleCancelOrganizer");
     setCancelModalView(true);
   };
 
@@ -108,13 +108,7 @@ const Organizers = ({
       dataIndex: "organizerTitle",
       key: "organizerTitle",
       width: "250px",
-      render: (text, record) => (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            {inputValues[record.userID]}
-          </Col>
-        </Row>
-      ),
+      render: (text) => <label className="column-boldness">{text}</label>,
     },
 
     {
@@ -180,23 +174,13 @@ const Organizers = ({
                 sm={7}
                 className="d-flex justify-content-center"
               >
-                {record.disabledNotification === true ? (
-                  <img
-                    draggable={false}
-                    src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                ) : (
-                  <img
-                    draggable={false}
-                    src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                )}
+                <img
+                  draggable={false}
+                  src={greenMailIcon}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
               </Col>
             </Row>
           );
@@ -209,23 +193,13 @@ const Organizers = ({
                 sm={7}
                 className="d-flex justify-content-center"
               >
-                {record.disabledNotification === true ? (
-                  <img
-                    draggable={false}
-                    src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                ) : (
-                  <img
-                    draggable={false}
-                    src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                )}
+                <img
+                  draggable={false}
+                  src={redMailIcon}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
               </Col>
             </Row>
           );
