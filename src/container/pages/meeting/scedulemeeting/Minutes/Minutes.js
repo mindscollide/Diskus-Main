@@ -530,6 +530,20 @@ const Minutes = ({ setMinutes }) => {
               </Row>
             </Col>
           </Row>
+          <Row className="mt-3">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end gap-2"
+            >
+              <Button
+                text={t("Previous")}
+                className={styles["Previous_Button"]}
+              />
+              <Button text={t("ADD")} className={styles["Button_General"]} />
+            </Col>
+          </Row>
         </>
       )}
     </section>
