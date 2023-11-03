@@ -372,6 +372,12 @@ const Minutes = ({ setMinutes }) => {
     }
   };
 
+  const handleRemovingTheMinutes = (index) => {
+    let updatedRecords = [...messages];
+    updatedRecords.splice(index, 1);
+    setMessages(updatedRecords);
+  };
+
   return (
     <section>
       <Row className="mt-3">
@@ -425,11 +431,14 @@ const Minutes = ({ setMinutes }) => {
                   className="d-flex gap-2 justify-content-end"
                 >
                   <Button
-                    text={t("Cancel")}
+                    text={t("Reset")}
                     className={styles["Previous_Button"]}
                   />
 
                   <Button
+                    disableBtn={
+                      addNoteFields.Description.value === "" ? true : false
+                    }
                     text={t("Save")}
                     className={styles["Button_General"]}
                     onClick={handleAddClick}
@@ -597,107 +606,112 @@ const Minutes = ({ setMinutes }) => {
                 ? messages.map((data, index) => {
                     return (
                       <>
-                        <Row className="mt-5">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_Minutes"]}
-                          >
-                            <Row>
-                              <Col lg={6} md={6} sm={6}>
-                                <Row className="mt-3">
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span className={styles["Title_File"]}>
-                                      {expanded ? (
-                                        <>{data.substring(0, 190)}...</>
-                                      ) : (
-                                        <>{data}</>
-                                      )}
+                        <section className={styles["Sizing_Saved_Minutes"]}>
+                          <Row className="mt-5">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Box_Minutes"]}
+                            >
+                              <Row>
+                                <Col lg={9} md={9} sm={9}>
+                                  <Row className="mt-3">
+                                    <Col lg={12} md={12} sm={12}>
+                                      <span className={styles["Title_File"]}>
+                                        {expanded ? (
+                                          <>{data.substring(0, 190)}...</>
+                                        ) : (
+                                          <>{data}</>
+                                        )}
 
-                                      <span
-                                        className={styles["Show_more_Styles"]}
-                                        onClick={toggleExpansion}
-                                      >
-                                        {expanded
-                                          ? t("See-more")
-                                          : t("See-less")}
-                                      </span>
-                                    </span>
-                                  </Col>
-                                </Row>
-                                <Row className="mt-1">
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span
-                                      className={
-                                        styles["Date_Minutes_And_time"]
-                                      }
-                                    >
-                                      4:00pm, 18th May, 2020
-                                    </span>
-                                  </Col>
-                                </Row>
-                              </Col>
-                              <Col lg={6} md={6} sm={6} className="mt-4">
-                                <Row className="d-flex justify-content-end">
-                                  <Col lg={2} md={2} sm={2}>
-                                    <img
-                                      draggable={false}
-                                      src={profile}
-                                      height="30px"
-                                      width="30px"
-                                      className={styles["Profile_minutes"]}
-                                    />
-                                  </Col>
-                                  <Col
-                                    lg={6}
-                                    md={6}
-                                    sm={6}
-                                    className={styles["Line_heigh"]}
-                                  >
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12}>
                                         <span
-                                          className={styles["Uploaded_heading"]}
+                                          className={styles["Show_more_Styles"]}
+                                          onClick={toggleExpansion}
                                         >
-                                          {t("Uploaded-by")}
+                                          {expanded
+                                            ? t("See-more")
+                                            : t("See-less")}
                                         </span>
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12}>
-                                        <span className={styles["Name"]}>
-                                          Mehtab Ahmed
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                  <Col
-                                    lg={3}
-                                    md={3}
-                                    sm={3}
-                                    className="d-flex justify-content-start align-items-center"
-                                  >
-                                    <img
-                                      draggable={false}
-                                      src={EditIcon}
-                                      height="21.55px"
-                                      width="21.55px"
-                                      className="cursor-pointer"
-                                    />
-                                  </Col>
-                                </Row>
-                              </Col>
-                            </Row>
-                            <img
-                              draggable={false}
-                              src={RedCroseeIcon}
-                              height="20.76px"
-                              width="20.76px"
-                              className={styles["RedCrossClass"]}
-                            />
-                          </Col>
-                        </Row>
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                  <Row className="mt-1">
+                                    <Col lg={12} md={12} sm={12}>
+                                      <span
+                                        className={
+                                          styles["Date_Minutes_And_time"]
+                                        }
+                                      >
+                                        4:00pm, 18th May, 2020
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col lg={3} md={3} sm={3} className="mt-4">
+                                  <Row className="d-flex justify-content-end">
+                                    <Col lg={2} md={2} sm={2}>
+                                      <img
+                                        draggable={false}
+                                        src={profile}
+                                        height="39px"
+                                        width="39px"
+                                        className={styles["Profile_minutes"]}
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={6}
+                                      md={6}
+                                      sm={6}
+                                      className={styles["Line_heigh"]}
+                                    >
+                                      <Row>
+                                        <Col lg={12} md={12} sm={12}>
+                                          <span
+                                            className={
+                                              styles["Uploaded_heading"]
+                                            }
+                                          >
+                                            {t("Uploaded-by")}
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                      <Row>
+                                        <Col lg={12} md={12} sm={12}>
+                                          <span className={styles["Name"]}>
+                                            Mehtab Ahmed
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                    <Col
+                                      lg={3}
+                                      md={3}
+                                      sm={3}
+                                      className="d-flex justify-content-start align-items-center"
+                                    >
+                                      <img
+                                        draggable={false}
+                                        src={EditIcon}
+                                        height="21.55px"
+                                        width="21.55px"
+                                        className="cursor-pointer"
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </Row>
+                              <img
+                                draggable={false}
+                                src={RedCroseeIcon}
+                                height="20.76px"
+                                width="20.76px"
+                                className={styles["RedCrossClass"]}
+                                onClick={() => handleRemovingTheMinutes(index)}
+                              />
+                            </Col>
+                          </Row>
+                        </section>
                       </>
                     );
                   })

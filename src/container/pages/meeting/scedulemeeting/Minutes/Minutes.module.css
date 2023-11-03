@@ -402,20 +402,20 @@ body[dir="rtl"] .Leftpolygon {
 
 .RedCrossClass {
   position: absolute !important;
-  right: -6px;
-  top: -4px;
+  right: -8px;
+  top: -9px;
   cursor: pointer !important;
 }
 
 .Name {
   font-family: "MontserratSemiBold" !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
   color: #5a5a5a !important;
 }
 
 .Uploaded_heading {
   font-family: "MontserratSemiBold" !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
   color: #5f78d6 !important;
 }
 
@@ -458,4 +458,14 @@ body[dir="rtl"] .Leftpolygon {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+
+.Sizing_Saved_Minutes {
+  padding: 0px 10px !important;
+}
+
+.Title_File {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
 }
