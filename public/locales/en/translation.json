@@ -1584,5 +1584,8 @@
   "Agenda-wise": "Agenda Wise",
   "List-updated-successfully": "List Updated Successfully",
   "RSVP-allowed-and-notify": "RSVP allowed and notify meeting organizer when members RSVP",
-  "RSVP-not-allowed": "RSVP not allowed "
+  "RSVP-not-allowed": "RSVP not allowed ",
+  "Only-minute-creator-can-delete": "Only Minute creator Can Delete",
+  "Record-deleted": "Record Deleted",
+  "No-record-deleted": "No Record Deleted"
 }

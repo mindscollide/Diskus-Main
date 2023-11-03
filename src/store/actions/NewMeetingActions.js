@@ -30,6 +30,7 @@ import {
   SaveGeneralWiseSavingDocuments,
   RetriveGeneralMinutesDocuments,
   getAllGeneralMiintuesDocument,
+  DeleteGeneralMinutes,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -3352,6 +3353,125 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
   };
 };
 
+//Delete General Minutes
+
+const DeleteGeneralMinutesInit = () => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTES_METHOD_INIT,
+  };
+};
+
+const DeleteGeneralMinutesSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTES_METHOD_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const DeleteGeneralMinutesFailed = (message) => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTES_METHOD_FAILED,
+    message: message,
+  };
+};
+
+const DeleteGeneralMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  let currentMeetingID = localStorage.getItem("meetingID");
+  return (dispatch) => {
+    dispatch(DeleteGeneralMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteGeneralMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DeleteGeneralMinutesApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteGeneralMinute_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                DeleteGeneralMinutesSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Record-deleted")
+                )
+              );
+              let DelMeet = {
+                MeetingID: Number(currentMeetingID),
+              };
+              dispatch(getAllGeneralMinutesApiFunc(navigate, t, DelMeet));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteGeneralMinute_02".toLowerCase()
+                )
+            ) {
+              dispatch(DeleteGeneralMinutesFailed(t("No-record-deleted")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteGeneralMinute_03".toLowerCase()
+                )
+            ) {
+              dispatch(DeleteGeneralMinutesFailed(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteGeneralMinute_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                DeleteGeneralMinutesFailed(t("Only-minute-creator-can-delete"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showRetriveGeneralMinutesDocsMeetingFailed(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showRetriveGeneralMinutesDocsMeetingFailed(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          showRetriveGeneralMinutesDocsMeetingFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -3428,4 +3548,5 @@ export {
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   DocumentsOfMeetingGenralMinutesApiFunc,
+  DeleteGeneralMinutesApiFunc,
 };

@@ -20,6 +20,7 @@ import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
   ADDGeneralMinutesApiFunc,
+  DeleteGeneralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   getAllGeneralMinutesApiFunc,
   uploadDocumentsMeetingMinutesApi,
@@ -478,10 +479,19 @@ const Minutes = ({ setMinutes }) => {
     // }
   };
 
-  const handleRemovingTheMinutes = (index) => {
-    let updatedRecords = [...messages];
-    updatedRecords.splice(index, 1);
-    setMessages(updatedRecords);
+  const handleRemovingTheMinutes = () => {
+    let DelMinuteID;
+    messages.map((minID, index) => {
+      console.log(minID.minuteID, "minIDminID");
+      DelMinuteID = minID.minuteID;
+    });
+    let Data = {
+      MinuteID: DelMinuteID,
+    };
+    dispatch(DeleteGeneralMinutesApiFunc(navigate, Data, t));
+    // let updatedRecords = [...messages];
+    // updatedRecords.splice(index, 1);
+    // setMessages(updatedRecords);
   };
 
   //UPloading the Documents
@@ -844,7 +854,7 @@ const Minutes = ({ setMinutes }) => {
                                 height="20.76px"
                                 width="20.76px"
                                 className={styles["RedCrossClass"]}
-                                onClick={() => handleRemovingTheMinutes(index)}
+                                onClick={handleRemovingTheMinutes}
                               />
                             </Col>
                           </Row>
