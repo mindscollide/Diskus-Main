@@ -391,7 +391,7 @@ const GroupViewPolls = ({
                             </Col>
                           </Row>
                         </section>
-                        <Row className="mt-5">
+                        {/* <Row className="mt-5">
                           <Col
                             lg={12}
                             md={12}
@@ -426,7 +426,7 @@ const GroupViewPolls = ({
                               onClick={handleSaveAndnext}
                             />
                           </Col>
-                        </Row>
+                        </Row> */}
                       </>
                     ) : (
                       <>

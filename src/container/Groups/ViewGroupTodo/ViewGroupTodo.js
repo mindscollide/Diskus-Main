@@ -181,22 +181,24 @@ const CreateTodoCommittee = () => {
   };
 
   const deleteTodolist = async (record) => {
-    await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false));
-    if (todoListPageSize !== null && todoListCurrentPage !== null) {
-      dispatch(
-        SearchTodoListApi(
-          navigate,
-          searchData,
-          todoListCurrentPage,
-          todoListPageSize,
-          t
-        )
-      );
-    } else {
-      localStorage.setItem("todoListPage", 1);
-      localStorage.setItem("todoListRow", 50);
-      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
-    }
+    await dispatch(
+      updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false, 2)
+    );
+    // if (todoListPageSize !== null && todoListCurrentPage !== null) {
+    //   dispatch(
+    //     SearchTodoListApi(
+    //       navigate,
+    //       searchData,
+    //       todoListCurrentPage,
+    //       todoListPageSize,
+    //       t
+    //     )
+    //   );
+    // } else {
+    //   localStorage.setItem("todoListPage", 1);
+    //   localStorage.setItem("todoListRow", 50);
+    //   dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
+    // }
   };
 
   const columnsToDo = [
@@ -452,7 +454,7 @@ const CreateTodoCommittee = () => {
         if (parseInt(record?.pK_UID) === parseInt(createrID)) {
           return (
             <i
-              className="meeting-editbutton"
+              className="meeting-editbutton cursor-pointer"
               onClick={(e) => deleteTodolist(index)}
             >
               <img draggable="false" src={del} alt="" />
@@ -492,7 +494,7 @@ const CreateTodoCommittee = () => {
     if (e === 6) {
       setRemoveTodo(statusdata);
     }
-    dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false));
+    dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false, 2));
   };
 
   useEffect(() => {
