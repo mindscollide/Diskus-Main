@@ -1092,6 +1092,26 @@ const setGroupPollsApi = {
   RequestMethod: "ServiceManager.SetGroupPolls",
 };
 
+const getGeneralMinutes = {
+  RequestMethod: "ServiceManager.GetMeetingGeneralMinutes",
+};
+
+const SaveminutesGeneral = {
+  RequestMethod: "ServiceManager.AddGeneralMinute",
+};
+
+const SaveGeneralWiseSavingDocuments = {
+  RequestMethod: "ServiceManager.SaveGeneralMinutesDocuments",
+};
+
+const RetriveGeneralMinutesDocuments = {
+  RequestMethod: "ServiceManager.ReteriveGeneralMinuteDocuments",
+};
+
+const getAllGeneralMiintuesDocument = {
+  RequestMethod: "ServiceManager.GetAllGeneralMiuteDocumentsForMeeting",
+};
+
 const getTaskGroupIDApi = {
   RequestMethod: "ServiceManager.GetTasksByGroupID",
 };
@@ -1402,6 +1422,11 @@ export {
   saveUserAttachmentPermission,
   getPollByGroupIDApi,
   setGroupPollsApi,
+  getGeneralMinutes,
+  SaveminutesGeneral,
+  SaveGeneralWiseSavingDocuments,
+  RetriveGeneralMinutesDocuments,
+  getAllGeneralMiintuesDocument,
   getTaskGroupIDApi,
   setGroupTaskApi,
   getTaskByCommitteeIDApi,
