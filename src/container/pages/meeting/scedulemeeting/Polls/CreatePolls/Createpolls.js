@@ -194,116 +194,116 @@ const Createpolls = ({ setCreatepoll }) => {
     let pollMeetingData = NewMeetingreducer.getMeetingusers;
     if (pollMeetingData !== undefined && pollMeetingData !== null) {
       let newmembersArray = [];
-      // if (Object.keys(pollMeetingData).length > 0) {
-      if (pollMeetingData.meetingOrganizers.length > 0) {
-        pollMeetingData.meetingOrganizers.map(
-          (MorganizerData, MorganizerIndex) => {
-            let MeetingOrganizerData = {
-              value: MorganizerData.userID,
-              label: (
-                <>
+      if (Object.keys(pollMeetingData).length > 0) {
+        if (pollMeetingData.meetingOrganizers.length > 0) {
+          pollMeetingData.meetingOrganizers.map(
+            (MorganizerData, MorganizerIndex) => {
+              let MeetingOrganizerData = {
+                value: MorganizerData.userID,
+                label: (
                   <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={GroupIcon}
-                          height="16.45px"
-                          width="18.32px"
-                          draggable="false"
-                          alt=""
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {MorganizerData.userName}
-                        </span>
-                      </Col>
-                    </Row>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={GroupIcon}
+                            height="16.45px"
+                            width="18.32px"
+                            draggable="false"
+                            alt=""
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {MorganizerData.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
                   </>
-                </>
-              ),
-              type: 1,
-            };
-            newmembersArray.push(MeetingOrganizerData);
-          }
-        );
-      }
-      if (pollMeetingData.meetingAgendaContributors.length > 0) {
-        pollMeetingData.meetingAgendaContributors.map(
-          (meetAgendaContributor, meetAgendaContributorIndex) => {
-            let MeetingAgendaContributorData = {
-              value: meetAgendaContributor.userID,
-              label: (
-                <>
+                ),
+                type: 1,
+              };
+              newmembersArray.push(MeetingOrganizerData);
+            }
+          );
+        }
+        if (pollMeetingData.meetingAgendaContributors.length > 0) {
+          pollMeetingData.meetingAgendaContributors.map(
+            (meetAgendaContributor, meetAgendaContributorIndex) => {
+              let MeetingAgendaContributorData = {
+                value: meetAgendaContributor.userID,
+                label: (
                   <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={GroupIcon}
-                          height="16.45px"
-                          alt=""
-                          width="18.32px"
-                          draggable="false"
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {meetAgendaContributor.userName}
-                        </span>
-                      </Col>
-                    </Row>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={GroupIcon}
+                            height="16.45px"
+                            alt=""
+                            width="18.32px"
+                            draggable="false"
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {meetAgendaContributor.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
                   </>
-                </>
-              ),
-              type: 2,
-            };
-            newmembersArray.push(MeetingAgendaContributorData);
-          }
-        );
-      }
-      if (pollMeetingData.meetingParticipants.length > 0) {
-        pollMeetingData.meetingParticipants.map(
-          (meetParticipants, meetParticipantsIndex) => {
-            let MeetingParticipantsData = {
-              value: meetParticipants.userID,
-              label: (
-                <>
+                ),
+                type: 2,
+              };
+              newmembersArray.push(MeetingAgendaContributorData);
+            }
+          );
+        }
+        if (pollMeetingData.meetingParticipants.length > 0) {
+          pollMeetingData.meetingParticipants.map(
+            (meetParticipants, meetParticipantsIndex) => {
+              let MeetingParticipantsData = {
+                value: meetParticipants.userID,
+                label: (
                   <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
-                        <img
-                          src={GroupIcon}
-                          height="16.45px"
-                          width="18.32px"
-                          alt=""
-                          draggable="false"
-                        />
-                        <span className={styles["NameDropDown"]}>
-                          {meetParticipants.userName}
-                        </span>
-                      </Col>
-                    </Row>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={GroupIcon}
+                            height="16.45px"
+                            width="18.32px"
+                            alt=""
+                            draggable="false"
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {meetParticipants.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
                   </>
-                </>
-              ),
-              type: 3,
-            };
-            newmembersArray.push(MeetingParticipantsData);
-          }
-        );
+                ),
+                type: 3,
+              };
+              newmembersArray.push(MeetingParticipantsData);
+            }
+          );
+        }
       }
-      // }
       console.log(newmembersArray, "pollMeetingDatapollMeetingData");
 
       setmemberSelect(newmembersArray);

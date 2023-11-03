@@ -23,6 +23,7 @@ import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
+import { getPollsByPollIdApi } from "../../../../../store/actions/Polls_actions";
 const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -57,7 +58,13 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     setPolls(false);
     setAttendance(true);
   };
-
+  const handleEditMeetingPoll = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(getPollsByPollIdApi(navigate, data, 0, t, setEditPolls));
+  };
   useEffect(() => {
     let Data = {
       MeetingID: currentMeetingID,
@@ -106,7 +113,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      width: "70px",
+      width: "120px",
       filters: [
         {
           text: t("Published"),
@@ -268,6 +275,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                                 height="21.59px"
                                 alt=""
                                 draggable="false"
+                                onClick={() => handleEditMeetingPoll(record)}
                               />
                             </Tooltip>
                           </Col>
@@ -302,6 +310,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                             height="21.59px"
                             alt=""
                             draggable="false"
+                            onClick={() => handleEditMeetingPoll(record)}
                           />
                         </Tooltip>
                       </Col>

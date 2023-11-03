@@ -1074,7 +1074,22 @@ const updatePollsApi = (navigate, Data, t, value, setEditPolls) => {
                 )
               );
               setEditPolls(false);
-              if (value === 3) {
+              if (value === 2) {
+                let currentMeetingID = Number(
+                  localStorage.getItem("meetingID")
+                );
+
+                let OrganizationID = localStorage.getItem("organizationID");
+                let Data1 = {
+                  MeetingID: currentMeetingID,
+                  OrganizationID: Number(OrganizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(GetAllPollsByMeetingIdApiFunc(Data1, navigate, t));
+              } else if (value === 3) {
                 let OrganizationID = localStorage.getItem("organizationID");
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
@@ -1087,6 +1102,19 @@ const updatePollsApi = (navigate, Data, t, value, setEditPolls) => {
                   Length: 50,
                 };
                 dispatch(GetPollsByCommitteeIDapi(navigate, t, newData));
+              } else if (value === 4) {
+                let OrganizationID = localStorage.getItem("organizationID");
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+                let newData = {
+                  GroupID: Number(ViewGroupID),
+                  OrganizationID: Number(OrganizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(getPollsByGroupMainApi(navigate, t, newData));
               } else {
                 let userID = localStorage.getItem("userID");
                 let organizationID = localStorage.getItem("organizationID");
@@ -1126,7 +1154,22 @@ const updatePollsApi = (navigate, Data, t, value, setEditPolls) => {
               setEditPolls(false);
               dispatch(setEditpollModal(false));
 
-              if (value === 3) {
+              if (value === 2) {
+                let currentMeetingID = Number(
+                  localStorage.getItem("meetingID")
+                );
+
+                let OrganizationID = localStorage.getItem("organizationID");
+                let Data1 = {
+                  MeetingID: currentMeetingID,
+                  OrganizationID: Number(OrganizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(GetAllPollsByMeetingIdApiFunc(Data1, navigate, t));
+              } else if (value === 3) {
                 let OrganizationID = localStorage.getItem("organizationID");
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
@@ -1139,6 +1182,19 @@ const updatePollsApi = (navigate, Data, t, value, setEditPolls) => {
                   Length: 50,
                 };
                 dispatch(GetPollsByCommitteeIDapi(navigate, t, newData));
+              } else if (value === 4) {
+                let OrganizationID = localStorage.getItem("organizationID");
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+                let newData = {
+                  GroupID: Number(ViewGroupID),
+                  OrganizationID: Number(OrganizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(getPollsByGroupMainApi(navigate, t, newData));
               } else {
                 let userID = localStorage.getItem("userID");
                 let organizationID = localStorage.getItem("organizationID");

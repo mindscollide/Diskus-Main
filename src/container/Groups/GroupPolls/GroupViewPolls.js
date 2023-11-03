@@ -24,7 +24,10 @@ import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../commen/functions/date_formater";
-import { getPollsByGroupMainApi } from "../../../store/actions/Polls_actions";
+import {
+  getPollsByGroupMainApi,
+  getPollsByPollIdApi,
+} from "../../../store/actions/Polls_actions";
 const GroupViewPolls = ({
   setSceduleMeeting,
   setPolls,
@@ -98,6 +101,15 @@ const GroupViewPolls = ({
       }
     } catch {}
   }, [PollsReducer.getPollByGroupID]);
+
+  const handleEditBtn = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(getPollsByPollIdApi(navigate, data, 0, t, setEditPolls));
+    // dispatch(showunsavedEditPollsMeetings(false));
+  };
 
   console.log(pollsRows, "pollsRowspollsRowspollsRows");
 
@@ -279,6 +291,7 @@ const GroupViewPolls = ({
                                 height="21.59px"
                                 alt=""
                                 draggable="false"
+                                onClick={() => handleEditBtn(record)}
                               />
                             </Tooltip>
                           </Col>
@@ -313,6 +326,7 @@ const GroupViewPolls = ({
                             height="21.59px"
                             alt=""
                             draggable="false"
+                            onClick={() => handleEditBtn(record)}
                           />
                         </Tooltip>
                       </Col>
