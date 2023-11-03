@@ -30,6 +30,7 @@ import {
   SaveGeneralWiseSavingDocuments,
   RetriveGeneralMinutesDocuments,
   getAllGeneralMiintuesDocument,
+  getUserWiseProposeDate,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -3345,6 +3346,94 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
   };
 };
 
+// GET USER WISE PROPOSED API
+const getProposedWiseInit = () => {
+  return {
+    type: actions.GET_USER_WISE_PROPOSED_INIT,
+  };
+};
+
+const getProposedWiseSuccess = (response, message) => {
+  return {
+    type: actions.GET_USER_WISE_PROPOSED_SUCCESS,
+    response,
+    message,
+  };
+};
+
+const getProposedWiseFail = (message) => {
+  return {
+    type: actions.GET_USER_WISE_PROPOSED_FAIL,
+    message,
+  };
+};
+
+const getUserProposedWiseApi = (navigate, t, proposedData) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getProposedWiseInit());
+    let form = new FormData();
+    form.append("RequestMethod", getUserWiseProposeDate.RequestMethod);
+    form.append("RequestData", JSON.stringify(proposedData));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getUserProposedWiseApi(navigate, t, proposedData));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getProposedWiseSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_02".toLowerCase()
+                )
+            ) {
+              dispatch(getProposedWiseFail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_03".toLowerCase()
+                )
+            ) {
+              dispatch(getProposedWiseFail(t("Something-went-wrong")));
+            } else {
+              dispatch(getProposedWiseFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getProposedWiseFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getProposedWiseFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getProposedWiseFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -3421,4 +3510,5 @@ export {
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   DocumentsOfMeetingGenralMinutesApiFunc,
+  getUserProposedWiseApi,
 };
