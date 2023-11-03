@@ -26,6 +26,7 @@ import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
 import {
   GetPollsByCommitteeIDapi,
+  deleteCommitteePollApi,
   getPollsByPollIdApi,
 } from "../../../../store/actions/Polls_actions";
 
@@ -68,6 +69,14 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     // setEditPolls(true);
   };
 
+  const handleDeletePoll = (record) => {
+    let data = {
+      PollID: record.pollID,
+      CommitteeID: parseInt(ViewCommitteeID),
+    };
+    dispatch(deleteCommitteePollApi(navigate, t, data));
+  };
+
   const handleCacnelbutton = () => {
     dispatch(showCancelPolls(true));
   };
@@ -103,6 +112,8 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         });
         console.log(newPollsArray, "newPollsArraynewPollsArray");
         setPollsRows(newPollsArray);
+      } else {
+        setPollsRows([])
       }
     } catch {}
   }, [PollsReducer.getPollByCommitteeID]);
@@ -305,6 +316,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                                 width="21.59px"
                                 height="21.59px"
                                 draggable="false"
+                                onClick={() => handleDeletePoll(record)}
                               />
                             </Tooltip>
                           </Col>
@@ -335,6 +347,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                             width="21.59px"
                             height="21.59px"
                             draggable="false"
+                            onClick={() => handleDeletePoll(record)}
                           />
                         </Tooltip>
                       </Col>

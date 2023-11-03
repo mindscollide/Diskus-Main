@@ -1140,11 +1140,36 @@ const setCommitteeTaskApi = {
   RequestMethod: "ServiceManager.SetCommitteeTasks",
 };
 
+const deleteCommitteePollRM = {
+  RequestMethod: "ServiceManager.DeleteCommitteePolls",
+};
+
+const deleteGroupPollsRM = {
+  RequestMethod: "ServiceManager.DeleteGroupPolls",
+};
+
+const deleteMeetingPollsRM = {
+  RequestMethod: "ServiceManager.DeleteMeetingPolls",
+};
+
+const deleteCommitteeTaskRM = {
+  RequestMethod: "ServiceManager.DeleteCommitteeTasks",
+};
+
+const deleteGroupTaskRM = {
+  RequestMethod: "ServiceManager.DeleteGroupTasks",
+};
+
 const getUserWiseProposeDate = {
   RequestMethod: "ServiceManager.GetUserWiseProposedDates",
 };
 
 export {
+  deleteCommitteeTaskRM,
+  deleteGroupTaskRM,
+  deleteMeetingPollsRM,
+  deleteGroupPollsRM,
+  deleteCommitteePollRM,
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
   saveCommitteeDocumentsRM,

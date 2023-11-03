@@ -26,7 +26,8 @@
 .Add_another_options:active,
 .Add_another_options:hover,
 .Add_another_options:focus,
-.Add_another_options:focus-visible {
+.Add_another_options:focus-visible,
+.Add_another_options:disabled {
   height: 39px !important;
   background: #fff !important;
   color: #d4d4d4 !important;

@@ -507,7 +507,7 @@ const Participants = ({
                   />
 
                   <Button
-                    text={t("Previous-meeting")}
+                    text={t("Previous")}
                     className={styles["Cancel_Organization"]}
                     onClick={EnableParticipantsViewPage}
                   />

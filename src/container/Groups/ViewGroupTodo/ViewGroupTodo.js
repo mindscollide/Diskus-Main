@@ -33,6 +33,7 @@ import {
   searchTodoListByUser,
   clearResponce,
   SearchTodoListApi,
+  deleteGroupTaskApi,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 
@@ -61,6 +62,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import { getTasksByGroupIDApi } from "../../../store/actions/Polls_actions";
+import { deleteGroupTaskRM } from "../../../commen/apis/Api_config";
 
 const CreateTodoCommittee = () => {
   //For Localization
@@ -181,24 +183,11 @@ const CreateTodoCommittee = () => {
   };
 
   const deleteTodolist = async (record) => {
-    await dispatch(
-      updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false, 2)
-    );
-    // if (todoListPageSize !== null && todoListCurrentPage !== null) {
-    //   dispatch(
-    //     SearchTodoListApi(
-    //       navigate,
-    //       searchData,
-    //       todoListCurrentPage,
-    //       todoListPageSize,
-    //       t
-    //     )
-    //   );
-    // } else {
-    //   localStorage.setItem("todoListPage", 1);
-    //   localStorage.setItem("todoListRow", 50);
-    //   dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
-    // }
+    let Data = {
+      FK_TID: record.pK_TID,
+      GroupID: ViewGroupID,
+    };
+    dispatch(deleteGroupTaskApi(navigate, t, Data));
   };
 
   const columnsToDo = [
