@@ -27,6 +27,19 @@ import {
   SetMeetingPollsApiFunc,
 } from "./NewMeetingActions";
 
+const mainLoaderStart = () => {
+  return {
+    type: actions.GET_MAIN_LOADER_START,
+  };
+};
+
+const mainLoaderFail = (message) => {
+  return {
+    type: actions.GET_MAIN_LOADER_FAIL,
+    message: message,
+  };
+};
+
 // search Poll Init
 const searchPolls_init = () => {
   return {
@@ -406,7 +419,9 @@ const SavePollsApi = (navigate, Data, t, value) => {
                   GroupID: Number(ViewGroupID),
                   PollID: response.data.responseResult.pollID,
                 };
-                dispatch(setGroupPollsMainApi(navigate, t, Data));
+                await dispatch(setGroupPollsMainApi(navigate, t, Data));
+
+                // dispatch(getPollsByGroupMainApi(navigate, t, newData));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1418,6 +1433,18 @@ const setGroupPollsMainApi = (navigate, t, Data) => {
               dispatch(
                 setGroupSuccess(response.data.responseResult, t("Record-found"))
               );
+              let OrganizationID = localStorage.getItem("organizationID");
+              let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+              let newData = {
+                GroupID: Number(ViewGroupID),
+                OrganizationID: Number(OrganizationID),
+                CreatorName: "",
+                PollTitle: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(getPollsByGroupMainApi(navigate, t, newData));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
