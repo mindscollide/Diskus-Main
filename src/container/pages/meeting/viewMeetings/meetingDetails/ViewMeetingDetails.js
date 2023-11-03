@@ -232,10 +232,10 @@ const ViewMeetingDetails = ({
               <Button
                 text={t("Leave-meeting")}
                 className={styles["LeaveMeetinButton"]}
-                onClick={
-                  (() => setViewAdvanceMeetingModal(false),
-                  setAdvanceMeetingModalID(null))
-                }
+                onClick={() => {
+                  setViewAdvanceMeetingModal(false);
+                  setAdvanceMeetingModalID(null);
+                }}
               />
             )}
           </Col>
