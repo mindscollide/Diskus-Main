@@ -18,7 +18,10 @@ import AgendaImport from "./AgendaimportMinutes/AgendaImport";
 import profile from "../../../../../assets/images/newprofile.png";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-import { getAllGeneralMinutesApiFunc } from "../../../../../store/actions/NewMeetingActions";
+import {
+  ADDGeneralMinutesApiFunc,
+  getAllGeneralMinutesApiFunc,
+} from "../../../../../store/actions/NewMeetingActions";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 // import { message, Upload } from "antd";
@@ -362,22 +365,28 @@ const Minutes = ({ setMinutes }) => {
   // Function For Adding a Minute
 
   const handleAddClick = () => {
-    if (addNoteFields.Description.value) {
-      // Add the current message to the list of messages
-      setMessages([...messages, addNoteFields.Description.value]);
+    let Data = {
+      MeetingID: currentMeetingID,
+      MinuteText: addNoteFields.Description.value,
+    };
+    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data));
 
-      // Clear the editor
-      editorRef.current.getEditor().setText("");
+    // if (addNoteFields.Description.value) {
+    //   // Add the current message to the list of messages
+    //   setMessages([...messages, addNoteFields.Description.value]);
 
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
-    }
+    //   // Clear the editor
+    //   editorRef.current.getEditor().setText("");
+
+    //   setAddNoteFields({
+    //     ...addNoteFields,
+    //     Description: {
+    //       value: "",
+    //       errorMessage: "",
+    //       errorStatus: false,
+    //     },
+    //   });
+    // }
   };
 
   const handleRemovingTheMinutes = (index) => {

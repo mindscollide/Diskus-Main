@@ -2855,4 +2855,5 @@ export {
   SaveUserAttachmentsPermissionApiFunc,
   showCancelViewModalmeetingDeitals,
   getAllGeneralMinutesApiFunc,
+  ADDGeneralMinutesApiFunc,
 };
