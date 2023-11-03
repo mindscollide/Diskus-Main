@@ -1054,6 +1054,29 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.DELETE_GENERAL_MINUTES_METHOD_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DELETE_GENERAL_MINUTES_METHOD_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.DELETE_GENERAL_MINUTES_METHOD_FAILED: {
+      return {
+        ...state,
+        Loading: true,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
     default: {
       return { ...state };
     }
