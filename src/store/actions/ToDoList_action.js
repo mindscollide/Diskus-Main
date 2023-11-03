@@ -13,6 +13,7 @@ import {
   searchTodoListRequestMethod,
   DeleteCommentRM,
 } from "../../commen/apis/Api_config";
+import { setTasksByCommitteeApi, setTasksByGroupApi } from "./Polls_actions";
 
 const ShowNotification = (message) => {
   console.log("message", message);
@@ -189,7 +190,7 @@ const setTodoStatusDataFormSocket = (response) => {
 };
 //Creating A ToDoList
 
-const CreateToDoList = (navigate, object, t) => {
+const CreateToDoList = (navigate, object, t, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let meetingPage = JSON.parse(localStorage.getItem("todoListPage"));
   let meetingRow = JSON.parse(localStorage.getItem("todoListRow"));
@@ -230,15 +231,34 @@ const CreateToDoList = (navigate, object, t) => {
               await dispatch(
                 ShowNotification(t("The-record-has-been-saved-successfully"))
               );
-              await dispatch(
-                SearchTodoListApi(
-                  navigate,
-                  dataForList,
-                  meetingPage,
-                  meetingRow,
-                  t
-                )
-              );
+              if (value === 1) {
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+                let data = {
+                  FK_TID: Number(response.data.responseResult.tid),
+                  CommitteeID: Number(ViewCommitteeID),
+                };
+
+                dispatch(setTasksByCommitteeApi(navigate, t, data));
+              } else if (value === 2) {
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+                let data = {
+                  FK_TID: Number(response.data.responseResult.tid),
+                  GroupID: Number(ViewGroupID),
+                };
+                dispatch(setTasksByGroupApi(navigate, t, data));
+              } else {
+                await dispatch(
+                  SearchTodoListApi(
+                    navigate,
+                    dataForList,
+                    meetingPage,
+                    meetingRow,
+                    t
+                  )
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

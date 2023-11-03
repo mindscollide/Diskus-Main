@@ -1538,13 +1538,13 @@ const getTaskGroupIdFail = (message) => {
   };
 };
 
-const getTasksByGroupIDApi = (navigate, t) => {
+const getTasksByGroupIDApi = (navigate, t, newData) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(getTaskGroupIdInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(newData));
     form.append("RequestMethod", getTaskGroupIDApi.RequestMethod);
     axios({
       method: "post",
@@ -1557,7 +1557,7 @@ const getTasksByGroupIDApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getTasksByGroupIDApi(navigate, t));
+          dispatch(getTasksByGroupIDApi(navigate, t, newData));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1629,13 +1629,13 @@ const setTaskGroupFail = (message) => {
   };
 };
 
-const setTasksByGroupApi = (navigate, t) => {
+const setTasksByGroupApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(setTaskGroupInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", setGroupTaskApi.RequestMethod);
     axios({
       method: "post",
@@ -1648,7 +1648,7 @@ const setTasksByGroupApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(setTasksByGroupApi(navigate, t));
+          dispatch(setTasksByGroupApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1664,6 +1664,12 @@ const setTasksByGroupApi = (navigate, t) => {
                   t("Record-found")
                 )
               );
+              let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+              let Data = {
+                GroupID: Number(ViewGroupID),
+              };
+              dispatch(getTasksByGroupIDApi(navigate, t, Data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1720,13 +1726,13 @@ const getTaskCommitteeIdFail = (message) => {
   };
 };
 
-const getTaskCommitteeIDApi = (navigate, t) => {
+const getTaskCommitteeIDApi = (navigate, t, newData) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(getTaskCommitteeIdInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(newData));
     form.append("RequestMethod", getTaskByCommitteeIDApi.RequestMethod);
     axios({
       method: "post",
@@ -1811,13 +1817,13 @@ const setTaskCommitteeFail = (message) => {
   };
 };
 
-const setTasksByCommitteeApi = (navigate, t) => {
+const setTasksByCommitteeApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(setTaskCommitteeInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", setCommitteeTaskApi.RequestMethod);
     axios({
       method: "post",
@@ -1837,7 +1843,7 @@ const setTasksByCommitteeApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetGroupTasks_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -1846,11 +1852,17 @@ const setTasksByCommitteeApi = (navigate, t) => {
                   t("Record-found")
                 )
               );
+              let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+              let Data = {
+                CommitteeID: Number(ViewCommitteeID),
+              };
+              dispatch(getTaskCommitteeIDApi(navigate, t, Data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetGroupTasks_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_02".toLowerCase()
                 )
             ) {
               dispatch(setTaskCommitteeFail(t("No-records-found")));
@@ -1858,7 +1870,7 @@ const setTasksByCommitteeApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_SetGroupTasks_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_SetCommitteeTasks_03".toLowerCase()
                 )
             ) {
               dispatch(setTaskCommitteeFail(t("Something-went-wrong")));
