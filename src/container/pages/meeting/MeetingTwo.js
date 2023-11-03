@@ -76,6 +76,7 @@ import ModalView from "../../modalView/ModalView";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import ViewParticipantsDates from "./scedulemeeting/Participants/ViewParticipantsDates/ViewParticipantsDates";
 import ViewMeetingModal from "./viewMeetings/ViewMeetingModal";
+import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -131,7 +132,10 @@ const NewMeeting = () => {
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
-  const [viewAdvanceMeetingModalUnpublish, setViewAdvanceMeetingModalUnpublish] = useState(false);
+  const [
+    viewAdvanceMeetingModalUnpublish,
+    setViewAdvanceMeetingModalUnpublish,
+  ] = useState(false);
 
   //  Call all search meetings api
   useEffect(() => {
@@ -625,19 +629,49 @@ const NewMeeting = () => {
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
+        const isQuickMeeting = record.isQuickMeeting;
+        let startMeetingRequest = {
+          MeetingID: Number(record.pK_MDID),
+          StatusID: 2,
+        };
         if (record.status === "1") {
           if (isParticipant) {
           } else {
-            return (
-              <Row>
-                <Col sm={12} md={12} lg={12}>
-                  <Button
-                    text={t("Start-meeting")}
-                    className={styles["Start-Meeting"]}
-                  />
-                </Col>
-              </Row>
-            );
+            if (isQuickMeeting) {
+              return (
+                <Row>
+                  <Col sm={12} md={12} lg={12}>
+                    <Button
+                      text={t("Start-meeting")}
+                      className={styles["Start-Meeting"]}
+                    />
+                  </Col>
+                </Row>
+              );
+            } else {
+              return (
+                <Row>
+                  <Col sm={12} md={12} lg={12}>
+                    <Button
+                      text={t("Start-meeting")}
+                      className={styles["Start-Meeting"]}
+                      onClick={() =>
+                        dispatch(
+                          UpdateOrganizersMeeting(
+                            navigate,
+                            startMeetingRequest,
+                            t,
+                            3,
+                            setViewAdvanceMeetingModal,
+                            setAdvanceMeetingModalID
+                          )
+                        )
+                      }
+                    />
+                  </Col>
+                </Row>
+              );
+            }
           }
         } else if (record.status === "2") {
           if (isParticipant) {
@@ -670,46 +704,6 @@ const NewMeeting = () => {
             );
           }
         }
-        // return (
-        //   <>
-        //     {/* <Row>
-        //       <Col sm={12} md={12} lg={12}>
-        //         <Button
-        //           text={t("Join-meeting")}
-        //           className={styles["joining-Meeting"]}
-        //         />
-        //       </Col>
-        //     </Row> */}
-        //     {/* <Row>
-        //       <Col sm={12} md={12} lg={12}>
-        //         <Button
-        //           text={t("Start-meeting")}
-        //           className={styles["Start-Meeting"]}
-        //         />
-        //       </Col>
-        //     </Row> */}
-        //     {/* <Row>
-        //       <Col sm={12} md={12} lg={12}>
-        //         <Button
-        //           text={t("Leave-meeting")}
-        //           className={styles["End-Meeting"]}
-        //           onClick={EndMeetingModal}
-        //         />
-        //       </Col>
-        //     </Row> */}
-
-        //     {/* <Row>
-        //       <Col sm={12} md={12} lg={12}>
-        //         <Button
-        //           text={t("End-meeting")}
-        //           className={styles["End-Meeting"]}
-        //           onClick={EndForAllModal}
-        //         />
-        //       </Col>
-        //     </Row> */}
-
-        //   </>
-        // );
       },
     },
     {
@@ -978,7 +972,7 @@ const NewMeeting = () => {
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
           unPublish={true}
         />
-      ):(
+      ) : (
         <>
           <Row className="mt-2">
             <Col
@@ -1201,7 +1195,9 @@ const NewMeeting = () => {
                     viewProposeDatePoll={viewProposeDatePoll}
                     setViewProposeDatePoll={setViewProposeDatePoll}
                     setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                    setViewAdvanceMeetingModalUnpublish={setViewAdvanceMeetingModalUnpublish}
+                    setViewAdvanceMeetingModalUnpublish={
+                      setViewAdvanceMeetingModalUnpublish
+                    }
                   />
                 ) : Number(currentView) === 1 ? (
                   <Row className="mt-2">
