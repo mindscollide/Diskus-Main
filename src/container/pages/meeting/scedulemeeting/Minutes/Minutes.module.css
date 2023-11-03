@@ -444,7 +444,7 @@ body[dir="rtl"] .Leftpolygon {
 }
 
 .ScrollerMinutes {
-  height: 15vh !important;
+  height: 25vh !important;
   overflow-x: hidden !important;
 }
 

@@ -20,8 +20,11 @@ import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
   ADDGeneralMinutesApiFunc,
+  SaveMinutesDocumentsApiFunc,
   getAllGeneralMinutesApiFunc,
+  uploadDocumentsMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
+import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 // import { message, Upload } from "antd";
@@ -134,10 +137,12 @@ const Minutes = ({ setMinutes }) => {
 
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const { NewMeetingreducer } = useSelector((state) => state);
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
   const [general, setGeneral] = useState(false);
+  const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
   const [fileAttachments, setFileAttachments] = useState([]);
@@ -158,6 +163,7 @@ const Minutes = ({ setMinutes }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  let userID = localStorage.getItem("userID");
   const date = new Date();
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -195,6 +201,30 @@ const Minutes = ({ setMinutes }) => {
     };
     dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
   }, []);
+
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.generalMinutes !== null &&
+        NewMeetingreducer.generalMinutes
+      ) {
+        console.log(
+          NewMeetingreducer.generalMinutes,
+          "generalMinutesgeneralMinutes"
+        );
+        if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
+          let newarr = [];
+          NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
+            console.log(data, "meetingMinutesmeetingMinutes");
+            newarr.push(data);
+          });
+          setMessages(newarr);
+        }
+      }
+    } catch {}
+  }, [NewMeetingreducer.generalMinutes]);
+
+  console.log(messages, "messagesmessagesmessages");
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
@@ -282,6 +312,7 @@ const Minutes = ({ setMinutes }) => {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
             fileSize: data.file.originFileObj.size,
+            fk_UserID: Number(userID),
           };
           setFileAttachments([...fileAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
@@ -318,6 +349,7 @@ const Minutes = ({ setMinutes }) => {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
             fileSize: data.file.originFileObj.size,
+            fk_UserID: Number(userID),
           };
           setFileAttachments([...fileAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
@@ -342,12 +374,6 @@ const Minutes = ({ setMinutes }) => {
     Slider.scrollLeft = Slider.scrollLeft + 300;
   };
 
-  const handleRemoveFile = (index) => {
-    const updatedFies = [...fileAttachments];
-    updatedFies.splice(index, 1);
-    setFileAttachments(updatedFies);
-  };
-
   const handleAgendaWiseClick = () => {
     setGeneral(false);
     setAgenda(true);
@@ -364,12 +390,31 @@ const Minutes = ({ setMinutes }) => {
 
   // Function For Adding a Minute
 
-  const handleAddClick = () => {
+  const handleAddClick = async () => {
     let Data = {
       MeetingID: currentMeetingID,
       MinuteText: addNoteFields.Description.value,
     };
     dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data));
+
+    // let newfile = [...previousFileIDs];
+    // const uploadPromises = fileForSend.map(async (newData) => {
+    //   await dispatch(
+    //     uploadDocumentsMeetingMinutesApi(navigate, t, newData, newfile)
+    //   );
+    // });
+
+    // // Wait for all promises to resolve
+    // await Promise.all(uploadPromises);
+
+    // let docsData = {
+    //   FK_MeetingGeneralMinutesID: messages.minuteID,
+    //   FK_MDID: currentMeetingID,
+    //   UpdateFileList: newfile.map((data, index) => {
+    //     return { PK_FileID: Number(data.pK_FileID) };
+    //   }),
+    // };
+    // dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
 
     // if (addNoteFields.Description.value) {
     //   // Add the current message to the list of messages
@@ -393,6 +438,30 @@ const Minutes = ({ setMinutes }) => {
     let updatedRecords = [...messages];
     updatedRecords.splice(index, 1);
     setMessages(updatedRecords);
+  };
+
+  //UPloading the Documents
+
+  const handleRemoveFile = (data) => {
+    setFileForSend((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) => fileSend.name !== data.DisplayAttachmentName
+      )
+    );
+
+    setPreviousFileIDs((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+
+    setFileAttachments((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
   };
 
   return (
@@ -621,6 +690,7 @@ const Minutes = ({ setMinutes }) => {
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
               {messages.length > 0
                 ? messages.map((data, index) => {
+                    console.log("className", data);
                     return (
                       <>
                         <section className={styles["Sizing_Saved_Minutes"]}>
@@ -637,9 +707,15 @@ const Minutes = ({ setMinutes }) => {
                                     <Col lg={12} md={12} sm={12}>
                                       <span className={styles["Title_File"]}>
                                         {expanded ? (
-                                          <>{data.substring(0, 190)}...</>
+                                          <>
+                                            {data.minutesDetails.substring(
+                                              0,
+                                              190
+                                            )}
+                                            ...
+                                          </>
                                         ) : (
-                                          <>{data}</>
+                                          <>{data.minutesDetails}</>
                                         )}
 
                                         <span
@@ -670,7 +746,7 @@ const Minutes = ({ setMinutes }) => {
                                     <Col lg={2} md={2} sm={2}>
                                       <img
                                         draggable={false}
-                                        src={profile}
+                                        src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                                         height="39px"
                                         width="39px"
                                         className={styles["Profile_minutes"]}

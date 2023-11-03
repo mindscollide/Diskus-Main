@@ -25,9 +25,18 @@ import {
   saveUserAttachmentPermission,
   getGeneralMinutes,
   SaveminutesGeneral,
+  uploadDocumentsRequestMethod,
+  saveFilesRequestMethod,
+  SaveGeneralWiseSavingDocuments,
+  RetriveGeneralMinutesDocuments,
+  getAllGeneralMiintuesDocument,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
-import { meetingApi, pollApi } from "../../commen/apis/Api_ends_points";
+import {
+  dataRoomApi,
+  meetingApi,
+  pollApi,
+} from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import axios from "axios";
 
@@ -2613,92 +2622,6 @@ const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
   };
 };
 
-//Getting all the General Mintues
-
-const ShowAllGeneralMinutesInit = () => {
-  return {
-    type: actions.GET_GENERAL_MINTES_INIT,
-  };
-};
-
-const ShowAllGeneralMinutesSuccess = (response, message) => {
-  return {
-    type: actions.GET_GENERAL_MINTES_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-const ShowAllGeneralMinutesFailed = (response, message) => {
-  return {
-    type: actions.GET_GENERAL_MINTES_FAILED,
-    message: message,
-  };
-};
-
-// Api Function For General Minutes
-const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(ShowAllGeneralMinutesInit());
-    let form = new FormData();
-    form.append("RequestMethod", getGeneralMinutes.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        console.log("responseresponseresponse", response);
-        if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t));
-          dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
-            if (
-              response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
-            ) {
-              dispatch(
-                ShowAllGeneralMinutesSuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
-            ) {
-              dispatch(
-                ShowAllGeneralMinutesFailed(
-                  response.data.responseResult.responseMessage,
-                  t("No-record-saved")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
-            ) {
-              dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
-          }
-        } else {
-          dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
-        }
-      })
-      .catch((response) => {
-        dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
-      });
-  };
-};
-
 // ADD General Minutes
 
 const ShowADDGeneralMinutesInit = () => {
@@ -2724,6 +2647,8 @@ const ShowADDGeneralMinutesFailed = (message) => {
 
 const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentMeetingID = localStorage.getItem("meetingID");
+
   return (dispatch) => {
     dispatch(ShowADDGeneralMinutesInit());
     let form = new FormData();
@@ -2755,6 +2680,10 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
                   t("Record-saved")
                 )
               );
+              let Meet = {
+                MeetingID: Number(currentMeetingID),
+              };
+              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_AddGeneralMinute_02"
@@ -2780,6 +2709,643 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
       })
       .catch((response) => {
         dispatch(ShowADDGeneralMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Getting all the General Mintues
+
+const ShowAllGeneralMinutesInit = () => {
+  return {
+    type: actions.GET_GENERAL_MINTES_INIT,
+  };
+};
+
+const ShowAllGeneralMinutesSuccess = (response, message) => {
+  return {
+    type: actions.GET_GENERAL_MINTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const ShowAllGeneralMinutesFailed = (response, message) => {
+  return {
+    type: actions.GET_GENERAL_MINTES_FAILED,
+    message: message,
+  };
+};
+
+// Api Function For General Minutes
+const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentMeetingID = localStorage.getItem("meetingID");
+  return (dispatch) => {
+    dispatch(ShowAllGeneralMinutesInit());
+    let form = new FormData();
+    form.append("RequestMethod", getGeneralMinutes.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("responseresponseresponse", response);
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "responseresponseresponse");
+            if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
+            ) {
+              dispatch(
+                ShowAllGeneralMinutesSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+              console.log(
+                response.data.responseResult,
+                "FK_MeetingGeneralMinutesID"
+              );
+              let MeetingDocs = {
+                MDID: Number(currentMeetingID),
+              };
+              dispatch(
+                DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
+              );
+
+              // let FetchMinutesId;
+              // response.data.responseResult.meetingMinutes.map(
+              //   (dataMin, Indexmin) => {
+              //     console.log(dataMin, "dataMindataMin");
+              //     FetchMinutesId = dataMin.minuteID;
+              //   }
+              // );
+              // let Retrive = {
+              //   FK_MeetingGeneralMinutesID: FetchMinutesId,
+              // };
+              // dispatch(
+              //   RetriveDocumentsMeetingGenralMinutesApiFunc(
+              //     navigate,
+              //     Retrive,
+              //     t
+              //   )
+              // );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
+            ) {
+              dispatch(
+                ShowAllGeneralMinutesFailed(
+                  response.data.responseResult.responseMessage,
+                  t("No-record-saved")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
+            ) {
+              dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Documents Upload And Save
+
+// Upload Documents Init
+const uploadDocument_init = () => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+  };
+};
+
+// Upload Documents Success
+const uploadDocument_success = (response, message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Upload Documents Fail
+const uploadDocument_fail = (message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Upload Documents API for Resolution
+const uploadDocumentsMeetingMinutesApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return async (dispatch) => {
+    dispatch(uploadDocument_init());
+    let form = new FormData();
+    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            uploadDocumentsMeetingMinutesApi(navigate, t, data, folderID)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                saveFilesMeetingMinutesApi(
+                  navigate,
+                  t,
+                  response.data.responseResult,
+                  folderID,
+                  newFolder
+                )
+              );
+              await dispatch(
+                uploadDocument_success(
+                  response.data.responseResult,
+                  t("Document-uploaded-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(uploadDocument_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(uploadDocument_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(uploadDocument_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Save Files Init
+const saveFiles_init = () => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_INIT,
+  };
+};
+
+// Save Files Success
+const saveFiles_success = (response, message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Save Files Fail
+const saveFiles_fail = (message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Save Files API for Resolution
+const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+  let Data = {
+    FolderID: folderID !== null ? folderID : 0,
+    Files: [
+      {
+        DisplayFileName: data.displayFileName,
+        DiskusFileName: JSON.parse(data.diskusFileName),
+        ShareAbleLink: data.shareAbleLink,
+        FK_UserID: JSON.parse(creatorID),
+        FK_OrganizationID: JSON.parse(organizationID),
+      },
+    ],
+    UserID: JSON.parse(creatorID),
+    Type: 0,
+  };
+  return async (dispatch) => {
+    dispatch(saveFiles_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(saveFilesMeetingMinutesApi(navigate, t, data, newFolder));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                )
+            ) {
+              let newData = {
+                pK_FileID: response.data.responseResult.fileID,
+                DisplayAttachmentName: data.displayFileName,
+              };
+              newFolder.push(newData);
+              await dispatch(
+                saveFiles_success(newData, t("Files-saved-successfully"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(saveFiles_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(saveFiles_fail(t("Something-went-wrong")));
+        }
+        console.log(response);
+      })
+      .catch(() => {
+        dispatch(saveFiles_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Save Minutes Documents
+
+const showSaveMinutesDocsInit = () => {
+  return {
+    type: actions.SAVE_GENERAL_MIN_DOCUMENTS_INIT,
+  };
+};
+
+const showSaveMinutesDocsSuccess = (response, message) => {
+  return {
+    type: actions.SAVE_GENERAL_MIN_DOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showSaveMinutesDocsFailed = (message) => {
+  return {
+    type: actions.SAVE_GENERAL_MIN_DOCUMENTS_FAILED,
+    message: message,
+  };
+};
+
+//SAVE GROUPS DOCUMENTS API
+
+const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showSaveMinutesDocsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", SaveGeneralWiseSavingDocuments.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveMinutesDocumentsApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveGeneralMinutesDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showSaveMinutesDocsSuccess(
+                  response.data.responseResult,
+                  t("List-updated-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveGeneralMinutesDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//general minutes Retrive documents
+
+const showRetriveGeneralMinutesDocsInit = () => {
+  return {
+    type: actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_INIT,
+  };
+};
+
+const showRetriveGeneralMinutesDocsSuccess = (response, message) => {
+  return {
+    type: actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showRetriveGeneralMinutesDocsFailed = (message) => {
+  return {
+    type: actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_INIT,
+    message: message,
+  };
+};
+
+const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showRetriveGeneralMinutesDocsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", RetriveGeneralMinutesDocuments.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Data, t)
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveGeneralMinuteDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showRetriveGeneralMinutesDocsSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveGeneralMinuteDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showRetriveGeneralMinutesDocsFailed(t("No-data-available"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveGeneralMinuteDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+//Retrive Document For Meeting
+const showRetriveGeneralMinutesDocsMeetingInit = () => {
+  return {
+    type: actions.GENERAL_DOCUMENT_FOR_MEETING_INIT,
+  };
+};
+
+const showRetriveGeneralMinutesDocsMeetingSuccess = (response, message) => {
+  return {
+    type: actions.GENERAL_DOCUMENT_FOR_MEETING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showRetriveGeneralMinutesDocsMeetingFailed = (message) => {
+  return {
+    type: actions.GENERAL_DOCUMENT_FOR_MEETING_FAILED,
+    message: message,
+  };
+};
+
+const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showRetriveGeneralMinutesDocsMeetingInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getAllGeneralMiintuesDocument.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DocumentsOfMeetingGenralMinutesApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showRetriveGeneralMinutesDocsMeetingSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showRetriveGeneralMinutesDocsMeetingFailed(
+                  t("No-data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showRetriveGeneralMinutesDocsMeetingFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showRetriveGeneralMinutesDocsMeetingFailed(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showRetriveGeneralMinutesDocsMeetingFailed(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          showRetriveGeneralMinutesDocsMeetingFailed(t("Something-went-wrong"))
+        );
       });
   };
 };
@@ -2856,4 +3422,9 @@ export {
   showCancelViewModalmeetingDeitals,
   getAllGeneralMinutesApiFunc,
   ADDGeneralMinutesApiFunc,
+  uploadDocumentsMeetingMinutesApi,
+  saveFilesMeetingMinutesApi,
+  RetriveDocumentsMeetingGenralMinutesApiFunc,
+  SaveMinutesDocumentsApiFunc,
+  DocumentsOfMeetingGenralMinutesApiFunc,
 };

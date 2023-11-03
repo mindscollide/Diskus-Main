@@ -1099,6 +1099,19 @@ const getGeneralMinutes = {
 const SaveminutesGeneral = {
   RequestMethod: "ServiceManager.AddGeneralMinute",
 };
+
+const SaveGeneralWiseSavingDocuments = {
+  RequestMethod: "ServiceManager.SaveGeneralMinutesDocuments",
+};
+
+const RetriveGeneralMinutesDocuments = {
+  RequestMethod: "ServiceManager.ReteriveGeneralMinuteDocuments",
+};
+
+const getAllGeneralMiintuesDocument = {
+  RequestMethod: "ServiceManager.GetAllGeneralMiuteDocumentsForMeeting",
+};
+
 export {
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
@@ -1395,4 +1408,7 @@ export {
   setGroupPollsApi,
   getGeneralMinutes,
   SaveminutesGeneral,
+  SaveGeneralWiseSavingDocuments,
+  RetriveGeneralMinutesDocuments,
+  getAllGeneralMiintuesDocument,
 };
