@@ -2675,10 +2675,6 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
                   t("Record-saved")
                 )
               );
-              let Meet = {
-                MeetingID: Number(currentMeetingID),
-              };
-              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_AddGeneralMinute_02"
@@ -2876,7 +2872,13 @@ const uploadDocumentsMeetingMinutesApi = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            uploadDocumentsMeetingMinutesApi(navigate, t, data, folderID)
+            uploadDocumentsMeetingMinutesApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              newFolder
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -3068,6 +3070,7 @@ const showSaveMinutesDocsFailed = (message) => {
 const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  let currentMeetingID = localStorage.getItem("meetingID");
   return (dispatch) => {
     dispatch(showSaveMinutesDocsInit());
     let form = new FormData();
@@ -3103,6 +3106,10 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
                   t("List-updated-successfully")
                 )
               );
+              let Meet = {
+                MeetingID: Number(currentMeetingID),
+              };
+              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

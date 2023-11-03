@@ -237,9 +237,22 @@ const Minutes = ({ setMinutes }) => {
           NewMeetingreducer.generalminutesDocumentForMeeting,
           "NewMeetingreducergeneralminutesDocumentForMeeting"
         );
+        if (
+          NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
+        ) {
+          let FileID;
+          NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
+            (docs, index) => {
+              docs.files.map((filedata, index) => {
+                console.log(filedata, "filedatafiledata");
+                FileID = filedata.pK_FileID;
+              });
+            }
+          );
+        }
       }
     } catch {}
-  }, []);
+  }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
@@ -412,24 +425,40 @@ const Minutes = ({ setMinutes }) => {
     };
     dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data));
 
-    // let newfile = [...previousFileIDs];
-    // const uploadPromises = fileForSend.map(async (newData) => {
-    //   await dispatch(
-    //     uploadDocumentsMeetingMinutesApi(navigate, t, newData,folderID, newfile)
-    //   );
-    // });
+    let newfile = [...previousFileIDs];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsMeetingMinutesApi(
+          navigate,
+          t,
+          newData,
+          folderID,
+          newfile
+        )
+      );
+    });
 
-    // // Wait for all promises to resolve
-    // await Promise.all(uploadPromises);
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+    console.log(messages.minuteID, "messagesmessages");
+    console.log(currentMeetingID, "messagesmessages");
 
-    // let docsData = {
-    //   FK_MeetingGeneralMinutesID: messages.minuteID,
-    //   FK_MDID: currentMeetingID,
-    //   UpdateFileList: newfile.map((data, index) => {
-    //     return { PK_FileID: Number(data.pK_FileID) };
-    //   }),
-    // };
-    // dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
+    console.log(newfile, "messagesmessages");
+    let MinuteID;
+    messages.map((minID, index) => {
+      console.log(minID.minuteID, "minIDminID");
+      MinuteID = minID.minuteID;
+    });
+
+    let docsData = {
+      FK_MeetingGeneralMinutesID: MinuteID,
+      FK_MDID: currentMeetingID,
+      UpdateFileList: newfile.map((data, index) => {
+        return { PK_FileID: Number(data.pK_FileID) };
+      }),
+    };
+    console.log(docsData, "messagesmessages");
+    dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
 
     // if (addNoteFields.Description.value) {
     //   // Add the current message to the list of messages
