@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
+import profile from "../../../../../assets/images/newprofile.png";
+import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import { useTranslation } from "react-i18next";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { showAgenItemsRemovedModal } from "../../../../../store/actions/NewMeetingActions";
@@ -272,6 +274,7 @@ const SubAgendaMappingDragging = ({
                       key={subAgendaData.SubAgendaID}
                       draggableId={`subAgenda-${subAgendaData.SubAgendaID}`}
                       index={subIndex}
+                      isDragDisabled={true}
                     >
                       {(provided, snapshot) => (
                         <div
@@ -347,228 +350,19 @@ const SubAgendaMappingDragging = ({
                                         className={styles["SubAgendaSection"]}
                                       >
                                         <Row className="mt-2 mb-2">
-                                          <Col lg={5} md={5} sm={12}>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles["Meeting_subAgenda"]
-                                                  }
-                                                >
-                                                  <span>{index + 1}.</span>
-                                                  <span>
-                                                    {subIndex + 1}
-                                                  </span>{" "}
-                                                  {t("Sub-agenda-title")}{" "}
-                                                  <span>{subIndex + 1}</span>
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                            <TextField
-                                              applyClass={"AgendaTextField"}
-                                              labelClass={"d-none"}
-                                              name={"SubTitle"}
-                                              disable={
-                                                apllyLockOnParentAgenda(
-                                                  index
-                                                ) ||
-                                                apllyLockOnSubAgenda(
-                                                  index,
-                                                  subIndex
-                                                )
-                                                  ? true
-                                                  : false
-                                              }
-                                              placeholder={t(
-                                                "Sub-Agenda-title"
-                                              )}
-                                              value={subAgendaData.SubTitle}
-                                              change={(e) =>
-                                                handleSubAgendaTitleChange(
-                                                  index,
-                                                  subIndex,
-                                                  e
-                                                )
-                                              }
-                                            />
-                                          </Col>
-                                          <Col lg={3} md={3} sm={12}>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles["Meeting_subAgenda"]
-                                                  }
-                                                >
-                                                  {t("Presenter")}
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                            <Select
-                                              options={SubAgendaoptions}
-                                              value={
-                                                subAgendaData.selectedOption
-                                              }
-                                              onChange={(value) =>
-                                                handleSubAgendaSelectChange(
-                                                  index,
-                                                  subIndex,
-                                                  value
-                                                )
-                                              }
-                                              isDisabled={
-                                                apllyLockOnParentAgenda(
-                                                  index
-                                                ) ||
-                                                apllyLockOnSubAgenda(
-                                                  index,
-                                                  subIndex
-                                                )
-                                                  ? true
-                                                  : false
-                                              }
-                                            />
-                                          </Col>
-                                          <Col
-                                            sm={12}
-                                            md={4}
-                                            lg={4}
-                                            className="d-flex gap-4 justify-content-start align-items-center"
-                                          >
-                                            <Row>
-                                              <Col lg={5} md={5} sm={5}>
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles[
-                                                          "Meeting_subAgenda"
-                                                        ]
-                                                      }
-                                                    >
-                                                      {t("Start-date")}
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                                <DatePicker
-                                                  arrowClassName="arrowClass"
-                                                  containerClassName="containerClassTimePicker"
-                                                  className="timePicker"
-                                                  calendar={calendarValue}
-                                                  locale={localValue}
-                                                  disableDayPicker
-                                                  inputClass="inputTImeMeeting"
-                                                  disabled={
-                                                    apllyLockOnParentAgenda(
-                                                      index
-                                                    ) ||
-                                                    apllyLockOnSubAgenda(
-                                                      index,
-                                                      subIndex
-                                                    )
-                                                      ? true
-                                                      : false
-                                                  }
-                                                  format="HH:mm A"
-                                                  selected={
-                                                    subAgendaData.startDate
-                                                  }
-                                                  onChange={(date) =>
-                                                    handleSubAgendaStartDateChange(
-                                                      index,
-                                                      subIndex,
-                                                      date
-                                                    )
-                                                  }
-                                                  plugins={[
-                                                    <TimePicker hideSeconds />,
-                                                  ]}
-                                                />
-                                              </Col>
-                                              <Col
-                                                lg={2}
-                                                md={2}
-                                                sm={2}
-                                                className="d-flex justify-content-center align-items-center"
-                                              >
-                                                <img
-                                                  draggable={false}
-                                                  src={desh}
-                                                  width="19.02px"
-                                                />
-                                              </Col>
-                                              <Col lg={5} md={5} sm={5}>
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles[
-                                                          "Meeting_subAgenda"
-                                                        ]
-                                                      }
-                                                    >
-                                                      {t("End-date")}
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                                <DatePicker
-                                                  arrowClassName="arrowClass"
-                                                  containerClassName="containerClassTimePicker"
-                                                  className="timePicker"
-                                                  calendar={calendarValue}
-                                                  locale={localValue}
-                                                  disableDayPicker
-                                                  inputClass="inputTImeMeeting"
-                                                  disabled={
-                                                    apllyLockOnParentAgenda(
-                                                      index
-                                                    ) ||
-                                                    apllyLockOnSubAgenda(
-                                                      index,
-                                                      subIndex
-                                                    )
-                                                      ? true
-                                                      : false
-                                                  }
-                                                  format="HH:mm A"
-                                                  selected={
-                                                    subAgendaData.endDate
-                                                  }
-                                                  onChange={(date) =>
-                                                    handleSubAgendaEndDateChange(
-                                                      index,
-                                                      subIndex,
-                                                      date
-                                                    )
-                                                  }
-                                                  plugins={[
-                                                    <TimePicker hideSeconds />,
-                                                  ]}
-                                                />
-                                              </Col>
-                                            </Row>
-                                            <img
-                                              draggable={false}
-                                              src={redcrossIcon}
-                                              height="25px"
-                                              width="25px"
+                                          <Col lg={12} md={12} sm={12}>
+                                            <span
                                               className={
-                                                styles[
-                                                  "RedCross_Icon_class_SubAgenda"
-                                                ]
+                                                styles["AgendaTitle_Heading"]
                                               }
-                                              onClick={() => {
-                                                apllyLockOnParentAgenda(
-                                                  index
-                                                ) ||
-                                                  handleCrossSubAjenda(
-                                                    index,
-                                                    subIndex
-                                                  );
-                                              }}
-                                            />
+                                            >
+                                              1. Get new computers from Techno
+                                              City Mall. Also, Get a new
+                                              graphics card for the designer.
+                                            </span>
                                           </Col>
                                         </Row>
+
                                         <Row>
                                           <Col lg={12} md={12} sm={12}>
                                             <span
@@ -598,6 +392,40 @@ const SubAgendaMappingDragging = ({
                                           expandSubIndex === subIndex &&
                                           subExpand && (
                                             <>
+                                              <Row className="mt-2">
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <div
+                                                    className={
+                                                      styles[
+                                                        "agendaCreationDetail"
+                                                      ]
+                                                    }
+                                                  >
+                                                    <img
+                                                      src={profile}
+                                                      className={
+                                                        styles["Image"]
+                                                      }
+                                                    />
+                                                    <p
+                                                      className={
+                                                        styles["agendaCreater"]
+                                                      }
+                                                    >
+                                                      Salman Memon
+                                                    </p>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "agendaCreationTime"
+                                                        ]
+                                                      }
+                                                    >
+                                                      12:15 PM - 12:15 PM
+                                                    </span>
+                                                  </div>
+                                                </Col>
+                                              </Row>
                                               <Row className="mt-3">
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span
@@ -773,38 +601,136 @@ const SubAgendaMappingDragging = ({
                                                     {subAgendaData.subSelectRadio ===
                                                     "1" ? (
                                                       <>
-                                                        {subAgendaData.Subfiles
-                                                          .length > 0 ? (
-                                                          <>
-                                                            <SubDocumnets
-                                                              subAgendaData={
-                                                                subAgendaData
+                                                        <Row>
+                                                          <Col
+                                                            lg={3}
+                                                            md={3}
+                                                            sm={12}
+                                                          >
+                                                            <div
+                                                              className={
+                                                                styles[
+                                                                  "agendaFileAttachedView"
+                                                                ]
                                                               }
-                                                              setRows={setRows}
-                                                              rows={rows}
-                                                              index={index}
-                                                              subIndex={
-                                                                subIndex
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "agendaFileSpan"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                <img
+                                                                  src={pdfIcon}
+                                                                  alt=""
+                                                                  draggable="false"
+                                                                />{" "}
+                                                                Admin Dashboard
+                                                                Design 13
+                                                                february
+                                                                prototype -
+                                                                Copy.pdf
+                                                              </span>
+                                                            </div>
+                                                          </Col>
+                                                          <Col
+                                                            lg={3}
+                                                            md={3}
+                                                            sm={12}
+                                                          >
+                                                            <div
+                                                              className={
+                                                                styles[
+                                                                  "agendaFileAttachedView"
+                                                                ]
                                                               }
-                                                              parentId={`parent-${data.ID}`}
-                                                            />
-                                                            <SubDedaultDragger
-                                                              setRows={setRows}
-                                                              rows={rows}
-                                                              index={index}
-                                                              subIndex={
-                                                                subIndex
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "agendaFileSpan"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                <img
+                                                                  src={pdfIcon}
+                                                                  alt=""
+                                                                  draggable="false"
+                                                                />{" "}
+                                                                Admin Dashboard
+                                                                Design 13
+                                                                february
+                                                                prototype -
+                                                                Copy.pdf
+                                                              </span>
+                                                            </div>
+                                                          </Col>
+                                                          <Col
+                                                            lg={3}
+                                                            md={3}
+                                                            sm={12}
+                                                          >
+                                                            <div
+                                                              className={
+                                                                styles[
+                                                                  "agendaFileAttachedView"
+                                                                ]
                                                               }
-                                                            />
-                                                          </>
-                                                        ) : (
-                                                          <SubDedaultDragger
-                                                            setRows={setRows}
-                                                            rows={rows}
-                                                            index={index}
-                                                            subIndex={subIndex}
-                                                          />
-                                                        )}
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "agendaFileSpan"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                <img
+                                                                  src={pdfIcon}
+                                                                  alt=""
+                                                                  draggable="false"
+                                                                />{" "}
+                                                                Admin Dashboard
+                                                                Design 13
+                                                                february
+                                                                prototype -
+                                                                Copy.pdf
+                                                              </span>
+                                                            </div>
+                                                          </Col>
+                                                          <Col
+                                                            lg={3}
+                                                            md={3}
+                                                            sm={12}
+                                                          >
+                                                            <div
+                                                              className={
+                                                                styles[
+                                                                  "agendaFileAttachedView"
+                                                                ]
+                                                              }
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "agendaFileSpan"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                <img
+                                                                  src={pdfIcon}
+                                                                  alt=""
+                                                                  draggable="false"
+                                                                />{" "}
+                                                                Admin Dashboard
+                                                                Design 13
+                                                                february
+                                                                prototype -
+                                                                Copy.pdf
+                                                              </span>
+                                                            </div>
+                                                          </Col>
+                                                        </Row>
                                                       </>
                                                     ) : subAgendaData.subSelectRadio ===
                                                       "2" ? (

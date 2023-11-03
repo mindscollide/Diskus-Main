@@ -326,6 +326,11 @@ const ViewMeetingModal = ({
                 {agenda && (
                   <Agenda
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                    setorganizers={setorganizers}
+                    setParticipants={setParticipants}
+                    setAgenda={setAgenda}
+                    setMeetingMaterial={setMeetingMaterial}
+                    advanceMeetingModalID={advanceMeetingModalID}
                   />
                 )}
                 {meetingMaterial && (
