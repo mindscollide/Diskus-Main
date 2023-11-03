@@ -16,7 +16,12 @@
   color: #6172d6;
   font-size: 12px !important;
 }
-
+.meetingTitle_view {
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6;
+  font-size: 12px !important;
+  cursor: pointer !important;
+}
 /* .newMeetingProgressbar {
   background: #6172d6 !important;
   margin: 3px !important;
