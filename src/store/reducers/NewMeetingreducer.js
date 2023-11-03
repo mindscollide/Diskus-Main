@@ -65,6 +65,7 @@ const initialState = {
   agendaRights: null,
   attachmentsPermission: [],
   cancelViewModalMeetingDetails: false,
+  generalMinutes: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -933,6 +934,30 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_USER_ATTACHMENT_PERMISSION_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_GENERAL_MINTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_GENERAL_MINTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        generalMinutes: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_GENERAL_MINTES_FAILED: {
       return {
         ...state,
         Loading: false,
