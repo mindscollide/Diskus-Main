@@ -76,6 +76,7 @@ import ModalView from "../../modalView/ModalView";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 import ViewParticipantsDates from "./scedulemeeting/Participants/ViewParticipantsDates/ViewParticipantsDates";
 import ViewMeetingModal from "./viewMeetings/ViewMeetingModal";
+import OrganizerViewModal from "./scedulemeeting/Organizers/OrganizerViewModal/OrganizerViewModal";
 import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
 
 const NewMeeting = () => {
@@ -118,6 +119,8 @@ const NewMeeting = () => {
   const [publishedMeeting, setpublishedMeeting] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [organizerProposeDate, setOrganizerProposeDate] = useState(false);
+
   const [searchFields, setSearchFeilds] = useState({
     MeetingTitle: "",
     Date: "",
@@ -131,6 +134,8 @@ const NewMeeting = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
+  const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
+    useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [
@@ -954,7 +959,10 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingPageCurrent", current);
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
-
+  console.log(
+    viewProposeOrganizerPoll,
+    "viewProposeOrganizerPollviewProposeOrganizerPoll"
+  );
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
@@ -976,6 +984,10 @@ const NewMeeting = () => {
           advanceMeetingModalID={advanceMeetingModalID}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
           unPublish={true}
+        />
+      ) : viewProposeOrganizerPoll ? (
+        <OrganizerViewModal
+          setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
         />
       ) : (
         <>
@@ -1199,6 +1211,7 @@ const NewMeeting = () => {
                   <UnpublishedProposedMeeting
                     viewProposeDatePoll={viewProposeDatePoll}
                     setViewProposeDatePoll={setViewProposeDatePoll}
+                    setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
                     setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                     setViewAdvanceMeetingModalUnpublish={
                       setViewAdvanceMeetingModalUnpublish

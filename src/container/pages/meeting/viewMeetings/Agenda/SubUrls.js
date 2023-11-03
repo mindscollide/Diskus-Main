@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
+import styles from "./Agenda.module.css";
 import { useTranslation } from "react-i18next";
 
 const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
@@ -29,13 +30,9 @@ const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
   return (
     <Row className="mt-2">
       <Col lg={12} md={12} sm={12}>
-        <TextField
-          labelClass={"d-none"}
-          placeholder={t("Enter-url")}
-          name={"SubAgendaUrlRadioField"}
-          value={subAgendaData.SubAgendaUrlFieldRadio}
-          change={(e) => handleSubAgendaUrlEnterUrlField(index, subIndex, e)}
-        />
+        <span className={styles["URLTitle_Heading"]}>
+          https://www.youtube.com/watch
+        </span>
       </Col>
     </Row>
   );

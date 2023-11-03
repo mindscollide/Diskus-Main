@@ -243,7 +243,7 @@ const Attendence = () => {
   // dispatch Api in useEffect
   useEffect(() => {
     let meetingData = {
-      MeetingID: meetingID,
+      MeetingID: 1785,
     };
     dispatch(getAllAttendanceMeetingApi(navigate, t, meetingData));
   }, []);
@@ -259,7 +259,7 @@ const Attendence = () => {
     });
     let Data = {
       MeetingAttendance: newData,
-      MeetingID: meetingID,
+      MeetingID: 1785,
     };
     console.log(Data, "DataData");
     dispatch(saveMeetingAttendanceApi(navigate, t, Data));
