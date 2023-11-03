@@ -145,6 +145,7 @@ const Minutes = ({ setMinutes }) => {
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
+  const [folderID, setFolderID] = useState(0);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
 
@@ -225,6 +226,20 @@ const Minutes = ({ setMinutes }) => {
   }, [NewMeetingreducer.generalMinutes]);
 
   console.log(messages, "messagesmessagesmessages");
+
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
+        NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
+      ) {
+        console.log(
+          NewMeetingreducer.generalminutesDocumentForMeeting,
+          "NewMeetingreducergeneralminutesDocumentForMeeting"
+        );
+      }
+    } catch {}
+  }, []);
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
@@ -400,7 +415,7 @@ const Minutes = ({ setMinutes }) => {
     // let newfile = [...previousFileIDs];
     // const uploadPromises = fileForSend.map(async (newData) => {
     //   await dispatch(
-    //     uploadDocumentsMeetingMinutesApi(navigate, t, newData, newfile)
+    //     uploadDocumentsMeetingMinutesApi(navigate, t, newData,folderID, newfile)
     //   );
     // });
 

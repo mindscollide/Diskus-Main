@@ -2771,7 +2771,7 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
                 "FK_MeetingGeneralMinutesID"
               );
               let MeetingDocs = {
-                MDID: Number(currentMeetingID),
+                MDID: 1833,
               };
               dispatch(
                 DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
