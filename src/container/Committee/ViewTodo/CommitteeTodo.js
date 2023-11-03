@@ -112,9 +112,8 @@ const CreateTodoCommittee = () => {
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   console.log("socketTodoStatusData", PollsReducer);
 
-  // GET TODOS STATUS
-  useEffect(() => {
-    dispatch(getTodoStatus(navigate, t));
+  const initalApiCall = async () => {
+    await dispatch(getTodoStatus(navigate, t));
 
     if (ViewCommitteeID !== null) {
       let newData = {
@@ -122,6 +121,10 @@ const CreateTodoCommittee = () => {
       };
       dispatch(getTaskCommitteeIDApi(navigate, t, newData));
     }
+  };
+  // GET TODOS STATUS
+  useEffect(() => {
+    initalApiCall();
     // if (todoListPageSize !== null && todoListCurrentPage !== null) {
 
     //   dispatch(
@@ -204,22 +207,24 @@ const CreateTodoCommittee = () => {
   };
 
   const deleteTodolist = async (record) => {
-    await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false));
-    if (todoListPageSize !== null && todoListCurrentPage !== null) {
-      dispatch(
-        SearchTodoListApi(
-          navigate,
-          searchData,
-          todoListCurrentPage,
-          todoListPageSize,
-          t
-        )
-      );
-    } else {
-      localStorage.setItem("todoListPage", 1);
-      localStorage.setItem("todoListRow", 50);
-      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
-    }
+    await dispatch(
+      updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false, 1)
+    );
+    // if (todoListPageSize !== null && todoListCurrentPage !== null) {
+    //   dispatch(
+    //     SearchTodoListApi(
+    //       navigate,
+    //       searchData,
+    //       todoListCurrentPage,
+    //       todoListPageSize,
+    //       t
+    //     )
+    //   );
+    // } else {
+    //   localStorage.setItem("todoListPage", 1);
+    //   localStorage.setItem("todoListRow", 50);
+    //   dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
+    // }
   };
 
   const columnsToDo = [
@@ -475,7 +480,7 @@ const CreateTodoCommittee = () => {
         if (parseInt(record?.pK_UID) === parseInt(createrID)) {
           return (
             <i
-              className="meeting-editbutton"
+              className="meeting-editbutton cursor-pointer"
               onClick={(e) => deleteTodolist(index)}
             >
               <img draggable="false" src={del} alt="" />
@@ -502,7 +507,7 @@ const CreateTodoCommittee = () => {
     if (e === 6) {
       setRemoveTodo(statusdata);
     }
-    dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false));
+    dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false, 1));
   };
 
   // const paginationChangeHandlerTodo = async (current, pageSize) => {
@@ -572,7 +577,7 @@ const CreateTodoCommittee = () => {
       setOpen({
         ...open,
         open: true,
-        message: toDoListReducer.ResponseMessage,
+        message: PollsReducer.ResponseMessage,
       });
       setTimeout(() => {
         setOpen({
