@@ -1,0 +1,400 @@
+import React, { useEffect, useState } from "react";
+import styles from "./MeetingDetails.module.css";
+import { useTranslation } from "react-i18next";
+import { Col, Row } from "react-bootstrap";
+import { Button, Notification } from "../../../../../components/elements";
+
+import Messegeblue from "../../../../../assets/images/blue Messege.svg";
+import BlueCamera from "../../../../../assets/images/blue Camera.svg";
+import { useDispatch } from "react-redux";
+import { ClearMessegeMeetingdetails } from "../../../../../store/actions/NewMeetingActions";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
+import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
+
+const ViewMeetingDetails = ({
+  setorganizers,
+  setmeetingDetails,
+  advanceMeetingModalID,
+  setViewAdvanceMeetingModal,
+}) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
+  const [cancelModalView, setCancelModalView] = useState(false);
+  const [rows, setRows] = useState([
+    {
+      selectedOption: "",
+      dateForView: "",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
+    },
+  ]);
+  //For Custom language datepicker
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
+  const [meetingDetails, setMeetingDetailsData] = useState({
+    MeetingTitle: "",
+    MeetingType: 0,
+    Location: "",
+    Description: "",
+    Link: "",
+    ReminderFrequency: {
+      value: 0,
+      label: "",
+    },
+    ReminderFrequencyTwo: {
+      value: 0,
+      label: "",
+    },
+    ReminderFrequencyThree: {
+      value: 0,
+      label: "",
+    },
+    Notes: "",
+    groupChat: false,
+    AllowRSPV: false,
+    NotifyMeetingOrganizer: false,
+    RecurringOptions: {
+      value: 0,
+      label: "",
+    },
+    Location: "",
+    IsVideoCall: false,
+  });
+
+  const handleUpdateNext = () => {
+    setmeetingDetails(false);
+    setorganizers(true);
+  };
+
+  //funciton cancel button
+  const handleCancelMeetingButton = (e) => {
+    setCancelModalView(true);
+  };
+
+  // Showing The reposnse messege
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(ClearMessegeMeetingdetails());
+    } else {
+      dispatch(ClearMessegeMeetingdetails());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
+
+  //Fetching All Saved Data
+  useEffect(() => {
+    try {
+    } catch {}
+    if (
+      NewMeetingreducer.getAllMeetingDetails != null &&
+      NewMeetingreducer.getAllMeetingDetails != undefined
+    ) {
+      let MeetingData =
+        NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+      let getmeetingDates = MeetingData.meetingDates;
+      let getmeetingRecurrance = MeetingData.meetingRecurrance;
+      let getmeetingReminders = MeetingData.meetingReminders;
+      let getmeetingStatus = MeetingData.meetingStatus;
+      let getmeetingType = MeetingData.meetingType;
+      let wasPublishedFlag = MeetingData.wasMeetingPublished;
+      console.log(wasPublishedFlag, "getmeetingTypegetmeetingType");
+      setMeetingDetailsData({
+        MeetingTitle: MeetingData.meetingTitle,
+        MeetingType: {
+          PK_MTID: getmeetingType.pK_MTID,
+          Type: getmeetingType.type,
+        },
+        Location: MeetingData.location,
+        Description: MeetingData.description,
+        Link: MeetingData.videoCallURl,
+        ReminderFrequency: {
+          value:
+            getmeetingReminders[0] !== undefined
+              ? getmeetingReminders[0]?.pK_MRID
+              : 0,
+          label:
+            getmeetingReminders[0] !== undefined
+              ? getmeetingReminders[0]?.description
+              : "",
+        },
+        ReminderFrequencyTwo: {
+          value:
+            getmeetingReminders[1] !== undefined
+              ? getmeetingReminders[1]?.pK_MRID
+              : 0,
+          label:
+            getmeetingReminders[1] !== undefined
+              ? getmeetingReminders[1]?.description
+              : "",
+        },
+        ReminderFrequencyThree: {
+          value:
+            getmeetingReminders[2] !== undefined
+              ? getmeetingReminders[2]?.pK_MRID
+              : 0,
+          label:
+            getmeetingReminders[2] !== undefined
+              ? getmeetingReminders[2]?.description
+              : "",
+        },
+        Notes: MeetingData.notes,
+        groupChat: MeetingData.isTalkGroup,
+        AllowRSPV: MeetingData.allowRSVP,
+        NotifyMeetingOrganizer: MeetingData.notifyAdminOnRSVP,
+        RecurringOptions: {
+          value: getmeetingRecurrance.recurranceID,
+          label: getmeetingRecurrance.recurrance,
+        },
+        Location: MeetingData.location,
+        IsVideoCall: MeetingData.isVideo,
+      });
+      let newDateTimeData = [];
+      if (
+        getmeetingDates !== null &&
+        getmeetingDates !== undefined &&
+        getmeetingDates.length > 0
+      ) {
+        getmeetingDates.forEach((data, index) => {
+          newDateTimeData.push({
+            selectedOption: data.meetingDate,
+            startDate: data.startTime,
+            endDate: data.endTime,
+            endTime: resolutionResultTable(data.meetingDate + data.endTime),
+            startTime: resolutionResultTable(data.meetingDate + data.startTime),
+            dateForView: resolutionResultTable(
+              data.meetingDate + data.startTime
+            ),
+          });
+        });
+      }
+      setRows(newDateTimeData);
+    }
+  }, [NewMeetingreducer.getAllMeetingDetails]);
+  return (
+    <section>
+      <Row className="mt-3">
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Button
+            text={t("Leave-meeting")}
+            className={styles["LeaveMeetinButton"]}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className={styles["ScrollerMeeting_Active"]}
+        >
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["Heading_Gray_meeting"]}>
+                {meetingDetails.MeetingType?.Type} | {meetingDetails.Location}
+              </span>
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["MeetingTitle_Heading"]}>
+                {meetingDetails.MeetingTitle}
+              </span>
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["ParaGraph_SavedMeeting"]}>
+                {meetingDetails.Description}
+              </span>
+            </Col>
+          </Row>
+          <Row className="mt-3">
+            <Col lg={5} md={5} sm={5}>
+              <Row className="mt-1">
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["NOtes_heading"]}>{t("Notes")}</span>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["ParaGraph_SavedMeeting"]}>
+                    {meetingDetails.Notes}
+                  </span>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["Scedule_OnHeading"]}>
+                    {t("Scheduled-on")}
+                  </span>
+                </Col>
+              </Row>
+              <Row>
+                {rows.map((data, index) => {
+                  return (
+                    <Col key={index} lg={12} md={12} sm={12}>
+                      <span className={styles["SceduledDateTime"]}>
+                        {data.startDate} - {data.endDate}, {data.selectedOption}
+                      </span>
+                    </Col>
+                  );
+                })}
+              </Row>
+            </Col>
+            <Col lg={7} md={7} sm={7}>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex align-items-center gap-1"
+                >
+                  {meetingDetails.groupChat && (
+                    <img
+                      src={Messegeblue}
+                      height="20.44px"
+                      width="25.68px"
+                      alt=""
+                    />
+                  )}
+                  {meetingDetails.IsVideoCall && (
+                    <>
+                      <img
+                        src={BlueCamera}
+                        height="17.84px"
+                        width="27.19px"
+                        alt=""
+                      />
+                      <span className={styles["LinkClass"]}>
+                        {meetingDetails.Link}
+                      </span>
+                    </>
+                  )}
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["NOtes_heading"]}>{t("RSVP")}</span>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["RspvClassDetails"]}>
+                    {meetingDetails.AllowRSPV
+                      ? t("RSVP-allowed-and-notify")
+                      : t("RSVP-not-allowed")}
+                  </span>
+                </Col>
+              </Row>
+              <Row className="mt-3">
+                <Col lg={6} md={6} sm={6}>
+                  <Row className="mt-2">
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["NOtes_heading"]}>
+                        {t("Reminder-frequency ")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    {meetingDetails.ReminderFrequency && (
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["RspvClassDetails"]}>
+                          {meetingDetails.ReminderFrequency.label}
+                        </span>
+                      </Col>
+                    )}
+
+                    {meetingDetails.ReminderFrequencyTwo && (
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["RspvClassDetails"]}>
+                          {meetingDetails.ReminderFrequencyTwo.label}
+                        </span>
+                      </Col>
+                    )}
+                    {meetingDetails.ReminderFrequencyThree && (
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["RspvClassDetails"]}>
+                          {meetingDetails.ReminderFrequencyThree.label}
+                        </span>
+                      </Col>
+                    )}
+                  </Row>
+                </Col>
+                <Col lg={6} md={6} sm={6}>
+                  <Row className="mt-2">
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["NOtes_heading"]}>
+                        {t("Recurring")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["ParaGraph_SavedMeeting"]}>
+                        {meetingDetails.RecurringOptions.label}
+                      </span>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <Row className="mt-2">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          <Button
+            text={t("Cancel")}
+            className={styles["Cancel_Meeting_SaveMeeting"]}
+            onClick={handleCancelMeetingButton}
+          />
+          <Button
+            text={t("Next")}
+            className={styles["Next_Meeting_SaveMeeting"]}
+            onClick={handleUpdateNext}
+          />
+        </Col>
+      </Row>
+
+      {cancelModalView && (
+        <CancelButtonModal
+          setCancelModalView={setCancelModalView}
+          cancelModalView={cancelModalView}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          setMeetingDetails={setmeetingDetails}
+        />
+      )}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+    </section>
+  );
+};
+
+export default ViewMeetingDetails;

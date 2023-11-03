@@ -1,0 +1,47 @@
+.Heading_unsaved_modal {
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.No_Button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6;
+  color: #fff;
+  border-radius: 4px !important;
+  border: none;
+}
+
+.No_Button:hover,
+.No_Button:hover,
+.No_Button:hover,
+.No_Button:hover {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Yes_Button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Yes_Button:hover,
+.Yes_Button:active,
+.Yes_Button:focus,
+.Yes_Button:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}

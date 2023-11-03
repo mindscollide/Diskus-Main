@@ -100,6 +100,9 @@ const Dashboard = () => {
     MeetingOrganizersReducer,
     MeetingAgendaReducer,
     PollsReducer,
+    CommitteeReducer,
+    toDoListReducer,
+    getTodosStatus,
   } = useSelector((state) => state);
   // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate();
@@ -1508,13 +1511,14 @@ const Dashboard = () => {
   ]);
 
   useEffect(() => {
-    if (Blur !== undefined) {
+    if (Blur !== undefined && Blur !== null) {
       console.log("Blur", Blur);
       setActivateBlur(true);
     } else {
       console.log("Blur", Blur);
       setActivateBlur(false);
     }
+    console.log("Blur", Blur);
   }, [Blur]);
 
   let videoGroupPanel = localStorage.getItem("VideoPanelGroup");
@@ -1603,13 +1607,16 @@ const Dashboard = () => {
             videoFeatureReducer.MaximizeVideoFlag === true ? (
               <VideoCallScreen />
             ) : null}
-            {activateBlur === false ? <Talk /> : null}
+            {activateBlur ? null : <Talk />}
             {/* {MeetingOrganizersReducer.LoadingMeetingOrganizer ? <Loader /> : null} */}
             {NewMeetingreducer.Loading ||
             assignees.Loading ||
             MeetingOrganizersReducer.LoadingMeetingOrganizer ||
             MeetingOrganizersReducer.Loading ||
             PollsReducer.Loading ||
+            CommitteeReducer.Loading ||
+            toDoListReducer.Loading ||
+            getTodosStatus.Loading ||
             MeetingAgendaReducer.Loading ? (
               <Loader />
             ) : null}

@@ -363,11 +363,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //On Click Of Dropdown Value
   const onSearch = (name, id, users) => {
-    let findisExist = TaskAssignedTo.findIndex((data, index) => data === id);
-    if (findisExist !== -1) {
+    if (taskAssignedName.length === 1) {
       setOpen({
         flag: true,
-        message: t("User-already-exist"),
+        message: t("Only-one-assignee-allow"),
       });
       setTaskAssignedToInput("");
     } else {
@@ -381,16 +380,18 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       setTaskAssignedToInput("");
       setAssignees([...assignees, users]);
     }
-    // if (taskAssignedName.length === 1) {
-    //   setOpen({
-    //     flag: true,
-    //     message: t("Only-one-assignee-allow"),
-    //   });
-    //   setTaskAssignedToInput("");
-    // } else {
-
-    // }
   };
+
+  useEffect(() => {
+    if (taskAssignedName.length > 1) {
+      setOpen({
+        flag: true,
+        message: t("Only-one-assignee-allow"),
+      });
+    } else {
+      setTaskAssigneeLength(false);
+    }
+  }, [taskAssignedName.length]);
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
@@ -638,12 +639,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       });
     }
   };
+
   const handleFocusCreateTodo = () => {
     setTask({
       ...task,
       DeadLineTime: getcurrentTime,
     });
   };
+
   // const handleBlur = (event) => {
   //   // Access the selected value when the input field loses focus
   //   const selectedValue = event.target.value;
@@ -785,12 +788,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       />
                     </Col>
                   </Row>
-                  <Row className="create_todo_assignee">
+                  <Row className="create_todo_assignee d-flex justify-content-end">
                     {assignees ? (
                       <>
                         {assignees.map((taskAssignedName, index) => (
                           <Col sm={12} md={6} lg={6}>
-                            <div className="dropdown-row-assignee dg-flex align-items-center flex-row">
+                            <div className="dropdown-row-assignee w-100">
                               <div className="d-flex align-items-center gap-2 mt-1 position-relative">
                                 <img
                                   draggable="false"

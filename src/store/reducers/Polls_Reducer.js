@@ -23,6 +23,13 @@ const initialState = {
   realtimePollsUpdate: null,
   pollingSocket: null,
   getPollByCommitteeID: null,
+  getPollByGroupID: null,
+  setGroupsPolls: null,
+  setCommitteePoll: null,
+  todoGetGroupTask: null,
+  setTodoGroupTask: null,
+  getTodoCommitteeTask: null,
+  setTodoCommitteeTask: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -331,8 +338,171 @@ const PollsReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.GET_POLLS_BY_GROUPID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_POLLS_BY_GROUPID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getPollByGroupID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_POLLS_BY_GROUPID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getPollByGroupID: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SET_GROUP_POLLS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SET_GROUP_POLLS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setGroupsPolls: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SET_GROUP_POLLS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setGroupsPolls: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SETCOMMITTEEPOLL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SETCOMMITTEEPOLL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setCommitteePoll: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SETCOMMITTEEPOLL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setCommitteePoll: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_TASK_BY_GROUPID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_TASK_BY_GROUPID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        todoGetGroupTask: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_TASK_BY_GROUPID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        todoGetGroupTask: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SET_TASK_GROUP_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SET_TASK_GROUP_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setTodoGroupTask: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SET_TASK_GROUP_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setTodoGroupTask: null,
+        ResponseMessage: action.message,
+      };
+    }
     default: {
       return { ...state };
+    }
+
+    case actions.GET_TASK_BY_COMMITTEE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_TASK_BY_COMMITTEE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getTodoCommitteeTask: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_TASK_BY_COMMITTEE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getTodoCommitteeTask: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SET_TASK_COMMITTEE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SET_TASK_COMMITTEE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setTodoCommitteeTask: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SET_TASK_COMMITTEE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setTodoCommitteeTask: null,
+        ResponseMessage: action.message,
+      };
     }
   }
 };

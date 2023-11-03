@@ -1,0 +1,122 @@
+.LeaveMeetinButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid#E1E1E1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.LeaveMeetinButton:is(:active, :hover, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid#E1E1E1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ScrollerMeeting_Active {
+  height: 48vh !important;
+  overflow-x: hidden !important;
+}
+
+.ScrollerMeeting_Active::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.ScrollerMeeting_Active::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Heading_Gray_meeting {
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+}
+
+.MeetingTitle_Heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 28px !important;
+  color: #6172d6 !important;
+}
+
+.ParaGraph_SavedMeeting {
+  color: #505050 !important;
+  font-family: "MontserratRegular" !important;
+  font-size: 16px !important;
+}
+
+.NOtes_heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #6172d6 !important;
+}
+
+.LinkClass {
+  font-size: 20px !important;
+  color: #6172d6 !important;
+  text-decoration: underline !important;
+}
+
+.RspvClassDetails {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+}
+
+.Cancel_Meeting_SaveMeeting {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid#E1E1E1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_Meeting_SaveMeeting:is(:active, :hover, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid#E1E1E1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Next_Meeting_SaveMeeting {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Next_Meeting_SaveMeeting:is(:active, :hover, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+.Scedule_OnHeading {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+.SceduledDateTime {
+  color: #505050 !important;
+  font-size: 16px !important;
+  font-family: "MontserratRegular";
+}

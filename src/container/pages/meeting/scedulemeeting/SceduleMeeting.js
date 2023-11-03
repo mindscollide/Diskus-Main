@@ -33,7 +33,6 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
   const [meetingMaterial, setMeetingMaterial] = useState(false);
   const [minutes, setMinutes] = useState(false);
   const [proposedMeetingDates, setProposedMeetingDates] = useState(false);
-  const [viewProposedMeetingDate, setViewProposedMeetingDate] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
@@ -174,10 +173,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
         <ProposedMeetingDate
           setProposedMeetingDates={setProposedMeetingDates}
           setParticipants={setParticipants}
-          setViewProposedMeetingDate={setViewProposedMeetingDate}
         />
-      ) : viewProposedMeetingDate ? (
-        <ViewParticipantsDates />
       ) : (
         <>
           <section>

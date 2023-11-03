@@ -50,6 +50,7 @@ import NewEndMeetingModal from "./NewEndMeetingModal/NewEndMeetingModal";
 import { useSelector } from "react-redux";
 import {
   clearMeetingState,
+  GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
   showEndMeetingForAll,
   showEndMeetingModal,
@@ -73,6 +74,9 @@ import ModalMeeting from "../../modalmeeting/ModalMeeting";
 import ModalUpdate from "../../modalUpdate/ModalUpdate";
 import ModalView from "../../modalView/ModalView";
 import CustomPagination from "../../../commen/functions/customPagination/Paginations";
+import ViewParticipantsDates from "./scedulemeeting/Participants/ViewParticipantsDates/ViewParticipantsDates";
+import ViewMeetingModal from "./viewMeetings/ViewMeetingModal";
+
 const NewMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -124,6 +128,9 @@ const NewMeeting = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
+  const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
+  const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
+  const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
 
   //  Call all search meetings api
   useEffect(() => {
@@ -211,7 +218,6 @@ const NewMeeting = () => {
     });
     setSearchMeeting(false);
   };
-
   const HandleCloseSearchModalMeeting = () => {
     setSearchFeilds({
       ...searchFields,
@@ -247,7 +253,6 @@ const NewMeeting = () => {
       });
     }
   };
-
   const openSceduleMeetingPage = () => {
     setSceduleMeeting(true);
   };
@@ -309,7 +314,6 @@ const NewMeeting = () => {
   const EndMeetingModal = () => {
     dispatch(showEndMeetingModal(true));
   };
-
   //Modal For End Meeting
   const EndForAllModal = () => {
     dispatch(showEndMeetingForAll(true));
@@ -347,22 +351,32 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingCurrentView", 2);
   };
 
-  const handleViewMeeting = async (id) => {
-    let Data = { MeetingID: id };
-    await dispatch(
-      ViewMeeting(
-        navigate,
-        Data,
-        t,
-        setViewFlag,
-        setEditFlag,
-        setCalendarViewModal,
-        1
-      )
-    );
+  const handleViewMeeting = async (id, isQuickMeeting) => {
+    if (isQuickMeeting) {
+      let Data = { MeetingID: id };
+      await dispatch(
+        ViewMeeting(
+          navigate,
+          Data,
+          t,
+          setViewFlag,
+          setEditFlag,
+          setCalendarViewModal,
+          1
+        )
+      );
+    } else {
+      setAdvanceMeetingModalID(id);
+      let Data = {
+        MeetingID: Number(id),
+      };
+      await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+      setViewAdvanceMeetingModal(true);
+    }
   };
 
-  const handleEditMeeting = async (id, isQuick) => {
+  const handleEditMeeting = async (id, isQuick, isAgendaContributor) => {
+    console.log("handleEditMeeting", id, isQuick);
     let Data = { MeetingID: id };
     if (isQuick) {
       await dispatch(
@@ -376,6 +390,8 @@ const NewMeeting = () => {
           2
         )
       );
+    } else if (isAgendaContributor) {
+    } else {
     }
   };
 
@@ -489,6 +505,11 @@ const NewMeeting = () => {
       key: "Chat",
       width: "36px",
       render: (text, record) => {
+        const isOrganiser = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Organizer"
+        );
         return (
           <>
             <Row>
@@ -569,7 +590,7 @@ const NewMeeting = () => {
                     }
                   ></span>
                 )}
-                {record.status === "9" && (
+                {record.status === "9" && isOrganiser && (
                   <Tooltip placement="topLeft" title={t("member")}>
                     <img
                       src={member}
@@ -594,13 +615,13 @@ const NewMeeting = () => {
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
-            (attendee.user.pK_UID === currentUserId &&
-              attendee.meetingAttendeeRole.role === "Participants") ||
+            (Number(attendee.user.pK_UID) === Number(currentUserId) &&
+              attendee.meetingAttendeeRole.role === "Participant") ||
             attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
-            attendee.user.pK_UID === currentUserId &&
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
         if (record.status === "1") {
@@ -619,27 +640,18 @@ const NewMeeting = () => {
           }
         } else if (record.status === "2") {
           if (isParticipant) {
-            return (
-              <Button
-                text={t("Join-meeting")}
-                className={styles["joining-Meeting"]}
-              />
-            );
+            <Button
+              text={t("Join-meeting")}
+              className={styles["joining-Meeting"]}
+            />;
           } else if (isOrganiser) {
             <Button
-              text={t("End-meeting")}
+              text={t("Join-meeting")}
               className={styles["joining-Meeting"]}
             />;
           }
-        } else if (record.status === "3") {
-        } else if (record.status === "4") {
-        } else if (record.status === "5") {
-        } else if (record.status === "6") {
-        } else if (record.status === "7") {
-        } else if (record.status === "8") {
-        } else if (record.status === "9") {
         } else if (record.status === "10") {
-          if (record.host.toLowerCase().includes("OrganizerName".toLowerCase)) {
+          if (isOrganiser) {
             return (
               <Button
                 text={t("End-Meeting")}
@@ -647,7 +659,7 @@ const NewMeeting = () => {
                 onClick={EndMeetingModal}
               />
             );
-          } else {
+          } else if (isParticipant) {
             return (
               <Button
                 text={t("Leave-meeting")}
@@ -656,9 +668,6 @@ const NewMeeting = () => {
               />
             );
           }
-        } else if (record.status === "11") {
-        } else if (record.status === "12") {
-        } else if (record.status === "13") {
         }
         // return (
         //   <>
@@ -709,25 +718,25 @@ const NewMeeting = () => {
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
-            attendee.user.pK_UID === currentUserId &&
-            attendee.meetingAttendeeRole.role === "Participants"
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Participant"
         );
 
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
-            attendee.user.pK_UID === currentUserId &&
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
 
         const isAgendaContributor = record.meetingAttendees.some(
           (attendee) =>
-            attendee.user.pK_UID === currentUserId &&
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
 
-        const isQuickMeeting = record.meetingAttendees.some(
-          (attendee) => attendee.isQuickMeeting === true
-        );
+        const isQuickMeeting = record.isQuickMeeting;
+        console.log("isQuickMeeting", isQuickMeeting);
+        console.log("isQuickMeeting", record);
 
         if (isQuickMeeting) {
           if (isOrganiser) {
@@ -746,7 +755,8 @@ const NewMeeting = () => {
                         onClick={() =>
                           handleEditMeeting(
                             record.pK_MDID,
-                            record.isQuickMeeting
+                            record.isQuickMeeting,
+                            isAgendaContributor
                           )
                         }
                       />
@@ -775,7 +785,8 @@ const NewMeeting = () => {
                         onClick={() =>
                           handleEditMeeting(
                             record.pK_MDID,
-                            record.isQuickMeeting
+                            record.isQuickMeeting,
+                            isAgendaContributor
                           )
                         }
                       />
@@ -800,7 +811,8 @@ const NewMeeting = () => {
                         onClick={() =>
                           handleEditMeeting(
                             record.pK_MDID,
-                            record.isQuickMeeting
+                            record.isQuickMeeting,
+                            isAgendaContributor
                           )
                         }
                       />
@@ -870,38 +882,39 @@ const NewMeeting = () => {
     try {
       if (searchMeetings !== null && searchMeetings !== undefined) {
         setTotalRecords(searchMeetings.totalRecords);
-        if (
-          searchMeetings.meetings !== null &&
-          searchMeetings.meetings !== undefined &&
-          searchMeetings.meetings.length > 0
-        ) {
+        if (Object.keys(searchMeetings.meetings).length > 0) {
           let newRowData = [];
           searchMeetings.meetings.map((data, index) => {
-            newRowData.push({
-              dateOfMeeting: data.dateOfMeeting,
-              host: data.host,
-              isAttachment: data.isAttachment,
-              isChat: data.isChat,
-              isVideoCall: data.isVideoCall,
-              isQuickMeeting: data.isQuickMeeting,
-              meetingAgenda: data.meetingAgenda,
-              meetingAttendees: data.meetingAttendees,
-              meetingEndTime: data.meetingEndTime,
-              meetingStartTime: data.meetingStartTime,
-              meetingURL: data.meetingURL,
-              orignalProfilePictureName: data.orignalProfilePictureName,
-              pK_MDID: data.pK_MDID,
-              meetingPoll: {
-                totalNoOfDirectors: data.meetingPoll.totalNoOfDirectors,
-                totalNoOfDirectorsVoted:
-                  data.meetingPoll.totalNoOfDirectorsVoted,
-              },
-              responseDeadLine: data.responseDeadLine,
-              status: data.status,
-              title: data.title,
-              talkGroupID: data.talkGroupID,
-              key: index,
-            });
+            try {
+              newRowData.push({
+                dateOfMeeting: data.dateOfMeeting,
+                host: data.host,
+                isAttachment: data.isAttachment,
+                isChat: data.isChat,
+                isVideoCall: data.isVideoCall,
+                isQuickMeeting: data.isQuickMeeting,
+                meetingAgenda: data.meetingAgenda,
+                meetingAttendees: data.meetingAttendees,
+                meetingEndTime: data.meetingEndTime,
+                meetingStartTime: data.meetingStartTime,
+                meetingURL: data.meetingURL,
+                orignalProfilePictureName: data.orignalProfilePictureName,
+                pK_MDID: data.pK_MDID,
+                meetingPoll: {
+                  totalNoOfDirectors:
+                    data.proposedMeetingDetail.totalNoOfDirectors,
+                  totalNoOfDirectorsVoted:
+                    data.proposedMeetingDetail.totalNoOfDirectorsVoted,
+                },
+                responseDeadLine: data.responseDeadLine,
+                status: data.status,
+                title: data.title,
+                talkGroupID: data.talkGroupID,
+                key: index,
+              });
+            } catch {
+              console.log("rowsrowsrowsrowsrows error", newRowData);
+            }
           });
           setRow(newRowData);
         }
@@ -910,7 +923,6 @@ const NewMeeting = () => {
       }
     } catch {}
   }, [searchMeetings]);
-
   // Empty text data
   const emptyText = () => {
     return (
@@ -949,6 +961,15 @@ const NewMeeting = () => {
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
         <SceduleMeeting setSceduleMeeting={setSceduleMeeting} />
+      ) : viewProposeDatePoll ? (
+        <ViewParticipantsDates
+          setViewProposeDatePoll={setViewProposeDatePoll}
+        />
+      ) : viewAdvanceMeetingModal ? (
+        <ViewMeetingModal
+          advanceMeetingModalID={advanceMeetingModalID}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+        />
       ) : (
         <>
           <Row className="mt-2">
@@ -998,12 +1019,6 @@ const NewMeeting = () => {
                   </Dropdown>
                 </Col>
               </Row>
-              {/* <Button
-                text={t("Schedule-a-meeting")}
-                className={styles["Newmeeting_Scehedule_meet"]}
-                icon={<Plus width={20} height={20} fontWeight={800} />}
-                onClick={openSceduleMeetingPage}
-              /> */}
             </Col>
             <Col
               sm={12}
@@ -1174,7 +1189,10 @@ const NewMeeting = () => {
                   </Col>
                 </Row>
                 {Number(currentView) === 2 ? (
-                  <UnpublishedProposedMeeting />
+                  <UnpublishedProposedMeeting
+                    viewProposeDatePoll={viewProposeDatePoll}
+                    setViewProposeDatePoll={setViewProposeDatePoll}
+                  />
                 ) : Number(currentView) === 1 ? (
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>

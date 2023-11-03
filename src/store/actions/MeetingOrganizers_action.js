@@ -245,7 +245,7 @@ const updateOrganizerMeetingStatus_fail = (message) => {
 }
 
 // Save Meeting Organizers Api
-const UpdateOrganizersMeeting = (navigate, Data, t) => {
+const UpdateOrganizersMeeting = (navigate, Data, t,route,setPublishState) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return async (dispatch) => {
     dispatch(updateOrganizerMeetingStatus_init())
@@ -279,6 +279,9 @@ const UpdateOrganizersMeeting = (navigate, Data, t) => {
                   t('Record-updated'),
                 ),
               )
+              if(route){
+                setPublishState(Data.MeetingID)
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

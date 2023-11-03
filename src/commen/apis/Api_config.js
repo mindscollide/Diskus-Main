@@ -1053,8 +1053,23 @@ const RetrieveGroupDocuments = {
   RequestMethod: "ServiceManager.ReteriveGroupDocuments",
 };
 
+const MeetingAgendaLock = {
+  RequestMethod: "ServiceManager.UpdateMeetingAgendaLockStatus",
+};
+
+const GetAllUserAgendaRights = {
+  RequestMethod: "ServiceManager.GetAllUserAgendaRights",
+};
+
+const saveUserAttachmentPermission = {
+  RequestMethod: "ServiceManager.SaveUserAttachmentPermission",
+};
+
 const getPollbyCommitteeIdRM = {
   RequestMethod: "ServiceManager.GetPollsByComitteeID",
+};
+const setCommitteePollsRM = {
+  RequestMethod: "ServiceManager.SetCommitteePolls",
 };
 
 const getAgendaVotingDetails = {
@@ -1081,7 +1096,32 @@ const viewAgendaVotingResults = {
   RequestMethod: "ServiceManager.ViewAgendaVotingResults",
 };
 
+const getPollByGroupIDApi = {
+  RequestMethod: "ServiceManager.GetPollsByGroupID",
+};
+
+const setGroupPollsApi = {
+  RequestMethod: "ServiceManager.SetGroupPolls",
+};
+
+const getTaskGroupIDApi = {
+  RequestMethod: "ServiceManager.GetTasksByGroupID",
+};
+
+const setGroupTaskApi = {
+  RequestMethod: "ServiceManager.SetGroupTasks",
+};
+
+const getTaskByCommitteeIDApi = {
+  RequestMethod: "ServiceManager.GetTasksByCommitteeID",
+};
+
+const setCommitteeTaskApi = {
+  RequestMethod: "ServiceManager.SetCommitteeTasks",
+};
+
 export {
+  setCommitteePollsRM,
   getPollbyCommitteeIdRM,
   saveCommitteeDocumentsRM,
   reteriveCommitteeDocumentsRM,
@@ -1372,4 +1412,13 @@ export {
   CreateUpdateGroupDataRoadMap,
   SaveTheGroupsDocuments,
   RetrieveGroupDocuments,
+  MeetingAgendaLock,
+  GetAllUserAgendaRights,
+  saveUserAttachmentPermission,
+  getPollByGroupIDApi,
+  setGroupPollsApi,
+  getTaskGroupIDApi,
+  setGroupTaskApi,
+  getTaskByCommitteeIDApi,
+  setCommitteeTaskApi,
 };

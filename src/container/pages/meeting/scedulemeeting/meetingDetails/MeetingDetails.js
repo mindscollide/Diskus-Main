@@ -123,6 +123,35 @@ const MeetingDetails = ({
   });
 
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  //language UseEffect
+  useEffect(() => {
+    if (currentLanguage !== undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
+
+  useEffect(() => {
+    //Meeting Type Drop Down API
+    dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+    //Reminder Frequency Drop Down API
+    dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+    //Recurring Drop Down API
+    dispatch(GetAllMeetingRecurringApiNew(navigate, t));
+    //Calling getAll Meeting Details By Meeting ID
+    if (currentMeetingID > 0) {
+      let Data = {
+        MeetingID: Number(currentMeetingID),
+      };
+      dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    } else {
+    }
+  }, []);
 
   const handleSelectChange = (selectedOption) => {
     setOptions({ ...options, selectedOption });
@@ -456,10 +485,6 @@ const MeetingDetails = ({
     if (meetingDetails.ReminderFrequencyThree.value !== 0) {
       newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
     }
-
-    console.log(newReminderData, "newReminderDatanewReminderData");
-    console.log(rows, "newReminderDatanewReminderData");
-
     rows.map((data, index) => {
       newArr.push({
         MeetingDate: data.selectedOption,
@@ -524,8 +549,6 @@ const MeetingDetails = ({
   };
 
   const handleReminderFrequencyTwo = (e) => {
-    console.log(e, "firstfirstfirstfirst");
-
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyTwo: {
@@ -671,21 +694,6 @@ const MeetingDetails = ({
     dispatch(showCancelModalmeetingDeitals(true));
   };
 
-  //Meeting Type Drop Down API
-  useEffect(() => {
-    dispatch(GetAllMeetingTypesNewFunction(navigate, t));
-  }, []);
-
-  //Reminder Frequency Drop Down API
-  useEffect(() => {
-    dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-  }, []);
-
-  //Recurring Drop Down API
-  useEffect(() => {
-    dispatch(GetAllMeetingRecurringApiNew(navigate, t));
-  }, []);
-
   //Meeting Type Drop Down Data
   useEffect(() => {
     try {
@@ -747,31 +755,6 @@ const MeetingDetails = ({
     } catch (error) {}
   }, [NewMeetingreducer.recurring.meetingRecurrances]);
 
-  //language UseEffect
-  useEffect(() => {
-    if (currentLanguage !== undefined) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
-      }
-    }
-  }, [currentLanguage]);
-
-  //Calling getAll Meeting Details By Meeting ID
-
-  useEffect(() => {
-    if (currentMeetingID > 0) {
-      let Data = {
-        MeetingID: Number(currentMeetingID),
-      };
-      dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
-    } else {
-    }
-  }, []);
-
   // Showing The reposnse messege
   useEffect(() => {
     if (
@@ -819,7 +802,6 @@ const MeetingDetails = ({
   ]);
 
   //Fetching All Saved Data
-
   useEffect(() => {
     try {
     } catch {}
@@ -909,7 +891,7 @@ const MeetingDetails = ({
       setPublishedFlag(wasPublishedFlag);
     }
   }, [NewMeetingreducer.getAllMeetingDetails]);
-  console.log(publishedFlag, "publishedFlagpublishedFlag");
+
   return (
     <section>
       {saveMeeting ? (

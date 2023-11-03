@@ -333,7 +333,7 @@ const getbyGroupID = (
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
-    GroupID: JSON.parse(GroupId),
+    GroupID: Number(GroupId),
     OrganizationID: JSON.parse(OrganizationID),
   };
   return (dispatch) => {
@@ -1511,10 +1511,10 @@ const SaveGroupsDocumentsApiFunc = (
                 )
               );
               dispatch(methodCreateUpdateDataRoadMapFailed(""));
-              dispatch(getGroups(navigate, t, currentPage));
               setCreategrouppage(false);
               setViewGroupPage(false);
               localStorage.removeItem("groupID");
+              dispatch(getGroups(navigate, t, currentPage));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
