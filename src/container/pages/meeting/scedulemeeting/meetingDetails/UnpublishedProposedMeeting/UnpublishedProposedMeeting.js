@@ -26,6 +26,7 @@ import VideoIcon from "../../../../../../assets/images/Video-Icon.png";
 import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
 import {
+  GetAllMeetingDetailsApiFunc,
   showDeleteMeetingModal,
   showSceduleProposedMeeting,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -46,6 +47,8 @@ const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
   setViewProposeOrganizerPoll,
   viewProposeDatePoll,
+  setAdvanceMeetingModalID,
+  setViewAdvanceMeetingModalUnpublish,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -118,6 +121,14 @@ const UnpublishedProposedMeeting = ({
       // setViewProposeOrganizerPoll(true);
     }
   };
+  const handleOpenViewModal = async (data) => {
+    setAdvanceMeetingModalID(data.pK_MDID);
+    let Data = {
+      MeetingID: Number(data.pK_MDID),
+    };
+    await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    setViewAdvanceMeetingModalUnpublish(true);
+  };
 
   const MeetingColoumns = [
     {
@@ -127,7 +138,14 @@ const UnpublishedProposedMeeting = ({
       width: "130px",
       align: "left",
       render: (text, record) => {
-        return <span className={styles["meetingTitle"]}>{text}</span>;
+        return (
+          <span
+            className={styles["meetingTitle_view"]}
+            onClick={() => handleOpenViewModal(record)}
+          >
+            {text}
+          </span>
+        );
       },
       sorter: (a, b) => {
         return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
@@ -529,9 +547,8 @@ const UnpublishedProposedMeeting = ({
       setPublishState(null);
     }
   }, [publishState]);
-  const scroll = {
-    y: 800, // Set the desired height for the vertical scroll
-  };
+
+
 
   return (
     <section>
