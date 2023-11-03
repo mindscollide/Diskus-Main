@@ -398,17 +398,6 @@ const SavePollsApi = (navigate, Data, t, value) => {
                   PollID: Number(response.data.responseResult.pollID),
                 };
                 await dispatch(setCommitteePollsApi(navigate, t, Data));
-                let OrganizationID = localStorage.getItem("organizationID");
-
-                let newData = {
-                  CommitteeID: Number(ViewCommitteeID),
-                  OrganizationID: Number(OrganizationID),
-                  CreatorName: "",
-                  PollTitle: "",
-                  PageNumber: 1,
-                  Length: 50,
-                };
-                dispatch(GetPollsByCommitteeIDapi(navigate, t, newData));
               } else if (value === 4) {
                 console.log("tsteasdasd");
                 let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -785,7 +774,7 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               await dispatch(setviewpollModal(false));
               await dispatch(setVotePollModal(true));
             }
-            setEditPolls(true)
+            setEditPolls(true);
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
@@ -1035,7 +1024,7 @@ const updatePollsFailed = (message) => {
   };
 };
 
-const updatePollsApi = (navigate, Data, t) => {
+const updatePollsApi = (navigate, Data, t, value, setEditPolls) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(updatePollsInit());
@@ -1053,7 +1042,7 @@ const updatePollsApi = (navigate, Data, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(updatePollsApi(navigate, Data, t));
+          dispatch(updatePollsApi(navigate, Data, t, value, setEditPolls));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1069,17 +1058,34 @@ const updatePollsApi = (navigate, Data, t) => {
                   t("Polls-due-date-update-successFully")
                 )
               );
-              let userID = localStorage.getItem("userID");
-              let organizationID = localStorage.getItem("organizationID");
-              let data = {
-                UserID: parseInt(userID),
-                OrganizationID: parseInt(organizationID),
-                CreatorName: "",
-                PollTitle: "",
-                PageNumber: 1,
-                Length: 50,
-              };
-              await dispatch(searchPollsApi(navigate, t, data));
+              setEditPolls(false);
+              if (value === 3) {
+                let OrganizationID = localStorage.getItem("organizationID");
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+                let newData = {
+                  CommitteeID: Number(ViewCommitteeID),
+                  OrganizationID: Number(OrganizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(GetPollsByCommitteeIDapi(navigate, t, newData));
+              } else {
+                let userID = localStorage.getItem("userID");
+                let organizationID = localStorage.getItem("organizationID");
+                let data = {
+                  UserID: parseInt(userID),
+                  OrganizationID: parseInt(organizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                await dispatch(searchPollsApi(navigate, t, data));
+              }
+
               dispatch(setEditpollModal(false));
             } else if (
               response.data.responseResult.responseMessage
@@ -1102,18 +1108,35 @@ const updatePollsApi = (navigate, Data, t) => {
                   t("Poll-details-updated")
                 )
               );
-              let userID = localStorage.getItem("userID");
-              let organizationID = localStorage.getItem("organizationID");
-              let data = {
-                UserID: parseInt(userID),
-                OrganizationID: parseInt(organizationID),
-                CreatorName: "",
-                PollTitle: "",
-                PageNumber: 1,
-                Length: 50,
-              };
-              await dispatch(searchPollsApi(navigate, t, data));
+              setEditPolls(false);
               dispatch(setEditpollModal(false));
+
+              if (value === 3) {
+                let OrganizationID = localStorage.getItem("organizationID");
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+                let newData = {
+                  CommitteeID: Number(ViewCommitteeID),
+                  OrganizationID: Number(OrganizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                dispatch(GetPollsByCommitteeIDapi(navigate, t, newData));
+              } else {
+                let userID = localStorage.getItem("userID");
+                let organizationID = localStorage.getItem("organizationID");
+                let data = {
+                  UserID: parseInt(userID),
+                  OrganizationID: parseInt(organizationID),
+                  CreatorName: "",
+                  PollTitle: "",
+                  PageNumber: 1,
+                  Length: 50,
+                };
+                await dispatch(searchPollsApi(navigate, t, data));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1483,6 +1506,18 @@ const setCommitteePollsApi = (navigate, t, data) => {
                   t("Record-save")
                 )
               );
+              let OrganizationID = localStorage.getItem("organizationID");
+              let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+              let newData = {
+                CommitteeID: Number(ViewCommitteeID),
+                OrganizationID: Number(OrganizationID),
+                CreatorName: "",
+                PollTitle: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(GetPollsByCommitteeIDapi(navigate, t, newData));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
