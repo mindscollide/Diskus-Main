@@ -110,7 +110,7 @@ const UnpublishedProposedMeeting = ({
       title: <span>{t("Title")}</span>,
       dataIndex: "title",
       key: "title",
-      width: "120px",
+      width: "130px",
       align: "left",
       render: (text, record) => {
         return <span className={styles["meetingTitle"]}>{text}</span>;
@@ -123,7 +123,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "120px",
+      width: "100px",
       filters: [
         {
           text: t("Proposed"),
@@ -148,7 +148,7 @@ const UnpublishedProposedMeeting = ({
       title: <span> {t("Organizer")}</span>,
       dataIndex: "host",
       key: "host",
-      width: "70px",
+      width: "73px",
 
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
@@ -161,7 +161,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Date-time"),
       dataIndex: "Date",
       key: "Date",
-      width: "95px",
+      width: "125px",
 
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
@@ -188,7 +188,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Propose-date-poll"),
       dataIndex: "getAllMeetingDetails",
       key: "MeetingPoll",
-      width: "100px",
+      width: "110px",
       render: (text, record) => {
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
         let value = +record.meetingPoll?.totalNoOfDirectorsVoted;
@@ -322,6 +322,45 @@ const UnpublishedProposedMeeting = ({
                     />
                   </>
                 )}
+              </Col>
+            </Row>
+          </>
+        );
+      },
+    },
+    {
+      dataIndex: "Edit",
+      key: "Edit",
+      width: "90px",
+      render: (text, record) => {
+        const isParticipant = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Participant"
+        );
+        const isAgendaContributor = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+        );
+        const isOrganiser = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Organizer"
+        );
+        let apiData = {
+          MeetingID: Number(record.pK_MDID),
+          StatusID: 1,
+        };
+        return (
+          <>
+            <Row>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex  align-items-center gap-4"
+              >
                 {record.status === "11" ? (
                   isParticipant ? null : isAgendaContributor ? null : (
                     <Button
@@ -344,7 +383,7 @@ const UnpublishedProposedMeeting = ({
                   isParticipant ? (
                     <Button
                       text={t("View-poll")}
-                      className={styles["publish_meeting_btn"]}
+                      className={styles["publish_meeting_btn_View_poll"]}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           true,
@@ -357,7 +396,7 @@ const UnpublishedProposedMeeting = ({
                   ) : isAgendaContributor ? null : (
                     <Button
                       text={t("View-poll")}
-                      className={styles["publish_meeting_btn"]}
+                      className={styles["publish_meeting_btn_View_poll"]}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           false,
@@ -445,7 +484,8 @@ const UnpublishedProposedMeeting = ({
                 orignalProfilePictureName: data.orignalProfilePictureName,
                 pK_MDID: data.pK_MDID,
                 meetingPoll: {
-                  totalNoOfDirectors: data.proposedMeetingDetail.totalNoOfDirectors,
+                  totalNoOfDirectors:
+                    data.proposedMeetingDetail.totalNoOfDirectors,
                   totalNoOfDirectorsVoted:
                     data.proposedMeetingDetail.totalNoOfDirectorsVoted,
                 },
@@ -485,7 +525,7 @@ const UnpublishedProposedMeeting = ({
         <Col lg={12} md={12} sm={12} className="w-100">
           <Table
             column={MeetingColoumns}
-            scroll={{ y: "64vh" }}
+            scroll={{ y: "64vh", x: "auto" }}
             pagination={false}
             className="newMeetingTable"
             rows={rows}

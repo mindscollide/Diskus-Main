@@ -1548,6 +1548,9 @@
   "Status-updated": "Status Updated",
   "Meeting-view": "Meeting View",
   "Group-detail": "Group detail",
+  "General": "General",
+  "Agenda-wise": "Agenda Wise",
+  "List-updated-successfully": "List Updated Successfully",
   "RSVP-allowed-and-notify": "RSVP allowed and notify meeting organizer when members RSVP",
   "RSVP-not-allowed": "RSVP not allowed "
 }

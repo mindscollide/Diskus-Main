@@ -48,7 +48,6 @@ const AgendaContributers = ({
 
       let newArr = [];
       agendaContributorData.forEach((AgConData, index) => {
-        console.log(AgConData, "AgConDataAgConDataAgConData");
         newArr.push({
           userName: AgConData.userName,
           userID: AgConData.userID,
@@ -78,30 +77,22 @@ const AgendaContributers = ({
 
   const AgendaContributorViewColoumns = [
     {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Name",
-      key: "Name",
+      title: t("Name"),
+      dataIndex: "userName",
+      key: "userName",
       width: "300px",
     },
 
     {
       title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
+      dataIndex: "email",
+      key: "email",
       width: "400px",
     },
     {
       title: t("Contributor-title"),
-      dataIndex: "ContributorTitle",
-      key: "ContributorTitle",
+      dataIndex: "Title",
+      key: "Title",
       width: "300px",
     },
 
@@ -137,12 +128,11 @@ const AgendaContributers = ({
 
     {
       title: t("Notification"),
-      dataIndex: "isOrganizerNotified",
-      key: "isOrganizerNotified",
+      dataIndex: "isContributedNotified",
+      key: "isContributedNotified",
       width: "180px",
       render: (text, record) => {
-        console.log("RSVP", text, record);
-        if (record.isOrganizerNotified === true) {
+        if (record.isContributedNotified === true) {
           return (
             <Row>
               <Col
@@ -151,27 +141,17 @@ const AgendaContributers = ({
                 sm={7}
                 className="d-flex justify-content-center"
               >
-                {record.disabledNotification === true ? (
-                  <img
-                    draggable={false}
-                    src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                ) : (
-                  <img
-                    draggable={false}
-                    src={greenMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                )}
+                <img
+                  draggable={false}
+                  src={greenMailIcon}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
               </Col>
             </Row>
           );
-        } else if (record.isOrganizerNotified === false) {
+        } else if (record.isContributedNotified === false) {
           return (
             <Row>
               <Col
@@ -180,23 +160,13 @@ const AgendaContributers = ({
                 sm={7}
                 className="d-flex justify-content-center"
               >
-                {record.disabledNotification === true ? (
-                  <img
-                    draggable={false}
-                    src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                ) : (
-                  <img
-                    draggable={false}
-                    src={redMailIcon}
-                    height="30px"
-                    width="30px"
-                    alt=""
-                  />
-                )}
+                <img
+                  draggable={false}
+                  src={redMailIcon}
+                  height="30px"
+                  width="30px"
+                  alt=""
+                />
               </Col>
             </Row>
           );
