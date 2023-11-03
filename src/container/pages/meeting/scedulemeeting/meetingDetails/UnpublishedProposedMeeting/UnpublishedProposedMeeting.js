@@ -322,6 +322,45 @@ const UnpublishedProposedMeeting = ({
                     />
                   </>
                 )}
+              </Col>
+            </Row>
+          </>
+        );
+      },
+    },
+    {
+      dataIndex: "Edit",
+      key: "Edit",
+      width: "90px",
+      render: (text, record) => {
+        const isParticipant = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Participant"
+        );
+        const isAgendaContributor = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+        );
+        const isOrganiser = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Organizer"
+        );
+        let apiData = {
+          MeetingID: Number(record.pK_MDID),
+          StatusID: 1,
+        };
+        return (
+          <>
+            <Row>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex  align-items-center gap-4"
+              >
                 {record.status === "11" ? (
                   isParticipant ? null : isAgendaContributor ? null : (
                     <Button
@@ -344,7 +383,7 @@ const UnpublishedProposedMeeting = ({
                   isParticipant ? (
                     <Button
                       text={t("View-poll")}
-                      className={styles["publish_meeting_btn"]}
+                      className={styles["publish_meeting_btn_View_poll"]}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           true,
@@ -357,7 +396,7 @@ const UnpublishedProposedMeeting = ({
                   ) : isAgendaContributor ? null : (
                     <Button
                       text={t("View-poll")}
-                      className={styles["publish_meeting_btn"]}
+                      className={styles["publish_meeting_btn_View_poll"]}
                       onClick={() =>
                         viewProposeDatePollHandler(
                           false,
@@ -445,7 +484,8 @@ const UnpublishedProposedMeeting = ({
                 orignalProfilePictureName: data.orignalProfilePictureName,
                 pK_MDID: data.pK_MDID,
                 meetingPoll: {
-                  totalNoOfDirectors: data.proposedMeetingDetail.totalNoOfDirectors,
+                  totalNoOfDirectors:
+                    data.proposedMeetingDetail.totalNoOfDirectors,
                   totalNoOfDirectorsVoted:
                     data.proposedMeetingDetail.totalNoOfDirectorsVoted,
                 },
