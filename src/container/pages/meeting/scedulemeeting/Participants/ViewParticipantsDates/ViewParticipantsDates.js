@@ -47,7 +47,6 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   });
   const [selectAll, setSelectAll] = useState(false);
   console.log(checkedObjects, "checkedObjectscheckedObjectscheckedObjects");
-  let currentLanguage = localStorage.getItem("i18nextLng");
   let currentMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID")
   );
