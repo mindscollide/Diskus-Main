@@ -22,6 +22,7 @@ import {
   ADDGeneralMinutesApiFunc,
   DeleteGeneralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
+  UpdateMinutesGeneralApiFunc,
   getAllGeneralMinutesApiFunc,
   uploadDocumentsMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -154,6 +155,7 @@ const Minutes = ({ setMinutes }) => {
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [expandedFiles, setExpandedFiles] = useState([]);
+  const [isEdit, setisEdit] = useState(false);
 
   const [open, setOpen] = useState({
     flag: false,
@@ -166,6 +168,8 @@ const Minutes = ({ setMinutes }) => {
       errorStatus: false,
     },
   });
+  const [notestext, setNotesText] = useState("");
+
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -222,28 +226,17 @@ const Minutes = ({ setMinutes }) => {
         if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
           let newarr = [];
           NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
-            console.log(data, "meetingMinutesmeetingMinutes");
             newarr.push(data);
           });
           setMessages(newarr);
-          NewMeetingreducer.generalMinutes.meetingMinutes.forEach(
-            (forEach, index) => {
-              console.log(forEach, "forEachforEachforEach");
-              setAddNoteFields({
-                ...addNoteFields,
-                Description: {
-                  value: forEach.userName,
-                  errorMessage: "",
-                  errorStatus: false,
-                },
-              });
-            }
-          );
         }
       }
     } catch {}
   }, [NewMeetingreducer.generalMinutes]);
 
+  console.log(addNoteFields, "addNoteFieldsaddNoteFields");
+
+  //For getting documents Agains Single Minutes Saved
   useEffect(() => {
     try {
       if (
@@ -268,32 +261,32 @@ const Minutes = ({ setMinutes }) => {
   console.log(expandedFiles, "expandedFilesexpandedFiles");
 
   // all Meeting Document
-  useEffect(() => {
-    try {
-      if (
-        NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
-        NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
-      ) {
-        console.log(
-          NewMeetingreducer.generalminutesDocumentForMeeting,
-          "NewMeetingreducergeneralminutesDocumentForMeeting"
-        );
-        if (
-          NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
-        ) {
-          let FileID;
-          NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
-            (docs, index) => {
-              docs.files.map((filedata, index) => {
-                console.log(filedata, "filedatafiledata");
-                FileID = filedata.pK_FileID;
-              });
-            }
-          );
-        }
-      }
-    } catch {}
-  }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
+  //       NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
+  //     ) {
+  //       console.log(
+  //         NewMeetingreducer.generalminutesDocumentForMeeting,
+  //         "NewMeetingreducergeneralminutesDocumentForMeeting"
+  //       );
+  //       if (
+  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
+  //       ) {
+  //         let FileID;
+  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
+  //           (docs, index) => {
+  //             docs.files.map((filedata, index) => {
+  //               console.log(filedata, "filedatafiledata");
+  //               FileID = filedata.pK_FileID;
+  //             });
+  //           }
+  //         );
+  //       }
+  //     }
+  //   } catch {}
+  // }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
@@ -306,6 +299,7 @@ const Minutes = ({ setMinutes }) => {
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText != "") {
+      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -315,6 +309,7 @@ const Minutes = ({ setMinutes }) => {
         },
       });
     } else {
+      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -442,6 +437,29 @@ const Minutes = ({ setMinutes }) => {
     var Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft + 300;
   };
+  console.log(
+    addNoteFields.Description.value,
+    "addNoteFieldsaddNoteFieldsaddNoteFields"
+  );
+
+  const handleEditFunc = (data) => {
+    console.log("handleEditFunc called");
+    console.log(data.minutesDetails, "data.minutesDetails");
+
+    // Ensure data.minutesDetails is not undefined or null before setting the state
+    if (data.minutesDetails !== undefined && data.minutesDetails !== null) {
+      setAddNoteFields({
+        Description: {
+          value: data.minutesDetails,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+      setisEdit(true);
+    } else {
+      console.log("data.minutesDetails is undefined or null");
+    }
+  };
 
   const handleAgendaWiseClick = () => {
     setGeneral(false);
@@ -559,6 +577,7 @@ const Minutes = ({ setMinutes }) => {
   };
 
   const handleResetBtnFunc = () => {
+    console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -572,7 +591,18 @@ const Minutes = ({ setMinutes }) => {
 
   const handleExpandShowFiles = () => {};
 
-  const handleEditFunc = () => {};
+  const handleUpdateFunc = () => {
+    let MinuteID;
+    messages.map((minID, index) => {
+      console.log(minID.minuteID, "minIDminID");
+      MinuteID = minID.minuteID;
+    });
+    let updateData = {
+      MinuteID: MinuteID,
+      MinuteText: addNoteFields.Description.value,
+    };
+    dispatch(UpdateMinutesGeneralApiFunc(navigate, updateData, t));
+  };
 
   return (
     <section>
@@ -607,9 +637,9 @@ const Minutes = ({ setMinutes }) => {
                   <ReactQuill
                     ref={editorRef}
                     theme="snow"
-                    value={addNoteFields.Description.value}
+                    value={addNoteFields.Description.value || ""}
                     placeholder={t("Note-details")}
-                    onChange={onTextChange}
+                    onChange={() => onTextChange}
                     modules={modules}
                     className={styles["quill-height-addNote"]}
                     style={{
@@ -631,15 +661,26 @@ const Minutes = ({ setMinutes }) => {
                     className={styles["Previous_Button"]}
                     onClick={handleResetBtnFunc}
                   />
-
-                  <Button
-                    disableBtn={
-                      addNoteFields.Description.value === "" ? true : false
-                    }
-                    text={t("Save")}
-                    className={styles["Button_General"]}
-                    onClick={handleAddClick}
-                  />
+                  {isEdit === true ? (
+                    <>
+                      <Button
+                        text={t("Update")}
+                        className={styles["Button_General"]}
+                        onClick={handleUpdateFunc}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        disableBtn={
+                          addNoteFields.Description.value === "" ? true : false
+                        }
+                        text={t("Save")}
+                        className={styles["Button_General"]}
+                        onClick={handleAddClick}
+                      />
+                    </>
+                  )}
                 </Col>
               </Row>
             </Col>
@@ -903,7 +944,7 @@ const Minutes = ({ setMinutes }) => {
                                         height="21.55px"
                                         width="21.55px"
                                         className="cursor-pointer"
-                                        onClick={handleEditFunc}
+                                        onClick={() => handleEditFunc(data)}
                                       />
                                     </Col>
                                   </Row>
