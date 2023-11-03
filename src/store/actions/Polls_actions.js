@@ -1538,13 +1538,13 @@ const getTaskGroupIdFail = (message) => {
   };
 };
 
-const getTasksByGroupIDApi = (navigate, t) => {
+const getTasksByGroupIDApi = (navigate, t, newData) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(getTaskGroupIdInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(newData));
     form.append("RequestMethod", getTaskGroupIDApi.RequestMethod);
     axios({
       method: "post",
@@ -1557,7 +1557,7 @@ const getTasksByGroupIDApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getTasksByGroupIDApi(navigate, t));
+          dispatch(getTasksByGroupIDApi(navigate, t, newData));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1629,13 +1629,13 @@ const setTaskGroupFail = (message) => {
   };
 };
 
-const setTasksByGroupApi = (navigate, t) => {
+const setTasksByGroupApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(setTaskGroupInit());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify());
+    form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", setGroupTaskApi.RequestMethod);
     axios({
       method: "post",
@@ -1648,7 +1648,7 @@ const setTasksByGroupApi = (navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(setTasksByGroupApi(navigate, t));
+          dispatch(setTasksByGroupApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1664,6 +1664,12 @@ const setTasksByGroupApi = (navigate, t) => {
                   t("Record-found")
                 )
               );
+              let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+              let Data = {
+                GroupID: Number(ViewGroupID),
+              };
+              dispatch(getTasksByGroupIDApi(navigate, t, Data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -531,7 +531,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         //   TaskAssignedTo,
         //   TasksAttachments,
         // }
-        dispatch(CreateToDoList(navigate, Data, t));
+        dispatch(CreateToDoList(navigate, Data, t, 2));
         setShow(false);
         setTask({
           ...task,
@@ -573,7 +573,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             TasksAttachments,
           };
         }
-        dispatch(CreateToDoList(navigate, Data, t));
+        dispatch(CreateToDoList(navigate, Data, t, 2));
         setShow(false);
         setTask({
           ...task,

@@ -13,7 +13,7 @@ import {
   searchTodoListRequestMethod,
   DeleteCommentRM,
 } from "../../commen/apis/Api_config";
-import { setTasksByCommitteeApi } from "./Polls_actions";
+import { setTasksByCommitteeApi, setTasksByGroupApi } from "./Polls_actions";
 
 const ShowNotification = (message) => {
   console.log("message", message);
@@ -240,6 +240,14 @@ const CreateToDoList = (navigate, object, t, value) => {
                 };
 
                 dispatch(setTasksByCommitteeApi(navigate, t, data));
+              } else if (value === 2) {
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+                let data = {
+                  FK_TID: Number(response.data.responseResult.tid),
+                  GroupID: Number(ViewGroupID),
+                };
+                dispatch(setTasksByGroupApi(navigate, t, data));
               } else {
                 await dispatch(
                   SearchTodoListApi(
