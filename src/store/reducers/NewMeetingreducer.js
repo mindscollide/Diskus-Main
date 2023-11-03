@@ -65,6 +65,9 @@ const initialState = {
   agendaRights: null,
   attachmentsPermission: [],
   cancelViewModalMeetingDetails: false,
+  generalMinutes: [],
+  generalMinutesDocument: [],
+  generalminutesDocumentForMeeting: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -926,6 +929,124 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_USER_ATTACHMENT_PERMISSION_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_GENERAL_MINTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_GENERAL_MINTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        generalMinutes: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_GENERAL_MINTES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_ADD_GENERAL_MINUTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ADD_GENERAL_MINUTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_ADD_GENERAL_MINUTES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SAVE_GENERAL_MIN_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_GENERAL_MIN_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.SAVE_GENERAL_MIN_DOCUMENTS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        generalMinutesDocument: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GENERAL_DOCUMENT_FOR_MEETING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GENERAL_DOCUMENT_FOR_MEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        generalminutesDocumentForMeeting: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GENERAL_DOCUMENT_FOR_MEETING_FAILED: {
       return {
         ...state,
         Loading: false,

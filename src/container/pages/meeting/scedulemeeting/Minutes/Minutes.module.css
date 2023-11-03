@@ -1,4 +1,4 @@
-.Minustes_Buttons_Import {
+/* .Minustes_Buttons_Import {
   padding: 12px 30px !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
@@ -237,4 +237,235 @@
 
 .AgendaIconStyles {
   margin-top: 8px !important;
+} */
+
+.Add-note-QuillRow {
+  position: relative;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.modal-Note-Title-Input :focus {
+  border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .modal-Note-Title-Input {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.quill-height-addNote {
+  border-top: 1px solid lightgrey;
+  height: 18vh !important;
+  border-radius: 3px !important;
+  position: relative;
+}
+
+.quill-height-addNote .ql-toolbar.ql-snow {
+  color: #a2a2a2 !important;
+}
+
+.ant-upload-text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .ant-upload-text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Choose_file_style {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 3px !important;
+}
+
+.Leftpolygon {
+  background: none;
+  border: none;
+  display: flex !important;
+  align-items: center !important;
+}
+
+body[dir="rtl"] .Leftpolygon {
+  transform: rotate(180deg) !important;
+}
+
+.Leftpolygon:hover,
+.Leftpolygon:active,
+.Leftpolygon:focus,
+.Leftpolygon:focus-visible {
+  background: none !important;
+  border: none !important;
+}
+
+.Attachments_Heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6 !important;
+}
+
+.Outer_Box {
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  margin-bottom: 10px !important;
+  border-radius: 4px !important;
+  width: 100% !important;
+}
+
+.filesStyles {
+  width: 100% !important;
+  display: flex !important;
+  gap: 35px !important;
+}
+
+.backGround_name_Icon {
+  background: #fff;
+}
+
+.IconTextClass {
+  display: flex;
+  text-align: center !important;
+  align-items: center !important;
+  gap: 7px !important;
+}
+
+.IconPDF {
+  margin-left: 10px !important;
+}
+
+.FileName {
+  font-size: 10px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratRegular";
+  display: inline-block !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  width: 100px !important;
+}
+
+.Crossicon_Class {
+  cursor: pointer !important;
+  position: absolute !important;
+  top: -7px !important;
+  right: -4px !important;
+}
+
+.Outer_Border-Line {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 10px 10px !important;
+  margin-top: 8px !important;
+}
+
+.Button_General {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Button_General:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Previous_Button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Previous_Button:is(:active, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.RedCrossClass {
+  position: absolute !important;
+  right: -8px;
+  top: -9px;
+  cursor: pointer !important;
+}
+
+.Name {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+}
+
+.Uploaded_heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.Line_heigh {
+  margin-top: 7px !important;
+  line-height: 15px !important;
+}
+
+.Profile_minutes {
+  border-radius: 50% !important;
+}
+
+.Date_Minutes_And_time {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+}
+
+.Box_Minutes {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 92px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  position: relative !important;
+}
+
+.ScrollerMinutes {
+  height: 25vh !important;
+  overflow-x: hidden !important;
+}
+
+.ScrollerMinutes::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.ScrollerMinutes::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Sizing_Saved_Minutes {
+  padding: 0px 10px !important;
+}
+
+.Title_File {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
 }

@@ -4,7 +4,7 @@ import { toDoListApi } from "../../commen/apis/Api_ends_points";
 import { todosStatus, updateTodoStatus } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { GetTodoListByUser, SearchTodoListApi } from "./ToDoList_action";
-import { getTaskCommitteeIDApi } from "./Polls_actions";
+import { getTaskCommitteeIDApi, getTasksByGroupIDApi } from "./Polls_actions";
 
 const getTodoStatusInit = () => {
   return {
@@ -160,6 +160,21 @@ const updateTodoStatusFunc = (navigate, statusID, data, t, flag, value) => {
                     CommitteeID: Number(ViewCommitteeID),
                   };
                   dispatch(getTaskCommitteeIDApi(navigate, t, newData));
+                }
+              } else if (value === 2) {
+                await dispatch(
+                  updateTodoStatusSuccess(
+                    t("The-record-has-been-updated-successfully"),
+                    false
+                  )
+                );
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+                if (ViewGroupID !== null) {
+                  let newData = {
+                    GroupID: Number(ViewGroupID),
+                  };
+                  dispatch(getTasksByGroupIDApi(navigate, t, newData));
                 }
               } else {
                 if (flag === false) {

@@ -482,12 +482,12 @@ const UpdatePolls = () => {
       (checkForPollStatus || allValuesNotEmpty)
     ) {
       if (Object.keys(pollmembers).length > 0) {
-        pollmembers.map((data, index) => {
+        pollmembers.forEach((data, index) => {
           users.push(data.userID);
         });
       }
       if (Object.keys(options).length > 0) {
-        options.map((optionData, index) => {
+        options.forEach((optionData, index) => {
           if (optionData.value !== "") {
             optionsListData.push(optionData.value);
           }
