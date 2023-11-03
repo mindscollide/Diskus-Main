@@ -455,10 +455,6 @@ const PollsReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-    default: {
-      return { ...state };
-    }
-
     case actions.GET_TASK_BY_COMMITTEE_INIT: {
       return {
         ...state,
@@ -503,6 +499,9 @@ const PollsReducer = (state = initialState, action) => {
         setTodoCommitteeTask: null,
         ResponseMessage: action.message,
       };
+    }
+    default: {
+      return { ...state };
     }
   }
 };

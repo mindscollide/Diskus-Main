@@ -191,12 +191,14 @@ const Groups = () => {
       ) {
         if (GroupsReducer.getAllGroupsResponse?.groups?.length > 0) {
           setTotalLength(GroupsReducer.getAllGroupsResponse.totalRecords);
-          let newArr = [];
-          let arr = GroupsReducer.getAllGroupsResponse.groups;
-          arr.map((data, index) => {
-            newArr.push(data);
-          });
-          setgroupsData(newArr);
+          let copyData = [...GroupsReducer.getAllGroupsResponse?.groups];
+          // Create a new copy of committeeMembers array for each committee
+          const updateGroups = copyData.map((groups) => ({
+            ...groups,
+            groupMembers: [...groups.groupMembers],
+          }));
+
+          setgroupsData(updateGroups);
         } else {
           setgroupsData([]);
         }
@@ -221,7 +223,7 @@ const Groups = () => {
 
   const viewTitleModal = (data) => {
     localStorage.setItem("ViewGroupID", data.groupID);
-
+    setViewGroupTab(1);
     dispatch(
       getbyGroupID(
         navigate,
