@@ -1128,7 +1128,21 @@ const setCommitteeTaskApi = {
   RequestMethod: "ServiceManager.SetCommitteeTasks",
 };
 
+const deleteCommitteePollRM = {
+  RequestMethod: "ServiceManager.DeleteCommitteePolls",
+};
+
+const deleteGroupPollsRM = {
+  RequestMethod: "ServiceManager.DeleteGroupPolls",
+};
+
+const deleteMeetingPollsRM = {
+  RequestMethod: "ServiceManager.DeleteMeetingPolls",
+};
 export {
+  deleteMeetingPollsRM,
+  deleteGroupPollsRM,
+  deleteCommitteePollRM,
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
   saveCommitteeDocumentsRM,

@@ -17,6 +17,9 @@ import {
   setGroupTaskApi,
   getTaskByCommitteeIDApi,
   setCommitteeTaskApi,
+  deleteMeetingPollsRM,
+  deleteGroupPollsRM,
+  deleteCommitteePollRM,
 } from "../../commen/apis/Api_config";
 import { pollApi, toDoListApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -2011,7 +2014,290 @@ const setTasksByCommitteeApi = (navigate, t, data) => {
   };
 };
 
+const deleteCommitteePoll_init = () => {
+  return {
+    type: actions.DELETECOMMITTEEPOLLS_INIT,
+  };
+};
+
+const deleteCommitteePoll_success = (response, message) => {
+  return {
+    type: actions.DELETECOMMITTEEPOLLS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const deleteCommitteePoll_fail = (message) => {
+  return {
+    type: actions.DELETECOMMITTEEPOLLS_FAIL,
+    message: message,
+  };
+};
+
+const deleteCommitteePollApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(deleteCommitteePoll_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", deleteCommitteePollRM.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteCommitteePollApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_DeleteCommitteePolls_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteCommitteePoll_success(
+                  response.data.responseResult,
+                  t("Record-deleted")
+                )
+              );
+              // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+              // let Data = {
+              //   CommitteeID: Number(ViewCommitteeID),
+              // };
+              // dispatch(getTaskCommitteeIDApi(navigate, t, Data));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_DeleteCommitteePolls_02".toLowerCase()
+                )
+            ) {
+              dispatch(deleteCommitteePoll_fail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_DeleteCommitteePolls_03".toLowerCase()
+                )
+            ) {
+              dispatch(deleteCommitteePoll_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(deleteCommitteePoll_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(deleteCommitteePoll_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(deleteCommitteePoll_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(deleteCommitteePoll_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const deleteGroupPoll_init = () => {
+  return {
+    type: actions.DELETEMEETINGPOLLS_INIT,
+  };
+};
+const deleteGroupPoll_success = (response, message) => {
+  return {
+    type: actions.DELETEGROUPPOLLS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const deleteGroupPoll_fail = (message) => {
+  return {
+    type: actions.DELETEGROUPPOLLS_FAIL,
+    message: message,
+  };
+};
+const deleteGroupPollApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(deleteGroupPoll_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", deleteGroupPollsRM.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteGroupPollApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_DeleteGroupPolls_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteGroupPoll_success(
+                  response.data.responseResult,
+                  t("Record-deleted")
+                )
+              );
+              // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+              // let Data = {
+              //   CommitteeID: Number(ViewCommitteeID),
+              // };
+              // dispatch(getTaskCommitteeIDApi(navigate, t, Data));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_DeleteGroupPolls_02".toLowerCase()
+                )
+            ) {
+              dispatch(deleteGroupPoll_fail(t("No-records-deleted")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_DeleteGroupPolls_03".toLowerCase()
+                )
+            ) {
+              dispatch(deleteGroupPoll_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(deleteGroupPoll_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(deleteGroupPoll_fail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(deleteGroupPoll_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(deleteGroupPoll_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const deleteMeetingPoll_init = () => {
+  return {
+    type: actions.DELETEMEETINGPOLLS_INIT,
+  };
+};
+const deleteMeetingPoll_success = (response, message) => {
+  return {
+    type: actions.DELETEMEETINGPOLLS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const deleteMeetingPoll_fail = (message) => {
+  return {
+    type: actions.DELETEMEETINGPOLLS_FAIL,
+    message: message,
+  };
+};
+const deleteMeetingPollApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(deleteMeetingPoll_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", deleteMeetingPollsRM.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteMeetingPollApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_DeleteMeetingPolls_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deleteMeetingPoll_success(
+                  response.data.responseResult,
+                  t("Record-deleted")
+                )
+              );
+              // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+              // let Data = {
+              //   CommitteeID: Number(ViewCommitteeID),
+              // };
+              // dispatch(getTaskCommitteeIDApi(navigate, t, Data));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_DeleteMeetingPolls_02".toLowerCase()
+                )
+            ) {
+              dispatch(deleteMeetingPoll_fail(t("No-records-deleted")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_DeleteMeetingPolls_03".toLowerCase()
+                )
+            ) {
+              dispatch(deleteMeetingPoll_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(deleteMeetingPoll_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(deleteMeetingPoll_fail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(deleteMeetingPoll_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(deleteMeetingPoll_fail(t("Something-went-wrong")));
+      });
+  };
+};
 export {
+  deleteGroupPollApi,
+  deleteMeetingPollApi,
+  deleteCommitteePollApi,
   searchPollsApi,
   SavePollsApi,
   getAllCommitteesandGroups,
