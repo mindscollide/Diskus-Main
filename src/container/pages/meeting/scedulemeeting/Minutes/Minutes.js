@@ -28,6 +28,8 @@ import {
 import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
 import downArrow from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
+import moment from "moment";
+import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 // import { message, Upload } from "antd";
@@ -222,11 +224,21 @@ const Minutes = ({ setMinutes }) => {
           NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
             console.log(data, "meetingMinutesmeetingMinutes");
             newarr.push(data);
-            data.minutesAttachmets.map((attachmentDoc, attachmentIndex) => {
-              console.log(attachmentDoc, "attachmentDocattachmentDoc");
-            });
           });
           setMessages(newarr);
+          NewMeetingreducer.generalMinutes.meetingMinutes.forEach(
+            (forEach, index) => {
+              console.log(forEach, "forEachforEachforEach");
+              setAddNoteFields({
+                ...addNoteFields,
+                Description: {
+                  value: forEach.userName,
+                  errorMessage: "",
+                  errorStatus: false,
+                },
+              });
+            }
+          );
         }
       }
     } catch {}
@@ -560,6 +572,8 @@ const Minutes = ({ setMinutes }) => {
 
   const handleExpandShowFiles = () => {};
 
+  const handleEditFunc = () => {};
+
   return (
     <section>
       <Row className="mt-3">
@@ -833,7 +847,10 @@ const Minutes = ({ setMinutes }) => {
                                           styles["Date_Minutes_And_time"]
                                         }
                                       >
-                                        4:00pm, 18th May, 2020
+                                        {resolutionResultTable(
+                                          data.lastUpdatedDate +
+                                            data.lastUpdatedTime
+                                        ).toString()}
                                       </span>
                                     </Col>
                                   </Row>
@@ -869,7 +886,7 @@ const Minutes = ({ setMinutes }) => {
                                       <Row>
                                         <Col lg={12} md={12} sm={12}>
                                           <span className={styles["Name"]}>
-                                            Mehtab Ahmed
+                                            {data.userName}
                                           </span>
                                         </Col>
                                       </Row>
@@ -886,6 +903,7 @@ const Minutes = ({ setMinutes }) => {
                                         height="21.55px"
                                         width="21.55px"
                                         className="cursor-pointer"
+                                        onClick={handleEditFunc}
                                       />
                                     </Col>
                                   </Row>

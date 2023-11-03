@@ -406,6 +406,7 @@ export const editResolutionTime = (dateTime) => {
 };
 
 export const resolutionResultTable = (dateTime) => {
+  console.log(dateTime, "dateTimedateTimedateTime");
   let fullDateYear =
     dateTime.slice(0, 4) +
     "-" +
