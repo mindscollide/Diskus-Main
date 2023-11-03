@@ -1141,7 +1141,7 @@ const deleteMeetingPollsRM = {
 };
 
 const deleteCommitteeTaskRM = {
-  RequestMethod: " ServiceManager.DeleteCommitteeTasks",
+  RequestMethod: "ServiceManager.DeleteCommitteeTasks",
 };
 
 const deleteGroupTaskRM = {

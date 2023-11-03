@@ -188,7 +188,7 @@ const CreateTodoCommittee = () => {
   const deleteTodolist = async (record) => {
     let data = {
       FK_TID: record.pK_TID,
-      CommitteeID: ViewCommitteeID,
+      CommitteeID: Number(ViewCommitteeID),
     };
     dispatch(deleteCommitteeTaskApi(navigate, t, data));
   };
