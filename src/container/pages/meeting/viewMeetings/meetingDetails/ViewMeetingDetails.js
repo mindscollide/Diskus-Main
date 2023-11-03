@@ -120,7 +120,6 @@ const ViewMeetingDetails = ({
       let getmeetingStatus = MeetingData.meetingStatus;
       let getmeetingType = MeetingData.meetingType;
       let wasPublishedFlag = MeetingData.wasMeetingPublished;
-      console.log(wasPublishedFlag, "getmeetingTypegetmeetingType");
       setMeetingDetailsData({
         MeetingTitle: MeetingData.meetingTitle,
         MeetingType: {

@@ -23,7 +23,7 @@ const Participants = ({
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
-  const [rspvRows, setrspvRows] = useState([]);
+  const [rowsData, setRowsData] = useState([]);
 
   //get all saved participants
   useEffect(() => {
@@ -59,7 +59,7 @@ const Participants = ({
         // IsParticipantsAddFlow;
       }
 
-      setrspvRows(getAllData);
+      setRowsData(getAllData);
     }
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
@@ -77,38 +77,33 @@ const Participants = ({
 
   const ParticipantsViewColoumn = [
     {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Name",
-      key: "Name",
+      title: t("Name"),
+      dataIndex: "userName",
+      key: "userName",
       width: "260px",
     },
 
     {
       title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
+      dataIndex: "email",
+      key: "email",
       width: "280px",
     },
     {
       title: t("Participant-title"),
-      dataIndex: "Participanttitle",
-      key: "Participanttitle",
+      dataIndex: "Title",
+      key: "Title",
       width: "300px",
     },
 
     {
       title: t("Role"),
-      dataIndex: "Role",
-      key: "Role",
+      dataIndex: "participantRole",
+      key: "participantRole",
       width: "249px",
+      render: (text) => (
+        <label className="column-boldness">{text.participantRole}</label>
+      ),
     },
     {
       title: t("RSVP"),
@@ -153,7 +148,7 @@ const Participants = ({
                   scroll={{ y: "62vh" }}
                   pagination={false}
                   className="Polling_table"
-                  rows={rspvRows}
+                  rows={rowsData}
                 />
               </Col>
             </Row>

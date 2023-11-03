@@ -10,11 +10,13 @@
   font-family: "MontserratSemiBold" !important;
   font-size: 12px !important;
 }
+
 .meetingTitle {
   font-family: "MontserratSemiBold" !important;
   color: #6172d6;
   font-size: 12px !important;
 }
+
 /* .newMeetingProgressbar {
   background: #6172d6 !important;
   margin: 3px !important;
@@ -26,11 +28,22 @@
   display: flex;
   justify-content: center;
 }
+
 .publish_meeting_btn {
   background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
   padding: 8px 20px;
   border-radius: 4px !important;
-  font-size: 14px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.publish_meeting_btn_View_poll {
+  background: #4adede  !important;
+  border: 1px solid #e1e1e1 !important;
+  width: 145px !important;
+  height: 36px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
   font-family: "MontserratSemiBold-600";
 }
