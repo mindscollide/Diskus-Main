@@ -220,7 +220,7 @@ const ViewVoteModal = () => {
               className="d-flex gap-2 align-items-center"
             >
               <span className={styles["Title"]}>{t("Answer")}</span>
-              <img src={down} height="18.04px" width="8.19px" />
+              {/* <img src={down} height="18.04px" width="8.19px" /> */}
             </Col>
           </Row>
         </>
@@ -235,6 +235,9 @@ const ViewVoteModal = () => {
           </Col>
         </Row>
       ),
+      sorter: (a, b) => {
+        return a?.answer.toLowerCase().localeCompare(b?.answer.toLowerCase());
+      },
     },
     {
       title: (
@@ -247,7 +250,7 @@ const ViewVoteModal = () => {
               className="d-flex gap-2 align-items-center"
             >
               <span className={styles["Title"]}>{t("Percentage")}</span>
-              <img src={down} height="18.04px" width="8.19px" />
+              {/* <img src={down} height="18.04px" width="8.19px" /> */}
             </Col>
           </Row>
         </>
@@ -281,6 +284,9 @@ const ViewVoteModal = () => {
           </Row>
         </>
       ),
+      sorter: (a, b) => {
+        return a.percentage - b.percentage;
+      },
     },
     {
       title: (
@@ -293,7 +299,6 @@ const ViewVoteModal = () => {
               className="d-flex gap-2 align-items-center"
             >
               <span className={styles["Title"]}>{t("Vote")}</span>
-              <img src={down} height="18.04px" width="8.19px" />
             </Col>
           </Row>
         </>
@@ -308,6 +313,9 @@ const ViewVoteModal = () => {
           </Col>
         </Row>
       ),
+      sorter: (a, b) => {
+        return a.votes - b.votes;
+      },
     },
   ];
 
