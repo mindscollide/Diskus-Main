@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ViewVoteModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -10,13 +10,22 @@ import { Chart } from "react-google-charts";
 import profile from "../../../../../../../assets/images/newprofile.png";
 import down from "../../../../../../../assets/images/arrdown.png";
 import { showviewVotesAgenda } from "../../../../../../../store/actions/NewMeetingActions";
+import { ViewAgendaVotingResults } from "../../../../../../../store/actions/MeetingAgenda_action";
 import { Progress } from "antd";
 const ViewVoteModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
   const [enablePieChart, setEnablePieChart] = useState(false);
+
+  const [votingResults, setVotingResults] = useState([]);
+
+  const [pieChartData, setPieChartData] = useState([]);
+
+  const [barChartData, setBarChartData] = useState([]);
 
   const data = [
     {
@@ -173,6 +182,24 @@ const ViewVoteModal = () => {
     },
   ];
 
+  const colorCodes = [
+    "#FF7F7F",
+    "#98FB98",
+    "#87CEEB",
+    "#FFFF99",
+    "#E6E6FA",
+    "#FFDAB9",
+    "#FFB6C1",
+    "#40E0D0",
+    "#996515",
+    "#C0C0C0",
+    "#00FFFF",
+    "#C8A2C8",
+    "#DA70D6",
+    "#800020",
+    "#FFD700",
+  ];
+
   const EnablePieChart = () => {
     setEnablePieChart(true);
   };
@@ -198,9 +225,16 @@ const ViewVoteModal = () => {
           </Row>
         </>
       ),
-      dataIndex: "Answer",
-      key: "Answer",
+      dataIndex: "answer",
+      key: "answer",
       width: "55px",
+      render: (text, record) => (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <span className={styles["YesPercentage"]}>{text}</span>
+          </Col>
+        </Row>
+      ),
     },
     {
       title: (
@@ -218,9 +252,35 @@ const ViewVoteModal = () => {
           </Row>
         </>
       ),
-      dataIndex: "Percentage",
-      key: "Percentage",
+      dataIndex: "percentage",
+      key: "percentage",
       width: "240px",
+      render: (text, record) => (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+              {record.participantsVoted.map((participant, index) => (
+                <img
+                  key={index}
+                  src={`data:image/jpeg;base64,${participant.userProfilePicture.displayProfilePictureName}`}
+                  height="22px"
+                  width="22px"
+                  className={styles["Image"]}
+                />
+              ))}
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Progress
+                className="VoteModalAgenda"
+                percent={text}
+                size="small"
+              />
+            </Col>
+          </Row>
+        </>
+      ),
     },
     {
       title: (
@@ -238,11 +298,56 @@ const ViewVoteModal = () => {
           </Row>
         </>
       ),
-      dataIndex: "Vote",
-      key: "Vote",
+      dataIndex: "votes",
+      key: "votes",
       width: "55px",
+      render: (text, record) => (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <span className={styles["NoOfVotes"]}>{text}</span>
+          </Col>
+        </Row>
+      ),
     },
   ];
+
+  useEffect(() => {
+    let Data = { AgendaVotingID: 1, MeetingID: 1785 };
+    dispatch(ViewAgendaVotingResults(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.ViewAgendaVotingResultData !== null &&
+      MeetingAgendaReducer.ViewAgendaVotingResultData !== undefined &&
+      MeetingAgendaReducer.ViewAgendaVotingResultData.length !== 0
+    ) {
+      setVotingResults(
+        MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults
+      );
+      let votingResultChart =
+        MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults;
+      setPieChartData(
+        votingResultChart.map((result) => [result.answer, result.votes])
+      );
+
+      const chartDataArray = [["Category", "Votes", { role: "style" }]];
+
+      pieChartData.forEach((dataPoint, index) => {
+        const color = colorCodes[index % colorCodes.length];
+        chartDataArray.push([dataPoint[0], dataPoint[1], color]);
+      });
+      setBarChartData(chartDataArray);
+    } else {
+      setPieChartData([]);
+      setBarChartData([]);
+      setVotingResults([]);
+    }
+  }, [MeetingAgendaReducer.ViewAgendaVotingResultData]);
+
+  console.log("VotingResults", votingResults, pieChartData, barChartData);
+
+  console.log("ViewVotingDetail Reducer", MeetingAgendaReducer);
 
   return (
     <section>
@@ -293,16 +398,27 @@ const ViewVoteModal = () => {
                         height={"300px"}
                         chartType="PieChart"
                         loader={<div>Loading Chart</div>}
-                        data={[
-                          ["Category", "Votes"],
-                          ["Yes", 50],
-                          ["No", 30],
-                          ["Abstain", 20],
-                        ]}
+                        data={barChartData}
                         options={{
                           title: "Vote Distribution",
                           pieHole: 0.4, // Adjust the value to control the size of the hole (0 to 1)
-                          colors: ["#4ADEDE", "#6172D6", "#F16B6B"],
+                          colors: [
+                            "#FF7F7F",
+                            "#98FB98",
+                            "#87CEEB",
+                            "#FFFF99",
+                            "#E6E6FA",
+                            "#FFDAB9",
+                            "#FFB6C1",
+                            "#40E0D0",
+                            "#996515",
+                            "#C0C0C0",
+                            "#00FFFF",
+                            "#C8A2C8",
+                            "#DA70D6",
+                            "#800020",
+                            "#FFD700",
+                          ],
                         }}
                         rootProps={{ "data-testid": "1" }}
                       />
@@ -325,17 +441,7 @@ const ViewVoteModal = () => {
                         height={"300px"}
                         chartType="ColumnChart"
                         loader={<div>Loading Chart</div>}
-                        data={[
-                          [
-                            "Category",
-                            "Votes",
-                            { role: "style" },
-                            { role: "annotation" },
-                          ],
-                          ["Yes", 50, "#4ADEDE", " "], // Empty string for annotation
-                          ["No", 30, "#6172D6", " "], // Empty string for annotation
-                          ["Abstain", 20, "#F16B6B", " "], // Empty string for annotation
-                        ]}
+                        data={barChartData}
                         options={{
                           title: "Vote Distribution",
                           hAxis: {
@@ -345,12 +451,23 @@ const ViewVoteModal = () => {
                             title: "Votes",
                           },
                           legend: { position: "none" },
-                          colors: ["#4ADEDE", "#6172D6", "#F16B6B"],
-                          annotations: {
-                            textStyle: {
-                              fontSize: 12, // Adjust the font size as needed
-                            },
-                          },
+                          colors: [
+                            "#FF7F7F",
+                            "#98FB98",
+                            "#87CEEB",
+                            "#FFFF99",
+                            "#E6E6FA",
+                            "#FFDAB9",
+                            "#FFB6C1",
+                            "#40E0D0",
+                            "#996515",
+                            "#C0C0C0",
+                            "#00FFFF",
+                            "#C8A2C8",
+                            "#DA70D6",
+                            "#800020",
+                            "#FFD700",
+                          ],
                         }}
                         rootProps={{ "data-testid": "1" }}
                       />
@@ -367,7 +484,7 @@ const ViewVoteModal = () => {
                   scroll={{ y: "15vh" }}
                   pagination={false}
                   className="Polling_table"
-                  rows={tablerowsData}
+                  rows={votingResults}
                 />
               </Col>
             </Row>

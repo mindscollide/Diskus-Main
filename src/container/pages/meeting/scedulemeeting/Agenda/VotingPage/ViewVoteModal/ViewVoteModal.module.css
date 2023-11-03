@@ -26,6 +26,9 @@
   font-size: 20px !important;
   font-family: "MontserratSemiBold" !important;
   color: #6172d6 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .NoOfVotes {
