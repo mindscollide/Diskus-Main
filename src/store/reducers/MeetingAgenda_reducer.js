@@ -6,6 +6,9 @@ const initialState = {
   MeetingAgendaVotingDetailsData: [],
   VotingResultDisplayData: [],
   SaveAgendaVotingData: [],
+  AgendaVotingInfoData: [],
+  CastAgendaVoteData: [],
+  ViewAgendaVotingResultData: [],
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -85,9 +88,91 @@ const MeetingAgendaReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.GET_AGENDAVOTINGINFO_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_AGENDAVOTINGINFO_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        AgendaVotingInfoData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_AGENDAVOTINGINFO_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        AgendaVotingInfoData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
     case actions.CLEAR_RESPONSEMESSAGE_AGENDAMEETING: {
       return {
         ...state,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CASTEVOTEFORAGENDA_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.CASTEVOTEFORAGENDA_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        CastAgendaVoteData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CASTEVOTEFORAGENDA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        CastAgendaVoteData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CLEAR_RESPONSEMESSAGE_AGENDAMEETING: {
+      return {
+        ...state,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.VIEW_AGENDAVOTINGRESULTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.VIEW_AGENDAVOTINGRESULTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ViewAgendaVotingResultData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.VIEW_AGENDAVOTINGRESULTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ViewAgendaVotingResultData: [],
         ResponseMessage: action.message,
       };
     }

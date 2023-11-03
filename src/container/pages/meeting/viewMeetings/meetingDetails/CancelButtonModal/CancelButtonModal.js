@@ -10,6 +10,7 @@ const CancelButtonModal = ({
   cancelModalView,
   setViewAdvanceMeetingModal,
   setMeetingDetails,
+  setAgenda,
 }) => {
   const { t } = useTranslation();
 
@@ -21,6 +22,7 @@ const CancelButtonModal = ({
     setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);
     setCancelModalView(false);
+    setAgenda(false);
   };
 
   return (
