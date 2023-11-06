@@ -1950,13 +1950,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
               ? "d-none"
               : "modalMeetingUpdateHeader"
           }
-          size={
-            isPublishMeeting === true
-              ? "sm"
-              : isCancelMeetingModal === true
-              ? null
-              : "lg"
-          }
+          size={isPublishMeeting || isCancelMeetingModal ? null : "lg"}
           ModalBody={
             <>
               {isPublishMeeting === false && isCancelMeetingModal === false ? (

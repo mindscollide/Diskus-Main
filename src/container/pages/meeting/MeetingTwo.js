@@ -88,7 +88,6 @@ const NewMeeting = () => {
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
-  console.log("searchMeetingssearchMeetings", searchMeetings);
   const endForAllMeeting = useSelector(
     (state) => state.NewMeetingreducer.endForAllMeeting
   );
@@ -402,6 +401,8 @@ const NewMeeting = () => {
           2
         )
       );
+    } else if (isQuick === false) {
+      console.log("isQuickhandleEditMeetinghandleEditMeeting", isQuick);
     } else if (isAgendaContributor) {
     } else {
     }

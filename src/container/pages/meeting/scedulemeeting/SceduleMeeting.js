@@ -36,6 +36,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
+  const [currentMeeting, setCurrentMeetingID] = useState(0);
 
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
