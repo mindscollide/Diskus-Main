@@ -19,6 +19,7 @@ import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
 import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
+import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
 
 const AgendaWise = () => {
   const navigate = useNavigate();
@@ -54,6 +55,14 @@ const AgendaWise = () => {
   const [updateData, setupdateData] = useState(null);
 
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
+
+  useEffect(() => {
+    let Data = {
+      FK_MDID: currentMeetingID,
+    };
+    dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+  }, []);
+
   let userID = localStorage.getItem("userID");
   const date = new Date();
   var Size = Quill.import("attributors/style/size");
