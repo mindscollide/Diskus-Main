@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AgendaWise.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -58,7 +58,7 @@ const AgendaWise = () => {
 
   useEffect(() => {
     let Data = {
-      FK_MDID: currentMeetingID,
+      MeetingID: currentMeetingID,
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
   }, []);
