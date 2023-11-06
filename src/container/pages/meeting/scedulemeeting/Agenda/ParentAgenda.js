@@ -54,6 +54,18 @@ const ParentAgenda = ({
   const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentMeetingID = localStorage.getItem("meetingID");
+
+  function getCurrentUTCDate() {
+    const currentDate = new Date();
+    const year = currentDate.getUTCFullYear();
+    const month = String(currentDate.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(currentDate.getUTCDate()).padStart(2, "0");
+
+    return `${year}${month}${day}`;
+  }
+
+  const currentUTCDate = getCurrentUTCDate();
+
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);
@@ -198,17 +210,55 @@ const ParentAgenda = ({
 
   // Function to update the startDate for a specific row
   const handleStartDateChange = (index, date) => {
-    console.log(date, "datedatedatedatedate");
-    const updatedRows = [...rows];
-    updatedRows[index].startDate = date;
-    setRows(updatedRows);
+    // console.log(date, "datedatedatedatedate");
+    // const updatedRows = [...rows];
+    // updatedRows[index].startDate = date;
+    // setRows(updatedRows);
+
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const updatedRows = [...rows];
+      updatedRows[index].startDate = currentUTCDate + formattedTime;
+      setRows(updatedRows);
+      // You can use 'formattedTime' as needed.
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
   };
 
   // Function to update the endDate for a specific row
   const handleEndDateChange = (index, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].endDate = date;
-    setRows(updatedRows);
+    // const updatedRows = [...rows];
+    // updatedRows[index].endDate = date;
+    // setRows(updatedRows);
+
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const updatedRows = [...rows];
+      updatedRows[index].endDate = currentUTCDate + formattedTime;
+      setRows(updatedRows);
+      // You can use 'formattedTime' as needed.
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
   };
 
   // Function to update the selected radio option for a specific row
@@ -216,6 +266,17 @@ const ParentAgenda = ({
     const updatedRows = [...rows];
     updatedRows[index].selectedRadio = value;
     setRows(updatedRows);
+  };
+
+  const handleAgendaDescription = (index, e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    const updatedAgendaItems = [...rows];
+    if (name === "Description") {
+      updatedAgendaItems[index][name] = value;
+    }
+    console.log(updatedAgendaItems, "Description");
+    setRows(updatedAgendaItems);
   };
 
   useEffect(() => {
@@ -443,6 +504,24 @@ const ParentAgenda = ({
                       </Row>
                       {expandIndex === index && expand ? (
                         <>
+                          <Row className="mb-2">
+                            <Col lg={12} md={12} sm={12}>
+                              <TextField
+                                applyClass="text-area-create-resolution"
+                                type="text"
+                                as={"textarea"}
+                                name={"Description"}
+                                value={data.Description}
+                                change={(e) =>
+                                  handleAgendaDescription(index, e)
+                                }
+                                rows="4"
+                                placeholder={t("Enter-description")}
+                                required={true}
+                                maxLength={500}
+                              />
+                            </Col>
+                          </Row>
                           <Row key={index + 3} className="mt-3">
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["Agenda_Heading"]}>

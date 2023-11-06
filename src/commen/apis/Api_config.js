@@ -1164,6 +1164,10 @@ const getUserWiseProposeDate = {
   RequestMethod: "ServiceManager.GetUserWiseProposedDates",
 };
 
+const getAdvanceMeetingAgendabyMeetingID = {
+  RequestMethod: "ServiceManager.GetAdvanceMeetingAgendabyMeetingID",
+};
+
 export {
   deleteCommitteeTaskRM,
   deleteGroupTaskRM,
@@ -1476,4 +1480,5 @@ export {
   getTaskByCommitteeIDApi,
   setCommitteeTaskApi,
   getUserWiseProposeDate,
+  getAdvanceMeetingAgendabyMeetingID,
 };

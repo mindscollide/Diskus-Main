@@ -4,7 +4,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button, Modal, Table } from "../../../../../../../components/elements";
+import {
+  Loader,
+  Button,
+  Modal,
+  Table,
+} from "../../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { Chart } from "react-google-charts";
 import profile from "../../../../../../../assets/images/newprofile.png";
@@ -14,11 +19,15 @@ import { ViewAgendaVotingResults } from "../../../../../../../store/actions/Meet
 import { Progress } from "antd";
 const ViewVoteModal = () => {
   const { t } = useTranslation();
+
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
+
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
+
   const [enablePieChart, setEnablePieChart] = useState(false);
 
   const [votingResults, setVotingResults] = useState([]);
@@ -26,161 +35,6 @@ const ViewVoteModal = () => {
   const [pieChartData, setPieChartData] = useState([]);
 
   const [barChartData, setBarChartData] = useState([]);
-
-  const data = [
-    {
-      key: "1",
-      Answer: (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <span className={styles["YesPercentage"]}>YES</span>
-          </Col>
-        </Row>
-      ),
-      Percentage: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-              <img
-                src={profile}
-                height="22px"
-                width="22px"
-                className={styles["Image"]}
-              />
-              <img
-                src={profile}
-                height="22px"
-                width="22px"
-                className={styles["Image"]}
-              />
-              <img
-                src={profile}
-                height="22px"
-                width="22px"
-                className={styles["Image"]}
-              />
-              <img
-                src={profile}
-                height="22px"
-                width="22px"
-                className={styles["Image"]}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <Progress className="VoteModalAgenda" percent={30} size="small" />
-            </Col>
-          </Row>
-        </>
-      ),
-      Vote: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["NoOfVotes"]}>04</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      key: "2",
-      Answer: (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <span className={styles["YesPercentage"]}>{t("NO")}</span>
-          </Col>
-        </Row>
-      ),
-      Percentage: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-              <img
-                src={profile}
-                height="22px"
-                width="22px"
-                className={styles["Image"]}
-              />
-              <img
-                src={profile}
-                height="22px"
-                width="22px"
-                className={styles["Image"]}
-              />
-              <img
-                src={profile}
-                height="22px"
-                width="22px"
-                className={styles["Image"]}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <Progress
-                className="NOProgressViewModal"
-                percent={70}
-                size="small"
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-      Vote: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["NoOfVotes"]}>03</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      key: "3",
-      Answer: (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <span className={styles["YesPercentage"]}>{t("Abstain")}</span>
-          </Col>
-        </Row>
-      ),
-      Percentage: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-              <img
-                src={profile}
-                height="22px"
-                width="22px"
-                className={styles["Image"]}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <Progress
-                className="AbstainProgressViewModal"
-                percent={10}
-                size="small"
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-      Vote: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["NoOfVotes"]}>0</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
 
   const colorCodes = [
     "#FF7F7F",
@@ -207,7 +61,7 @@ const ViewVoteModal = () => {
   const DisablePieChart = () => {
     setEnablePieChart(false);
   };
-  const [tablerowsData, setTablerowsData] = useState(data);
+
   const MeetingColoumns = [
     {
       title: (
@@ -220,7 +74,6 @@ const ViewVoteModal = () => {
               className="d-flex gap-2 align-items-center"
             >
               <span className={styles["Title"]}>{t("Answer")}</span>
-              {/* <img src={down} height="18.04px" width="8.19px" /> */}
             </Col>
           </Row>
         </>
@@ -250,7 +103,6 @@ const ViewVoteModal = () => {
               className="d-flex gap-2 align-items-center"
             >
               <span className={styles["Title"]}>{t("Percentage")}</span>
-              {/* <img src={down} height="18.04px" width="8.19px" /> */}
             </Col>
           </Row>
         </>
@@ -319,6 +171,8 @@ const ViewVoteModal = () => {
     },
   ];
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     let Data = { AgendaVotingID: 1, MeetingID: 1785 };
     dispatch(ViewAgendaVotingResults(Data, navigate, t));
@@ -333,6 +187,17 @@ const ViewVoteModal = () => {
       setVotingResults(
         MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults
       );
+    } else {
+      setVotingResults([]);
+    }
+  }, [MeetingAgendaReducer.ViewAgendaVotingResultData]);
+
+  useEffect(() => {
+    if (
+      votingResults !== undefined &&
+      votingResults !== null &&
+      votingResults.length > 0
+    ) {
       let votingResultChart =
         MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults;
       setPieChartData(
@@ -346,12 +211,9 @@ const ViewVoteModal = () => {
         chartDataArray.push([dataPoint[0], dataPoint[1], color]);
       });
       setBarChartData(chartDataArray);
-    } else {
-      setPieChartData([]);
-      setBarChartData([]);
-      setVotingResults([]);
+      setLoading(false);
     }
-  }, [MeetingAgendaReducer.ViewAgendaVotingResultData]);
+  }, [votingResults]);
 
   console.log("VotingResults", votingResults, pieChartData, barChartData);
 
@@ -381,17 +243,29 @@ const ViewVoteModal = () => {
               <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                 <Button
                   text={t("Bar-graph")}
-                  className={styles["BargraphButton"]}
+                  className={
+                    enablePieChart === true
+                      ? styles["BargraphButton"]
+                      : styles["BargraphButtonActive"]
+                  }
                   onClick={DisablePieChart}
                 />
                 <Button
                   text={t("Pie-graph")}
-                  className={styles["BargraphButton"]}
+                  className={
+                    enablePieChart === true
+                      ? styles["BargraphButtonActive"]
+                      : styles["BargraphButton"]
+                  }
                   onClick={EnablePieChart}
                 />
               </Col>
             </Row>
-            {enablePieChart === true ? (
+            {loading ? (
+              <div>
+                <Loader />
+              </div>
+            ) : enablePieChart === true ? (
               <>
                 <Row className="mt-4">
                   <Col

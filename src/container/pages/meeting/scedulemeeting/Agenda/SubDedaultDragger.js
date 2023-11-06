@@ -19,8 +19,10 @@ const SubDedaultDragger = ({ setRows, rows, index, subIndex }) => {
       const { status } = data.file;
       let newRows = [...rows];
       let fileData = {
-        name: data.file.originFileObj.name,
-        FileID: getRandomUniqueNumber().toString(),
+        AgendaAttachmentsID: getRandomUniqueNumber().toString(),
+        DisplayAttachmentName: data.file.originFileObj.name,
+        OriginalAttachmentName: data.file.originFileObj.name,
+        FK_MAID: 0,
       };
       newRows[index].subAgenda[subIndex].Subfiles.push(fileData);
       setRows(newRows);
@@ -30,8 +32,10 @@ const SubDedaultDragger = ({ setRows, rows, index, subIndex }) => {
       let newRows = [...rows];
       list.map((fileDatas, fileindex) => {
         let fileData = {
-          name: fileDatas.file.originFileObj.name,
-          FileID: getRandomUniqueNumber().toString(),
+          AgendaAttachmentsID: getRandomUniqueNumber().toString(),
+          DisplayAttachmentName: fileDatas.file.originFileObj.name,
+          OriginalAttachmentName: fileDatas.file.originFileObj.name,
+          FK_MAID: 0,
         };
         newRows[index].subAgenda[subIndex].Subfiles.push(fileData);
       });

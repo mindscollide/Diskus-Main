@@ -10,11 +10,21 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option";
 import styles from "./Agenda.module.css";
 
-const SubDocumnets = ({ subAgendaData, parentId,setRows,rows,index,subIndex }) => {
+const SubDocumnets = ({
+  subAgendaData,
+  parentId,
+  setRows,
+  rows,
+  index,
+  subIndex,
+}) => {
   const handlesubAgendaCrossFiles = (subAgendaFilesIndex) => {
     let optionscross = [...rows];
-    optionscross[index].subAgenda[subIndex].Subfiles.splice(subAgendaFilesIndex, 1);
-    setRows(optionscross)
+    optionscross[index].subAgenda[subIndex].Subfiles.splice(
+      subAgendaFilesIndex,
+      1
+    );
+    setRows(optionscross);
   };
   return (
     <Row>
@@ -27,8 +37,8 @@ const SubDocumnets = ({ subAgendaData, parentId,setRows,rows,index,subIndex }) =
                     return (
                       <>
                         <Draggable
-                          key={subAgendaFiles.FileID}
-                          draggableId={`parent-attachments-${parentId}-subAgendaID-${subAgendaData.SubAgendaID}-attachments-${subAgendaFiles.FileID}`}
+                          key={subAgendaFiles.AgendaAttachmentsID}
+                          draggableId={`parent-attachments-${parentId}-subAgendaID-${subAgendaData.SubAgendaID}-attachments-${subAgendaFiles.AgendaAttachmentsID}`}
                           index={subAgendaFilesIndex}
                         >
                           {(provided) => (
@@ -58,7 +68,9 @@ const SubDocumnets = ({ subAgendaData, parentId,setRows,rows,index,subIndex }) =
                                       <img
                                         draggable={false}
                                         src={getIconSource(
-                                          getFileExtension(subAgendaFiles.name)
+                                          getFileExtension(
+                                            subAgendaFiles.DisplayAttachmentName
+                                          )
                                         )}
                                         height="25.57px"
                                         width="25.57px"
@@ -66,7 +78,7 @@ const SubDocumnets = ({ subAgendaData, parentId,setRows,rows,index,subIndex }) =
                                       <span
                                         className={styles["SubagendaFilesName"]}
                                       >
-                                        {subAgendaFiles.name}
+                                        {subAgendaFiles.DisplayAttachmentName}
                                       </span>
                                     </Col>
                                     <Col lg={2} md={2} sm={2}>
@@ -75,7 +87,11 @@ const SubDocumnets = ({ subAgendaData, parentId,setRows,rows,index,subIndex }) =
                                         height="19px"
                                         width="19px"
                                         className="cursor-pointer"
-                                        onClick={()=>handlesubAgendaCrossFiles(subAgendaFilesIndex)}
+                                        onClick={() =>
+                                          handlesubAgendaCrossFiles(
+                                            subAgendaFilesIndex
+                                          )
+                                        }
                                       />
                                     </Col>
                                   </Row>
