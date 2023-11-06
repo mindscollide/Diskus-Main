@@ -36,6 +36,7 @@ const AgendaContributers = ({
   setAgendaContributors,
   setSceduleMeeting,
   currentMeeting,
+  setCurrentMeetingID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

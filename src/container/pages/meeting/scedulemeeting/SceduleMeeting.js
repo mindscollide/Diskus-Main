@@ -339,6 +339,7 @@ const SceduleMeeting = ({
                       setMeetingMaterial={setMeetingMaterial}
                       currentMeeting={currentMeeting}
                       isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
                   {agendaContributors && (
@@ -356,6 +357,7 @@ const SceduleMeeting = ({
                       setMeetingMaterial={setMeetingMaterial}
                       currentMeeting={currentMeeting}
                       isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
                   {participants && (
@@ -366,6 +368,7 @@ const SceduleMeeting = ({
                       setSceduleMeeting={setSceduleMeeting}
                       currentMeeting={currentMeeting}
                       isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
 
@@ -374,6 +377,7 @@ const SceduleMeeting = ({
                       setSceduleMeeting={setSceduleMeeting}
                       currentMeeting={currentMeeting}
                       isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
                   {meetingMaterial && (
@@ -383,6 +387,7 @@ const SceduleMeeting = ({
                       setMinutes={setMinutes}
                       currentMeeting={currentMeeting}
                       isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
                   {minutes && (
@@ -390,6 +395,7 @@ const SceduleMeeting = ({
                       setMinutes={setMinutes}
                       currentMeeting={currentMeeting}
                       isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
                   {actionsPage && (
@@ -398,6 +404,7 @@ const SceduleMeeting = ({
                       setPolls={setPolls}
                       setactionsPage={setactionsPage}
                       currentMeeting={currentMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                       isEditMeeting={isEditMeeting}
                     />
                   )}
@@ -408,12 +415,14 @@ const SceduleMeeting = ({
                       setAttendance={setAttendance}
                       currentMeeting={currentMeeting}
                       isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
                   {attendance && (
                     <Attendence
                       isEditMeeting={isEditMeeting}
                       currentMeeting={currentMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
                 </Paper>

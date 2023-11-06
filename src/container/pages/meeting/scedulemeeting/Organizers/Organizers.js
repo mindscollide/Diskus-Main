@@ -61,6 +61,7 @@ const Organizers = ({
   setMeetingMaterial,
   setSceduleMeeting,
   currentMeeting,
+  setCurrentMeetingID,
 }) => {
   const { t } = useTranslation();
 
@@ -435,6 +436,7 @@ const Organizers = ({
   };
 
   const handleCancelEdit = () => {
+    setCurrentMeetingID(0);
     setEditState(false);
     dispatch(meetingOrganizers([]));
     dispatch(selectedMeetingOrganizers([]));

@@ -117,7 +117,6 @@ const NewMeeting = () => {
   const [editFlag, setEditFlag] = useState(false);
   const [viewFlag, setViewFlag] = useState(false);
   const [currentMeeting, setCurrentMeetingID] = useState(0);
-  console.log(currentMeeting, "currentMeetingcurrentMeeting");
   const [publishedMeeting, setpublishedMeeting] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
