@@ -39,7 +39,9 @@ const AgendaWise = () => {
   const [isEdit, setisEdit] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
@@ -53,15 +55,42 @@ const AgendaWise = () => {
   const [expandedFiles, setExpandedFiles] = useState([]);
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
+  const [agendaOptions, setAgendaOptions] = useState([]);
 
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: 1216,
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
   }, []);
+
+  useEffect(() => {
+    console.log(MeetingAgendaReducer, "GetAdvanceMeetingAgendabyMeetingIDData");
+    if (
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== undefined
+    ) {
+      let NewData = [];
+      console.log(
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
+        "GetAdvanceMeetingAgendabyMeetingIDData"
+      );
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
+        (agenda, index) => {
+          console.log(agenda, "agendaagendaagenda");
+          NewData.push({
+            value: agenda.id,
+            label: agenda.title,
+          });
+        }
+      );
+      setAgendaOptions(NewData);
+    }
+  }, [NewMeetingreducer.GetAdvanceMeetingAgendabyMeetingIDData]);
+
+  console.log(agendaOptions, "NewMeetingreducerNewMeetingreducer");
 
   let userID = localStorage.getItem("userID");
   const date = new Date();
@@ -260,7 +289,7 @@ const AgendaWise = () => {
     <section>
       <Row className="mt-4">
         <Col lg={6} md={6} sm={6}>
-          <Select options={options} />
+          <Select options={agendaOptions} />
         </Col>
       </Row>
       <Row className="mt-4">
