@@ -85,6 +85,8 @@ const Groups = () => {
     setUpdateComponentpage(false);
     setViewGroupPage(false);
     localStorage.removeItem("groupsArCurrent");
+    localStorage.removeItem("ViewGroupID");
+
     localStorage.setItem("groupsCurrent", 1);
     dispatch(getGroups(navigate, t, 1));
     // dispatch(GetAllUserChats(navigate, currentUserId, currentOrganizationId, t))

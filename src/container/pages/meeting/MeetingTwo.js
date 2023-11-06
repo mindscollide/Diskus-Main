@@ -88,6 +88,7 @@ const NewMeeting = () => {
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
+  console.log("searchMeetingssearchMeetings", searchMeetings);
   const endForAllMeeting = useSelector(
     (state) => state.NewMeetingreducer.endForAllMeeting
   );
@@ -929,11 +930,8 @@ const NewMeeting = () => {
                 talkGroupID: data.talkGroupID,
                 key: index,
               });
-            } catch {
-              console.log("rowsrowsrowsrowsrows error", newRowData);
-            }
+            } catch {}
           });
-          console.log("rowsrowsrowsrowsrows error", newRowData);
           setRow(newRowData);
         }
       } else {

@@ -1942,7 +1942,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
           setModalField={setModalField}
           modalField={modalField}
           modalBodyClassName="modalMeetingUpdateBody"
-          modalFooterClassName="modalMeetingUpdateFooter"
+          modalFooterClassName={"modalMeetingUpdateFooter"}
           modalHeaderClassName={
             isPublishMeeting === true
               ? "d-none"
@@ -1954,86 +1954,60 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
             isPublishMeeting === true
               ? "sm"
               : isCancelMeetingModal === true
-              ? "sm"
+              ? null
               : "lg"
           }
           ModalBody={
             <>
               {isPublishMeeting === false && isCancelMeetingModal === false ? (
                 <Row>
-                  <Col lg={2} md={2} sm={3} xs={12}>
+                  <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-4">
                     <Button
                       className={
                         isDetails
-                          ? "MontserratSemiBold-600 btn btn-primary isDetail-Update-btn"
-                          : "MontserratSemiBold-600 btn btn-outline-primary isDetail-Update-Outline-btn"
+                          ? "MontserratSemiBold-600  isDetail-Update-btn"
+                          : "MontserratSemiBold-600   isDetail-Update-Outline-btn"
                       }
                       variant={"Primary"}
                       text={t("Details")}
                       onClick={changeSelectDetails}
                     />
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className="MontserratSemiBold-600 agenda-upper-button"
-                  >
                     <Button
                       className={
                         isAgenda
-                          ? "MontserratSemiBold-600 btn btn-primary isAgenda-Update-btn"
-                          : "MontserratSemiBold-600 btn btn-outline-primary isAgenda-Update-Outline-btn"
+                          ? "MontserratSemiBold-600  isDetail-Update-btn"
+                          : "MontserratSemiBold-600   isDetail-Update-Outline-btn"
                       }
                       variant={"Primary"}
                       text={t("Agendas")}
                       onClick={changeSelectAgenda}
                       datatut="show-agenda"
                     />
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className="MontserratSemiBold-600 attendees-upper-button"
-                  >
                     <Button
                       className={
                         isAttendees
-                          ? "MontserratSemiBold-600 btn btn-primary isAttendees-Update-btn"
-                          : "MontserratSemiBold-600 btn btn-outline-primary isAttendees-Update-Outline-btn"
+                          ? "MontserratSemiBold-600  isDetail-Update-btn"
+                          : "MontserratSemiBold-600   isDetail-Update-Outline-btn"
                       }
                       variant={"Primary"}
                       text={t("Attendees")}
                       datatut="show-meeting-attendees"
                       onClick={changeSelectAttendees}
-                    ></Button>
-                  </Col>
-                  {minutesOftheMeatingStatus ? (
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={3}
-                      xs={12}
-                      className="MontserratSemiBold-600 minutes-upper-btn"
-                    >
+                    />
+                    {minutesOftheMeatingStatus && (
                       <Button
                         className={
                           isMinutes
-                            ? "MontserratSemiBold-600 btn btn-primary isMinutes-Update-btn"
-                            : "MontserratSemiBold-600 btn btn-outline-primary isMinutes-Update-Outline-btn"
+                            ? "MontserratSemiBold-600  isDetail-Update-btn"
+                            : "MontserratSemiBold-600   isDetail-Update-Outline-btn"
                         }
                         variant={"Primary"}
                         text={t("Minutes")}
                         datatut="show-minutes"
                         onClick={changeSelectMinutes}
-                      ></Button>
-                    </Col>
-                  ) : null}
-
-                  <Col lg={4} md={4} sm={12} xs={12} className="p-0"></Col>
+                      />
+                    )}
+                  </Col>
                 </Row>
               ) : null}
               {isDetails ? (
@@ -2533,9 +2507,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                   >
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
-                          {
-                            console.log("createMeeting.MeetingAgendasin", data);
-                          }
                           return (
                             <div className="margin-top-20">
                               <Accordian
@@ -2972,32 +2943,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                 </>
               ) : isCancelMeetingModal ? (
                 <>
-                  <Row className="confirmationDialogue display-contents">
+                  <Row className="confirmationDialogue">
                     <Col lg={12} md={12} sm={12}>
                       <p className="publishMessageModal">
-                        {/* Are you sure you want to cancel this meeting? */}
                         {t("Are-you-sure-you-want-to-cancel-meeting")}
                       </p>
-                    </Col>
-                  </Row>
-                  <Row className="updatemeeting-cancel-btn">
-                    <Col lg={6} md={6} xs={12} className="text-end">
-                      <Button
-                        className={
-                          "btn btn-primary cancelmeetingmodalgoBackbtn"
-                        }
-                        text={t("Go-back")}
-                        onClick={goBack}
-                      />
-                    </Col>
-                    <Col lg={6} md={6} xs={12} className="text-start">
-                      <Button
-                        className={
-                          "btn btn-primary cancelmeetingmodalcancelbtn "
-                        }
-                        text={t("Cancel")}
-                        onClick={cancelMeeting}
-                      />
                     </Col>
                   </Row>
                 </>
@@ -3028,8 +2978,14 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                 </>
               ) : isAgenda ? (
                 <>
-                  <Row className="display-contents">
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className="d-flex justify-content-between"
+                    >
                       <Button
                         disableBtn={endMeetingStatus}
                         onClick={addAnOtherAgenda}
@@ -3041,18 +2997,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                         text={
                           editRecordFlag
                             ? t("Update-agenda")
-                            : "+" + t("Add-agenda")
+                            : " + " + t("Add-agenda")
                         }
                       />
-                    </Col>
-
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={6}
-                      xs={12}
-                      className="d-flex justify-content-end"
-                    >
                       <Button
                         onClick={navigateToAttendees}
                         className={
@@ -3198,6 +3145,27 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                     </Col>
                   </Row>
                 </>
+              ) : isCancelMeetingModal ? (
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-center gap-3 mt-4"
+                  >
+                    <Button
+                      className={"btn  cancelmeetingmodalgoBackbtn"}
+                      text={t("Go-back")}
+                      onClick={goBack}
+                    />
+                    <Button
+                      className={"btn cancelmeetingmodalcancelbtn "}
+                      text={t("Cancel")}
+                      onClick={cancelMeeting}
+                    />
+                  </Col>
+                </Row>
               ) : null}
             </>
           }

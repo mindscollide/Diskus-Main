@@ -27,6 +27,8 @@ import {
   deleteMeetingPollApi,
   getPollsByPollIdApi,
 } from "../../../../../store/actions/Polls_actions";
+import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
+
 const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -37,6 +39,9 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const [editPolls, setEditPolls] = useState(false);
   const [pollsRows, setPollsRows] = useState([]);
   const [afterViewPolls, setafterViewPolls] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(50);
+  const [totalRecords, setTotalRecords] = useState(0);
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
@@ -88,6 +93,19 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
   }, []);
 
+  const handleChangePagination = (current, pageSize) => {
+    setPageNumber(current);
+    setPageSize(pageSize);
+    let Data = {
+      MeetingID: currentMeetingID,
+      OrganizationID: Number(OrganizationID),
+      CreatorName: "",
+      PollTitle: "",
+      PageNumber: Number(current),
+      Length: Number(pageSize),
+    };
+    dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
+  };
   useEffect(() => {
     try {
       if (
@@ -95,6 +113,8 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         NewMeetingreducer.getPollsMeetingID !== null
       ) {
         let pollsData = NewMeetingreducer.getPollsMeetingID.polls;
+        setTotalRecords(NewMeetingreducer.getPollsMeetingID.totalRecords);
+
         let newPollsArray = [];
         pollsData.map((data, index) => {
           console.log(data, "datadatadatadata");
@@ -494,6 +514,26 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                     )}
                   </Col>
                 </Row>
+                {pollsRows.length > 0 && (
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="pagination-groups-table d-flex justify-content-center my-3"
+                    >
+                      <CustomPagination
+                        pageSizeOptionsValues={["30", "50", "100", "200"]}
+                        current={pageNumber}
+                        pageSize={pageSize}
+                        total={totalRecords}
+                        showSizer={totalRecords >= 9 ? true : false}
+                        className={styles["PaginationStyle-Resolution"]}
+                        onChange={handleChangePagination}
+                      />
+                    </Col>
+                  </Row>
+                )}
               </>
             )}
             {NewMeetingreducer.cancelPolls && (
