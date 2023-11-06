@@ -2773,24 +2773,6 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
               // dispatch(
               //   DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
               // );
-
-              // let FetchMinutesId;
-              // response.data.responseResult.meetingMinutes.map(
-              //   (dataMin, Indexmin) => {
-              //     console.log(dataMin, "dataMindataMin");
-              //     FetchMinutesId = dataMin.minuteID;
-              //   }
-              // );
-              // let Retrive = {
-              //   FK_MeetingGeneralMinutesID: FetchMinutesId,
-              // };
-              // dispatch(
-              //   RetriveDocumentsMeetingGenralMinutesApiFunc(
-              //     navigate,
-              //     Retrive,
-              //     t
-              //   )
-              // );
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"

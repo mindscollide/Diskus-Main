@@ -156,6 +156,7 @@ const Minutes = ({ setMinutes }) => {
   const [expanded, setExpanded] = useState(false);
   const [expandedFiles, setExpandedFiles] = useState([]);
   const [isEdit, setisEdit] = useState(false);
+  const [minuteID, setMinuteID] = useState(0);
 
   const [open, setOpen] = useState({
     flag: false,
@@ -214,6 +215,11 @@ const Minutes = ({ setMinutes }) => {
     };
     console.log(Data, "useEffectuseEffect");
     dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
+
+    // let Retrive = {
+    //   FK_MeetingGeneralMinutesID: minuteID,
+    // };
+    // dispatch(RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Retrive, t));
   }, []);
 
   useEffect(() => {
@@ -231,6 +237,7 @@ const Minutes = ({ setMinutes }) => {
           NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
             console.log(data, "newarrnewarrnewarr");
             newarr.push(data);
+            setMinuteID(data.minuteID);
           });
           setMessages(newarr);
         }
@@ -239,6 +246,7 @@ const Minutes = ({ setMinutes }) => {
   }, [NewMeetingreducer.generalMinutes]);
 
   console.log(messages, "addNoteFieldsaddNoteFields");
+  console.log(minuteID, "minuteIDminuteID");
 
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
@@ -499,14 +507,8 @@ const Minutes = ({ setMinutes }) => {
 
     console.log(newfile, "messagesmessages");
 
-    let MinuteID;
-    messages.map((minID, index) => {
-      console.log(minID.minuteID, "minIDminID");
-      MinuteID = minID.minuteID;
-    });
-
     let docsData = {
-      FK_MeetingGeneralMinutesID: MinuteID,
+      FK_MeetingGeneralMinutesID: minuteID,
       FK_MDID: currentMeetingID,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
@@ -537,9 +539,6 @@ const Minutes = ({ setMinutes }) => {
       MinuteID: DelMinuteID,
     };
     dispatch(DeleteGeneralMinutesApiFunc(navigate, Data, t));
-    // let updatedRecords = [...messages];
-    // updatedRecords.splice(index, 1);
-    // setMessages(updatedRecords);
   };
 
   //UPloading the Documents
