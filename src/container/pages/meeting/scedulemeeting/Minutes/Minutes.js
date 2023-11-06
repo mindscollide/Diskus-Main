@@ -158,6 +158,7 @@ const Minutes = ({ setMinutes }) => {
   const [expandedFiles, setExpandedFiles] = useState([]);
   const [isEdit, setisEdit] = useState(false);
   const [minuteID, setMinuteID] = useState(0);
+  const [updateData, setupdateData] = useState(null);
 
   const [open, setOpen] = useState({
     flag: false,
@@ -243,27 +244,6 @@ const Minutes = ({ setMinutes }) => {
 
   console.log(messages, "addNoteFieldsaddNoteFields");
   console.log(minuteID, "minuteIDminuteID");
-
-  //For getting documents Agains Single Minutes Saved
-  useEffect(() => {
-    try {
-      if (
-        NewMeetingreducer.generalMinutesDocument !== undefined &&
-        NewMeetingreducer.generalMinutesDocument !== null
-      ) {
-        console.log(
-          NewMeetingreducer.generalMinutesDocument,
-          "generalMinutesDocument"
-        );
-        let files = [];
-        NewMeetingreducer.generalMinutesDocument.data.map((data, index) => {
-          console.log(data, "undefinedundefined");
-          files.push(data);
-        });
-        setExpandedFiles(files);
-      }
-    } catch {}
-  }, [NewMeetingreducer.generalMinutesDocument]);
 
   console.log(messages, "messagesmessagesmessages");
   console.log(expandedFiles, "expandedFilesexpandedFiles");
@@ -442,6 +422,7 @@ const Minutes = ({ setMinutes }) => {
 
   //Edit Button Function
   const handleEditFunc = (data) => {
+    setupdateData(data);
     console.log("handleEditFunccalled");
     console.log(data, "dataminutesDetails");
     let Retrive = {
@@ -462,6 +443,31 @@ const Minutes = ({ setMinutes }) => {
       console.log("data.minutesDetails is undefined or null");
     }
   };
+
+  console.log(updateData, "updateDataupdateData");
+
+  //For getting documents Agains Single Minutes Saved
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.generalMinutesDocument !== undefined &&
+        NewMeetingreducer.generalMinutesDocument !== null
+      ) {
+        console.log(
+          NewMeetingreducer.generalMinutesDocument,
+          "generalMinutesDocument"
+        );
+        let files = [];
+        NewMeetingreducer.generalMinutesDocument.data.map((data, index) => {
+          console.log(data, "undefinedundefined");
+          files.push({
+            DisplayAttachmentName: data.displayFileName,
+          });
+        });
+        setFileAttachments(files);
+      }
+    } catch {}
+  }, [NewMeetingreducer.generalMinutesDocument]);
 
   const handleAgendaWiseClick = () => {
     setGeneral(false);
@@ -577,20 +583,14 @@ const Minutes = ({ setMinutes }) => {
     setFileAttachments([]);
   };
 
-  const handleExpandShowFiles = () => {};
-
   //Updating the text of min
   const handleUpdateFunc = () => {
-    let MinuteID;
-    messages.map((minID, index) => {
-      console.log(minID.minuteID, "minIDminID");
-      MinuteID = minID.minuteID;
-    });
-    let updateData = {
-      MinuteID: MinuteID,
+    console.log("UpdateCLickd");
+    let Data = {
+      MinuteID: updateData.minuteID,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(UpdateMinutesGeneralApiFunc(navigate, updateData, t));
+    dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
   };
 
   return (
@@ -628,7 +628,7 @@ const Minutes = ({ setMinutes }) => {
                     theme="snow"
                     value={addNoteFields.Description.value || ""}
                     placeholder={t("Note-details")}
-                    onChange={onTextChange}
+                    onChange={() => onTextChange}
                     modules={modules}
                     className={styles["quill-height-addNote"]}
                     style={{
@@ -941,7 +941,6 @@ const Minutes = ({ setMinutes }) => {
                                     width="18.71px"
                                     height="9.36px"
                                     className="cursor-pointer"
-                                    onClick={handleExpandShowFiles}
                                   />
                                 </Col>
                               </Row>
