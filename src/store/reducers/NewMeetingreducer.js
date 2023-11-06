@@ -1224,6 +1224,29 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.SAVE_DOCUMENTS_AGENDA_WISE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_DOCUMENTS_AGENDA_WISE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_DOCUMENTS_AGENDA_WISE_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     default: {
       return { ...state };
     }

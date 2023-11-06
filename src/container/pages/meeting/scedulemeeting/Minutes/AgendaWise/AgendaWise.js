@@ -20,7 +20,12 @@ import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
 import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
-import { AddAgendaWiseMinutesApiFunc } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  AddAgendaWiseMinutesApiFunc,
+  GetAllAgendaWiseMinutesApiFunc,
+  SaveAgendaWiseDocumentsApiFunc,
+  uploadDocumentsMeetingMinutesApi,
+} from "../../../../../../store/actions/NewMeetingActions";
 
 const AgendaWise = () => {
   const navigate = useNavigate();
@@ -71,6 +76,11 @@ const AgendaWise = () => {
       MeetingID: 1216,
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+
+    let newData = {
+      AgendaID: 1216,
+    };
+    dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, Data, t));
   }, []);
 
   useEffect(() => {
@@ -281,7 +291,7 @@ const AgendaWise = () => {
     }
   };
 
-  const handleAddClickAgendaWise = () => {
+  const handleAddClickAgendaWise = async () => {
     let Data = {
       AgendaID: "1222",
       MinuteText: addNoteFields.Description.value,
@@ -299,6 +309,90 @@ const AgendaWise = () => {
         title: selectoptions.label,
       },
     });
+  };
+
+  const documentUploadingFunc = async (minuteID) => {
+    let newfile = [...previousFileIDs];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsMeetingMinutesApi(
+          navigate,
+          t,
+          newData,
+          folderID,
+          newfile
+        )
+      );
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+    console.log(messages, "messagesmessages");
+    console.log(currentMeetingID, "messagesmessages");
+
+    console.log(newfile, "messagesmessages");
+
+    let docsData = {
+      FK_MeetingAgendaMinutesID: 1,
+      FK_MDID: 1833,
+      UpdateFileList: newfile.map((data, index) => {
+        return { PK_FileID: Number(data.pK_FileID) };
+      }),
+    };
+    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t));
+
+    setFileAttachments([]);
+    setPreviousFileIDs([]);
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+  };
+  //For getting the MinuteID
+  //   useEffect(() => {
+  //     if (NewMeetingreducer.addMinuteID !== 0) {
+  //       documentUploadingFunc(NewMeetingreducer.addMinuteID);
+  //     }
+  //   }, [NewMeetingreducer.addMinuteID]);
+
+  const handleRemoveFile = (data) => {
+    setFileForSend((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) => fileSend.name !== data.DisplayAttachmentName
+      )
+    );
+
+    setPreviousFileIDs((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+
+    setFileAttachments((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+  };
+
+  const handleResetBtnFunc = () => {
+    console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+    setFileAttachments([]);
+    setPreviousFileIDs([]);
   };
 
   return (
@@ -343,7 +437,7 @@ const AgendaWise = () => {
               <Button
                 text={t("Reset")}
                 className={styles["Previous_Button"]}
-                // onClick={handleResetBtnFunc}
+                onClick={handleResetBtnFunc}
               />
               {isEdit === true ? (
                 <>
@@ -412,7 +506,7 @@ const AgendaWise = () => {
                                       src={CrossIcon}
                                       height="12.68px"
                                       width="12.68px"
-                                      //   onClick={() => handleRemoveFile(index)}
+                                      onClick={() => handleRemoveFile(index)}
                                     />
                                   </span>
                                   <section className={styles["Outer_Box"]}>

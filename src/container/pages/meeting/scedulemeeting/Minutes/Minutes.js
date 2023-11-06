@@ -754,7 +754,10 @@ const Minutes = ({ setMinutes }) => {
                         >
                           {fileAttachments.length > 0
                             ? fileAttachments.map((data, index) => {
-                                console.log(data, "datadatadata");
+                                console.log(
+                                  data,
+                                  "fileAttachmentsfileAttachments"
+                                );
                                 return (
                                   <>
                                     <Col
@@ -993,6 +996,88 @@ const Minutes = ({ setMinutes }) => {
                                     height="9.36px"
                                     className="cursor-pointer"
                                   />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className={styles["DocsScroller"]}
+                                >
+                                  <Row>
+                                    {data.minutesAttachmets.map(
+                                      (filesname, index) => {
+                                        console.log(
+                                          filesname,
+                                          "filesnamefilesname"
+                                        );
+                                        return (
+                                          <>
+                                            <Col
+                                              lg={2}
+                                              md={2}
+                                              sm={12}
+                                              className="position-relative gap-2"
+                                            >
+                                              <section
+                                                className={styles["Outer_Box"]}
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <img
+                                                      src={file_image}
+                                                      width={"100%"}
+                                                      alt=""
+                                                      draggable="false"
+                                                    />
+                                                  </Col>
+                                                </Row>
+
+                                                <section
+                                                  className={
+                                                    styles[
+                                                      "backGround_name_Icon"
+                                                    ]
+                                                  }
+                                                >
+                                                  <Row className="mb-2">
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                      className={
+                                                        styles["IconTextClass"]
+                                                      }
+                                                    >
+                                                      <img
+                                                        src={pdfIcon}
+                                                        height="10px"
+                                                        width="10px"
+                                                        className={
+                                                          styles["IconPDF"]
+                                                        }
+                                                      />
+                                                      <span
+                                                        className={
+                                                          styles["FileName"]
+                                                        }
+                                                      >
+                                                        {
+                                                          data.DisplayAttachmentName
+                                                        }
+                                                      </span>
+                                                    </Col>
+                                                  </Row>
+                                                </section>
+                                              </section>
+                                            </Col>
+                                          </>
+                                        );
+                                      }
+                                    )}
+                                    <Col lg={12} md={12} sm={12}></Col>
+                                  </Row>
                                 </Col>
                               </Row>
                               <img

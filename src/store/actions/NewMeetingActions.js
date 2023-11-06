@@ -37,6 +37,7 @@ import {
   updateAgendaWiseMinutes,
   getAllAgendaWiseMinutes,
   getUserWiseProposeDate,
+  saveDocumentAgendaWiseMinutes,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -3987,6 +3988,102 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
   };
 };
 
+//Save Agenda Wise Document
+
+const showSavedAgendaWiseDocumentInit = () => {
+  return {
+    type: actions.SAVE_DOCUMENTS_AGENDA_WISE_INIT,
+  };
+};
+
+const showSavedAgendaWiseDocumentSuccess = (response, message) => {
+  return {
+    type: actions.SAVE_DOCUMENTS_AGENDA_WISE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showSavedAgendaWiseDocumentFailed = (message) => {
+  return {
+    type: actions.SAVE_DOCUMENTS_AGENDA_WISE_FAILED,
+    message: message,
+  };
+};
+
+const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showSavedAgendaWiseDocumentInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", saveDocumentAgendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveAgendaWiseMinutesDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showSavedAgendaWiseDocumentSuccess(
+                  response.data.responseResult,
+                  t("List Updated Successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveAgendaWiseMinutesDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showSavedAgendaWiseDocumentFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 //Update General meeting
 
 const showUpdateMinutesInit = () => {
@@ -4164,4 +4261,5 @@ export {
   UpdateAgendaWiseMinutesApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   getUserProposedWiseApi,
+  SaveAgendaWiseDocumentsApiFunc,
 };
