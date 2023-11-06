@@ -206,10 +206,13 @@ const Minutes = ({ setMinutes }) => {
     },
   };
 
+  console.log(currentMeetingID, "currentMeetingIDcurrentMeetingID");
+
   useEffect(() => {
     let Data = {
       MeetingID: currentMeetingID,
     };
+    console.log(Data, "useEffectuseEffect");
     dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
   }, []);
 
@@ -226,6 +229,7 @@ const Minutes = ({ setMinutes }) => {
         if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
           let newarr = [];
           NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
+            console.log(data, "newarrnewarrnewarr");
             newarr.push(data);
           });
           setMessages(newarr);
@@ -234,7 +238,7 @@ const Minutes = ({ setMinutes }) => {
     } catch {}
   }, [NewMeetingreducer.generalMinutes]);
 
-  console.log(addNoteFields, "addNoteFieldsaddNoteFields");
+  console.log(messages, "addNoteFieldsaddNoteFields");
 
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
@@ -288,14 +292,7 @@ const Minutes = ({ setMinutes }) => {
   //   } catch {}
   // }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
 
-  const enterKeyHandler = (event) => {
-    if (event.key === "Tab" && !event.shiftKey) {
-      event.preventDefault();
-      const quill = editorRef.current.getEditor();
-      quill.root.setAttribute("autofocus", "");
-      quill.focus();
-    }
-  };
+  //onChange function for React Quill
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText != "") {
@@ -321,6 +318,7 @@ const Minutes = ({ setMinutes }) => {
     }
   };
 
+  //Props for File Dragger
   const props = {
     name: "file",
     multiple: true,
@@ -437,11 +435,8 @@ const Minutes = ({ setMinutes }) => {
     var Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft + 300;
   };
-  console.log(
-    addNoteFields.Description.value,
-    "addNoteFieldsaddNoteFieldsaddNoteFields"
-  );
 
+  //Edit Button Function
   const handleEditFunc = (data) => {
     console.log("handleEditFunc called");
     console.log(data.minutesDetails, "data.minutesDetails");
@@ -499,10 +494,11 @@ const Minutes = ({ setMinutes }) => {
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    console.log(messages.minuteID, "messagesmessages");
+    console.log(messages, "messagesmessages");
     console.log(currentMeetingID, "messagesmessages");
 
     console.log(newfile, "messagesmessages");
+
     let MinuteID;
     messages.map((minID, index) => {
       console.log(minID.minuteID, "minIDminID");
@@ -518,23 +514,6 @@ const Minutes = ({ setMinutes }) => {
     };
     console.log(docsData, "messagesmessages");
     dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
-
-    // if (addNoteFields.Description.value) {
-    //   // Add the current message to the list of messages
-    //   setMessages([...messages, addNoteFields.Description.value]);
-
-    //   // Clear the editor
-    //   editorRef.current.getEditor().setText("");
-
-    //   setAddNoteFields({
-    //     ...addNoteFields,
-    //     Description: {
-    //       value: "",
-    //       errorMessage: "",
-    //       errorStatus: false,
-    //     },
-    //   });
-    // }
   };
 
   const handleRemovingTheMinutes = () => {
@@ -591,6 +570,7 @@ const Minutes = ({ setMinutes }) => {
 
   const handleExpandShowFiles = () => {};
 
+  //Updating the text of min
   const handleUpdateFunc = () => {
     let MinuteID;
     messages.map((minID, index) => {
@@ -639,7 +619,7 @@ const Minutes = ({ setMinutes }) => {
                     theme="snow"
                     value={addNoteFields.Description.value || ""}
                     placeholder={t("Note-details")}
-                    onChange={() => onTextChange}
+                    onChange={onTextChange}
                     modules={modules}
                     className={styles["quill-height-addNote"]}
                     style={{
@@ -672,9 +652,6 @@ const Minutes = ({ setMinutes }) => {
                   ) : (
                     <>
                       <Button
-                        disableBtn={
-                          addNoteFields.Description.value === "" ? true : false
-                        }
                         text={t("Save")}
                         className={styles["Button_General"]}
                         onClick={handleAddClick}

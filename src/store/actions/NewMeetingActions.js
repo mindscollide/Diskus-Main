@@ -2732,7 +2732,6 @@ const ShowAllGeneralMinutesFailed = (response, message) => {
 // Api Function For General Minutes
 const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentMeetingID = localStorage.getItem("meetingID");
   return (dispatch) => {
     dispatch(ShowAllGeneralMinutesInit());
     let form = new FormData();
