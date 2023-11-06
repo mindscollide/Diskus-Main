@@ -17,13 +17,8 @@ const initialState = {
 };
 
 const assigneesReducer = (state = initialState, action) => {
-  console.log("ASSIGNESS_LIST_INIT", state);
   switch (action.type) {
     case actions.LOADER_CREATEMEETING_DASHBOARD: {
-      console.log(
-        action,
-        "meetingcreatedashboardLoadermeetingcreatedashboardLoader"
-      );
       return { ...state, meetingcreatedashboardLoader: action.response };
     }
     case actions.SHOW:

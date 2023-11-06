@@ -70,6 +70,7 @@ const initialState = {
   generalminutesDocumentForMeeting: [],
   addMinuteID: 0,
   agendaWiseMinutes: [],
+  userWiseMeetingProposed: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1195,6 +1196,31 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         agendaWiseMinutes: action.response,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_USER_WISE_PROPOSED_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_USER_WISE_PROPOSED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        userWiseMeetingProposed: action.response,
+        ResponseMessage: action.ResponseMessage,
+      };
+    }
+
+    case actions.GET_USER_WISE_PROPOSED_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        userWiseMeetingProposed: [],
+        ResponseMessage: action.ResponseMessage,
       };
     }
 

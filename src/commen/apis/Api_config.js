@@ -1084,6 +1084,18 @@ const saveAgendaVoting = {
   RequestMethod: "ServiceManager.SaveAgendaVoting",
 };
 
+const getAgendaAndVotingInfo = {
+  RequestMethod: "ServiceManager.GetAgendaAndVotingInfo",
+};
+
+const casteVoteForAgenda = {
+  RequestMethod: "ServiceManager.CasteVoteForAgenda",
+};
+
+const viewAgendaVotingResults = {
+  RequestMethod: "ServiceManager.ViewAgendaVotingResults",
+};
+
 const getPollByGroupIDApi = {
   RequestMethod: "ServiceManager.GetPollsByGroupID",
 };
@@ -1151,8 +1163,40 @@ const updateAgendaWiseMinutes = {
 const getAllAgendaWiseMinutes = {
   RequestMethod: "ServiceManager.GetAgendaWiseMinutes",
 };
+const deleteCommitteePollRM = {
+  RequestMethod: "ServiceManager.DeleteCommitteePolls",
+};
+
+const deleteGroupPollsRM = {
+  RequestMethod: "ServiceManager.DeleteGroupPolls",
+};
+
+const deleteMeetingPollsRM = {
+  RequestMethod: "ServiceManager.DeleteMeetingPolls",
+};
+
+const deleteCommitteeTaskRM = {
+  RequestMethod: "ServiceManager.DeleteCommitteeTasks",
+};
+
+const deleteGroupTaskRM = {
+  RequestMethod: "ServiceManager.DeleteGroupTasks",
+};
+
+const getUserWiseProposeDate = {
+  RequestMethod: "ServiceManager.GetUserWiseProposedDates",
+};
+
+const getAdvanceMeetingAgendabyMeetingID = {
+  RequestMethod: "ServiceManager.GetAdvanceMeetingAgendabyMeetingID",
+};
 
 export {
+  deleteCommitteeTaskRM,
+  deleteGroupTaskRM,
+  deleteMeetingPollsRM,
+  deleteGroupPollsRM,
+  deleteCommitteePollRM,
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
   saveCommitteeDocumentsRM,
@@ -1435,6 +1479,9 @@ export {
   getAgendaVotingDetails,
   getAllVotingResultDisplay,
   saveAgendaVoting,
+  getAgendaAndVotingInfo,
+  casteVoteForAgenda,
+  viewAgendaVotingResults,
   //Aun MeetingMaterial
   getAllMeetingMaterial,
   downloadMeetingAttendanceReport,
@@ -1461,4 +1508,6 @@ export {
   DeleteagendaWiseMinutes,
   updateAgendaWiseMinutes,
   getAllAgendaWiseMinutes,
+  getUserWiseProposeDate,
+  getAdvanceMeetingAgendabyMeetingID,
 };

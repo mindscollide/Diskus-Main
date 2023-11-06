@@ -272,7 +272,10 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
     };
     dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t, setViewGroupPage));
   };
-
+  const handleClose = () => {
+    localStorage.removeItem("ViewGroupID");
+    setViewGroupPage(false);
+  };
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">
       {/* <Row className="mt-3">
@@ -553,7 +556,7 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
           <Button
             className={styles["Close-ViewGroup-btn"]}
             text={t("Close")}
-            onClick={() => setViewGroupPage(false)}
+            onClick={handleClose}
           />
           <Button
             className={styles["Close-ViewGroup-btn"]}

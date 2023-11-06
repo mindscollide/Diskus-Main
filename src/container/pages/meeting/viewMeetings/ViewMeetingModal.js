@@ -24,6 +24,9 @@ import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
+  setAdvanceMeetingModalID,
+  unPublish,
+  isOrganisers,
 }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -37,7 +40,7 @@ const ViewMeetingModal = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
-
+  console.log("isOrganisers",isOrganisers);
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
     setorganizers(false);
@@ -248,42 +251,46 @@ const ViewMeetingModal = ({
                       }
                       onClick={showMeetingMaterial}
                     />
-                    <Button
-                      text={t("Minutes")}
-                      className={
-                        minutes === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showMinutes}
-                    />
-                    <Button
-                      text={t("Actions")}
-                      className={
-                        actionsPage === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showActions}
-                    />
-                    <Button
-                      text={t("Polls")}
-                      className={
-                        polls === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={ShowPolls}
-                    />
-                    <Button
-                      text={t("Attendence")}
-                      className={
-                        attendance === true
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showAttendance}
-                    />
+                    {unPublish ? null : (
+                      <>
+                        <Button
+                          text={t("Minutes")}
+                          className={
+                            minutes === true
+                              ? styles["Schedule_meetings_options_active"]
+                              : styles["Schedule_meetings_options"]
+                          }
+                          onClick={showMinutes}
+                        />
+                        <Button
+                          text={t("Actions")}
+                          className={
+                            actionsPage === true
+                              ? styles["Schedule_meetings_options_active"]
+                              : styles["Schedule_meetings_options"]
+                          }
+                          onClick={showActions}
+                        />
+                        <Button
+                          text={t("Polls")}
+                          className={
+                            polls === true
+                              ? styles["Schedule_meetings_options_active"]
+                              : styles["Schedule_meetings_options"]
+                          }
+                          onClick={ShowPolls}
+                        />
+                        <Button
+                          text={t("Attendence")}
+                          className={
+                            attendance === true
+                              ? styles["Schedule_meetings_options_active"]
+                              : styles["Schedule_meetings_options"]
+                          }
+                          onClick={showAttendance}
+                        />
+                      </>
+                    )}
                   </Col>
                 </Row>
 
@@ -293,6 +300,8 @@ const ViewMeetingModal = ({
                     setmeetingDetails={setmeetingDetails}
                     advanceMeetingModalID={advanceMeetingModalID}
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                    setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+                    isOrganisers={isOrganisers}
                   />
                 )}
                 {organizers && (
@@ -326,6 +335,11 @@ const ViewMeetingModal = ({
                 {agenda && (
                   <Agenda
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                    setorganizers={setorganizers}
+                    setParticipants={setParticipants}
+                    setAgenda={setAgenda}
+                    setMeetingMaterial={setMeetingMaterial}
+                    advanceMeetingModalID={advanceMeetingModalID}
                   />
                 )}
                 {meetingMaterial && (
@@ -335,22 +349,26 @@ const ViewMeetingModal = ({
                     setMinutes={setMinutes}
                   />
                 )}
-                {minutes && <Minutes setMinutes={setMinutes} />}
-                {actionsPage && (
-                  <Actions
-                    setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                    setPolls={setPolls}
-                    setactionsPage={setactionsPage}
-                  />
+                {unPublish ? null : (
+                  <>
+                    {minutes && <Minutes setMinutes={setMinutes} />}
+                    {actionsPage && (
+                      <Actions
+                        setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                        setPolls={setPolls}
+                        setactionsPage={setactionsPage}
+                      />
+                    )}
+                    {polls && (
+                      <Polls
+                        setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                        setPolls={setPolls}
+                        setAttendance={setAttendance}
+                      />
+                    )}
+                    {attendance && <Attendence />}
+                  </>
                 )}
-                {polls && (
-                  <Polls
-                    setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                    setPolls={setPolls}
-                    setAttendance={setAttendance}
-                  />
-                )}
-                {attendance && <Attendence />}
               </Paper>
             </Col>
           </Row>

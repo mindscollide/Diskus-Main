@@ -29,7 +29,10 @@ import RedCross from "../../../../../assets/images/CrossIcon.svg";
 import UnsavedEditPollsMeeting from "./UnsavedEditPollsMeeting/UnsavedEditPollsMeeting";
 import { showunsavedEditPollsMeetings } from "../../../../../store/actions/NewMeetingActions";
 import {
+  convertGMTDateintoUTC,
   convertintoGMTCalender,
+  formatDateToMMDDYY,
+  formatDateToUTC,
   multiDatePickerDateChangIntoUTC,
 } from "../../../../../commen/functions/date_formater";
 import { updatePollsApi } from "../../../../../store/actions/Polls_actions";
@@ -167,7 +170,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
     setMeetingDate(meetingDateValueFormat);
     setupdatePolls({
       ...updatePolls,
-      date: DateDate,
+      date: convertGMTDateintoUTC(date).slice(0, 8),
     });
   };
 
@@ -222,8 +225,17 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       }
     } catch {}
   };
-
-  const handleUpdateClick = (value) => {
+  console.log(
+    {
+      updatePolls,
+      members,
+      options,
+      checkForPollStatus,
+      allValuesNotEmpty,
+    },
+    "handleUpdateClickhandleUpdateClickhandleUpdateClick"
+  );
+  const handleUpdateClick = (pollStatusValue) => {
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");
     let users = [];
@@ -250,10 +262,10 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       let data = {
         PollDetails: {
           PollTitle: updatePolls.Title,
-          DueDate: multiDatePickerDateChangIntoUTC(updatePolls.date),
+          DueDate: updatePolls.date,
           AllowMultipleAnswers: updatePolls.AllowMultipleAnswers,
           CreatorID: parseInt(createrid),
-          PollStatusID: parseInt(value),
+          PollStatusID: parseInt(pollStatusValue),
           OrganizationID: parseInt(organizationid),
           PollID: parseInt(updatePolls.PollID),
         },
@@ -261,7 +273,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
         PollAnswers: optionsListData,
       };
 
-      dispatch(updatePollsApi(navigate, data, t));
+      dispatch(updatePollsApi(navigate, data, t, 3, setEditPolls));
     } else {
       setError(true);
 
@@ -421,6 +433,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                 value={updatePolls.Title}
                 name={"UpdatePollsTitle"}
                 change={HandleChangeUpdatePolls}
+                disable={checkForPollStatus}
               />
             </Col>
           </Row>
@@ -453,6 +466,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                   applyClass={"PollingCreateModal"}
                                   labelClass="d-none"
                                   name={data.name}
+                                  disable={checkForPollStatus}
                                   maxLength={500}
                                   value={data.value}
                                   change={(e) => HandleOptionChange(e)}
@@ -471,6 +485,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                   applyClass={"PollingCreateModal"}
                                   labelClass="d-none"
                                   name={data.name}
+                                  disable={checkForPollStatus}
                                   value={data.value}
                                   maxLength={500}
                                   change={(e) => HandleOptionChange(e)}
@@ -480,6 +495,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                       src={WhiteCrossIcon}
                                       width="31.76px"
                                       height="31.76px"
+                                      alt=""
                                       onClick={() =>
                                         HandleCancelFunction(index)
                                       }
@@ -505,6 +521,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           <Row className="mt-2">
             <Col lg={12} md={12} sm={12}>
               <Button
+                disableBtn={checkForPollStatus}
                 text={
                   <>
                     <Row className="mt-1">
@@ -561,6 +578,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                   <Checkbox
                     onChange={HandleCheckMultipleAnswersUpdatePolls}
                     checked={updatePolls.AllowMultipleAnswers}
+                    disabled={checkForPollStatus}
                   />
                   <p className={styles["CheckBoxTitle"]}>
                     {t("Allow-multiple-answers")}
@@ -592,6 +610,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                   <Button
                     text={t("ADD")}
                     className={styles["ADD_Btn_CreatePool_Modal"]}
+                    disableBtn={checkForPollStatus}
                     onClick={handleAddUsers}
                   />
                 </Col>
@@ -637,15 +656,17 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                       sm={2}
                                       className="d-flex align-items-center"
                                     >
-                                      <img
-                                        draggable={false}
-                                        src={RedCross}
-                                        height="14px"
-                                        alt=""
-                                        width="14px"
-                                        className="cursor-pointer"
-                                        onClick={() => RemoveMembers(index)}
-                                      />
+                                      {checkForPollStatus ? null : (
+                                        <img
+                                          draggable={false}
+                                          src={RedCross}
+                                          height="14px"
+                                          alt=""
+                                          width="14px"
+                                          className="cursor-pointer"
+                                          onClick={() => RemoveMembers(index)}
+                                        />
+                                      )}
                                     </Col>
                                   </Row>
                                 </section>
@@ -681,7 +702,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           <Button
             text={t("Update-and-published")}
             className={styles["Save_Button_Meeting_Creat_Polls"]}
-            onClick={() => handleUpdateClick(1)}
+            onClick={() => handleUpdateClick(2)}
           />
         </Col>
       </Row>

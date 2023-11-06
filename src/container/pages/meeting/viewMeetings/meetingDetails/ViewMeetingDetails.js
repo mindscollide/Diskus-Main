@@ -12,18 +12,22 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
+import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 
 const ViewMeetingDetails = ({
   setorganizers,
   setmeetingDetails,
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
+  setAdvanceMeetingModalID,
+  isOrganisers,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
+  const [meetingStatus, setMeetingStatus] = useState(0);
   const [rows, setRows] = useState([
     {
       selectedOption: "",
@@ -34,6 +38,10 @@ const ViewMeetingDetails = ({
       endTime: "",
     },
   ]);
+  let userID = localStorage.getItem("userID");
+
+  console.log("isOrganisers", isOrganisers);
+
   //For Custom language datepicker
   const [open, setOpen] = useState({
     flag: false,
@@ -78,7 +86,10 @@ const ViewMeetingDetails = ({
   const handleCancelMeetingButton = (e) => {
     setCancelModalView(true);
   };
-
+  let endMeetingRequest = {
+    MeetingID: Number(advanceMeetingModalID),
+    StatusID: 9,
+  };
   // Showing The reposnse messege
   useEffect(() => {
     if (
@@ -117,7 +128,10 @@ const ViewMeetingDetails = ({
       let getmeetingDates = MeetingData.meetingDates;
       let getmeetingRecurrance = MeetingData.meetingRecurrance;
       let getmeetingReminders = MeetingData.meetingReminders;
-      let getmeetingStatus = MeetingData.meetingStatus;
+      let getmeetingStatus = MeetingData.meetingStatus.status;
+      console.log("meetingStatus", NewMeetingreducer);
+      console.log("meetingStatus", getmeetingStatus);
+      setMeetingStatus(Number(getmeetingStatus));
       let getmeetingType = MeetingData.meetingType;
       let wasPublishedFlag = MeetingData.wasMeetingPublished;
       setMeetingDetailsData({
@@ -192,16 +206,43 @@ const ViewMeetingDetails = ({
       setRows(newDateTimeData);
     }
   }, [NewMeetingreducer.getAllMeetingDetails]);
+
   return (
     <section>
-      <Row className="mt-3">
-        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-          <Button
-            text={t("Leave-meeting")}
-            className={styles["LeaveMeetinButton"]}
-          />
-        </Col>
-      </Row>
+      {meetingStatus === 10 && (
+        <Row className="mt-3">
+          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+            {isOrganisers  ? (
+              <Button
+                text={t("End-meeting")}
+                className={styles["LeaveMeetinButton"]}
+                onClick={() =>
+                  dispatch(
+                    UpdateOrganizersMeeting(
+                      navigate,
+                      endMeetingRequest,
+                      t,
+                      4,
+                      setViewAdvanceMeetingModal,
+                      setAdvanceMeetingModalID
+                    )
+                  )
+                }
+              />
+            ) : (
+              <Button
+                text={t("Leave-meeting")}
+                className={styles["LeaveMeetinButton"]}
+                onClick={() => {
+                  setViewAdvanceMeetingModal(false);
+                  setAdvanceMeetingModalID(null);
+                }}
+              />
+            )}
+          </Col>
+        </Row>
+      )}
+
       <Row>
         <Col
           lg={12}

@@ -141,7 +141,7 @@ const AgendaContributers = ({
             <Col lg={12} md={12} sm={12}>
               <TextField
                 disable={record.isEdit ? true : false}
-                placeholder={t("Content-title")}
+                placeholder={t("Organization-title")}
                 labelClass={"d-none"}
                 width={"100%"}
                 applyClass={"Organizer_table"}
@@ -615,7 +615,7 @@ const AgendaContributers = ({
                     onClick={enableNotificatoinTable}
                   />
                   <Button
-                    text={t("Previous-meeting")}
+                    text={t("Previous")}
                     className={styles["Cancel_Organization"]}
                   />
                   <Button

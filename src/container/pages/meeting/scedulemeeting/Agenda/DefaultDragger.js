@@ -16,22 +16,30 @@ const DefaultDragger = ({ index, setRows, rows }) => {
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
-      console.log("Dropped files", data.file);
+      console.log("DATADATADATA", data.file);
       let newRows = [...rows];
+      console.log("DATADATADATA", newRows);
       let fileData = {
-        name: data.file.originFileObj.name,
-        FileID: getRandomUniqueNumber().toString(),
+        AgendaAttachmentsID: getRandomUniqueNumber().toString(),
+        DisplayAttachmentName: data.file.originFileObj.name,
+        OriginalAttachmentName: data.file.originFileObj.name,
+        FK_MAID: 0,
       };
+      console.log("DATADATADATA", fileData);
       newRows[index].files.push(fileData);
+      console.log("DATADATADATA", newRows);
       setRows(newRows);
     },
     onDrop(e) {
       let list = e.dataTransfer.files;
       let newRows = [...rows];
+      console.log("DATADATADATA", list);
       list.map((fileDatas, fileindex) => {
         let fileData = {
-          name: fileDatas.file.originFileObj.name,
-          FileID: getRandomUniqueNumber().toString(),
+          AgendaAttachmentsID: getRandomUniqueNumber().toString(),
+          DisplayAttachmentName: fileDatas.file.originFileObj.name,
+          OriginalAttachmentName: fileDatas.file.originFileObj.name,
+          FK_MAID: 0,
         };
         newRows[index].files.push(fileData);
       });

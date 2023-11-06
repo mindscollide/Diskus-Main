@@ -168,7 +168,7 @@ const NotifyAgendaModal = ({
                       onChange={handleCheckAll}
                     />
                     <p className={styles["Check_box_title"]}>
-                      {t("All-agenda-organizer-except")}
+                      {t("All-agenda-organizer")}
                     </p>
                   </>
                 )}

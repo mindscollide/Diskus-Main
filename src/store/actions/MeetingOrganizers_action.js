@@ -1,45 +1,47 @@
-import * as actions from '../action_types'
-import axios from 'axios'
-import { RefreshToken } from './Auth_action'
+import * as actions from "../action_types";
+import axios from "axios";
+import { RefreshToken } from "./Auth_action";
 import {
   getAllGroupsUsersAndCommitteesByOrganizaitonID,
   saveMeetingOrganizers,
   meetingStatusUpdate,
   getAllMeetingOrganizers,
   sendNotification,
-} from '../../commen/apis/Api_config'
-import { meetingApi } from '../../commen/apis/Api_ends_points'
+} from "../../commen/apis/Api_config";
+import { meetingApi } from "../../commen/apis/Api_ends_points";
+import { GetAllMeetingDetailsApiFunc } from "./NewMeetingActions";
+import { ViewMeeting } from "./Get_List_Of_Assignees";
 
 const getAllCommitteesUsersandGroups_init = () => {
   return {
     type: actions.GETALLCOMMITTEESUSERSANDGROUPS_INIT,
-  }
-}
+  };
+};
 const getAllCommitteesUsersandGroups_success = (response, message) => {
   return {
     type: actions.GETALLCOMMITTEESUSERSANDGROUPS_SUCCESS,
     response: response,
     message: message,
-  }
-}
+  };
+};
 const getAllCommitteesUsersandGroups_fail = (message) => {
   return {
     type: actions.GETALLCOMMITTEESUSERSANDGROUPS_FAIL,
     message: message,
-  }
-}
+  };
+};
 const GetAllCommitteesUsersandGroups = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem('token'))
+  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(getAllCommitteesUsersandGroups_init())
-    let form = new FormData()
-    form.append('RequestData', JSON.stringify(Data))
+    dispatch(getAllCommitteesUsersandGroups_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
     form.append(
-      'RequestMethod',
-      getAllGroupsUsersAndCommitteesByOrganizaitonID.RequestMethod,
-    )
+      "RequestMethod",
+      getAllGroupsUsersAndCommitteesByOrganizaitonID.RequestMethod
+    );
     axios({
-      method: 'post',
+      method: "post",
       url: meetingApi,
       data: form,
       headers: {
@@ -48,85 +50,87 @@ const GetAllCommitteesUsersandGroups = (Data, navigate, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_01'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_01".toLowerCase()
                 )
             ) {
               dispatch(
                 getAllCommitteesUsersandGroups_success(
                   response.data.responseResult,
-                  t('Record-found'),
-                ),
-              )
+                  t("Record-found")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_02'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_02".toLowerCase()
                 )
             ) {
               dispatch(
-                getAllCommitteesUsersandGroups_fail(t('No-records-found')),
-              )
+                getAllCommitteesUsersandGroups_fail(t("No-records-found"))
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_03'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_03".toLowerCase()
                 )
             ) {
               dispatch(
-                getAllCommitteesUsersandGroups_fail(t('Something-went-wrong')),
-              )
+                getAllCommitteesUsersandGroups_fail(t("Something-went-wrong"))
+              );
             } else {
               dispatch(
-                getAllCommitteesUsersandGroups_fail(t('Something-went-wrong')),
-              )
+                getAllCommitteesUsersandGroups_fail(t("Something-went-wrong"))
+              );
             }
           } else {
             dispatch(
-              getAllCommitteesUsersandGroups_fail(t('Something-went-wrong')),
-            )
+              getAllCommitteesUsersandGroups_fail(t("Something-went-wrong"))
+            );
           }
         } else {
           dispatch(
-            getAllCommitteesUsersandGroups_fail(t('Something-went-wrong')),
-          )
+            getAllCommitteesUsersandGroups_fail(t("Something-went-wrong"))
+          );
         }
       })
       .catch((response) => {
-        dispatch(getAllCommitteesUsersandGroups_fail(t('Something-went-wrong')))
-      })
-  }
-}
+        dispatch(
+          getAllCommitteesUsersandGroups_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
 
 const meetingOrganizers = (response) => {
   return {
     type: actions.GET_MEETING_ORGANIZERS,
     response: response,
-  }
-}
+  };
+};
 
 const selectedMeetingOrganizers = (response) => {
   return {
     type: actions.SELECTED_MEETING_ORGANIZERS,
     response: response,
-  }
-}
+  };
+};
 
 // save meeting organizers Init
 const saveMeetingOrganizers_init = () => {
   return {
     type: actions.SAVE_MEETINGORGANIZERS_INIT,
-  }
-}
+  };
+};
 
 // save meeting organizers success
 const saveMeetingOrganizers_success = (response, message) => {
@@ -134,30 +138,30 @@ const saveMeetingOrganizers_success = (response, message) => {
     type: actions.SAVE_MEETINGORGANIZERS_SUCCESS,
     response: response,
     message: message,
-  }
-}
+  };
+};
 
 // save meeting organizers fail
 const saveMeetingOrganizers_fail = (message) => {
   return {
     type: actions.SAVE_MEETINGORGANIZERS_FAIL,
     message: message,
-  }
-}
+  };
+};
 
 // Save Meeting Organizers Api
 const SaveMeetingOrganizers = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem('token'))
-  let currentMeetingID = Number(localStorage.getItem('meetingID'))
-  let Data2 = { MeetingID: currentMeetingID }
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  let Data2 = { MeetingID: currentMeetingID };
 
   return async (dispatch) => {
-    dispatch(saveMeetingOrganizers_init())
-    let form = new FormData()
-    form.append('RequestData', JSON.stringify(Data))
-    form.append('RequestMethod', saveMeetingOrganizers.RequestMethod)
+    dispatch(saveMeetingOrganizers_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", saveMeetingOrganizers.RequestMethod);
     await axios({
-      method: 'post',
+      method: "post",
       url: meetingApi,
       data: form,
       headers: {
@@ -166,66 +170,66 @@ const SaveMeetingOrganizers = (navigate, Data, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(SaveMeetingOrganizers(navigate, Data, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveMeetingOrganizers(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_SaveMeetingOrganizers_01'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_SaveMeetingOrganizers_01".toLowerCase()
                 )
             ) {
               await dispatch(
                 saveMeetingOrganizers_success(
                   response.data.responseResult,
-                  t('Organizers-saved-successfully'),
-                ),
-              )
-              dispatch(GetAllMeetingOrganizers(Data2, navigate, t))
+                  t("Organizers-saved-successfully")
+                )
+              );
+              dispatch(GetAllMeetingOrganizers(Data2, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_SaveMeetingOrganizers_02'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_SaveMeetingOrganizers_02".toLowerCase()
                 )
             ) {
               dispatch(
                 saveMeetingOrganizers_fail(
-                  t('Organizers-not-saved-successfully'),
-                ),
-              )
+                  t("Organizers-not-saved-successfully")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_SaveMeetingOrganizers_03'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_SaveMeetingOrganizers_03".toLowerCase()
                 )
             ) {
-              dispatch(saveMeetingOrganizers_fail(t('Something-went-wrong')))
+              dispatch(saveMeetingOrganizers_fail(t("Something-went-wrong")));
             } else {
-              dispatch(saveMeetingOrganizers_fail(t('Something-went-wrong')))
+              dispatch(saveMeetingOrganizers_fail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(saveMeetingOrganizers_fail(t('Something-went-wrong')))
+            dispatch(saveMeetingOrganizers_fail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(saveMeetingOrganizers_fail(t('Something-went-wrong')))
+          dispatch(saveMeetingOrganizers_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(saveMeetingOrganizers_fail(t('Something-went-wrong')))
-      })
-  }
-}
+        dispatch(saveMeetingOrganizers_fail(t("Something-went-wrong")));
+      });
+  };
+};
 
 // save meeting organizers Init
 const updateOrganizerMeetingStatus_init = () => {
   return {
     type: actions.UPDATE_ORGANIZERSMEETING_INIT,
-  }
-}
+  };
+};
 
 // save meeting organizers success
 const updateOrganizerMeetingStatus_success = (response, message) => {
@@ -233,27 +237,37 @@ const updateOrganizerMeetingStatus_success = (response, message) => {
     type: actions.UPDATE_ORGANIZERSMEETING_SUCCESS,
     response: response,
     message: message,
-  }
-}
+  };
+};
 
 // save meeting organizers fail
 const updateOrganizerMeetingStatus_fail = (message) => {
   return {
     type: actions.UPDATE_ORGANIZERSMEETING_FAIL,
     message: message,
-  }
-}
+  };
+};
 
 // Save Meeting Organizers Api
-const UpdateOrganizersMeeting = (navigate, Data, t,route,setPublishState) => {
-  let token = JSON.parse(localStorage.getItem('token'))
+const UpdateOrganizersMeeting = (
+  navigate,
+  Data,
+  t,
+  route,
+  setPublishState,
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
+  setCalendarViewModal
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
-    dispatch(updateOrganizerMeetingStatus_init())
-    let form = new FormData()
-    form.append('RequestData', JSON.stringify(Data))
-    form.append('RequestMethod', meetingStatusUpdate.RequestMethod)
+    dispatch(updateOrganizerMeetingStatus_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", meetingStatusUpdate.RequestMethod);
     await axios({
-      method: 'post',
+      method: "post",
       url: meetingApi,
       data: form,
       headers: {
@@ -262,100 +276,147 @@ const UpdateOrganizersMeeting = (navigate, Data, t,route,setPublishState) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(UpdateOrganizersMeeting(navigate, Data, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(UpdateOrganizersMeeting(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_MeetingStatusUpdate_01'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase()
                 )
             ) {
               await dispatch(
                 updateOrganizerMeetingStatus_success(
                   response.data.responseResult,
-                  t('Record-updated'),
-                ),
-              )
-              if(route){
-                setPublishState(Data.MeetingID)
+                  t("Record-updated")
+                )
+              );
+              if (route) {
+                if (route === 3) {
+                  let requestDataForMeetingDetails = {
+                    MeetingID: Number(Data.MeetingID),
+                  };
+                  await dispatch(
+                    GetAllMeetingDetailsApiFunc(
+                      requestDataForMeetingDetails,
+                      navigate,
+                      t
+                    )
+                  );
+                  setAdvanceMeetingModalID(Data.MeetingID);
+                  setPublishState(true);
+                } else if (route === 3) {
+                  let requestDataForMeetingDetails = {
+                    MeetingID: Number(Data.MeetingID),
+                  };
+                  await dispatch(
+                    GetAllMeetingDetailsApiFunc(
+                      requestDataForMeetingDetails,
+                      navigate,
+                      t
+                    )
+                  );
+                  setAdvanceMeetingModalID(null);
+                  setPublishState(false);
+                } else if (route === 4) {
+                  let requestDataForMeetingDetails = {
+                    MeetingID: Number(Data.MeetingID),
+                  };
+                  await dispatch(
+                    ViewMeeting(
+                      navigate,
+                      requestDataForMeetingDetails,
+                      t,
+                      setViewFlag,
+                      setEditFlag,
+                      setCalendarViewModal,
+                      1
+                    )
+                  );
+                  setAdvanceMeetingModalID(Data.MeetingID);
+                  setPublishState(false);
+                } else {
+                  setPublishState(Data.MeetingID);
+                }
               }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_MeetingStatusUpdate_02'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_02".toLowerCase()
                 )
             ) {
               dispatch(
-                updateOrganizerMeetingStatus_fail(t('Record-not-updated')),
-              )
+                updateOrganizerMeetingStatus_fail(t("Record-not-updated"))
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_MeetingStatusUpdate_03'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_03".toLowerCase()
                 )
             ) {
               dispatch(
-                updateOrganizerMeetingStatus_fail(t('Something-went-wrong')),
-              )
+                updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+              );
             } else {
               dispatch(
-                updateOrganizerMeetingStatus_fail(t('Something-went-wrong')),
-              )
+                updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+              );
             }
           } else {
             dispatch(
-              updateOrganizerMeetingStatus_fail(t('Something-went-wrong')),
-            )
+              updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+            );
           }
         } else {
-          dispatch(updateOrganizerMeetingStatus_fail(t('Something-went-wrong')))
+          dispatch(
+            updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+          );
         }
       })
       .catch((response) => {
-        dispatch(updateOrganizerMeetingStatus_fail(t('Something-went-wrong')))
-      })
-  }
-}
+        dispatch(updateOrganizerMeetingStatus_fail(t("Something-went-wrong")));
+      });
+  };
+};
 
 const clearResponseMessage = (message) => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_MO,
     message: message,
-  }
-}
+  };
+};
 
 const getAllMeetingOrganizers_init = () => {
   return {
     type: actions.GETALLMEETINGORGANIZERS_INIT,
-  }
-}
+  };
+};
 const getAllMeetingOrganizers_success = (response, message) => {
   return {
     type: actions.GETALLMEETINGORGANIZERS_SUCCESS,
     response: response,
     message: message,
-  }
-}
+  };
+};
 const getAllMeetingOrganizers_fail = (message) => {
   return {
     type: actions.GETALLMEETINGORGANIZERS_FAIL,
     message: message,
-  }
-}
+  };
+};
 const GetAllMeetingOrganizers = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem('token'))
+  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(getAllMeetingOrganizers_init())
-    let form = new FormData()
-    form.append('RequestData', JSON.stringify(Data))
-    form.append('RequestMethod', getAllMeetingOrganizers.RequestMethod)
+    dispatch(getAllMeetingOrganizers_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getAllMeetingOrganizers.RequestMethod);
     axios({
-      method: 'post',
+      method: "post",
       url: meetingApi,
       data: form,
       headers: {
@@ -364,114 +425,114 @@ const GetAllMeetingOrganizers = (Data, navigate, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(GetAllMeetingOrganizers(Data, navigate, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllMeetingOrganizers(Data, navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_GetAllMeetingOrganizers_01'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_GetAllMeetingOrganizers_01".toLowerCase()
                 )
             ) {
               dispatch(
                 getAllMeetingOrganizers_success(
                   response.data.responseResult,
-                  t('Record-found'),
-                ),
-              )
+                  t("Record-found")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_GetAllMeetingOrganizers_02'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_GetAllMeetingOrganizers_02".toLowerCase()
                 )
             ) {
-              dispatch(getAllMeetingOrganizers_fail(t('No-records-found')))
+              dispatch(getAllMeetingOrganizers_fail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_GetAllMeetingOrganizers_03'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_GetAllMeetingOrganizers_03".toLowerCase()
                 )
             ) {
-              dispatch(getAllMeetingOrganizers_fail(t('Something-went-wrong')))
+              dispatch(getAllMeetingOrganizers_fail(t("Something-went-wrong")));
             } else {
-              dispatch(getAllMeetingOrganizers_fail(t('Something-went-wrong')))
+              dispatch(getAllMeetingOrganizers_fail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(getAllMeetingOrganizers_fail(t('Something-went-wrong')))
+            dispatch(getAllMeetingOrganizers_fail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(getAllMeetingOrganizers_fail(t('Something-went-wrong')))
+          dispatch(getAllMeetingOrganizers_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(getAllMeetingOrganizers_fail(t('Something-went-wrong')))
-      })
-  }
-}
+        dispatch(getAllMeetingOrganizers_fail(t("Something-went-wrong")));
+      });
+  };
+};
 
 const saveMeetingFlag = (response) => {
   return {
     type: actions.SAVE_MEETING_FLAG,
     response: response,
-  }
-}
+  };
+};
 
 const editMeetingFlag = (response) => {
   return {
     type: actions.EDIT_MEETING_FLAG,
     response: response,
-  }
-}
+  };
+};
 
 const notificationSendData = (response) => {
   return {
     type: actions.NOTIFICATION_SEND_DATA,
     response: response,
-  }
-}
+  };
+};
 
 const notificationUpdateData = (response) => {
   return {
     type: actions.NOTIFICATION_UPDATE_DATA,
     response: response,
-  }
-}
+  };
+};
 
 //Send Notification Api
 const sendNotificationOrganizerInit = () => {
   return {
     type: actions.SEND_NOTIFICATION_ORGANIZER_INIT,
-  }
-}
+  };
+};
 
 const sendNotificationOrganizerSuccess = (message) => {
   return {
     type: actions.SEND_NOTIFICATION_ORGANIZER_SUCCESS,
     message: message,
-  }
-}
+  };
+};
 
 const sendNotificationOrganizerFail = (message) => {
   return {
     type: actions.SEND_NOTIFICATION_ORGANIZER_FAIL,
     message: message,
-  }
-}
+  };
+};
 
 //Send Notification API Function
 const sendNotificationOrganizer = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem('token'))
+  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(sendNotificationOrganizerInit())
-    let form = new FormData()
-    form.append('RequestMethod', sendNotification.RequestMethod)
-    form.append('RequestData', JSON.stringify(Data))
+    dispatch(sendNotificationOrganizerInit());
+    let form = new FormData();
+    form.append("RequestMethod", sendNotification.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
     axios({
-      method: 'post',
+      method: "post",
       url: meetingApi,
       data: form,
       headers: {
@@ -480,50 +541,52 @@ const sendNotificationOrganizer = (Data, navigate, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(sendNotificationOrganizer(Data, navigate, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(sendNotificationOrganizer(Data, navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_SendRecentNotifications_01'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_SendRecentNotifications_01".toLowerCase()
                 )
             ) {
               dispatch(
                 sendNotificationOrganizerSuccess(
-                  t('Notification-sent-successfully'),
-                ),
-              )
+                  t("Notification-sent-successfully")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Meeting_MeetingServiceManager_SendRecentNotifications_02'.toLowerCase(),
+                  "Meeting_MeetingServiceManager_SendRecentNotifications_02".toLowerCase()
                 )
             ) {
               dispatch(
                 sendNotificationOrganizerFail(
-                  t('Notification-not-sent-successfully'),
-                ),
-              )
+                  t("Notification-not-sent-successfully")
+                )
+              );
             } else {
-              dispatch(sendNotificationOrganizerFail(t('Something-went-wrong')))
+              dispatch(
+                sendNotificationOrganizerFail(t("Something-went-wrong"))
+              );
             }
           } else {
-            dispatch(sendNotificationOrganizerFail(t('Something-went-wrong')))
+            dispatch(sendNotificationOrganizerFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(sendNotificationOrganizerFail(t('Something-went-wrong')))
+          dispatch(sendNotificationOrganizerFail(t("Something-went-wrong")));
         }
-        console.log('responseresponse', response)
+        console.log("responseresponse", response);
       })
       .catch((response) => {
-        dispatch(sendNotificationOrganizerFail(t('Something-went-wrong')))
-      })
-  }
-}
+        dispatch(sendNotificationOrganizerFail(t("Something-went-wrong")));
+      });
+  };
+};
 
 export {
   GetAllCommitteesUsersandGroups,
@@ -538,4 +601,4 @@ export {
   notificationSendData,
   sendNotificationOrganizer,
   notificationUpdateData,
-}
+};

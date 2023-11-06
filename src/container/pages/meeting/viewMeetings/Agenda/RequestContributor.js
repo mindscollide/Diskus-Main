@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import styles from "./Agenda.module.css";
 import { TextField } from "../../../../../components/elements";
 
 const RequestContributor = ({ data, index, setRows, rows }) => {
@@ -32,37 +33,19 @@ const RequestContributor = ({ data, index, setRows, rows }) => {
   };
   return (
     <>
-      <Row key={index + 5} className="mt-2">
+      <Row key={index + 5} className="mt-3">
         <Col lg={12} md={12} sm={12}>
-          <TextField
-            applyClass={"AgendaTextField"}
-            labelClass={"d-none"}
-            placeholder={t("Enter-email-address-here")}
-            name={"MainRequestContributorName"}
-            value={data.requestContributorURl}
-            change={(e) => {
-              handleMainAgendaAdditionalFieldChangeRequestContributorURL(
-                index,
-                e
-              );
-            }}
-          />
+          <span className={styles["ContributorTitle_Heading"]}>
+            Get new computers from Techno City Mall. Also, Get a new graphics
+            card for the designer.
+          </span>
         </Col>
       </Row>
-      <Row className="mb-2">
+      <Row className="mt-2 mb-2">
         <Col lg={12} md={12} sm={12}>
-          <TextField
-            applyClass="text-area-create-resolution"
-            type="text"
-            as={"textarea"}
-            name={"MainNoteReqContributor"}
-            value={data.MainNote}
-            change={(e) => handleMainAgendaAdditionalMainReqNotes(index, e)}
-            rows="4"
-            placeholder={t("Enter-notes")}
-            required={true}
-            maxLength={500}
-          />
+          <span className={styles["ContributorDescription"]}>
+            https://www.youtube.com/watch
+          </span>
         </Col>
       </Row>
     </>

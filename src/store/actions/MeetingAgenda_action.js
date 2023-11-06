@@ -5,6 +5,10 @@ import {
   getAgendaVotingDetails,
   getAllVotingResultDisplay,
   saveAgendaVoting,
+  getAgendaAndVotingInfo,
+  casteVoteForAgenda,
+  viewAgendaVotingResults,
+  getAdvanceMeetingAgendabyMeetingID,
 } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 
@@ -291,9 +295,368 @@ const SaveAgendaVoting = (Data, navigate, t) => {
   };
 };
 
+const getAgendaAndVotingInfo_init = () => {
+  return {
+    type: actions.GET_AGENDAVOTINGINFO_INIT,
+  };
+};
+const getAgendaAndVotingInfo_success = (response, message) => {
+  return {
+    type: actions.GET_AGENDAVOTINGINFO_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAgendaAndVotingInfo_fail = (message) => {
+  return {
+    type: actions.GET_AGENDAVOTINGINFO_FAIL,
+    message: message,
+  };
+};
+const GetAgendaAndVotingInfo = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAgendaAndVotingInfo_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getAgendaAndVotingInfo.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAgendaAndVotingInfo_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAgendaAndVotingInfo_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAgendaAndVotingInfo_02".toLowerCase()
+                )
+            ) {
+              dispatch(getAgendaAndVotingInfo_fail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAgendaAndVotingInfo_03".toLowerCase()
+                )
+            ) {
+              dispatch(getAgendaAndVotingInfo_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getAgendaAndVotingInfo_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getAgendaAndVotingInfo_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getAgendaAndVotingInfo_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(getAgendaAndVotingInfo_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const casteVoteForAgenda_init = () => {
+  return {
+    type: actions.CASTEVOTEFORAGENDA_INIT,
+  };
+};
+const casteVoteForAgenda_success = (response, message) => {
+  return {
+    type: actions.CASTEVOTEFORAGENDA_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const casteVoteForAgenda_fail = (message) => {
+  return {
+    type: actions.CASTEVOTEFORAGENDA_FAIL,
+    message: message,
+  };
+};
+const CasteVoteForAgenda = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(casteVoteForAgenda_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", casteVoteForAgenda.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveAgendaVoting(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_CasteVoteForAgenda_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                casteVoteForAgenda_success(
+                  response.data.responseResult,
+                  t("Record-saved")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_CasteVoteForAgenda_02".toLowerCase()
+                )
+            ) {
+              dispatch(casteVoteForAgenda_fail(t("No-records-saved")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_CasteVoteForAgenda_03".toLowerCase()
+                )
+            ) {
+              dispatch(casteVoteForAgenda_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(casteVoteForAgenda_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(casteVoteForAgenda_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(casteVoteForAgenda_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(casteVoteForAgenda_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const viewAgendaVotingResults_init = () => {
+  return {
+    type: actions.VIEW_AGENDAVOTINGRESULTS_INIT,
+  };
+};
+const viewAgendaVotingResults_success = (response, message) => {
+  return {
+    type: actions.VIEW_AGENDAVOTINGRESULTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const viewAgendaVotingResults_fail = (message) => {
+  return {
+    type: actions.VIEW_AGENDAVOTINGRESULTS_FAIL,
+    message: message,
+  };
+};
+const ViewAgendaVotingResults = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(viewAgendaVotingResults_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", viewAgendaVotingResults.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(ViewAgendaVotingResults(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ViewAgendaVotingResults_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                viewAgendaVotingResults_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ViewAgendaVotingResults_02".toLowerCase()
+                )
+            ) {
+              dispatch(viewAgendaVotingResults_fail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ViewAgendaVotingResults_03".toLowerCase()
+                )
+            ) {
+              dispatch(viewAgendaVotingResults_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(viewAgendaVotingResults_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(viewAgendaVotingResults_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(viewAgendaVotingResults_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(viewAgendaVotingResults_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const getAdvanceMeetingAgendabyMeetingID_init = () => {
+  return {
+    type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_INIT,
+  };
+};
+const getAdvanceMeetingAgendabyMeetingID_success = (response, message) => {
+  return {
+    type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAdvanceMeetingAgendabyMeetingID_fail = (message) => {
+  return {
+    type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_FAIL,
+    message: message,
+  };
+};
+const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAdvanceMeetingAgendabyMeetingID_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      getAdvanceMeetingAgendabyMeetingID.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingID_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingID_fail(t("No-records-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingID_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingID_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
   SaveAgendaVoting,
   clearResponseMessage,
+  GetAgendaAndVotingInfo,
+  CasteVoteForAgenda,
+  ViewAgendaVotingResults,
+  GetAdvanceMeetingAgendabyMeetingID,
 };
