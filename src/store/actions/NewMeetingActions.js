@@ -3939,7 +3939,7 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_01".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -3952,7 +3952,7 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_02".toLowerCase()
                 )
             ) {
               dispatch(showAgendaWiseAddMinutesFailed(t("No-record-saved")));
@@ -3960,9 +3960,13 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_03".toLowerCase()
                 )
             ) {
+              dispatch(
+                showAgendaWiseAddMinutesFailed(t("Something-went-wrong"))
+              );
+            } else {
               dispatch(
                 showAgendaWiseAddMinutesFailed(t("Something-went-wrong"))
               );
