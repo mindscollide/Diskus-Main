@@ -514,6 +514,17 @@ const Minutes = ({ setMinutes }) => {
     };
     console.log(docsData, "messagesmessages");
     dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
+
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+
+    setFileAttachments([]);
   };
 
   const handleRemovingTheMinutes = () => {
