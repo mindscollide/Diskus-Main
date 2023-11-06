@@ -994,7 +994,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1002,7 +1002,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1018,7 +1018,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         generalMinutesDocument: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1026,7 +1026,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1042,7 +1042,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         generalminutesDocumentForMeeting: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1050,7 +1050,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1065,7 +1065,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1073,7 +1073,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1088,7 +1088,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1096,7 +1096,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
