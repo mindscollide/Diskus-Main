@@ -77,6 +77,7 @@ const Agenda = ({ setSceduleMeeting }) => {
     const newMainAgenda = {
       ID: getRandomUniqueNumber().toString(),
       title: "",
+      description: "",
       selectedOption: null,
       startDate: null,
       endDate: null,
@@ -89,6 +90,7 @@ const Agenda = ({ setSceduleMeeting }) => {
         {
           SubAgendaID: getRandomUniqueNumber().toString(),
           SubTitle: "",
+          description: "",
           selectedOption: null,
           startDate: null,
           endDate: null,
