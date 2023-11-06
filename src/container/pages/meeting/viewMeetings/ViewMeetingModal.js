@@ -26,7 +26,7 @@ const ViewMeetingModal = ({
   setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
   unPublish,
-  isOrganisers
+  isOrganisers,
 }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -40,7 +40,7 @@ const ViewMeetingModal = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
-
+  console.log("isOrganisers",isOrganisers);
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
     setorganizers(false);
