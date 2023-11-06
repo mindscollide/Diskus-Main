@@ -2730,7 +2730,7 @@ const ShowAllGeneralMinutesFailed = (response, message) => {
 };
 
 // Api Function For General Minutes
-const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
+const getAllGeneralMinutesApiFunc = (navigate, t, Data, minuteID) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(ShowAllGeneralMinutesInit());
@@ -2749,7 +2749,7 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
         console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
-          dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
+          dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, minuteID));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");
@@ -2767,6 +2767,7 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
                 response.data.responseResult,
                 "FK_MeetingGeneralMinutesID"
               );
+
               // let MeetingDocs = {
               //   MDID: 1833,
               // };

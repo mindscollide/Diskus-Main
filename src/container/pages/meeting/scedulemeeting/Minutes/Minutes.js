@@ -21,6 +21,7 @@ import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
   ADDGeneralMinutesApiFunc,
   DeleteGeneralMinutesApiFunc,
+  RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
   getAllGeneralMinutesApiFunc,
@@ -214,12 +215,7 @@ const Minutes = ({ setMinutes }) => {
       MeetingID: currentMeetingID,
     };
     console.log(Data, "useEffectuseEffect");
-    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
-
-    // let Retrive = {
-    //   FK_MeetingGeneralMinutesID: minuteID,
-    // };
-    // dispatch(RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Retrive, t));
+    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, minuteID));
   }, []);
 
   useEffect(() => {
@@ -446,9 +442,12 @@ const Minutes = ({ setMinutes }) => {
 
   //Edit Button Function
   const handleEditFunc = (data) => {
-    console.log("handleEditFunc called");
-    console.log(data.minutesDetails, "data.minutesDetails");
-
+    console.log("handleEditFunccalled");
+    console.log(data, "dataminutesDetails");
+    let Retrive = {
+      FK_MeetingGeneralMinutesID: data.minuteID,
+    };
+    dispatch(RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Retrive, t));
     // Ensure data.minutesDetails is not undefined or null before setting the state
     if (data.minutesDetails !== undefined && data.minutesDetails !== null) {
       setAddNoteFields({
