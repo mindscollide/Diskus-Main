@@ -3154,7 +3154,7 @@ const showRetriveGeneralMinutesDocsSuccess = (response, message) => {
 
 const showRetriveGeneralMinutesDocsFailed = (message) => {
   return {
-    type: actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_INIT,
+    type: actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_FAILED,
     message: message,
   };
 };
