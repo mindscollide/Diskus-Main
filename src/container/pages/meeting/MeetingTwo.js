@@ -427,12 +427,18 @@ const NewMeeting = () => {
       key: "title",
       width: "115px",
       render: (text, record) => {
+        const isOrganiser = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Organizer"
+        );
         return (
           <span
             className={styles["meetingTitle"]}
-            onClick={() =>
-              handleViewMeeting(record.pK_MDID, record.isQuickMeeting)
-            }
+            onClick={() => {
+              handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+              setIsOrganisers(isOrganiser);
+            }}
           >
             {text}
           </span>
@@ -632,31 +638,45 @@ const NewMeeting = () => {
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
-            (Number(attendee.user.pK_UID) === Number(currentUserId) &&
-              attendee.meetingAttendeeRole.role === "Participant") ||
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            (attendee.meetingAttendeeRole.role === "Participant" ||
+              attendee.meetingAttendeeRole.role === "Agenda Contributor")
         );
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
-        const isQuickMeeting = record.isQuickMeeting;
-        let startMeetingRequest = {
+        const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
-          StatusID: 2,
+          StatusID: 10,
         };
-        if (record.status === "1") {
-          console.log("rowsrowsrowsrowsrows record", record.status);
+        if (Number(record.status) === 1) {
           if (isParticipant) {
           } else {
-            if (isQuickMeeting) {
+            if (record.isQuickMeeting === true) {
               return (
                 <Row>
                   <Col sm={12} md={12} lg={12}>
                     <Button
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
+                      onClick={() => {
+                        dispatch(
+                          UpdateOrganizersMeeting(
+                            navigate,
+                            startMeetingRequest,
+                            t,
+                            4,
+                            setViewFlag,
+                            setAdvanceMeetingModalID,
+                            setViewFlag,
+                            setEditFlag,
+                            setCalendarViewModal
+                          )
+                        );
+                        setIsOrganisers(isOrganiser);
+                      }}
                     />
                   </Col>
                 </Row>
@@ -687,37 +707,43 @@ const NewMeeting = () => {
               );
             }
           }
-        } else if (record.status === "2") {
+        } else if (Number(record.status) === 10) {
+          console.log("check status", record.status);
+
           if (isParticipant) {
             return (
               <Button
                 text={t("Join-meeting")}
                 className={styles["joining-Meeting"]}
-                onClick={() =>
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting)
-                }
+                onClick={() => {
+                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  setIsOrganisers(isOrganiser);
+                }}
               />
             );
           } else if (isOrganiser) {
             return (
               <Button
-                text={t("Join-meeting")}
+                text={t("Start-join-meeting")}
                 className={styles["joining-Meeting"]}
-                onClick={() =>
-                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting)
-                }
+                onClick={() => {
+                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  setIsOrganisers(isOrganiser);
+                }}
               />
             );
           }
-        } else if (record.status === "10") {
+        } else if (Number(record.status) === 2) {
+          console.log("check status", record.status);
+
           if (isOrganiser) {
-            return (
-              <Button
-                text={t("End-Meeting")}
-                className={styles["End-Meeting"]}
-                onClick={EndMeetingModal}
-              />
-            );
+            // return (
+            //   <Button
+            //     text={t("End-Meeting")}
+            //     className={styles["End-Meeting"]}
+            //     onClick={EndMeetingModal}
+            //   />
+            // );
           } else if (isParticipant) {
             // return (
             //   <Button
@@ -727,6 +753,7 @@ const NewMeeting = () => {
             //   />
             // );
           }
+        } else {
         }
       },
     },

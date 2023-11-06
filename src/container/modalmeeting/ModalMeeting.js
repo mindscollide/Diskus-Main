@@ -35,9 +35,7 @@ import {
   GetAllReminders,
 } from "../../store/actions/Get_List_Of_Assignees";
 import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar";
-import {
-  FileUploadToDo,
-} from "../../store/actions/Upload_action";
+import { FileUploadToDo } from "../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import InputIcon from "react-multi-date-picker/components/input_icon";
@@ -113,18 +111,17 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [createMeetingTime, setCreateMeetingTime] = useState("");
-  console.log(
-    createMeetingTime,
-    "createMeetingTimecreateMeetingTimecreateMeetingTime"
-  );
+  const [onclickFlag, setOnclickFlag] = useState(false);
+
   // for Participant options
   const participantOptions = [t("Organizer"), t("Participant")];
   const currentDate = new Date();
   const currentHours = currentDate.getHours().toString().padStart(2, "0");
   const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
   const getcurrentTime = `${currentHours}:${currentMinutes}`;
-
-  console.log(getcurrentTime, "createMeetingTimecreateMeetingTime");
+  const [meetingDate, setMeetingDate] = useState("");
+  const [fileForSend, setFileForSend] = useState([]);
+  const [fileSize, setFileSize] = useState(0);
 
   //Reminder Stats
   const [reminderValue, setReminderValue] = useState("");
@@ -159,12 +156,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       }
     }
   }, [currentLanguage]);
-
-  function validateEmail(email) {
-    const re =
-      /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/;
-    return re.test(String(email).toLowerCase());
-  }
 
   function urlPatternValidation(URL) {
     const regex = new RegExp(
@@ -335,23 +326,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     });
   }
 
-  const handleFocusMeetingTime = () => {
-    setCreateMeeting({
-      ...createMeeting,
-      MeetingStartTime: RemoveTimeDashes(getcurrentTime),
-      MeetingEndTime: RemoveTimeDashes(getcurrentTime),
-    });
-    setCreateMeetingTime(getcurrentTime);
-  };
-
-  const handleEndDateChange = (date) => {
-    const updatedRows = [...createMeeting];
-    updatedRows.MeetingStartTime = date;
-    setCreateMeeting(updatedRows);
-  };
-
-  const [selectedTime, setSelectedTime] = useState(null);
-
   const handleTimeChange = (newTime) => {
     let newDate = new Date(newTime);
     if (newDate instanceof Date && !isNaN(newDate)) {
@@ -410,14 +384,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     }
   };
 
-  const [meetingDate, setMeetingDate] = useState("");
-  console.log(meetingDate, "meetingDatemeetingDatemeetingDate");
   const meetingDateHandler = (date, format = "YYYYMMDD") => {
-    console.log("meetingDateHandler", date);
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
-    console.log("meetingDateHandler", meetingDateValueFormat);
-    console.log("meetingDateHandler", meetingDateSaveFormat);
     setMeetingDate(meetingDateValueFormat);
     setCreateMeeting({
       ...createMeeting,
@@ -448,9 +417,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     } else {
     }
   };
-
-  const [fileForSend, setFileForSend] = useState([]);
-  const [fileSize, setFileSize] = useState(0);
 
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
@@ -555,9 +521,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   };
 
   const editGrid = (datarecord, dataindex) => {
-    console.log(datarecord, "editGrideditGrideditGrideditGrid");
-    console.log(dataindex, "editGrideditGrideditGrideditGrid");
-    console.log(datarecord, "editGrideditGrideditGrideditGrid");
     seteditRecordIndex(dataindex);
     seteditRecordFlag(true);
     setObjMeetingAgenda(datarecord.ObjMeetingAgenda);
@@ -1024,8 +987,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     }
   }, [show]);
 
-  console.log("allAssignessList error", createMeeting);
-
   useEffect(() => {
     if (meetingAttendeesList.length > 0) {
       let user1 = createMeeting.MeetingAttendees;
@@ -1069,7 +1030,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     }
   }, [assignees.user]);
 
-  const [onclickFlag, setOnclickFlag] = useState(false);
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
     setOnclickFlag(true);
@@ -1213,7 +1173,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   // for attendies handler
   const handleSubmit = async () => {
     let uploadMeetingAttachments = [...createMeeting.MeetingAgendas];
-    console.log(uploadMeetingAttachments, "uploadMeetingAttachments");
     let finalDateTime = createConvert(
       createMeeting.MeetingDate + createMeeting.MeetingStartTime
     );
@@ -1334,13 +1293,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   };
 
   const deleteFilefromAttachments = (data, index) => {
-    console.log(data, "datadatadatadeleteFilefromAttachments");
     let searchIndex = meetingAgendaAttachments.MeetingAgendaAttachments;
     let newAttachments = attachments.filter(
       (fileData, index) =>
         fileData.DisplayAttachmentName !== data.DisplayAttachmentName
     );
-    console.log(newAttachments, "datadatadatadeleteFilefromAttachments");
     setAttachments(newAttachments);
     searchIndex.splice(index, 1);
     setMeetingAgendaAttachments({
@@ -1356,7 +1313,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setAddedParticipantNameList(addedParticipantNameList);
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
-  console.log(createMeeting, "createMeetingcreateMeetingcreateMeeting");
 
   function CustomInput({ onFocus, value, onChange }) {
     return (

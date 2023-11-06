@@ -10,6 +10,7 @@ import {
 } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import { GetAllMeetingDetailsApiFunc } from "./NewMeetingActions";
+import { ViewMeeting } from "./Get_List_Of_Assignees";
 
 const getAllCommitteesUsersandGroups_init = () => {
   return {
@@ -254,7 +255,10 @@ const UpdateOrganizersMeeting = (
   t,
   route,
   setPublishState,
-  setAdvanceMeetingModalID
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
+  setCalendarViewModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -315,6 +319,23 @@ const UpdateOrganizersMeeting = (
                     )
                   );
                   setAdvanceMeetingModalID(null);
+                  setPublishState(false);
+                } else if (route === 4) {
+                  let requestDataForMeetingDetails = {
+                    MeetingID: Number(Data.MeetingID),
+                  };
+                  await dispatch(
+                    ViewMeeting(
+                      navigate,
+                      requestDataForMeetingDetails,
+                      t,
+                      setViewFlag,
+                      setEditFlag,
+                      setCalendarViewModal,
+                      1
+                    )
+                  );
+                  setAdvanceMeetingModalID(Data.MeetingID);
                   setPublishState(false);
                 } else {
                   setPublishState(Data.MeetingID);
