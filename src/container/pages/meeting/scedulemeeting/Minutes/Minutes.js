@@ -160,7 +160,7 @@ const Minutes = ({ setMinutes }) => {
   const [isEdit, setisEdit] = useState(false);
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
-
+  const [showMore, setShowMore] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -644,6 +644,10 @@ const Minutes = ({ setMinutes }) => {
     setisEdit(false);
   };
 
+  const handleshowMore = () => {
+    setShowMore(!showMore);
+  };
+
   return (
     <section>
       <Row className="mt-3">
@@ -999,87 +1003,107 @@ const Minutes = ({ setMinutes }) => {
                                 </Col>
                               </Row>
                               <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className={styles["DocsScroller"]}
-                                >
-                                  <Row>
-                                    {data.minutesAttachmets.map(
-                                      (filesname, index) => {
-                                        console.log(
-                                          filesname,
-                                          "filesnamefilesname"
-                                        );
-                                        return (
-                                          <>
-                                            <Col
-                                              lg={2}
-                                              md={2}
-                                              sm={12}
-                                              className="position-relative gap-2"
-                                            >
-                                              <section
-                                                className={styles["Outer_Box"]}
-                                              >
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <img
-                                                      src={file_image}
-                                                      width={"100%"}
-                                                      alt=""
-                                                      draggable="false"
-                                                    />
-                                                  </Col>
-                                                </Row>
-
-                                                <section
-                                                  className={
-                                                    styles[
-                                                      "backGround_name_Icon"
-                                                    ]
-                                                  }
-                                                >
-                                                  <Row className="mb-2">
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                      className={
-                                                        styles["IconTextClass"]
-                                                      }
-                                                    >
-                                                      <img
-                                                        src={pdfIcon}
-                                                        height="10px"
-                                                        width="10px"
-                                                        className={
-                                                          styles["IconPDF"]
-                                                        }
-                                                      />
-                                                      <span
-                                                        className={
-                                                          styles["FileName"]
-                                                        }
-                                                      >
-                                                        {
-                                                          data.DisplayAttachmentName
-                                                        }
-                                                      </span>
-                                                    </Col>
-                                                  </Row>
-                                                </section>
-                                              </section>
-                                            </Col>
-                                          </>
-                                        );
-                                      }
-                                    )}
-                                    <Col lg={12} md={12} sm={12}></Col>
-                                  </Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <span onClick={handleshowMore}>
+                                    Show more
+                                  </span>
                                 </Col>
                               </Row>
+                              {showMore ? (
+                                <>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={styles["DocsScroller"]}
+                                    >
+                                      <Row className="mt-3">
+                                        {data.minutesAttachmets.map(
+                                          (filesname, index) => {
+                                            console.log(
+                                              filesname,
+                                              "filesnamefilesname"
+                                            );
+                                            return (
+                                              <>
+                                                <Col
+                                                  lg={2}
+                                                  md={2}
+                                                  sm={12}
+                                                  className="position-relative gap-2"
+                                                >
+                                                  <section
+                                                    className={
+                                                      styles["Outer_Box"]
+                                                    }
+                                                  >
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <img
+                                                          src={file_image}
+                                                          width={"100%"}
+                                                          alt=""
+                                                          draggable="false"
+                                                        />
+                                                      </Col>
+                                                    </Row>
+
+                                                    <section
+                                                      className={
+                                                        styles[
+                                                          "backGround_name_Icon"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <Row className="mb-2">
+                                                        <Col
+                                                          lg={12}
+                                                          md={12}
+                                                          sm={12}
+                                                          className={
+                                                            styles[
+                                                              "IconTextClass"
+                                                            ]
+                                                          }
+                                                        >
+                                                          <img
+                                                            src={pdfIcon}
+                                                            height="10px"
+                                                            width="10px"
+                                                            className={
+                                                              styles["IconPDF"]
+                                                            }
+                                                          />
+                                                          <span
+                                                            className={
+                                                              styles["FileName"]
+                                                            }
+                                                          >
+                                                            {
+                                                              data.DisplayAttachmentName
+                                                            }
+                                                          </span>
+                                                        </Col>
+                                                      </Row>
+                                                    </section>
+                                                  </section>
+                                                </Col>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                        <Col lg={12} md={12} sm={12}></Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              ) : null}
+
                               <img
                                 draggable={false}
                                 src={RedCroseeIcon}
