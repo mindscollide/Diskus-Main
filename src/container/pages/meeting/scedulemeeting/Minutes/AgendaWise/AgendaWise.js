@@ -20,6 +20,7 @@ import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
 import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
+import { AddAgendaWiseMinutesApiFunc } from "../../../../../../store/actions/NewMeetingActions";
 
 const AgendaWise = () => {
   const navigate = useNavigate();
@@ -56,6 +57,12 @@ const AgendaWise = () => {
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
+  const [agendaSelect, setAgendaSelect] = useState({
+    agendaSelectOptions: {
+      id: 0,
+      title: "",
+    },
+  });
 
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
@@ -68,27 +75,30 @@ const AgendaWise = () => {
 
   useEffect(() => {
     console.log(MeetingAgendaReducer, "GetAdvanceMeetingAgendabyMeetingIDData");
-    if (
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== undefined
-    ) {
-      let NewData = [];
-      console.log(
-        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
-        "GetAdvanceMeetingAgendabyMeetingIDData"
-      );
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
-        (agenda, index) => {
-          console.log(agenda, "agendaagendaagenda");
-          NewData.push({
-            value: agenda.id,
-            label: agenda.title,
-          });
-        }
-      );
-      setAgendaOptions(NewData);
-    }
-  }, [NewMeetingreducer.GetAdvanceMeetingAgendabyMeetingIDData]);
+    try {
+      if (
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
+          undefined
+      ) {
+        let NewData = [];
+        console.log(
+          MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
+          "agendaListagendaList"
+        );
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
+          (agenda, index) => {
+            console.log(agenda, "agendaagendaagenda");
+            NewData.push({
+              value: agenda.id,
+              label: agenda.title,
+            });
+          }
+        );
+        setAgendaOptions(NewData);
+      }
+    } catch {}
+  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList]);
 
   console.log(agendaOptions, "NewMeetingreducerNewMeetingreducer");
 
@@ -271,25 +281,31 @@ const AgendaWise = () => {
     }
   };
 
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
-
   const handleAddClickAgendaWise = () => {
-    // let Data = {
-    //   AgendaID: 1222,
-    //   MinuteText: "3223fwfsdfsdrsdd",
-    // };
-    // dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
+    let Data = {
+      AgendaID: "1222",
+      MinuteText: addNoteFields.Description.value,
+    };
+    console.log(Data, "addNoteFieldsaddNoteFields");
+    dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
+  };
+
+  const handleAgendaSelect = (selectoptions) => {
+    console.log(selectoptions, "selectoptionsselectoptions");
+    setAgendaSelect({
+      ...agendaSelect,
+      agendaSelectOptions: {
+        id: selectoptions.value,
+        title: selectoptions.label,
+      },
+    });
   };
 
   return (
     <section>
       <Row className="mt-4">
         <Col lg={6} md={6} sm={6}>
-          <Select options={agendaOptions} />
+          <Select options={agendaOptions} onChange={handleAgendaSelect} />
         </Col>
       </Row>
       <Row className="mt-4">
