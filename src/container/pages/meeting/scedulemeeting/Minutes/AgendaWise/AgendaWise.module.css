@@ -1,0 +1,124 @@
+.Previous_Button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Previous_Button:is(:active, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.RedCrossClass {
+  position: absolute !important;
+  right: -8px;
+  top: -9px;
+  cursor: pointer !important;
+}
+
+.Name {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+}
+
+.Uploaded_heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.Line_heigh {
+  margin-top: 7px !important;
+  line-height: 15px !important;
+}
+
+.Profile_minutes {
+  border-radius: 50% !important;
+}
+
+.Date_Minutes_And_time {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+}
+
+.Box_Minutes {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 92px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  position: relative !important;
+}
+
+.ScrollerMinutes {
+  height: 25vh !important;
+  overflow-x: hidden !important;
+}
+
+.ScrollerMinutes::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.ScrollerMinutes::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Sizing_Saved_Minutes {
+  padding: 0px 10px !important;
+}
+
+.Title_File {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+}
+
+.Add-note-QuillRow {
+  position: relative;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.modal-Note-Title-Input :focus {
+  border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .modal-Note-Title-Input {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.quill-height-addNote {
+  border-top: 1px solid lightgrey;
+  height: 18vh !important;
+  border-radius: 3px !important;
+  position: relative;
+}
+
+.quill-height-addNote .ql-toolbar.ql-snow {
+  color: #a2a2a2 !important;
+}
+
+.ant-upload-text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .ant-upload-text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}

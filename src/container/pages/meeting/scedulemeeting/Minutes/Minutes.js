@@ -32,6 +32,7 @@ import downArrow from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import moment from "moment";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
+import AgendaWise from "./AgendaWise/AgendaWise";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 // import { message, Upload } from "antd";
@@ -217,6 +218,9 @@ const Minutes = ({ setMinutes }) => {
     };
     console.log(Data, "useEffectuseEffect");
     dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, minuteID));
+    return () => {
+      setFileAttachments([]);
+    };
   }, []);
 
   useEffect(() => {
@@ -453,18 +457,20 @@ const Minutes = ({ setMinutes }) => {
         NewMeetingreducer.generalMinutesDocument !== undefined &&
         NewMeetingreducer.generalMinutesDocument !== null
       ) {
-        console.log(
-          NewMeetingreducer.generalMinutesDocument,
-          "generalMinutesDocument"
-        );
         let files = [];
+        let prevData = [];
         NewMeetingreducer.generalMinutesDocument.data.map((data, index) => {
-          console.log(data, "undefinedundefined");
           files.push({
+            DisplayAttachmentName: data.displayFileName,
+            fileID: data.pK_FileID,
+          });
+          prevData.push({
+            pK_FileID: data.pK_FileID,
             DisplayAttachmentName: data.displayFileName,
           });
         });
         setFileAttachments(files);
+        setPreviousFileIDs(prevData);
       }
     } catch {}
   }, [NewMeetingreducer.generalMinutesDocument]);
@@ -482,15 +488,118 @@ const Minutes = ({ setMinutes }) => {
   const toggleExpansion = () => {
     setExpanded(!expanded);
   };
-
-  // Function For Adding a Minute
-
   const handleAddClick = async () => {
     let Data = {
       MeetingID: currentMeetingID,
       MinuteText: addNoteFields.Description.value,
     };
     dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data));
+
+    setFileAttachments([]);
+  };
+
+  const documentUploadingFunc = async (minuteID) => {
+    let newfile = [...previousFileIDs];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsMeetingMinutesApi(
+          navigate,
+          t,
+          newData,
+          folderID,
+          newfile
+        )
+      );
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+    console.log(messages, "messagesmessages");
+    console.log(currentMeetingID, "messagesmessages");
+
+    console.log(newfile, "messagesmessages");
+
+    let docsData = {
+      FK_MeetingGeneralMinutesID: minuteID,
+      FK_MDID: currentMeetingID,
+      UpdateFileList: newfile.map((data, index) => {
+        return { PK_FileID: Number(data.pK_FileID) };
+      }),
+    };
+    dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
+    setFileAttachments([]);
+    setPreviousFileIDs([]);
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+  };
+  useEffect(() => {
+    if (NewMeetingreducer.addMinuteID !== 0) {
+      documentUploadingFunc(NewMeetingreducer.addMinuteID);
+    }
+  }, [NewMeetingreducer.addMinuteID]);
+
+  const handleRemovingTheMinutes = (data) => {
+    console.log(data, "datadatadatadata");
+    let Data = {
+      MinuteID: data.minuteID,
+    };
+    console.log(Data, "datadatadatadata");
+
+    dispatch(DeleteGeneralMinutesApiFunc(navigate, Data, t));
+  };
+
+  //UPloading the Documents
+
+  const handleRemoveFile = (data) => {
+    setFileForSend((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) => fileSend.name !== data.DisplayAttachmentName
+      )
+    );
+
+    setPreviousFileIDs((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+
+    setFileAttachments((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) =>
+          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+      )
+    );
+  };
+
+  const handleResetBtnFunc = () => {
+    console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+    setFileAttachments([]);
+    setPreviousFileIDs([]);
+  };
+
+  //Updating the text of min
+  const handleUpdateFunc = async () => {
+    console.log("UpdateCLickd");
+    let Data = {
+      MinuteID: updateData.minuteID,
+      MinuteText: addNoteFields.Description.value,
+    };
+    dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
 
     let newfile = [...previousFileIDs];
     const uploadPromises = fileForSend.map(async (newData) => {
@@ -532,65 +641,7 @@ const Minutes = ({ setMinutes }) => {
     });
 
     setFileAttachments([]);
-  };
-
-  const handleRemovingTheMinutes = () => {
-    let DelMinuteID;
-    messages.map((minID, index) => {
-      console.log(minID.minuteID, "minIDminID");
-      DelMinuteID = minID.minuteID;
-    });
-    let Data = {
-      MinuteID: DelMinuteID,
-    };
-    dispatch(DeleteGeneralMinutesApiFunc(navigate, Data, t));
-  };
-
-  //UPloading the Documents
-
-  const handleRemoveFile = (data) => {
-    setFileForSend((prevFiles) =>
-      prevFiles.filter(
-        (fileSend) => fileSend.name !== data.DisplayAttachmentName
-      )
-    );
-
-    setPreviousFileIDs((prevFiles) =>
-      prevFiles.filter(
-        (fileSend) =>
-          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-      )
-    );
-
-    setFileAttachments((prevFiles) =>
-      prevFiles.filter(
-        (fileSend) =>
-          fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
-      )
-    );
-  };
-
-  const handleResetBtnFunc = () => {
-    console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
-    setAddNoteFields({
-      ...addNoteFields,
-      Description: {
-        value: "",
-        errorMessage: "",
-        errorStatus: true,
-      },
-    });
-    setFileAttachments([]);
-  };
-
-  //Updating the text of min
-  const handleUpdateFunc = () => {
-    console.log("UpdateCLickd");
-    let Data = {
-      MinuteID: updateData.minuteID,
-      MinuteText: addNoteFields.Description.value,
-    };
-    dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
+    setisEdit(false);
   };
 
   return (
@@ -610,7 +661,7 @@ const Minutes = ({ setMinutes }) => {
         </Col>
       </Row>
       {agenda ? (
-        <AgendaImport />
+        <AgendaWise />
       ) : general ? (
         <>
           <Row className="mt-4">
@@ -628,7 +679,7 @@ const Minutes = ({ setMinutes }) => {
                     theme="snow"
                     value={addNoteFields.Description.value || ""}
                     placeholder={t("Note-details")}
-                    onChange={() => onTextChange}
+                    onChange={onTextChange}
                     modules={modules}
                     className={styles["quill-height-addNote"]}
                     style={{
@@ -950,7 +1001,7 @@ const Minutes = ({ setMinutes }) => {
                                 height="20.76px"
                                 width="20.76px"
                                 className={styles["RedCrossClass"]}
-                                onClick={handleRemovingTheMinutes}
+                                onClick={() => handleRemovingTheMinutes(data)}
                               />
                             </Col>
                           </Row>

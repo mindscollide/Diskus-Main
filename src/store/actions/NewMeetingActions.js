@@ -2673,7 +2673,7 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
             ) {
               dispatch(
                 ShowADDGeneralMinutesSuccess(
-                  response.data.responseResult.responseMessage,
+                  response.data.responseResult.minuteID,
                   t("Record-saved")
                 )
               );
@@ -3003,6 +3003,7 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
                 )
             ) {
               dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
+              dispatch(ShowADDGeneralMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3010,18 +3011,25 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
                 )
             ) {
+              dispatch(ShowADDGeneralMinutesFailed(""));
+
               dispatch(saveFiles_fail(t("Something-went-wrong")));
             }
           } else {
+            dispatch(ShowADDGeneralMinutesFailed(""));
+
             dispatch(saveFiles_fail(t("Something-went-wrong")));
           }
         } else {
+          dispatch(ShowADDGeneralMinutesFailed(""));
+
           dispatch(saveFiles_fail(t("Something-went-wrong")));
         }
         console.log(response);
       })
       .catch(() => {
         dispatch(saveFiles_fail(t("Something-went-wrong")));
+        dispatch(ShowADDGeneralMinutesFailed(""));
       });
   };
 };
@@ -3090,6 +3098,7 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
                   t("List-updated-successfully")
                 )
               );
+              dispatch(ShowADDGeneralMinutesFailed(""));
               let Meet = {
                 MeetingID: Number(currentMeetingID),
               };
@@ -3102,19 +3111,23 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
                 )
             ) {
               dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+              dispatch(ShowADDGeneralMinutesFailed(""));
             }
           } else {
             console.log(response, "response");
             dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+            dispatch(ShowADDGeneralMinutesFailed(""));
           }
         } else {
           console.log(response, "response");
           dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+          dispatch(ShowADDGeneralMinutesFailed(""));
         }
       })
       .catch((response) => {
         console.log(response, "response");
         dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+        dispatch(ShowADDGeneralMinutesFailed(""));
       });
   };
 };

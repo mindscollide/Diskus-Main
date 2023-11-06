@@ -68,6 +68,7 @@ const initialState = {
   generalMinutes: [],
   generalMinutesDocument: [],
   generalminutesDocumentForMeeting: [],
+  addMinuteID: 0,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -971,7 +972,8 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        addMinuteID: action.response,
+        ResponseMessage: action.message,
       };
     }
 
@@ -979,7 +981,8 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        addMinuteID: 0,
+        ResponseMessage: action.message,
       };
     }
 
