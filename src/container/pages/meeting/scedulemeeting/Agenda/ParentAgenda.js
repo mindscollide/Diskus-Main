@@ -53,7 +53,6 @@ const ParentAgenda = ({
   console.log(rows, "rowsrowsrows");
   const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
-  let currentMeetingID = localStorage.getItem("meetingID");
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);

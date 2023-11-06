@@ -43,7 +43,7 @@ import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_ac
 // import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 // import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
 // import AgendaImport from "./AgendaimportMinutes/AgendaImport";
-const Minutes = ({ setMinutes }) => {
+const Minutes = ({ setMinutes, currentMeeting }) => {
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
@@ -163,7 +163,6 @@ const Minutes = ({ setMinutes }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   let userID = localStorage.getItem("userID");
   const date = new Date();
   var Size = Quill.import("attributors/style/size");
@@ -198,7 +197,7 @@ const Minutes = ({ setMinutes }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
     };
     dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
   }, []);
@@ -407,10 +406,10 @@ const Minutes = ({ setMinutes }) => {
 
   const handleAddClick = async () => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data));
+    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
 
     // let newfile = [...previousFileIDs];
     // const uploadPromises = fileForSend.map(async (newData) => {
@@ -424,7 +423,7 @@ const Minutes = ({ setMinutes }) => {
 
     // let docsData = {
     //   FK_MeetingGeneralMinutesID: messages.minuteID,
-    //   FK_MDID: currentMeetingID,
+    //   FK_MDID: currentMeeting,
     //   UpdateFileList: newfile.map((data, index) => {
     //     return { PK_FileID: Number(data.pK_FileID) };
     //   }),

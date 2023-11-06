@@ -29,7 +29,12 @@ import {
 } from "../../../../../store/actions/Polls_actions";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 
-const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
+const Polls = ({
+  setSceduleMeeting,
+  setPolls,
+  setAttendance,
+  currentMeeting,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,7 +47,6 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
 
@@ -77,13 +81,13 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const handleDeletePoll = (record) => {
     let data = {
       PollID: record.pollID,
-      MeetingID: parseInt(currentMeetingID),
+      MeetingID: parseInt(currentMeeting),
     };
     dispatch(deleteMeetingPollApi(navigate, t, data));
   };
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -97,7 +101,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     setPageNumber(current);
     setPageSize(pageSize);
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -116,7 +120,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         setTotalRecords(NewMeetingreducer.getPollsMeetingID.totalRecords);
 
         let newPollsArray = [];
-        pollsData.map((data, index) => {
+        pollsData.forEach((data, index) => {
           console.log(data, "datadatadatadata");
           newPollsArray.push(data);
         });
@@ -390,11 +394,17 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         <>
           <section>
             {createpoll ? (
-              <Createpolls setCreatepoll={setCreatepoll} />
+              <Createpolls
+                setCreatepoll={setCreatepoll}
+                currentMeeting={currentMeeting}
+              />
             ) : votePolls ? (
               <CastVotePollsMeeting setvotePolls={setvotePolls} />
             ) : editPolls ? (
-              <EditPollsMeeting setEditPolls={setEditPolls} />
+              <EditPollsMeeting
+                setEditPolls={setEditPolls}
+                currentMeeting={currentMeeting}
+              />
             ) : (
               <>
                 <Row className="mt-4">
