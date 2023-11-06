@@ -940,7 +940,7 @@ const Minutes = ({ setMinutes }) => {
                                     </Col>
                                   </Row>
                                 </Col>
-                                <Col lg={3} md={3} sm={3} className="mt-4">
+                                <Col lg={4} md={4} sm={4} className="mt-4">
                                   <Row className="d-flex justify-content-end">
                                     <Col lg={2} md={2} sm={2}>
                                       <img
@@ -993,16 +993,8 @@ const Minutes = ({ setMinutes }) => {
                                     </Col>
                                   </Row>
                                 </Col>
-                                <Col lg={1} md={1} sm={1}>
-                                  <img
-                                    src={downArrow}
-                                    width="18.71px"
-                                    height="9.36px"
-                                    className="cursor-pointer"
-                                  />
-                                </Col>
                               </Row>
-                              <Row>
+                              <Row className="mt-2">
                                 <Col lg={12} md={12} sm={12}>
                                   <span onClick={handleshowMore}>
                                     Show more
