@@ -4,6 +4,7 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
+import { useNavigate } from "react-router-dom";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,6 +47,8 @@ const ParentAgenda = ({
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   const { NewMeetingreducer } = useSelector((state) => state);
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);

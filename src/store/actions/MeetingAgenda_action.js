@@ -8,6 +8,7 @@ import {
   getAgendaAndVotingInfo,
   casteVoteForAgenda,
   viewAgendaVotingResults,
+  getAdvanceMeetingAgendabyMeetingID,
 } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 
@@ -546,6 +547,109 @@ const ViewAgendaVotingResults = (Data, navigate, t) => {
   };
 };
 
+const getAdvanceMeetingAgendabyMeetingID_init = () => {
+  return {
+    type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_INIT,
+  };
+};
+const getAdvanceMeetingAgendabyMeetingID_success = (response, message) => {
+  return {
+    type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAdvanceMeetingAgendabyMeetingID_fail = (message) => {
+  return {
+    type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_FAIL,
+    message: message,
+  };
+};
+const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAdvanceMeetingAgendabyMeetingID_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      getAdvanceMeetingAgendabyMeetingID.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingID_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingID_fail(t("No-records-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingID_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                getAdvanceMeetingAgendabyMeetingID_fail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -554,4 +658,5 @@ export {
   GetAgendaAndVotingInfo,
   CasteVoteForAgenda,
   ViewAgendaVotingResults,
+  GetAdvanceMeetingAgendabyMeetingID,
 };

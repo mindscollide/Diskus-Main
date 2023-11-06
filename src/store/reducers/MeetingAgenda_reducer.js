@@ -9,6 +9,7 @@ const initialState = {
   AgendaVotingInfoData: [],
   CastAgendaVoteData: [],
   ViewAgendaVotingResultData: [],
+  GetAdvanceMeetingAgendabyMeetingIDData: [],
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -173,6 +174,31 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ViewAgendaVotingResultData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetAdvanceMeetingAgendabyMeetingIDData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetAdvanceMeetingAgendabyMeetingIDData: [],
         ResponseMessage: action.message,
       };
     }
