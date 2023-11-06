@@ -11,6 +11,7 @@ import {
   getMeetingMaterialAPI,
   showAdvancePermissionModal,
   showMainAgendaItemRemovedModal,
+  GetAllMeetingUserApiFunc,
   showVoteAgendaModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import styles from "./Agenda.module.css";
@@ -74,6 +75,7 @@ const ParentAgenda = ({
   const [subexpandIndex, setsubexpandIndex] = useState(-1);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
+  const [allPresenters, setAllPresenters] = useState([]);
   //Timepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -291,6 +293,34 @@ const ParentAgenda = ({
     }
   }, [currentLanguage]);
 
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(currentMeetingID),
+    };
+    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.getMeetingusers !== undefined &&
+      NewMeetingreducer.getMeetingusers !== null &&
+      NewMeetingreducer.getMeetingusers.length !== 0
+    ) {
+      const newData = {
+        meetingOrganizers: NewMeetingreducer.getMeetingusers.meetingOrganizers,
+        meetingParticipants:
+          NewMeetingreducer.getMeetingusers.meetingParticipants,
+        meetingAgendaContributors:
+          NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
+      };
+      setAllPresenters(newData);
+    }
+  }, [NewMeetingreducer?.getMeetingusers]);
+
+  console.log("allPresenters", allPresenters);
+
+  console.log("Meeting Reducer", NewMeetingreducer);
+
   return (
     <Draggable key={data.ID} draggableId={data.ID} index={index}>
       {(provided, snapshot) => (
@@ -393,6 +423,17 @@ const ParentAgenda = ({
                               apllyLockOnParentAgenda(index) ? true : false
                             }
                           />
+                          {/* <Select
+                            options={optionsIndividualOpenCloseVoting}
+                            onChange={dropDownSelectOrganizers}
+                            value={{
+                              value: agendaDetails.organizerUserID,
+                              label: agendaDetails.organizerUserName,
+                            }}
+                            classNamePrefix={
+                              styles["SelectOrganizersSelect_active"]
+                            }
+                          /> */}
                         </Col>
                         <Col
                           sm={12}
