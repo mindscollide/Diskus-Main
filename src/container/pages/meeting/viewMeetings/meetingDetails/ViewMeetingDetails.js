@@ -40,7 +40,8 @@ const ViewMeetingDetails = ({
   ]);
   let userID = localStorage.getItem("userID");
 
-  console.log("meetingStatus", meetingStatus);
+  console.log("isOrganisers", isOrganisers);
+
   //For Custom language datepicker
   const [open, setOpen] = useState({
     flag: false,
@@ -208,10 +209,10 @@ const ViewMeetingDetails = ({
 
   return (
     <section>
-      {meetingStatus === 2 && (
+      {meetingStatus === 10 && (
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-            {isOrganisers ? (
+            {isOrganisers  ? (
               <Button
                 text={t("End-meeting")}
                 className={styles["LeaveMeetinButton"]}
