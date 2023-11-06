@@ -122,3 +122,97 @@ body[dir="rtl"] .modal-Note-Title-Input {
 body[dir="rtl"] .ant-upload-text {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
+.Button_General {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Button_General:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Previous_Button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Previous_Button:is(:active, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Outer_Box {
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  margin-bottom: 10px !important;
+  border-radius: 4px !important;
+  width: 100% !important;
+}
+
+.filesStyles {
+  width: 100% !important;
+  display: flex !important;
+  gap: 35px !important;
+}
+
+.backGround_name_Icon {
+  background: #fff;
+}
+
+.IconTextClass {
+  display: flex;
+  text-align: center !important;
+  align-items: center !important;
+  gap: 7px !important;
+}
+
+.IconPDF {
+  margin-left: 10px !important;
+}
+
+.FileName {
+  font-size: 10px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratRegular";
+  display: inline-block !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  width: 100px !important;
+}
+
+.Crossicon_Class {
+  cursor: pointer !important;
+  position: absolute !important;
+  top: -7px !important;
+  right: -4px !important;
+}
+
+.Outer_Border-Line {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 10px 10px !important;
+  margin-top: 8px !important;
+}

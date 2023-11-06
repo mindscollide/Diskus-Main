@@ -69,6 +69,7 @@ const initialState = {
   generalMinutesDocument: [],
   generalminutesDocumentForMeeting: [],
   addMinuteID: 0,
+  agendaWiseMinutes: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1099,6 +1100,100 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.AGENDA_WISE_MINUTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.AGENDA_WISE_MINUTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.AGENDA_WISE_MINUTES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DELETE_AGENDA_WISE_MINUTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DELETE_AGENDA_WISE_MINUTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DELETE_AGENDA_WISE_MINUTES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.UPDATE_AGENDA_WISE_MINUTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.UPDATE_AGENDA_WISE_MINUTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.UPDATE_AGENDA_WISE_MINUTES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_AGENDA_WISE_MINUTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_AGENDA_WISE_MINUTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        agendaWiseMinutes: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_AGENDA_WISE_MINUTES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        agendaWiseMinutes: action.response,
         ResponseMessage: action.message,
       };
     }

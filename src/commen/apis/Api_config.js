@@ -1136,6 +1136,22 @@ const UpdateGeneralMinutes = {
   RequestMethod: "ServiceManager.UpdateGeneralMinute",
 };
 
+const agenwiseMinutes = {
+  RequestMethod: "ServiceManager.AddAgendaWiseMinutes",
+};
+
+const DeleteagendaWiseMinutes = {
+  RequestMethod: "ServiceManager.DeleteAgendaWiseMinute",
+};
+
+const updateAgendaWiseMinutes = {
+  RequestMethod: "ServiceManager.UpdateAgendaWiseMinute",
+};
+
+const getAllAgendaWiseMinutes = {
+  RequestMethod: "ServiceManager.GetAgendaWiseMinutes",
+};
+
 export {
   setCommitteePollsRM,
   getPollbyCommitteeIdRM,
@@ -1441,4 +1457,8 @@ export {
   setCommitteeTaskApi,
   DeleteGeneralMinutes,
   UpdateGeneralMinutes,
+  agenwiseMinutes,
+  DeleteagendaWiseMinutes,
+  updateAgendaWiseMinutes,
+  getAllAgendaWiseMinutes,
 };

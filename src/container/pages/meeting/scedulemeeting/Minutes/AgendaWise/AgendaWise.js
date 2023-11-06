@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button } from "../../../../../../components/elements";
+import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { useRef } from "react";
 import { Upload } from "antd";
@@ -231,8 +232,28 @@ const AgendaWise = () => {
       });
     }
   };
+
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
+
+  const handleAddClickAgendaWise = () => {
+    // let Data = {
+    //   AgendaID: 1222,
+    //   MinuteText: "3223fwfsdfsdrsdd",
+    // };
+    // dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
+  };
+
   return (
     <section>
+      <Row className="mt-4">
+        <Col lg={6} md={6} sm={6}>
+          <Select options={options} />
+        </Col>
+      </Row>
       <Row className="mt-4">
         <Col lg={6} md={6} sm={6}>
           <Row className={styles["Add-note-QuillRow"]}>
@@ -283,7 +304,7 @@ const AgendaWise = () => {
                   <Button
                     text={t("Save")}
                     className={styles["Button_General"]}
-                    // onClick={handleAddClick}
+                    onClick={handleAddClickAgendaWise}
                   />
                 </>
               )}
