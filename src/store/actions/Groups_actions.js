@@ -1466,7 +1466,10 @@ const SaveGroupsDocumentsApiFunc = (
   setViewGroupPage
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  let currentPage =
+    localStorage.getItem("groupsCurrent") !== null
+      ? Number(localStorage.getItem("groupsCurrent"))
+      : 1;
   return (dispatch) => {
     dispatch(showSaveGroupDocsInit());
     let form = new FormData();
@@ -1510,11 +1513,11 @@ const SaveGroupsDocumentsApiFunc = (
                   t("Update-successful")
                 )
               );
+              localStorage.removeItem("groupID");
+              dispatch(getGroups(navigate, t, currentPage));
               dispatch(methodCreateUpdateDataRoadMapFailed(""));
               setCreategrouppage(false);
               setViewGroupPage(false);
-              localStorage.removeItem("groupID");
-              dispatch(getGroups(navigate, t, currentPage));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1525,18 +1528,21 @@ const SaveGroupsDocumentsApiFunc = (
               dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
               dispatch(methodCreateUpdateDataRoadMapFailed(""));
               localStorage.removeItem("groupID");
+              dispatch(getGroups(navigate, t, currentPage));
             }
           } else {
             console.log(response, "response");
             dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
             dispatch(methodCreateUpdateDataRoadMapFailed(""));
             localStorage.removeItem("groupID");
+            dispatch(getGroups(navigate, t, currentPage));
           }
         } else {
           console.log(response, "response");
           dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
           dispatch(methodCreateUpdateDataRoadMapFailed(""));
           localStorage.removeItem("groupID");
+          dispatch(getGroups(navigate, t, currentPage));
         }
       })
       .catch((response) => {
@@ -1544,6 +1550,7 @@ const SaveGroupsDocumentsApiFunc = (
         dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
         dispatch(methodCreateUpdateDataRoadMapFailed(""));
         localStorage.removeItem("groupID");
+        dispatch(getGroups(navigate, t, currentPage));
       });
   };
 };

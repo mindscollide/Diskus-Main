@@ -150,10 +150,9 @@ const saveMeetingOrganizers_fail = (message) => {
 };
 
 // Save Meeting Organizers Api
-const SaveMeetingOrganizers = (navigate, Data, t) => {
+const SaveMeetingOrganizers = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
-  let Data2 = { MeetingID: currentMeetingID };
+  let Data2 = { MeetingID: currentMeeting };
 
   return async (dispatch) => {
     dispatch(saveMeetingOrganizers_init());

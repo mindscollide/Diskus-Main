@@ -354,7 +354,6 @@ const GetAllMeetingTypesNewFunction = (navigate, t) => {
         } else {
           dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
@@ -391,7 +390,8 @@ const SaveMeetingDetialsNewApiFunction = (
   setSceduleMeeting,
   setorganizers,
   setmeetingDetails,
-  viewValue
+  viewValue,
+  setCurrentMeetingID
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -410,7 +410,18 @@ const SaveMeetingDetialsNewApiFunction = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveMeetingDetialsNewApiFunction(navigate, t, data));
+          dispatch(
+            SaveMeetingDetialsNewApiFunction(
+              navigate,
+              t,
+              data,
+              setSceduleMeeting,
+              setorganizers,
+              setmeetingDetails,
+              viewValue,
+              setCurrentMeetingID
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -426,14 +437,9 @@ const SaveMeetingDetialsNewApiFunction = (
                   t("Record-found")
                 )
               );
-              localStorage.setItem(
-                "meetingID",
-                response.data.responseResult.meetingID
-              );
-              console.log(
-                data.MeetingDetails.MeetingStatusID,
-                "MeetingStatusIDMeetingStatusIDMeetingStatusID"
-              );
+
+              setCurrentMeetingID(response.data.responseResult.meetingID);
+
               if (viewValue === 1) {
                 setSceduleMeeting(false);
               } else if (viewValue === 2) {
@@ -481,7 +487,6 @@ const SaveMeetingDetialsNewApiFunction = (
         } else {
           dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
@@ -579,7 +584,6 @@ const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
             handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
           );
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(
@@ -669,7 +673,6 @@ const GetAllMeetingRecurringApiNew = (navigate, t) => {
         } else {
           dispatch(handleReucrringFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(handleReucrringFailed(t("Something-went-wrong")));
@@ -714,7 +717,6 @@ const searchNewUserMeeting = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "responseresponseresponse");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(searchNewUserMeeting(navigate, Data, t));
@@ -1007,7 +1009,6 @@ const GetAllParticipantsRoleNew = (navigate, t) => {
         } else {
           dispatch(showParticipantsRolesFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showParticipantsRolesFailed(t("Something-went-wrong")));
@@ -1150,7 +1151,7 @@ const showSaveParticipantsFailed = (message) => {
 };
 
 //Saving the participants Api
-const SaveparticipantsApi = (Data, navigate, t) => {
+const SaveparticipantsApi = (Data, navigate, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showSavedParticipantsInit());
@@ -1168,7 +1169,7 @@ const SaveparticipantsApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveparticipantsApi(Data, navigate, t));
+          dispatch(SaveparticipantsApi(Data, navigate, t, currentMeeting));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1184,9 +1185,8 @@ const SaveparticipantsApi = (Data, navigate, t) => {
                   t("Record-inserted")
                 )
               );
-              let currentMeetingID = localStorage.getItem("meetingID");
               let Data = {
-                MeetingID: Number(currentMeetingID),
+                MeetingID: Number(currentMeeting),
               };
               dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
             } else if (
@@ -1328,12 +1328,14 @@ const saveAgendaContributors_fail = (message) => {
   };
 };
 
-const saveAgendaContributors = (navigate, t, data) => {
+const saveAgendaContributors = (navigate, t, data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentMeetingID = localStorage.getItem("meetingID");
 
   let getAllData = {
-    MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+    MeetingID:
+      currentMeeting !== null && currentMeeting !== undefined
+        ? Number(currentMeeting)
+        : 1686,
   };
   return (dispatch) => {
     dispatch(saveAgendaContributors_init());
@@ -1351,7 +1353,7 @@ const saveAgendaContributors = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(saveAgendaContributors(navigate, t, data));
+          dispatch(saveAgendaContributors(navigate, t, data, currentMeeting));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1574,7 +1576,6 @@ const SendNotificationApiFunc = (Data, navigate, t) => {
             sendNotificationParticipantsFailed(t("Something-went-wrong"))
           );
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(sendNotificationParticipantsFailed(t("Something-went-wrong")));
@@ -1606,7 +1607,13 @@ const showGetAllMeetingDetialsFailed = (message) => {
 };
 
 //GET ALL MEETING DETAILS API Function
-const GetAllMeetingDetailsApiFunc = (Data, navigate, t) => {
+const GetAllMeetingDetailsApiFunc = (
+  Data,
+  navigate,
+  t,
+  setCurrentMeetingID,
+  setSceduleMeeting
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showGetAllMeetingDetialsInit());
@@ -1624,7 +1631,15 @@ const GetAllMeetingDetailsApiFunc = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+          dispatch(
+            GetAllMeetingDetailsApiFunc(
+              Data,
+              navigate,
+              t,
+              setCurrentMeetingID,
+              setSceduleMeeting
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1640,6 +1655,8 @@ const GetAllMeetingDetailsApiFunc = (Data, navigate, t) => {
                   t("Record-found")
                 )
               );
+              setSceduleMeeting(true);
+              setCurrentMeetingID(Data.MeetingID);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1667,7 +1684,6 @@ const GetAllMeetingDetailsApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
@@ -1757,7 +1773,6 @@ const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showPollsByMeetingIdFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showPollsByMeetingIdFailed(t("Something-went-wrong")));
@@ -1848,7 +1863,6 @@ const GetAllMeetingUserApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showGetAllMeetingUsersFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showGetAllMeetingUsersFailed(t("Something-went-wrong")));
@@ -1936,7 +1950,6 @@ const SetMeetingPollsApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showSetMeetingPollsFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showSetMeetingPollsFailed(t("Something-went-wrong")));
@@ -2036,7 +2049,6 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
             showGetAllProposedMeetingDatesFailed(t("Something-went-wrong"))
           );
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(
@@ -2071,7 +2083,6 @@ const showPrposedMeetingDateFailed = (message) => {
 
 const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentMeetingID = localStorage.getItem("meetingID");
   return (dispatch) => {
     dispatch(showPrposedMeetingDateInit());
     let form = new FormData();
@@ -2141,7 +2152,6 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
@@ -2237,7 +2247,6 @@ const SetMeetingResponseApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showPrposedMeetingReponsneFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showPrposedMeetingReponsneFailed(t("Something-went-wrong")));
@@ -2271,7 +2280,6 @@ const meetingMaterialFail = (message) => {
 
 //Aun work on meeting Material Main API
 const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
-  console.log(rows, "getMeetingMaterialAPI");
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(meetingMaterialInit());
@@ -2287,13 +2295,11 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_01"
@@ -2311,7 +2317,6 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
               let NewData = {
                 AgendaID: "1222",
               };
-              console.log(NewData, "newIDnewIDnewID");
               dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
             } else if (
               response.data.responseResult.responseMessage ===
@@ -2384,13 +2389,11 @@ const UpateMeetingStatusLockApiFunc = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(UpateMeetingStatusLockApiFunc(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_01"
@@ -2477,13 +2480,11 @@ const GetAllUserAgendaRightsApiFunc = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllUserAgendaRights_01"
@@ -2564,13 +2565,11 @@ const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_01"
@@ -2641,9 +2640,8 @@ const ShowADDGeneralMinutesFailed = (message) => {
   };
 };
 
-const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
+const ADDGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentMeetingID = localStorage.getItem("meetingID");
 
   return (dispatch) => {
     dispatch(ShowADDGeneralMinutesInit());
@@ -2659,13 +2657,11 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_AddGeneralMinute_01"
@@ -2677,7 +2673,7 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
                 )
               );
               let Meet = {
-                MeetingID: Number(currentMeetingID),
+                MeetingID: Number(currentMeeting),
               };
               dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
@@ -2735,7 +2731,6 @@ const ShowAllGeneralMinutesFailed = (response, message) => {
 // Api Function For General Minutes
 const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentMeetingID = localStorage.getItem("meetingID");
   return (dispatch) => {
     dispatch(ShowAllGeneralMinutesInit());
     let form = new FormData();
@@ -2750,13 +2745,11 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
@@ -2767,34 +2760,12 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
                   t("Record-found")
                 )
               );
-              console.log(
-                response.data.responseResult,
-                "FK_MeetingGeneralMinutesID"
-              );
               let MeetingDocs = {
                 MDID: 1833,
               };
               dispatch(
                 DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
               );
-
-              // let FetchMinutesId;
-              // response.data.responseResult.meetingMinutes.map(
-              //   (dataMin, Indexmin) => {
-              //     console.log(dataMin, "dataMindataMin");
-              //     FetchMinutesId = dataMin.minuteID;
-              //   }
-              // );
-              // let Retrive = {
-              //   FK_MeetingGeneralMinutesID: FetchMinutesId,
-              // };
-              // dispatch(
-              //   RetriveDocumentsMeetingGenralMinutesApiFunc(
-              //     navigate,
-              //     Retrive,
-              //     t
-              //   )
-              // );
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
@@ -3033,7 +3004,6 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
         } else {
           dispatch(saveFiles_fail(t("Something-went-wrong")));
         }
-        console.log(response);
       })
       .catch(() => {
         dispatch(saveFiles_fail(t("Something-went-wrong")));
@@ -3083,14 +3053,11 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(SaveMinutesDocumentsApiFunc(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3114,16 +3081,13 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
               dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
             }
           } else {
-            console.log(response, "response");
             dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
           }
         } else {
-          console.log(response, "response");
           dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
       });
   };
@@ -3169,16 +3133,13 @@ const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Data, t)
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3214,20 +3175,17 @@ const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
         );
@@ -3274,14 +3232,11 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(DocumentsOfMeetingGenralMinutesApiFunc(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3321,7 +3276,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showRetriveGeneralMinutesDocsMeetingFailed(
                 t("Something-went-wrong")
@@ -3329,7 +3283,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showRetriveGeneralMinutesDocsMeetingFailed(
               t("Something-went-wrong")
@@ -3338,7 +3291,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           showRetriveGeneralMinutesDocsMeetingFailed(t("Something-went-wrong"))
         );
@@ -3512,4 +3464,5 @@ export {
   DocumentsOfMeetingGenralMinutesApiFunc,
   getUserProposedWiseApi,
   UpateMeetingStatusLockApiFunc,
+  showGetAllMeetingDetialsFailed,
 };

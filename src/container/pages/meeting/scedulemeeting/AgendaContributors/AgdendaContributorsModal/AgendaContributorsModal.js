@@ -26,6 +26,7 @@ const AgendaContributorsModal = ({
   rowsData,
   setRowsData,
   setNotificedMembersData,
+  currentMeeting,
 }) => {
   const animatedComponents = makeAnimated();
   const { t } = useTranslation();
@@ -159,7 +160,7 @@ const AgendaContributorsModal = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
+      MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
   }, []);

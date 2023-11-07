@@ -342,7 +342,7 @@ const savePolls_fail = (message) => {
 };
 
 // Save polls Api
-const SavePollsApi = (navigate, Data, t, value) => {
+const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
   console.log("tsteasdasdtsteasdasdtsteasdasd", value);
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -389,17 +389,14 @@ const SavePollsApi = (navigate, Data, t, value) => {
                 await dispatch(searchPollsApi(navigate, t, data));
                 dispatch(setCreatePollModal(false));
               } else if (value === 2) {
-                let currentMeetingID = Number(
-                  localStorage.getItem("meetingID")
-                );
                 let Data = {
-                  MeetingID: currentMeetingID,
+                  MeetingID: currentMeeting,
                   PollID: response.data.responseResult.pollID,
                 };
                 await dispatch(SetMeetingPollsApiFunc(Data, navigate, t));
                 let OrganizationID = localStorage.getItem("organizationID");
                 let Data1 = {
-                  MeetingID: currentMeetingID,
+                  MeetingID: currentMeeting,
                   OrganizationID: Number(OrganizationID),
                   CreatorName: "",
                   PollTitle: "",
@@ -792,13 +789,13 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               await dispatch(setviewpollModal(false));
               await dispatch(setVotePollModal(true));
             }
-            setEditPolls(true);
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
                 t("Record-found")
               )
             );
+            setEditPolls(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -1042,7 +1039,14 @@ const updatePollsFailed = (message) => {
   };
 };
 
-const updatePollsApi = (navigate, Data, t, value, setEditPolls) => {
+const updatePollsApi = (
+  navigate,
+  Data,
+  t,
+  value,
+  setEditPolls,
+  currentMeeting
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(updatePollsInit());
@@ -1060,7 +1064,16 @@ const updatePollsApi = (navigate, Data, t, value, setEditPolls) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(updatePollsApi(navigate, Data, t, value, setEditPolls));
+          dispatch(
+            updatePollsApi(
+              navigate,
+              Data,
+              t,
+              value,
+              setEditPolls,
+              currentMeeting
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1078,13 +1091,9 @@ const updatePollsApi = (navigate, Data, t, value, setEditPolls) => {
               );
               setEditPolls(false);
               if (value === 2) {
-                let currentMeetingID = Number(
-                  localStorage.getItem("meetingID")
-                );
-
                 let OrganizationID = localStorage.getItem("organizationID");
                 let Data1 = {
-                  MeetingID: currentMeetingID,
+                  MeetingID: currentMeeting,
                   OrganizationID: Number(OrganizationID),
                   CreatorName: "",
                   PollTitle: "",
@@ -1158,13 +1167,9 @@ const updatePollsApi = (navigate, Data, t, value, setEditPolls) => {
               dispatch(setEditpollModal(false));
 
               if (value === 2) {
-                let currentMeetingID = Number(
-                  localStorage.getItem("meetingID")
-                );
-
                 let OrganizationID = localStorage.getItem("organizationID");
                 let Data1 = {
-                  MeetingID: currentMeetingID,
+                  MeetingID: currentMeeting,
                   OrganizationID: Number(OrganizationID),
                   CreatorName: "",
                   PollTitle: "",
@@ -2234,7 +2239,7 @@ const deleteMeetingPoll_fail = (message) => {
     message: message,
   };
 };
-const deleteMeetingPollApi = (navigate, t, data) => {
+const deleteMeetingPollApi = (navigate, t, data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -2269,11 +2274,10 @@ const deleteMeetingPollApi = (navigate, t, data) => {
                   t("Record-deleted")
                 )
               );
-              let currentMeetingID = Number(localStorage.getItem("meetingID"));
               let OrganizationID = localStorage.getItem("organizationID");
 
               let Data = {
-                MeetingID: currentMeetingID,
+                MeetingID: currentMeeting,
                 OrganizationID: Number(OrganizationID),
                 CreatorName: "",
                 PollTitle: "",

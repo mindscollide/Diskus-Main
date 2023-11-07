@@ -77,6 +77,7 @@
   overflow: hidden !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
+  cursor: pointer !important;
 }
 
 .EmptyState_heading {
@@ -173,4 +174,25 @@
 
 .MaintainingHeight {
   height: 55vh !important;
+}
+
+.PaginationStyle-Resolution {
+  background-color: #fff !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: auto !important;
+  padding: 12px 40px !important;
+  margin: 20px 0 40px 0;
+  height: auto !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+}
+
+.PaginationStyle-Resolution:is(:focus-visible) {
+  outline: none !important;
+}
+
+body[dir="rtl"] .PaginationStyle-Resolution {
+  width: auto !important;
+  padding: 12px 10px !important;
 }

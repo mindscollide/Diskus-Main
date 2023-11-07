@@ -38,7 +38,7 @@ fieldset:disabled .btn {
   height: 20% !important;
   max-height: 20% !important;
   min-height: 20% !important;
-  padding: 0 20px !important;
+  display: block !important;
 }
 
 .modalMeetingUpdateBody {
@@ -219,8 +219,7 @@ button.updatemeetingmodalconfirmationsubmit {
 .modal-update-meeting-details {
   background: #6172d6 !important;
   border: none !important;
-  width: 119px !important;
-  height: 46px !important;
+  padding: 12px 30px !important;
   border-radius: 4px !important;
   font-size: 15px !important;
   font-weight: 500 !important;
@@ -249,13 +248,10 @@ body[dir="rtl"] .modal-update-meeting {
 .modal-update-addagenda {
   background: #6172d6 !important;
   border: none !important;
-  width: 140px !important;
-  height: 46px !important;
+  padding: 12px 30px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 500 !important;
-  margin-left: 5px !important;
-  margin-top: 6px !important;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -438,25 +434,44 @@ body[dir="rtl"] .publish-meeting-btn {
   width: 33% !important;
 }
 
-.isDetail-Update-btn {
-  padding: 3px 20px !important;
+.isDetail-Update-btn,
+.isDetail-Update-btn:is(
+    :active,
+    :hover,
+    :focus,
+    :focus-visible,
+    :visited,
+    :target
+  ) {
+  padding: 8px 30px !important;
   border: none !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   font-size: 15px !important;
   color: #fff !important;
+  outline: none !important;
 }
 
 body[dir="rtl"] .isDetail-Update-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
-.isDetail-Update-Outline-btn {
+.isDetail-Update-Outline-btn,
+.isDetail-Update-Outline-btn:is(
+    :hover,
+    :active,
+    :focus,
+    :focus-visible,
+    :visited,
+    :target
+  ) {
   color: #666666 !important;
-  border-color: #e1e1e1 !important;
-  padding: 3px 20px !important;
-  border-radius: 3px !important;
+  padding: 8px 30px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
   background: #fff !important;
+  outline: none !important;
+  border-color: none !important;
   font-size: 15px !important;
 }
 
@@ -653,7 +668,6 @@ body[dir="rtl"] .isMinutes-Update-btn {
   font-family: "MontserratMedium-500";
   font-size: 12px;
 }
-
 
 .select-participant-update-box {
   margin-top: -1px !important;
