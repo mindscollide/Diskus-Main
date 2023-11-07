@@ -521,14 +521,16 @@ const AgendaWise = ({ currentMeeting }) => {
 
   const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
     console.log(AgendaWiseData, "AgendaWiseDataAgendaWiseData");
-    let DeleteData = {
+
+    let Data = {
       MDID: currentMeeting,
       MeetingAgendaMinutesID: AgendaWiseData.minuteID,
     };
+
     dispatch(
       DeleteAgendaWiseMinutesDocumentsApiFunc(
         navigate,
-        DeleteData,
+        Data,
         t,
         currentMeeting,
         AgendaWiseData
