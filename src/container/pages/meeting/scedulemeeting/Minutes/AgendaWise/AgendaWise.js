@@ -23,6 +23,7 @@ import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/acti
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
+  DeleteAgendaWiseMinutesApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
@@ -80,9 +81,9 @@ const AgendaWise = ({ currentMeeting }) => {
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
 
     let newData = {
-      AgendaID: 1216,
+      AgendaID: "1222",
     };
-    dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, Data, t));
+    dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, newData, t));
   }, []);
 
   useEffect(() => {
@@ -514,6 +515,26 @@ const AgendaWise = ({ currentMeeting }) => {
     setisEdit(false);
   };
 
+  const handleRemovingTheMinutesAgendaWise = (data) => {
+    console.log(data, "handleRemovingTheMinutesAgendaWise");
+    let DelData = {
+      MinuteID: data.minuteID,
+    };
+    dispatch(
+      DeleteAgendaWiseMinutesApiFunc(navigate, DelData, t, currentMeeting)
+    );
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+
+    setFileAttachments([]);
+  };
+
   return (
     <section>
       <Row className="mt-4">
@@ -839,7 +860,9 @@ const AgendaWise = ({ currentMeeting }) => {
                             height="20.76px"
                             width="20.76px"
                             className={styles["RedCrossClass"]}
-                            // onClick={() => handleRemovingTheMinutes(data)}
+                            onClick={() =>
+                              handleRemovingTheMinutesAgendaWise(data)
+                            }
                           />
                         </Col>
                       </Row>

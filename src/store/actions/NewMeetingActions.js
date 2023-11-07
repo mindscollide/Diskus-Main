@@ -3706,7 +3706,7 @@ const showDeleteAgendaWiseMinutesFailed = (message) => {
   };
 };
 
-const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
+const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -3726,7 +3726,9 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(DeleteAgendaWiseMinutesApiFunc(navigate, Data, t));
+          dispatch(
+            DeleteAgendaWiseMinutesApiFunc(navigate, Data, t, currentMeeting)
+          );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -3743,6 +3745,12 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                   response.data.responseResult,
                   t("Record Deleted")
                 )
+              );
+              let DelteGetAll = {
+                AgendaID: "1222",
+              };
+              dispatch(
+                GetAllAgendaWiseMinutesApiFunc(navigate, DelteGetAll, t)
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3820,7 +3828,7 @@ const DeleteGeneralMinutesFailed = (message) => {
   };
 };
 
-const DeleteGeneralMinutesApiFunc = (navigate, Data, t) => {
+const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   let currentMeetingID = localStorage.getItem("meetingID");
@@ -3841,7 +3849,9 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(DeleteGeneralMinutesApiFunc(navigate, Data, t));
+          dispatch(
+            DeleteGeneralMinutesApiFunc(navigate, Data, t, currentMeeting)
+          );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -3860,7 +3870,7 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t) => {
                 )
               );
               let DelMeet = {
-                MeetingID: Number(currentMeetingID),
+                MeetingID: currentMeeting,
               };
               dispatch(getAllGeneralMinutesApiFunc(navigate, t, DelMeet));
             } else if (

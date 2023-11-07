@@ -550,7 +550,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     };
     console.log(Data, "datadatadatadata");
 
-    dispatch(DeleteGeneralMinutesApiFunc(navigate, Data, t));
+    dispatch(DeleteGeneralMinutesApiFunc(navigate, Data, t, currentMeeting));
   };
 
   //UPloading the Documents
