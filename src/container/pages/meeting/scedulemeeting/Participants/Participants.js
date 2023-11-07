@@ -194,11 +194,16 @@ const Participants = ({
 
       render: (text, record) => {
         if (
-          (Number(ediorRole.status) === 9 &&
+          ((Number(ediorRole.status) === 9 ||
+            Number(ediorRole.status) === 8 ||
+            Number(ediorRole.status) === 10) &&
             ediorRole.role === "Organizer" &&
             isEditMeeting === true) ||
           ((Number(ediorRole.status) === 11 ||
-            Number(ediorRole.status) === 12) &&
+            Number(ediorRole.status) === 2 ||
+            Number(ediorRole.status) === 1 ||
+            Number(ediorRole.status) === 12 ||
+            Number(ediorRole.status) === 10) &&
             ediorRole.role === "Agenda Contributor" &&
             isEditMeeting === true)
         ) {
@@ -239,11 +244,16 @@ const Participants = ({
       render: (text, record) => {
         let participantRole = record.participantRole.participantRole;
         if (
-          (Number(ediorRole.status) === 9 &&
+          ((Number(ediorRole.status) === 9 ||
+            Number(ediorRole.status) === 8 ||
+            Number(ediorRole.status) === 10) &&
             ediorRole.role === "Organizer" &&
             isEditMeeting === true) ||
           ((Number(ediorRole.status) === 11 ||
-            Number(ediorRole.status) === 12) &&
+            Number(ediorRole.status) === 2 ||
+            Number(ediorRole.status) === 1 ||
+            Number(ediorRole.status) === 12 ||
+            Number(ediorRole.status) === 10) &&
             ediorRole.role === "Agenda Contributor" &&
             isEditMeeting === true)
         ) {
@@ -286,11 +296,16 @@ const Participants = ({
 
       render: (text, record) => {
         if (
-          (Number(ediorRole.status) === 9 &&
+          ((Number(ediorRole.status) === 9 ||
+            Number(ediorRole.status) === 8 ||
+            Number(ediorRole.status) === 10) &&
             ediorRole.role === "Organizer" &&
             isEditMeeting === true) ||
           ((Number(ediorRole.status) === 11 ||
-            Number(ediorRole.status) === 12) &&
+            Number(ediorRole.status) === 2 ||
+            Number(ediorRole.status) === 1 ||
+            Number(ediorRole.status) === 12 ||
+            Number(ediorRole.status) === 10) &&
             ediorRole.role === "Agenda Contributor" &&
             isEditMeeting === true)
         ) {
@@ -434,11 +449,16 @@ const Participants = ({
             sm={12}
             className="d-flex justify-content-end gap-2"
           >
-            {(Number(ediorRole.status) === 9 &&
+            {((Number(ediorRole.status) === 9 ||
+              Number(ediorRole.status) === 8 ||
+              Number(ediorRole.status) === 10) &&
               ediorRole.role === "Organizer" &&
               isEditMeeting === true) ||
             ((Number(ediorRole.status) === 11 ||
-              Number(ediorRole.status) === 12) &&
+              Number(ediorRole.status) === 2 ||
+              Number(ediorRole.status) === 1 ||
+              Number(ediorRole.status) === 12 ||
+              Number(ediorRole.status) === 10) &&
               ediorRole.role === "Agenda Contributor" &&
               isEditMeeting === true) ? null : isEditable ? (
               <>
@@ -510,11 +530,16 @@ const Participants = ({
             </>
           ) : (
             <>
-              {(Number(ediorRole.status) === 9 &&
+              {((Number(ediorRole.status) === 9 ||
+                Number(ediorRole.status) === 8 ||
+                Number(ediorRole.status) === 10) &&
                 ediorRole.role === "Organizer" &&
                 isEditMeeting === true) ||
               ((Number(ediorRole.status) === 11 ||
-                Number(ediorRole.status) === 12) &&
+                Number(ediorRole.status) === 2 ||
+                Number(ediorRole.status) === 1 ||
+                Number(ediorRole.status) === 12 ||
+                Number(ediorRole.status) === 10) &&
                 ediorRole.role === "Agenda Contributor" &&
                 isEditMeeting === true) ? null : (
                 <Button
@@ -541,11 +566,16 @@ const Participants = ({
                 className={styles["Cancel_Organization"]}
                 onClick={nextTabOrganizer}
               />
-              {(Number(ediorRole.status) === 9 &&
+              {((Number(ediorRole.status) === 9 ||
+                Number(ediorRole.status) === 8 ||
+                Number(ediorRole.status) === 10) &&
                 ediorRole.role === "Organizer" &&
                 isEditMeeting === true) ||
               ((Number(ediorRole.status) === 11 ||
-                Number(ediorRole.status) === 12) &&
+                Number(ediorRole.status) === 2 ||
+                Number(ediorRole.status) === 1 ||
+                Number(ediorRole.status) === 12 ||
+                Number(ediorRole.status) === 10) &&
                 ediorRole.role === "Agenda Contributor" &&
                 isEditMeeting === true) ? null : (
                 <Button

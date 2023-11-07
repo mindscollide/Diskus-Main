@@ -53,7 +53,7 @@ const UnpublishedProposedMeeting = ({
   setSceduleMeeting,
   setEdiorRole,
   setEditMeeting,
-  setCurrentMeetingID
+  setCurrentMeetingID,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
