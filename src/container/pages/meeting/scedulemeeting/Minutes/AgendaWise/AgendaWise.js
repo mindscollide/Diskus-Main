@@ -111,6 +111,28 @@ const AgendaWise = ({ currentMeeting }) => {
     } catch {}
   }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList]);
 
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.agendaWiseMinutesReducer !== null &&
+        NewMeetingreducer.agendaWiseMinutesReducer !== undefined
+      ) {
+        console.log(
+          NewMeetingreducer.agendaWiseMinutesReducer,
+          "agendaWiseMinutesagendaWiseMinutes"
+        );
+        let agendaWiseArr = [];
+        NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes.map(
+          (agendawiseData, agendawiseIndex) => {
+            console.log(agendawiseData, "agendawiseDataagendawiseData");
+            agendaWiseArr.push(agendawiseData);
+          }
+        );
+        setMessages(agendaWiseArr);
+      }
+    } catch {}
+  }, [NewMeetingreducer.agendaWiseMinutesReducer]);
+
   console.log(agendaOptions, "NewMeetingreducerNewMeetingreducer");
 
   let userID = localStorage.getItem("userID");

@@ -69,7 +69,7 @@ const initialState = {
   generalMinutesDocument: [],
   generalminutesDocumentForMeeting: [],
   addMinuteID: 0,
-  agendaWiseMinutes: [],
+  agendaWiseMinutesReducer: [],
   userWiseMeetingProposed: [],
   agendaWiseMinuteID: 0,
 };
@@ -1188,7 +1188,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        agendaWiseMinutes: action.response,
+        agendaWiseMinutesReducer: action.response,
         ResponseMessage: action.message,
       };
     }
@@ -1197,7 +1197,6 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        agendaWiseMinutes: action.response,
         ResponseMessage: action.message,
       };
     }

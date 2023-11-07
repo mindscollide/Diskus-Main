@@ -4077,7 +4077,7 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
                 )
               );
               let getAll = {
-                AgendaID: 1222,
+                AgendaID: "1222",
               };
               dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t));
             } else if (
