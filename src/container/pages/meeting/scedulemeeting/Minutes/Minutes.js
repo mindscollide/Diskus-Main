@@ -629,6 +629,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     };
     console.log(docsData, "messagesmessages");
     dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
+    setisEdit(false);
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -639,7 +640,6 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     });
 
     setFileAttachments([]);
-    setisEdit(false);
   };
 
   const handleshowMore = () => {

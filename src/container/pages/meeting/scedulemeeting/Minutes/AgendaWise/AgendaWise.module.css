@@ -216,3 +216,22 @@ body[dir="rtl"] .ant-upload-text {
   padding: 10px 10px !important;
   margin-top: 8px !important;
 }
+
+.Leftpolygon {
+  background: none;
+  border: none;
+  display: flex !important;
+  align-items: center !important;
+}
+
+body[dir="rtl"] .Leftpolygon {
+  transform: rotate(180deg) !important;
+}
+
+.Leftpolygon:hover,
+.Leftpolygon:active,
+.Leftpolygon:focus,
+.Leftpolygon:focus-visible {
+  background: none !important;
+  border: none !important;
+}
