@@ -83,6 +83,18 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
   });
   console.log(formattedDates, "formattedDateformattedDate");
 
+  const counts = formattedDates.map((formattedDate, index) => {
+    if (organizerRows[index].userName === "Total") {
+      return countSelectedProposedDatesForColumn(index);
+    }
+    return 0;
+  });
+
+  const maxCountIndex = counts.findIndex(
+    (count, index) =>
+      organizerRows[index].userName === "Total" && count === Math.max(...counts)
+  );
+
   const scheduleColumn = [
     {
       dataIndex: "userName",

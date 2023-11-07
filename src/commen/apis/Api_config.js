@@ -1203,6 +1203,10 @@ const DeleteDocumentGenralMinute = {
   RequestMethod: "ServiceManager.DeleteGeneralMinuteDocuments",
 };
 
+const ScheduleMeetingOnSelectedDate = {
+  RequestMethod: "ServiceManager.ScheduleMeetingOnSelectedDate",
+};
+
 export {
   deleteCommitteeTaskRM,
   deleteGroupTaskRM,
@@ -1525,4 +1529,5 @@ export {
   saveDocumentAgendaWiseMinutes,
   RetriveAgendaWiseDocuments,
   DeleteDocumentGenralMinute,
+  ScheduleMeetingOnSelectedDate,
 };
