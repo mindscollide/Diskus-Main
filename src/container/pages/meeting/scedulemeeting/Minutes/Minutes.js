@@ -209,7 +209,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     },
   };
 
-  console.log(currentMeetingID, "currentMeetingIDcurrentMeetingID");
+  console.log(currentMeeting, "currentMeetingIDcurrentMeetingID");
 
   useEffect(() => {
     let Data = {
@@ -495,41 +495,6 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
 
     setFileAttachments([]);
-    // let newfile = [...previousFileIDs];
-    // const uploadPromises = fileForSend.map(async (newData) => {
-    //   await dispatch(
-    //     uploadDocumentsMeetingMinutesApi(navigate, t, newData,folderID, newfile)
-    //   );
-    // });
-
-    // // Wait for all promises to resolve
-    // await Promise.all(uploadPromises);
-
-    // let docsData = {
-    //   FK_MeetingGeneralMinutesID: messages.minuteID,
-    //   FK_MDID: currentMeeting,
-    //   UpdateFileList: newfile.map((data, index) => {
-    //     return { PK_FileID: Number(data.pK_FileID) };
-    //   }),
-    // };
-    // dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
-
-    // if (addNoteFields.Description.value) {
-    //   // Add the current message to the list of messages
-    //   setMessages([...messages, addNoteFields.Description.value]);
-
-    //   // Clear the editor
-    //   editorRef.current.getEditor().setText("");
-
-    //   setAddNoteFields({
-    //     ...addNoteFields,
-    //     Description: {
-    //       value: "",
-    //       errorMessage: "",
-    //       errorStatus: false,
-    //     },
-    //   });
-    // }
   };
 
   const documentUploadingFunc = async (minuteID) => {
@@ -549,13 +514,13 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
     console.log(messages, "messagesmessages");
-    console.log(currentMeetingID, "messagesmessages");
+    console.log(currentMeeting, "messagesmessages");
 
     console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: currentMeetingID,
+      FK_MDID: currentMeeting,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
@@ -651,13 +616,13 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
     console.log(messages, "messagesmessages");
-    console.log(currentMeetingID, "messagesmessages");
+    console.log(currentMeeting, "messagesmessages");
 
     console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: currentMeetingID,
+      FK_MDID: currentMeeting,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),

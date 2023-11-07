@@ -3972,7 +3972,7 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
             ) {
               await dispatch(
                 showAgendaWiseAddMinutesSuccess(
-                  response.data.responseResult,
+                  response.data.responseResult.minuteID,
                   t("Response-saved")
                 )
               );

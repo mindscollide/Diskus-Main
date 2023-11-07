@@ -291,15 +291,6 @@ const AgendaWise = () => {
     }
   };
 
-  const handleAddClickAgendaWise = async () => {
-    let Data = {
-      AgendaID: "1222",
-      MinuteText: addNoteFields.Description.value,
-    };
-    console.log(Data, "addNoteFieldsaddNoteFields");
-    dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
-  };
-
   const handleAgendaSelect = (selectoptions) => {
     console.log(selectoptions, "selectoptionsselectoptions");
     setAgendaSelect({
@@ -309,6 +300,15 @@ const AgendaWise = () => {
         title: selectoptions.label,
       },
     });
+  };
+
+  const handleAddClickAgendaWise = async () => {
+    let Data = {
+      AgendaID: "1222",
+      MinuteText: addNoteFields.Description.value,
+    };
+    console.log(Data, "addNoteFieldsaddNoteFields");
+    dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
   };
 
   const documentUploadingFunc = async (minuteID) => {
@@ -355,6 +355,10 @@ const AgendaWise = () => {
   // For getting the MinuteID
   useEffect(() => {
     if (NewMeetingreducer.agendaWiseMinuteID !== 0) {
+      console.log(
+        NewMeetingreducer.agendaWiseMinuteID,
+        "agendaWiseMinuteIDagendaWiseMinuteID"
+      );
       documentUploadingFunc(NewMeetingreducer.agendaWiseMinuteID);
     }
   }, [NewMeetingreducer.agendaWiseMinuteID]);
