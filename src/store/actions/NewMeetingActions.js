@@ -452,6 +452,19 @@ const SaveMeetingDetialsNewApiFunction = (
                   t("Record-found")
                 )
               );
+              let MappedData = {
+                MeetingID: response.data.responseResult.meetingID,
+                MeetingTitle: meetingDetails.MeetingTitle,
+                IsUpdateFlow: false,
+              };
+              console.log(MappedData, "MappedDataMappedData");
+              dispatch(
+                CreateUpdateMeetingDataRoomMapeedApiFunc(
+                  navigate,
+                  MappedData,
+                  t
+                )
+              );
 
               setCurrentMeetingID(response.data.responseResult.meetingID);
 
