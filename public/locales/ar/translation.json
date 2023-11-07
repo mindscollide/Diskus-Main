@@ -1554,5 +1554,7 @@
   "RSVP-allowed-and-notify": "RSVP allowed and notify meeting organizer when members RSVP",
   "RSVP-not-allowed": "RSVP not allowed ",
   "View-not-available": "View Not Available",
-  "Start-join-meeting": "Start/Join Meeting"
+  "Start-join-meeting": "Start/Join Meeting",
+  "Total": "Total",
+  "Organizer-View": "Organizer View"
 }

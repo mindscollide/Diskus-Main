@@ -106,13 +106,18 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
       NewMeetingreducer.userWiseMeetingProposed !== undefined &&
       NewMeetingreducer.userWiseMeetingProposed.length > 0
     ) {
-      let ProposeDates = [];
+      let ProposeDates;
 
       NewMeetingreducer.userWiseMeetingProposed.forEach((datesData, index) => {
-        datesData.selectedProposedDates.forEach((eachRecord, index) => {
-          ProposeDates.push(eachRecord.proposedDate);
-        });
+        const uniqueData = new Set(
+          datesData.selectedProposedDates.map(JSON.stringify)
+        );
+        console.log(uniqueData, "uniqueDatauniqueDatauniqueDatauniqueData");
+        ProposeDates = Array.from(uniqueData).map(JSON.parse);
+
+        // ProposeDates.push(eachRecord.proposedDate);
       });
+      console.log(ProposeDates, "ProposeDatesProposeDatesProposeDates");
       setProposedDates(ProposeDates);
       setInitialOrganizerRows(NewMeetingreducer.userWiseMeetingProposed);
     } else {
@@ -133,23 +138,23 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
     });
 
     // Create an object with maxSelectedProposedDates empty selectedProposedDates
-    const yourNewObject = {
-      userID: 0,
-      userName: "Total",
-      designation: "",
-      userEmail: "",
-      title: "",
-      selectedProposedDates: Array(maxSelectedProposedDates).fill({
-        proposedDateID: 0,
-        proposedDate: "",
-        startTime: "",
-        endTime: "",
-        isSelected: false,
-        isTotal: 0,
-      }),
-    };
+    // const yourNewObject = {
+    //   userID: 0,
+    //   userName: "Total",
+    //   designation: "",
+    //   userEmail: "",
+    //   title: "",
+    //   selectedProposedDates: Array(maxSelectedProposedDates).fill({
+    //     proposedDateID: 0,
+    //     proposedDate: "",
+    //     startTime: "",
+    //     endTime: "",
+    //     isSelected: false,
+    //     isTotal: 0,
+    //   }),
+    // };
 
-    newOrganizerRows.push(yourNewObject);
+    // newOrganizerRows.push(yourNewObject);
 
     setOrganizerRows(newOrganizerRows);
   }, [initialOrganizerRows]);
@@ -205,12 +210,13 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
                 className="d-flex justify-content-end"
               >
                 <Button
-                  text={"Cancel"}
+                  text={t("Cancel")}
                   onClick={cancelHandler}
                   className={styles["Cancel_Button_ProposeOrganizer"]}
                 />
               </Col>
             </Row>
+
             <Table
               rows={organizerRows}
               column={organizerColumn}
@@ -224,7 +230,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
                 className="d-flex justify-content-center mt-3"
               >
                 <Button
-                  text="View Poll"
+                  text={t("View-poll")}
                   onClick={handleViewPollClick}
                   className={styles["view-poll-organizer-btn"]}
                 />

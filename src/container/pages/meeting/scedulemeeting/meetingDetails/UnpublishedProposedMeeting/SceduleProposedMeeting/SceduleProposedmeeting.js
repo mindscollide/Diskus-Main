@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./SceduleProposedMeeting.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -19,30 +19,69 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
-  console.log(organizerRows, "organizerRowsorganizerRows");
+  const [isActive, setIsActive] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  console.log(activeIndex, "activeIndexactiveIndexactiveIndexactiveIndex");
 
-  // Function to count the selected proposed dates for a row
-  const countSelectedProposedDates = (organizerRows) => {
-    console.log("Row Data:", organizerRows);
-    // if (organizerRows.selectedProposedDates) {
-    //   console.log("Selected Proposed Dates:", organizerRows.selectedProposedDates);
-    //   const count = organizerRows.selectedProposedDates.filter(
-    //     (date) => date.isSelected
-    //   ).length;
-    //   console.log("Count of Selected Proposed Dates:", count);
-
-    //   // Add a zero prefix to the count if it's a single digit
-    //   return count < 10 ? `0${count}` : count;
-    // } else {
-    //   console.log("No selectedProposedDates found.");
-    // }
+  const toggleActive = (index) => {
+    console.log(index, "proposedDateindexindex");
+    setIsActive(!isActive);
+    setActiveIndex(index);
   };
 
+  console.log(organizerRows, "organizerRowsorganizerRows");
+
+  const yourNewObject = {
+    userID: 0,
+    userName: "Total",
+    designation: "",
+    userEmail: "",
+    title: "",
+    selectedProposedDates: Array(proposedDates.length).fill({
+      proposedDateID: 0,
+      proposedDate: "",
+      startTime: "",
+      endTime: "",
+      isSelected: false,
+      isTotal: 0,
+    }),
+  };
+
+  const updatedOrganizerRows = [...organizerRows, yourNewObject];
+
+  // Function to count the selected proposed dates for a row
+  const countSelectedProposedDatesForColumn = (columnIndex) => {
+    if (organizerRows && Array.isArray(organizerRows)) {
+      console.log(
+        organizerRows,
+        "columnIndexcolumnIndexcolumnIndexcolumnIndexorganizerRows"
+      );
+      const count = organizerRows.reduce((total, row) => {
+        if (
+          row &&
+          row.selectedProposedDates.length > 0 &&
+          row.selectedProposedDates[columnIndex].isSelected
+        ) {
+          return total + 1;
+        }
+        console.log(total, "columnIndexcolumnIndex");
+        return total;
+      }, 0);
+
+      // Add a zero prefix to the count if it's a single digit
+      return count < 10 ? `0${count}` : count;
+    } else {
+      return "00";
+    }
+  };
   const dateFormat = "YYYYMMDD";
   const formattedDates = proposedDates.map((date) => {
-    const formattedDate = moment(date, dateFormat, true).format("DD MMM, YY");
+    const formattedDate = moment(date.proposedDate, dateFormat).format(
+      "DD MMM, YY"
+    );
     return formattedDate;
   });
+  console.log(formattedDates, "formattedDateformattedDate");
 
   const scheduleColumn = [
     {
@@ -66,67 +105,61 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
       ),
     },
 
-    ...formattedDates.map((formattedDate, index) => ({
-      title: <span className={styles["DateObject"]}>{formattedDate}</span>,
-      dataIndex: "selectedProposedDates",
-      key: `selectedProposedDates-${index}`,
-      render: (text, record, columnIndex) => {
-        try {
-          if (record.userName === "Total") {
-            const totalDate = record.selectedProposedDates.find(
-              (date) => date.isTotal === 0
-            );
-            if (totalDate) {
-              return (
-                <span className={styles["TotalCount"]}>
-                  {countSelectedProposedDates(record)}
-                </span>
-              );
+    ...formattedDates.map((formattedDate, index) => {
+      const record = organizerRows[index]; // Access the record using the index
+      return {
+        title: (
+          <span
+            className={
+              activeIndex === index
+                ? `${styles["Date-Object-Detail_active"]}`
+                : `${styles["Date-Object-Detail"]}`
             }
-          } else if (record.userName !== "Total") {
-            // Check if record.selectedProposedDates is defined and has the specific element
-            if (
-              record.selectedProposedDates &&
-              record.selectedProposedDates[index] &&
-              record.selectedProposedDates[index].isSelected
-            ) {
-              return (
-                <img
-                  src={BlueTick}
-                  className={styles["TickIconClass"]}
-                  width="20.7px"
-                  height="14.21px"
-                  alt=""
-                />
+            onClick={() => toggleActive(index)}
+          >
+            {formattedDate}
+          </span>
+        ),
+        dataIndex: "selectedProposedDates",
+        key: `selectedProposedDates-${index}`,
+        render: (text, record, columnIndex) => {
+          console.log(columnIndex, record, text, "columnIndexcolumnIndex122");
+          try {
+            if (record.userName === "Total") {
+              const totalDate = record.selectedProposedDates.find(
+                (date) => date.isTotal === 0
               );
+              if (totalDate) {
+                return (
+                  <>
+                    <span className={styles["TotalCount"]}>
+                      {countSelectedProposedDatesForColumn(index)}
+                    </span>
+                  </>
+                );
+              }
+            } else if (record.userName !== "Total") {
+              if (
+                record.selectedProposedDates &&
+                record.selectedProposedDates[index] &&
+                record.selectedProposedDates[index].isSelected
+              ) {
+                return (
+                  <img
+                    src={BlueTick}
+                    className={styles["TickIconClass"]}
+                    width="20.7px"
+                    height="14.21px"
+                    alt=""
+                  />
+                );
+              }
+              return null;
             }
-            return null;
-          }
-        } catch (error) {}
-      },
-    })),
-  ];
-
-  // this col is for footer
-  const totalColumn = [
-    {
-      dataIndex: "total",
-      key: "total",
-
-      render: (text, record) => (
-        <>
-          <span className={styles["TotalCount_HEading"]}>Total</span>
-          <Row>
-            <Col lg={9} md={9} sm={9}></Col>
-            <Col lg={3} md={3} sm={3} className="">
-              <span className={styles["TotalCount"]}>
-                {countSelectedProposedDates(record)}
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
+          } catch (error) {}
+        },
+      };
+    }),
   ];
 
   return (
@@ -138,6 +171,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
         modalFooterClassName={"d-block"}
         onHide={() => {
           dispatch(showSceduleProposedMeeting(false));
+          setActiveIndex(-1);
         }}
         size={"lg"}
         ModalTitle={
@@ -161,49 +195,28 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
                     scroll={{ x: "22vh" }}
                     pagination={false}
                     className="SceduleProposedMeeting"
-                    rows={organizerRows}
-                    // footer={(text, record) => {
-                    //   console.log(
-                    //     record,
-                    //     text,
-                    //     "recordrecordrecordrecordrecord"
-                    //   );
-                    //   return (
-                    //     <>
-                    //       <span className={styles["TotalCount_HEading"]}>
-                    //         Total
-                    //       </span>
-                    //       <Row>
-                    //         <Col lg={9} md={9} sm={9}></Col>
-                    //         <Col lg={3} md={3} sm={3} className="">
-                    //           <span className={styles["TotalCount"]}>
-                    //             {countSelectedProposedDates(organizerRows[0])}
-                    //           </span>
-                    //         </Col>
-                    //       </Row>
-                    //     </>
-                    //   );
-                    // }}
+                    rows={updatedOrganizerRows}
                   />
+                  <span>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center mt-4"
+                      >
+                        <Button
+                          text={t("Schedule")}
+                          className={styles["Schedule-btn-count"]}
+                        />
+                      </Col>
+                    </Row>
+                  </span>
                 </Col>
               </Row>
             </section>
           </>
         }
-        // ModalFooter={
-        //   <section>
-        //     <Row>
-        //       <Col lg={12} md={12} sm={12}>
-        //         <Table
-        //           column={totalColumn}
-        //           pagination={false}
-        //           // className="SceduleProposedMeeting"
-        //           rows={organizerRows}
-        //         />
-        //       </Col>
-        //     </Row>
-        //   </section>
-        // }
       />
     </section>
   );
