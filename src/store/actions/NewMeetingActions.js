@@ -3873,9 +3873,11 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
                   t("Record-deleted")
                 )
               );
+
               let DelMeet = {
                 MeetingID: currentMeeting,
               };
+
               dispatch(getAllGeneralMinutesApiFunc(navigate, t, DelMeet));
             } else if (
               response.data.responseResult.responseMessage
@@ -4576,6 +4578,122 @@ const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
         dispatch(
           showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
         );
+      });
+  };
+};
+
+//Dlete Documentes General Minutes
+
+const showDeleteGeneralMeetingDocumentsInit = () => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTE_DCOUMENTS_INIT,
+  };
+};
+
+const showDeleteGeneralMeetingDocumentsSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTE_DCOUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showDeleteGeneralMeetingDocumentsFailed = (message) => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTE_DCOUMENTS_FAILED,
+    message: message,
+  };
+};
+
+const DeleteGeneralMinuteDocuments = (navigate, Data, t, currentMeeting) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showDeleteAgendaWiseMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteagendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            DeleteGeneralMinuteDocuments(navigate, Data, t, currentMeeting)
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showDeleteAgendaWiseMinutesSuccess(
+                  response.data.responseResult,
+                  t("Record Deleted")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseMinutesFailed(t("No Record Deleted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseMinutesFailed(
+                  t("only a organizer can perform this operation")
+                )
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong")));
       });
   };
 };

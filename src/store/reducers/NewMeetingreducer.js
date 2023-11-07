@@ -1274,6 +1274,29 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.DELETE_GENERAL_MINUTE_DCOUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DELETE_GENERAL_MINUTE_DCOUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DELETE_GENERAL_MINUTE_DCOUMENTS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     default: {
       return { ...state };
     }
