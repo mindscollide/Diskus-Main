@@ -4,16 +4,25 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { Modal, Button, Table } from "../../../../../../../components/elements";
+import {
+  Modal,
+  Button,
+  Table,
+  Loader,
+} from "../../../../../../../components/elements";
 import { useSelector } from "react-redux";
 import { showSceduleProposedMeeting } from "../../../../../../../store/actions/NewMeetingActions";
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
+import { scheduleMeetingMainApi } from "../../../../../../../store/actions/NewMeetingActions";
 const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
   console.log(
     proposedDates,
     "proposedDatesproposedDatesproposedDatesproposedDatesproposedDates"
   );
+
+  let meetingID = Number(localStorage.getItem("MeetingId"));
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,15 +30,39 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
 
   const [isActive, setIsActive] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  console.log(activeIndex, "activeIndexactiveIndexactiveIndexactiveIndex");
+  const [selectProposedDate, setSelectPropsed] = useState(null);
+  console.log(
+    selectProposedDate,
+    "activeIndexactiveIndexactiveIndexactiveIndex"
+  );
 
-  const toggleActive = (index) => {
-    console.log(index, "proposedDateindexindex");
+  const toggleActive = (index, record, formattedDate) => {
+    console.log({ record, formattedDate }, "proposedDateindexindex");
     setIsActive(!isActive);
     setActiveIndex(index);
+    let newdata2 = [];
+    let dateformat = moment(formattedDate).format("YYYYMMDD");
+
+    organizerRows.map((data, index) => {
+      if (data.selectedProposedDates.length > 0) {
+        data.selectedProposedDates.filter((newData, index) => {
+          if (newData.proposedDate === dateformat) {
+            return newdata2.push(newData);
+          }
+        });
+      }
+    });
+    const uniqueData = new Set(newdata2.map(JSON.stringify));
+    console.log(uniqueData, "uniqueDatauniqueDatauniqueDatauniqueData");
+    setSelectPropsed(Array.from(uniqueData).map(JSON.parse));
   };
 
   console.log(organizerRows, "organizerRowsorganizerRows");
+
+  const proposedDateIDs = organizerRows.map((row) =>
+    row.selectedProposedDates.map((date) => date.proposedDateID)
+  );
+  console.log(proposedDateIDs, "proposedDateIDsproposedDateIDs");
 
   const yourNewObject = {
     userID: 0,
@@ -83,17 +116,14 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
   });
   console.log(formattedDates, "formattedDateformattedDate");
 
-  const counts = formattedDates.map((formattedDate, index) => {
-    if (organizerRows[index].userName === "Total") {
-      return countSelectedProposedDatesForColumn(index);
-    }
-    return 0;
-  });
-
-  const maxCountIndex = counts.findIndex(
-    (count, index) =>
-      organizerRows[index].userName === "Total" && count === Math.max(...counts)
-  );
+  // Api hit for schedule Meeting
+  const scheduleHitButton = () => {
+    let scheduleMeeting = {
+      MeetingID: 1666,
+      ProposedDateID: selectProposedDate[0].proposedDateID,
+    };
+    dispatch(scheduleMeetingMainApi(navigate, t, scheduleMeeting));
+  };
 
   const scheduleColumn = [
     {
@@ -119,6 +149,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
 
     ...formattedDates.map((formattedDate, index) => {
       const record = organizerRows[index]; // Access the record using the index
+      console.log(record, "recordrecordrecord");
       return {
         title: (
           <span
@@ -127,7 +158,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
                 ? `${styles["Date-Object-Detail_active"]}`
                 : `${styles["Date-Object-Detail"]}`
             }
-            onClick={() => toggleActive(index)}
+            onClick={() => toggleActive(index, record, formattedDate)}
           >
             {formattedDate}
           </span>
@@ -220,6 +251,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
                         <Button
                           text={t("Schedule")}
                           className={styles["Schedule-btn-count"]}
+                          onClick={scheduleHitButton}
                         />
                       </Col>
                     </Row>
@@ -230,6 +262,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
           </>
         }
       />
+      {NewMeetingreducer.Loading ? <Loader /> : null}
     </section>
   );
 };

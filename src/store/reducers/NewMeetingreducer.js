@@ -78,6 +78,7 @@ const initialState = {
   getCommitteeByMeetingID: null,
   setGroupwithMeetingID: null,
   getGroupwithMeetingID: null,
+  scheduleMeetingProposed: "",
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1383,6 +1384,31 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SCHEDULE_MEETING_ON_SELECT_DATE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SCHEDULE_MEETING_ON_SELECT_DATE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        scheduleMeetingProposed: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SCHEDULE_MEETING_ON_SELECT_DATE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        scheduleMeetingProposed: "",
         ResponseMessage: action.message,
       };
     }
