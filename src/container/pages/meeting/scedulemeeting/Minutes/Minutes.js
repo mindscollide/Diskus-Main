@@ -161,6 +161,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [showMore, setShowMore] = useState(false);
+  const [generalShowMore, setGeneralShowMore] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -641,7 +642,8 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     });
   };
 
-  const handleshowMore = () => {
+  const handleshowMore = (index) => {
+    setGeneralShowMore(index);
     setShowMore(!showMore);
   };
 
@@ -995,13 +997,14 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                 <Col lg={12} md={12} sm={12}>
                                   <span
                                     className={styles["Show_more"]}
-                                    onClick={handleshowMore}
+                                    onClick={() => handleshowMore(index)}
                                   >
                                     Show more
                                   </span>
                                 </Col>
                               </Row>
-                              {showMore ? (
+                              {generalShowMore === index &&
+                              showMore === true ? (
                                 <>
                                   <Row>
                                     <Col
