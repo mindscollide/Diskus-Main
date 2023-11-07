@@ -42,6 +42,7 @@ import {
   utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
 import { UpdateOrganizersMeeting } from "../../../../../../store/actions/MeetingOrganizers_action";
+import SceduleMeeting from "../../SceduleMeeting";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -49,6 +50,10 @@ const UnpublishedProposedMeeting = ({
   viewProposeDatePoll,
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModalUnpublish,
+  setSceduleMeeting,
+  setEdiorRole,
+  setEditMeeting,
+  setCurrentMeetingID
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -74,7 +79,6 @@ const UnpublishedProposedMeeting = ({
   const [rows, setRow] = useState([]);
   const [publishState, setPublishState] = useState(null);
   const [organizerViewModal, setOrganizerViewModal] = useState(false);
-
   const handleDeleteMeetingModal = () => {
     dispatch(showDeleteMeetingModal(true));
   };
@@ -121,6 +125,7 @@ const UnpublishedProposedMeeting = ({
       // setViewProposeOrganizerPoll(true);
     }
   };
+
   const handleOpenViewModal = async (data) => {
     setAdvanceMeetingModalID(data.pK_MDID);
     let Data = {
@@ -128,6 +133,21 @@ const UnpublishedProposedMeeting = ({
     };
     await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
     setViewAdvanceMeetingModalUnpublish(true);
+  };
+
+  const handleEditMeeting = async (id, record) => {
+    let Data = {
+      MeetingID: Number(id),
+    };
+    await dispatch(
+      GetAllMeetingDetailsApiFunc(
+        Data,
+        navigate,
+        t,
+        setCurrentMeetingID,
+        setSceduleMeeting
+      )
+    );
   };
 
   const MeetingColoumns = [
@@ -325,7 +345,7 @@ const UnpublishedProposedMeeting = ({
                 lg={12}
                 className="d-flex  align-items-center gap-4"
               >
-                {isParticipant ? null : isAgendaContributor ? (
+                {isAgendaContributor ? (
                   <img
                     src={EditIcon}
                     className="cursor-pointer"
@@ -333,6 +353,20 @@ const UnpublishedProposedMeeting = ({
                     height="17.03px"
                     alt=""
                     draggable="false"
+                    onClick={() => {
+                      handleEditMeeting(
+                        record.pK_MDID,
+                        record.isQuickMeeting,
+                        isAgendaContributor,
+                        record
+                      );
+
+                      setEdiorRole({
+                        status: record.status,
+                        role: "Agenda Contributor",
+                      });
+                      setEditMeeting(true);
+                    }}
                   />
                 ) : (
                   <>
@@ -351,6 +385,20 @@ const UnpublishedProposedMeeting = ({
                       height="17.03px"
                       alt=""
                       draggable="false"
+                      onClick={() => {
+                        handleEditMeeting(
+                          record.pK_MDID,
+                          record.isQuickMeeting,
+                          isAgendaContributor,
+                          record
+                        );
+
+                        setEdiorRole({
+                          status: record.status,
+                          role: "Organizer",
+                        });
+                        setEditMeeting(true);
+                      }}
                     />
                   </>
                 )}
@@ -547,8 +595,6 @@ const UnpublishedProposedMeeting = ({
       setPublishState(null);
     }
   }, [publishState]);
-
-
 
   return (
     <section>
