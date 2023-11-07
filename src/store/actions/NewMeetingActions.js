@@ -4595,7 +4595,8 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
               navigate,
               Data,
               t,
-              currentMeeting
+              currentMeeting,
+              MinuteData
             )
           );
         } else if (response.data.responseCode === 200) {
