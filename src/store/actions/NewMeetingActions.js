@@ -39,6 +39,7 @@ import {
   getUserWiseProposeDate,
   saveDocumentAgendaWiseMinutes,
   RetriveAgendaWiseDocuments,
+  DeleteDocumentGenralMinute,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -4563,17 +4564,23 @@ const showDeleteGeneralMeetingDocumentsFailed = (message) => {
   };
 };
 
-const DeleteGeneralMinuteDocuments = (navigate, Data, t, currentMeeting) => {
+const DeleteGeneralMinuteDocumentsApiFunc = (
+  navigate,
+  Data,
+  t,
+  currentMeeting,
+  MinuteData
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
-    dispatch(showDeleteAgendaWiseMinutesInit());
+    dispatch(showDeleteGeneralMeetingDocumentsInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", DeleteagendaWiseMinutes.RequestMethod);
+    form.append("RequestMethod", DeleteDocumentGenralMinute.RequestMethod);
     axios({
       method: "post",
-      url: meetingApi,
+      url: dataRoomApi,
       data: form,
       headers: {
         _token: token,
@@ -4584,7 +4591,12 @@ const DeleteGeneralMinuteDocuments = (navigate, Data, t, currentMeeting) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            DeleteGeneralMinuteDocuments(navigate, Data, t, currentMeeting)
+            DeleteGeneralMinuteDocumentsApiFunc(
+              navigate,
+              Data,
+              t,
+              currentMeeting
+            )
           );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
@@ -4594,64 +4606,62 @@ const DeleteGeneralMinuteDocuments = (navigate, Data, t, currentMeeting) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_01".toLowerCase()
+                  "DataRoom_DataRoomManager_DeleteGeneralMinuteDocuments_01".toLowerCase()
                 )
             ) {
               await dispatch(
-                showDeleteAgendaWiseMinutesSuccess(
+                showDeleteGeneralMeetingDocumentsSuccess(
                   response.data.responseResult,
                   t("Record Deleted")
                 )
               );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_02".toLowerCase()
-                )
-            ) {
+              let Erase = {
+                MinuteID: MinuteData.minuteID,
+              };
               dispatch(
-                showDeleteAgendaWiseMinutesFailed(t("No Record Deleted"))
+                DeleteGeneralMinutesApiFunc(navigate, Erase, t, currentMeeting)
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_03".toLowerCase()
+                  "DataRoom_DataRoomManager_DeleteGeneralMinuteDocuments_02".toLowerCase()
                 )
             ) {
               dispatch(
-                showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+                showDeleteGeneralMeetingDocumentsFailed(t("No Record Deleted"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_04".toLowerCase()
+                  "DataRoom_DataRoomManager_DeleteGeneralMinuteDocuments_03".toLowerCase()
                 )
             ) {
               dispatch(
-                showDeleteAgendaWiseMinutesFailed(
-                  t("only a organizer can perform this operation")
+                showDeleteGeneralMeetingDocumentsFailed(
+                  t("Something-went-wrong")
                 )
               );
             }
           } else {
             console.log(response, "response");
             dispatch(
-              showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+              showDeleteGeneralMeetingDocumentsFailed(t("Something-went-wrong"))
             );
           }
         } else {
           console.log(response, "response");
           dispatch(
-            showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+            showDeleteGeneralMeetingDocumentsFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
         console.log(response, "response");
-        dispatch(showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong")));
+        dispatch(
+          showDeleteGeneralMeetingDocumentsFailed(t("Something-went-wrong"))
+        );
       });
   };
 };
@@ -4744,4 +4754,5 @@ export {
   uploadDocumentsMeetingAgendaWiseMinutesApi,
   saveFilesMeetingagendaWiseMinutesApi,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
+  DeleteGeneralMinuteDocumentsApiFunc,
 };
