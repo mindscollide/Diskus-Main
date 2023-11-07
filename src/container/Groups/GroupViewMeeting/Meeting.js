@@ -467,28 +467,30 @@ const CommitteeMeetingTab = () => {
         const isQuickMeeting = record.isQuickMeeting;
 
         if (isQuickMeeting) {
-          if (isOrganiser) {
-            return (
-              <>
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <img
-                      src={EditIcon}
-                      className="cursor-pointer"
-                      width="17.11px"
-                      height="17.11px"
-                      alt=""
-                      draggable="false"
-                      onClick={() =>
-                        handleEditMeeting(record.pK_MDID, record.isQuickMeeting)
-                      }
-                    />
-                  </Col>
-                </Row>
-              </>
-            );
-          } else {
-          }
+          // if (isOrganiser) {
+          return (
+            <>
+              <Row>
+                <Col sm={12} md={12} lg={12}>
+                  {/* <Tooltip placement="topRight" title={t("Edit")}> */}
+                  <img
+                    src={EditIcon}
+                    className="cursor-pointer"
+                    width="17.11px"
+                    height="17.11px"
+                    alt=""
+                    draggable="false"
+                    onClick={() =>
+                      handleEditMeeting(record.pK_MDID, record.isQuickMeeting)
+                    }
+                  />
+                  {/* </Tooltip> */}
+                </Col>
+              </Row>
+            </>
+          );
+          // } else {
+          // }
         }
       },
     },

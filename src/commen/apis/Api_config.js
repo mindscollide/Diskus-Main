@@ -1140,6 +1140,29 @@ const setCommitteeTaskApi = {
   RequestMethod: "ServiceManager.SetCommitteeTasks",
 };
 
+const DeleteGeneralMinutes = {
+  RequestMethod: "ServiceManager.DeleteGeneralMinute",
+};
+
+const UpdateGeneralMinutes = {
+  RequestMethod: "ServiceManager.UpdateGeneralMinute",
+};
+
+const agenwiseMinutes = {
+  RequestMethod: "ServiceManager.AddAgendaWiseMinutes",
+};
+
+const DeleteagendaWiseMinutes = {
+  RequestMethod: "ServiceManager.DeleteAgendaWiseMinute",
+};
+
+const updateAgendaWiseMinutes = {
+  RequestMethod: "ServiceManager.UpdateAgendaWiseMinute",
+};
+
+const getAllAgendaWiseMinutes = {
+  RequestMethod: "ServiceManager.GetAgendaWiseMinutes",
+};
 const deleteCommitteePollRM = {
   RequestMethod: "ServiceManager.DeleteCommitteePolls",
 };
@@ -1166,6 +1189,18 @@ const getUserWiseProposeDate = {
 
 const getAdvanceMeetingAgendabyMeetingID = {
   RequestMethod: "ServiceManager.GetAdvanceMeetingAgendabyMeetingID",
+};
+
+const saveDocumentAgendaWiseMinutes = {
+  RequestMethod: "ServiceManager.SaveAgendaWiseMinutesDocuments",
+};
+
+const RetriveAgendaWiseDocuments = {
+  RequestMethod: "ServiceManager.ReteriveAgendaWiseMiuteDocuments",
+};
+
+const DeleteDocumentGenralMinute = {
+  RequestMethod: "ServiceManager.DeleteGeneralMinuteDocuments",
 };
 
 export {
@@ -1479,6 +1514,15 @@ export {
   setGroupTaskApi,
   getTaskByCommitteeIDApi,
   setCommitteeTaskApi,
+  DeleteGeneralMinutes,
+  UpdateGeneralMinutes,
+  agenwiseMinutes,
+  DeleteagendaWiseMinutes,
+  updateAgendaWiseMinutes,
+  getAllAgendaWiseMinutes,
   getUserWiseProposeDate,
   getAdvanceMeetingAgendabyMeetingID,
+  saveDocumentAgendaWiseMinutes,
+  RetriveAgendaWiseDocuments,
+  DeleteDocumentGenralMinute,
 };

@@ -3,16 +3,8 @@ import styles from "./Participants.module.css";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import addmore from "../../../../../assets/images/addmore.png";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
-import rspvAbstainIcon from "../../../../../assets/images/rspvAbstain.svg";
-import { Col, Row, Tab } from "react-bootstrap";
-import {
-  Button,
-  Table,
-  TextField,
-  Loader,
-  Notification,
-} from "../../../../../components/elements";
+import { Col, Row } from "react-bootstrap";
+import { Button, Table, TextField } from "../../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +19,6 @@ import {
   showCrossConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
-import ParticipantsView from "./ParticpantsView/ParticipantsView";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 import { useEffect } from "react";
 
@@ -37,28 +28,21 @@ const Participants = ({
   setProposedMeetingDates,
   setSceduleMeeting,
   currentMeeting,
+  setAgendaContributors,
+  ediorRole,
+  setEditMeeting,
+  isEditMeeting,
 }) => {
-  const [proposeMeeting, setPropseMeeting] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  console.log(
-    NewMeetingreducer.getAllSavedparticipants,
-    "getAllSavedparticipants"
-  );
-  const [particiapntsView, setParticiapntsView] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(true);
-  const [IsParticipantsAddFlow, setIsParticpantAddFlow] = useState({
-    IsParticipantsAddFlow: true,
-  });
   const [isEditable, setIsEditable] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
   const [inputValues, setInputValues] = useState({});
   const [editableSave, setEditableSave] = useState(0);
-  const [data, setData] = useState([]);
   const [rspvRows, setrspvRows] = useState([]);
-  console.log(rspvRows, "rspvRowsrspvRows");
   //open row icon cross modal
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
@@ -209,29 +193,39 @@ const Participants = ({
       width: "80px",
 
       render: (text, record) => {
-        console.log("SaifSaifSaifSaif", { record });
-        return (
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <>
-                <TextField
-                  disable={record.isComingApi === true ? true : false}
-                  placeholder={t("Participant-title")}
-                  labelClass={"d-none"}
-                  applyClass={"Organizer_table"}
-                  value={
-                    record.isComingApi === true
-                      ? record.Title
-                      : inputValues[record.userID] || ""
-                  }
-                  change={(e) =>
-                    handleInputChange(record.userID, e.target.value)
-                  } // Update the inputValues when the user types
-                />
-              </>
-            </Col>
-          </Row>
-        );
+        if (
+          ((Number(ediorRole.status) === 9 ||
+            Number(ediorRole.status) === 8 ||
+            Number(ediorRole.status) === 10) &&
+            ediorRole.role === "Organizer" &&
+            isEditMeeting === true) ||
+          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
+        ) {
+          return { text };
+        } else {
+          return (
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <>
+                  <TextField
+                    disable={record.isComingApi === true ? true : false}
+                    placeholder={t("Participant-title")}
+                    labelClass={"d-none"}
+                    applyClass={"Organizer_table"}
+                    value={
+                      record.isComingApi === true
+                        ? record.Title
+                        : inputValues[record.userID] || ""
+                    }
+                    change={(e) =>
+                      handleInputChange(record.userID, e.target.value)
+                    } // Update the inputValues when the user types
+                  />
+                </>
+              </Col>
+            </Row>
+          );
+        }
       },
     },
 
@@ -242,33 +236,44 @@ const Participants = ({
       width: "80px",
 
       render: (text, record) => {
-        console.log(record, "isComingApiisComingApiisComingApi");
-        return (
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <>
-                <Select
-                  isDisabled={record.isComingApi === true ? true : false}
-                  options={particpantsRole}
-                  menuPortalTarget={document.body}
-                  styles={customStyles}
-                  classNamePrefix={"ParticipantRole"}
-                  value={
-                    record.isComingApi === true
-                      ? {
-                          value: record.participantRole.participantRoleID,
-                          label: record.participantRole.participantRole,
-                        }
-                      : record.selectedOption
-                  }
-                  onChange={(selectedOption) =>
-                    handleSelectChange(record.userID, selectedOption)
-                  }
-                />
-              </>
-            </Col>
-          </Row>
-        );
+        let participantRole = record.participantRole.participantRole;
+        if (
+          ((Number(ediorRole.status) === 9 ||
+            Number(ediorRole.status) === 8 ||
+            Number(ediorRole.status) === 10) &&
+            ediorRole.role === "Organizer" &&
+            isEditMeeting === true) ||
+          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
+        ) {
+          return { participantRole };
+        } else {
+          return (
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <>
+                  <Select
+                    isDisabled={record.isComingApi === true ? true : false}
+                    options={particpantsRole}
+                    menuPortalTarget={document.body}
+                    styles={customStyles}
+                    classNamePrefix={"ParticipantRole"}
+                    value={
+                      record.isComingApi === true
+                        ? {
+                            value: record.participantRole.participantRoleID,
+                            label: record.participantRole.participantRole,
+                          }
+                        : record.selectedOption
+                    }
+                    onChange={(selectedOption) =>
+                      handleSelectChange(record.userID, selectedOption)
+                    }
+                  />
+                </>
+              </Col>
+            </Row>
+          );
+        }
       },
     },
 
@@ -278,33 +283,43 @@ const Participants = ({
       width: "80px",
 
       render: (text, record) => {
-        console.log("recordrecordrecord", { record });
-        return (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                {record.isComingApi === true ? (
-                  ""
-                ) : (
-                  <>
-                    <img
-                      src={redcrossIcon}
-                      className="cursor-pointer "
-                      height="21px"
-                      width="21px"
-                      onClick={() => handleCancelingRow(record)}
-                    />
-                  </>
-                )}
-              </Col>
-            </Row>
-          </>
-        );
+        if (
+          ((Number(ediorRole.status) === 9 ||
+            Number(ediorRole.status) === 8 ||
+            Number(ediorRole.status) === 10) &&
+            ediorRole.role === "Organizer" &&
+            isEditMeeting === true) ||
+          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
+        ) {
+        } else {
+          return (
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  {record.isComingApi === true ? (
+                    ""
+                  ) : (
+                    <>
+                      <img
+                        src={redcrossIcon}
+                        className="cursor-pointer "
+                        height="21px"
+                        width="21px"
+                        onClick={() => handleCancelingRow(record)}
+                        alt=""
+                      />
+                    </>
+                  )}
+                </Col>
+              </Row>
+            </>
+          );
+        }
       },
     },
   ];
@@ -315,9 +330,13 @@ const Participants = ({
     setProposedMeetingDates(true);
   };
 
-  //Enable the view page
-  const EnableParticipantsViewPage = () => {
-    setParticiapntsView(true);
+  const nextTabOrganizer = () => {
+    setAgenda(true);
+    setParticipants(false);
+  };
+  const previousTabOrganizer = () => {
+    setAgendaContributors(true);
+    setParticipants(false);
   };
 
   //canceling the participants page
@@ -340,7 +359,6 @@ const Participants = ({
       [userID]: newValue,
     }));
     setrspvRows((prevRowsData) => {
-      console.log(prevRowsData, "prevRowsDataprevRowsData");
       return prevRowsData.map((row) => {
         if (row.userID === userID) {
           return {
@@ -367,7 +385,6 @@ const Participants = ({
     let newData = [];
     let copyData = [...rspvRows];
     copyData.forEach((data, index) => {
-      console.log(data, "newDatanewDatanewData");
       newData.push({
         UserID: data.userID,
         Title: data.Title,
@@ -381,8 +398,6 @@ const Participants = ({
         IsParticipantsAddFlow: false,
         NotificationMessage: "",
       };
-      console.log({ Data }, "DataData");
-
       dispatch(SaveparticipantsApi(Data, navigate, t));
     } else {
       let Data = {
@@ -391,8 +406,6 @@ const Participants = ({
         IsParticipantsAddFlow: true,
         NotificationMessage: "",
       };
-      console.log({ Data }, "DataData");
-
       dispatch(SaveparticipantsApi(Data, navigate, t, currentMeeting));
     }
   };
@@ -402,131 +415,146 @@ const Participants = ({
       let removedublicates = rspvRows.some(
         (data, index) => data.isComingApi === false
       );
-      console.log(removedublicates, "removedublicatesremovedublicates");
       setIsEditable(removedublicates);
     } else {
       setIsEditable(false);
     }
   }, [rspvRows]);
-  console.log(isEditable, "isEditableisEditableisEditable");
 
   return (
     <>
-      {particiapntsView ? (
-        <ParticipantsView />
-      ) : (
-        <>
-          <section className={styles["defined_Height"]}>
-            <Row className="mt-3">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
-                {isEditable ? (
-                  <>
-                    <Row>
-                      <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                        <Button
-                          text={t("Cancel")}
-                          className={styles["Cancel_Organization"]}
-                          onClick={handleCancelButtonForClearingParticipants}
-                        />
-
-                        <Button
-                          text={t("Save")}
-                          className={styles["Next_Organization"]}
-                          onClick={handleSaveparticpants}
-                        />
-                      </Col>
-                    </Row>
-                  </>
-                ) : (
-                  <>
+      <section className={styles["defined_Height"]}>
+        <Row className="mt-3">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-end gap-2"
+          >
+            {((Number(ediorRole.status) === 9 ||
+              Number(ediorRole.status) === 8 ||
+              Number(ediorRole.status) === 10) &&
+              ediorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            (ediorRole.role === "Agenda Contributor" &&
+              isEditMeeting === true) ? null : isEditable ? (
+              <>
+                <Row>
+                  <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                     <Button
-                      text={t("Edit")}
-                      className={styles["Edit_Button_Organizers"]}
-                      icon={
-                        <img
-                          draggable={false}
-                          src={EditIcon}
-                          width="11.75px"
-                          height="11.75px"
-                        />
-                      }
-                      onClick={handleEditFunction}
+                      text={t("Cancel")}
+                      className={styles["Cancel_Organization"]}
+                      onClick={handleCancelButtonForClearingParticipants}
                     />
 
                     <Button
-                      text={t("Add-more")}
-                      icon={<img draggable={false} src={addmore} />}
-                      className={styles["AddMoreBtn"]}
-                      onClick={openAddPartcipantModal}
+                      text={t("Save")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleSaveparticpants}
                     />
-                  </>
-                )}
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <Table
-                  column={ParticipantsColoumn}
-                  scroll={{ y: "42vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={rspvRows}
+                  </Col>
+                </Row>
+              </>
+            ) : (
+              <>
+                <Button
+                  text={t("Edit")}
+                  className={styles["Edit_Button_Organizers"]}
+                  icon={
+                    <img
+                      draggable={false}
+                      src={EditIcon}
+                      width="11.75px"
+                      height="11.75px"
+                      alt=""
+                    />
+                  }
+                  onClick={handleEditFunction}
                 />
-              </Col>
-            </Row>
-          </section>
-          <Row className="mt-3">
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
-              {isEditable ? (
-                <>
-                  <div className={styles["definedHeight"]}></div>
-                </>
-              ) : (
-                <>
-                  <Button
-                    text={t("Propose-meeting-dates")}
-                    className={styles["Next_Organization"]}
-                    onClick={handleProposedmeetingDates}
-                  />
 
-                  <Button
-                    text={t("Cancel")}
-                    className={styles["Cancel_Organization"]}
-                    onClick={handleCancelParticipants}
-                  />
-
-                  <Button
-                    text={t("Previous")}
-                    className={styles["Cancel_Organization"]}
-                    onClick={EnableParticipantsViewPage}
-                  />
-
-                  <Button
-                    text={t("Next")}
-                    className={styles["Cancel_Organization"]}
-                  />
-
-                  <Button
-                    text={t("Published")}
-                    className={styles["Next_Organization"]}
-                    onClick={handleNextButton}
-                  />
-                </>
+                <Button
+                  text={t("Add-more")}
+                  icon={<img draggable={false} src={addmore} />}
+                  className={styles["AddMoreBtn"]}
+                  onClick={openAddPartcipantModal}
+                />
+              </>
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <Table
+              column={ParticipantsColoumn}
+              scroll={{ y: "42vh" }}
+              pagination={false}
+              className="Polling_table"
+              rows={rspvRows}
+            />
+          </Col>
+        </Row>
+      </section>
+      <Row className="mt-3">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          {isEditable ? (
+            <>
+              <div className={styles["definedHeight"]}></div>
+            </>
+          ) : (
+            <>
+              {((Number(ediorRole.status) === 9 ||
+                Number(ediorRole.status) === 8 ||
+                Number(ediorRole.status) === 10) &&
+                ediorRole.role === "Organizer" &&
+                isEditMeeting === true) ||
+              (ediorRole.role === "Agenda Contributor" &&
+                isEditMeeting === true) ? null : (
+                <Button
+                  text={t("Propose-meeting-dates")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleProposedmeetingDates}
+                />
               )}
-            </Col>
-          </Row>
-        </>
-      )}
+
+              <Button
+                text={t("Cancel")}
+                className={styles["Cancel_Organization"]}
+                onClick={handleCancelParticipants}
+              />
+
+              <Button
+                text={t("Previous")}
+                className={styles["Cancel_Organization"]}
+                onClick={previousTabOrganizer}
+              />
+
+              <Button
+                text={t("Next")}
+                className={styles["Cancel_Organization"]}
+                onClick={nextTabOrganizer}
+              />
+              {((Number(ediorRole.status) === 9 ||
+                Number(ediorRole.status) === 8 ||
+                Number(ediorRole.status) === 10) &&
+                ediorRole.role === "Organizer" &&
+                isEditMeeting === true) ||
+              (ediorRole.role === "Agenda Contributor" &&
+                isEditMeeting === true) ? null : (
+                <Button
+                  text={t("Published")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              )}
+            </>
+          )}
+        </Col>
+      </Row>
 
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.participantModal && (

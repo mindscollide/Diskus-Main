@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import styles from "./Notes.module.css";
-import IconAttachment from "../../assets/images/Icon-Attachment.png";
-import EditIcon from "../../assets/images/Edit-Icon.png";
 import NotesMainEmpty from "../../assets/images/NotesMain_Empty.svg";
 import ModalViewNote from "../modalViewNote/ModalViewNote";
 import ModalAddNote from "../modalAddNote/ModalAddNote";
@@ -13,9 +11,6 @@ import hollowstar from "../../assets/images/Hollowstar.svg";
 import PlusExpand from "../../assets/images/Plus-notesExpand.svg";
 import MinusExpand from "../../assets/images/close-accordion.svg";
 import EditIconNote from "../../assets/images/EditIconNotes.svg";
-import { Pagination, ConfigProvider } from "antd";
-import ar_EG from "antd/es/locale/ar_EG";
-import en_US from "antd/es/locale/en_US";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -61,7 +56,6 @@ const Notes = () => {
   //for view modal notes
   const [viewModalShow, setViewModalShow] = useState(false);
   const [isExpanded, setExpanded] = useState(false);
-  const [isExpand, setExpand] = useState(false);
 
   useEffect(() => {
     if (notesPagesize !== null && notesPage !== null) {
@@ -96,22 +90,20 @@ const Notes = () => {
 
   // render Notes Data
   useEffect(() => {
-    console.log("check note empty state");
     try {
       if (
         NotesReducer.GetAllNotesResponse !== null &&
         NotesReducer.GetAllNotesResponse !== undefined
       ) {
-        console.log("check note empty state");
         setTotalRecords(NotesReducer.GetAllNotesResponse.totalRecords);
         if (NotesReducer.GetAllNotesResponse.getNotes === null) {
-          console.log("check note empty state");
+          
           setNotes([]);
         } else if (
           Array.isArray(NotesReducer.GetAllNotesResponse.getNotes) &&
           NotesReducer.GetAllNotesResponse.getNotes.length > 0
         ) {
-          console.log("check note empty state");
+          
           let notes = [];
           NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push({
@@ -138,7 +130,6 @@ const Notes = () => {
           typeof NotesReducer.GetAllNotesResponse.getNotes === "object" &&
           Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
         ) {
-          console.log("check note empty state");
           let notes = [];
           NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push({
@@ -165,33 +156,6 @@ const Notes = () => {
           console.log("check note empty state");
           setNotes([]);
         }
-        // if (Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0) {
-        //   let notes = [];
-        //   NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
-        //     notes.push({
-        //       date: data.date,
-        //       description: data.description,
-        //       fK_NotesStatus: data.fK_NotesStatus,
-        //       fK_OrganizationID: data.fK_OrganizationID,
-        //       fK_UserID: data.fK_UserID,
-        //       isAttachment: data.isAttachment,
-        //       isStarred: data.isStarred,
-        //       modifiedDate: data.modifiedDate,
-        //       modifiedTime: data.modifiedTime,
-        //       notesAttachments: data.notesAttachments,
-        //       notesStatus: data.notesStatus,
-        //       organizationName: data.organizationName,
-        //       pK_NotesID: data.pK_NotesID,
-        //       time: data.time,
-        //       title: data.title,
-        //       username: data.username,
-        //     });
-        //   });
-        //   setNotes(notes);
-        // } else {
-        //   console.log("check note empty state");
-        //   setNotes([]);
-        // }
       } else {
         console.log("check note empty state");
         setNotes([]);
@@ -207,7 +171,6 @@ const Notes = () => {
   };
   // for open Update User Notes Modal
   const editIconModal = async (id) => {
-    console.log(id, "editIconModaleditIconModaleditIconModal");
     dispatch(
       GetNotesByIdAPI(
         navigate,

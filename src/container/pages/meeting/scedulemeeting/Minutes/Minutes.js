@@ -20,11 +20,19 @@ import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
   ADDGeneralMinutesApiFunc,
+  DeleteGeneralMinutesApiFunc,
+  RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
+  UpdateMinutesGeneralApiFunc,
   getAllGeneralMinutesApiFunc,
   uploadDocumentsMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
 import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
+import downArrow from "../../../../../assets/images/whitedown.png";
+import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
+import moment from "moment";
+import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
+import AgendaWise from "./AgendaWise/AgendaWise";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 // import { message, Upload } from "antd";
@@ -148,7 +156,12 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   const [folderID, setFolderID] = useState(0);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
-
+  const [expandedFiles, setExpandedFiles] = useState([]);
+  const [isEdit, setisEdit] = useState(false);
+  const [minuteID, setMinuteID] = useState(0);
+  const [updateData, setupdateData] = useState(null);
+  const [showMore, setShowMore] = useState(false);
+  const [generalShowMore, setGeneralShowMore] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -160,6 +173,8 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
       errorStatus: false,
     },
   });
+  const [notestext, setNotesText] = useState("");
+
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -195,11 +210,16 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     },
   };
 
+  console.log(currentMeeting, "currentMeetingIDcurrentMeetingID");
+
   useEffect(() => {
     let Data = {
       MeetingID: currentMeeting,
     };
-    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
+    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    return () => {
+      setFileAttachments([]);
+    };
   }, []);
 
   useEffect(() => {
@@ -215,8 +235,9 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
         if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
           let newarr = [];
           NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
-            console.log(data, "meetingMinutesmeetingMinutes");
+            console.log(data, "newarrnewarrnewarr");
             newarr.push(data);
+            setMinuteID(data.minuteID);
           });
           setMessages(newarr);
         }
@@ -224,33 +245,39 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     } catch {}
   }, [NewMeetingreducer.generalMinutes]);
 
-  console.log(messages, "messagesmessagesmessages");
+  // all Meeting Document
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
+  //       NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
+  //     ) {
+  //       console.log(
+  //         NewMeetingreducer.generalminutesDocumentForMeeting,
+  //         "NewMeetingreducergeneralminutesDocumentForMeeting"
+  //       );
+  //       if (
+  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
+  //       ) {
+  //         let FileID;
+  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
+  //           (docs, index) => {
+  //             docs.files.map((filedata, index) => {
+  //               console.log(filedata, "filedatafiledata");
+  //               FileID = filedata.pK_FileID;
+  //             });
+  //           }
+  //         );
+  //       }
+  //     }
+  //   } catch {}
+  // }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
 
-  useEffect(() => {
-    try {
-      if (
-        NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
-        NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
-      ) {
-        console.log(
-          NewMeetingreducer.generalminutesDocumentForMeeting,
-          "NewMeetingreducergeneralminutesDocumentForMeeting"
-        );
-      }
-    } catch {}
-  }, []);
-
-  const enterKeyHandler = (event) => {
-    if (event.key === "Tab" && !event.shiftKey) {
-      event.preventDefault();
-      const quill = editorRef.current.getEditor();
-      quill.root.setAttribute("autofocus", "");
-      quill.focus();
-    }
-  };
+  //onChange function for React Quill
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText != "") {
+      console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -260,6 +287,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
         },
       });
     } else {
+      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -271,6 +299,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     }
   };
 
+  //Props for File Dragger
   const props = {
     name: "file",
     multiple: true,
@@ -388,6 +417,61 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     Slider.scrollLeft = Slider.scrollLeft + 300;
   };
 
+  //Edit Button Function
+  const handleEditFunc = async (data) => {
+    setupdateData(data);
+    console.log("handleEditFunccalled");
+    console.log(data, "dataminutesDetails");
+    if (data.minutesDetails !== undefined && data.minutesDetails !== null) {
+      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
+      setAddNoteFields({
+        Description: {
+          value: data.minutesDetails,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+      setisEdit(true);
+    } else {
+      console.log("data.minutesDetails is undefined or null");
+    }
+    let Retrive = {
+      FK_MeetingGeneralMinutesID: data.minuteID,
+    };
+    await dispatch(
+      RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Retrive, t)
+    );
+    // Ensure data.minutesDetails is not undefined or null before setting the state
+    
+  };
+
+  console.log(updateData, "updateDataupdateData");
+
+  //For getting documents Agains Single Minutes Saved
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.generalMinutesDocument !== undefined &&
+        NewMeetingreducer.generalMinutesDocument !== null
+      ) {
+        let files = [];
+        let prevData = [];
+        NewMeetingreducer.generalMinutesDocument.data.map((data, index) => {
+          files.push({
+            DisplayAttachmentName: data.displayFileName,
+            fileID: data.pK_FileID,
+          });
+          prevData.push({
+            pK_FileID: data.pK_FileID,
+            DisplayAttachmentName: data.displayFileName,
+          });
+        });
+        setFileAttachments(files);
+        setPreviousFileIDs(prevData);
+      }
+    } catch {}
+  }, [NewMeetingreducer.generalMinutesDocument]);
+
   const handleAgendaWiseClick = () => {
     setGeneral(false);
     setAgenda(true);
@@ -401,57 +485,72 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   const toggleExpansion = () => {
     setExpanded(!expanded);
   };
-
-  // Function For Adding a Minute
-
   const handleAddClick = async () => {
     let Data = {
       MeetingID: currentMeeting,
       MinuteText: addNoteFields.Description.value,
     };
     dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
-
-    // let newfile = [...previousFileIDs];
-    // const uploadPromises = fileForSend.map(async (newData) => {
-    //   await dispatch(
-    //     uploadDocumentsMeetingMinutesApi(navigate, t, newData,folderID, newfile)
-    //   );
-    // });
-
-    // // Wait for all promises to resolve
-    // await Promise.all(uploadPromises);
-
-    // let docsData = {
-    //   FK_MeetingGeneralMinutesID: messages.minuteID,
-    //   FK_MDID: currentMeeting,
-    //   UpdateFileList: newfile.map((data, index) => {
-    //     return { PK_FileID: Number(data.pK_FileID) };
-    //   }),
-    // };
-    // dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
-
-    // if (addNoteFields.Description.value) {
-    //   // Add the current message to the list of messages
-    //   setMessages([...messages, addNoteFields.Description.value]);
-
-    //   // Clear the editor
-    //   editorRef.current.getEditor().setText("");
-
-    //   setAddNoteFields({
-    //     ...addNoteFields,
-    //     Description: {
-    //       value: "",
-    //       errorMessage: "",
-    //       errorStatus: false,
-    //     },
-    //   });
-    // }
+    setFileAttachments([]);
   };
 
-  const handleRemovingTheMinutes = (index) => {
-    let updatedRecords = [...messages];
-    updatedRecords.splice(index, 1);
-    setMessages(updatedRecords);
+  const documentUploadingFunc = async (minuteID) => {
+    let newfile = [...previousFileIDs];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsMeetingMinutesApi(
+          navigate,
+          t,
+          newData,
+          folderID,
+          newfile
+        )
+      );
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+    console.log(messages, "messagesmessages");
+    console.log(currentMeeting, "messagesmessages");
+
+    console.log(newfile, "messagesmessages");
+
+    let docsData = {
+      FK_MeetingGeneralMinutesID: minuteID,
+      FK_MDID: currentMeeting,
+      UpdateFileList: newfile.map((data, index) => {
+        return { PK_FileID: Number(data.pK_FileID) };
+      }),
+    };
+    dispatch(
+      SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+    );
+    setFileAttachments([]);
+    setPreviousFileIDs([]);
+    console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+  };
+  useEffect(() => {
+    if (NewMeetingreducer.addMinuteID !== 0) {
+      documentUploadingFunc(NewMeetingreducer.addMinuteID);
+    }
+  }, [NewMeetingreducer.addMinuteID]);
+
+  const handleRemovingTheMinutes = (data) => {
+    console.log(data, "datadatadatadata");
+    let Data = {
+      MinuteID: data.minuteID,
+    };
+    console.log(Data, "datadatadatadata");
+
+    dispatch(DeleteGeneralMinutesApiFunc(navigate, Data, t, currentMeeting));
   };
 
   //UPloading the Documents
@@ -478,6 +577,76 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     );
   };
 
+  const handleResetBtnFunc = () => {
+    console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+    setFileAttachments([]);
+    setPreviousFileIDs([]);
+  };
+
+  //Updating the text of min
+  const handleUpdateFunc = async () => {
+    console.log("UpdateCLickd");
+    let Data = {
+      MinuteID: updateData.minuteID,
+      MinuteText: addNoteFields.Description.value,
+    };
+    dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
+
+    let newfile = [...previousFileIDs];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsMeetingMinutesApi(
+          navigate,
+          t,
+          newData,
+          folderID,
+          newfile
+        )
+      );
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+    console.log(messages, "messagesmessages");
+    console.log(currentMeeting, "messagesmessages");
+
+    console.log(newfile, "messagesmessages");
+
+    let docsData = {
+      FK_MeetingGeneralMinutesID: minuteID,
+      FK_MDID: currentMeeting,
+      UpdateFileList: newfile.map((data, index) => {
+        return { PK_FileID: Number(data.pK_FileID) };
+      }),
+    };
+    console.log(docsData, "messagesmessages");
+    dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
+    setisEdit(false);
+    setFileAttachments([]);
+    console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+  };
+
+  const handleshowMore = (index) => {
+    setGeneralShowMore(index);
+    setShowMore(!showMore);
+  };
+
   return (
     <section>
       <Row className="mt-3">
@@ -495,7 +664,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
         </Col>
       </Row>
       {agenda ? (
-        <AgendaImport />
+        <AgendaWise currentMeeting={currentMeeting} />
       ) : general ? (
         <>
           <Row className="mt-4">
@@ -511,7 +680,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                   <ReactQuill
                     ref={editorRef}
                     theme="snow"
-                    value={addNoteFields.Description.value}
+                    value={addNoteFields.Description.value || ""}
                     placeholder={t("Note-details")}
                     onChange={onTextChange}
                     modules={modules}
@@ -533,16 +702,25 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                   <Button
                     text={t("Reset")}
                     className={styles["Previous_Button"]}
+                    onClick={handleResetBtnFunc}
                   />
-
-                  <Button
-                    disableBtn={
-                      addNoteFields.Description.value === "" ? true : false
-                    }
-                    text={t("Save")}
-                    className={styles["Button_General"]}
-                    onClick={handleAddClick}
-                  />
+                  {isEdit === true ? (
+                    <>
+                      <Button
+                        text={t("Update")}
+                        className={styles["Button_General"]}
+                        onClick={handleUpdateFunc}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        text={t("Save")}
+                        className={styles["Button_General"]}
+                        onClick={handleAddClick}
+                      />
+                    </>
+                  )}
                 </Col>
               </Row>
             </Col>
@@ -579,7 +757,10 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                         >
                           {fileAttachments.length > 0
                             ? fileAttachments.map((data, index) => {
-                                console.log(data, "datadatadata");
+                                console.log(
+                                  data,
+                                  "fileAttachmentsfileAttachments"
+                                );
                                 return (
                                   <>
                                     <Col
@@ -716,7 +897,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                               className={styles["Box_Minutes"]}
                             >
                               <Row>
-                                <Col lg={9} md={9} sm={9}>
+                                <Col lg={8} md={8} sm={8}>
                                   <Row className="mt-3">
                                     <Col lg={12} md={12} sm={12}>
                                       <span className={styles["Title_File"]}>
@@ -750,12 +931,15 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                           styles["Date_Minutes_And_time"]
                                         }
                                       >
-                                        4:00pm, 18th May, 2020
+                                        {resolutionResultTable(
+                                          data.lastUpdatedDate +
+                                            data.lastUpdatedTime
+                                        ).toString()}
                                       </span>
                                     </Col>
                                   </Row>
                                 </Col>
-                                <Col lg={3} md={3} sm={3} className="mt-4">
+                                <Col lg={4} md={4} sm={4} className="mt-4">
                                   <Row className="d-flex justify-content-end">
                                     <Col lg={2} md={2} sm={2}>
                                       <img
@@ -786,7 +970,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                       <Row>
                                         <Col lg={12} md={12} sm={12}>
                                           <span className={styles["Name"]}>
-                                            Mehtab Ahmed
+                                            {data.userName}
                                           </span>
                                         </Col>
                                       </Row>
@@ -803,18 +987,126 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                         height="21.55px"
                                         width="21.55px"
                                         className="cursor-pointer"
+                                        onClick={() => handleEditFunc(data)}
+                                        alt=""
                                       />
                                     </Col>
                                   </Row>
                                 </Col>
                               </Row>
+                              <Row className="mt-2">
+                                <Col lg={12} md={12} sm={12}>
+                                  <span
+                                    className={styles["Show_more"]}
+                                    onClick={() => handleshowMore(index)}
+                                  >
+                                    Show more
+                                  </span>
+                                </Col>
+                              </Row>
+                              {generalShowMore === index &&
+                              showMore === true ? (
+                                <>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={styles["DocsScroller"]}
+                                    >
+                                      <Row className="mt-3">
+                                        {data.minutesAttachmets.map(
+                                          (filesname, index) => {
+                                            console.log(
+                                              filesname,
+                                              "filesnamefilesname"
+                                            );
+                                            return (
+                                              <>
+                                                <Col
+                                                  lg={2}
+                                                  md={2}
+                                                  sm={12}
+                                                  className="position-relative gap-2"
+                                                >
+                                                  <section
+                                                    className={
+                                                      styles["Outer_Box"]
+                                                    }
+                                                  >
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <img
+                                                          src={file_image}
+                                                          width={"100%"}
+                                                          alt=""
+                                                          draggable="false"
+                                                        />
+                                                      </Col>
+                                                    </Row>
+
+                                                    <section
+                                                      className={
+                                                        styles[
+                                                          "backGround_name_Icon"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <Row className="mb-2">
+                                                        <Col
+                                                          lg={12}
+                                                          md={12}
+                                                          sm={12}
+                                                          className={
+                                                            styles[
+                                                              "IconTextClass"
+                                                            ]
+                                                          }
+                                                        >
+                                                          <img
+                                                            src={pdfIcon}
+                                                            height="10px"
+                                                            width="10px"
+                                                            className={
+                                                              styles["IconPDF"]
+                                                            }
+                                                          />
+                                                          <span
+                                                            className={
+                                                              styles["FileName"]
+                                                            }
+                                                          >
+                                                            {
+                                                              data.DisplayAttachmentName
+                                                            }
+                                                          </span>
+                                                        </Col>
+                                                      </Row>
+                                                    </section>
+                                                  </section>
+                                                </Col>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                        <Col lg={12} md={12} sm={12}></Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              ) : null}
+
                               <img
                                 draggable={false}
                                 src={RedCroseeIcon}
                                 height="20.76px"
                                 width="20.76px"
                                 className={styles["RedCrossClass"]}
-                                onClick={() => handleRemovingTheMinutes(index)}
+                                onClick={() => handleRemovingTheMinutes(data)}
                               />
                             </Col>
                           </Row>

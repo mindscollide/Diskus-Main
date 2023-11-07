@@ -15,6 +15,7 @@ const CustomTable = ({
   scroll,
   footer,
   prefixClassName,
+  size,
 }) => {
   console.log("CustomTable", className);
 
@@ -36,6 +37,7 @@ const CustomTable = ({
         locale={locale}
         prefixCls={prefixClassName}
         scroll={scroll}
+        size={size}
       />
     </>
   );
