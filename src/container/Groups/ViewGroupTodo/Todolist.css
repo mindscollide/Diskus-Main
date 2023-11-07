@@ -2,10 +2,6 @@
   cursor: pointer;
   color: #505050;
   margin: 0px 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: auto !important;
-  overflow: hidden;
   font-size: 14px;
   font-family: "MontserratSemiBold-600";
   color: #2197d7 !important;

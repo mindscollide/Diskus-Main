@@ -246,12 +246,6 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     } catch {}
   }, [NewMeetingreducer.generalMinutes]);
 
-  console.log(messages, "addNoteFieldsaddNoteFields");
-  console.log(minuteID, "minuteIDminuteID");
-
-  console.log(messages, "messagesmessagesmessages");
-  console.log(expandedFiles, "expandedFilesexpandedFiles");
-
   // all Meeting Document
   // useEffect(() => {
   //   try {
@@ -284,7 +278,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText != "") {
-      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
+      console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -425,16 +419,12 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   };
 
   //Edit Button Function
-  const handleEditFunc = (data) => {
+  const handleEditFunc = async (data) => {
     setupdateData(data);
     console.log("handleEditFunccalled");
     console.log(data, "dataminutesDetails");
-    let Retrive = {
-      FK_MeetingGeneralMinutesID: data.minuteID,
-    };
-    dispatch(RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Retrive, t));
-    // Ensure data.minutesDetails is not undefined or null before setting the state
     if (data.minutesDetails !== undefined && data.minutesDetails !== null) {
+      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         Description: {
           value: data.minutesDetails,
@@ -446,6 +436,14 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     } else {
       console.log("data.minutesDetails is undefined or null");
     }
+    let Retrive = {
+      FK_MeetingGeneralMinutesID: data.minuteID,
+    };
+    await dispatch(
+      RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Retrive, t)
+    );
+    // Ensure data.minutesDetails is not undefined or null before setting the state
+    
   };
 
   console.log(updateData, "updateDataupdateData");
@@ -530,6 +528,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     );
     setFileAttachments([]);
     setPreviousFileIDs([]);
+    console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -640,6 +639,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
     setisEdit(false);
     setFileAttachments([]);
+    console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -996,6 +996,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                         width="21.55px"
                                         className="cursor-pointer"
                                         onClick={() => handleEditFunc(data)}
+                                        alt=""
                                       />
                                     </Col>
                                   </Row>

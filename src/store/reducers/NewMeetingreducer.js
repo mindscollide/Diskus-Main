@@ -74,6 +74,10 @@ const initialState = {
   agendaWiseMinuteID: 0,
   RetriveAgendaWiseDocuments: [],
   meetingDataRoomMapFolderID: 0,
+  setCommitteewithMeetingID: null,
+  getCommitteeByMeetingID: null,
+  setGroupwithMeetingID: null,
+  getGroupwithMeetingID: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1294,6 +1298,28 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETCOMMITTEEBYMEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETCOMMITTEEBYMEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getCommitteeByMeetingID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETCOMMITTEEBYMEETINGID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getCommitteeByMeetingID: null,
         ResponseMessage: action.message,
       };
     }

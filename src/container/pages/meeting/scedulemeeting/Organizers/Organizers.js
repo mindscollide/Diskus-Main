@@ -189,14 +189,19 @@ const Organizers = ({
       width: "250px",
       render: (text, record) => {
         if (
-          Number(ediorRole.status) === 9 &&
+          (Number(ediorRole.status) === 9 ||
+            Number(ediorRole.status) === 8 ||
+            Number(ediorRole.status) === 10) &&
           ediorRole.role === "Organizer" &&
           isEditMeeting === true
         ) {
           return text;
         } else if (
           (Number(ediorRole.status) === 11 ||
-            Number(ediorRole.status) === 12) &&
+            Number(ediorRole.status) === 2 ||
+            Number(ediorRole.status) === 1 ||
+            Number(ediorRole.status) === 12 ||
+            Number(ediorRole.status) === 10) &&
           ediorRole.role === "Agenda Contributor" &&
           isEditMeeting === true
         ) {
@@ -214,12 +219,17 @@ const Organizers = ({
                     handleInputChange(record.userID, e.target.value)
                   } // Update the inputValues when the user types
                   disable={
-                    Number(ediorRole.status) === 9 &&
+                    (Number(ediorRole.status) === 9 ||
+                      Number(ediorRole.status) === 8 ||
+                      Number(ediorRole.status) === 10) &&
                     ediorRole.role === "Organizer" &&
                     isEditMeeting === true
                       ? true
                       : (Number(ediorRole.status) === 11 ||
-                          Number(ediorRole.status) === 12) &&
+                          Number(ediorRole.status) === 2 ||
+                          Number(ediorRole.status) === 1 ||
+                          Number(ediorRole.status) === 12 ||
+                          Number(ediorRole.status) === 10) &&
                         ediorRole.role === "Agenda Contributor" &&
                         isEditMeeting === true
                       ? true
@@ -387,12 +397,18 @@ const Organizers = ({
 
   const sendRecentNotification = (record) => {
     if (
-      Number(ediorRole.status) === 9 &&
+      (Number(ediorRole.status) === 9 ||
+        Number(ediorRole.status) === 8 ||
+        Number(ediorRole.status) === 10) &&
       ediorRole.role === "Organizer" &&
       isEditMeeting === true
     ) {
     } else if (
-      (Number(ediorRole.status) === 11 || Number(ediorRole.status) === 12) &&
+      (Number(ediorRole.status) === 11 ||
+        Number(ediorRole.status) === 2 ||
+        Number(ediorRole.status) === 1 ||
+        Number(ediorRole.status) === 12 ||
+        Number(ediorRole.status) === 10) &&
       ediorRole.role === "Agenda Contributor" &&
       isEditMeeting === true
     ) {
@@ -734,11 +750,14 @@ const Organizers = ({
                       </Col>
                     </Row>
                   </>
-                ) : Number(ediorRole.status) === 9 &&
+                ) : (Number(ediorRole.status) === 9 ||
+                    Number(ediorRole.status) === 8 ||
+                    Number(ediorRole.status) === 10) &&
                   ediorRole.role === "Organizer" &&
                   isEditMeeting === true ? null : (Number(ediorRole.status) ===
                     11 ||
-                    Number(ediorRole.status) === 12) &&
+                    Number(ediorRole.status) === 12 ||
+                    Number(ediorRole.status) === 10) &&
                   ediorRole.role === "Agenda Contributor" &&
                   isEditMeeting === true ? null : (
                   <>
@@ -801,11 +820,14 @@ const Organizers = ({
                     className={styles["publish_button_Organization"]}
                     onClick={nextTabOrganizer}
                   />
-                  {Number(ediorRole.status) === 9 &&
+                  {(Number(ediorRole.status) === 9 ||
+                    Number(ediorRole.status) === 8 ||
+                    Number(ediorRole.status) === 10) &&
                   ediorRole.role === "Organizer" &&
                   isEditMeeting === true ? null : (Number(ediorRole.status) ===
                       11 ||
-                      Number(ediorRole.status) === 12) &&
+                      Number(ediorRole.status) === 12 ||
+                      Number(ediorRole.status) === 10) &&
                     ediorRole.role === "Agenda Contributor" &&
                     isEditMeeting === true ? null : (
                     <Button
