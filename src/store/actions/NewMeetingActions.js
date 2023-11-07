@@ -4048,7 +4048,7 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
     form.append("RequestMethod", saveDocumentAgendaWiseMinutes.RequestMethod);
     axios({
       method: "post",
-      url: meetingApi,
+      url: dataRoomApi,
       data: form,
       headers: {
         _token: token,
@@ -4076,6 +4076,10 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
                   t("List Updated Successfully")
                 )
               );
+              let getAll = {
+                AgendaID: 1222,
+              };
+              dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
