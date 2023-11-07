@@ -11,6 +11,7 @@ import ViewCommitteeDetails from "../../../container/Committee/ViewCommittee/Vie
 import Polls from "../../../container/Committee/ViewPolls/Polls/Polls";
 import CommitteeTodo from "../../../container/Committee/ViewTodo/CommitteeTodo.js";
 import { XLg } from "react-bootstrap-icons";
+import CommitteeMeetingTab from "../../../container/Committee/ViewMeeting/Meeting";
 const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -138,8 +139,9 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
             </>
           ) : currentView === 4 ? (
             <>
+              <CommitteeMeetingTab />
               {/* <Meeting /> */}
-              <Row>
+              {/* <Row>
                 <Col
                   sm={12}
                   md={12}
@@ -152,7 +154,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
                     onClick={() => setViewGroupPage(false)}
                   />
                 </Col>
-              </Row>
+              </Row> */}
             </>
           ) : null}
         </Paper>

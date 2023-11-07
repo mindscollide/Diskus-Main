@@ -269,7 +269,7 @@ const NewMeeting = () => {
 
   const openSceduleMeetingPage = () => {
     setSceduleMeeting(true);
-    setCurrentMeetingID(0)
+    setCurrentMeetingID(0);
   };
 
   const groupChatInitiation = (data) => {
@@ -407,8 +407,7 @@ const NewMeeting = () => {
           setViewFlag,
           setEditFlag,
           setCalendarViewModal,
-          setSceduleMeeting,
-          4
+          2
         )
       );
     } else if (isQuick === false) {

@@ -397,7 +397,6 @@ const ViewMeeting = (
   setViewFlag,
   setEditFlag,
   setCalendarViewModal,
-  setSceduleMeeting,
   no
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -425,7 +424,6 @@ const ViewMeeting = (
               setViewFlag,
               setEditFlag,
               setCalendarViewModal,
-              setSceduleMeeting,
               no
             )
           );
@@ -451,8 +449,6 @@ const ViewMeeting = (
                 setEditFlag(true);
               } else if (no === 3) {
                 setCalendarViewModal(true);
-              } else if (no === 4) {
-                setSceduleMeeting(true);
               }
             } else if (
               response.data.responseResult.responseMessage

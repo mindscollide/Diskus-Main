@@ -42,6 +42,7 @@ import {
   GetAllMeetingTypesNewFunction,
   SaveMeetingDetialsNewApiFunction,
   showCancelModalmeetingDeitals,
+  showGetAllMeetingDetialsFailed,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -124,8 +125,7 @@ const MeetingDetails = ({
     },
     IsVideoCall: false,
   });
-
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  console.log(meetingDetails, "meetingDetailsmeetingDetails");
   //language UseEffect
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -147,51 +147,6 @@ const MeetingDetails = ({
     //Recurring Drop Down API
     dispatch(GetAllMeetingRecurringApiNew(navigate, t));
     //Calling getAll Meeting Details By Meeting ID
-    if (currentMeetingID !== 0) {
-      let Data = {
-        MeetingID: Number(currentMeetingID),
-      };
-      dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
-    } else {
-      setMeetingDetails({
-        MeetingTitle: "",
-        MeetingType: 0,
-        Location: "",
-        Description: "",
-        Link: "",
-        ReminderFrequency: {
-          value: 0,
-          label: "",
-        },
-        ReminderFrequencyTwo: {
-          value: 0,
-          label: "",
-        },
-        ReminderFrequencyThree: {
-          value: 0,
-          label: "",
-        },
-        Notes: "",
-        groupChat: false,
-        AllowRSPV: false,
-        NotifyMeetingOrganizer: false,
-        RecurringOptions: {
-          value: 0,
-          label: "",
-        },
-        IsVideoCall: false,
-      });
-      setRows([
-        {
-          selectedOption: "",
-          dateForView: "",
-          startDate: "",
-          startTime: "",
-          endDate: "",
-          endTime: "",
-        },
-      ]);
-    }
   }, []);
 
   const handleSelectChange = (selectedOption) => {
@@ -546,7 +501,7 @@ const MeetingDetails = ({
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       let data = {
         MeetingDetails: {
-          MeetingID: Number(currentMeetingID),
+          MeetingID: Number(currentMeeting),
           MeetingTitle: meetingDetails.MeetingTitle,
           MeetingType: meetingDetails.MeetingType,
           Location: meetingDetails.Location,
@@ -714,7 +669,7 @@ const MeetingDetails = ({
     });
 
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
     };
     dispatch(FetchMeetingURLApi(Data, navigate, t));
   };
@@ -845,6 +800,10 @@ const MeetingDetails = ({
 
   //Fetching All Saved Data
   useEffect(() => {
+    console.log(
+      NewMeetingreducer.getAllMeetingDetails,
+      "getAllMeetingDetailsgetAllMeetingDetailsgetAllMeetingDetails"
+    );
     try {
       if (
         NewMeetingreducer.getAllMeetingDetails !== null &&
@@ -1240,7 +1199,7 @@ const MeetingDetails = ({
                                           locale={localValue}
                                           format="HH:mm A"
                                           selected={
-                                            currentMeetingID === 0
+                                            currentMeeting === 0
                                               ? data.startDate
                                               : rows.startDate
                                           }

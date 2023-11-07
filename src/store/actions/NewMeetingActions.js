@@ -4289,4 +4289,5 @@ export {
   GetAllAgendaWiseMinutesApiFunc,
   getUserProposedWiseApi,
   SaveAgendaWiseDocumentsApiFunc,
+  showGetAllMeetingDetialsFailed,
 };

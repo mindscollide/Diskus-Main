@@ -5,7 +5,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
-import { showCancelModalmeetingDeitals } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  showCancelModalmeetingDeitals,
+  showGetAllMeetingDetialsFailed,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 const CancelButtonModal = ({
   setSceduleMeeting,
@@ -23,6 +26,7 @@ const CancelButtonModal = ({
 
   const handleYesFunctionality = () => {
     localStorage.removeItem("meetingID");
+    dispatch(showGetAllMeetingDetialsFailed(""));
     setMeetingDetails({
       MeetingTitle: "",
       MeetingType: 0,

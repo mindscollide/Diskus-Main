@@ -83,7 +83,7 @@ const Polls = ({
       PollID: record.pollID,
       MeetingID: parseInt(currentMeeting),
     };
-    dispatch(deleteMeetingPollApi(navigate, t, data));
+    dispatch(deleteMeetingPollApi(navigate, t, data, currentMeeting));
   };
   useEffect(() => {
     let Data = {
