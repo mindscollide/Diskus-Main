@@ -20,6 +20,7 @@ import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
   ADDGeneralMinutesApiFunc,
+  DeleteGeneralMinuteDocumentsApiFunc,
   DeleteGeneralMinutesApiFunc,
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
@@ -544,14 +545,21 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     }
   }, [NewMeetingreducer.addMinuteID]);
 
-  const handleRemovingTheMinutes = (data) => {
-    console.log(data, "datadatadatadata");
+  const handleRemovingTheMinutes = (MinuteData) => {
+    console.log(MinuteData, "handleRemovingTheMinutes");
     let Data = {
-      MinuteID: data.minuteID,
+      MDID: currentMeeting,
+      MeetingGeneralMinutesID: MinuteData.minuteID,
     };
-    console.log(Data, "datadatadatadata");
-
-    dispatch(DeleteGeneralMinutesApiFunc(navigate, Data, t, currentMeeting));
+    dispatch(
+      DeleteGeneralMinuteDocumentsApiFunc(
+        navigate,
+        Data,
+        t,
+        currentMeeting,
+        MinuteData
+      )
+    );
   };
 
   //UPloading the Documents
