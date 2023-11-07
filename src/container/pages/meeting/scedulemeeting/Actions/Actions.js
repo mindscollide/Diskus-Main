@@ -24,6 +24,9 @@ const Actions = ({
   setactionsPage,
   setPolls,
   currentMeeting,
+  ediorRole,
+  setEditMeeting,
+  isEditMeeting,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -61,12 +64,12 @@ const Actions = ({
         <>
           <Row>
             <Col lf={12} md={12} sm={12}>
-              <img
+              {/* <img
                 draggable={false}
                 src={CrossIcon}
                 className="cursor-pointer"
                 onClick={handleCrossIconModal}
-              />
+              /> */}
             </Col>
           </Row>
         </>
@@ -143,21 +146,29 @@ const Actions = ({
             <AfterSaveViewTable />
           ) : (
             <>
-              <Row className="mt-3">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Button
-                    text={t("Create-task")}
-                    className={styles["Create_Task_Button"]}
-                    icon={<img draggable={false} src={addmore} />}
-                    onClick={handleCreateTaskButton}
-                  />
-                </Col>
-              </Row>
+              {(Number(ediorRole.status) === 1 ||
+                Number(ediorRole.status) === 10 ||
+                Number(ediorRole.status) === 11 ||
+                Number(ediorRole.status) === 12) &&
+              ediorRole.role === "Organizer" &&
+              isEditMeeting === true ? (
+                <Row className="mt-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Button
+                      text={t("Create-task")}
+                      className={styles["Create_Task_Button"]}
+                      icon={<img draggable={false} src={addmore} />}
+                      onClick={handleCreateTaskButton}
+                    />
+                  </Col>
+                </Row>
+              ) : null}
+
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   {actionsRows.length === 0 ? (
@@ -226,32 +237,52 @@ const Actions = ({
                           sm={12}
                           className="d-flex justify-content-end gap-2"
                         >
-                          <Button
-                            text={t("Clone-meeting")}
-                            className={styles["CloneMeetingButton"]}
-                            onClick={handleAfterViewActions}
-                          />
+                          {(Number(ediorRole.status) === 1 ||
+                            Number(ediorRole.status) === 10 ||
+                            Number(ediorRole.status) === 8) &&
+                          ediorRole.role === "Organizer" &&
+                          isEditMeeting === true ? (
+                            <Button
+                              text={t("Clone-meeting")}
+                              className={styles["CloneMeetingButton"]}
+                              onClick={handleAfterViewActions}
+                            />
+                          ) : null}
+
                           <Button
                             text={t("Cancel")}
                             className={styles["CloneMeetingButton"]}
                             onClick={handleCancelActions}
                           />
 
-                          <Button
-                            text={t("Save")}
-                            className={styles["CloneMeetingButton"]}
-                          />
+                          {((Number(ediorRole.status) === 1 ||
+                            Number(ediorRole.status) === 10 ||
+                            Number(ediorRole.status) === 11 ||
+                            Number(ediorRole.status) === 12) &&
+                            ediorRole.role === "Organizer" &&
+                            isEditMeeting === true) ||
+                          ((Number(ediorRole.status) === 9 ||
+                            Number(ediorRole.status) === 10) &&
+                            (ediorRole.role === "Participant" ||
+                              ediorRole.role === "Agenda Contributor") &&
+                            isEditMeeting === true) ? (
+                            <>
+                              <Button
+                                text={t("Save")}
+                                className={styles["CloneMeetingButton"]}
+                              />
+                              <Button
+                                text={t("Save-and-publish")}
+                                className={styles["CloneMeetingButton"]}
+                              />
 
-                          <Button
-                            text={t("Save-and-publish")}
-                            className={styles["CloneMeetingButton"]}
-                          />
-
-                          <Button
-                            text={t("Save-and-next")}
-                            className={styles["SaveButtonActions"]}
-                            onClick={handleSaveAndnext}
-                          />
+                              <Button
+                                text={t("Save-and-next")}
+                                className={styles["SaveButtonActions"]}
+                                onClick={handleSaveAndnext}
+                              />
+                            </>
+                          ) : null}
                         </Col>
                       </Row>
                     </>
