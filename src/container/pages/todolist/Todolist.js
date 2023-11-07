@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import {
   ArrowCounterclockwise,
   ChevronDown,
   Plus,
 } from "react-bootstrap-icons";
-import { Input, Pagination, Select } from "antd";
+import { Select } from "antd";
 import {
   Button,
   TableToDo,
@@ -17,20 +17,11 @@ import {
   Notification,
 } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
-import UserImage from "../../../assets/images/user.png";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import del from "../../../assets/images/del.png";
-import { Dropdown, Space, Typography } from "antd";
-import {
-  Paragraph,
-  Search,
-  ArrowRight,
-  ArrowLeft,
-} from "react-bootstrap-icons";
+import { Search, ArrowRight, ArrowLeft } from "react-bootstrap-icons";
 import {
   ViewToDoList,
-  GetTodoListByUser,
-  searchTodoListByUser,
   clearResponce,
   SearchTodoListApi,
 } from "../../../store/actions/ToDoList_action";
@@ -45,16 +36,10 @@ import {
   updateTodoStatusFunc,
 } from "../../../store/actions/GetTodos";
 import Form from "react-bootstrap/Form";
-import moment from "moment";
 import "./Todolist.css";
 import { useTranslation } from "react-i18next";
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
-import { enGB, ar } from "date-fns/locale";
-import { registerLocale } from "react-datepicker";
 import {
-  _justShowDateformat,
-  newDateFormaterAsPerUTC,
-  newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
@@ -78,7 +63,6 @@ const TodoList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isExpand, setExpand] = useState(false);
-  const { Option } = Select;
   const [rowsToDo, setRowToDo] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
@@ -104,8 +88,6 @@ const TodoList = () => {
   const [tableFilterOptions, setTableFilterOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
-
-  console.log("socketTodoStatusData", socketTodoStatusData);
 
   // GET TODOS STATUS
   useEffect(() => {
@@ -162,7 +144,6 @@ const TodoList = () => {
       toDoListReducer.SocketTodoActivityData !== null &&
       toDoListReducer.SocketTodoActivityData !== undefined
     ) {
-      // setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
       let dataToSort = [toDoListReducer.SocketTodoActivityData, ...rowsToDo];
       const sortedTasks = dataToSort.sort((taskA, taskB) => {
         const deadlineA = taskA?.deadlineDateTime;

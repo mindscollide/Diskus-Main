@@ -1,12 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState,  useEffect } from "react";
 import {
-  TextField,
   Button,
   Modal,
   Notification,
-  EmployeeCard,
 } from "../../components/elements";
-import { PlusSquareFill, Star } from "react-bootstrap-icons";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import CustomUpload from "./../../components/elements/upload/Upload";
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
@@ -17,7 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./ModalUpdateNote.module.css";
 import { FileUploadToDo } from "../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
-import moment from "moment";
 import {
   deleteNotesApi,
   UpdateNotesAPI,
@@ -28,7 +24,6 @@ import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
 import {
   newTimeFormaterAsPerUTC,
-  TimeDisplayFormat,
   _justShowDateformat,
 } from "../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +41,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [attachments, setAttachments] = useState([]);
-  console.log(attachments, "attachmentsattachmentsattachments");
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   const dispatch = useDispatch();
@@ -129,7 +123,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   });
 
   const deleteFilefromAttachments = (data, index) => {
-    console.log(data, "deleteFilefromAttachments");
     let searchIndex = [...tasksAttachments.TasksAttachments];
     let removeFilefromAttachments = attachments.findIndex(
       (attacData, index) =>
@@ -163,8 +156,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     console.log("values", name, value);
     if (name === "Title" && value !== "") {
       let valueCheck = validateInput(value);
-      console.log(value, "Titlellee");
-
       if (valueCheck !== "") {
         setAddNoteFields({
           ...addNoteFields,
@@ -189,7 +180,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
 
   //State management of the Quill Editor
   const onTextChange = (content, delta, source) => {
-    console.log("content", content);
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText !== "") {
       setAddNoteFields({
@@ -438,7 +428,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                   : 0,
             });
           });
-          console.log(notesAttachment, "newfilesnewfiles");
           let Data = {
             PK_NotesID: addNoteFields.PK_NotesID,
             Title: addNoteFields.Title.value,
