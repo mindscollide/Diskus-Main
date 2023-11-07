@@ -1558,5 +1558,14 @@
   "No-record-deleted": "No Record Deleted",
   "View-not-available": "View Not Available",
   "Start-join-meeting": "Start/Join Meeting",
-  "Create-Meeting": "Create Meeting"
+  "Create-Meeting": "Create Meeting",
+  "Folder-mapped-with-data-room": "Folder mapped with data room",
+  "New-mapping-created": "New mapping created",
+  "Failed-to-create-new-mapping": "Failed to create new mapping",
+  "No-record-update": "No Record Update",
+  "No-record-saved": "No Record Saved",
+  "Record-saved": "Record Saved",
+  "Only-a-organizer-can-perform-this-operation": "only a organizer can perform this operation",
+  "Record-not-updated": "Record Not Updated",
+  "Edit-new-meeting": "Edit New Meeting"
 }

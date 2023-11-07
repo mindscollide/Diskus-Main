@@ -1218,6 +1218,18 @@ const setMeetingbyGroupIDRM = {
 const setMeetingbyCommitteeIDRM = {
   RequestMethod: "ServiceManager.SetCommitteeMeetings",
 };
+const DeleteAgendaWiseDocuments = {
+  RequestMethod: "ServiceManager.DeleteAgendaWiseMinuteDocuments",
+};
+
+const CreateUpdateMeetingDataroomMapped = {
+  RequestMethod: "ServiceManager.CreateUpdateMeetingDataRoomMap",
+};
+
+const UpdateMeetingUsershit = {
+  RequestMethod: "ServiceManager.UpdateMeetingUsers",
+};
+
 export {
   setMeetingbyCommitteeIDRM,
   setMeetingbyGroupIDRM,
@@ -1544,4 +1556,7 @@ export {
   saveDocumentAgendaWiseMinutes,
   RetriveAgendaWiseDocuments,
   DeleteDocumentGenralMinute,
+  DeleteAgendaWiseDocuments,
+  CreateUpdateMeetingDataroomMapped,
+  UpdateMeetingUsershit,
 };
