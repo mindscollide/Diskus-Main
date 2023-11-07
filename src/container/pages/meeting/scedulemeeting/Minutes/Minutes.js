@@ -215,7 +215,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     let Data = {
       MeetingID: currentMeeting,
     };
-    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
+    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     return () => {
       setFileAttachments([]);
     };
@@ -523,7 +523,9 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
+    dispatch(
+      SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+    );
     setFileAttachments([]);
     setPreviousFileIDs([]);
     setAddNoteFields({

@@ -2764,7 +2764,7 @@ const ShowAllGeneralMinutesFailed = (response, message) => {
 };
 
 // Api Function For General Minutes
-const getAllGeneralMinutesApiFunc = (navigate, t, Data, minuteID) => {
+const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(ShowAllGeneralMinutesInit());
@@ -2783,7 +2783,9 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, minuteID) => {
         console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
-          dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, minuteID));
+          dispatch(
+            getAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");
@@ -3093,7 +3095,7 @@ const showSaveMinutesDocsFailed = (message) => {
 
 //SAVE GROUPS DOCUMENTS API
 
-const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
+const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   let currentMeetingID = localStorage.getItem("meetingID");
@@ -3114,7 +3116,9 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveMinutesDocumentsApiFunc(navigate, Data, t));
+          dispatch(
+            SaveMinutesDocumentsApiFunc(navigate, Data, t, currentMeeting)
+          );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -3134,9 +3138,9 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
               );
               dispatch(ShowADDGeneralMinutesFailed(""));
               let Meet = {
-                MeetingID: Number(currentMeetingID),
+                MeetingID: currentMeeting,
               };
-              dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, Data, t));
+              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
