@@ -1201,7 +1201,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setIsAgenda(false);
     setIsAttendees(false);
     setIsPublishMeeting(false);
-    dispatch(ScheduleNewMeeting(navigate, newData, calenderFlag, t));
+    dispatch(ScheduleNewMeeting(navigate, newData, calenderFlag, t, 2));
     setObjMeetingAgenda({
       Title: "",
       PresenterName: "",

@@ -1203,7 +1203,26 @@ const DeleteDocumentGenralMinute = {
   RequestMethod: "ServiceManager.DeleteGeneralMinuteDocuments",
 };
 
+const getMeetingbyGroupIDRM = {
+  RequestMethod: "ServiceManager.GetMeetingsByGroupID",
+};
+
+const getMeetingbyCommitteeIDRM = {
+  RequestMethod: "ServiceManager.GetMeetingsByCommitteeID",
+};
+
+const setMeetingbyGroupIDRM = {
+  RequestMethod: "ServiceManager.SetGroupMeeting",
+};
+
+const setMeetingbyCommitteeIDRM = {
+  RequestMethod: "ServiceManager.SetCommitteeMeetings",
+};
 export {
+  setMeetingbyCommitteeIDRM,
+  setMeetingbyGroupIDRM,
+  getMeetingbyCommitteeIDRM,
+  getMeetingbyGroupIDRM,
   deleteCommitteeTaskRM,
   deleteGroupTaskRM,
   deleteMeetingPollsRM,
