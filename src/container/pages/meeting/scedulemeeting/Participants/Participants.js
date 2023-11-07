@@ -194,9 +194,13 @@ const Participants = ({
 
       render: (text, record) => {
         if (
-          Number(ediorRole.status) === 9 &&
-          ediorRole.role === "Organizer" &&
-          isEditMeeting === true
+          (Number(ediorRole.status) === 9 &&
+            ediorRole.role === "Organizer" &&
+            isEditMeeting === true) ||
+          ((Number(ediorRole.status) === 11 ||
+            Number(ediorRole.status) === 12) &&
+            ediorRole.role === "Agenda Contributor" &&
+            isEditMeeting === true)
         ) {
           return { text };
         } else {
@@ -235,9 +239,13 @@ const Participants = ({
       render: (text, record) => {
         let participantRole = record.participantRole.participantRole;
         if (
-          Number(ediorRole.status) === 9 &&
-          ediorRole.role === "Organizer" &&
-          isEditMeeting === true
+          (Number(ediorRole.status) === 9 &&
+            ediorRole.role === "Organizer" &&
+            isEditMeeting === true) ||
+          ((Number(ediorRole.status) === 11 ||
+            Number(ediorRole.status) === 12) &&
+            ediorRole.role === "Agenda Contributor" &&
+            isEditMeeting === true)
         ) {
           return { participantRole };
         } else {
@@ -278,9 +286,13 @@ const Participants = ({
 
       render: (text, record) => {
         if (
-          Number(ediorRole.status) === 9 &&
-          ediorRole.role === "Organizer" &&
-          isEditMeeting === true
+          (Number(ediorRole.status) === 9 &&
+            ediorRole.role === "Organizer" &&
+            isEditMeeting === true) ||
+          ((Number(ediorRole.status) === 11 ||
+            Number(ediorRole.status) === 12) &&
+            ediorRole.role === "Agenda Contributor" &&
+            isEditMeeting === true)
         ) {
         } else {
           return (
@@ -422,9 +434,13 @@ const Participants = ({
             sm={12}
             className="d-flex justify-content-end gap-2"
           >
-            {Number(ediorRole.status) === 9 &&
-            ediorRole.role === "Organizer" &&
-            isEditMeeting === true ? null : isEditable ? (
+            {(Number(ediorRole.status) === 9 &&
+              ediorRole.role === "Organizer" &&
+              isEditMeeting === true) ||
+            ((Number(ediorRole.status) === 11 ||
+              Number(ediorRole.status) === 12) &&
+              ediorRole.role === "Agenda Contributor" &&
+              isEditMeeting === true) ? null : isEditable ? (
               <>
                 <Row>
                   <Col lg={12} md={12} sm={12} className="d-flex gap-2">
@@ -494,9 +510,13 @@ const Participants = ({
             </>
           ) : (
             <>
-              {Number(ediorRole.status) === 9 &&
-              ediorRole.role === "Organizer" &&
-              isEditMeeting === true ? null : (
+              {(Number(ediorRole.status) === 9 &&
+                ediorRole.role === "Organizer" &&
+                isEditMeeting === true) ||
+              ((Number(ediorRole.status) === 11 ||
+                Number(ediorRole.status) === 12) &&
+                ediorRole.role === "Agenda Contributor" &&
+                isEditMeeting === true) ? null : (
                 <Button
                   text={t("Propose-meeting-dates")}
                   className={styles["Next_Organization"]}
@@ -521,9 +541,13 @@ const Participants = ({
                 className={styles["Cancel_Organization"]}
                 onClick={nextTabOrganizer}
               />
-              {Number(ediorRole.status) === 9 &&
-              ediorRole.role === "Organizer" &&
-              isEditMeeting === true ? null : (
+              {(Number(ediorRole.status) === 9 &&
+                ediorRole.role === "Organizer" &&
+                isEditMeeting === true) ||
+              ((Number(ediorRole.status) === 11 ||
+                Number(ediorRole.status) === 12) &&
+                ediorRole.role === "Agenda Contributor" &&
+                isEditMeeting === true) ? null : (
                 <Button
                   text={t("Published")}
                   className={styles["Next_Organization"]}

@@ -798,8 +798,6 @@ const NewMeeting = () => {
         );
 
         const isQuickMeeting = record.isQuickMeeting;
-        const status = record.status;
-        console.log("statusstatusstatus", record);
         if (isQuickMeeting) {
           if (isOrganiser) {
             return (
@@ -1292,6 +1290,10 @@ const NewMeeting = () => {
                     setViewAdvanceMeetingModalUnpublish={
                       setViewAdvanceMeetingModalUnpublish
                     }
+                    setSceduleMeeting={setSceduleMeeting}
+                    setEdiorRole={setEdiorRole}
+                    setEditMeeting={setEditMeeting}
+                    setCurrentMeetingID={setCurrentMeetingID}
                   />
                 ) : Number(currentView) === 1 ? (
                   <Row className="mt-2">

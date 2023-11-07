@@ -188,7 +188,18 @@ const Organizers = ({
       key: "organizerTitle",
       width: "250px",
       render: (text, record) => {
-        if (Number(ediorRole.status) === 9 && ediorRole.role==="Organizer"&& isEditMeeting === true) {
+        if (
+          Number(ediorRole.status) === 9 &&
+          ediorRole.role === "Organizer" &&
+          isEditMeeting === true
+        ) {
+          return text;
+        } else if (
+          (Number(ediorRole.status) === 11 ||
+            Number(ediorRole.status) === 12) &&
+          ediorRole.role === "Agenda Contributor" &&
+          isEditMeeting === true
+        ) {
           return text;
         } else {
           return (
@@ -203,7 +214,14 @@ const Organizers = ({
                     handleInputChange(record.userID, e.target.value)
                   } // Update the inputValues when the user types
                   disable={
-                    Number(ediorRole.status) === 9 && ediorRole.role==="Organizer"&& isEditMeeting === true
+                    Number(ediorRole.status) === 9 &&
+                    ediorRole.role === "Organizer" &&
+                    isEditMeeting === true
+                      ? true
+                      : (Number(ediorRole.status) === 11 ||
+                          Number(ediorRole.status) === 12) &&
+                        ediorRole.role === "Agenda Contributor" &&
+                        isEditMeeting === true
                       ? true
                       : record.disabledTitle === true
                       ? true
@@ -368,7 +386,16 @@ const Organizers = ({
   ];
 
   const sendRecentNotification = (record) => {
-    if (Number(ediorRole.status) === 9 && ediorRole.role==="Organizer"&& isEditMeeting === true) {
+    if (
+      Number(ediorRole.status) === 9 &&
+      ediorRole.role === "Organizer" &&
+      isEditMeeting === true
+    ) {
+    } else if (
+      (Number(ediorRole.status) === 11 || Number(ediorRole.status) === 12) &&
+      ediorRole.role === "Agenda Contributor" &&
+      isEditMeeting === true
+    ) {
     } else {
       dispatch(sendRecentNotificationOrganizerModal(true));
       dispatch(notificationSendData([record]));
@@ -707,7 +734,12 @@ const Organizers = ({
                       </Col>
                     </Row>
                   </>
-                ) : Number(ediorRole.status) === 9 && ediorRole.role==="Organizer"&&
+                ) : Number(ediorRole.status) === 9 &&
+                  ediorRole.role === "Organizer" &&
+                  isEditMeeting === true ? null : (Number(ediorRole.status) ===
+                    11 ||
+                    Number(ediorRole.status) === 12) &&
+                  ediorRole.role === "Agenda Contributor" &&
                   isEditMeeting === true ? null : (
                   <>
                     <Button
@@ -769,8 +801,13 @@ const Organizers = ({
                     className={styles["publish_button_Organization"]}
                     onClick={nextTabOrganizer}
                   />
-                  {Number(ediorRole.status) === 9 && ediorRole.role==="Organizer"&&
-                  isEditMeeting === true ? null : (
+                  {Number(ediorRole.status) === 9 &&
+                  ediorRole.role === "Organizer" &&
+                  isEditMeeting === true ? null : (Number(ediorRole.status) ===
+                      11 ||
+                      Number(ediorRole.status) === 12) &&
+                    ediorRole.role === "Agenda Contributor" &&
+                    isEditMeeting === true ? null : (
                     <Button
                       text={t("Publish")}
                       className={styles["Next_Organization"]}
