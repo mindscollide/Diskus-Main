@@ -1,0 +1,119 @@
+.meetingTitle {
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6;
+  font-size: 12px !important;
+  cursor: pointer;
+}
+.Start-Meeting {
+  width: 118px;
+  height: 28px;
+  font-size: 12px;
+  color: #fff;
+  background: #81db86;
+  border: none;
+  border-radius: 4px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Start-Meeting:is(:hover, :focus, :focus-visible:active) {
+  width: 118px !important;
+  height: 28px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #81db86 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.joining-Meeting {
+  width: 118px;
+  height: 28px;
+  font-size: 12px;
+  color: #fff;
+  background: #6172d6;
+  border: none;
+  border-radius: 4px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.joining-Meeting:active,
+.joining-Meeting:hover,
+.joining-Meeting:focus,
+.joining-Meeting:focus-visible {
+  width: 118px !important;
+  height: 28px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.End-Meeting {
+  width: 118px !important;
+  height: 28px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #f16b6b !important;
+  border: none !important;
+  border-radius: 4px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.End-Meeting:is(:hover, :focus, :focus-visible:active) {
+  width: 118px !important;
+  height: 28px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #f16b6b !important;
+  border: none !important;
+  border-radius: 4px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.organizer-value {
+  font-family: "MontserratRegular" !important;
+  font-weight: 500 !important;
+}
+
+.datetime-value {
+  font-family: "MontserratRegular" !important;
+  font-weight: 500 !important;
+}
+
+.Create_Meeting_Button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratMedium-500";
+  display: flex;
+  align-items: center !important;
+  gap: 5px;
+  border: none;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+}
+
+.Create_Meeting_Button:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratMedium-500" !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  border: none !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
