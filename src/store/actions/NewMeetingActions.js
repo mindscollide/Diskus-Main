@@ -30,7 +30,15 @@ import {
   SaveGeneralWiseSavingDocuments,
   RetriveGeneralMinutesDocuments,
   getAllGeneralMiintuesDocument,
+  DeleteGeneralMinutes,
+  UpdateGeneralMinutes,
+  agenwiseMinutes,
+  DeleteagendaWiseMinutes,
+  updateAgendaWiseMinutes,
+  getAllAgendaWiseMinutes,
   getUserWiseProposeDate,
+  saveDocumentAgendaWiseMinutes,
+  RetriveAgendaWiseDocuments,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -354,7 +362,6 @@ const GetAllMeetingTypesNewFunction = (navigate, t) => {
         } else {
           dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
@@ -488,7 +495,6 @@ const SaveMeetingDetialsNewApiFunction = (
         } else {
           dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
@@ -586,7 +592,6 @@ const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
             handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
           );
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(
@@ -676,7 +681,6 @@ const GetAllMeetingRecurringApiNew = (navigate, t) => {
         } else {
           dispatch(handleReucrringFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(handleReucrringFailed(t("Something-went-wrong")));
@@ -721,7 +725,6 @@ const searchNewUserMeeting = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "responseresponseresponse");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(searchNewUserMeeting(navigate, Data, t));
@@ -1014,7 +1017,6 @@ const GetAllParticipantsRoleNew = (navigate, t) => {
         } else {
           dispatch(showParticipantsRolesFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showParticipantsRolesFailed(t("Something-went-wrong")));
@@ -1582,7 +1584,6 @@ const SendNotificationApiFunc = (Data, navigate, t) => {
             sendNotificationParticipantsFailed(t("Something-went-wrong"))
           );
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(sendNotificationParticipantsFailed(t("Something-went-wrong")));
@@ -1656,15 +1657,14 @@ const GetAllMeetingDetailsApiFunc = (
                   "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_01".toLowerCase()
                 )
             ) {
-              console.log(Data, "DataDataDataData");
-              setSceduleMeeting(true);
-              setCurrentMeetingID(Data.MeetingID);
               dispatch(
                 showGetAllMeetingDetialsSuccess(
                   response.data.responseResult,
                   t("Record-found")
                 )
               );
+              setSceduleMeeting(true);
+              setCurrentMeetingID(Data.MeetingID);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1692,7 +1692,6 @@ const GetAllMeetingDetailsApiFunc = (
         } else {
           dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
@@ -1782,7 +1781,6 @@ const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showPollsByMeetingIdFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showPollsByMeetingIdFailed(t("Something-went-wrong")));
@@ -1873,7 +1871,6 @@ const GetAllMeetingUserApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showGetAllMeetingUsersFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showGetAllMeetingUsersFailed(t("Something-went-wrong")));
@@ -1961,7 +1958,6 @@ const SetMeetingPollsApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showSetMeetingPollsFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showSetMeetingPollsFailed(t("Something-went-wrong")));
@@ -2061,7 +2057,6 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
             showGetAllProposedMeetingDatesFailed(t("Something-went-wrong"))
           );
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(
@@ -2165,7 +2160,6 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
@@ -2261,7 +2255,6 @@ const SetMeetingResponseApiFunc = (Data, navigate, t) => {
         } else {
           dispatch(showPrposedMeetingReponsneFailed(t("Something-went-wrong")));
         }
-        console.log("responseresponse", response);
       })
       .catch((response) => {
         dispatch(showPrposedMeetingReponsneFailed(t("Something-went-wrong")));
@@ -2295,7 +2288,6 @@ const meetingMaterialFail = (message) => {
 
 //Aun work on meeting Material Main API
 const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
-  console.log(rows, "getMeetingMaterialAPI");
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(meetingMaterialInit());
@@ -2311,13 +2303,11 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_01"
@@ -2335,7 +2325,6 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
               let NewData = {
                 AgendaID: "1222",
               };
-              console.log(NewData, "newIDnewIDnewID");
               dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
             } else if (
               response.data.responseResult.responseMessage ===
@@ -2408,13 +2397,11 @@ const UpateMeetingStatusLockApiFunc = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(UpateMeetingStatusLockApiFunc(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_01"
@@ -2501,13 +2488,11 @@ const GetAllUserAgendaRightsApiFunc = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllUserAgendaRights_01"
@@ -2588,13 +2573,11 @@ const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_01"
@@ -2682,20 +2665,18 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_AddGeneralMinute_01"
             ) {
               dispatch(
                 ShowADDGeneralMinutesSuccess(
-                  response.data.responseResult.responseMessage,
+                  response.data.responseResult.minuteID,
                   t("Record-saved")
                 )
               );
@@ -2756,7 +2737,7 @@ const ShowAllGeneralMinutesFailed = (response, message) => {
 };
 
 // Api Function For General Minutes
-const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
+const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(ShowAllGeneralMinutesInit());
@@ -2772,13 +2753,13 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
       },
     })
       .then(async (response) => {
-        console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
-          dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
+          dispatch(
+            getAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse");
             if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
@@ -2793,30 +2774,19 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data) => {
                 response.data.responseResult,
                 "FK_MeetingGeneralMinutesID"
               );
+
+              // let MeetingDocs = {
+              //   MDID: 1833,
+              // };
+              // dispatch(
+              //   DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
+              // );
               let MeetingDocs = {
                 MDID: 1833,
               };
               dispatch(
                 DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
               );
-
-              // let FetchMinutesId;
-              // response.data.responseResult.meetingMinutes.map(
-              //   (dataMin, Indexmin) => {
-              //     console.log(dataMin, "dataMindataMin");
-              //     FetchMinutesId = dataMin.minuteID;
-              //   }
-              // );
-              // let Retrive = {
-              //   FK_MeetingGeneralMinutesID: FetchMinutesId,
-              // };
-              // dispatch(
-              //   RetriveDocumentsMeetingGenralMinutesApiFunc(
-              //     navigate,
-              //     Retrive,
-              //     t
-              //   )
-              // );
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
@@ -2872,7 +2842,7 @@ const uploadDocument_fail = (message) => {
   };
 };
 
-// Upload Documents API for Resolution
+// Upload Documents API for general Minutes
 const uploadDocumentsMeetingMinutesApi = (
   navigate,
   t,
@@ -2899,7 +2869,13 @@ const uploadDocumentsMeetingMinutesApi = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            uploadDocumentsMeetingMinutesApi(navigate, t, data, folderID)
+            uploadDocumentsMeetingMinutesApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              newFolder
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2979,7 +2955,7 @@ const saveFiles_fail = (message) => {
   };
 };
 
-// Save Files API for Resolution
+// Save Files API for genral Minutes
 const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
@@ -3040,6 +3016,7 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
                 )
             ) {
               dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
+              dispatch(ShowADDGeneralMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3047,18 +3024,24 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
                   "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
                 )
             ) {
+              dispatch(ShowADDGeneralMinutesFailed(""));
+
               dispatch(saveFiles_fail(t("Something-went-wrong")));
             }
           } else {
+            dispatch(ShowADDGeneralMinutesFailed(""));
+
             dispatch(saveFiles_fail(t("Something-went-wrong")));
           }
         } else {
+          dispatch(ShowADDGeneralMinutesFailed(""));
+
           dispatch(saveFiles_fail(t("Something-went-wrong")));
         }
-        console.log(response);
       })
       .catch(() => {
         dispatch(saveFiles_fail(t("Something-went-wrong")));
+        dispatch(ShowADDGeneralMinutesFailed(""));
       });
   };
 };
@@ -3088,9 +3071,10 @@ const showSaveMinutesDocsFailed = (message) => {
 
 //SAVE GROUPS DOCUMENTS API
 
-const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
+const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  let currentMeetingID = localStorage.getItem("meetingID");
   return (dispatch) => {
     dispatch(showSaveMinutesDocsInit());
     let form = new FormData();
@@ -3105,14 +3089,13 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveMinutesDocumentsApiFunc(navigate, Data, t));
+          dispatch(
+            SaveMinutesDocumentsApiFunc(navigate, Data, t, currentMeeting)
+          );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3126,6 +3109,11 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
                   t("List-updated-successfully")
                 )
               );
+              dispatch(ShowADDGeneralMinutesFailed(""));
+              let Meet = {
+                MeetingID: currentMeeting,
+              };
+              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3134,19 +3122,20 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
                 )
             ) {
               dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+              dispatch(ShowADDGeneralMinutesFailed(""));
             }
           } else {
-            console.log(response, "response");
             dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+            dispatch(ShowADDGeneralMinutesFailed(""));
           }
         } else {
-          console.log(response, "response");
           dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+          dispatch(ShowADDGeneralMinutesFailed(""));
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(showSaveMinutesDocsFailed(t("Something-went-wrong")));
+        dispatch(ShowADDGeneralMinutesFailed(""));
       });
   };
 };
@@ -3169,7 +3158,7 @@ const showRetriveGeneralMinutesDocsSuccess = (response, message) => {
 
 const showRetriveGeneralMinutesDocsFailed = (message) => {
   return {
-    type: actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_INIT,
+    type: actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_FAILED,
     message: message,
   };
 };
@@ -3191,16 +3180,13 @@ const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Data, t)
           );
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3236,20 +3222,17 @@ const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
         );
@@ -3296,14 +3279,11 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(DocumentsOfMeetingGenralMinutesApiFunc(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3343,7 +3323,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showRetriveGeneralMinutesDocsMeetingFailed(
                 t("Something-went-wrong")
@@ -3351,7 +3330,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showRetriveGeneralMinutesDocsMeetingFailed(
               t("Something-went-wrong")
@@ -3360,7 +3338,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           showRetriveGeneralMinutesDocsMeetingFailed(t("Something-went-wrong"))
         );
@@ -3456,6 +3433,1229 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
   };
 };
 
+const showGetAllAgendaWiseMinutesInit = () => {
+  return {
+    type: actions.GET_ALL_AGENDA_WISE_MINUTES_INIT,
+  };
+};
+
+const showGetAllAgendaWiseMinutesSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_AGENDA_WISE_MINUTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showGetAllAgendaWiseMinutesFailed = (message) => {
+  return {
+    type: actions.GET_ALL_AGENDA_WISE_MINUTES_FAILED,
+    message: message,
+  };
+};
+
+const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showGetAllAgendaWiseMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getAllAgendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showGetAllAgendaWiseMinutesSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_02".toLowerCase()
+                )
+            ) {
+              dispatch(showGetAllAgendaWiseMinutesFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showGetAllAgendaWiseMinutesFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showGetAllAgendaWiseMinutesFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showGetAllAgendaWiseMinutesFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showGetAllAgendaWiseMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Update  Agenda Wise Minutess
+
+const showUpdateAgendaWiseMinutesInit = () => {
+  return {
+    type: actions.UPDATE_AGENDA_WISE_MINUTES_INIT,
+  };
+};
+
+const showUpdateAgendaWiseMinutesSuccess = (response, message) => {
+  return {
+    type: actions.UPDATE_AGENDA_WISE_MINUTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showUpdateAgendaWiseMinutesFailed = (message) => {
+  return {
+    type: actions.UPDATE_AGENDA_WISE_MINUTES_FAILED,
+    message: message,
+  };
+};
+
+const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showUpdateAgendaWiseMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", updateAgendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(UpdateAgendaWiseMinutesApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateAgendaWiseMinute_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showUpdateAgendaWiseMinutesSuccess(
+                  response.data.responseResult,
+                  t("Record Updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateAgendaWiseMinute_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showUpdateAgendaWiseMinutesFailed(t("Record Not Updated"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showUpdateAgendaWiseMinutesFailed(t("Something-went-wrong"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateAgendaWiseMinute_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showUpdateAgendaWiseMinutesFailed(
+                  t(" only a organizer can perform this operation")
+                )
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showUpdateAgendaWiseMinutesFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showUpdateAgendaWiseMinutesFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showUpdateAgendaWiseMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Delete agenda wise minutes
+
+const showDeleteAgendaWiseMinutesInit = () => {
+  return {
+    type: actions.DELETE_AGENDA_WISE_MINUTES_INIT,
+  };
+};
+
+const showDeleteAgendaWiseMinutesSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_AGENDA_WISE_MINUTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showDeleteAgendaWiseMinutesFailed = (message) => {
+  return {
+    type: actions.DELETE_AGENDA_WISE_MINUTES_FAILED,
+    message: message,
+  };
+};
+
+const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showDeleteAgendaWiseMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteagendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            DeleteAgendaWiseMinutesApiFunc(navigate, Data, t, currentMeeting)
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showDeleteAgendaWiseMinutesSuccess(
+                  response.data.responseResult,
+                  t("Record Deleted")
+                )
+              );
+              let DelteGetAll = {
+                AgendaID: "1222",
+              };
+              dispatch(
+                GetAllAgendaWiseMinutesApiFunc(navigate, DelteGetAll, t)
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseMinutesFailed(t("No Record Deleted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseMinutesFailed(
+                  t("only a organizer can perform this operation")
+                )
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Delete General Minutes
+
+const DeleteGeneralMinutesInit = () => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTES_METHOD_INIT,
+  };
+};
+
+const DeleteGeneralMinutesSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTES_METHOD_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const DeleteGeneralMinutesFailed = (message) => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTES_METHOD_FAILED,
+    message: message,
+  };
+};
+
+const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  let currentMeetingID = localStorage.getItem("meetingID");
+  return (dispatch) => {
+    dispatch(DeleteGeneralMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteGeneralMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            DeleteGeneralMinutesApiFunc(navigate, Data, t, currentMeeting)
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteGeneralMinute_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                DeleteGeneralMinutesSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Record-deleted")
+                )
+              );
+
+              let DelMeet = {
+                MeetingID: currentMeeting,
+              };
+
+              dispatch(getAllGeneralMinutesApiFunc(navigate, t, DelMeet));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteGeneralMinute_02".toLowerCase()
+                )
+            ) {
+              dispatch(DeleteGeneralMinutesFailed(t("No-record-deleted")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteGeneralMinute_03".toLowerCase()
+                )
+            ) {
+              dispatch(DeleteGeneralMinutesFailed(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteGeneralMinute_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                DeleteGeneralMinutesFailed(t("Only-minute-creator-can-delete"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showRetriveGeneralMinutesDocsMeetingFailed(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showRetriveGeneralMinutesDocsMeetingFailed(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          showRetriveGeneralMinutesDocsMeetingFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+//Agenda Wise Add minutes
+
+const showAgendaWiseAddMinutesInit = () => {
+  return {
+    type: actions.AGENDA_WISE_MINUTES_INIT,
+  };
+};
+
+const showAgendaWiseAddMinutesSuccess = (response, message) => {
+  return {
+    type: actions.AGENDA_WISE_MINUTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showAgendaWiseAddMinutesFailed = (message) => {
+  return {
+    type: actions.AGENDA_WISE_MINUTES_FAILED,
+    message: message,
+  };
+};
+
+const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showAgendaWiseAddMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", agenwiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showAgendaWiseAddMinutesSuccess(
+                  response.data.responseResult.minuteID,
+                  t("Response-saved")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_02".toLowerCase()
+                )
+            ) {
+              dispatch(showAgendaWiseAddMinutesFailed(t("No-record-saved")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AddAgendaWiseMinutes_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showAgendaWiseAddMinutesFailed(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                showAgendaWiseAddMinutesFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(showAgendaWiseAddMinutesFailed(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(showAgendaWiseAddMinutesFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showAgendaWiseAddMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Save Agenda Wise Document
+
+const showSavedAgendaWiseDocumentInit = () => {
+  return {
+    type: actions.SAVE_DOCUMENTS_AGENDA_WISE_INIT,
+  };
+};
+
+const showSavedAgendaWiseDocumentSuccess = (response, message) => {
+  return {
+    type: actions.SAVE_DOCUMENTS_AGENDA_WISE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showSavedAgendaWiseDocumentFailed = (message) => {
+  return {
+    type: actions.SAVE_DOCUMENTS_AGENDA_WISE_FAILED,
+    message: message,
+  };
+};
+
+const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showSavedAgendaWiseDocumentInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", saveDocumentAgendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveAgendaWiseMinutesDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showSavedAgendaWiseDocumentSuccess(
+                  response.data.responseResult,
+                  t("List Updated Successfully")
+                )
+              );
+              let getAll = {
+                AgendaID: "1222",
+              };
+              dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveAgendaWiseMinutesDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showSavedAgendaWiseDocumentFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Update General meeting
+
+const showUpdateMinutesInit = () => {
+  return {
+    type: actions.UPDATE_GENERAL_MINUTES_INIT,
+  };
+};
+
+const showUpdateMinutesSuccess = (resposne, message) => {
+  return {
+    type: actions.UPDATE_GENERAL_MINUTES_SUCCESS,
+    resposne: resposne,
+    message: message,
+  };
+};
+
+const showUpdateMinutesFailed = (message) => {
+  return {
+    type: actions.UPDATE_GENERAL_MINUTES_FAILED,
+    message: message,
+  };
+};
+
+const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showUpdateMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", UpdateGeneralMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showUpdateMinutesSuccess(
+                  response.data.responseResult,
+                  t("Response-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_02".toLowerCase()
+                )
+            ) {
+              dispatch(showUpdateMinutesFailed(t("No-record-update")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateGeneralMinute_03".toLowerCase()
+                )
+            ) {
+              dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showUpdateMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Upload Documents for agendawise minutes
+
+// Upload Documents Init
+const uploadDocument_init_agenda_Wise = () => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+  };
+};
+
+// Upload Documents Success
+const uploadDocument_success_agenda_wise = (response, message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Upload Documents Fail
+const uploadDocument_fail_agenda_wise = (message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Upload Documents API for general Minutes
+const uploadDocumentsMeetingAgendaWiseMinutesApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return async (dispatch) => {
+    dispatch(uploadDocument_init_agenda_Wise());
+    let form = new FormData();
+    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            uploadDocumentsMeetingAgendaWiseMinutesApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              newFolder
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                saveFilesMeetingagendaWiseMinutesApi(
+                  navigate,
+                  t,
+                  response.data.responseResult,
+                  folderID,
+                  newFolder
+                )
+              );
+              await dispatch(
+                uploadDocument_success_agenda_wise(
+                  response.data.responseResult,
+                  t("Document-uploaded-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                uploadDocument_fail_agenda_wise(t("Failed-to-update-document"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                uploadDocument_fail_agenda_wise(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              uploadDocument_fail_agenda_wise(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(uploadDocument_fail_agenda_wise(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(uploadDocument_fail_agenda_wise(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Save Files Init
+const saveFiles_init_agenda_wise = () => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_INIT,
+  };
+};
+
+// Save Files Success
+const saveFiles_success_agenda_wise = (response, message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Save Files Fail
+const saveFiles_fail_agenda_wise = (message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Save Files API for genral Minutes
+const saveFilesMeetingagendaWiseMinutesApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+  let Data = {
+    FolderID: folderID !== null ? folderID : 0,
+    Files: [
+      {
+        DisplayFileName: data.displayFileName,
+        DiskusFileName: JSON.parse(data.diskusFileName),
+        ShareAbleLink: data.shareAbleLink,
+        FK_UserID: JSON.parse(creatorID),
+        FK_OrganizationID: JSON.parse(organizationID),
+      },
+    ],
+    UserID: JSON.parse(creatorID),
+    Type: 0,
+  };
+  return async (dispatch) => {
+    dispatch(saveFiles_init_agenda_wise());
+    let form = new FormData();
+    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(
+            saveFilesMeetingagendaWiseMinutesApi(navigate, t, data, newFolder)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                )
+            ) {
+              let newData = {
+                pK_FileID: response.data.responseResult.fileID,
+                DisplayAttachmentName: data.displayFileName,
+              };
+              newFolder.push(newData);
+              await dispatch(
+                saveFiles_success_agenda_wise(
+                  newData,
+                  t("Files-saved-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveFiles_fail_agenda_wise(t("Failed-to-save-any-file"))
+              );
+              dispatch(showAgendaWiseAddMinutesFailed(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                )
+            ) {
+              dispatch(showAgendaWiseAddMinutesFailed(""));
+
+              dispatch(saveFiles_fail_agenda_wise(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(showAgendaWiseAddMinutesFailed(""));
+
+            dispatch(saveFiles_fail_agenda_wise(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(showAgendaWiseAddMinutesFailed(""));
+
+          dispatch(saveFiles_fail_agenda_wise(t("Something-went-wrong")));
+        }
+        console.log(response);
+      })
+      .catch(() => {
+        dispatch(saveFiles_fail_agenda_wise(t("Something-went-wrong")));
+        dispatch(showAgendaWiseAddMinutesFailed(""));
+      });
+  };
+};
+
+//Retrive all agendawise documents
+
+const showRetriveAgendaWiseDocumentsInit = () => {
+  return {
+    type: actions.RETRIVE_AGENDA_WISE_DOCUMENTS_INIT,
+  };
+};
+
+const showRetriveAgendaWiseDocumentsSuccess = (response, message) => {
+  return {
+    type: actions.RETRIVE_AGENDA_WISE_DOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showRetriveAgendaWiseDocumentsFailed = (message) => {
+  return {
+    type: actions.RETRIVE_AGENDA_WISE_DOCUMENTS_FAILED,
+    message: message,
+  };
+};
+
+const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showRetriveAgendaWiseDocumentsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", RetriveAgendaWiseDocuments.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveAgendaWiseMiuteDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showRetriveAgendaWiseDocumentsSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveAgendaWiseMiuteDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showRetriveAgendaWiseDocumentsFailed(t("No-data-available"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveAgendaWiseMiuteDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+//Dlete Documentes General Minutes
+
+const showDeleteGeneralMeetingDocumentsInit = () => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTE_DCOUMENTS_INIT,
+  };
+};
+
+const showDeleteGeneralMeetingDocumentsSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTE_DCOUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showDeleteGeneralMeetingDocumentsFailed = (message) => {
+  return {
+    type: actions.DELETE_GENERAL_MINUTE_DCOUMENTS_FAILED,
+    message: message,
+  };
+};
+
+const DeleteGeneralMinuteDocuments = (navigate, Data, t, currentMeeting) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showDeleteAgendaWiseMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteagendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            DeleteGeneralMinuteDocuments(navigate, Data, t, currentMeeting)
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showDeleteAgendaWiseMinutesSuccess(
+                  response.data.responseResult,
+                  t("Record Deleted")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseMinutesFailed(t("No Record Deleted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseMinutesFailed(
+                  t("only a organizer can perform this operation")
+                )
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -3532,6 +4732,16 @@ export {
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   DocumentsOfMeetingGenralMinutesApiFunc,
+  DeleteGeneralMinutesApiFunc,
+  UpdateMinutesGeneralApiFunc,
+  AddAgendaWiseMinutesApiFunc,
+  DeleteAgendaWiseMinutesApiFunc,
+  UpdateAgendaWiseMinutesApiFunc,
+  GetAllAgendaWiseMinutesApiFunc,
   getUserProposedWiseApi,
+  SaveAgendaWiseDocumentsApiFunc,
   showGetAllMeetingDetialsFailed,
+  uploadDocumentsMeetingAgendaWiseMinutesApi,
+  saveFilesMeetingagendaWiseMinutesApi,
+  AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
 };
