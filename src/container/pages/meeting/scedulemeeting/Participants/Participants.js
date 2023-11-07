@@ -36,6 +36,7 @@ const Participants = ({
   setAgenda,
   setProposedMeetingDates,
   setSceduleMeeting,
+  currentMeeting,
 }) => {
   const [proposeMeeting, setPropseMeeting] = useState(false);
   const { t } = useTranslation();
@@ -58,8 +59,6 @@ const Participants = ({
   const [data, setData] = useState([]);
   const [rspvRows, setrspvRows] = useState([]);
   console.log(rspvRows, "rspvRowsrspvRows");
-  let currentMeetingID = localStorage.getItem("meetingID");
-  console.log(currentMeetingID, "currentMeetingID");
   //open row icon cross modal
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
@@ -119,7 +118,7 @@ const Participants = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: Number(currentMeetingID),
+      MeetingID: Number(currentMeeting),
     };
     dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
   }, []);
@@ -329,7 +328,7 @@ const Participants = ({
   //Clearing the non saved  participant
   const handleCancelButtonForClearingParticipants = () => {
     let Data = {
-      MeetingID: Number(currentMeetingID),
+      MeetingID: Number(currentMeeting),
     };
     dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
   };
@@ -378,7 +377,7 @@ const Participants = ({
     if (editableSave === 1) {
       let Data = {
         MeetingParticipants: newData,
-        MeetingID: Number(currentMeetingID),
+        MeetingID: Number(currentMeeting),
         IsParticipantsAddFlow: false,
         NotificationMessage: "",
       };
@@ -388,13 +387,13 @@ const Participants = ({
     } else {
       let Data = {
         MeetingParticipants: newData,
-        MeetingID: Number(currentMeetingID),
+        MeetingID: Number(currentMeeting),
         IsParticipantsAddFlow: true,
         NotificationMessage: "",
       };
       console.log({ Data }, "DataData");
 
-      dispatch(SaveparticipantsApi(Data, navigate, t));
+      dispatch(SaveparticipantsApi(Data, navigate, t, currentMeeting));
     }
   };
 
@@ -531,7 +530,11 @@ const Participants = ({
 
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.participantModal && (
-        <AddParticipantModal setrspvRows={setrspvRows} rspvRows={rspvRows} />
+        <AddParticipantModal
+          setrspvRows={setrspvRows}
+          rspvRows={rspvRows}
+          currentMeeting={currentMeeting}
+        />
       )}
       {NewMeetingreducer.cancelPartipants && (
         <CancelParticipants setSceduleMeeting={setSceduleMeeting} />

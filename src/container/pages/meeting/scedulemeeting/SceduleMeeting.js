@@ -21,10 +21,13 @@ import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
 import ViewParticipantsDates from "./Participants/ViewParticipantsDates/ViewParticipantsDates";
-const SceduleMeeting = ({ setSceduleMeeting }) => {
+const SceduleMeeting = ({
+  setSceduleMeeting,
+  currentMeeting,
+  setCurrentMeetingID,
+}) => {
   const { t } = useTranslation();
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
-  console.log(currentMeetingID, "currentMeetingIDcurrentMeetingID");
+
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
@@ -36,6 +39,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
+  const [isEditMeeting, setEditMeeting] = useState(false);
 
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
@@ -209,9 +213,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                         onClick={showMeetingDeitals}
                       />
                       <Button
-                        disableBtn={
-                          Number(currentMeetingID) === 0 ? true : false
-                        }
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
                         text={t("Organizers")}
                         className={
                           organizers === true
@@ -221,9 +223,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                         onClick={showOrganizers}
                       />
                       <Button
-                        disableBtn={
-                          Number(currentMeetingID) === 0 ? true : false
-                        }
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
                         text={t("Agenda-contributors")}
                         className={
                           agendaContributors === true
@@ -233,9 +233,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                         onClick={showAgendaContributers}
                       />
                       <Button
-                        disableBtn={
-                          Number(currentMeetingID) === 0 ? true : false
-                        }
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
                         text={t("Participants")}
                         className={
                           participants === true
@@ -245,9 +243,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                         onClick={showParticipants}
                       />
                       <Button
-                        disableBtn={
-                          Number(currentMeetingID) === 0 ? true : false
-                        }
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
                         text={t("Agenda")}
                         className={
                           agenda === true
@@ -257,9 +253,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                         onClick={showAgenda}
                       />
                       <Button
-                        disableBtn={
-                          Number(currentMeetingID) === 0 ? true : false
-                        }
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
                         text={t("Meeting-material")}
                         className={
                           meetingMaterial === true
@@ -269,9 +263,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                         onClick={showMeetingMaterial}
                       />
                       <Button
-                        disableBtn={
-                          Number(currentMeetingID) === 0 ? true : false
-                        }
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
                         text={t("Minutes")}
                         className={
                           minutes === true
@@ -281,9 +273,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                         onClick={showMinutes}
                       />
                       <Button
-                        disableBtn={
-                          Number(currentMeetingID) === 0 ? true : false
-                        }
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
                         text={t("Actions")}
                         className={
                           actionsPage === true
@@ -293,9 +283,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                         onClick={showActions}
                       />
                       <Button
-                        disableBtn={
-                          Number(currentMeetingID) === 0 ? true : false
-                        }
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
                         text={t("Polls")}
                         className={
                           polls === true
@@ -305,9 +293,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                         onClick={ShowPolls}
                       />
                       <Button
-                        disableBtn={
-                          Number(currentMeetingID) === 0 ? true : false
-                        }
+                        disableBtn={Number(currentMeeting) === 0 ? true : false}
                         text={t("Attendence")}
                         className={
                           attendance === true
@@ -332,6 +318,10 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                       setAttendance={setAttendance}
                       setPolls={setPolls}
                       setMeetingMaterial={setMeetingMaterial}
+                      setCurrentMeetingID={setCurrentMeetingID}
+                      setEditMeeting={setEditMeeting}
+                      currentMeeting={currentMeeting}
+                      isEditMeeting={isEditMeeting}
                     />
                   )}
                   {organizers && (
@@ -347,6 +337,9 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                       setAttendance={setAttendance}
                       setPolls={setPolls}
                       setMeetingMaterial={setMeetingMaterial}
+                      currentMeeting={currentMeeting}
+                      isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
                   {agendaContributors && (
@@ -362,6 +355,9 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                       setAttendance={setAttendance}
                       setPolls={setPolls}
                       setMeetingMaterial={setMeetingMaterial}
+                      currentMeeting={currentMeeting}
+                      isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
                   {participants && (
@@ -370,23 +366,46 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                       setAgenda={setAgenda}
                       setProposedMeetingDates={setProposedMeetingDates}
                       setSceduleMeeting={setSceduleMeeting}
+                      currentMeeting={currentMeeting}
+                      isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
 
-                  {agenda && <Agenda setSceduleMeeting={setSceduleMeeting} />}
+                  {agenda && (
+                    <Agenda
+                      setSceduleMeeting={setSceduleMeeting}
+                      currentMeeting={currentMeeting}
+                      isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
+                    />
+                  )}
                   {meetingMaterial && (
                     <MeetingMaterial
                       setSceduleMeeting={setSceduleMeeting}
                       setMeetingMaterial={setMeetingMaterial}
                       setMinutes={setMinutes}
+                      currentMeeting={currentMeeting}
+                      isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
-                  {minutes && <Minutes setMinutes={setMinutes} />}
+                  {minutes && (
+                    <Minutes
+                      setMinutes={setMinutes}
+                      currentMeeting={currentMeeting}
+                      isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
+                    />
+                  )}
                   {actionsPage && (
                     <Actions
                       setSceduleMeeting={setSceduleMeeting}
                       setPolls={setPolls}
                       setactionsPage={setactionsPage}
+                      currentMeeting={currentMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
+                      isEditMeeting={isEditMeeting}
                     />
                   )}
                   {polls && (
@@ -394,9 +413,18 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                       setSceduleMeeting={setSceduleMeeting}
                       setPolls={setPolls}
                       setAttendance={setAttendance}
+                      currentMeeting={currentMeeting}
+                      isEditMeeting={isEditMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
-                  {attendance && <Attendence />}
+                  {attendance && (
+                    <Attendence
+                      isEditMeeting={isEditMeeting}
+                      currentMeeting={currentMeeting}
+                      setCurrentMeetingID={setCurrentMeetingID}
+                    />
+                  )}
                 </Paper>
               </Col>
             </Row>

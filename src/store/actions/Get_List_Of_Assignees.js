@@ -313,24 +313,24 @@ const UpdateMeeting = (navigate, object, t) => {
                 )
             ) {
               let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                let meetingPageCurrent = parseInt(
-                  localStorage.getItem("MeetingPageCurrent")
-                );
-                let searchData = {
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow),
-                  PublishedMeetings: true,
-                };
-                await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                await dispatch(
-                  ShowNotification(t("The-record-has-been-updated-successfully"))
-                );
-                await dispatch(meetingLoaderDashboard(false));
-                await dispatch(SetLoaderFalse(false))
+              let meetingPageCurrent = parseInt(
+                localStorage.getItem("MeetingPageCurrent")
+              );
+              let searchData = {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(createrID),
+                PageNumber: Number(meetingPageCurrent),
+                Length: Number(meetingpageRow),
+                PublishedMeetings: true,
+              };
+              await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              await dispatch(
+                ShowNotification(t("The-record-has-been-updated-successfully"))
+              );
+              await dispatch(meetingLoaderDashboard(false));
+              await dispatch(SetLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -397,6 +397,7 @@ const ViewMeeting = (
   setViewFlag,
   setEditFlag,
   setCalendarViewModal,
+  setSceduleMeeting,
   no
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -424,6 +425,7 @@ const ViewMeeting = (
               setViewFlag,
               setEditFlag,
               setCalendarViewModal,
+              setSceduleMeeting,
               no
             )
           );
@@ -449,6 +451,8 @@ const ViewMeeting = (
                 setEditFlag(true);
               } else if (no === 3) {
                 setCalendarViewModal(true);
+              } else if (no === 4) {
+                setSceduleMeeting(true);
               }
             } else if (
               response.data.responseResult.responseMessage

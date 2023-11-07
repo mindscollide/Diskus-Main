@@ -27,7 +27,14 @@ import {
   deleteMeetingPollApi,
   getPollsByPollIdApi,
 } from "../../../../../store/actions/Polls_actions";
-const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
+import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
+
+const Polls = ({
+  setSceduleMeeting,
+  setPolls,
+  setAttendance,
+  currentMeeting,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,7 +44,9 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const [editPolls, setEditPolls] = useState(false);
   const [pollsRows, setPollsRows] = useState([]);
   const [afterViewPolls, setafterViewPolls] = useState(false);
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(50);
+  const [totalRecords, setTotalRecords] = useState(0);
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
 
@@ -72,13 +81,13 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const handleDeletePoll = (record) => {
     let data = {
       PollID: record.pollID,
-      MeetingID: parseInt(currentMeetingID),
+      MeetingID: parseInt(currentMeeting),
     };
     dispatch(deleteMeetingPollApi(navigate, t, data));
   };
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -88,6 +97,19 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
   }, []);
 
+  const handleChangePagination = (current, pageSize) => {
+    setPageNumber(current);
+    setPageSize(pageSize);
+    let Data = {
+      MeetingID: currentMeeting,
+      OrganizationID: Number(OrganizationID),
+      CreatorName: "",
+      PollTitle: "",
+      PageNumber: Number(current),
+      Length: Number(pageSize),
+    };
+    dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
+  };
   useEffect(() => {
     try {
       if (
@@ -95,8 +117,10 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         NewMeetingreducer.getPollsMeetingID !== null
       ) {
         let pollsData = NewMeetingreducer.getPollsMeetingID.polls;
+        setTotalRecords(NewMeetingreducer.getPollsMeetingID.totalRecords);
+
         let newPollsArray = [];
-        pollsData.map((data, index) => {
+        pollsData.forEach((data, index) => {
           console.log(data, "datadatadatadata");
           newPollsArray.push(data);
         });
@@ -116,7 +140,14 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       width: "300px",
       render: (text, record) => {
         console.log(record, "recordrecordrecordrecord");
-        return <span className={styles["DateClass"]}>{text}</span>;
+        return (
+          <span
+            className={styles["DateClass"]}
+            onClick={() => navigate("/DisKus/polling")}
+          >
+            {text}
+          </span>
+        );
       },
     },
 
@@ -205,7 +236,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() => {}}
+                  onClick={() => navigate("/DisKus/polling")}
                 />
               );
             } else if (record.voteStatus === "Voted") {
@@ -363,11 +394,17 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         <>
           <section>
             {createpoll ? (
-              <Createpolls setCreatepoll={setCreatepoll} />
+              <Createpolls
+                setCreatepoll={setCreatepoll}
+                currentMeeting={currentMeeting}
+              />
             ) : votePolls ? (
               <CastVotePollsMeeting setvotePolls={setvotePolls} />
             ) : editPolls ? (
-              <EditPollsMeeting setEditPolls={setEditPolls} />
+              <EditPollsMeeting
+                setEditPolls={setEditPolls}
+                currentMeeting={currentMeeting}
+              />
             ) : (
               <>
                 <Row className="mt-4">
@@ -487,6 +524,26 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                     )}
                   </Col>
                 </Row>
+                {pollsRows.length > 0 && (
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="pagination-groups-table d-flex justify-content-center my-3"
+                    >
+                      <CustomPagination
+                        pageSizeOptionsValues={["30", "50", "100", "200"]}
+                        current={pageNumber}
+                        pageSize={pageSize}
+                        total={totalRecords}
+                        showSizer={totalRecords >= 9 ? true : false}
+                        className={styles["PaginationStyle-Resolution"]}
+                        onChange={handleChangePagination}
+                      />
+                    </Col>
+                  </Row>
+                )}
               </>
             )}
             {NewMeetingreducer.cancelPolls && (
