@@ -394,7 +394,6 @@ const GroupViewPolls = ({
       Length: 50,
     };
     dispatch(getPollsByGroupMainApi(navigate, t, Data));
-    // dispatch(GetPollsByCommitteeIDapi(navigate, t, Data));
   };
 
   return (

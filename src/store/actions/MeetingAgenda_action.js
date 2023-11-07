@@ -554,10 +554,11 @@ const getAdvanceMeetingAgendabyMeetingID_init = () => {
     type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_INIT,
   };
 };
-const getAdvanceMeetingAgendabyMeetingID_success = (response, message) => {
+const getAdvanceMeetingAgendabyMeetingID_success = (data, message) => {
+  console.log(data, message, "getAdvanceMeetingAgendabyMeetingID_success");
   return {
     type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_SUCCESS,
-    response: response,
+    response: data,
     message: message,
   };
 };
