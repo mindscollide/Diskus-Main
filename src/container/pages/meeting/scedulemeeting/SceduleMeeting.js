@@ -206,9 +206,15 @@ const SceduleMeeting = ({
           <section>
             <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
-                <span className={styles["Scedule_newMeeting_Heading"]}>
-                  {t("Schedule-new-meeting")}
-                </span>
+                {isEditMeeting ? (
+                  <span className={styles["Scedule_newMeeting_Heading"]}>
+                    {t("Edit-new-meeting")}
+                  </span>
+                ) : (
+                  <span className={styles["Scedule_newMeeting_Heading"]}>
+                    {t("Schedule-new-meeting")}
+                  </span>
+                )}
 
                 {/*               
                     <span className={styles["Scedule_newMeeting_Heading"]}>
@@ -339,16 +345,23 @@ const SceduleMeeting = ({
                         }
                         onClick={ShowPolls}
                       />
-                      <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
-                        text={t("Attendence")}
-                        className={
-                          attendance === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showAttendance}
-                      />
+                      {(Number(ediorRole.status) === 10 ||
+                        Number(ediorRole.status) === 9) &&
+                      ediorRole.role === "Organizer" &&
+                      isEditMeeting === true ? (
+                        <Button
+                          disableBtn={
+                            Number(currentMeeting) === 0 ? true : false
+                          }
+                          text={t("Attendence")}
+                          className={
+                            attendance === true
+                              ? styles["Schedule_meetings_options_active"]
+                              : styles["Schedule_meetings_options"]
+                          }
+                          onClick={showAttendance}
+                        />
+                      ) : null}
                     </Col>
                   </Row>
 

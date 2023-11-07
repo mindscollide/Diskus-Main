@@ -245,7 +245,7 @@ const Attendence = ({ currentMeeting }) => {
   // dispatch Api in useEffect
   useEffect(() => {
     let meetingData = {
-      MeetingID: currentMeeting,
+      MeetingID: Number(currentMeeting),
     };
     dispatch(getAllAttendanceMeetingApi(navigate, t, meetingData));
   }, []);

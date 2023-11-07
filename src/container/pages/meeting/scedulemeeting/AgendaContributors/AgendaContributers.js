@@ -139,11 +139,6 @@ const AgendaContributers = ({
         ) {
           return text;
         } else if (
-          (Number(ediorRole.status) === 11 ||
-            Number(ediorRole.status) === 2 ||
-            Number(ediorRole.status) === 1 ||
-            Number(ediorRole.status) === 12 ||
-            Number(ediorRole.status) === 10) &&
           ediorRole.role === "Agenda Contributor" &&
           isEditMeeting === true
         ) {
@@ -183,13 +178,7 @@ const AgendaContributers = ({
             Number(ediorRole.status) === 10) &&
             ediorRole.role === "Organizer" &&
             isEditMeeting === true) ||
-          ((Number(ediorRole.status) === 11 ||
-            Number(ediorRole.status) === 2 ||
-            Number(ediorRole.status) === 1 ||
-            Number(ediorRole.status) === 12 ||
-            Number(ediorRole.status) === 10) &&
-            ediorRole.role === "Agenda Contributor" &&
-            isEditMeeting === true)
+          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
           return (
             <Row>
@@ -275,12 +264,7 @@ const AgendaContributers = ({
                   Number(ediorRole.status) === 10) &&
                   ediorRole.role === "Organizer" &&
                   isEditMeeting === true) ||
-                ((Number(ediorRole.status) === 11 ||
-                  Number(ediorRole.status) === 2 ||
-                  Number(ediorRole.status) === 1 ||
-                  Number(ediorRole.status) === 12 ||
-                  Number(ediorRole.status) === 10) &&
-                  ediorRole.role === "Agenda Contributor" &&
+                (ediorRole.role === "Agenda Contributor" &&
                   isEditMeeting === true) ? (
                   <img
                     draggable={false}
@@ -573,12 +557,7 @@ const AgendaContributers = ({
             Number(ediorRole.status) === 10) &&
             ediorRole.role === "Organizer" &&
             isEditMeeting === true) ||
-          ((Number(ediorRole.status) === 11 ||
-            Number(ediorRole.status) === 2 ||
-            Number(ediorRole.status) === 1 ||
-            Number(ediorRole.status) === 12 ||
-            Number(ediorRole.status) === 10) &&
-            ediorRole.role === "Agenda Contributor" &&
+          (ediorRole.role === "Agenda Contributor" &&
             isEditMeeting === true) ? (
             <></>
           ) : (
@@ -606,12 +585,7 @@ const AgendaContributers = ({
               Number(ediorRole.status) === 10) &&
               ediorRole.role === "Organizer" &&
               isEditMeeting === true) ||
-            ((Number(ediorRole.status) === 11 ||
-              Number(ediorRole.status) === 2 ||
-              Number(ediorRole.status) === 1 ||
-              Number(ediorRole.status) === 12 ||
-              Number(ediorRole.status) === 10) &&
-              ediorRole.role === "Agenda Contributor" &&
+            (ediorRole.role === "Agenda Contributor" &&
               isEditMeeting === true) ? (
               <></>
             ) : isEdit ? (
@@ -726,12 +700,7 @@ const AgendaContributers = ({
                 Number(ediorRole.status) === 10) &&
                 ediorRole.role === "Organizer" &&
                 isEditMeeting === true) ||
-              ((Number(ediorRole.status) === 11 ||
-                Number(ediorRole.status) === 2 ||
-                Number(ediorRole.status) === 1 ||
-                Number(ediorRole.status) === 12 ||
-                Number(ediorRole.status) === 10) &&
-                ediorRole.role === "Agenda Contributor" &&
+              (ediorRole.role === "Agenda Contributor" &&
                 isEditMeeting === true) ? null : (
                 <Button
                   text={t("Published")}

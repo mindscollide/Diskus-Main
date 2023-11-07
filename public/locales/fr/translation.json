@@ -1106,5 +1106,6 @@
   "No-record-deleted": "No Record Deleted",
   "RSVP-not-allowed": "RSVP not allowed ",
   "Start-join-meeting": "Start/Join Meeting",
-  "Create-Meeting": "Create Meeting"
+  "Create-Meeting": "Create Meeting",
+  "Edit-new-meeting": "Edit New Meeting"
 }
