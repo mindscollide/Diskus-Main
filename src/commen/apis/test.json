@@ -1,0 +1,34 @@
+{
+  "responseMessage": "Success",
+  "responseCode": 200,
+  "responseType": "ServiceManager.GetUserWiseProposedDates",
+  "responseResult": {
+    "userWiseMeetingProposedDates": [
+      {
+        "userID": 983,
+        "userName": "ErenOne",
+        "designation": "React Developer",
+        "userEmail": "erenone@yopmail.com",
+        "title": "",
+        "selectedProposedDates": [
+          {
+            "proposedDateID": 85,
+            "proposedDate": "20231027",
+            "startTime": "124331",
+            "endTime": "124632",
+            "isSelected": false
+          },
+          {
+            "proposedDateID": 86,
+            "proposedDate": "20231028",
+            "startTime": "144338",
+            "endTime": "154340",
+            "isSelected": true
+          }
+        ]
+      }
+    ],
+    "responseMessage": "Meeting_MeetingServiceManager_GetUserWiseProposedDates_01",
+    "isExecuted": true
+  }
+}

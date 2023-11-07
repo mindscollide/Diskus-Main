@@ -8,288 +8,124 @@ import { Modal, Button, Table } from "../../../../../../../components/elements";
 import { useSelector } from "react-redux";
 import { showSceduleProposedMeeting } from "../../../../../../../store/actions/NewMeetingActions";
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
-const SceduleProposedmeeting = () => {
+import moment from "moment";
+const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
+  console.log(
+    proposedDates,
+    "proposedDatesproposedDatesproposedDatesproposedDatesproposedDates"
+  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const [sceduleProposedmeetingData, setSceduleProposedmeetingData] = useState([
-    {
-      Dates: [
-        {
-          dataFormeeting: "22-2-2023",
-        },
-        {
-          dataFormeeting: "25-3-2023",
-        },
-        {
-          dataFormeeting: "28-3-2023",
-        },
-        {
-          dataFormeeting: "25-3-2023",
-        },
-        {
-          dataFormeeting: "28-3-2023",
-        },
-      ],
-      members: [
-        {
-          name: "Mr Abdul Qadir",
-          designation: "CFO",
-          isTick: true,
-        },
-        {
-          name: "Mr Huzaeifa Jahangir",
-          designation: "Team Lead",
-          isTick: true,
-        },
-        {
-          name: "Mr Saif Ul Islam",
-          designation: "Software Engineer",
-          isTick: true,
-        },
-      ],
 
-      Votes: [
-        {
-          amount: 0,
-        },
-        {
-          amount: 2,
-        },
-        {
-          amount: 3,
-        },
-      ],
+  console.log(organizerRows, "organizerRowsorganizerRows");
 
-      Selected: true,
-    },
-  ]);
+  // Function to count the selected proposed dates for a row
+  const countSelectedProposedDates = (organizerRows) => {
+    console.log("Row Data:", organizerRows);
+    // if (organizerRows.selectedProposedDates) {
+    //   console.log("Selected Proposed Dates:", organizerRows.selectedProposedDates);
+    //   const count = organizerRows.selectedProposedDates.filter(
+    //     (date) => date.isSelected
+    //   ).length;
+    //   console.log("Count of Selected Proposed Dates:", count);
 
-  const data = [
+    //   // Add a zero prefix to the count if it's a single digit
+    //   return count < 10 ? `0${count}` : count;
+    // } else {
+    //   console.log("No selectedProposedDates found.");
+    // }
+  };
+
+  const dateFormat = "YYYYMMDD";
+  const formattedDates = proposedDates.map((date) => {
+    const formattedDate = moment(date, dateFormat, true).format("DD MMM, YY");
+    return formattedDate;
+  });
+
+  const scheduleColumn = [
     {
-      key: "1",
-      Title: (
+      dataIndex: "userName",
+      key: "userName",
+      render: (text, record) => (
         <>
           <span className={styles["WidthOFSpan"]}>
-            <span className={styles["ParticipantName"]}>Mr Abdul Qadir</span>
-            <span className={styles["Designation"]}>CFO</span>
+            {record.userName === "Total" ? (
+              <span className={styles["TotalCount_HEading"]}>
+                {record.userName}
+              </span>
+            ) : (
+              <span className={styles["ParticipantName"]}>
+                {record.userName}
+              </span>
+            )}{" "}
+            <span className={styles["Designation"]}>{record.designation}</span>
           </span>
         </>
       ),
-      Tick: (
-        <>
-          <img
-            src={BlueTick}
-            className={styles["TickIconClass"]}
-            width="20.7px"
-            height="14.21px"
-          />
-        </>
-      ),
     },
-    {
-      key: "1",
-      Title: (
-        <>
-          <span className={styles["WidthOFSpan"]}>
-            <span className={styles["ParticipantName"]}>
-              Mr Huzaeifa Jahangir
-            </span>
-            <span className={styles["Designation"]}>Team Lead</span>
-          </span>
-        </>
-      ),
-      Tick: (
-        <>
-          <img
-            src={BlueTick}
-            className={styles["TickIconClass"]}
-            width="20.7px"
-            height="14.21px"
-          />
-        </>
-      ),
-    },
-    {
-      key: "1",
-      Title: (
-        <>
-          <span className={styles["WidthOFSpan"]}>
-            <span className={styles["ParticipantName"]}>Mr Owais Wajid</span>
-            <span className={styles["Designation"]}>Sr Software Engineer</span>
-          </span>
-        </>
-      ),
-      Tick: (
-        <>
-          <img
-            src={BlueTick}
-            className={styles["TickIconClass"]}
-            width="20.7px"
-            height="14.21px"
-          />
-        </>
-      ),
-    },
-    {
-      key: "1",
-      Title: (
-        <>
-          <span className={styles["WidthOFSpan"]}>
-            <span className={styles["ParticipantName"]}>Mr Saif Ul Islam</span>
-            <span className={styles["Designation"]}>Software Engineer</span>
-          </span>
-        </>
-      ),
-      Tick: (
-        <>
-          <img
-            src={BlueTick}
-            className={styles["TickIconClass"]}
-            width="20.7px"
-            height="14.21px"
-          />
-        </>
-      ),
-    },
-    {
-      key: "1",
-      Title: (
-        <>
-          <span className={styles["TotalCount_HEading"]}>{t("Total")}</span>
-        </>
-      ),
-      Tick: (
-        <>
-          <Row>
-            <Col lg={3} md={3} sm={3}></Col>
-            <Col lg={9} md={9} sm={9} className="d-flex gap-4">
-              <span className={styles["TotalCount"]}>0</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      key: "1",
-      Title: <></>,
-      Tick: (
-        <>
-          <Button text={t("Scedule")} className={styles["SceduleButton"]} />
-        </>
-      ),
-    },
+
+    ...formattedDates.map((formattedDate, index) => ({
+      title: <span className={styles["DateObject"]}>{formattedDate}</span>,
+      dataIndex: "selectedProposedDates",
+      key: `selectedProposedDates-${index}`,
+      render: (text, record, columnIndex) => {
+        try {
+          if (record.userName === "Total") {
+            const totalDate = record.selectedProposedDates.find(
+              (date) => date.isTotal === 0
+            );
+            if (totalDate) {
+              return (
+                <span className={styles["TotalCount"]}>
+                  {countSelectedProposedDates(record)}
+                </span>
+              );
+            }
+          } else if (record.userName !== "Total") {
+            // Check if record.selectedProposedDates is defined and has the specific element
+            if (
+              record.selectedProposedDates &&
+              record.selectedProposedDates[index] &&
+              record.selectedProposedDates[index].isSelected
+            ) {
+              return (
+                <img
+                  src={BlueTick}
+                  className={styles["TickIconClass"]}
+                  width="20.7px"
+                  height="14.21px"
+                  alt=""
+                />
+              );
+            }
+            return null;
+          }
+        } catch (error) {}
+      },
+    })),
   ];
-  const [tablerowsData, setTablerowsData] = useState(data);
-  const MeetingColoumns = [
-    {
-      dataIndex: "Title",
-      key: "Title",
-      width: "150px",
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className={styles["ColoumnOuterBorderBox"]}
-            >
-              <span className={styles["DateObject"]}>22-2-2023</span>
-            </Col>
-          </Row>
-        </>
-      ),
 
-      className: styles["border-column"],
-      dataIndex: "Tick",
-      key: "Tick",
-      width: "100px",
-      render: (text, record, rowIndex) => (
-        <div
-          className={`${
-            rowIndex === data.length - 1 ? " " + styles["last-row"] : ""
-          }`}
-        >
-          {text}
-        </div>
-      ),
-      onHeaderCell: (column) => ({
-        className: styles["border-title"], // Apply the custom class to the th element
-      }),
-    },
+  // this col is for footer
+  const totalColumn = [
     {
-      title: (
+      dataIndex: "total",
+      key: "total",
+
+      render: (text, record) => (
         <>
+          <span className={styles["TotalCount_HEading"]}>Total</span>
           <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["DateObject"]}>24-4-2023</span>
+            <Col lg={9} md={9} sm={9}></Col>
+            <Col lg={3} md={3} sm={3} className="">
+              <span className={styles["TotalCount"]}>
+                {countSelectedProposedDates(record)}
+              </span>
             </Col>
           </Row>
         </>
       ),
-      dataIndex: "Tick",
-      key: "Tick",
-      width: "100px",
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["DateObject"]}>26-6-2023</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Tick",
-      key: "Tick",
-      width: "100px",
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["DateObject"]}>29-9-2023</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Tick",
-      key: "Tick",
-      width: "100px",
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["DateObject"]}>29-9-2023</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Tick",
-      key: "Tick",
-      width: "100px",
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["DateObject"]}>29-9-2023</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      dataIndex: "Tick",
-      key: "Tick",
-      width: "100px",
     },
   ];
 
@@ -321,17 +157,53 @@ const SceduleProposedmeeting = () => {
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Table
-                    column={MeetingColoumns}
+                    column={scheduleColumn}
                     scroll={{ x: "22vh" }}
                     pagination={false}
                     className="SceduleProposedMeeting"
-                    rows={tablerowsData}
+                    rows={organizerRows}
+                    // footer={(text, record) => {
+                    //   console.log(
+                    //     record,
+                    //     text,
+                    //     "recordrecordrecordrecordrecord"
+                    //   );
+                    //   return (
+                    //     <>
+                    //       <span className={styles["TotalCount_HEading"]}>
+                    //         Total
+                    //       </span>
+                    //       <Row>
+                    //         <Col lg={9} md={9} sm={9}></Col>
+                    //         <Col lg={3} md={3} sm={3} className="">
+                    //           <span className={styles["TotalCount"]}>
+                    //             {countSelectedProposedDates(organizerRows[0])}
+                    //           </span>
+                    //         </Col>
+                    //       </Row>
+                    //     </>
+                    //   );
+                    // }}
                   />
                 </Col>
               </Row>
             </section>
           </>
         }
+        // ModalFooter={
+        //   <section>
+        //     <Row>
+        //       <Col lg={12} md={12} sm={12}>
+        //         <Table
+        //           column={totalColumn}
+        //           pagination={false}
+        //           // className="SceduleProposedMeeting"
+        //           rows={organizerRows}
+        //         />
+        //       </Col>
+        //     </Row>
+        //   </section>
+        // }
       />
     </section>
   );

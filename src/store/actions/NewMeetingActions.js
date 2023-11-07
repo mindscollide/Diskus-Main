@@ -3398,7 +3398,7 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
             ) {
               dispatch(
                 getProposedWiseSuccess(
-                  response.data.responseResult.responseMessage,
+                  response.data.responseResult.userWiseMeetingProposedDates,
                   t("Record-found")
                 )
               );

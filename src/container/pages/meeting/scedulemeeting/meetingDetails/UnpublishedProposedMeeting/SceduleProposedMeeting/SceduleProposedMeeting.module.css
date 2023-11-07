@@ -70,12 +70,12 @@
 }
 
 .TotalCount {
-  width: 117px !important;
+  /* width: 117px !important; */
   /* display: flex !important;
   justify-content: center !important; */
-  margin-top: 8px !important;
   color: #6172d6;
   font-family: "MontserratSemiBold" !important;
+  margin-left: 35px !important;
 }
 
 .bottom_line {
@@ -127,6 +127,7 @@
   font-family: "MontserratSemiBold" !important;
   font-size: 16px !important;
   color: #6172d6;
+
   /* padding-left: 17px !important; */
 }
 
@@ -181,3 +182,15 @@
 .bottom-border {
   border-bottom: 1px solid #000; /* Add your border styles here */
 }
+
+.HighlightedColumn {
+  border-left: 1px solid blue !important;
+  border-right: 1px solid blue !important;
+  border-top: 1px solid blue !important;
+  padding: 5px !important;
+}
+/* .schedule-footer-class {
+  display: block;
+  margin: 0 !important;
+  padding: 0 !important;
+} */
