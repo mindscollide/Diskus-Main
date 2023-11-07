@@ -235,3 +235,10 @@ body[dir="rtl"] .Leftpolygon {
   background: none !important;
   border: none !important;
 }
+
+.Show_more {
+  color: #5f78d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  cursor: pointer !important;
+}

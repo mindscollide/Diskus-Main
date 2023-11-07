@@ -67,6 +67,8 @@ const AgendaWise = ({ currentMeeting }) => {
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
+  const [showMore, setShowMore] = useState(false);
+  const [showMoreIndex, setShowMoreIndex] = useState(0);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
       id: 0,
@@ -536,6 +538,11 @@ const AgendaWise = ({ currentMeeting }) => {
     setFileAttachments([]);
   };
 
+  const handleshowMore = (index) => {
+    setShowMoreIndex(index);
+    setShowMore(!showMore);
+  };
+
   return (
     <section>
       <Row className="mt-4">
@@ -794,6 +801,110 @@ const AgendaWise = ({ currentMeeting }) => {
                                   </span>
                                 </Col>
                               </Row>
+                              <Row className="mt-2">
+                                <Col lg={12} md={12} sm={12}>
+                                  <span
+                                    className={styles["Show_more"]}
+                                    onClick={() => handleshowMore(index)}
+                                  >
+                                    Show more
+                                  </span>
+                                </Col>
+                              </Row>
+                              {showMoreIndex === index && showMore === true ? (
+                                <>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={styles["DocsScroller"]}
+                                    >
+                                      <Row className="mt-3">
+                                        {data.minutesAttachmets.map(
+                                          (filesname, index) => {
+                                            console.log(
+                                              filesname,
+                                              "filesnamefilesname"
+                                            );
+                                            return (
+                                              <>
+                                                <Col
+                                                  lg={2}
+                                                  md={2}
+                                                  sm={12}
+                                                  className="position-relative gap-2"
+                                                >
+                                                  <section
+                                                    className={
+                                                      styles["Outer_Box"]
+                                                    }
+                                                  >
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <img
+                                                          src={file_image}
+                                                          width={"100%"}
+                                                          alt=""
+                                                          draggable="false"
+                                                        />
+                                                      </Col>
+                                                    </Row>
+
+                                                    <section
+                                                      className={
+                                                        styles[
+                                                          "backGround_name_Icon"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <Row className="mb-2">
+                                                        <Col
+                                                          lg={12}
+                                                          md={12}
+                                                          sm={12}
+                                                          className={
+                                                            styles[
+                                                              "IconTextClass"
+                                                            ]
+                                                          }
+                                                        >
+                                                          <img
+                                                            src={pdfIcon}
+                                                            height="10px"
+                                                            width="10px"
+                                                            className={
+                                                              styles["IconPDF"]
+                                                            }
+                                                          />
+                                                          <span
+                                                            className={
+                                                              styles["FileName"]
+                                                            }
+                                                          >
+                                                            {
+                                                              data.DisplayAttachmentName
+                                                            }
+                                                          </span>
+                                                        </Col>
+                                                      </Row>
+                                                    </section>
+                                                  </section>
+                                                </Col>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                        <Col lg={12} md={12} sm={12}></Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              ) : null}
                             </Col>
                             <Col lg={3} md={3} sm={3} className="mt-4">
                               <Row className="d-flex justify-content-end">
@@ -830,9 +941,9 @@ const AgendaWise = ({ currentMeeting }) => {
                                   </Row>
                                 </Col>
                                 <Col
-                                  lg={3}
-                                  md={3}
-                                  sm={3}
+                                  lg={4}
+                                  md={4}
+                                  sm={4}
                                   className="d-flex justify-content-start align-items-center"
                                 >
                                   <img
@@ -845,14 +956,6 @@ const AgendaWise = ({ currentMeeting }) => {
                                   />
                                 </Col>
                               </Row>
-                            </Col>
-                            <Col lg={1} md={1} sm={1}>
-                              {/* <img
-                                src={downArrow}
-                                width="18.71px"
-                                height="9.36px"
-                                className="cursor-pointer"
-                              /> */}
                             </Col>
                           </Row>
                           <img
