@@ -1297,6 +1297,29 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     default: {
       return { ...state };
     }

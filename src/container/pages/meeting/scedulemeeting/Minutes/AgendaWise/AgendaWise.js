@@ -24,6 +24,7 @@ import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
   DeleteAgendaWiseMinutesApiFunc,
+  DeleteAgendaWiseMinutesDocumentsApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
@@ -518,13 +519,19 @@ const AgendaWise = ({ currentMeeting }) => {
     setisEdit(false);
   };
 
-  const handleRemovingTheMinutesAgendaWise = (data) => {
-    console.log(data, "handleRemovingTheMinutesAgendaWise");
-    let DelData = {
-      MinuteID: data.minuteID,
+  const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
+    let Data = {
+      MDID: currentMeeting,
+      MeetingAgendaMinutesID: AgendaWiseData.minuteID,
     };
     dispatch(
-      DeleteAgendaWiseMinutesApiFunc(navigate, DelData, t, currentMeeting)
+      DeleteAgendaWiseMinutesDocumentsApiFunc(
+        navigate,
+        Data,
+        t,
+        currentMeeting,
+        AgendaWiseData
+      )
     );
     setAddNoteFields({
       ...addNoteFields,

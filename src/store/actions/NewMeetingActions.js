@@ -40,6 +40,7 @@ import {
   saveDocumentAgendaWiseMinutes,
   RetriveAgendaWiseDocuments,
   DeleteDocumentGenralMinute,
+  DeleteAgendaWiseDocuments,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -4667,6 +4668,133 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
   };
 };
 
+//Documents Delete Agenda Wise
+
+const showDeleteAgendaWiseDocumentInit = () => {
+  return {
+    type: actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_INIT,
+  };
+};
+
+const showDeleteAgendaWiseDocumentSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showDeleteAgendaWiseDocumentFailed = (message) => {
+  return {
+    type: actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_FAILED,
+    message: message,
+  };
+};
+
+const DeleteAgendaWiseMinutesDocumentsApiFunc = (
+  navigate,
+  Data,
+  t,
+  currentMeeting,
+  AgendaWiseData
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showDeleteAgendaWiseDocumentInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteAgendaWiseDocuments.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            DeleteAgendaWiseMinutesDocumentsApiFunc(
+              navigate,
+              Data,
+              t,
+              currentMeeting,
+              AgendaWiseData
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteAgendaWiseMinuteDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showDeleteAgendaWiseDocumentSuccess(
+                  response.data.responseResult,
+                  t("Record Deleted")
+                )
+              );
+              let AgendaWiseDelData = {
+                MinuteID: AgendaWiseData.minuteID,
+              };
+              dispatch(
+                DeleteAgendaWiseMinutesApiFunc(
+                  navigate,
+                  AgendaWiseDelData,
+                  t,
+                  currentMeeting
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteAgendaWiseMinuteDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseDocumentFailed(t("No Record Deleted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteAgendaWiseMinuteDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -4756,4 +4884,5 @@ export {
   saveFilesMeetingagendaWiseMinutesApi,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
   DeleteGeneralMinuteDocumentsApiFunc,
+  DeleteAgendaWiseMinutesDocumentsApiFunc,
 };
