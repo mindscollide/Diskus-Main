@@ -3511,4 +3511,5 @@ export {
   SaveMinutesDocumentsApiFunc,
   DocumentsOfMeetingGenralMinutesApiFunc,
   getUserProposedWiseApi,
+  UpateMeetingStatusLockApiFunc,
 };

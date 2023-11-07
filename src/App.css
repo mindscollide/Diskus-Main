@@ -6250,6 +6250,11 @@ label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked.ant-checkbox-wrapper-dis
   overflow-y: auto !important;
   max-height: 100px !important;
 }
+
 .ant-table-cell-scrollbar {
   display: none;
+}
+
+.SelectOrganizersSelect_active__menu {
+  z-index: 9999999999 !important;
 }
