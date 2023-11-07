@@ -4567,7 +4567,7 @@ const DeleteGeneralMinuteDocuments = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
-    dispatch(showDeleteAgendaWiseMinutesInit());
+    dispatch(showDeleteGeneralMeetingDocumentsInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", DeleteagendaWiseMinutes.RequestMethod);
@@ -4651,7 +4651,338 @@ const DeleteGeneralMinuteDocuments = (navigate, Data, t, currentMeeting) => {
       })
       .catch((response) => {
         console.log(response, "response");
-        dispatch(showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+const getCommitteebyMeeting_init = () => {
+  return {
+    type: actions.GETGROUPBYMEETINGID_INIT,
+  };
+};
+const getCommitteebyMeeting_success = (response, message) => {
+  return {
+    type: actions.GETGROUPBYMEETINGID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getCommitteebyMeeting_fail = (message) => {
+  return {
+    type: actions.GETGROUPBYMEETINGID_FAIL,
+    message: message,
+  };
+};
+const getCommitteebyMeetingApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getCommitteebyMeeting_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteagendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_01".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_02".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_03".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_04".toLowerCase()
+                )
+            ) {
+            }
+          } else {
+            console.log(response, "response");
+          }
+        } else {
+          console.log(response, "response");
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+      });
+  };
+};
+
+const setCommitteebyMeeting_init = () => {
+  return {
+    type: actions.SETCOMMITTEEBYMEETINGID_INIT,
+  };
+};
+const setCommitteebyMeeting_success = (response, message) => {
+  return {
+    type: actions.SETCOMMITTEEBYMEETINGID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const setCommitteebyMeeting_fail = (message) => {
+  return {
+    type: actions.SETCOMMITTEEBYMEETINGID_FAIL,
+    message: message,
+  };
+};
+const setCommitteebyMeetingApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(setCommitteebyMeeting_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteagendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_01".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_02".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_03".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_04".toLowerCase()
+                )
+            ) {
+            }
+          } else {
+            console.log(response, "response");
+          }
+        } else {
+          console.log(response, "response");
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+      });
+  };
+};
+
+const getGroupbyMeeting_init = () => {
+  return {
+    type: actions.GETGROUPBYMEETINGID_INIT,
+  };
+};
+const getGroupbyMeeting_success = (response, message) => {
+  return {
+    type: actions.GETGROUPBYMEETINGID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getGroupbyMeeting_fail = (message) => {
+  return {
+    type: actions.GETGROUPBYMEETINGID_FAIL,
+    message: message,
+  };
+};
+const getGroupbyMeetingApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getGroupbyMeeting_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteagendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_01".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_02".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_03".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_04".toLowerCase()
+                )
+            ) {
+            }
+          } else {
+            console.log(response, "response");
+          }
+        } else {
+          console.log(response, "response");
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+      });
+  };
+};
+
+const setGroupbyMeeting_init = () => {
+  return {
+    type: actions.SETGROUPBYMEETINGID_INIT,
+  };
+};
+const setGroupbyMeeting_success = (response, message) => {
+  return {
+    type: actions.SETGROUPBYMEETINGID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const setGroupbyMeeting_fail = (message) => {
+  return {
+    type: actions.SETGROUPBYMEETINGID_FAIL,
+    message: message,
+  };
+};
+const setGroupbyMeetingApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(setGroupbyMeeting_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteagendaWiseMinutes.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_01".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_02".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_03".toLowerCase()
+                )
+            ) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_04".toLowerCase()
+                )
+            ) {
+            }
+          } else {
+            console.log(response, "response");
+          }
+        } else {
+          console.log(response, "response");
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
       });
   };
 };

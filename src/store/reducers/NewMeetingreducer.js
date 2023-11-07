@@ -73,6 +73,10 @@ const initialState = {
   userWiseMeetingProposed: [],
   agendaWiseMinuteID: 0,
   RetriveAgendaWiseDocuments: [],
+  setCommitteewithMeetingID: null,
+  getCommitteeByMeetingID: null,
+  setGroupwithMeetingID: null,
+  getGroupwithMeetingID: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1296,7 +1300,97 @@ const NewMeetingreducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+    case actions.GETCOMMITTEEBYMEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETCOMMITTEEBYMEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getCommitteeByMeetingID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETCOMMITTEEBYMEETINGID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getCommitteeByMeetingID: null,
+        ResponseMessage: action.message,
+      };
+    }
 
+    case actions.SETCOMMITTEEBYMEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SETCOMMITTEEBYMEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setCommitteewithMeetingID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SETCOMMITTEEBYMEETINGID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setCommitteewithMeetingID: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GETGROUPBYMEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETGROUPBYMEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getGroupwithMeetingID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETGROUPBYMEETINGID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getGroupwithMeetingID: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SETGROUPBYMEETINGID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SETGROUPBYMEETINGID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setGroupwithMeetingID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SETGROUPBYMEETINGID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setGroupwithMeetingID: null,
+        ResponseMessage: action.message,
+      };
+    }
     default: {
       return { ...state };
     }
