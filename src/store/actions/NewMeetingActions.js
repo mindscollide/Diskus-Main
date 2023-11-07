@@ -2862,7 +2862,7 @@ const uploadDocument_fail = (message) => {
   };
 };
 
-// Upload Documents API for Resolution
+// Upload Documents API for general Minutes
 const uploadDocumentsMeetingMinutesApi = (
   navigate,
   t,
@@ -2975,7 +2975,7 @@ const saveFiles_fail = (message) => {
   };
 };
 
-// Save Files API for Resolution
+// Save Files API for genral Minutes
 const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
@@ -3135,7 +3135,7 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t) => {
               let Meet = {
                 MeetingID: Number(currentMeetingID),
               };
-              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
+              dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, Data, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4205,6 +4205,256 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
   };
 };
 
+//Upload Documents for agendawise minutes
+
+// Upload Documents Init
+const uploadDocument_init_agenda_Wise = () => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+  };
+};
+
+// Upload Documents Success
+const uploadDocument_success_agenda_wise = (response, message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Upload Documents Fail
+const uploadDocument_fail_agenda_wise = (message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Upload Documents API for general Minutes
+const uploadDocumentsMeetingAgendaWiseMinutesApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return async (dispatch) => {
+    dispatch(uploadDocument_init_agenda_Wise());
+    let form = new FormData();
+    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            uploadDocumentsMeetingAgendaWiseMinutesApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              newFolder
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                saveFilesMeetingagendaWiseMinutesApi(
+                  navigate,
+                  t,
+                  response.data.responseResult,
+                  folderID,
+                  newFolder
+                )
+              );
+              await dispatch(
+                uploadDocument_success_agenda_wise(
+                  response.data.responseResult,
+                  t("Document-uploaded-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                uploadDocument_fail_agenda_wise(t("Failed-to-update-document"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                uploadDocument_fail_agenda_wise(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              uploadDocument_fail_agenda_wise(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(uploadDocument_fail_agenda_wise(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(uploadDocument_fail_agenda_wise(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Save Files Init
+const saveFiles_init_agenda_wise = () => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_INIT,
+  };
+};
+
+// Save Files Success
+const saveFiles_success_agenda_wise = (response, message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Save Files Fail
+const saveFiles_fail_agenda_wise = (message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Save Files API for genral Minutes
+const saveFilesMeetingagendaWiseMinutesApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+  let Data = {
+    FolderID: folderID !== null ? folderID : 0,
+    Files: [
+      {
+        DisplayFileName: data.displayFileName,
+        DiskusFileName: JSON.parse(data.diskusFileName),
+        ShareAbleLink: data.shareAbleLink,
+        FK_UserID: JSON.parse(creatorID),
+        FK_OrganizationID: JSON.parse(organizationID),
+      },
+    ],
+    UserID: JSON.parse(creatorID),
+    Type: 0,
+  };
+  return async (dispatch) => {
+    dispatch(saveFiles_init_agenda_wise());
+    let form = new FormData();
+    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(
+            saveFilesMeetingagendaWiseMinutesApi(navigate, t, data, newFolder)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                )
+            ) {
+              let newData = {
+                pK_FileID: response.data.responseResult.fileID,
+                DisplayAttachmentName: data.displayFileName,
+              };
+              newFolder.push(newData);
+              await dispatch(
+                saveFiles_success_agenda_wise(
+                  newData,
+                  t("Files-saved-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveFiles_fail_agenda_wise(t("Failed-to-save-any-file"))
+              );
+              dispatch(showAgendaWiseAddMinutesFailed(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                )
+            ) {
+              dispatch(showAgendaWiseAddMinutesFailed(""));
+
+              dispatch(saveFiles_fail_agenda_wise(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(showAgendaWiseAddMinutesFailed(""));
+
+            dispatch(saveFiles_fail_agenda_wise(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(showAgendaWiseAddMinutesFailed(""));
+
+          dispatch(saveFiles_fail_agenda_wise(t("Something-went-wrong")));
+        }
+        console.log(response);
+      })
+      .catch(() => {
+        dispatch(saveFiles_fail_agenda_wise(t("Something-went-wrong")));
+        dispatch(showAgendaWiseAddMinutesFailed(""));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -4290,4 +4540,6 @@ export {
   getUserProposedWiseApi,
   SaveAgendaWiseDocumentsApiFunc,
   showGetAllMeetingDetialsFailed,
+  uploadDocumentsMeetingAgendaWiseMinutesApi,
+  saveFilesMeetingagendaWiseMinutesApi,
 };

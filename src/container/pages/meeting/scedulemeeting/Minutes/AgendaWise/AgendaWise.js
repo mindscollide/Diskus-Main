@@ -24,10 +24,11 @@ import {
   AddAgendaWiseMinutesApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
+  uploadDocumentsMeetingAgendaWiseMinutesApi,
   uploadDocumentsMeetingMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 
-const AgendaWise = () => {
+const AgendaWise = ({ currentMeeting }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -315,7 +316,7 @@ const AgendaWise = () => {
     let newfile = [...previousFileIDs];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
-        uploadDocumentsMeetingMinutesApi(
+        uploadDocumentsMeetingAgendaWiseMinutesApi(
           navigate,
           t,
           newData,
@@ -334,7 +335,7 @@ const AgendaWise = () => {
 
     let docsData = {
       FK_MeetingAgendaMinutesID: minuteID,
-      FK_MDID: currentMeetingID,
+      FK_MDID: currentMeeting,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),

@@ -1192,7 +1192,7 @@ const getAdvanceMeetingAgendabyMeetingID = {
 };
 
 const saveDocumentAgendaWiseMinutes = {
-  RequestMethod: " ServiceManager.SaveAgendaWiseMinutesDocuments",
+  RequestMethod: "ServiceManager.SaveAgendaWiseMinutesDocuments",
 };
 
 export {

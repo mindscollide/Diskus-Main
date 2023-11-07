@@ -664,7 +664,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
         </Col>
       </Row>
       {agenda ? (
-        <AgendaWise />
+        <AgendaWise currentMeeting={currentMeeting} />
       ) : general ? (
         <>
           <Row className="mt-4">
