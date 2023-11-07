@@ -269,11 +269,11 @@ const NewMeeting = () => {
 
   const openSceduleMeetingPage = () => {
     setSceduleMeeting(true);
+    setCurrentMeetingID(0)
   };
 
   const groupChatInitiation = (data) => {
     if (data.talkGroupID !== 0) {
-      console.log("discussionGroupChat", data);
       dispatch(createShoutAllScreen(false));
       dispatch(addNewChatScreen(false));
       dispatch(footerActionStatus(false));
@@ -396,65 +396,37 @@ const NewMeeting = () => {
     isAgendaContributor,
     record
   ) => {
-    console.log("handleEditMeeting", id, isQuick, record);
-    // let Data = { MeetingID: id };
-    let Data = {
-      MeetingID: Number(id),
-    };
-    await dispatch(
-      GetAllMeetingDetailsApiFunc(
-        Data,
-        navigate,
-        t,
-        setCurrentMeetingID,
-        setSceduleMeeting
-      )
-    );
-    // if (isQuick) {
-    //   await dispatch(
-    //     ViewMeeting(
-    //       navigate,
-    //       Data,
-    //       t,
-    //       setViewFlag,
-    //       setEditFlag,
-    //       setCalendarViewModal,
-    //       setSceduleMeeting,
-    //       4
-    //     )
-    //   );
-    // } else if(isQuick === false) {
-    //     let Data = {
-    //       MeetingID: Number(id),
-    //     };
-    //     await dispatch(
-    //       GetAllMeetingDetailsApiFunc(
-    //         Data,
-    //         navigate,
-    //         t,
-    //         setCurrentMeetingID,
-    //         setViewAdvanceMeetingModal
-    //       )
-    //     );
-    // }
-    // // else if (isQuick === false) {
-    // //   dispatch(
-    // //     ViewMeeting(
-    // //       navigate,
-    // //       Data,
-    // //       t,
-    // //       setViewFlag,
-    // //       setEditFlag,
-    // //       setCalendarViewModal,
-    // //       setSceduleMeeting,
-    // //       4
-    // //     )
-    // //   );
-    // //   console.log("isQuickhandleEditMeetinghandleEditMeeting", isQuick);
-    // // }
-    // else if (isAgendaContributor) {
-    // } else {
-    // }
+    let Data = { MeetingID: Number(id) };
+
+    if (isQuick) {
+      await dispatch(
+        ViewMeeting(
+          navigate,
+          Data,
+          t,
+          setViewFlag,
+          setEditFlag,
+          setCalendarViewModal,
+          setSceduleMeeting,
+          4
+        )
+      );
+    } else if (isQuick === false) {
+      let Data = {
+        MeetingID: Number(id),
+      };
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          Data,
+          navigate,
+          t,
+          setCurrentMeetingID,
+          setSceduleMeeting
+        )
+      );
+    } else if (isAgendaContributor) {
+    } else {
+    }
   };
 
   useEffect(() => {
