@@ -4988,7 +4988,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
   };
 };
 
-//Update Meeting Users For Organizers
+//Update Meeting Users For Participants
 
 const UpdateMeetingUserInit = () => {
   return {
