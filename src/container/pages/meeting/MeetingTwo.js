@@ -104,8 +104,6 @@ const NewMeeting = () => {
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
-  let OrganizerName = localStorage.getItem("name");
-
   const [quickMeeting, setQuickMeeting] = useState(false);
   // const [unPublishedMeeting, setUnPublishedMeeting] = useState(false);
   // const [allPublishedMeetings, setAllPublishedMeetings] = useState(false);
@@ -117,10 +115,10 @@ const NewMeeting = () => {
   const [editFlag, setEditFlag] = useState(false);
   const [viewFlag, setViewFlag] = useState(false);
   const [currentMeeting, setCurrentMeetingID] = useState(0);
-  const [publishedMeeting, setpublishedMeeting] = useState(false);
+  const [isEditMeeting, setEditMeeting] = useState(false);
+
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [organizerProposeDate, setOrganizerProposeDate] = useState(false);
 
   const [searchFields, setSearchFeilds] = useState({
     MeetingTitle: "",
@@ -135,11 +133,11 @@ const NewMeeting = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
-  const [meetingID, setMeetingID] = useState(0);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
+  const [ediorRole, setEdiorRole] = useState({ status: null, role: null });
   const [
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
@@ -423,7 +421,6 @@ const NewMeeting = () => {
           setSceduleMeeting
         )
       );
-    } else if (isAgendaContributor) {
     } else {
     }
   };
@@ -732,8 +729,6 @@ const NewMeeting = () => {
             }
           }
         } else if (Number(record.status) === 10) {
-          console.log("check status", record.status);
-
           if (isParticipant) {
             return (
               <Button
@@ -758,8 +753,6 @@ const NewMeeting = () => {
             );
           }
         } else if (Number(record.status) === 2) {
-          console.log("check status", record.status);
-
           if (isOrganiser) {
             // return (
             //   <Button
@@ -805,9 +798,8 @@ const NewMeeting = () => {
         );
 
         const isQuickMeeting = record.isQuickMeeting;
-        console.log("isQuickMeeting", isQuickMeeting);
-        console.log("isQuickMeeting", record);
-
+        const status = record.status;
+        console.log("statusstatusstatus", record);
         if (isQuickMeeting) {
           if (isOrganiser) {
             return (
@@ -853,14 +845,20 @@ const NewMeeting = () => {
                         height="17.11px"
                         alt=""
                         draggable="false"
-                        onClick={() =>
+                        onClick={() => {
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
                             isAgendaContributor,
                             record
-                          )
-                        }
+                          );
+
+                          setEdiorRole({
+                            status: record.status,
+                            role: "Organizer",
+                          });
+                          setEditMeeting(true);
+                        }}
                       />
                     </Tooltip>
                   </Col>
@@ -880,14 +878,19 @@ const NewMeeting = () => {
                         height="17.11px"
                         alt=""
                         draggable="false"
-                        onClick={() =>
+                        onClick={() => {
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
                             isAgendaContributor,
                             record
-                          )
-                        }
+                          );
+                          setEdiorRole({
+                            status: record.status,
+                            role: "Agenda Contributor",
+                          });
+                          setEditMeeting(true);
+                        }}
                       />
                     </Tooltip>
                   </Col>
@@ -1035,6 +1038,10 @@ const NewMeeting = () => {
           setSceduleMeeting={setSceduleMeeting}
           setCurrentMeetingID={setCurrentMeetingID}
           currentMeeting={currentMeeting}
+          ediorRole={ediorRole}
+          setEdiorRole={setEdiorRole}
+          setEditMeeting={setEditMeeting}
+          isEditMeeting={isEditMeeting}
         />
       ) : viewProposeDatePoll ? (
         <ViewParticipantsDates

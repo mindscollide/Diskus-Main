@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./SceduleMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
-import {
-  Button,
-  TextField,
-  Loader,
-  Notification,
-} from "../../../../components/elements";
+import { Button } from "../../../../components/elements";
 import MeetingDetails from "./meetingDetails/MeetingDetails";
 import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";
@@ -20,7 +15,6 @@ import ProposedMeetingDate from "./Participants/ProposedMeetingDate/ProposedMeet
 import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
-import ViewParticipantsDates from "./Participants/ViewParticipantsDates/ViewParticipantsDates";
 import { GetAllMeetingDetailsApiFunc } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +22,10 @@ const SceduleMeeting = ({
   setSceduleMeeting,
   currentMeeting,
   setCurrentMeetingID,
+  ediorRole,
+  isEditMeeting,
+  setEditMeeting,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
 
@@ -42,9 +40,16 @@ const SceduleMeeting = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
-  const [isEditMeeting, setEditMeeting] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  //  Call all search meetings api
+  useEffect(() => {
+    return () => {
+      setEditMeeting(false);
+      setEdiorRole({ status: null, role: null });
+    };
+  }, []);
 
   const showMeetingDeitals = () => {
     let Data = {
@@ -329,9 +334,10 @@ const SceduleMeeting = ({
                       setPolls={setPolls}
                       setMeetingMaterial={setMeetingMaterial}
                       setCurrentMeetingID={setCurrentMeetingID}
-                      setEditMeeting={setEditMeeting}
                       currentMeeting={currentMeeting}
+                      setEditMeeting={setEditMeeting}
                       isEditMeeting={isEditMeeting}
+                      ediorRole={ediorRole}
                     />
                   )}
                   {organizers && (
@@ -348,26 +354,23 @@ const SceduleMeeting = ({
                       setPolls={setPolls}
                       setMeetingMaterial={setMeetingMaterial}
                       currentMeeting={currentMeeting}
-                      isEditMeeting={isEditMeeting}
                       setCurrentMeetingID={setCurrentMeetingID}
+                      setEditMeeting={setEditMeeting}
+                      isEditMeeting={isEditMeeting}
+                      ediorRole={ediorRole}
                     />
                   )}
                   {agendaContributors && (
                     <AgendaContributers
                       setorganizers={setorganizers}
-                      setmeetingDetails={setmeetingDetails}
+                      setCurrentMeetingID={setCurrentMeetingID}
+                      currentMeeting={currentMeeting}
                       setSceduleMeeting={setSceduleMeeting}
                       setAgendaContributors={setAgendaContributors}
                       setParticipants={setParticipants}
-                      setAgenda={setAgenda}
-                      setMinutes={setMinutes}
-                      setactionsPage={setactionsPage}
-                      setAttendance={setAttendance}
-                      setPolls={setPolls}
-                      setMeetingMaterial={setMeetingMaterial}
-                      currentMeeting={currentMeeting}
+                      setEditMeeting={setEditMeeting}
                       isEditMeeting={isEditMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
+                      ediorRole={ediorRole}
                     />
                   )}
                   {participants && (
@@ -377,8 +380,11 @@ const SceduleMeeting = ({
                       setProposedMeetingDates={setProposedMeetingDates}
                       setSceduleMeeting={setSceduleMeeting}
                       currentMeeting={currentMeeting}
-                      isEditMeeting={isEditMeeting}
                       setCurrentMeetingID={setCurrentMeetingID}
+                      setAgendaContributors={setAgendaContributors}
+                      setEditMeeting={setEditMeeting}
+                      isEditMeeting={isEditMeeting}
+                      ediorRole={ediorRole}
                     />
                   )}
 
@@ -386,8 +392,10 @@ const SceduleMeeting = ({
                     <Agenda
                       setSceduleMeeting={setSceduleMeeting}
                       currentMeeting={currentMeeting}
-                      isEditMeeting={isEditMeeting}
                       setCurrentMeetingID={setCurrentMeetingID}
+                      setEditMeeting={setEditMeeting}
+                      isEditMeeting={isEditMeeting}
+                      ediorRole={ediorRole}
                     />
                   )}
                   {meetingMaterial && (
@@ -396,16 +404,20 @@ const SceduleMeeting = ({
                       setMeetingMaterial={setMeetingMaterial}
                       setMinutes={setMinutes}
                       currentMeeting={currentMeeting}
-                      isEditMeeting={isEditMeeting}
                       setCurrentMeetingID={setCurrentMeetingID}
+                      setEditMeeting={setEditMeeting}
+                      isEditMeeting={isEditMeeting}
+                      ediorRole={ediorRole}
                     />
                   )}
                   {minutes && (
                     <Minutes
                       setMinutes={setMinutes}
                       currentMeeting={currentMeeting}
-                      isEditMeeting={isEditMeeting}
                       setCurrentMeetingID={setCurrentMeetingID}
+                      setEditMeeting={setEditMeeting}
+                      isEditMeeting={isEditMeeting}
+                      ediorRole={ediorRole}
                     />
                   )}
                   {actionsPage && (
@@ -415,7 +427,9 @@ const SceduleMeeting = ({
                       setactionsPage={setactionsPage}
                       currentMeeting={currentMeeting}
                       setCurrentMeetingID={setCurrentMeetingID}
+                      setEditMeeting={setEditMeeting}
                       isEditMeeting={isEditMeeting}
+                      ediorRole={ediorRole}
                     />
                   )}
                   {polls && (
@@ -424,15 +438,19 @@ const SceduleMeeting = ({
                       setPolls={setPolls}
                       setAttendance={setAttendance}
                       currentMeeting={currentMeeting}
-                      isEditMeeting={isEditMeeting}
                       setCurrentMeetingID={setCurrentMeetingID}
+                      setEditMeeting={setEditMeeting}
+                      isEditMeeting={isEditMeeting}
+                      ediorRole={ediorRole}
                     />
                   )}
                   {attendance && (
                     <Attendence
-                      isEditMeeting={isEditMeeting}
                       currentMeeting={currentMeeting}
                       setCurrentMeetingID={setCurrentMeetingID}
+                      setEditMeeting={setEditMeeting}
+                      isEditMeeting={isEditMeeting}
+                      ediorRole={ediorRole}
                     />
                   )}
                 </Paper>

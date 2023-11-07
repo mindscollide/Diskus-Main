@@ -5,27 +5,21 @@ import {
   Table,
   TextField,
   Switch,
-  Loader,
   Notification,
 } from "../../../../../components/elements";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import addmore from "../../../../../assets/images/addmore.png";
-import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import greenMailIcon from "../../../../../assets/images/greenmail.svg";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
-import rspvAbstainIcon from "../../../../../assets/images/rspvAbstain.svg";
 import CrossResolution from "../../../../../assets/images/resolutions/cross_icon_resolution.svg";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
-import mail from "../../../../../assets/images/mail.svg";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
-import { Tooltip } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   showAddUserModal,
-  showCancelModalOrganizers,
   showCrossConfirmationModal,
   showNotifyOrganizors,
   sendRecentNotificationOrganizerModal,
@@ -62,14 +56,15 @@ const Organizers = ({
   setSceduleMeeting,
   currentMeeting,
   setCurrentMeetingID,
+  ediorRole,
+  setEditMeeting,
+  isEditMeeting,
 }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-
-  let currentLanguage = localStorage.getItem("i18nextLng");
 
   let currentUserEmail = localStorage.getItem("userEmail");
   let currentUserID = Number(localStorage.getItem("userID"));
@@ -192,20 +187,34 @@ const Organizers = ({
       dataIndex: "organizerTitle",
       key: "organizerTitle",
       width: "250px",
-      render: (text, record) => (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <TextField
-              placeholder={t("Content-title")}
-              labelClass={"d-none"}
-              applyClass={"Organizer_table"}
-              value={inputValues[record.userID] || ""} // Use the controlled value
-              change={(e) => handleInputChange(record.userID, e.target.value)} // Update the inputValues when the user types
-              disable={record.disabledTitle === true ? true : false}
-            />
-          </Col>
-        </Row>
-      ),
+      render: (text, record) => {
+        if (Number(ediorRole.status) === 9 && ediorRole.role==="Organizer"&& isEditMeeting === true) {
+          return text;
+        } else {
+          return (
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <TextField
+                  placeholder={t("Content-title")}
+                  labelClass={"d-none"}
+                  applyClass={"Organizer_table"}
+                  value={inputValues[record.userID] || ""} // Use the controlled value
+                  change={(e) =>
+                    handleInputChange(record.userID, e.target.value)
+                  } // Update the inputValues when the user types
+                  disable={
+                    Number(ediorRole.status) === 9 && ediorRole.role==="Organizer"&& isEditMeeting === true
+                      ? true
+                      : record.disabledTitle === true
+                      ? true
+                      : false
+                  }
+                />
+              </Col>
+            </Row>
+          );
+        }
+      },
     },
 
     {
@@ -236,7 +245,6 @@ const Organizers = ({
       key: "rsvp",
       width: "120px",
       render: (text, record) => {
-        console.log("RSVP", text, record);
         if (record.isRSVP === true) {
           return (
             <img
@@ -244,11 +252,18 @@ const Organizers = ({
               src={rspvGreenIcon}
               height="30px"
               width="30px"
+              alt=""
             />
           );
         } else {
           return (
-            <img draggable={false} src={NORSVP} height="30px" width="30px" />
+            <img
+              draggable={false}
+              src={NORSVP}
+              height="30px"
+              width="30px"
+              alt=""
+            />
           );
         }
       },
@@ -260,7 +275,6 @@ const Organizers = ({
       key: "isOrganizerNotified",
       width: "180px",
       render: (text, record) => {
-        console.log("RSVP", text, record);
         if (record.isOrganizerNotified === true) {
           return (
             <Row>
@@ -277,6 +291,7 @@ const Organizers = ({
                     height="30px"
                     width="30px"
                     // onClick={() => sendRecentNotification(record)}
+                    alt=""
                     className="cursor-pointer"
                   />
                 ) : (
@@ -287,6 +302,7 @@ const Organizers = ({
                     width="30px"
                     onClick={() => sendRecentNotification(record)}
                     className="cursor-pointer"
+                    alt=""
                   />
                 )}
               </Col>
@@ -308,6 +324,7 @@ const Organizers = ({
                     height="30px"
                     width="30px"
                     className="cursor-pointer"
+                    alt=""
                   />
                 ) : (
                   <img
@@ -317,6 +334,7 @@ const Organizers = ({
                     width="30px"
                     onClick={() => sendRecentNotification(record)}
                     className="cursor-pointer"
+                    alt=""
                   />
                 )}
               </Col>
@@ -350,9 +368,11 @@ const Organizers = ({
   ];
 
   const sendRecentNotification = (record) => {
-    console.log("Mail Clicked");
-    dispatch(sendRecentNotificationOrganizerModal(true));
-    dispatch(notificationSendData([record]));
+    if (Number(ediorRole.status) === 9 && ediorRole.role==="Organizer"&& isEditMeeting === true) {
+    } else {
+      dispatch(sendRecentNotificationOrganizerModal(true));
+      dispatch(notificationSendData([record]));
+    }
   };
 
   // const deleteRow = (record) => {}
@@ -364,10 +384,8 @@ const Organizers = ({
   };
 
   const openAddUserModal = () => {
-    console.log("Add User Modal");
     dispatch(showAddUserModal(true));
     dispatch(saveMeetingFlag(true));
-    console.log("Add User Modal");
   };
 
   const previousTabOrganizer = () => {
@@ -387,7 +405,6 @@ const Organizers = ({
   };
 
   const handlePublishButton = () => {
-    // console.log('For Save Data', transformedData)
     // dispatch(SaveMeetingOrganizers(navigate, transformedData, t))
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
@@ -472,7 +489,6 @@ const Organizers = ({
     dispatch(SaveMeetingOrganizers(navigate, Data, t));
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
-    console.log("Save API call", Data);
   };
 
   const editMeetingOrganizers = () => {
@@ -490,7 +506,6 @@ const Organizers = ({
     dispatch(SaveMeetingOrganizers(navigate, Data, t, currentMeeting));
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
-    console.log("Save API call", Data);
   };
 
   useEffect(() => {
@@ -515,7 +530,6 @@ const Organizers = ({
       );
 
       setRowsData(updatedMeetingOrganizers);
-      console.log("updated Rows Data", updatedMeetingOrganizers);
     }
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
 
@@ -578,7 +592,6 @@ const Organizers = ({
 
       // Set the updated rowsData
       setRowsData(updatedRowsData);
-      console.log("updated Rows Data", updatedRowsData);
     }
   }, [MeetingOrganizersReducer.MeetingOrganizersData]);
 
@@ -640,12 +653,6 @@ const Organizers = ({
     dispatch(clearResponseMessage(""));
   }, [MeetingOrganizersReducer.ResponseMessage]);
 
-  console.log("MeetingOrganizersReducer", MeetingOrganizersReducer);
-
-  console.log("NewMeetingreducer", NewMeetingreducer);
-
-  console.log("Table Data", rowsData);
-
   return (
     <>
       {viewOrganizers ? (
@@ -700,7 +707,8 @@ const Organizers = ({
                       </Col>
                     </Row>
                   </>
-                ) : (
+                ) : Number(ediorRole.status) === 9 && ediorRole.role==="Organizer"&&
+                  isEditMeeting === true ? null : (
                   <>
                     <Button
                       text={t("Edit")}
@@ -711,13 +719,14 @@ const Organizers = ({
                           src={EditIcon}
                           width="11.75px"
                           height="11.75px"
+                          alt=""
                         />
                       }
                       onClick={enableEditButton}
                     />
                     <Button
                       text={t("Add-more")}
-                      icon={<img draggable={false} src={addmore} />}
+                      icon={<img draggable={false} src={addmore} alt="" />}
                       className={styles["AddMoreBtn"]}
                       onClick={openAddUserModal}
                     />
@@ -760,12 +769,14 @@ const Organizers = ({
                     className={styles["publish_button_Organization"]}
                     onClick={nextTabOrganizer}
                   />
-
-                  <Button
-                    text={t("Publish")}
-                    className={styles["Next_Organization"]}
-                    onClick={handlePublishButton}
-                  />
+                  {Number(ediorRole.status) === 9 && ediorRole.role==="Organizer"&&
+                  isEditMeeting === true ? null : (
+                    <Button
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handlePublishButton}
+                    />
+                  )}
                 </section>
               </Col>
             </Row>
