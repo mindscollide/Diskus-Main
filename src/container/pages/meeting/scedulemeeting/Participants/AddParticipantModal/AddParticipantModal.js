@@ -23,14 +23,14 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 
-const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
+const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
   const animatedComponents = makeAnimated();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   console.log(NewMeetingreducer, "statestatestate");
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  // let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [addParticipantDropdown, setAddParticipantDropdown] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [open, setOpen] = useState({
@@ -183,7 +183,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
     };
     dispatch(GetAllCommitteesUsersandGroupsParticipants(Data, navigate, t));
   }, []);

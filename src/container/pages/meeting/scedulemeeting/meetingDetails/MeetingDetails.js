@@ -55,6 +55,10 @@ const MeetingDetails = ({
   setorganizers,
   setmeetingDetails,
   setSceduleMeeting,
+  setCurrentMeetingID,
+  currentMeeting,
+  setEditMeeting,
+  isEditMeeting,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -118,7 +122,6 @@ const MeetingDetails = ({
       value: 0,
       label: "",
     },
-    Location: "",
     IsVideoCall: false,
   });
 
@@ -144,12 +147,50 @@ const MeetingDetails = ({
     //Recurring Drop Down API
     dispatch(GetAllMeetingRecurringApiNew(navigate, t));
     //Calling getAll Meeting Details By Meeting ID
-    if (currentMeetingID > 0) {
+    if (currentMeetingID !== 0) {
       let Data = {
         MeetingID: Number(currentMeetingID),
       };
       dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
     } else {
+      setMeetingDetails({
+        MeetingTitle: "",
+        MeetingType: 0,
+        Location: "",
+        Description: "",
+        Link: "",
+        ReminderFrequency: {
+          value: 0,
+          label: "",
+        },
+        ReminderFrequencyTwo: {
+          value: 0,
+          label: "",
+        },
+        ReminderFrequencyThree: {
+          value: 0,
+          label: "",
+        },
+        Notes: "",
+        groupChat: false,
+        AllowRSPV: false,
+        NotifyMeetingOrganizer: false,
+        RecurringOptions: {
+          value: 0,
+          label: "",
+        },
+        IsVideoCall: false,
+      });
+      setRows([
+        {
+          selectedOption: "",
+          dateForView: "",
+          startDate: "",
+          startTime: "",
+          endDate: "",
+          endTime: "",
+        },
+      ]);
     }
   }, []);
 
@@ -387,7 +428,8 @@ const MeetingDetails = ({
           setSceduleMeeting,
           setorganizers,
           setmeetingDetails,
-          1
+          1,
+          setCurrentMeetingID
         )
       );
     } else {
@@ -804,92 +846,95 @@ const MeetingDetails = ({
   //Fetching All Saved Data
   useEffect(() => {
     try {
-    } catch {}
-    if (
-      NewMeetingreducer.getAllMeetingDetails != null &&
-      NewMeetingreducer.getAllMeetingDetails != undefined
-    ) {
-      let MeetingData =
-        NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
-      let getmeetingDates = MeetingData.meetingDates;
-      let getmeetingRecurrance = MeetingData.meetingRecurrance;
-      let getmeetingReminders = MeetingData.meetingReminders;
-      let getmeetingStatus = MeetingData.meetingStatus;
-      let getmeetingType = MeetingData.meetingType;
-      let wasPublishedFlag = MeetingData.wasMeetingPublished;
-      console.log(wasPublishedFlag, "getmeetingTypegetmeetingType");
-      setMeetingDetails({
-        MeetingTitle: MeetingData.meetingTitle,
-        MeetingType: {
-          PK_MTID: getmeetingType.pK_MTID,
-          Type: getmeetingType.type,
-        },
-        Location: MeetingData.location,
-        Description: MeetingData.description,
-        Link: MeetingData.videoCallURl,
-        ReminderFrequency: {
-          value:
-            getmeetingReminders[0] !== undefined
-              ? getmeetingReminders[0]?.pK_MRID
-              : 0,
-          label:
-            getmeetingReminders[0] !== undefined
-              ? getmeetingReminders[0]?.description
-              : "",
-        },
-        ReminderFrequencyTwo: {
-          value:
-            getmeetingReminders[1] !== undefined
-              ? getmeetingReminders[1]?.pK_MRID
-              : 0,
-          label:
-            getmeetingReminders[1] !== undefined
-              ? getmeetingReminders[1]?.description
-              : "",
-        },
-        ReminderFrequencyThree: {
-          value:
-            getmeetingReminders[2] !== undefined
-              ? getmeetingReminders[2]?.pK_MRID
-              : 0,
-          label:
-            getmeetingReminders[2] !== undefined
-              ? getmeetingReminders[2]?.description
-              : "",
-        },
-        Notes: MeetingData.notes,
-        groupChat: MeetingData.isTalkGroup,
-        AllowRSPV: MeetingData.allowRSVP,
-        NotifyMeetingOrganizer: MeetingData.notifyAdminOnRSVP,
-        RecurringOptions: {
-          value: getmeetingRecurrance.recurranceID,
-          label: getmeetingRecurrance.recurrance,
-        },
-        Location: MeetingData.location,
-        IsVideoCall: MeetingData.isVideo,
-      });
-      let newDateTimeData = [];
       if (
-        getmeetingDates !== null &&
-        getmeetingDates !== undefined &&
-        getmeetingDates.length > 0
+        NewMeetingreducer.getAllMeetingDetails !== null &&
+        NewMeetingreducer.getAllMeetingDetails !== undefined
       ) {
-        getmeetingDates.forEach((data, index) => {
-          newDateTimeData.push({
-            selectedOption: data.meetingDate,
-            startDate: data.startTime,
-            endDate: data.endTime,
-            endTime: resolutionResultTable(data.meetingDate + data.endTime),
-            startTime: resolutionResultTable(data.meetingDate + data.startTime),
-            dateForView: resolutionResultTable(
-              data.meetingDate + data.startTime
-            ),
-          });
+        setEditMeeting(true);
+        let MeetingData =
+          NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+        let getmeetingDates = MeetingData.meetingDates;
+        let getmeetingRecurrance = MeetingData.meetingRecurrance;
+        let getmeetingReminders = MeetingData.meetingReminders;
+        let getmeetingStatus = MeetingData.meetingStatus;
+        let getmeetingType = MeetingData.meetingType;
+        let wasPublishedFlag = MeetingData.wasMeetingPublished;
+        console.log(wasPublishedFlag, "getmeetingTypegetmeetingType");
+        // setCurrentMeetingID(getmeetingType.pK_MTID);
+        setMeetingDetails({
+          MeetingTitle: MeetingData.meetingTitle,
+          MeetingType: {
+            PK_MTID: getmeetingType.pK_MTID,
+            Type: getmeetingType.type,
+          },
+          Location: MeetingData.location,
+          Description: MeetingData.description,
+          Link: MeetingData.videoCallURl,
+          ReminderFrequency: {
+            value:
+              getmeetingReminders[0] !== undefined
+                ? getmeetingReminders[0]?.pK_MRID
+                : 0,
+            label:
+              getmeetingReminders[0] !== undefined
+                ? getmeetingReminders[0]?.description
+                : "",
+          },
+          ReminderFrequencyTwo: {
+            value:
+              getmeetingReminders[1] !== undefined
+                ? getmeetingReminders[1]?.pK_MRID
+                : 0,
+            label:
+              getmeetingReminders[1] !== undefined
+                ? getmeetingReminders[1]?.description
+                : "",
+          },
+          ReminderFrequencyThree: {
+            value:
+              getmeetingReminders[2] !== undefined
+                ? getmeetingReminders[2]?.pK_MRID
+                : 0,
+            label:
+              getmeetingReminders[2] !== undefined
+                ? getmeetingReminders[2]?.description
+                : "",
+          },
+          Notes: MeetingData.notes,
+          groupChat: MeetingData.isTalkGroup,
+          AllowRSPV: MeetingData.allowRSVP,
+          NotifyMeetingOrganizer: MeetingData.notifyAdminOnRSVP,
+          RecurringOptions: {
+            value: getmeetingRecurrance.recurranceID,
+            label: getmeetingRecurrance.recurrance,
+          },
+          IsVideoCall: MeetingData.isVideo,
         });
+        let newDateTimeData = [];
+        if (
+          getmeetingDates !== null &&
+          getmeetingDates !== undefined &&
+          getmeetingDates.length > 0
+        ) {
+          getmeetingDates.forEach((data, index) => {
+            newDateTimeData.push({
+              selectedOption: data.meetingDate,
+              startDate: data.startTime,
+              endDate: data.endTime,
+              endTime: resolutionResultTable(data.meetingDate + data.endTime),
+              startTime: resolutionResultTable(
+                data.meetingDate + data.startTime
+              ),
+              dateForView: resolutionResultTable(
+                data.meetingDate + data.startTime
+              ),
+            });
+          });
+        }
+        setRows(newDateTimeData);
+        setPublishedFlag(wasPublishedFlag);
       }
-      setRows(newDateTimeData);
-      setPublishedFlag(wasPublishedFlag);
-    }
+    } catch {}
   }, [NewMeetingreducer.getAllMeetingDetails]);
 
   return (
@@ -1482,7 +1527,7 @@ const MeetingDetails = ({
                 className={styles["Published"]}
                 onClick={handleCancelMeetingButton}
               />
-              {Number(currentMeetingID) === 0 ? (
+              {Number(currentMeeting) === 0 ? (
                 <>
                   <Button
                     text={t("Save")}
@@ -1501,7 +1546,7 @@ const MeetingDetails = ({
               )}
 
               <Button
-                disableBtn={Number(currentMeetingID) === 0 ? true : false}
+                disableBtn={Number(currentMeeting) === 0 ? true : false}
                 text={t("Next")}
                 className={styles["Published"]}
                 onClick={handleUpdateNext}
@@ -1509,7 +1554,7 @@ const MeetingDetails = ({
 
               <Button
                 disableBtn={
-                  Number(currentMeetingID) === 0 && publishedFlag === true
+                  Number(currentMeeting) === 0 && publishedFlag === true
                     ? true
                     : false
                 }

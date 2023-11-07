@@ -398,7 +398,8 @@ const SaveMeetingDetialsNewApiFunction = (
   setSceduleMeeting,
   setorganizers,
   setmeetingDetails,
-  viewValue
+  viewValue,
+  setCurrentMeetingID
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -417,7 +418,18 @@ const SaveMeetingDetialsNewApiFunction = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveMeetingDetialsNewApiFunction(navigate, t, data));
+          dispatch(
+            SaveMeetingDetialsNewApiFunction(
+              navigate,
+              t,
+              data,
+              setSceduleMeeting,
+              setorganizers,
+              setmeetingDetails,
+              viewValue,
+              setCurrentMeetingID
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -433,14 +445,9 @@ const SaveMeetingDetialsNewApiFunction = (
                   t("Record-found")
                 )
               );
-              localStorage.setItem(
-                "meetingID",
-                response.data.responseResult.meetingID
-              );
-              console.log(
-                data.MeetingDetails.MeetingStatusID,
-                "MeetingStatusIDMeetingStatusIDMeetingStatusID"
-              );
+
+              setCurrentMeetingID(response.data.responseResult.meetingID);
+
               if (viewValue === 1) {
                 setSceduleMeeting(false);
               } else if (viewValue === 2) {
@@ -1157,7 +1164,7 @@ const showSaveParticipantsFailed = (message) => {
 };
 
 //Saving the participants Api
-const SaveparticipantsApi = (Data, navigate, t) => {
+const SaveparticipantsApi = (Data, navigate, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showSavedParticipantsInit());
@@ -1175,7 +1182,7 @@ const SaveparticipantsApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveparticipantsApi(Data, navigate, t));
+          dispatch(SaveparticipantsApi(Data, navigate, t, currentMeeting));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1191,9 +1198,8 @@ const SaveparticipantsApi = (Data, navigate, t) => {
                   t("Record-inserted")
                 )
               );
-              let currentMeetingID = localStorage.getItem("meetingID");
               let Data = {
-                MeetingID: Number(currentMeetingID),
+                MeetingID: Number(currentMeeting),
               };
               dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
             } else if (
@@ -1335,12 +1341,14 @@ const saveAgendaContributors_fail = (message) => {
   };
 };
 
-const saveAgendaContributors = (navigate, t, data) => {
+const saveAgendaContributors = (navigate, t, data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentMeetingID = localStorage.getItem("meetingID");
 
   let getAllData = {
-    MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+    MeetingID:
+      currentMeeting !== null && currentMeeting !== undefined
+        ? Number(currentMeeting)
+        : 1686,
   };
   return (dispatch) => {
     dispatch(saveAgendaContributors_init());
@@ -1358,7 +1366,7 @@ const saveAgendaContributors = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(saveAgendaContributors(navigate, t, data));
+          dispatch(saveAgendaContributors(navigate, t, data, currentMeeting));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1613,7 +1621,13 @@ const showGetAllMeetingDetialsFailed = (message) => {
 };
 
 //GET ALL MEETING DETAILS API Function
-const GetAllMeetingDetailsApiFunc = (Data, navigate, t) => {
+const GetAllMeetingDetailsApiFunc = (
+  Data,
+  navigate,
+  t,
+  setCurrentMeetingID,
+  setSceduleMeeting
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showGetAllMeetingDetialsInit());
@@ -1631,7 +1645,15 @@ const GetAllMeetingDetailsApiFunc = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+          dispatch(
+            GetAllMeetingDetailsApiFunc(
+              Data,
+              navigate,
+              t,
+              setCurrentMeetingID,
+              setSceduleMeeting
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1641,6 +1663,9 @@ const GetAllMeetingDetailsApiFunc = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_01".toLowerCase()
                 )
             ) {
+              console.log(Data, "DataDataDataData");
+              setSceduleMeeting(true);
+              setCurrentMeetingID(Data.MeetingID);
               dispatch(
                 showGetAllMeetingDetialsSuccess(
                   response.data.responseResult,
@@ -2078,7 +2103,6 @@ const showPrposedMeetingDateFailed = (message) => {
 
 const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentMeetingID = localStorage.getItem("meetingID");
   return (dispatch) => {
     dispatch(showPrposedMeetingDateInit());
     let form = new FormData();
@@ -2648,9 +2672,8 @@ const ShowADDGeneralMinutesFailed = (message) => {
   };
 };
 
-const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
+const ADDGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentMeetingID = localStorage.getItem("meetingID");
 
   return (dispatch) => {
     dispatch(ShowADDGeneralMinutesInit());
@@ -2683,6 +2706,10 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
                   t("Record-saved")
                 )
               );
+              let Meet = {
+                MeetingID: Number(currentMeeting),
+              };
+              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_AddGeneralMinute_02"

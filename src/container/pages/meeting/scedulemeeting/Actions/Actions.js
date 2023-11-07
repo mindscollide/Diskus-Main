@@ -19,7 +19,12 @@ import {
 import AfterSaveViewTable from "./AfterSaveViewTable/AfterSaveViewTable";
 import CancelActions from "./CancelActions/CancelActions";
 
-const Actions = ({ setSceduleMeeting, setactionsPage, setPolls }) => {
+const Actions = ({
+  setSceduleMeeting,
+  setactionsPage,
+  setPolls,
+  currentMeeting,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

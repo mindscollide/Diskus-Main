@@ -116,6 +116,7 @@ const NewMeeting = () => {
   const [entereventIcon, setentereventIcon] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const [viewFlag, setViewFlag] = useState(false);
+  const [currentMeeting, setCurrentMeetingID] = useState(0);
   const [publishedMeeting, setpublishedMeeting] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -134,6 +135,7 @@ const NewMeeting = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
+  const [meetingID, setMeetingID] = useState(0);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
@@ -264,13 +266,14 @@ const NewMeeting = () => {
       });
     }
   };
+
   const openSceduleMeetingPage = () => {
     setSceduleMeeting(true);
+    setCurrentMeetingID(0)
   };
 
   const groupChatInitiation = (data) => {
     if (data.talkGroupID !== 0) {
-      console.log("discussionGroupChat", data);
       dispatch(createShoutAllScreen(false));
       dispatch(addNewChatScreen(false));
       dispatch(footerActionStatus(false));
@@ -361,7 +364,7 @@ const NewMeeting = () => {
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
   };
-
+  // setCurrentMeetingID;
   const handleViewMeeting = async (id, isQuickMeeting) => {
     if (isQuickMeeting) {
       let Data = { MeetingID: id };
@@ -373,6 +376,7 @@ const NewMeeting = () => {
           setViewFlag,
           setEditFlag,
           setCalendarViewModal,
+          setSceduleMeeting,
           1
         )
       );
@@ -386,9 +390,14 @@ const NewMeeting = () => {
     }
   };
 
-  const handleEditMeeting = async (id, isQuick, isAgendaContributor) => {
-    console.log("handleEditMeeting", id, isQuick);
-    let Data = { MeetingID: id };
+  const handleEditMeeting = async (
+    id,
+    isQuick,
+    isAgendaContributor,
+    record
+  ) => {
+    let Data = { MeetingID: Number(id) };
+
     if (isQuick) {
       await dispatch(
         ViewMeeting(
@@ -398,7 +407,21 @@ const NewMeeting = () => {
           setViewFlag,
           setEditFlag,
           setCalendarViewModal,
-          2
+          setSceduleMeeting,
+          4
+        )
+      );
+    } else if (isQuick === false) {
+      let Data = {
+        MeetingID: Number(id),
+      };
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          Data,
+          navigate,
+          t,
+          setCurrentMeetingID,
+          setSceduleMeeting
         )
       );
     } else if (isAgendaContributor) {
@@ -472,8 +495,12 @@ const NewMeeting = () => {
           text: t("Not-conducted"),
           value: "8",
         },
+        {
+          text: t("Cancelled"),
+          value: "4",
+        },
       ],
-      defaultFilteredValue: ["10", "9", "8", "2", "1"],
+      defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
@@ -800,7 +827,8 @@ const NewMeeting = () => {
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
-                            isAgendaContributor
+                            isAgendaContributor,
+                            record
                           )
                         }
                       />
@@ -830,7 +858,8 @@ const NewMeeting = () => {
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
-                            isAgendaContributor
+                            isAgendaContributor,
+                            record
                           )
                         }
                       />
@@ -856,7 +885,8 @@ const NewMeeting = () => {
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
-                            isAgendaContributor
+                            isAgendaContributor,
+                            record
                           )
                         }
                       />
@@ -956,11 +986,8 @@ const NewMeeting = () => {
                 talkGroupID: data.talkGroupID,
                 key: index,
               });
-            } catch {
-              console.log("rowsrowsrowsrowsrows error", newRowData);
-            }
+            } catch {}
           });
-          console.log("rowsrowsrowsrowsrows error", newRowData);
           setRow(newRowData);
         }
       } else {
@@ -1005,7 +1032,11 @@ const NewMeeting = () => {
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
-        <SceduleMeeting setSceduleMeeting={setSceduleMeeting} />
+        <SceduleMeeting
+          setSceduleMeeting={setSceduleMeeting}
+          setCurrentMeetingID={setCurrentMeetingID}
+          currentMeeting={currentMeeting}
+        />
       ) : viewProposeDatePoll ? (
         <ViewParticipantsDates
           setViewProposeDatePoll={setViewProposeDatePoll}

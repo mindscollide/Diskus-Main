@@ -34,7 +34,7 @@ import {
 } from "../../../../../../commen/functions/date_formater";
 import { updatePollsApi } from "../../../../../../store/actions/Polls_actions";
 
-const EditPollsMeeting = ({ setEditPolls }) => {
+const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -258,7 +258,9 @@ const EditPollsMeeting = ({ setEditPolls }) => {
         PollAnswers: optionsListData,
       };
 
-      dispatch(updatePollsApi(navigate, data, t, 2, setEditPolls));
+      dispatch(
+        updatePollsApi(navigate, data, t, 2, setEditPolls, currentMeeting)
+      );
     } else {
       setError(true);
 

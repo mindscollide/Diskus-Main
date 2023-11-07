@@ -41,7 +41,7 @@ import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPubli
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import { SavePollsApi } from "../../../../../../store/actions/Polls_actions";
 
-const Createpolls = ({ setCreatepoll }) => {
+const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,7 +53,6 @@ const Createpolls = ({ setCreatepoll }) => {
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [memberSelect, setmemberSelect] = useState([]);
   console.log(memberSelect, "memberSelectmemberSelectmemberSelect");
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [pollsData, setPollsData] = useState({
     Title: "",
     AllowMultipleAnswer: false,
@@ -185,7 +184,7 @@ const Createpolls = ({ setCreatepoll }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
     };
     dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
   }, []);
@@ -485,7 +484,7 @@ const Createpolls = ({ setCreatepoll }) => {
         PollAnswers: optionsListData,
       };
 
-      await dispatch(SavePollsApi(navigate, data, t, 2));
+      await dispatch(SavePollsApi(navigate, data, t, 2, currentMeeting));
       setCreatepoll(false);
     } else {
       // setError(true);

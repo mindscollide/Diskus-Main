@@ -51,7 +51,7 @@ import AgendaWise from "./AgendaWise/AgendaWise";
 // import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 // import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
 // import AgendaImport from "./AgendaimportMinutes/AgendaImport";
-const Minutes = ({ setMinutes }) => {
+const Minutes = ({ setMinutes, currentMeeting }) => {
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
@@ -177,7 +177,6 @@ const Minutes = ({ setMinutes }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   let userID = localStorage.getItem("userID");
   const date = new Date();
   var Size = Quill.import("attributors/style/size");
@@ -214,7 +213,7 @@ const Minutes = ({ setMinutes }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
     };
     console.log(Data, "useEffectuseEffect");
     dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, minuteID));
@@ -490,12 +489,47 @@ const Minutes = ({ setMinutes }) => {
   };
   const handleAddClick = async () => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data));
+    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
 
     setFileAttachments([]);
+    // let newfile = [...previousFileIDs];
+    // const uploadPromises = fileForSend.map(async (newData) => {
+    //   await dispatch(
+    //     uploadDocumentsMeetingMinutesApi(navigate, t, newData,folderID, newfile)
+    //   );
+    // });
+
+    // // Wait for all promises to resolve
+    // await Promise.all(uploadPromises);
+
+    // let docsData = {
+    //   FK_MeetingGeneralMinutesID: messages.minuteID,
+    //   FK_MDID: currentMeeting,
+    //   UpdateFileList: newfile.map((data, index) => {
+    //     return { PK_FileID: Number(data.pK_FileID) };
+    //   }),
+    // };
+    // dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
+
+    // if (addNoteFields.Description.value) {
+    //   // Add the current message to the list of messages
+    //   setMessages([...messages, addNoteFields.Description.value]);
+
+    //   // Clear the editor
+    //   editorRef.current.getEditor().setText("");
+
+    //   setAddNoteFields({
+    //     ...addNoteFields,
+    //     Description: {
+    //       value: "",
+    //       errorMessage: "",
+    //       errorStatus: false,
+    //     },
+    //   });
+    // }
   };
 
   const documentUploadingFunc = async (minuteID) => {

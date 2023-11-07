@@ -26,7 +26,7 @@ import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 
-const Agenda = ({ setSceduleMeeting }) => {
+const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { NewMeetingreducer } = useSelector((state) => state);
@@ -283,7 +283,10 @@ const Agenda = ({ setSceduleMeeting }) => {
         <PermissionConfirmation />
       )}
       {NewMeetingreducer.voteAgendaModal && (
-        <VoteModal setenableVotingPage={setenableVotingPage} />
+        <VoteModal
+          setenableVotingPage={setenableVotingPage}
+          currentMeeting={currentMeeting}
+        />
       )}
       {NewMeetingreducer.voteConfirmationModal && <VoteModalConfirm />}
       {NewMeetingreducer.importPreviousAgendaModal && <ImportPrevious />}
