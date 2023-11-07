@@ -22,8 +22,11 @@ import { resolutionResultTable } from "../../../../../../commen/functions/date_f
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
 import {
   AddAgendaWiseMinutesApiFunc,
+  AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
+  UpdateAgendaWiseMinutesApiFunc,
+  saveFilesMeetingagendaWiseMinutesApi,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
   uploadDocumentsMeetingMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -69,8 +72,6 @@ const AgendaWise = ({ currentMeeting }) => {
       title: "",
     },
   });
-
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
   useEffect(() => {
     let Data = {
@@ -351,7 +352,6 @@ const AgendaWise = ({ currentMeeting }) => {
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
     console.log(messages, "messagesmessages");
-    console.log(currentMeetingID, "messagesmessages");
 
     console.log(newfile, "messagesmessages");
 
@@ -422,6 +422,98 @@ const AgendaWise = ({ currentMeeting }) => {
     setPreviousFileIDs([]);
   };
 
+  //handle Edit functionality
+
+  const handleEditFunc = (data) => {
+    setupdateData(data);
+    console.log(data, "handleEditFunchandleEditFunc");
+    let Data = {
+      FK_MeetingAgendaMinutesID: data.minuteID,
+    };
+    dispatch(
+      AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
+    );
+    setisEdit(true);
+  };
+
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.RetriveAgendaWiseDocuments !== null &&
+        NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined
+      ) {
+        console.log(
+          NewMeetingreducer.RetriveAgendaWiseDocuments,
+          "RetriveAgendaWiseDocuments"
+        );
+
+        let files = [];
+        let prevData = [];
+        NewMeetingreducer.RetriveAgendaWiseDocuments.data.map((data, index) => {
+          files.push({
+            DisplayAttachmentName: data.displayFileName,
+            fileID: data.pK_FileID,
+          });
+          prevData.push({
+            pK_FileID: data.pK_FileID,
+            DisplayAttachmentName: data.displayFileName,
+          });
+        });
+        setFileAttachments(files);
+        setPreviousFileIDs(prevData);
+      }
+    } catch {}
+  }, [NewMeetingreducer.RetriveAgendaWiseDocuments]);
+
+  const handleUpdateFuncagendaWise = async () => {
+    let UpdateDataAgendaWise = {
+      MinuteID: updateData.minuteID,
+      MinuteText: addNoteFields.Description.value,
+    };
+    dispatch(UpdateAgendaWiseMinutesApiFunc(navigate, UpdateDataAgendaWise, t));
+
+    let newfile = [...previousFileIDs];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsMeetingAgendaWiseMinutesApi(
+          navigate,
+          t,
+          newData,
+          folderID,
+          newfile
+        )
+      );
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+    console.log(messages, "messagesmessages");
+    console.log(currentMeeting, "messagesmessages");
+
+    console.log(newfile, "messagesmessages");
+
+    let docsData = {
+      FK_MeetingAgendaMinutesID: updateData.minuteID,
+      FK_MDID: currentMeeting,
+      UpdateFileList: newfile.map((data, index) => {
+        return { PK_FileID: Number(data.pK_FileID) };
+      }),
+    };
+    console.log(docsData, "messagesmessages");
+    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t));
+    setAddNoteFields({
+      ...addNoteFields,
+      Description: {
+        value: "",
+        errorMessage: "",
+        errorStatus: true,
+      },
+    });
+
+    setFileAttachments([]);
+    setisEdit(false);
+  };
+
   return (
     <section>
       <Row className="mt-4">
@@ -471,7 +563,7 @@ const AgendaWise = ({ currentMeeting }) => {
                   <Button
                     text={t("Update")}
                     className={styles["Button_General"]}
-                    // onClick={handleUpdateFunc}
+                    onClick={handleUpdateFuncagendaWise}
                   />
                 </>
               ) : (
@@ -727,7 +819,7 @@ const AgendaWise = ({ currentMeeting }) => {
                                     height="21.55px"
                                     width="21.55px"
                                     className="cursor-pointer"
-                                    // onClick={() => handleEditFunc(data)}
+                                    onClick={() => handleEditFunc(data)}
                                   />
                                 </Col>
                               </Row>

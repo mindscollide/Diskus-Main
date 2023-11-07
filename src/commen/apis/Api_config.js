@@ -1195,6 +1195,10 @@ const saveDocumentAgendaWiseMinutes = {
   RequestMethod: "ServiceManager.SaveAgendaWiseMinutesDocuments",
 };
 
+const RetriveAgendaWiseDocuments = {
+  RequestMethod: "ServiceManager.ReteriveAgendaWiseMiuteDocuments",
+};
+
 export {
   deleteCommitteeTaskRM,
   deleteGroupTaskRM,
@@ -1515,4 +1519,5 @@ export {
   getUserWiseProposeDate,
   getAdvanceMeetingAgendabyMeetingID,
   saveDocumentAgendaWiseMinutes,
+  RetriveAgendaWiseDocuments,
 };

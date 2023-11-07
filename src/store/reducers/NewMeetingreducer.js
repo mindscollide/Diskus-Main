@@ -72,6 +72,7 @@ const initialState = {
   agendaWiseMinutesReducer: [],
   userWiseMeetingProposed: [],
   agendaWiseMinuteID: 0,
+  RetriveAgendaWiseDocuments: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1242,6 +1243,30 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_DOCUMENTS_AGENDA_WISE_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.RETRIVE_AGENDA_WISE_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.RETRIVE_AGENDA_WISE_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        RetriveAgendaWiseDocuments: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.RETRIVE_AGENDA_WISE_DOCUMENTS_FAILED: {
       return {
         ...state,
         Loading: false,

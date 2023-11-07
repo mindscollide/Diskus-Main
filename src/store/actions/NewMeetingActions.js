@@ -38,6 +38,7 @@ import {
   getAllAgendaWiseMinutes,
   getUserWiseProposeDate,
   saveDocumentAgendaWiseMinutes,
+  RetriveAgendaWiseDocuments,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -4459,6 +4460,112 @@ const saveFilesMeetingagendaWiseMinutesApi = (
   };
 };
 
+//Retrive all agendawise documents
+
+const showRetriveAgendaWiseDocumentsInit = () => {
+  return {
+    type: actions.RETRIVE_AGENDA_WISE_DOCUMENTS_INIT,
+  };
+};
+
+const showRetriveAgendaWiseDocumentsSuccess = (response, message) => {
+  return {
+    type: actions.RETRIVE_AGENDA_WISE_DOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showRetriveAgendaWiseDocumentsFailed = (message) => {
+  return {
+    type: actions.RETRIVE_AGENDA_WISE_DOCUMENTS_FAILED,
+    message: message,
+  };
+};
+
+const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showRetriveAgendaWiseDocumentsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", RetriveAgendaWiseDocuments.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveAgendaWiseMiuteDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showRetriveAgendaWiseDocumentsSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveAgendaWiseMiuteDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showRetriveAgendaWiseDocumentsFailed(t("No-data-available"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_ReteriveAgendaWiseMiuteDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          showRetriveAgendaWiseDocumentsFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -4546,4 +4653,5 @@ export {
   showGetAllMeetingDetialsFailed,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
   saveFilesMeetingagendaWiseMinutesApi,
+  AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
 };
