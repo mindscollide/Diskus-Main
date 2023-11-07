@@ -14,6 +14,7 @@ import {
   GetAllParticipantsRoleNew,
   GetAllSavedparticipantsAPI,
   SaveparticipantsApi,
+  UpdateMeetingUserApiFunc,
   showAddParticipantsModal,
   showCancelModalPartipants,
   showCrossConfirmationModal,
@@ -382,32 +383,30 @@ const Participants = ({
   };
 
   const handleSaveparticpants = () => {
-    let newData = [];
+    let newarry = [];
     let copyData = [...rspvRows];
-    copyData.forEach((data, index) => {
-      newData.push({
-        UserID: data.userID,
-        Title: data.Title,
-        ParticipantRoleID: data.participantRole.participantRoleID,
-      });
+
+    console.log(copyData, "copyDatacopyDatacopyData");
+    copyData.map((data, index) => {
+      newarry.push(data.userID);
     });
-    if (editableSave === 1) {
-      let Data = {
-        MeetingParticipants: newData,
-        MeetingID: Number(currentMeeting),
-        IsParticipantsAddFlow: false,
-        NotificationMessage: "",
-      };
-      dispatch(SaveparticipantsApi(Data, navigate, t));
-    } else {
-      let Data = {
-        MeetingParticipants: newData,
-        MeetingID: Number(currentMeeting),
-        IsParticipantsAddFlow: true,
-        NotificationMessage: "",
-      };
-      dispatch(SaveparticipantsApi(Data, navigate, t, currentMeeting));
-    }
+    //Upadte Meeting Organizer
+    let Data = {
+      MeetingID: currentMeeting,
+      MeetingAttendeRoleID: 1,
+      UpdatedUsers: newarry,
+    };
+    console.log(Data, "UpdatedUsersUpdatedUsers");
+    dispatch(
+      UpdateMeetingUserApiFunc(
+        navigate,
+        Data,
+        t,
+        rspvRows,
+        editableSave,
+        currentMeeting
+      )
+    );
   };
 
   useEffect(() => {

@@ -5011,7 +5011,14 @@ const UpdateMeetingUserFailed = (response, message) => {
   };
 };
 
-const UpdateMeetingUserApiFunc = (navigate, Data, t) => {
+const UpdateMeetingUserApiFunc = (
+  navigate,
+  Data,
+  t,
+  rspvRows,
+  editableSave,
+  currentMeeting
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -5031,7 +5038,16 @@ const UpdateMeetingUserApiFunc = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(UpdateMeetingUserApiFunc(navigate, Data, t));
+          dispatch(
+            UpdateMeetingUserApiFunc(
+              navigate,
+              Data,
+              t,
+              rspvRows,
+              editableSave,
+              currentMeeting
+            )
+          );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -5049,6 +5065,34 @@ const UpdateMeetingUserApiFunc = (navigate, Data, t) => {
                   t("Update-successful")
                 )
               );
+              let newData = [];
+              let copyData = [...rspvRows];
+              copyData.forEach((data, index) => {
+                newData.push({
+                  UserID: data.userID,
+                  Title: data.Title,
+                  ParticipantRoleID: data.participantRole.participantRoleID,
+                });
+              });
+              if (editableSave === 1) {
+                let Data = {
+                  MeetingParticipants: newData,
+                  MeetingID: Number(currentMeeting),
+                  IsParticipantsAddFlow: false,
+                  NotificationMessage: "",
+                };
+                dispatch(SaveparticipantsApi(Data, navigate, t));
+              } else {
+                let Data = {
+                  MeetingParticipants: newData,
+                  MeetingID: Number(currentMeeting),
+                  IsParticipantsAddFlow: true,
+                  NotificationMessage: "",
+                };
+                dispatch(
+                  SaveparticipantsApi(Data, navigate, t, currentMeeting)
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

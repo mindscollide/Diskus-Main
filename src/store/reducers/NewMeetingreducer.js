@@ -1387,6 +1387,14 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.UPDATE_MEETING_USERS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     default: {
       return { ...state };
     }
