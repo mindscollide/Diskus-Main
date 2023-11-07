@@ -333,8 +333,8 @@ const AgendaWise = () => {
     console.log(newfile, "messagesmessages");
 
     let docsData = {
-      FK_MeetingAgendaMinutesID: 1,
-      FK_MDID: 1833,
+      FK_MeetingAgendaMinutesID: minuteID,
+      FK_MDID: currentMeetingID,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
@@ -352,12 +352,12 @@ const AgendaWise = () => {
       },
     });
   };
-  //For getting the MinuteID
-  //   useEffect(() => {
-  //     if (NewMeetingreducer.addMinuteID !== 0) {
-  //       documentUploadingFunc(NewMeetingreducer.addMinuteID);
-  //     }
-  //   }, [NewMeetingreducer.addMinuteID]);
+  // For getting the MinuteID
+  useEffect(() => {
+    if (NewMeetingreducer.agendaWiseMinuteID !== 0) {
+      documentUploadingFunc(NewMeetingreducer.agendaWiseMinuteID);
+    }
+  }, [NewMeetingreducer.agendaWiseMinuteID]);
 
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>

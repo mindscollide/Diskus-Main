@@ -71,6 +71,7 @@ const initialState = {
   addMinuteID: 0,
   agendaWiseMinutes: [],
   userWiseMeetingProposed: [],
+  agendaWiseMinuteID: 0,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1116,6 +1117,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        agendaWiseMinuteID: action.response,
         ResponseMessage: action.message,
       };
     }
@@ -1124,6 +1126,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        agendaWiseMinuteID: 0,
         ResponseMessage: action.message,
       };
     }
