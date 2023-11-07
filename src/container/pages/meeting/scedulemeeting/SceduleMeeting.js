@@ -50,7 +50,15 @@ const SceduleMeeting = ({
     let Data = {
       MeetingID: Number(currentMeeting),
     };
-    dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    dispatch(
+      GetAllMeetingDetailsApiFunc(
+        Data,
+        navigate,
+        t,
+        setCurrentMeetingID,
+        setSceduleMeeting
+      )
+    );
     setmeetingDetails(true);
     setorganizers(false);
     setAgendaContributors(false);
