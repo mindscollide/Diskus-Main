@@ -367,6 +367,7 @@ const AgendaWise = ({ currentMeeting }) => {
 
     setFileAttachments([]);
     setPreviousFileIDs([]);
+    setAgendaOptions([]);
     setAddNoteFields({
       ...addNoteFields,
       Description: {
