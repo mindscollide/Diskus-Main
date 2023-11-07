@@ -215,8 +215,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     let Data = {
       MeetingID: currentMeeting,
     };
-    console.log(Data, "useEffectuseEffect");
-    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, minuteID));
+    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data));
     return () => {
       setFileAttachments([]);
     };
@@ -493,7 +492,6 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
       MinuteText: addNoteFields.Description.value,
     };
     dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
-
     setFileAttachments([]);
   };
 
@@ -630,6 +628,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     console.log(docsData, "messagesmessages");
     dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
     setisEdit(false);
+    setFileAttachments([]);
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -638,8 +637,6 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
         errorStatus: true,
       },
     });
-
-    setFileAttachments([]);
   };
 
   const handleshowMore = () => {
@@ -994,7 +991,10 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                               </Row>
                               <Row className="mt-2">
                                 <Col lg={12} md={12} sm={12}>
-                                  <span onClick={handleshowMore}>
+                                  <span
+                                    className={styles["Show_more"]}
+                                    onClick={handleshowMore}
+                                  >
                                     Show more
                                   </span>
                                 </Col>
