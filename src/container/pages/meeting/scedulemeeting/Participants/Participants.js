@@ -199,13 +199,7 @@ const Participants = ({
             Number(ediorRole.status) === 10) &&
             ediorRole.role === "Organizer" &&
             isEditMeeting === true) ||
-          ((Number(ediorRole.status) === 11 ||
-            Number(ediorRole.status) === 2 ||
-            Number(ediorRole.status) === 1 ||
-            Number(ediorRole.status) === 12 ||
-            Number(ediorRole.status) === 10) &&
-            ediorRole.role === "Agenda Contributor" &&
-            isEditMeeting === true)
+          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
           return { text };
         } else {
@@ -249,13 +243,7 @@ const Participants = ({
             Number(ediorRole.status) === 10) &&
             ediorRole.role === "Organizer" &&
             isEditMeeting === true) ||
-          ((Number(ediorRole.status) === 11 ||
-            Number(ediorRole.status) === 2 ||
-            Number(ediorRole.status) === 1 ||
-            Number(ediorRole.status) === 12 ||
-            Number(ediorRole.status) === 10) &&
-            ediorRole.role === "Agenda Contributor" &&
-            isEditMeeting === true)
+          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
           return { participantRole };
         } else {
@@ -301,13 +289,7 @@ const Participants = ({
             Number(ediorRole.status) === 10) &&
             ediorRole.role === "Organizer" &&
             isEditMeeting === true) ||
-          ((Number(ediorRole.status) === 11 ||
-            Number(ediorRole.status) === 2 ||
-            Number(ediorRole.status) === 1 ||
-            Number(ediorRole.status) === 12 ||
-            Number(ediorRole.status) === 10) &&
-            ediorRole.role === "Agenda Contributor" &&
-            isEditMeeting === true)
+          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
         } else {
           return (
@@ -454,12 +436,7 @@ const Participants = ({
               Number(ediorRole.status) === 10) &&
               ediorRole.role === "Organizer" &&
               isEditMeeting === true) ||
-            ((Number(ediorRole.status) === 11 ||
-              Number(ediorRole.status) === 2 ||
-              Number(ediorRole.status) === 1 ||
-              Number(ediorRole.status) === 12 ||
-              Number(ediorRole.status) === 10) &&
-              ediorRole.role === "Agenda Contributor" &&
+            (ediorRole.role === "Agenda Contributor" &&
               isEditMeeting === true) ? null : isEditable ? (
               <>
                 <Row>
@@ -535,12 +512,7 @@ const Participants = ({
                 Number(ediorRole.status) === 10) &&
                 ediorRole.role === "Organizer" &&
                 isEditMeeting === true) ||
-              ((Number(ediorRole.status) === 11 ||
-                Number(ediorRole.status) === 2 ||
-                Number(ediorRole.status) === 1 ||
-                Number(ediorRole.status) === 12 ||
-                Number(ediorRole.status) === 10) &&
-                ediorRole.role === "Agenda Contributor" &&
+              (ediorRole.role === "Agenda Contributor" &&
                 isEditMeeting === true) ? null : (
                 <Button
                   text={t("Propose-meeting-dates")}
@@ -571,12 +543,7 @@ const Participants = ({
                 Number(ediorRole.status) === 10) &&
                 ediorRole.role === "Organizer" &&
                 isEditMeeting === true) ||
-              ((Number(ediorRole.status) === 11 ||
-                Number(ediorRole.status) === 2 ||
-                Number(ediorRole.status) === 1 ||
-                Number(ediorRole.status) === 12 ||
-                Number(ediorRole.status) === 10) &&
-                ediorRole.role === "Agenda Contributor" &&
+              (ediorRole.role === "Agenda Contributor" &&
                 isEditMeeting === true) ? null : (
                 <Button
                   text={t("Published")}
