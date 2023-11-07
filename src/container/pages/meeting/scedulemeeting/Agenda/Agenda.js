@@ -157,6 +157,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
                               return (
                                 <>
                                   <ParentAgenda
+                                    currentMeeting={currentMeeting}
                                     data={data}
                                     index={index}
                                     rows={rows}

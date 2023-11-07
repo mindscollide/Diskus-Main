@@ -3533,4 +3533,5 @@ export {
   SaveMinutesDocumentsApiFunc,
   DocumentsOfMeetingGenralMinutesApiFunc,
   getUserProposedWiseApi,
+  showGetAllMeetingDetialsFailed,
 };

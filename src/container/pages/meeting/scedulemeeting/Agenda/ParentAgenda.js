@@ -48,6 +48,7 @@ const ParentAgenda = ({
   agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
+  currentMeeting,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -295,7 +296,7 @@ const ParentAgenda = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: Number(currentMeetingID),
+      MeetingID: Number(currentMeeting),
     };
     dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
   }, []);
