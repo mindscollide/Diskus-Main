@@ -123,6 +123,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText != "") {
+      console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
+
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -389,6 +391,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           FK_OrganizationID: JSON.parse(OrganizationID),
           NotesAttachments: newData,
         };
+        console.log(Data, "addNoteFieldsaddNoteFieldsaddNoteFields");
         dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
       } else {
         setAddNewModal(false);
@@ -402,6 +405,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           NotesAttachments: notesAttachment,
         };
 
+        console.log(Data, "addNoteFieldsaddNoteFieldsaddNoteFields");
         dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
       }
     } else {
