@@ -33,12 +33,12 @@ import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
 import Plus from "../../../../../../assets/images/Meeting plus.png";
 import profile from "../../../../../../assets/images/newprofile.png";
 import { validateInput } from "../../../../../../commen/functions/regex";
-const VoteModal = ({ setenableVotingPage }) => {
+const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  // let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
   const { NewMeetingreducer, MeetingAgendaReducer, MeetingOrganizersReducer } =
     useSelector((state) => state);
@@ -289,11 +289,11 @@ const VoteModal = ({ setenableVotingPage }) => {
   useEffect(() => {
     let dataForAgendaDetails = {
       AgendaVotingID: 4,
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
     };
-    let dataForAllOrganizers = { MeetingID: currentMeetingID };
+    let dataForAllOrganizers = { MeetingID: currentMeeting };
     let dataForAllMeetingParticipants = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
     };
     dispatch(
       GetAllSavedparticipantsAPI(dataForAllMeetingParticipants, navigate, t)
@@ -635,6 +635,11 @@ const VoteModal = ({ setenableVotingPage }) => {
       { votingAnswer: "Yes", votingAnswerID: 1, agendaID: 1222 },
       { votingAnswer: "No", votingAnswerID: 2, agendaID: 1222 }
     );
+  };
+
+  const castVotePage = () => {
+    setenableVotingPage(true);
+    dispatch(showVoteAgendaModal(false));
   };
 
   useEffect(() => {
@@ -1041,6 +1046,11 @@ const VoteModal = ({ setenableVotingPage }) => {
                   text={t("Cancel")}
                   className={styles["Cancel_Vote_Modal"]}
                   onClick={openConfirmationModal}
+                />
+                <Button
+                  text={t("CastVotePage")}
+                  className={styles["Cancel_Vote_Modal"]}
+                  onClick={castVotePage}
                 />
                 <Button
                   text={t("Save")}

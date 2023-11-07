@@ -24,7 +24,12 @@ import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../commen/functions/date_formater";
-import { getPollsByGroupMainApi } from "../../../store/actions/Polls_actions";
+import {
+  deleteGroupPollApi,
+  getPollsByGroupMainApi,
+  getPollsByPollIdApi,
+} from "../../../store/actions/Polls_actions";
+import CustomPagination from "../../../commen/functions/customPagination/Paginations";
 const GroupViewPolls = ({
   setSceduleMeeting,
   setPolls,
@@ -41,6 +46,9 @@ const GroupViewPolls = ({
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
   const [pollsRows, setPollsRows] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(50);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [afterViewPolls, setafterViewPolls] = useState(false);
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
   let OrganizationID = localStorage.getItem("organizationID");
@@ -87,6 +95,7 @@ const GroupViewPolls = ({
         PollsReducer.getPollByGroupID !== undefined &&
         PollsReducer.getPollByGroupID !== null
       ) {
+        setTotalRecords(PollsReducer.getPollByGroupID.totalRecords);
         let pollsData = PollsReducer.getPollByGroupID.polls;
         let newPollsArray = [];
         pollsData.forEach((data, index) => {
@@ -95,9 +104,28 @@ const GroupViewPolls = ({
         });
         console.log(newPollsArray, "newPollsArraynewPollsArray");
         setPollsRows(newPollsArray);
+      } else {
+        setPollsRows([]);
       }
     } catch {}
   }, [PollsReducer.getPollByGroupID]);
+
+  const handleEditBtn = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(getPollsByPollIdApi(navigate, data, 0, t, setEditPolls));
+    // dispatch(showunsavedEditPollsMeetings(false));
+  };
+
+  const handleDeletePoll = (record) => {
+    let data = {
+      PollID: record.pollID,
+      GroupID: parseInt(ViewGroupID),
+    };
+    dispatch(deleteGroupPollApi(navigate, t, data));
+  };
 
   console.log(pollsRows, "pollsRowspollsRowspollsRows");
 
@@ -109,7 +137,14 @@ const GroupViewPolls = ({
       width: "300px",
       render: (text, record) => {
         console.log(record, "recordrecordrecordrecord");
-        return <span className={styles["DateClass"]}>{text}</span>;
+        return (
+          <span
+            className={styles["DateClass"]}
+            onClick={() => navigate("/DisKus/polling")}
+          >
+            {text}
+          </span>
+        );
       },
     },
 
@@ -198,7 +233,7 @@ const GroupViewPolls = ({
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() => {}}
+                  onClick={() => navigate("/DisKus/polling")}
                 />
               );
             } else if (record.voteStatus === "Voted") {
@@ -279,6 +314,7 @@ const GroupViewPolls = ({
                                 height="21.59px"
                                 alt=""
                                 draggable="false"
+                                onClick={() => handleEditBtn(record)}
                               />
                             </Tooltip>
                           </Col>
@@ -296,6 +332,7 @@ const GroupViewPolls = ({
                                 width="21.59px"
                                 height="21.59px"
                                 draggable="false"
+                                onClick={() => handleDeletePoll(record)}
                               />
                             </Tooltip>
                           </Col>
@@ -313,6 +350,7 @@ const GroupViewPolls = ({
                             height="21.59px"
                             alt=""
                             draggable="false"
+                            onClick={() => handleEditBtn(record)}
                           />
                         </Tooltip>
                       </Col>
@@ -325,6 +363,7 @@ const GroupViewPolls = ({
                             width="21.59px"
                             height="21.59px"
                             draggable="false"
+                            onClick={() => handleDeletePoll(record)}
                           />
                         </Tooltip>
                       </Col>
@@ -342,6 +381,20 @@ const GroupViewPolls = ({
   const handleCreatepolls = () => {
     dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(true);
+  };
+  const handleChangePagination = (current, pageSize) => {
+    setPageNumber(current);
+    setPageSize(pageSize);
+    let Data = {
+      GroupID: Number(ViewGroupID),
+      OrganizationID: Number(OrganizationID),
+      CreatorName: "",
+      PollTitle: "",
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(getPollsByGroupMainApi(navigate, t, Data));
+    dispatch(GetPollsByCommitteeIDapi(navigate, t, Data));
   };
 
   return (
@@ -476,6 +529,30 @@ const GroupViewPolls = ({
                     )}
                   </Col>
                 </Row>
+                {pollsRows.length > 0 && (
+                  <Row>
+                    <Col sm={12} md={12} lg={12}>
+                      <Row>
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="pagination-groups-table d-flex justify-content-center my-3"
+                        >
+                          <CustomPagination
+                            pageSizeOptionsValues={["30", "50", "100", "200"]}
+                            current={pageNumber}
+                            pageSize={pageSize}
+                            total={totalRecords}
+                            showSizer={totalRecords >= 9 ? true : false}
+                            className={styles["PaginationStyle-Resolution"]}
+                            onChange={handleChangePagination}
+                          />
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                )}
               </>
             )}
             {NewMeetingreducer.cancelPolls && (

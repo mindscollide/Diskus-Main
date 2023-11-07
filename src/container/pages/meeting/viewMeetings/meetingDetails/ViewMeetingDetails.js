@@ -12,12 +12,15 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
+import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 
 const ViewMeetingDetails = ({
   setorganizers,
   setmeetingDetails,
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
+  setAdvanceMeetingModalID,
+  isOrganisers,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -35,7 +38,10 @@ const ViewMeetingDetails = ({
       endTime: "",
     },
   ]);
-  console.log("meetingStatus", meetingStatus);
+  let userID = localStorage.getItem("userID");
+
+  console.log("isOrganisers", isOrganisers);
+
   //For Custom language datepicker
   const [open, setOpen] = useState({
     flag: false,
@@ -80,7 +86,10 @@ const ViewMeetingDetails = ({
   const handleCancelMeetingButton = (e) => {
     setCancelModalView(true);
   };
-
+  let endMeetingRequest = {
+    MeetingID: Number(advanceMeetingModalID),
+    StatusID: 9,
+  };
   // Showing The reposnse messege
   useEffect(() => {
     if (
@@ -120,7 +129,7 @@ const ViewMeetingDetails = ({
       let getmeetingRecurrance = MeetingData.meetingRecurrance;
       let getmeetingReminders = MeetingData.meetingReminders;
       let getmeetingStatus = MeetingData.meetingStatus.status;
-      console.log("meetingStatus", MeetingData);
+      console.log("meetingStatus", NewMeetingreducer);
       console.log("meetingStatus", getmeetingStatus);
       setMeetingStatus(Number(getmeetingStatus));
       let getmeetingType = MeetingData.meetingType;
@@ -197,15 +206,39 @@ const ViewMeetingDetails = ({
       setRows(newDateTimeData);
     }
   }, [NewMeetingreducer.getAllMeetingDetails]);
+
   return (
     <section>
-      {meetingStatus === 2 && (
+      {meetingStatus === 10 && (
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-            <Button
-              text={t("Leave-meeting")}
-              className={styles["LeaveMeetinButton"]}
-            />
+            {isOrganisers  ? (
+              <Button
+                text={t("End-meeting")}
+                className={styles["LeaveMeetinButton"]}
+                onClick={() =>
+                  dispatch(
+                    UpdateOrganizersMeeting(
+                      navigate,
+                      endMeetingRequest,
+                      t,
+                      4,
+                      setViewAdvanceMeetingModal,
+                      setAdvanceMeetingModalID
+                    )
+                  )
+                }
+              />
+            ) : (
+              <Button
+                text={t("Leave-meeting")}
+                className={styles["LeaveMeetinButton"]}
+                onClick={() => {
+                  setViewAdvanceMeetingModal(false);
+                  setAdvanceMeetingModalID(null);
+                }}
+              />
+            )}
           </Col>
         </Row>
       )}

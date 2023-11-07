@@ -12,8 +12,15 @@ import {
   getWeekToDo,
   searchTodoListRequestMethod,
   DeleteCommentRM,
+  deleteCommitteeTaskRM,
+  deleteGroupTaskRM,
 } from "../../commen/apis/Api_config";
-import { setTasksByCommitteeApi, setTasksByGroupApi } from "./Polls_actions";
+import {
+  getTaskCommitteeIDApi,
+  getTasksByGroupIDApi,
+  setTasksByCommitteeApi,
+  setTasksByGroupApi,
+} from "./Polls_actions";
 
 const ShowNotification = (message) => {
   console.log("message", message);
@@ -934,7 +941,187 @@ const clearResponce = () => {
   };
 };
 
+const deleteGroupTask_init = () => {
+  return {
+    type: actions.DELETEGROUPTASK_INIT,
+  };
+};
+const deleteGroupTask_success = (response, message) => {
+  return {
+    type: actions.DELETEGROUPTASK_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const deleteGroupTask_fail = (message) => {
+  return {
+    type: actions.DELETEGROUPTASK_FAIL,
+    message: message,
+  };
+};
+const deleteGroupTaskApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(deleteGroupTask_init());
+    let form = new FormData();
+    form.append("RequestMethod", deleteGroupTaskRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteGroupTaskApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_DeleteGroupTasks_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                deleteGroupTask_success(
+                  response.data.responseResult,
+                  t("Record-deleted")
+                )
+              );
+              let newData = {
+                GroupID: Number(Data.GroupID),
+              };
+              dispatch(getTasksByGroupIDApi(navigate, t, newData));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_DeleteGroupTasks_02".toLowerCase()
+                )
+            ) {
+              dispatch(deleteGroupTask_fail(t("Failed-to-delete-record")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_DeleteGroupTasks_03".toLowerCase()
+                )
+            ) {
+              dispatch(deleteGroupTask_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(deleteGroupTask_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(deleteGroupTask_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(deleteGroupTask_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(deleteGroupTask_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const deleteCommitteeTask_init = () => {
+  return {
+    type: actions.DELETECOMMITTEETASK_INIT,
+  };
+};
+const deleteCommitteeTask_success = (response, message) => {
+  return {
+    type: actions.DELETECOMMITTEETASK_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const deleteCommitteeTask_fail = (message) => {
+  return {
+    type: actions.DELETECOMMITTEETASK_FAIL,
+    message: message,
+  };
+};
+const deleteCommitteeTaskApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(deleteCommitteeTask_init());
+    let form = new FormData();
+    form.append("RequestMethod", deleteCommitteeTaskRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteCommentApi(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_DeleteCommitteeTasks_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                deleteCommitteeTask_success(
+                  response.data.responseResult,
+                  t("Record-deleted")
+                )
+              );
+              let newData = {
+                CommitteeID: Number(Data.CommitteeID),
+              };
+              dispatch(getTaskCommitteeIDApi(navigate, t, newData));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_DeleteCommitteeTasks_02".toLowerCase()
+                )
+            ) {
+              dispatch(deleteCommitteeTask_fail(t("Failed-to-delete-record")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_DeleteCommitteeTasks_03".toLowerCase()
+                )
+            ) {
+              dispatch(deleteCommitteeTask_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(deleteCommitteeTask_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(deleteCommitteeTask_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(deleteCommitteeTask_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(deleteCommitteeTask_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
+  deleteCommitteeTaskApi,
+  deleteGroupTaskApi,
   CreateToDoList,
   GetAllAssigneesToDoList,
   ViewToDoList,

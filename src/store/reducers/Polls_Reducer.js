@@ -30,6 +30,9 @@ const initialState = {
   setTodoGroupTask: null,
   getTodoCommitteeTask: null,
   setTodoCommitteeTask: null,
+  deleteCommitteePolls: null,
+  deleteGroupPolls: null,
+  deleteMeetingPolls: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -198,7 +201,6 @@ const PollsReducer = (state = initialState, action) => {
     }
 
     case actions.GET_POLLS_BY_POLLID_SUCCESS: {
-      console.log(action, "getAllPollsByPollsIDSuccess");
       return {
         ...state,
         Loading: false,
@@ -497,6 +499,72 @@ const PollsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         setTodoCommitteeTask: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETEMEETINGPOLLS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DELETEMEETINGPOLLS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        deleteMeetingPolls: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETEMEETINGPOLLS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        deleteMeetingPolls: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETECOMMITTEEPOLLS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DELETECOMMITTEEPOLLS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        deleteCommitteePolls: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETECOMMITTEEPOLLS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        deleteCommitteePolls: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETEGROUPPOLLS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.DELETEGROUPPOLLS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        deleteGroupPolls: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.DELETEGROUPPOLLS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        deleteGroupPolls: null,
         ResponseMessage: action.message,
       };
     }

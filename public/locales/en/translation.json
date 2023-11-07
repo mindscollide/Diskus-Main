@@ -1529,7 +1529,7 @@
   "Pie-graph": "Pie Graph",
   "Cast-your-vote": "Cast Your Vote",
   "On-starting-of-meeting": "On Starting of Meeting",
-  "Content-title": "Organization Title",
+  "Organization-title": "Organization Title",
   "14-days-before": "14 days before",
   "21-days-before": "21 days before",
   "Departmental-meeting": "Departmental Meeting",
@@ -1548,7 +1548,6 @@
   "Folder-shared-against-different-users": "Folder shared against different users",
   "Folder-not-shared-against-any-users": "Folder not shared against any users",
   "Please-select-user": "Please select user",
-  "Previous-meeting": "Previous",
   "Atleast-one-agenda-contributor-should-be-selected": "Atleast one agenda contributor should be selected",
   "Atleast-one-participant-should-be-selected": "Atleast one Participant should be selected",
   "Consecutive-date-times-should-be-greater-than-previous-date-time": "Consecutive Date Times Should be greater than previous date time",
@@ -1576,7 +1575,7 @@
   "Absent": "Absent",
   "Present": "Present",
   "Remote": "Remote",
-  "status-not-updated": "status Not Updated",
+  "status-not-updated": "Status Not Updated",
   "Status-updated": "Status Updated",
   "Meeting-view": "Meeting View",
   "Group-detail": "Group detail",
@@ -1585,5 +1584,6 @@
   "List-updated-successfully": "List Updated Successfully",
   "RSVP-allowed-and-notify": "RSVP allowed and notify meeting organizer when members RSVP",
   "RSVP-not-allowed": "RSVP not allowed ",
-  "View-not-available": "View Not Available"
+  "View-not-available": "View Not Available",
+  "Start-join-meeting": "Start/Join Meeting"
 }

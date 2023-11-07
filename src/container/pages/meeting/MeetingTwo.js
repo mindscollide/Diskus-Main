@@ -116,6 +116,7 @@ const NewMeeting = () => {
   const [entereventIcon, setentereventIcon] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const [viewFlag, setViewFlag] = useState(false);
+  const [currentMeeting, setCurrentMeetingID] = useState(0);
   const [publishedMeeting, setpublishedMeeting] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -127,12 +128,14 @@ const NewMeeting = () => {
     OrganizerName: "",
     DateView: "",
   });
+  const [isOrganisers, setIsOrganisers] = useState(false);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
+  const [meetingID, setMeetingID] = useState(0);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
@@ -263,13 +266,14 @@ const NewMeeting = () => {
       });
     }
   };
+
   const openSceduleMeetingPage = () => {
     setSceduleMeeting(true);
+    setCurrentMeetingID(0);
   };
 
   const groupChatInitiation = (data) => {
     if (data.talkGroupID !== 0) {
-      console.log("discussionGroupChat", data);
       dispatch(createShoutAllScreen(false));
       dispatch(addNewChatScreen(false));
       dispatch(footerActionStatus(false));
@@ -360,7 +364,7 @@ const NewMeeting = () => {
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
   };
-
+  // setCurrentMeetingID;
   const handleViewMeeting = async (id, isQuickMeeting) => {
     if (isQuickMeeting) {
       let Data = { MeetingID: id };
@@ -372,6 +376,7 @@ const NewMeeting = () => {
           setViewFlag,
           setEditFlag,
           setCalendarViewModal,
+          setSceduleMeeting,
           1
         )
       );
@@ -385,9 +390,14 @@ const NewMeeting = () => {
     }
   };
 
-  const handleEditMeeting = async (id, isQuick, isAgendaContributor) => {
-    console.log("handleEditMeeting", id, isQuick);
-    let Data = { MeetingID: id };
+  const handleEditMeeting = async (
+    id,
+    isQuick,
+    isAgendaContributor,
+    record
+  ) => {
+    let Data = { MeetingID: Number(id) };
+
     if (isQuick) {
       await dispatch(
         ViewMeeting(
@@ -398,6 +408,19 @@ const NewMeeting = () => {
           setEditFlag,
           setCalendarViewModal,
           2
+        )
+      );
+    } else if (isQuick === false) {
+      let Data = {
+        MeetingID: Number(id),
+      };
+      await dispatch(
+        GetAllMeetingDetailsApiFunc(
+          Data,
+          navigate,
+          t,
+          setCurrentMeetingID,
+          setSceduleMeeting
         )
       );
     } else if (isAgendaContributor) {
@@ -424,12 +447,18 @@ const NewMeeting = () => {
       key: "title",
       width: "115px",
       render: (text, record) => {
+        const isOrganiser = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Organizer"
+        );
         return (
           <span
             className={styles["meetingTitle"]}
-            onClick={() =>
-              handleViewMeeting(record.pK_MDID, record.isQuickMeeting)
-            }
+            onClick={() => {
+              handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+              setIsOrganisers(isOrganiser);
+            }}
           >
             {text}
           </span>
@@ -447,6 +476,10 @@ const NewMeeting = () => {
       filters: [
         {
           text: t("Active"),
+          value: "10",
+        },
+        {
+          text: t("Start"),
           value: "2",
         },
         {
@@ -461,8 +494,12 @@ const NewMeeting = () => {
           text: t("Not-conducted"),
           value: "8",
         },
+        {
+          text: t("Cancelled"),
+          value: "4",
+        },
       ],
-      defaultFilteredValue: ["10", "9", "8", "1"],
+      defaultFilteredValue: ["10", "9", "8", "2", "1", "4"],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
@@ -625,30 +662,45 @@ const NewMeeting = () => {
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
-            (Number(attendee.user.pK_UID) === Number(currentUserId) &&
-              attendee.meetingAttendeeRole.role === "Participant") ||
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            (attendee.meetingAttendeeRole.role === "Participant" ||
+              attendee.meetingAttendeeRole.role === "Agenda Contributor")
         );
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
-        const isQuickMeeting = record.isQuickMeeting;
-        let startMeetingRequest = {
+        const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
-          StatusID: 2,
+          StatusID: 10,
         };
-        if (record.status === "1") {
+        if (Number(record.status) === 1) {
           if (isParticipant) {
           } else {
-            if (isQuickMeeting) {
+            if (record.isQuickMeeting === true) {
               return (
                 <Row>
                   <Col sm={12} md={12} lg={12}>
                     <Button
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
+                      onClick={() => {
+                        dispatch(
+                          UpdateOrganizersMeeting(
+                            navigate,
+                            startMeetingRequest,
+                            t,
+                            4,
+                            setViewFlag,
+                            setAdvanceMeetingModalID,
+                            setViewFlag,
+                            setEditFlag,
+                            setCalendarViewModal
+                          )
+                        );
+                        setIsOrganisers(isOrganiser);
+                      }}
                     />
                   </Col>
                 </Row>
@@ -660,7 +712,7 @@ const NewMeeting = () => {
                     <Button
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
-                      onClick={() =>
+                      onClick={() => {
                         dispatch(
                           UpdateOrganizersMeeting(
                             navigate,
@@ -670,44 +722,62 @@ const NewMeeting = () => {
                             setViewAdvanceMeetingModal,
                             setAdvanceMeetingModalID
                           )
-                        )
-                      }
+                        );
+                        setIsOrganisers(isOrganiser);
+                      }}
                     />
                   </Col>
                 </Row>
               );
             }
           }
-        } else if (record.status === "2") {
+        } else if (Number(record.status) === 10) {
+          console.log("check status", record.status);
+
           if (isParticipant) {
-            <Button
-              text={t("Join-meeting")}
-              className={styles["joining-Meeting"]}
-            />;
+            return (
+              <Button
+                text={t("Join-meeting")}
+                className={styles["joining-Meeting"]}
+                onClick={() => {
+                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  setIsOrganisers(isOrganiser);
+                }}
+              />
+            );
           } else if (isOrganiser) {
-            <Button
-              text={t("Join-meeting")}
-              className={styles["joining-Meeting"]}
-            />;
+            return (
+              <Button
+                text={t("Start-join-meeting")}
+                className={styles["joining-Meeting"]}
+                onClick={() => {
+                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  setIsOrganisers(isOrganiser);
+                }}
+              />
+            );
           }
-        } else if (record.status === "10") {
+        } else if (Number(record.status) === 2) {
+          console.log("check status", record.status);
+
           if (isOrganiser) {
-            return (
-              <Button
-                text={t("End-Meeting")}
-                className={styles["End-Meeting"]}
-                onClick={EndMeetingModal}
-              />
-            );
+            // return (
+            //   <Button
+            //     text={t("End-Meeting")}
+            //     className={styles["End-Meeting"]}
+            //     onClick={EndMeetingModal}
+            //   />
+            // );
           } else if (isParticipant) {
-            return (
-              <Button
-                text={t("Leave-meeting")}
-                className={styles["End-Meeting"]}
-                onClick={EndMeetingModal}
-              />
-            );
+            // return (
+            //   <Button
+            //     text={t("Leave-meeting")}
+            //     className={styles["End-Meeting"]}
+            //     onClick={EndMeetingModal}
+            //   />
+            // );
           }
+        } else {
         }
       },
     },
@@ -756,7 +826,8 @@ const NewMeeting = () => {
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
-                            isAgendaContributor
+                            isAgendaContributor,
+                            record
                           )
                         }
                       />
@@ -786,7 +857,8 @@ const NewMeeting = () => {
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
-                            isAgendaContributor
+                            isAgendaContributor,
+                            record
                           )
                         }
                       />
@@ -812,7 +884,8 @@ const NewMeeting = () => {
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isQuickMeeting,
-                            isAgendaContributor
+                            isAgendaContributor,
+                            record
                           )
                         }
                       />
@@ -912,9 +985,7 @@ const NewMeeting = () => {
                 talkGroupID: data.talkGroupID,
                 key: index,
               });
-            } catch {
-              console.log("rowsrowsrowsrowsrows error", newRowData);
-            }
+            } catch {}
           });
           setRow(newRowData);
         }
@@ -956,14 +1027,15 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingPageCurrent", current);
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
-  console.log(
-    viewProposeOrganizerPoll,
-    "viewProposeOrganizerPollviewProposeOrganizerPoll"
-  );
+
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
-        <SceduleMeeting setSceduleMeeting={setSceduleMeeting} />
+        <SceduleMeeting
+          setSceduleMeeting={setSceduleMeeting}
+          setCurrentMeetingID={setCurrentMeetingID}
+          currentMeeting={currentMeeting}
+        />
       ) : viewProposeDatePoll ? (
         <ViewParticipantsDates
           setViewProposeDatePoll={setViewProposeDatePoll}
@@ -972,7 +1044,9 @@ const NewMeeting = () => {
         <ViewMeetingModal
           advanceMeetingModalID={advanceMeetingModalID}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           unPublish={false}
+          isOrganisers={isOrganisers}
         />
       ) : viewAdvanceMeetingModalUnpublish ? (
         <ViewMeetingModal

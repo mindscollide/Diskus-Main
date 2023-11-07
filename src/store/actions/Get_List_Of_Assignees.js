@@ -14,6 +14,7 @@ import {
 import { getMeetingUserId, searchUserMeeting } from "./GetMeetingUserId";
 import { RefreshToken } from "../actions/Auth_action";
 import { getCalendarDataResponse } from "../actions/GetDataForCalendar";
+import { searchNewUserMeeting } from "./NewMeetingActions";
 
 const ShowNotification = (message) => {
   return {
@@ -22,7 +23,6 @@ const ShowNotification = (message) => {
   };
 };
 const meetingLoaderDashboard = (payload) => {
-  console.log("payload", payload);
   return {
     type: actions.LOADER_CREATEMEETING_DASHBOARD,
     response: payload,
@@ -210,10 +210,27 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
                 calenderFlag !== null
               ) {
                 await dispatch(getCalendarDataResponse(navigate, createrID, t));
-                await dispatch(SetLoaderFalse());
-              } else {
-                await dispatch(searchUserMeeting(navigate, Data, t));
+                await dispatch(SetLoaderFalse(false));
                 dispatch(meetingLoaderDashboard(false));
+                console.log(calenderFlag, "calenderFlagcalenderFlag");
+              } else {
+                console.log(calenderFlag, "calenderFlagcalenderFlag");
+                let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                let meetingPageCurrent = parseInt(
+                  localStorage.getItem("MeetingPageCurrent")
+                );
+                let searchData = {
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(createrID),
+                  PageNumber: Number(meetingPageCurrent),
+                  Length: Number(meetingpageRow),
+                  PublishedMeetings: true,
+                };
+                await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                await dispatch(meetingLoaderDashboard(false));
+                await dispatch(SetLoaderFalse(false));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -295,10 +312,25 @@ const UpdateMeeting = (navigate, object, t) => {
                   "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase()
                 )
             ) {
+              let meetingpageRow = localStorage.getItem("MeetingPageRows");
+              let meetingPageCurrent = parseInt(
+                localStorage.getItem("MeetingPageCurrent")
+              );
+              let searchData = {
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(createrID),
+                PageNumber: Number(meetingPageCurrent),
+                Length: Number(meetingpageRow),
+                PublishedMeetings: true,
+              };
+              await dispatch(searchNewUserMeeting(navigate, searchData, t));
               await dispatch(
                 ShowNotification(t("The-record-has-been-updated-successfully"))
               );
-              await dispatch(searchUserMeeting(navigate, Data, t));
+              await dispatch(meetingLoaderDashboard(false));
+              await dispatch(SetLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -26,9 +26,11 @@ import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
 import {
   GetPollsByCommitteeIDapi,
+  deleteCommitteePollApi,
   getPollsByPollIdApi,
 } from "../../../../store/actions/Polls_actions";
-
+import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
+import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
 const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -40,8 +42,10 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
   const [pollsRows, setPollsRows] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(50);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [afterViewPolls, setafterViewPolls] = useState(false);
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
   let OrganizationID = localStorage.getItem("organizationID");
@@ -66,6 +70,14 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     // dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(false);
     // setEditPolls(true);
+  };
+
+  const handleDeletePoll = (record) => {
+    let data = {
+      PollID: record.pollID,
+      CommitteeID: parseInt(ViewCommitteeID),
+    };
+    dispatch(deleteCommitteePollApi(navigate, t, data));
   };
 
   const handleCacnelbutton = () => {
@@ -95,6 +107,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         PollsReducer.getPollByCommitteeID !== undefined &&
         PollsReducer.getPollByCommitteeID !== null
       ) {
+        setTotalRecords(PollsReducer.getPollByCommitteeID.totalRecords);
         let pollsData = PollsReducer.getPollByCommitteeID.polls;
         let newPollsArray = [];
         pollsData.forEach((data, index) => {
@@ -103,11 +116,11 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         });
         console.log(newPollsArray, "newPollsArraynewPollsArray");
         setPollsRows(newPollsArray);
+      } else {
+        setPollsRows([]);
       }
     } catch {}
   }, [PollsReducer.getPollByCommitteeID]);
-
-  console.log(pollsRows, "pollsRowspollsRowspollsRows");
 
   const PollsColoumn = [
     {
@@ -117,7 +130,14 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       width: "300px",
       render: (text, record) => {
         console.log(record, "recordrecordrecordrecord");
-        return <span className={styles["DateClass"]}>{text}</span>;
+        return (
+          <span
+            className={styles["DateClass"]}
+            onClick={() => navigate("/DisKus/polling")}
+          >
+            {text}
+          </span>
+        );
       },
     },
 
@@ -206,7 +226,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() => {}}
+                  onClick={() => navigate("/DisKus/polling")}
                 />
               );
             } else if (record.voteStatus === "Voted") {
@@ -305,6 +325,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                                 width="21.59px"
                                 height="21.59px"
                                 draggable="false"
+                                onClick={() => handleDeletePoll(record)}
                               />
                             </Tooltip>
                           </Col>
@@ -335,6 +356,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                             width="21.59px"
                             height="21.59px"
                             draggable="false"
+                            onClick={() => handleDeletePoll(record)}
                           />
                         </Tooltip>
                       </Col>
@@ -353,7 +375,20 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(true);
   };
-  console.log("editPollseditPolls", editPolls);
+
+  const handleChangePagination = (current, pageSize) => {
+    setPageNumber(current);
+    setPageSize(pageSize);
+    let Data = {
+      CommitteeID: Number(ViewCommitteeID),
+      OrganizationID: Number(OrganizationID),
+      CreatorName: "",
+      PollTitle: "",
+      PageNumber: Number(current),
+      Length: Number(pageSize),
+    };
+    dispatch(GetPollsByCommitteeIDapi(navigate, t, Data));
+  };
   return (
     <>
       {afterViewPolls ? (
@@ -450,6 +485,26 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                     )}
                   </Col>
                 </Row>
+                {pollsRows.length > 0 && (
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="pagination-groups-table d-flex justify-content-center my-3"
+                    >
+                      <CustomPagination
+                        pageSizeOptionsValues={["30", "50", "100", "200"]}
+                        current={pageNumber}
+                        pageSize={pageSize}
+                        total={totalRecords}
+                        showSizer={totalRecords >= 9 ? true : false}
+                        className={styles["PaginationStyle-Resolution"]}
+                        onChange={handleChangePagination}
+                      />
+                    </Col>
+                  </Row>
+                )}
               </>
             )}
             {NewMeetingreducer.cancelPolls && (

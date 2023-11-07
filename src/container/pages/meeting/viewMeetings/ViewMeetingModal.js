@@ -24,7 +24,9 @@ import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
+  setAdvanceMeetingModalID,
   unPublish,
+  isOrganisers,
 }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -38,7 +40,7 @@ const ViewMeetingModal = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
-
+  console.log("isOrganisers",isOrganisers);
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
     setorganizers(false);
@@ -298,6 +300,8 @@ const ViewMeetingModal = ({
                     setmeetingDetails={setmeetingDetails}
                     advanceMeetingModalID={advanceMeetingModalID}
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                    setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+                    isOrganisers={isOrganisers}
                   />
                 )}
                 {organizers && (
@@ -331,6 +335,11 @@ const ViewMeetingModal = ({
                 {agenda && (
                   <Agenda
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                    setorganizers={setorganizers}
+                    setParticipants={setParticipants}
+                    setAgenda={setAgenda}
+                    setMeetingMaterial={setMeetingMaterial}
+                    advanceMeetingModalID={advanceMeetingModalID}
                   />
                 )}
                 {meetingMaterial && (

@@ -18,6 +18,8 @@ const initialState = {
   SearchTodolist: null,
   deleteComment: null,
   deleteCommentSpinner: false,
+  deleteGroupTask: null,
+  deleteCommitteeTask: null,
 };
 
 const toDoListReducer = (state = initialState, action) => {

@@ -25,6 +25,7 @@ import {
 import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { XLg } from "react-bootstrap-icons";
 
 const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const { t } = useTranslation();
@@ -39,11 +40,15 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   );
 
   useEffect(() => {
-    if (ViewGroupID !== 0) {
+    if (ViewGroupID !== null) {
       dispatch(getbyGroupID(navigate, ViewGroupID, t));
     }
-  }, [ViewGroupID]);
+  }, []);
 
+  const handleClose = () => {
+    localStorage.removeItem("ViewGroupID");
+    setViewGroupPage(false);
+  };
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">
       <Row className="mt-3">
@@ -55,43 +60,53 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
       </Row>
       <Paper className={styles["View-group-paper"]}>
         <Row>
-          <Col sm={12} md={12} lg={12} className="d-flex gap-3 mb-3">
-            <Button
-              text={t("Group-detail")}
-              className={
-                currentViewGroup === 1
-                  ? styles["View-Group-details_active"]
-                  : styles["View-Group-details"]
-              }
-              onClick={() => setCurrentViewGroup(1)}
-            />
-            <Button
-              text={t("Task")}
-              className={
-                currentViewGroup === 2
-                  ? styles["View-Group-details_active"]
-                  : styles["View-Group-details"]
-              }
-              onClick={() => setCurrentViewGroup(2)}
-            />
-            <Button
-              text={t("Polls")}
-              className={
-                currentViewGroup === 3
-                  ? styles["View-Group-details_active"]
-                  : styles["View-Group-details"]
-              }
-              onClick={() => setCurrentViewGroup(3)}
-            />
-            <Button
-              text={t("Meetings")}
-              className={
-                currentViewGroup === 4
-                  ? styles["View-Group-details_active"]
-                  : styles["View-Group-details"]
-              }
-              onClick={() => setCurrentViewGroup(4)}
-            />
+          <Col
+            sm={12}
+            md={12}
+            lg={12}
+            className="d-flex justify-content-between"
+          >
+            <div className="d-flex gap-3 mb-3">
+              <Button
+                text={t("Committee-detail")}
+                className={
+                  currentViewGroup === 1
+                    ? styles["View-Group-details_active"]
+                    : styles["View-Group-details"]
+                }
+                onClick={() => setCurrentViewGroup(1)}
+              />
+              <Button
+                text={t("Task")}
+                className={
+                  currentViewGroup === 2
+                    ? styles["View-Group-details_active"]
+                    : styles["View-Group-details"]
+                }
+                onClick={() => setCurrentViewGroup(2)}
+              />
+              <Button
+                text={t("Polls")}
+                className={
+                  currentViewGroup === 3
+                    ? styles["View-Group-details_active"]
+                    : styles["View-Group-details"]
+                }
+                onClick={() => setCurrentViewGroup(3)}
+              />
+              <Button
+                text={t("Meetings")}
+                className={
+                  currentViewGroup === 4
+                    ? styles["View-Group-details_active"]
+                    : styles["View-Group-details"]
+                }
+                onClick={() => setCurrentViewGroup(4)}
+              />
+            </div>
+            <div>
+              <XLg size={"24px"} cursor="pointer" onClick={handleClose} />
+            </div>
           </Col>
         </Row>
 
@@ -100,38 +115,10 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
         ) : currentViewGroup === 2 ? (
           <>
             <ViewGroupTodo />
-            <Row className="my-3 ">
-              <Col
-                sm={12}
-                md={12}
-                lg={12}
-                className="d-flex justify-content-end"
-              >
-                <Button
-                  text={t("Close")}
-                  className={styles["closeBtn-view-Group"]}
-                  onClick={() => setViewGroupPage(false)}
-                />
-              </Col>
-            </Row>
           </>
         ) : currentViewGroup === 3 ? (
           <>
             <Polls view={2} />
-            <Row>
-              <Col
-                sm={12}
-                md={12}
-                lg={12}
-                className="d-flex justify-content-end"
-              >
-                <Button
-                  text={t("Close")}
-                  className={styles["closeBtn-view-Group"]}
-                  onClick={() => setViewGroupPage(false)}
-                />
-              </Col>
-            </Row>
           </>
         ) : currentViewGroup === 4 ? (
           "Meeting"

@@ -1,34 +1,57 @@
 {
-  "responseMessage": "Success",
-  "responseCode": 200,
-  "responseType": "ServiceManager.GetUserWiseProposedDates",
-  "responseResult": {
-    "userWiseMeetingProposedDates": [
-      {
-        "userID": 983,
-        "userName": "ErenOne",
-        "designation": "React Developer",
-        "userEmail": "erenone@yopmail.com",
-        "title": "",
-        "selectedProposedDates": [
-          {
-            "proposedDateID": 85,
-            "proposedDate": "20231027",
-            "startTime": "124331",
-            "endTime": "124632",
-            "isSelected": false
-          },
-          {
-            "proposedDateID": 86,
-            "proposedDate": "20231028",
-            "startTime": "144338",
-            "endTime": "154340",
-            "isSelected": true
-          }
-        ]
-      }
-    ],
-    "responseMessage": "Meeting_MeetingServiceManager_GetUserWiseProposedDates_01",
-    "isExecuted": true
-  }
+  "MeetingID": 1216,
+  "AgendaList": [
+    {
+      "ID": "100",
+      "Title": "Talha Title",
+      "Description": "Description",
+      "PresenterID": 1,
+      "StartDate": "20231114080000",
+      "EndDate": "20231114090000",
+      "SelectedRadio": 0,
+      "UrlFieldMain": "",
+      "RequestContributorURl": 0,
+      "MainNote": "",
+      "IsLocked": false,
+      "AgendaVotingID": 0,
+      "VoteOwner": null,
+      "IsAttachment": false,
+      "UserID": 0,
+      "Files": [
+        {
+          "AgendaAttachmentsID": 12,
+          "DisplayAttachmentName": "MyAttachement.pdf",
+          "OriginalAttachmentName": "213",
+          "FK_MAID": 100
+        }
+      ],
+      "SubAgenda": [
+        {
+          "SubAgendaID": "100",
+          "SubTitle": "Talha Title",
+          "Description": "Description",
+          "PresenterID": 1,
+          "StartDate": "20231114080000",
+          "EndDate": "20231114090000",
+          "SubSelectRadio": 0,
+          "SubAgendaUrlFieldRadio": "",
+          "SubAgendarequestContributorUrl": 0,
+          "SubAgendarequestContributorEnterNotes": "",
+          "IsLocked": false,
+          "AgendaVotingID": 0,
+          "VoteOwner": null,
+          "IsAttachment": false,
+          "UserID": 0,
+          "Subfiles": [
+            {
+              "AgendaAttachmentsID": 12,
+              "DisplayAttachmentName": "MyAttachement.pdf",
+              "OriginalAttachmentName": "213",
+              "FK_MAID": 100
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

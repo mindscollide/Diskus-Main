@@ -10,6 +10,7 @@ import {
 } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import { GetAllMeetingDetailsApiFunc } from "./NewMeetingActions";
+import { ViewMeeting } from "./Get_List_Of_Assignees";
 
 const getAllCommitteesUsersandGroups_init = () => {
   return {
@@ -149,10 +150,9 @@ const saveMeetingOrganizers_fail = (message) => {
 };
 
 // Save Meeting Organizers Api
-const SaveMeetingOrganizers = (navigate, Data, t) => {
+const SaveMeetingOrganizers = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
-  let Data2 = { MeetingID: currentMeetingID };
+  let Data2 = { MeetingID: currentMeeting };
 
   return async (dispatch) => {
     dispatch(saveMeetingOrganizers_init());
@@ -254,7 +254,10 @@ const UpdateOrganizersMeeting = (
   t,
   route,
   setPublishState,
-  setAdvanceMeetingModalID
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
+  setCalendarViewModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -294,9 +297,45 @@ const UpdateOrganizersMeeting = (
                   let requestDataForMeetingDetails = {
                     MeetingID: Number(Data.MeetingID),
                   };
-                  await dispatch(GetAllMeetingDetailsApiFunc(requestDataForMeetingDetails, navigate, t));
+                  await dispatch(
+                    GetAllMeetingDetailsApiFunc(
+                      requestDataForMeetingDetails,
+                      navigate,
+                      t
+                    )
+                  );
                   setAdvanceMeetingModalID(Data.MeetingID);
                   setPublishState(true);
+                } else if (route === 3) {
+                  let requestDataForMeetingDetails = {
+                    MeetingID: Number(Data.MeetingID),
+                  };
+                  await dispatch(
+                    GetAllMeetingDetailsApiFunc(
+                      requestDataForMeetingDetails,
+                      navigate,
+                      t
+                    )
+                  );
+                  setAdvanceMeetingModalID(null);
+                  setPublishState(false);
+                } else if (route === 4) {
+                  let requestDataForMeetingDetails = {
+                    MeetingID: Number(Data.MeetingID),
+                  };
+                  await dispatch(
+                    ViewMeeting(
+                      navigate,
+                      requestDataForMeetingDetails,
+                      t,
+                      setViewFlag,
+                      setEditFlag,
+                      setCalendarViewModal,
+                      1
+                    )
+                  );
+                  setAdvanceMeetingModalID(Data.MeetingID);
+                  setPublishState(false);
                 } else {
                   setPublishState(Data.MeetingID);
                 }

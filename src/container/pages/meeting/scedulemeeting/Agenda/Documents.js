@@ -28,8 +28,8 @@ const Documents = ({ data, index, setRows, rows, parentId }) => {
               ? data?.files?.map((filesData, Fileindex) => {
                   return (
                     <Draggable
-                      key={filesData.FileID}
-                      draggableId={`parent-attachments-${parentId}-${filesData.FileID}`}
+                      key={filesData.AgendaAttachmentsID}
+                      draggableId={`parent-attachments-${parentId}-${filesData.AgendaAttachmentsID}`}
                       index={Fileindex}
                     >
                       {(provided) => (
@@ -51,11 +51,13 @@ const Documents = ({ data, index, setRows, rows, parentId }) => {
                                     <img
                                       draggable={false}
                                       src={getIconSource(
-                                        getFileExtension(filesData.name)
+                                        getFileExtension(
+                                          filesData.DisplayAttachmentName
+                                        )
                                       )}
                                     />
                                     <span className={styles["TitleFile"]}>
-                                      {filesData.name}
+                                      {filesData.DisplayAttachmentName}
                                     </span>
                                   </Col>
                                   <Col

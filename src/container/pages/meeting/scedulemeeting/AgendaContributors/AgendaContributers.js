@@ -35,6 +35,8 @@ const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
   setSceduleMeeting,
+  currentMeeting,
+  setCurrentMeetingID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -83,11 +85,10 @@ const AgendaContributers = ({
   // const openCrossIconModal = () => {
   //   dispatch(showCrossConfirmationModal(true));
   // };
-  let currentMeetingID = localStorage.getItem("meetingID");
 
   useEffect(() => {
     let getAllData = {
-      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 0,
+      MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
   }, []);
@@ -141,7 +142,7 @@ const AgendaContributers = ({
             <Col lg={12} md={12} sm={12}>
               <TextField
                 disable={record.isEdit ? true : false}
-                placeholder={t("Content-title")}
+                placeholder={t("Organization-title")}
                 labelClass={"d-none"}
                 width={"100%"}
                 applyClass={"Organizer_table"}
@@ -394,7 +395,7 @@ const AgendaContributers = ({
     let removenewData = rowsData.filter((data, index) => data.isEdit === true);
     setRowsData(removenewData);
     let getAllData = {
-      MeetingID: currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+      MeetingID: currentMeeting !== null ? Number(currentMeeting) : 1686,
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
     // Create a copy of data with was coming
@@ -410,18 +411,17 @@ const AgendaContributers = ({
           UserID: data.userID,
           Title: data.Title,
           AgendaListRightsAll: data.AgendaListRightsAll,
-          MeetingID:
-            currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+          MeetingID: currentMeeting !== null ? Number(currentMeeting) : 1686,
           IsContributorNotified: data.isContributedNotified,
         });
       });
       let Data = {
         AgendaContributors: newData,
-        MeetingID: Number(currentMeetingID),
+        MeetingID: Number(currentMeeting),
         IsAgendaContributorAddFlow: false,
         NotificationMessage: notifyMessageField,
       };
-      dispatch(saveAgendaContributors(navigate, t, Data));
+      dispatch(saveAgendaContributors(navigate, t, Data, currentMeeting));
     } else {
       let newData = [];
       let copyData = [...rowsData];
@@ -431,14 +431,13 @@ const AgendaContributers = ({
           UserID: data.userID,
           Title: data.Title,
           AgendaListRightsAll: data.AgendaListRightsAll,
-          MeetingID:
-            currentMeetingID !== null ? Number(currentMeetingID) : 1686,
+          MeetingID: currentMeeting !== null ? Number(currentMeeting) : 1686,
           IsContributorNotified: data.isContributedNotified,
         });
       });
       let Data = {
         AgendaContributors: newData,
-        MeetingID: Number(currentMeetingID),
+        MeetingID: Number(currentMeeting),
         IsAgendaContributorAddFlow: true,
         NotificationMessage: notifyMessageField,
       };
@@ -615,7 +614,7 @@ const AgendaContributers = ({
                     onClick={enableNotificatoinTable}
                   />
                   <Button
-                    text={t("Previous-meeting")}
+                    text={t("Previous")}
                     className={styles["Cancel_Organization"]}
                   />
                   <Button
@@ -643,6 +642,7 @@ const AgendaContributers = ({
           rowsData={rowsData}
           setRowsData={setRowsData}
           setNotificedMembersData={setNotificedMembersData}
+          currentMeeting={currentMeeting}
         />
       )}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}

@@ -26,7 +26,7 @@ import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 
-const Agenda = ({ setSceduleMeeting }) => {
+const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { NewMeetingreducer } = useSelector((state) => state);
@@ -77,6 +77,7 @@ const Agenda = ({ setSceduleMeeting }) => {
     const newMainAgenda = {
       ID: getRandomUniqueNumber().toString(),
       title: "",
+      description: "",
       selectedOption: null,
       startDate: null,
       endDate: null,
@@ -89,6 +90,7 @@ const Agenda = ({ setSceduleMeeting }) => {
         {
           SubAgendaID: getRandomUniqueNumber().toString(),
           SubTitle: "",
+          description: "",
           selectedOption: null,
           startDate: null,
           endDate: null,
@@ -155,6 +157,7 @@ const Agenda = ({ setSceduleMeeting }) => {
                               return (
                                 <>
                                   <ParentAgenda
+                                    currentMeeting={currentMeeting}
                                     data={data}
                                     index={index}
                                     rows={rows}
@@ -281,7 +284,10 @@ const Agenda = ({ setSceduleMeeting }) => {
         <PermissionConfirmation />
       )}
       {NewMeetingreducer.voteAgendaModal && (
-        <VoteModal setenableVotingPage={setenableVotingPage} />
+        <VoteModal
+          setenableVotingPage={setenableVotingPage}
+          currentMeeting={currentMeeting}
+        />
       )}
       {NewMeetingreducer.voteConfirmationModal && <VoteModalConfirm />}
       {NewMeetingreducer.importPreviousAgendaModal && <ImportPrevious />}

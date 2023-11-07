@@ -87,7 +87,6 @@ const Createpolls = ({ setCreatepoll }) => {
   });
 
   const [members, setMembers] = useState([]);
-  console.log(members, "membersmembersmembers");
   const HandleCancelFunction = (index) => {
     let optionscross = [...options];
     optionscross.splice(index, 1);
