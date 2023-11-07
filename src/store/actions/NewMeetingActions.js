@@ -402,7 +402,9 @@ const SaveMeetingDetialsNewApiFunction = (
   setorganizers,
   setmeetingDetails,
   viewValue,
-  setCurrentMeetingID
+  setCurrentMeetingID,
+  currentMeeting,
+  meetingDetails
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -430,7 +432,9 @@ const SaveMeetingDetialsNewApiFunction = (
               setorganizers,
               setmeetingDetails,
               viewValue,
-              setCurrentMeetingID
+              setCurrentMeetingID,
+              currentMeeting,
+              meetingDetails
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -446,6 +450,19 @@ const SaveMeetingDetialsNewApiFunction = (
                 handleSaveMeetingSuccess(
                   response.data.responseResult,
                   t("Record-found")
+                )
+              );
+              let MappedData = {
+                MeetingID: response.data.responseResult.meetingID,
+                MeetingTitle: meetingDetails.MeetingTitle,
+                IsUpdateFlow: false,
+              };
+              console.log(MappedData, "MappedDataMappedData");
+              dispatch(
+                CreateUpdateMeetingDataRoomMapeedApiFunc(
+                  navigate,
+                  MappedData,
+                  t
                 )
               );
 
@@ -3592,7 +3609,7 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showUpdateAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  t("Record Updated")
+                  t("Record-updated")
                 )
               );
             } else if (
@@ -3603,7 +3620,7 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                 )
             ) {
               dispatch(
-                showUpdateAgendaWiseMinutesFailed(t("Record Not Updated"))
+                showUpdateAgendaWiseMinutesFailed(t("Record-not-updated"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3624,7 +3641,7 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
             ) {
               dispatch(
                 showUpdateAgendaWiseMinutesFailed(
-                  t(" only a organizer can perform this operation")
+                  t("Only-a-organizer-can-perform-this-operation")
                 )
               );
             }
@@ -3708,7 +3725,7 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
               await dispatch(
                 showDeleteAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  t("Record Deleted")
+                  t("Record-deleted")
                 )
               );
               let DelteGetAll = {
@@ -3725,7 +3742,7 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
                 )
             ) {
               dispatch(
-                showDeleteAgendaWiseMinutesFailed(t("No Record Deleted"))
+                showDeleteAgendaWiseMinutesFailed(t("No-record-deleted"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3746,7 +3763,7 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
             ) {
               dispatch(
                 showDeleteAgendaWiseMinutesFailed(
-                  t("only a organizer can perform this operation")
+                  t("Only-a-organizer-can-perform-this-operation")
                 )
               );
             }
@@ -3951,7 +3968,7 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showAgendaWiseAddMinutesSuccess(
                   response.data.responseResult.minuteID,
-                  t("Response-saved")
+                  t("Record-saved")
                 )
               );
             } else if (
@@ -4051,7 +4068,7 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showSavedAgendaWiseDocumentSuccess(
                   response.data.responseResult,
-                  t("List Updated Successfully")
+                  t("List-updated-successfully")
                 )
               );
               let getAll = {
@@ -4151,7 +4168,7 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showUpdateMinutesSuccess(
                   response.data.responseResult,
-                  t("Response-updated")
+                  t("Record-updated")
                 )
               );
             } else if (
@@ -4615,7 +4632,7 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
               await dispatch(
                 showDeleteGeneralMeetingDocumentsSuccess(
                   response.data.responseResult,
-                  t("Record Deleted")
+                  t("Record-deleted")
                 )
               );
               let Erase = {
@@ -4632,7 +4649,7 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
                 )
             ) {
               dispatch(
-                showDeleteGeneralMeetingDocumentsFailed(t("No Record Deleted"))
+                showDeleteGeneralMeetingDocumentsFailed(t("No-record-deleted"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -4741,7 +4758,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               await dispatch(
                 showDeleteAgendaWiseDocumentSuccess(
                   response.data.responseResult,
-                  t("Record Deleted")
+                  t("Record-deleted")
                 )
               );
               let AgendaWiseDelData = {
@@ -4763,7 +4780,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                 )
             ) {
               dispatch(
-                showDeleteAgendaWiseDocumentFailed(t("No Record Deleted"))
+                showDeleteAgendaWiseDocumentFailed(t("No-record-deleted"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -4885,7 +4902,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showCreateUpdateMeetingDataRoomSuccess(
                   response.data.responseResult,
-                  t(" Folder-mapped-with-data-room")
+                  t("Updated-successfully")
                 )
               );
             } else if (
@@ -4910,7 +4927,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showCreateUpdateMeetingDataRoomSuccess(
                   response.data.responseResult,
-                  t("New-mapping-created.")
+                  t("New-mapping-created")
                 )
               );
             } else if (
