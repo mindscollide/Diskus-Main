@@ -39,6 +39,7 @@ const ProposedMeetingDate = ({
   setProposedMeetingDates,
   setParticipants,
   setViewProposedMeetingDate,
+  currentMeeting,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -230,7 +231,7 @@ const ProposedMeetingDate = ({
     });
     if (isAscendingOrder()) {
       let Data = {
-        MeetingID: currentMeetingID,
+        MeetingID: currentMeeting,
         SendResponsebyDate: sendResponseBy.date,
         ProposedDates: newArr,
       };
@@ -286,7 +287,7 @@ const ProposedMeetingDate = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeetingID,
+      MeetingID: currentMeeting,
     };
     dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
   }, []);

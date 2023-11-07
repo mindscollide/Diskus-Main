@@ -2239,7 +2239,7 @@ const deleteMeetingPoll_fail = (message) => {
     message: message,
   };
 };
-const deleteMeetingPollApi = (navigate, t, data) => {
+const deleteMeetingPollApi = (navigate, t, data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -2274,11 +2274,10 @@ const deleteMeetingPollApi = (navigate, t, data) => {
                   t("Record-deleted")
                 )
               );
-              let currentMeetingID = Number(localStorage.getItem("meetingID"));
               let OrganizationID = localStorage.getItem("organizationID");
 
               let Data = {
-                MeetingID: currentMeetingID,
+                MeetingID: currentMeeting,
                 OrganizationID: Number(OrganizationID),
                 CreatorName: "",
                 PollTitle: "",

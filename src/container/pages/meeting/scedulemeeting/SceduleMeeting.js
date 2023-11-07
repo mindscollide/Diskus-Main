@@ -21,6 +21,9 @@ import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
 import ViewParticipantsDates from "./Participants/ViewParticipantsDates/ViewParticipantsDates";
+import { GetAllMeetingDetailsApiFunc } from "../../../../store/actions/NewMeetingActions";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const SceduleMeeting = ({
   setSceduleMeeting,
   currentMeeting,
@@ -40,8 +43,14 @@ const SceduleMeeting = ({
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
   const [isEditMeeting, setEditMeeting] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const showMeetingDeitals = () => {
+    let Data = {
+      MeetingID: Number(currentMeeting),
+    };
+    dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
     setmeetingDetails(true);
     setorganizers(false);
     setAgendaContributors(false);
@@ -177,6 +186,7 @@ const SceduleMeeting = ({
         <ProposedMeetingDate
           setProposedMeetingDates={setProposedMeetingDates}
           setParticipants={setParticipants}
+          currentMeeting={currentMeeting}
         />
       ) : (
         <>
