@@ -1,5 +1,5 @@
 {
-  "FK_MeetingAgendaMinutesID": 22,
-  "FK_MDID": 1627,
-  "UpdateFileList": [{ "PK_FileID": 6320 }]
+  "MeetingID": 1972,
+  "MeetingAttendeRoleID": 1,
+  "UpdatedUsers": [983, 984, 986]
 }
