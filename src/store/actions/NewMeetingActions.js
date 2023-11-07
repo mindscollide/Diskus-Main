@@ -452,25 +452,25 @@ const SaveMeetingDetialsNewApiFunction = (
                   t("Record-found")
                 )
               );
-              let MappedData = {
-                MeetingID: response.data.responseResult.meetingID,
-                MeetingTitle: meetingDetails.MeetingTitle,
-                IsUpdateFlow: false,
-              };
-              console.log(MappedData, "MappedDataMappedData");
-              dispatch(
-                CreateUpdateMeetingDataRoomMapeedApiFunc(
-                  navigate,
-                  MappedData,
-                  t
-                )
-              );
 
               setCurrentMeetingID(response.data.responseResult.meetingID);
 
               if (viewValue === 1) {
                 setSceduleMeeting(false);
               } else if (viewValue === 2) {
+                let MappedData = {
+                  MeetingID: response.data.responseResult.meetingID,
+                  MeetingTitle: meetingDetails.MeetingTitle,
+                  IsUpdateFlow: false,
+                };
+                console.log(MappedData, "MappedDataMappedData");
+                dispatch(
+                  CreateUpdateMeetingDataRoomMapeedApiFunc(
+                    navigate,
+                    MappedData,
+                    t
+                  )
+                );
               } else if (viewValue === 3) {
                 setorganizers(true);
                 setmeetingDetails(false);
