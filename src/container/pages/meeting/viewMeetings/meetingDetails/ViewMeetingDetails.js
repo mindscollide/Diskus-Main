@@ -38,9 +38,6 @@ const ViewMeetingDetails = ({
       endTime: "",
     },
   ]);
-  let userID = localStorage.getItem("userID");
-
-  console.log("isOrganisers", isOrganisers);
 
   //For Custom language datepicker
   const [open, setOpen] = useState({
@@ -119,9 +116,10 @@ const ViewMeetingDetails = ({
   useEffect(() => {
     try {
     } catch {}
+    console.log("meetingStatus", NewMeetingreducer);
     if (
-      NewMeetingreducer.getAllMeetingDetails != null &&
-      NewMeetingreducer.getAllMeetingDetails != undefined
+      NewMeetingreducer.getAllMeetingDetails !== null &&
+      NewMeetingreducer.getAllMeetingDetails !== undefined
     ) {
       let MeetingData =
         NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
@@ -212,7 +210,7 @@ const ViewMeetingDetails = ({
       {meetingStatus === 10 && (
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-            {isOrganisers  ? (
+            {isOrganisers ? (
               <Button
                 text={t("End-meeting")}
                 className={styles["LeaveMeetinButton"]}
