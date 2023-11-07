@@ -73,6 +73,7 @@ const initialState = {
   userWiseMeetingProposed: [],
   agendaWiseMinuteID: 0,
   RetriveAgendaWiseDocuments: [],
+  meetingDataRoomMapFolderID: 0,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1316,6 +1317,31 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        meetingDataRoomMapFolderID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        meetingDataRoomMapFolderID: 0,
         ResponseMessage: action.message,
       };
     }

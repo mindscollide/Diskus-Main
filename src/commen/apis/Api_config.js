@@ -1207,6 +1207,10 @@ const DeleteAgendaWiseDocuments = {
   RequestMethod: "ServiceManager.DeleteAgendaWiseMinuteDocuments",
 };
 
+const CreateUpdateMeetingDataroomMapped = {
+  RequestMethod: "ServiceManager.CreateUpdateMeetingDataRoomMap",
+};
+
 export {
   deleteCommitteeTaskRM,
   deleteGroupTaskRM,
@@ -1530,4 +1534,5 @@ export {
   RetriveAgendaWiseDocuments,
   DeleteDocumentGenralMinute,
   DeleteAgendaWiseDocuments,
+  CreateUpdateMeetingDataroomMapped,
 };

@@ -41,6 +41,7 @@ import {
   RetriveAgendaWiseDocuments,
   DeleteDocumentGenralMinute,
   DeleteAgendaWiseDocuments,
+  CreateUpdateMeetingDataroomMapped,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -4795,6 +4796,168 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
   };
 };
 
+//Create update Meeting Data Room Mapped
+
+const showCreateUpdateMeetingDataRoomInit = () => {
+  return {
+    type: actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_INIT,
+  };
+};
+
+const showCreateUpdateMeetingDataRoomSuccess = (response, message) => {
+  return {
+    type: actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showCreateUpdateMeetingDataRoomFailed = (response, message) => {
+  return {
+    type: actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_FAILED,
+    message: message,
+  };
+};
+
+const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
+  console.log(
+    { Data },
+    "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc"
+  );
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showCreateUpdateMeetingDataRoomInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      CreateUpdateMeetingDataroomMapped.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "headers");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(CreateUpdateMeetingDataRoomMapeedApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showCreateUpdateMeetingDataRoomSuccess(
+                  response.data.responseResult.folderID,
+                  t("Folder-mapped-with-data-room")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(
+                  t("Failed-to-save-or-map-folder")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showCreateUpdateMeetingDataRoomSuccess(
+                  response.data.responseResult,
+                  t(" Folder-mapped-with-data-room")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(
+                  t("Unable-to-update-folder")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_05".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showCreateUpdateMeetingDataRoomSuccess(
+                  response.data.responseResult,
+                  t("New-mapping-created.")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(
+                  t("Failed-to-create-new-mapping")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -4885,4 +5048,5 @@ export {
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
   DeleteGeneralMinuteDocumentsApiFunc,
   DeleteAgendaWiseMinutesDocumentsApiFunc,
+  CreateUpdateMeetingDataRoomMapeedApiFunc,
 };
