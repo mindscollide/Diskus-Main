@@ -1207,6 +1207,18 @@ const ScheduleMeetingOnSelectedDate = {
   RequestMethod: "ServiceManager.ScheduleMeetingOnSelectedDate",
 };
 
+const DeleteAgendaWiseDocuments = {
+  RequestMethod: "ServiceManager.DeleteAgendaWiseMinuteDocuments",
+};
+
+const CreateUpdateMeetingDataroomMapped = {
+  RequestMethod: "ServiceManager.CreateUpdateMeetingDataRoomMap",
+};
+
+const UpdateMeetingUsershit = {
+  RequestMethod: "ServiceManager.UpdateMeetingUsers",
+};
+
 export {
   deleteCommitteeTaskRM,
   deleteGroupTaskRM,
@@ -1530,4 +1542,7 @@ export {
   RetriveAgendaWiseDocuments,
   DeleteDocumentGenralMinute,
   ScheduleMeetingOnSelectedDate,
+  DeleteAgendaWiseDocuments,
+  CreateUpdateMeetingDataroomMapped,
+  UpdateMeetingUsershit,
 };

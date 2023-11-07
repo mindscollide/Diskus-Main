@@ -455,7 +455,9 @@ const MeetingDetails = ({
           setorganizers,
           setmeetingDetails,
           2,
-          setCurrentMeetingID
+          setCurrentMeetingID,
+          currentMeeting,
+          meetingDetails
         )
       );
     } else {
@@ -522,7 +524,9 @@ const MeetingDetails = ({
           data,
           setSceduleMeeting,
           setorganizers,
-          setmeetingDetails
+          setmeetingDetails,
+          currentMeeting,
+          meetingDetails
         )
       );
     } else {

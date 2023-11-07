@@ -73,6 +73,7 @@ const initialState = {
   userWiseMeetingProposed: [],
   agendaWiseMinuteID: 0,
   RetriveAgendaWiseDocuments: [],
+  meetingDataRoomMapFolderID: 0,
   setCommitteewithMeetingID: null,
   getCommitteeByMeetingID: null,
   setGroupwithMeetingID: null,
@@ -1323,74 +1324,69 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
-    case actions.SETCOMMITTEEBYMEETINGID_INIT: {
+    case actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_INIT: {
       return {
         ...state,
         Loading: true,
       };
     }
-    case actions.SETCOMMITTEEBYMEETINGID_SUCCESS: {
+
+    case actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_SUCCESS: {
       return {
         ...state,
         Loading: false,
-        setCommitteewithMeetingID: action.response,
-        ResponseMessage: action.message,
-      };
-    }
-    case actions.SETCOMMITTEEBYMEETINGID_FAIL: {
-      return {
-        ...state,
-        Loading: false,
-        setCommitteewithMeetingID: null,
         ResponseMessage: action.message,
       };
     }
 
-    case actions.GETGROUPBYMEETINGID_INIT: {
-      return {
-        ...state,
-        Loading: true,
-      };
-    }
-    case actions.GETGROUPBYMEETINGID_SUCCESS: {
+    case actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_FAILED: {
       return {
         ...state,
         Loading: false,
-        getGroupwithMeetingID: action.response,
-        ResponseMessage: action.message,
-      };
-    }
-    case actions.GETGROUPBYMEETINGID_FAIL: {
-      return {
-        ...state,
-        Loading: false,
-        getGroupwithMeetingID: null,
         ResponseMessage: action.message,
       };
     }
 
-    case actions.SETGROUPBYMEETINGID_INIT: {
+    case actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_INIT: {
       return {
         ...state,
         Loading: true,
       };
     }
-    case actions.SETGROUPBYMEETINGID_SUCCESS: {
+
+    case actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_SUCCESS: {
       return {
         ...state,
         Loading: false,
-        setGroupwithMeetingID: action.response,
+        meetingDataRoomMapFolderID: action.response,
         ResponseMessage: action.message,
       };
     }
-    case actions.SETGROUPBYMEETINGID_FAIL: {
+
+    case actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_FAILED: {
       return {
         ...state,
         Loading: false,
-        setGroupwithMeetingID: null,
+        meetingDataRoomMapFolderID: 0,
         ResponseMessage: action.message,
       };
     }
+
+    case actions.UPDATE_MEETING_USERS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.UPDATE_MEETING_USERS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     default: {
       return { ...state };
     }
