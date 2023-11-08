@@ -1392,6 +1392,12 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.UPDATE_MEETING_USERS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
     case actions.SCHEDULE_MEETING_ON_SELECT_DATE_INIT: {
       return {
         ...state,
@@ -1446,6 +1452,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: true,
       };
     }
+
     case actions.GETMEETINGBYGROUPID_SUCCESS: {
       return {
         ...state,
