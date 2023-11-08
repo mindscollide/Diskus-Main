@@ -49,6 +49,8 @@ const ParentAgenda = ({
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
   currentMeeting,
+  fileForSend,
+  setFileForSend,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -715,11 +717,15 @@ const ParentAgenda = ({
                                           setRows={setRows}
                                           rows={rows}
                                           parentId={`parent-${data.ID}`}
+                                          setFileForSend={setFileForSend}
+                                          fileForSend={fileForSend}
                                         />
                                         <DefaultDragger
                                           setRows={setRows}
                                           rows={rows}
                                           index={index}
+                                          fileForSend={fileForSend}
+                                          setFileForSend={setFileForSend}
                                         />
                                       </>
                                     ) : (
@@ -727,6 +733,8 @@ const ParentAgenda = ({
                                         setRows={setRows}
                                         rows={rows}
                                         index={index}
+                                        fileForSend={fileForSend}
+                                        setFileForSend={setFileForSend}
                                       />
                                     )}
                                   </>

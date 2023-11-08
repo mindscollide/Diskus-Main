@@ -9,16 +9,45 @@ import {
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
 
-const Documents = ({ data, index, setRows, rows, parentId }) => {
+const Documents = ({
+  data,
+  index,
+  setRows,
+  rows,
+  parentId,
+  setFileForSend,
+  fileForSend,
+}) => {
   const [files, setfiles] = useState([]);
 
-  const CrossDocument = (fileIndex) => {
+  const CrossDocument = (fileIndex, fileDataProp) => {
+    console.log(fileDataProp, "fileDataPropfileDataProp");
     let optionscross = [...rows];
     optionscross[index].files.splice(fileIndex, 1);
-    console.log("optionscrossoptionscross", optionscross);
-    // setfiles(optionscross);
     setRows(optionscross);
+    setFileForSend((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) => fileSend.name !== fileDataProp.DisplayAttachmentName
+      )
+    );
   };
+  console.log("fileDataPropfileDataProp", fileForSend);
+
+  // const handleRemoveFile = (data) => {
+  //   setFileForSend((prevFiles) =>
+  //     prevFiles.filter(
+  //       (fileSend) => fileSend.name !== data.DisplayAttachmentName
+  //     )
+  //   );
+
+  //   setFileAttachments((prevFiles) =>
+  //     prevFiles.filter(
+  //       (fileSend) =>
+  //         fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+  //     )
+  //   );
+  // };
+
   return (
     <>
       <Row key={index + 5}>
@@ -73,7 +102,7 @@ const Documents = ({ data, index, setRows, rows, parentId }) => {
                                       height="15px"
                                       className="cursor-pointer"
                                       onClick={() => {
-                                        CrossDocument(index);
+                                        CrossDocument(index, filesData);
                                       }}
                                     />
                                   </Col>
