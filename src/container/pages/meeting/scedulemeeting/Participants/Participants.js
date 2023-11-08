@@ -545,7 +545,7 @@ const Participants = ({
               (ediorRole.role === "Agenda Contributor" &&
                 isEditMeeting === true) ? null : (
                 <Button
-                  text={t("Published")}
+                  text={t("Publish")}
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />

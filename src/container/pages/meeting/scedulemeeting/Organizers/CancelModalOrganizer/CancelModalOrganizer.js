@@ -7,6 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
+import {
+  editMeetingFlag,
+  saveMeetingFlag,
+} from "../../../../../../store/actions/MeetingOrganizers_action";
 
 const CancelModalOrganizer = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
@@ -19,7 +23,10 @@ const CancelModalOrganizer = ({ setSceduleMeeting }) => {
   };
 
   const handleYesFunctionality = () => {
+    dispatch(showCancelModalOrganizers(false));
     setSceduleMeeting(false);
+    dispatch(saveMeetingFlag(false));
+    dispatch(editMeetingFlag(false));
   };
 
   return (

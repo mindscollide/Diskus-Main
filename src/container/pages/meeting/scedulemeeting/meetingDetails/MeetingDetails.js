@@ -234,85 +234,87 @@ const MeetingDetails = ({
   };
 
   const handleUpdateNext = () => {
-    // setorganizers(true);
-    // setmeetingDetails(false);
+    setmeetingDetails(false);
+    setorganizers(true);
     //Enable the Error Handling From here
     // setSaveMeeting(!saveMeeting);
-    if (
-      (Number(ediorRole.status) === 9 ||
-        Number(ediorRole.status) === 8 ||
-        Number(ediorRole.status) === 10) &&
-      ediorRole.role === "Organizer" &&
-      isEditMeeting === true
-    ) {
-      setorganizers(true);
-      setmeetingDetails(false);
-    } else {
-      let newArr = [];
-      let newReminderData = [];
-      if (meetingDetails.ReminderFrequency !== 0) {
-        newReminderData.push(meetingDetails.ReminderFrequency);
-      }
-      if (meetingDetails.ReminderFrequencyTwo !== 0) {
-        newReminderData.push(meetingDetails.ReminderFrequencyTwo);
-      }
-      if (meetingDetails.ReminderFrequencyThree !== 0) {
-        newReminderData.push(meetingDetails.ReminderFrequencyThree);
-      }
-      rows.map((data, index) => {
-        newArr.push({
-          MeetingDate: data.selectedOption,
-          StartTime: data.startDate,
-          EndTime: data.endDate,
-        });
-      });
 
-      let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-      if (
-        meetingDetails.MeetingTitle !== "" &&
-        meetingDetails.MeetingType !== 0 &&
-        meetingDetails.Location !== "" &&
-        meetingDetails.Description !== "" &&
-        newArr.length > 0 &&
-        newReminderData.length > 0 &&
-        meetingDetails.Notes !== "" &&
-        meetingDetails.Link !== ""
-      ) {
-        let data = {
-          MeetingDetails: {
-            MeetingTitle: meetingDetails.MeetingTitle,
-            MeetingType: meetingDetails.MeetingType,
-            Location: meetingDetails.Location,
-            Description: meetingDetails.Description,
-            IsVideoChat: meetingDetails.IsVideoCall,
-            IsTalkGroup: meetingDetails.groupChat,
-            OrganizationId: organizationID,
-            MeetingDates: newArr,
-            MeetingReminders: newReminderData,
-            Notes: meetingDetails.Notes,
-            AllowRSVP: meetingDetails.AllowRSPV,
-            NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
-            ReucurringMeetingID: meetingDetails.RecurringOptions,
-            VideoURL: meetingDetails.Link,
-            MeetingStatusID: 11,
-          },
-        };
+    //Previous Work on Meeting Details
+    // if (
+    //   (Number(ediorRole.status) === 9 ||
+    //     Number(ediorRole.status) === 8 ||
+    //     Number(ediorRole.status) === 10) &&
+    //   ediorRole.role === "Organizer" &&
+    //   isEditMeeting === true
+    // ) {
+    //   setorganizers(true);
+    //   setmeetingDetails(false);
+    // } else {
+    //   let newArr = [];
+    //   let newReminderData = [];
+    //   if (meetingDetails.ReminderFrequency !== 0) {
+    //     newReminderData.push(meetingDetails.ReminderFrequency);
+    //   }
+    //   if (meetingDetails.ReminderFrequencyTwo !== 0) {
+    //     newReminderData.push(meetingDetails.ReminderFrequencyTwo);
+    //   }
+    //   if (meetingDetails.ReminderFrequencyThree !== 0) {
+    //     newReminderData.push(meetingDetails.ReminderFrequencyThree);
+    //   }
+    //   rows.map((data, index) => {
+    //     newArr.push({
+    //       MeetingDate: data.selectedOption,
+    //       StartTime: data.startDate,
+    //       EndTime: data.endDate,
+    //     });
+    //   });
 
-        dispatch(
-          SaveMeetingDetialsNewApiFunction(
-            navigate,
-            t,
-            data,
-            setSceduleMeeting,
-            setorganizers,
-            setmeetingDetails,
-            3
-          )
-        );
-      } else {
-        seterror(true);
-      }
-    }
+    //   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    //   if (
+    //     meetingDetails.MeetingTitle !== "" &&
+    //     meetingDetails.MeetingType !== 0 &&
+    //     meetingDetails.Location !== "" &&
+    //     meetingDetails.Description !== "" &&
+    //     newArr.length > 0 &&
+    //     newReminderData.length > 0 &&
+    //     meetingDetails.Notes !== "" &&
+    //     meetingDetails.Link !== ""
+    //   ) {
+    //     let data = {
+    //       MeetingDetails: {
+    //         MeetingTitle: meetingDetails.MeetingTitle,
+    //         MeetingType: meetingDetails.MeetingType,
+    //         Location: meetingDetails.Location,
+    //         Description: meetingDetails.Description,
+    //         IsVideoChat: meetingDetails.IsVideoCall,
+    //         IsTalkGroup: meetingDetails.groupChat,
+    //         OrganizationId: organizationID,
+    //         MeetingDates: newArr,
+    //         MeetingReminders: newReminderData,
+    //         Notes: meetingDetails.Notes,
+    //         AllowRSVP: meetingDetails.AllowRSPV,
+    //         NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
+    //         ReucurringMeetingID: meetingDetails.RecurringOptions,
+    //         VideoURL: meetingDetails.Link,
+    //         MeetingStatusID: 11,
+    //       },
+    //     };
+
+    //     dispatch(
+    //       SaveMeetingDetialsNewApiFunction(
+    //         navigate,
+    //         t,
+    //         data,
+    //         setSceduleMeeting,
+    //         setorganizers,
+    //         setmeetingDetails,
+    //         3
+    //       )
+    //     );
+    //   } else {
+    //     seterror(true);
+    //   }
+    // }
   };
 
   const handlePublish = () => {
