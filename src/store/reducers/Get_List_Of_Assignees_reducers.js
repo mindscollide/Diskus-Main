@@ -105,7 +105,7 @@ const assigneesReducer = (state = initialState, action) => {
     case actions.VIEW_MEETING_FAIL:
       return {
         ...state,
-        // Loading: false,
+        Loading: false,
         // ResponseMessage:
         //   action.response.responseMessage !== undefined
         //     ? action.response.responseMessage
@@ -116,7 +116,7 @@ const assigneesReducer = (state = initialState, action) => {
     case actions.CLEARE_STATE:
       return {
         ...state,
-        // Loading: false,
+        Loading: false,
         ResponseMessage: "",
         ViewMeetingDetails: [],
         CancelMeetingData: [],
@@ -135,7 +135,7 @@ const assigneesReducer = (state = initialState, action) => {
     case actions.CANCEL_MEETING_SUCCESS:
       return {
         ...state,
-        // Loading: false,
+        Loading: false,
         ResponseMessage: action.message,
         CancelMeetingData: action.response,
       };
@@ -159,7 +159,7 @@ const assigneesReducer = (state = initialState, action) => {
     case actions.START_MEETING_SUCCESS:
       return {
         ...state,
-        // Loading: false,
+        Loading: false,
         ResponseMessage: action.message,
         StartMeetingData: action.response,
       };

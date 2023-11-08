@@ -450,6 +450,11 @@ const Minutes = ({
     // Ensure data.minutesDetails is not undefined or null before setting the state
   };
 
+  const handlegoPrevTab = () => {
+    setMeetingMaterial(true);
+    setMinutes(false);
+  };
+
   console.log(updateData, "updateDataupdateData");
 
   //For getting documents Agains Single Minutes Saved
@@ -1141,6 +1146,7 @@ const Minutes = ({
               <Button
                 text={t("Previous")}
                 className={styles["Previous_Button"]}
+                onClick={handlegoPrevTab}
               />
               <Button text={t("Next")} className={styles["Button_General"]} />
             </Col>

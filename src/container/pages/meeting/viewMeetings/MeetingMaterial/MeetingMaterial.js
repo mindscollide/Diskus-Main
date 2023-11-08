@@ -278,7 +278,11 @@ const MeetingMaterial = ({
   const handleCancelButton = () => {
     dispatch(showCancelMeetingMaterial(true));
   };
+  const handleClickSave = () => {
+    setMeetingMaterial(false);
 
+    setMinutes(true);
+  };
   const handleSaveAndNext = () => {
     setMeetingMaterial(false);
     setMinutes(true);
@@ -312,6 +316,11 @@ const MeetingMaterial = ({
             text={t("Cancel")}
             className={styles["Cancel_Classname"]}
             onClick={handleCancelButton}
+          />
+          <Button
+            text={t("Save")}
+            onClick={handleClickSave}
+            className={styles["Save_Classname"]}
           />
           {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} />
           <Button

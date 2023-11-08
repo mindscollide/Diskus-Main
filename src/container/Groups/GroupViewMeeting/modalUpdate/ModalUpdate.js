@@ -1534,7 +1534,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-    await dispatch(UpdateMeeting(navigate, newData, t));
+    await dispatch(UpdateMeeting(navigate, newData, t, 2));
     await setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
@@ -1596,11 +1596,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
     await setIsMinutes(false);
     await setIsAgenda(false);
     await setIsAttendees(false);
-    let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
+    let meetingID = createMeeting.MeetingID;
     let Data = {
       MeetingID: meetingID,
     };
-    await dispatch(CancelMeeting(navigate, Data, t));
+    await dispatch(CancelMeeting(navigate, Data, t, 2));
     setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
