@@ -27,6 +27,7 @@ const ViewMeetingModal = ({
   setAdvanceMeetingModalID,
   unPublish,
   isOrganisers,
+  currentMeeting,
 }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -40,7 +41,7 @@ const ViewMeetingModal = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
-  console.log("isOrganisers",isOrganisers);
+  console.log("isOrganisers", isOrganisers);
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
     setorganizers(false);
@@ -347,6 +348,7 @@ const ViewMeetingModal = ({
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                     setMeetingMaterial={setMeetingMaterial}
                     setMinutes={setMinutes}
+                    currentMeeting={currentMeeting}
                   />
                 )}
                 {unPublish ? null : (
@@ -366,7 +368,10 @@ const ViewMeetingModal = ({
                         setAttendance={setAttendance}
                       />
                     )}
-                    {attendance && <Attendence />}
+
+                    {attendance && (
+                      <Attendence currentMeeting={currentMeeting} />
+                    )}
                   </>
                 )}
               </Paper>

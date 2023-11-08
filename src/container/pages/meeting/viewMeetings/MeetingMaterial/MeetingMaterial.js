@@ -21,6 +21,7 @@ const MeetingMaterial = ({
   setSceduleMeeting,
   setMeetingMaterial,
   setMinutes,
+  currentMeeting,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -272,7 +273,7 @@ const MeetingMaterial = ({
   // Api request on useEffect
   useEffect(() => {
     let meetingMaterialData = {
-      MeetingID: meetingMaterialID,
+      MeetingID: Number(currentMeeting),
     };
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
   }, []);
