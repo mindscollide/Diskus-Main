@@ -462,6 +462,7 @@ const MeetingDetails = ({
           meetingDetails
         )
       );
+      localStorage.setItem("MeetingTitle", meetingDetails.MeetingTitle);
     } else {
       seterror(true);
     }

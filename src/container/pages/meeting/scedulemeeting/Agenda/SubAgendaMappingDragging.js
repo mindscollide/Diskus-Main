@@ -54,6 +54,8 @@ const SubAgendaMappingDragging = ({
   setSubExpand,
   openAdvancePermissionModal,
   openVoteMOdal,
+  fileForSend,
+  setFileForSend,
 }) => {
   const { t } = useTranslation();
   //Timepicker
@@ -830,7 +832,7 @@ const SubAgendaMappingDragging = ({
                                                         : false
                                                     }
                                                   >
-                                                    <Radio value="1">
+                                                    <Radio value={1}>
                                                       <span
                                                         className={
                                                           styles[
@@ -841,7 +843,7 @@ const SubAgendaMappingDragging = ({
                                                         {t("Document")}
                                                       </span>
                                                     </Radio>
-                                                    <Radio value="2">
+                                                    <Radio value={2}>
                                                       <span
                                                         className={
                                                           styles[
@@ -852,7 +854,7 @@ const SubAgendaMappingDragging = ({
                                                         {t("URL")}
                                                       </span>
                                                     </Radio>
-                                                    <Radio value="3">
+                                                    <Radio value={3}>
                                                       <span
                                                         className={
                                                           styles[
@@ -967,7 +969,7 @@ const SubAgendaMappingDragging = ({
                                                     ref={provided.innerRef}
                                                   >
                                                     {subAgendaData.subSelectRadio ===
-                                                    "1" ? (
+                                                    1 ? (
                                                       <>
                                                         {subAgendaData.Subfiles
                                                           .length > 0 ? (
@@ -983,6 +985,12 @@ const SubAgendaMappingDragging = ({
                                                                 subIndex
                                                               }
                                                               parentId={`parent-${data.ID}`}
+                                                              fileForSend={
+                                                                fileForSend
+                                                              }
+                                                              setFileForSend={
+                                                                setFileForSend
+                                                              }
                                                             />
                                                             <SubDedaultDragger
                                                               setRows={setRows}
@@ -990,6 +998,12 @@ const SubAgendaMappingDragging = ({
                                                               index={index}
                                                               subIndex={
                                                                 subIndex
+                                                              }
+                                                              fileForSend={
+                                                                fileForSend
+                                                              }
+                                                              setFileForSend={
+                                                                setFileForSend
                                                               }
                                                             />
                                                           </>
@@ -999,11 +1013,17 @@ const SubAgendaMappingDragging = ({
                                                             rows={rows}
                                                             index={index}
                                                             subIndex={subIndex}
+                                                            fileForSend={
+                                                              fileForSend
+                                                            }
+                                                            setFileForSend={
+                                                              setFileForSend
+                                                            }
                                                           />
                                                         )}
                                                       </>
                                                     ) : subAgendaData.subSelectRadio ===
-                                                      "2" ? (
+                                                      2 ? (
                                                       <SubUrls
                                                         subAgendaData={
                                                           subAgendaData
@@ -1014,7 +1034,7 @@ const SubAgendaMappingDragging = ({
                                                         subIndex={subIndex}
                                                       />
                                                     ) : subAgendaData.subSelectRadio ===
-                                                      "3" ? (
+                                                      3 ? (
                                                       <SubRequestContributor
                                                         subAgendaData={
                                                           subAgendaData

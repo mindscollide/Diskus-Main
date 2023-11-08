@@ -16,7 +16,7 @@ import whitepresentIcon from "../../../../../assets/images/whitepresent.png";
 import whiteAbsentICon from "../../../../../assets/images/whiteabsent.png";
 import whiteworkhome from "../../../../../assets/images/whitehomework.png";
 import { useSelector } from "react-redux";
-const Attendence = ({ currentMeeting }) => {
+const Attendence = ({ advanceMeetingModalID }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -245,7 +245,7 @@ const Attendence = ({ currentMeeting }) => {
   // dispatch Api in useEffect
   useEffect(() => {
     let meetingData = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(getAllAttendanceMeetingApi(navigate, t, meetingData));
   }, []);
@@ -261,7 +261,7 @@ const Attendence = ({ currentMeeting }) => {
     });
     let Data = {
       MeetingAttendance: newData,
-      MeetingID: 1785,
+      MeetingID: Number(advanceMeetingModalID),
     };
     console.log(Data, "DataData");
     dispatch(saveMeetingAttendanceApi(navigate, t, Data));

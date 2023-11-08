@@ -7,7 +7,10 @@ import { Button, Notification } from "../../../../../components/elements";
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../assets/images/blue Camera.svg";
 import { useDispatch } from "react-redux";
-import { ClearMessegeMeetingdetails } from "../../../../../store/actions/NewMeetingActions";
+import {
+  ClearMessegeMeetingdetails,
+  GetAllMeetingDetailsApiFunc,
+} from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
@@ -20,7 +23,7 @@ const ViewMeetingDetails = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
-  isOrganisers,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -73,7 +76,13 @@ const ViewMeetingDetails = ({
     Location: "",
     IsVideoCall: false,
   });
-
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    console.log("GetAllMeetingDetailsApiFunc");
+    dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+  }, []);
   const handleUpdateNext = () => {
     setmeetingDetails(false);
     setorganizers(true);
@@ -210,7 +219,7 @@ const ViewMeetingDetails = ({
       {meetingStatus === 10 && (
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-            {isOrganisers ? (
+            {Number(ediorRole.status) === 10 && ediorRole.role === "Organizer" ? (
               <Button
                 text={t("End-meeting")}
                 className={styles["LeaveMeetinButton"]}

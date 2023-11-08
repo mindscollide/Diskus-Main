@@ -3,7 +3,11 @@ import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
 import { removePropertiesFromObject } from "../../../../../commen/functions/validations";
 import { Col, Row } from "react-bootstrap";
-import { Button } from "../../../../../components/elements";
+import {
+  Button,
+  Loader,
+  Notification,
+} from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Upload } from "antd";
@@ -18,6 +22,8 @@ import {
 import {
   CreateUpdateMeetingDataRoomMap,
   UploadDocumentsAgendaApi,
+  AddUpdateAdvanceMeetingAgenda,
+  clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
@@ -39,15 +45,24 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
 
   const navigate = useNavigate();
 
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
-  );
+  let currentUserID = Number(localStorage.getItem("userID"));
+
+  const { NewMeetingreducer, MeetingAgendaReducer, DataRoomReducer } =
+    useSelector((state) => state);
+
+  let meetingTitle = localStorage.getItem("MeetingTitle");
+
   const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
   const [fileForSend, setFileForSend] = useState([]);
 
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
+
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
 
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
@@ -61,27 +76,36 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
       presenterName: "",
       startDate: null,
       endDate: null,
-      selectedRadio: "1",
+      selectedRadio: 1,
       urlFieldMain: "",
       requestContributorURl: 0,
       MainNote: "",
       requestContributorURlName: "",
       files: [],
+      IsLocked: false,
+      VoteOwner: null,
+      IsAttachment: false,
+      UserID: currentUserID,
       subAgenda: [
         {
           SubAgendaID: getRandomUniqueNumber().toString(),
           SubTitle: "",
           description: "",
+          AgendaVotingID: 0,
           presenterID: null,
           presenterName: "",
           startDate: null,
           endDate: null,
-          subSelectRadio: "1",
+          subSelectRadio: 1,
           SubAgendaUrlFieldRadio: "",
           subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           Subfiles: [],
+          IsLocked: false,
+          VoteOwner: null,
+          IsAttachment: false,
+          UserID: currentUserID,
         },
       ],
     },
@@ -101,12 +125,16 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
       presenterName: "",
       startDate: null,
       endDate: null,
-      selectedRadio: "1",
+      selectedRadio: 1,
       urlFieldMain: "",
       requestContributorURl: 0,
       MainNote: "",
       requestContributorURlName: "",
       files: [],
+      IsLocked: false,
+      VoteOwner: null,
+      IsAttachment: false,
+      UserID: currentUserID,
       subAgenda: [
         {
           SubAgendaID: getRandomUniqueNumber().toString(),
@@ -116,12 +144,17 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
           presenterName: "",
           startDate: null,
           endDate: null,
-          subSelectRadio: "1",
+          subSelectRadio: 1,
+          AgendaVotingID: 0,
           SubAgendaUrlFieldRadio: "",
           subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           Subfiles: [],
+          IsLocked: false,
+          VoteOwner: null,
+          IsAttachment: false,
+          UserID: currentUserID,
         },
       ],
     };
@@ -153,9 +186,13 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
     let getFolderIDData = {
       MeetingID: currentMeeting,
       MeetingTitle:
-        NewMeetingreducer.getAllMeetingDetails.length !== 0
+        NewMeetingreducer.getAllMeetingDetails !== null
           ? NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails
               .meetingTitle
+          : meetingTitle !== null &&
+            meetingTitle !== undefined &&
+            meetingTitle !== ""
+          ? meetingTitle
           : "",
       IsUpdateFlow: false,
     };
@@ -190,23 +227,19 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
 
   function removeProperties(data) {
     if (Array.isArray(data)) {
-      // If data is an array, recursively process each element
       return data.map((item) => removeProperties(item));
     } else if (typeof data === "object" && data !== null) {
-      // If data is an object and not null, filter out the properties you want to remove
       const {
         presenterName,
-        requestContributorURl,
+        requestContributorURlName,
         subAgendarequestContributorUrlName,
         ...rest
       } = data;
-      // Recursively process the remaining properties
       for (const key in rest) {
         rest[key] = removeProperties(rest[key]);
       }
       return rest;
     } else {
-      // If data is neither an array nor an object, return it as is
       return data;
     }
   }
@@ -227,15 +260,16 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
     await Promise.all(uploadPromises);
 
     let cleanedData = removeProperties(rows);
-
     let capitalizedData = capitalizeKeys(cleanedData);
 
     let mappingObject = {};
     newFolder.forEach((folder) => {
+      console.log("Save Agenda Data folderfolder", folder);
       mappingObject[folder.DisplayAttachmentName] = folder.pK_FileID.toString();
     });
+    console.log("Save Agenda Data capitalizedData", capitalizedData);
 
-    // Update capitalizedData with the mappingObject
+    // Update Files property in capitalizedData
     let updatedData = capitalizedData.map((item) => {
       let updatedFiles = item.Files.map((file) => {
         let newAttachmentName = mappingObject[file.DisplayAttachmentName];
@@ -249,17 +283,62 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
         }
       });
 
+      // Update Subfiles property in SubAgenda objects
+      let updatedSubAgenda = item.SubAgenda.map((subAgenda) => {
+        let updatedSubFiles = subAgenda.Subfiles.map((subFile) => {
+          let newAttachmentName = mappingObject[subFile.DisplayAttachmentName];
+          if (newAttachmentName) {
+            return {
+              ...subFile,
+              OriginalAttachmentName: newAttachmentName,
+            };
+          } else {
+            return subFile;
+          }
+        });
+
+        return {
+          ...subAgenda,
+          Subfiles: updatedSubFiles,
+        };
+      });
+
       return {
         ...item,
         Files: updatedFiles,
+        SubAgenda: updatedSubAgenda,
       };
     });
 
     console.log("Save Agenda Data", updatedData);
+    let Data = {
+      MeetingID: currentMeeting,
+      AgendaList: updatedData,
+    };
+    dispatch(AddUpdateAdvanceMeetingAgenda(Data, navigate, t));
   };
+  console.log(open, "openopenopen");
+  // useEffect(() => {
+  //   console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
+  //   if (MeetingAgendaReducer.ResponseMessage) {
+  //     setTimeout(
+  //       setOpen({
+  //         ...open,
+  //         flag: true,
+  //         message: "Record Saved",
+  //       }),
+  //       3000
+  //     );
+  //   }
+  //   // dispatch(clearResponseMessage(""));
+  // }, [MeetingAgendaReducer.ResponseMessage]);
 
   console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
-  console.log("MeetingAgendaReducerMeetingAgendaReducer", MeetingAgendaReducer);
+  console.log(
+    "MeetingAgendaReducerMeetingAgendaReducer",
+    MeetingAgendaReducer,
+    DataRoomReducer
+  );
 
   return (
     <>
@@ -438,6 +517,11 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
       {NewMeetingreducer.cancelAgenda && (
         <CancelAgenda setSceduleMeeting={setSceduleMeeting} />
       )}
+      {DataRoomReducer.Loading === true ||
+      MeetingAgendaReducer.Loading === true ? (
+        <Loader />
+      ) : null}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

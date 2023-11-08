@@ -12,6 +12,7 @@ import {
   uploadDocumentsRequestMethod,
   getAdvanceMeetingAgendabyMeetingID,
   createUpdateMeetingDataRoomMap,
+  addUpdateAdvanceMeetingAgenda,
 } from "../../commen/apis/Api_config";
 import { meetingApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 
@@ -993,6 +994,100 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
   };
 };
 
+const addUpdateAdvanceMeetingAgenda_init = () => {
+  return {
+    type: actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_INIT,
+  };
+};
+const addUpdateAdvanceMeetingAgenda_success = (response, message) => {
+  return {
+    type: actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const addUpdateAdvanceMeetingAgenda_fail = (message) => {
+  return {
+    type: actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_FAIL,
+    message: message,
+  };
+};
+const AddUpdateAdvanceMeetingAgenda = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(addUpdateAdvanceMeetingAgenda_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", addUpdateAdvanceMeetingAgenda.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAgendaVotingDetails(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AddUpdateAdvanceMeetingAgenda_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                addUpdateAdvanceMeetingAgenda_success(
+                  response.data.responseResult,
+                  t("Record-saved")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AddUpdateAdvanceMeetingAgenda_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                addUpdateAdvanceMeetingAgenda_fail(t("No-records-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AddUpdateAdvanceMeetingAgenda_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(addUpdateAdvanceMeetingAgenda_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -1005,4 +1100,5 @@ export {
   CreateUpdateMeetingDataRoomMap,
   SaveFilesAgendaApi,
   UploadDocumentsAgendaApi,
+  AddUpdateAdvanceMeetingAgenda,
 };

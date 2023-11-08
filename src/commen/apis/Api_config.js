@@ -1238,6 +1238,10 @@ const UpdateMeetingUserhit = {
   RequestMethod: "ServiceManager.UpdateMeetingUsers",
 };
 
+const addUpdateAdvanceMeetingAgenda = {
+  RequestMethod: "ServiceManager.AddUpdateAdvanceMeetingAgenda",
+};
+
 export {
   setMeetingbyCommitteeIDRM,
   setMeetingbyGroupIDRM,
@@ -1569,4 +1573,5 @@ export {
   DeleteAgendaWiseDocuments,
   CreateUpdateMeetingDataroomMapped,
   UpdateMeetingUserhit,
+  addUpdateAdvanceMeetingAgenda,
 };

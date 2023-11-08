@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
-import {
-  Button,
-  TextField,
-  Loader,
-  Notification,
-} from "../../../../components/elements";
+import { Button } from "../../../../components/elements";
 import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";
 import Participants from "./Participants/Participants";
@@ -19,14 +14,14 @@ import ProposedMeetingDate from "./Participants/ProposedMeetingDate/ProposedMeet
 import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
-import ViewParticipantsDates from "./Participants/ViewParticipantsDates/ViewParticipantsDates";
 import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
   unPublish,
-  isOrganisers,
+  ediorRole,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -40,7 +35,13 @@ const ViewMeetingModal = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
-  console.log("isOrganisers",isOrganisers);
+
+  useEffect(() => {
+    return () => {
+      setEdiorRole({ status: null, role: null });
+    };
+  }, []);
+
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
     setorganizers(false);
@@ -170,7 +171,7 @@ const ViewMeetingModal = ({
     setmeetingDetails(false);
     setPolls(false);
   };
-
+  console.log("ediorRole", ediorRole);
   return (
     <>
       {proposedMeetingDates ? (
@@ -251,35 +252,46 @@ const ViewMeetingModal = ({
                       }
                       onClick={showMeetingMaterial}
                     />
-                    {unPublish ? null : (
-                      <>
-                        <Button
-                          text={t("Minutes")}
-                          className={
-                            minutes === true
-                              ? styles["Schedule_meetings_options_active"]
-                              : styles["Schedule_meetings_options"]
-                          }
-                          onClick={showMinutes}
-                        />
-                        <Button
-                          text={t("Actions")}
-                          className={
-                            actionsPage === true
-                              ? styles["Schedule_meetings_options_active"]
-                              : styles["Schedule_meetings_options"]
-                          }
-                          onClick={showActions}
-                        />
-                        <Button
-                          text={t("Polls")}
-                          className={
-                            polls === true
-                              ? styles["Schedule_meetings_options_active"]
-                              : styles["Schedule_meetings_options"]
-                          }
-                          onClick={ShowPolls}
-                        />
+                    <>
+                      <Button
+                        text={t("Minutes")}
+                        className={
+                          minutes === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showMinutes}
+                        disableBtn={unPublish ? true : false}
+                      />
+                      <Button
+                        text={t("Actions")}
+                        className={
+                          actionsPage === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={showActions}
+                        disableBtn={true}
+                      />
+                      <Button
+                        text={t("Polls")}
+                        className={
+                          polls === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
+                        onClick={ShowPolls}
+                        disableBtn={
+                          unPublish
+                            ? true
+                            : Number(ediorRole.status) === 1 ||
+                              Number(ediorRole.status) === 11 ||
+                              Number(ediorRole.status) === 12
+                            ? true
+                            : false
+                        }
+                      />
+                      {Number(ediorRole.status) === 10 ? (
                         <Button
                           text={t("Attendence")}
                           className={
@@ -289,11 +301,11 @@ const ViewMeetingModal = ({
                           }
                           onClick={showAttendance}
                         />
-                      </>
-                    )}
+                      ) : null}
+                    </>
+                    {/* )} */}
                   </Col>
                 </Row>
-
                 {meetingDetails && (
                   <ViewMeetingDetails
                     setorganizers={setorganizers}
@@ -301,7 +313,7 @@ const ViewMeetingModal = ({
                     advanceMeetingModalID={advanceMeetingModalID}
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                     setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                    isOrganisers={isOrganisers}
+                    ediorRole={ediorRole}
                   />
                 )}
                 {organizers && (
@@ -311,6 +323,7 @@ const ViewMeetingModal = ({
                     advanceMeetingModalID={advanceMeetingModalID}
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                     setAgendaContributors={setAgendaContributors}
+                    ediorRole={ediorRole}
                   />
                 )}
                 {agendaContributors && (
@@ -320,6 +333,7 @@ const ViewMeetingModal = ({
                     setParticipants={setParticipants}
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                     advanceMeetingModalID={advanceMeetingModalID}
+                    ediorRole={ediorRole}
                   />
                 )}
                 {participants && (
@@ -329,44 +343,68 @@ const ViewMeetingModal = ({
                     setAgendaContributors={setAgendaContributors}
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                     advanceMeetingModalID={advanceMeetingModalID}
+                    ediorRole={ediorRole}
                   />
                 )}
-
                 {agenda && (
                   <Agenda
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                    setorganizers={setorganizers}
+                    setMeetingMaterial={setMeetingMaterial}
                     setParticipants={setParticipants}
                     setAgenda={setAgenda}
-                    setMeetingMaterial={setMeetingMaterial}
                     advanceMeetingModalID={advanceMeetingModalID}
+                    ediorRole={ediorRole}
                   />
                 )}
                 {meetingMaterial && (
                   <MeetingMaterial
                     setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                    advanceMeetingModalID={advanceMeetingModalID}
                     setMeetingMaterial={setMeetingMaterial}
+                    setAgenda={setAgenda}
                     setMinutes={setMinutes}
+                    ediorRole={ediorRole}
                   />
                 )}
                 {unPublish ? null : (
                   <>
-                    {minutes && <Minutes setMinutes={setMinutes} />}
+                    {minutes && (
+                      <Minutes
+                        setMinutes={setMinutes}
+                        setactionsPage={setactionsPage}
+                        setMeetingMaterial={setMeetingMaterial}
+                        ediorRole={ediorRole}
+                        advanceMeetingModalID={advanceMeetingModalID}
+                      />
+                    )}
                     {actionsPage && (
                       <Actions
-                        setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                         setPolls={setPolls}
+                        setMinutes={setMinutes}
                         setactionsPage={setactionsPage}
+                        ediorRole={ediorRole}
+                        advanceMeetingModalID={advanceMeetingModalID}
+                        setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+                        setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                       />
                     )}
                     {polls && (
                       <Polls
-                        setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                         setPolls={setPolls}
+                        setactionsPage={setactionsPage}
                         setAttendance={setAttendance}
+                        ediorRole={ediorRole}
+                        advanceMeetingModalID={advanceMeetingModalID}
+                        setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+                        setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                       />
                     )}
-                    {attendance && <Attendence />}
+                    {attendance && (
+                      <Attendence
+                        ediorRole={ediorRole}
+                        advanceMeetingModalID={advanceMeetingModalID}
+                      />
+                    )}
                   </>
                 )}
               </Paper>
