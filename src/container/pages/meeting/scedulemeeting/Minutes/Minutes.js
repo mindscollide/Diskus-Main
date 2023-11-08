@@ -277,7 +277,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   //onChange function for React Quill
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText != "") {
+    if (source === "user" && plainText) {
       console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
@@ -285,16 +285,6 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
           value: content,
           errorMessage: "",
           errorStatus: false,
-        },
-      });
-    } else {
-      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: true,
         },
       });
     }
@@ -421,9 +411,9 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   //Edit Button Function
   const handleEditFunc = async (data) => {
     setupdateData(data);
-    console.log("handleEditFunccalled");
+    console.log(data, "handleEditFunccalled");
     console.log(data, "dataminutesDetails");
-    if (data.minutesDetails !== undefined && data.minutesDetails !== null) {
+    if (data.minutesDetails !== "") {
       console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         Description: {
@@ -443,10 +433,9 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
       RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Retrive, t)
     );
     // Ensure data.minutesDetails is not undefined or null before setting the state
-    
   };
 
-  console.log(updateData, "updateDataupdateData");
+  console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
 
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
@@ -918,7 +907,11 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                             ...
                                           </>
                                         ) : (
-                                          <>{data.minutesDetails}</>
+                                          <div
+                                            dangerouslySetInnerHTML={{
+                                              __html: data.minutesDetails,
+                                            }}
+                                          ></div>
                                         )}
 
                                         <span

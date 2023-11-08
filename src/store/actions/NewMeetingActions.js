@@ -4685,6 +4685,12 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
               dispatch(
                 showDeleteGeneralMeetingDocumentsFailed(t("No-record-deleted"))
               );
+              let Erase = {
+                MinuteID: MinuteData.minuteID,
+              };
+              dispatch(
+                DeleteGeneralMinutesApiFunc(navigate, Erase, t, currentMeeting)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5605,7 +5611,9 @@ const UpdateMeetingUserApiFunc = (
                   IsParticipantsAddFlow: false,
                   NotificationMessage: "",
                 };
-                dispatch(SaveparticipantsApi(Data, navigate, t));
+                dispatch(
+                  SaveparticipantsApi(Data, navigate, t, currentMeeting)
+                );
               } else {
                 let Data = {
                   MeetingParticipants: newData,
