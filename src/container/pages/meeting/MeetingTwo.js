@@ -28,8 +28,7 @@ import DatePicker, { DateObject } from "react-multi-date-picker";
 import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useTranslation } from "react-i18next";
-import { Pagination, Tooltip } from "antd";
-import Select from "react-select";
+import { Tooltip } from "antd";
 import {
   Button,
   Table,
@@ -83,7 +82,7 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const { talkStateData, talkFeatureStates } = useSelector((state) => state);
+  const { talkStateData } = useSelector((state) => state);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -125,7 +124,6 @@ const NewMeeting = () => {
     OrganizerName: "",
     DateView: "",
   });
-  const [isOrganisers, setIsOrganisers] = useState(false);
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);

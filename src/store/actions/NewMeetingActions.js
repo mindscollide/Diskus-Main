@@ -2829,12 +2829,12 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
                 "FK_MeetingGeneralMinutesID"
               );
 
-              // let MeetingDocs = {
-              //   MDID: 1833,
-              // };
-              // dispatch(
-              //   DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
-              // );
+              let MeetingDocs = {
+                MDID: currentMeeting,
+              };
+              dispatch(
+                DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
+              );
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"

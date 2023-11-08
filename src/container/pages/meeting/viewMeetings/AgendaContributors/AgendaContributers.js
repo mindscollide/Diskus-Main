@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getAllAgendaContributorApi } from "../../../../../store/actions/NewMeetingActions";
-import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
@@ -226,7 +225,6 @@ const AgendaContributers = ({
           setMeetingDetails={setAgendaContributors}
         />
       )}
-      {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
     </>
   );
 };

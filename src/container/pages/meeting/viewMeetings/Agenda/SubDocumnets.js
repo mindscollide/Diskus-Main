@@ -10,19 +10,29 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option";
 import styles from "./Agenda.module.css";
 
-const SubDocumnets = ({ subAgendaData, parentId,setRows,rows,index,subIndex }) => {
+const SubDocumnets = ({
+  subAgendaData,
+  parentId,
+  setRows,
+  rows,
+  index,
+  subIndex,
+}) => {
   const handlesubAgendaCrossFiles = (subAgendaFilesIndex) => {
     let optionscross = [...rows];
-    optionscross[index].subAgenda[subIndex].Subfiles.splice(subAgendaFilesIndex, 1);
-    setRows(optionscross)
+    optionscross[index].subAgenda[subIndex].subfiles.splice(
+      subAgendaFilesIndex,
+      1
+    );
+    setRows(optionscross);
   };
   return (
     <Row>
       <Col lg={12} md={12} sm={12} className={styles["SubAgendaDocScroller"]}>
         <Row>
           <div className="d-flex gap-2 flex-wrap  mt-2">
-            {subAgendaData?.Subfiles?.length > 0
-              ? subAgendaData?.Subfiles?.map(
+            {subAgendaData?.subfiles?.length > 0
+              ? subAgendaData?.subfiles?.map(
                   (subAgendaFiles, subAgendaFilesIndex) => {
                     return (
                       <>
@@ -75,7 +85,11 @@ const SubDocumnets = ({ subAgendaData, parentId,setRows,rows,index,subIndex }) =
                                         height="19px"
                                         width="19px"
                                         className="cursor-pointer"
-                                        onClick={()=>handlesubAgendaCrossFiles(subAgendaFilesIndex)}
+                                        onClick={() =>
+                                          handlesubAgendaCrossFiles(
+                                            subAgendaFilesIndex
+                                          )
+                                        }
                                       />
                                     </Col>
                                   </Row>
