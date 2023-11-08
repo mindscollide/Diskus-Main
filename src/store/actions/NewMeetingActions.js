@@ -459,23 +459,23 @@ const SaveMeetingDetialsNewApiFunction = (
                   t("Record-found")
                 )
               );
-              let MappedData = {
-                MeetingID: response.data.responseResult.meetingID,
-                MeetingTitle: meetingDetails.MeetingTitle,
-                IsUpdateFlow: false,
-              };
-              console.log(MappedData, "MappedDataMappedData");
-              dispatch(
-                CreateUpdateMeetingDataRoomMapeedApiFunc(
-                  navigate,
-                  MappedData,
-                  t
-                )
-              );
 
               setCurrentMeetingID(response.data.responseResult.meetingID);
 
               if (viewValue === 1) {
+                let MappedData = {
+                  MeetingID: response.data.responseResult.meetingID,
+                  MeetingTitle: meetingDetails.MeetingTitle,
+                  IsUpdateFlow: false,
+                };
+                console.log(MappedData, "MappedDataMappedData");
+                dispatch(
+                  CreateUpdateMeetingDataRoomMapeedApiFunc(
+                    navigate,
+                    MappedData,
+                    t
+                  )
+                );
                 setSceduleMeeting(false);
               } else if (viewValue === 2) {
                 let MappedData = {
@@ -494,6 +494,20 @@ const SaveMeetingDetialsNewApiFunction = (
               } else if (viewValue === 3) {
                 setorganizers(true);
                 setmeetingDetails(false);
+              } else if (viewValue === 4) {
+                let MappedData = {
+                  MeetingID: response.data.responseResult.meetingID,
+                  MeetingTitle: meetingDetails.MeetingTitle,
+                  IsUpdateFlow: true,
+                };
+                console.log(MappedData, "MappedDataMappedData");
+                dispatch(
+                  CreateUpdateMeetingDataRoomMapeedApiFunc(
+                    navigate,
+                    MappedData,
+                    t
+                  )
+                );
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -5878,7 +5892,9 @@ const UpdateMeetingUserForOrganizers = (
                 IsOrganizerAddFlow: true,
                 NotificationMessage: rowsData[0].NotificationMessage,
               };
-              dispatch(SaveMeetingOrganizers(navigate, Data, t));
+              dispatch(
+                SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
+              );
               dispatch(saveMeetingFlag(false));
               dispatch(editMeetingFlag(false));
             } else if (
