@@ -13,12 +13,9 @@ import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import OrganizersViewPage from "./OrganizerViewPage/OrganizersViewPage";
 import {
   clearResponseMessage,
   GetAllMeetingOrganizers,
-  saveMeetingFlag,
-  editMeetingFlag,
 } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 
@@ -28,7 +25,7 @@ const Organizers = ({
   setorganizers,
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
-  ediorRole
+  ediorRole,
 }) => {
   const { t } = useTranslation();
 
@@ -46,7 +43,6 @@ const Organizers = ({
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
-  const [inputValues, setInputValues] = useState({});
 
   const currentOrganizerData = {
     displayPicture: "",
@@ -367,52 +363,42 @@ const Organizers = ({
 
   return (
     <>
-      {viewOrganizers ? (
-        <OrganizersViewPage />
-      ) : (
-        <>
-          <section className="position-relative">
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <Table
-                  column={MeetingColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={rowsData}
-                />
-              </Col>
-            </Row>
+      <section className="position-relative">
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <Table
+              column={MeetingColoumns}
+              scroll={{ y: "62vh" }}
+              pagination={false}
+              className="Polling_table"
+              rows={rowsData}
+            />
+          </Col>
+        </Row>
+      </section>
+      <Row>
+        <Col lg={12} md={12} sm={12}>
+          <section className={styles["Footer_button"]}>
+            <Button
+              text={t("Cancel")}
+              className={styles["Cancel_Organization"]}
+              onClick={handleCancelOrganizer}
+            />
+
+            <Button
+              text={t("Previous")}
+              className={styles["publish_button_Organization"]}
+              onClick={previousTabOrganizer}
+            />
+
+            <Button
+              text={t("Next")}
+              className={styles["publish_button_Organization"]}
+              onClick={nextTabOrganizer}
+            />
           </section>
-          {NewMeetingreducer.notifyOrganizors === false &&
-          MeetingOrganizersReducer.SaveMeetingFlag === false &&
-          MeetingOrganizersReducer.EditMeetingFlag === false ? (
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <section className={styles["Footer_button"]}>
-                  <Button
-                    text={t("Cancel")}
-                    className={styles["Cancel_Organization"]}
-                    onClick={handleCancelOrganizer}
-                  />
-
-                  <Button
-                    text={t("Previous")}
-                    className={styles["publish_button_Organization"]}
-                    onClick={previousTabOrganizer}
-                  />
-
-                  <Button
-                    text={t("Next")}
-                    className={styles["publish_button_Organization"]}
-                    onClick={nextTabOrganizer}
-                  />
-                </section>
-              </Col>
-            </Row>
-          ) : null}
-        </>
-      )}
+        </Col>
+      </Row>
 
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 

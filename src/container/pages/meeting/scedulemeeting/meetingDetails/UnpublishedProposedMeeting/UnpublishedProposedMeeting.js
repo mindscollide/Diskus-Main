@@ -2,18 +2,12 @@ import React, { useState } from "react";
 import styles from "./UnpublishedProposedMeeting.module.css";
 import { Col, Row, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import ClipIcon from "../../../../../../assets/images/ClipIcon.png";
-import CommentIcon from "../../../../../../assets/images/Comment-Icon.png";
-import member from "../../../../../../assets/images/member.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
 import deleteIcon from "../../../../../../assets/images/delete_dataroom.svg";
 import OrganizerViewModal from "../../../scedulemeeting/Organizers/OrganizerViewModal/OrganizerViewModal";
 
-import { Tooltip } from "antd";
-import successfullPolls from "../../../../../../assets/images/successfull-polls.svg";
-import { ChevronDown, Plus } from "react-bootstrap-icons";
-import { Progress } from "antd";
+import { ChevronDown } from "react-bootstrap-icons";
 import {
   Button,
   Notification,
@@ -21,8 +15,6 @@ import {
   Table,
 } from "../../../../../../components/elements";
 import rspvGreenIcon from "../../../../../../assets/images/rspvGreen.svg";
-import VideoIcon from "../../../../../../assets/images/Video-Icon.png";
-
 import DeleteMeetingModal from "./DeleteMeetingModal/DeleteMeetingModal";
 import { useSelector } from "react-redux";
 import {
@@ -36,13 +28,11 @@ import SceduleProposedmeeting from "./SceduleProposedMeeting/SceduleProposedmeet
 import { useEffect } from "react";
 import { StatusValue } from "../../../statusJson";
 import {
-  _justShowDateformat,
   convertDateinGMT,
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
 import { UpdateOrganizersMeeting } from "../../../../../../store/actions/MeetingOrganizers_action";
-import SceduleMeeting from "../../SceduleMeeting";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -83,7 +73,6 @@ const UnpublishedProposedMeeting = ({
   const handleDeleteMeetingModal = () => {
     dispatch(showDeleteMeetingModal(true));
   };
-  console.log("ediorRole", ediorRole);
 
   const enableScedulePrposedMeetingModal = () => {
     dispatch(showSceduleProposedMeeting(true));
