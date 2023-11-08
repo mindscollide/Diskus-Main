@@ -203,6 +203,29 @@ const Committee = () => {
     }
   };
 
+  // Click on Documents Tab
+  const handleDocumentsClickTab = (data) => {
+    setViewCommitteeViewTab(1);
+    localStorage.setItem("ViewCommitteeID", data.committeeID);
+
+    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let Data = {
+      CommitteeID: JSON.parse(data.committeeID),
+      OrganizationId: OrganizationID,
+    };
+    dispatch(
+      getCommitteesbyCommitteeId(
+        navigate,
+        Data,
+        t,
+        setViewGroupPage,
+        setUpdateComponentpage,
+        1
+      )
+    );
+  };
+
+  // Click on title
   const viewTitleModal = (data) => {
     setViewCommitteeViewTab(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
@@ -495,6 +518,9 @@ const Committee = () => {
                                 }}
                                 handlePollsClickOption={() => {
                                   handlePollsClickTab(data);
+                                }}
+                                handleClickDocumentOption={() => {
+                                  handleDocumentsClickTab(data);
                                 }}
                                 creatorId={data.creatorID}
                                 groupState={false}
