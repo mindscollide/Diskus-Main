@@ -16,16 +16,51 @@ const SubDocumnets = ({
   setRows,
   rows,
   index,
+  fileForSend,
+  setFileForSend,
   subIndex,
 }) => {
-  const handlesubAgendaCrossFiles = (subAgendaFilesIndex) => {
+  const handlesubAgendaCrossFiles = (subAgendaFilesIndex, subAgendaFiles) => {
+    console.log(subAgendaFiles, "fileDataPropfileDataProp");
     let optionscross = [...rows];
-    optionscross[index].subAgenda[subIndex].Subfiles.splice(
-      subAgendaFilesIndex,
-      1
+
+    // Find the correct subAgenda and update its Subfiles array
+    const updatedOptionsCross = optionscross.map((option) => {
+      if (option.subAgenda) {
+        option.subAgenda = option.subAgenda.map((subAgenda) => {
+          if (subAgenda.Subfiles) {
+            subAgenda.Subfiles = subAgenda.Subfiles.filter(
+              (file) =>
+                file.DisplayAttachmentName !==
+                subAgendaFiles.DisplayAttachmentName
+            );
+          }
+          return subAgenda;
+        });
+      }
+      return option;
+    });
+
+    // Update the state with the modified array
+    setRows(updatedOptionsCross);
+
+    // Remove the file from the `fileForSend` state (if needed)
+    setFileForSend((prevFiles) =>
+      prevFiles.filter(
+        (fileSend) => fileSend.name !== subAgendaFiles.DisplayAttachmentName
+      )
     );
-    setRows(optionscross);
   };
+
+  // const handlesubAgendaCrossFiles = (subAgendaFilesIndex) => {
+  //   let optionscross = [...rows];
+  //   optionscross[index].subAgenda[subIndex].Subfiles.splice(
+  //     subAgendaFilesIndex,
+  //     1
+  //   );
+  //   setRows(optionscross);
+  // };
+
   return (
     <Row>
       <Col lg={12} md={12} sm={12} className={styles["SubAgendaDocScroller"]}>
@@ -89,7 +124,8 @@ const SubDocumnets = ({
                                         className="cursor-pointer"
                                         onClick={() =>
                                           handlesubAgendaCrossFiles(
-                                            subAgendaFilesIndex
+                                            subAgendaFilesIndex,
+                                            subAgendaFiles
                                           )
                                         }
                                       />
