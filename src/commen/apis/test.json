@@ -1,5 +1,45 @@
 {
   "MeetingID": 1972,
   "MeetingAttendeRoleID": 1,
-  "UpdatedUsers": [983, 984, 986]
+  "UpdatedUsers": [983, 984, 986],
+  "MeetingTitle": "asa",
+  "MeetingDescription": "asas",
+  "MeetingTypeID": 0,
+  "MeetingDate": "20231109",
+  "OrganizationId": 302,
+  "MeetingStartTime": "122131",
+  "MeetingEndTime": "122131",
+  "MeetingLocation": "as",
+  "IsVideoCall": false,
+  "IsChat": false,
+  "MeetingReminderID": [2],
+  "MeetingAgendas": [
+    {
+      "ObjMeetingAgenda": {
+        "Title": "sss",
+        "PresenterName": "",
+        "URLs": "",
+        "FK_MDID": 0
+      },
+      "MeetingAgendaAttachments": []
+    }
+  ],
+  "MeetingAttendees": [
+    {
+      "User": { "PK_UID": 802 },
+      "MeetingAttendeeRole": { "PK_MARID": 3 },
+      "AttendeeAvailability": { "PK_AAID": 1 }
+    },
+    {
+      "User": { "PK_UID": 991 },
+      "MeetingAttendeeRole": { "PK_MARID": 2 },
+      "AttendeeAvailability": { "PK_AAID": 1 }
+    },
+    {
+      "User": { "PK_UID": 779 },
+      "MeetingAttendeeRole": { "PK_MARID": 1 },
+      "AttendeeAvailability": { "PK_AAID": 1 }
+    }
+  ],
+  "ExternalMeetingAttendees": []
 }

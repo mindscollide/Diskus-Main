@@ -73,6 +73,10 @@ const initialState = {
   userWiseMeetingProposed: [],
   agendaWiseMinuteID: 0,
   RetriveAgendaWiseDocuments: [],
+  setMeetingbyCommitteeID: null,
+  getMeetingByCommitteeID: null,
+  setMeetingByMeetingID: null,
+  getMeetingbyGroupID: null,
   meetingDataRoomMapFolderID: 0,
   setCommitteewithMeetingID: null,
   getCommitteeByMeetingID: null,
@@ -1301,28 +1305,6 @@ const NewMeetingreducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-    case actions.GETCOMMITTEEBYMEETINGID_INIT: {
-      return {
-        ...state,
-        Loading: true,
-      };
-    }
-    case actions.GETCOMMITTEEBYMEETINGID_SUCCESS: {
-      return {
-        ...state,
-        Loading: false,
-        getCommitteeByMeetingID: action.response,
-        ResponseMessage: action.message,
-      };
-    }
-    case actions.GETCOMMITTEEBYMEETINGID_FAIL: {
-      return {
-        ...state,
-        Loading: false,
-        getCommitteeByMeetingID: null,
-        ResponseMessage: action.message,
-      };
-    }
 
     case actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_INIT: {
       return {
@@ -1386,15 +1368,104 @@ const NewMeetingreducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+    case actions.GETMEETINGBYCOMMITTEEID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETMEETINGBYCOMMITTEEID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getMeetingByCommitteeID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETMEETINGBYCOMMITTEEID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getMeetingByCommitteeID: null,
+        ResponseMessage: action.message,
+      };
+    }
 
     case actions.UPDATE_MEETING_USERS_FAILED: {
       return {
         ...state,
         Loading: false,
+      };
+    }
+    case actions.SETMEETINGBYCOMMITTEEID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SETMEETINGBYCOMMITTEEID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setMeetingbyCommitteeID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SETMEETINGBYCOMMITTEEID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setMeetingbyCommitteeID: null,
         ResponseMessage: action.message,
       };
     }
 
+    case actions.GETMEETINGBYGROUPID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GETMEETINGBYGROUPID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getMeetingbyGroupID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETMEETINGBYGROUPID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getMeetingbyGroupID: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SETMEETINGBYGROUPID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SETMEETINGBYGROUPID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        setMeetingByMeetingID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SETMEETINGBYGROUPID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        setMeetingByMeetingID: null,
+        ResponseMessage: action.message,
+      };
+    }
     default: {
       return { ...state };
     }
