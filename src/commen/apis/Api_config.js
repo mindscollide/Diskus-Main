@@ -1207,7 +1207,38 @@ const createUpdateMeetingDataRoomMap = {
   RequestMethod: "ServiceManager.CreateUpdateMeetingDataRoomMap",
 };
 
+const getMeetingbyGroupIDRM = {
+  RequestMethod: "ServiceManager.GetMeetingsByGroupID",
+};
+
+const getMeetingbyCommitteeIDRM = {
+  RequestMethod: "ServiceManager.GetMeetingsByCommitteeID",
+};
+
+const setMeetingbyGroupIDRM = {
+  RequestMethod: "ServiceManager.SetGroupMeeting",
+};
+
+const setMeetingbyCommitteeIDRM = {
+  RequestMethod: "ServiceManager.SetCommitteeMeetings",
+};
+const DeleteAgendaWiseDocuments = {
+  RequestMethod: "ServiceManager.DeleteAgendaWiseMinuteDocuments",
+};
+
+const CreateUpdateMeetingDataroomMapped = {
+  RequestMethod: "ServiceManager.CreateUpdateMeetingDataRoomMap",
+};
+
+const UpdateMeetingUsershit = {
+  RequestMethod: "ServiceManager.UpdateMeetingUsers",
+};
+
 export {
+  setMeetingbyCommitteeIDRM,
+  setMeetingbyGroupIDRM,
+  getMeetingbyCommitteeIDRM,
+  getMeetingbyGroupIDRM,
   deleteCommitteeTaskRM,
   deleteGroupTaskRM,
   deleteMeetingPollsRM,
@@ -1530,4 +1561,7 @@ export {
   RetriveAgendaWiseDocuments,
   DeleteDocumentGenralMinute,
   createUpdateMeetingDataRoomMap,
+  DeleteAgendaWiseDocuments,
+  CreateUpdateMeetingDataroomMapped,
+  UpdateMeetingUsershit,
 };

@@ -26,6 +26,7 @@ import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { XLg } from "react-bootstrap-icons";
+import GroupMeeting from "../../../container/Groups/GroupViewMeeting/Meeting";
 
 const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const { t } = useTranslation();
@@ -48,6 +49,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const handleClose = () => {
     localStorage.removeItem("ViewGroupID");
     setViewGroupPage(false);
+    console.log("Close Btn");
   };
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -121,7 +123,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
             <Polls view={2} />
           </>
         ) : currentViewGroup === 4 ? (
-          "Meeting"
+          <GroupMeeting />
         ) : null}
       </Paper>
     </section>

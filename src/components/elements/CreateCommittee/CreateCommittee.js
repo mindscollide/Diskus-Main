@@ -54,6 +54,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const [fileAttachments, setFileAttachments] = useState([]);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
+  console.log(fileForSend, "fileForSendfileForSendfileForSendfileForSend");
   const [committeeMemberRolesOptions, setCommitteeMemberRolesOptions] =
     useState([]);
   const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(

@@ -21,6 +21,7 @@ import styles from "./Meeting.module.css";
 import { useSelector } from "react-redux";
 import {
   getMeetingByCommitteeIDApi,
+  getMeetingbyGroupApi,
   searchNewUserMeeting,
 } from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
@@ -28,10 +29,9 @@ import { useDispatch } from "react-redux";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 const CommitteeMeetingTab = () => {
   const { t } = useTranslation();
-  const getMeetingByCommitteeID = useSelector(
-    (state) => state.NewMeetingreducer.getMeetingByCommitteeID
+  const getMeetingbyGroupID = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingbyGroupID
   );
-
   const [isOrganisers, setIsOrganisers] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -43,7 +43,7 @@ const CommitteeMeetingTab = () => {
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [viewMeetingModal, setViewMeetingModal] = useState(false);
   const [editMeetingModal, setEditMeetingModal] = useState(false);
-  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+  let ViewGroupID = localStorage.getItem("ViewGroupID");
 
   const handleViewMeeting = (meetingID, isQuickMeeting) => {
     setViewMeetingModal(true);
@@ -51,10 +51,9 @@ const CommitteeMeetingTab = () => {
   const handleEditMeeting = (meetingID, isQuickMeeting) => {
     setEditMeetingModal(true);
   };
-
   useEffect(() => {
     let searchData = {
-      CommitteeID: Number(ViewCommitteeID),
+      GroupID: Number(ViewGroupID),
       Date: "",
       Title: "",
       HostName: "",
@@ -63,20 +62,17 @@ const CommitteeMeetingTab = () => {
       Length: 50,
       PublishedMeetings: true,
     };
-    dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
+    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
     dispatch(allAssignessList(navigate, t));
   }, []);
 
   useEffect(() => {
     try {
-      if (
-        getMeetingByCommitteeID !== null &&
-        getMeetingByCommitteeID !== undefined
-      ) {
-        setTotalRecords(getMeetingByCommitteeID.totalRecords);
-        if (Object.keys(getMeetingByCommitteeID.meetings).length > 0) {
+      if (getMeetingbyGroupID !== null && getMeetingbyGroupID !== undefined) {
+        setTotalRecords(getMeetingbyGroupID.totalRecords);
+        if (Object.keys(getMeetingbyGroupID.meetings).length > 0) {
           let newRowData = [];
-          getMeetingByCommitteeID.meetings.forEach((data, index) => {
+          getMeetingbyGroupID.meetings.forEach((data, index) => {
             try {
               newRowData.push({
                 dateOfMeeting: data.dateOfMeeting,
@@ -112,7 +108,7 @@ const CommitteeMeetingTab = () => {
         setRow([]);
       }
     } catch {}
-  }, [getMeetingByCommitteeID]);
+  }, [getMeetingbyGroupID]);
 
   const MeetingColoumns = [
     {
@@ -476,28 +472,30 @@ const CommitteeMeetingTab = () => {
         const isQuickMeeting = record.isQuickMeeting;
 
         if (isQuickMeeting) {
-          if (isOrganiser) {
-            return (
-              <>
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <img
-                      src={EditIcon}
-                      className="cursor-pointer"
-                      width="17.11px"
-                      height="17.11px"
-                      alt=""
-                      draggable="false"
-                      onClick={() =>
-                        handleEditMeeting(record.pK_MDID, record.isQuickMeeting)
-                      }
-                    />
-                  </Col>
-                </Row>
-              </>
-            );
-          } else {
-          }
+          // if (isOrganiser) {
+          return (
+            <>
+              <Row>
+                <Col sm={12} md={12} lg={12}>
+                  {/* <Tooltip placement="topRight" title={t("Edit")}> */}
+                  <img
+                    src={EditIcon}
+                    className="cursor-pointer"
+                    width="17.11px"
+                    height="17.11px"
+                    alt=""
+                    draggable="false"
+                    onClick={() =>
+                      handleEditMeeting(record.pK_MDID, record.isQuickMeeting)
+                    }
+                  />
+                  {/* </Tooltip> */}
+                </Col>
+              </Row>
+            </>
+          );
+          // } else {
+          // }
         }
       },
     },
@@ -528,12 +526,12 @@ const CommitteeMeetingTab = () => {
       )}
       <Row>
         <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
-          <Button
+          {/* <Button
             text={t("Create-Meeting")}
             icon={<img draggable={false} src={addmore} alt="" />}
             className={styles["Create_Meeting_Button"]}
             onClick={handelCreateMeeting}
-          />
+          /> */}
         </Col>
       </Row>
       <Row>

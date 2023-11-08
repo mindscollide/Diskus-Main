@@ -239,7 +239,9 @@ const MeetingDetails = ({
     //Enable the Error Handling From here
     // setSaveMeeting(!saveMeeting);
     if (
-      Number(ediorRole.status) === 9 &&
+      (Number(ediorRole.status) === 9 ||
+        Number(ediorRole.status) === 8 ||
+        Number(ediorRole.status) === 10) &&
       ediorRole.role === "Organizer" &&
       isEditMeeting === true
     ) {
@@ -453,7 +455,9 @@ const MeetingDetails = ({
           setorganizers,
           setmeetingDetails,
           2,
-          setCurrentMeetingID
+          setCurrentMeetingID,
+          currentMeeting,
+          meetingDetails
         )
       );
     } else {
@@ -520,7 +524,9 @@ const MeetingDetails = ({
           data,
           setSceduleMeeting,
           setorganizers,
-          setmeetingDetails
+          setmeetingDetails,
+          currentMeeting,
+          meetingDetails
         )
       );
     } else {
@@ -911,13 +917,13 @@ const MeetingDetails = ({
                     change={HandleChange}
                     value={meetingDetails.MeetingTitle}
                     disable={
-                      Number(ediorRole.status) === 9 &&
+                      (Number(ediorRole.status) === 9 ||
+                        Number(ediorRole.status) === 8 ||
+                        Number(ediorRole.status) === 10) &&
                       ediorRole.role === "Organizer" &&
                       isEditMeeting === true
                         ? true
-                        : (Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                          ediorRole.role === "Agenda Contributor" &&
+                        : ediorRole.role === "Agenda Contributor" &&
                           isEditMeeting === true
                         ? true
                         : false
@@ -960,13 +966,13 @@ const MeetingDetails = ({
                         onChange={handleMeetingSelectChange}
                         isSearchable={false}
                         isDisabled={
-                          Number(ediorRole.status) === 9 &&
+                          (Number(ediorRole.status) === 9 ||
+                            Number(ediorRole.status) === 8 ||
+                            Number(ediorRole.status) === 10) &&
                           ediorRole.role === "Organizer" &&
                           isEditMeeting === true
                             ? true
-                            : (Number(ediorRole.status) === 11 ||
-                                Number(ediorRole.status) === 12) &&
-                              ediorRole.role === "Agenda Contributor" &&
+                            : ediorRole.role === "Agenda Contributor" &&
                               isEditMeeting === true
                             ? true
                             : false
@@ -1008,13 +1014,13 @@ const MeetingDetails = ({
                         change={HandleChange}
                         value={meetingDetails.Location}
                         disable={
-                          Number(ediorRole.status) === 9 &&
+                          (Number(ediorRole.status) === 9 ||
+                            Number(ediorRole.status) === 8 ||
+                            Number(ediorRole.status) === 10) &&
                           ediorRole.role === "Organizer" &&
                           isEditMeeting === true
                             ? true
-                            : (Number(ediorRole.status) === 11 ||
-                                Number(ediorRole.status) === 12) &&
-                              ediorRole.role === "Agenda Contributor" &&
+                            : ediorRole.role === "Agenda Contributor" &&
                               isEditMeeting === true
                             ? true
                             : false
@@ -1051,13 +1057,13 @@ const MeetingDetails = ({
                     value={meetingDetails.Description}
                     maxLength={500}
                     disable={
-                      Number(ediorRole.status) === 9 &&
+                      (Number(ediorRole.status) === 9 ||
+                        Number(ediorRole.status) === 8 ||
+                        Number(ediorRole.status) === 10) &&
                       ediorRole.role === "Organizer" &&
                       isEditMeeting === true
                         ? true
-                        : (Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                          ediorRole.role === "Agenda Contributor" &&
+                        : ediorRole.role === "Agenda Contributor" &&
                           isEditMeeting === true
                         ? true
                         : false
@@ -1086,13 +1092,13 @@ const MeetingDetails = ({
                         onChange={handleGroupChat}
                         checkedValue={meetingDetails.groupChat}
                         disabled={
-                          Number(ediorRole.status) === 9 &&
+                          (Number(ediorRole.status) === 9 ||
+                            Number(ediorRole.status) === 8 ||
+                            Number(ediorRole.status) === 10) &&
                           ediorRole.role === "Organizer" &&
                           isEditMeeting === true
                             ? true
-                            : (Number(ediorRole.status) === 11 ||
-                                Number(ediorRole.status) === 12) &&
-                              ediorRole.role === "Agenda Contributor" &&
+                            : ediorRole.role === "Agenda Contributor" &&
                               isEditMeeting === true
                             ? true
                             : false
@@ -1141,13 +1147,13 @@ const MeetingDetails = ({
                             : styles["Button_not_active"]
                         }
                         disableBtn={
-                          Number(ediorRole.status) === 9 &&
+                          (Number(ediorRole.status) === 9 ||
+                            Number(ediorRole.status) === 8 ||
+                            Number(ediorRole.status) === 10) &&
                           ediorRole.role === "Organizer" &&
                           isEditMeeting === true
                             ? true
-                            : (Number(ediorRole.status) === 11 ||
-                                Number(ediorRole.status) === 12) &&
-                              ediorRole.role === "Agenda Contributor" &&
+                            : ediorRole.role === "Agenda Contributor" &&
                               isEditMeeting === true
                             ? true
                             : false
@@ -1218,13 +1224,18 @@ const MeetingDetails = ({
                                         changeDateStartHandler(value, index)
                                       }
                                       disabled={
-                                        Number(ediorRole.status) === 9 &&
+                                        (Number(ediorRole.status) === 9 ||
+                                          Number(ediorRole.status) === 8 ||
+                                          Number(ediorRole.status) === 10) &&
                                         ediorRole.role === "Organizer" &&
                                         isEditMeeting === true
                                           ? true
                                           : (Number(ediorRole.status) === 11 ||
+                                              Number(ediorRole.status) === 2 ||
+                                              Number(ediorRole.status) === 1 ||
+                                              Number(ediorRole.status) === 12 ||
                                               Number(ediorRole.status) ===
-                                                12) &&
+                                                10) &&
                                             ediorRole.role ===
                                               "Agenda Contributor" &&
                                             isEditMeeting === true
@@ -1272,13 +1283,18 @@ const MeetingDetails = ({
                                         handleStartDateChange(index, date)
                                       }
                                       disabled={
-                                        Number(ediorRole.status) === 9 &&
+                                        (Number(ediorRole.status) === 9 ||
+                                          Number(ediorRole.status) === 8 ||
+                                          Number(ediorRole.status) === 10) &&
                                         ediorRole.role === "Organizer" &&
                                         isEditMeeting === true
                                           ? true
                                           : (Number(ediorRole.status) === 11 ||
+                                              Number(ediorRole.status) === 2 ||
+                                              Number(ediorRole.status) === 1 ||
+                                              Number(ediorRole.status) === 12 ||
                                               Number(ediorRole.status) ===
-                                                12) &&
+                                                10) &&
                                             ediorRole.role ===
                                               "Agenda Contributor" &&
                                             isEditMeeting === true
@@ -1321,13 +1337,18 @@ const MeetingDetails = ({
                                         handleEndDateChange(index, date)
                                       }
                                       disabled={
-                                        Number(ediorRole.status) === 9 &&
+                                        (Number(ediorRole.status) === 9 ||
+                                          Number(ediorRole.status) === 8 ||
+                                          Number(ediorRole.status) === 10) &&
                                         ediorRole.role === "Organizer" &&
                                         isEditMeeting === true
                                           ? true
                                           : (Number(ediorRole.status) === 11 ||
+                                              Number(ediorRole.status) === 2 ||
+                                              Number(ediorRole.status) === 1 ||
+                                              Number(ediorRole.status) === 12 ||
                                               Number(ediorRole.status) ===
-                                                12) &&
+                                                10) &&
                                             ediorRole.role ===
                                               "Agenda Contributor" &&
                                             isEditMeeting === true
@@ -1345,16 +1366,15 @@ const MeetingDetails = ({
                                     {index === 0 ? null : Number(
                                         ediorRole.status
                                       ) === 9 &&
-                                      isEditMeeting === true ? null : (Number(
-                                        ediorRole.status
-                                      ) === 11 ||
-                                        Number(ediorRole.status) === 12) &&
-                                      ediorRole.role === "Agenda Contributor" &&
+                                      isEditMeeting ===
+                                        true ? null : ediorRole.role ===
+                                        "Agenda Contributor" &&
                                       isEditMeeting === true ? null : (
                                       <img
                                         draggable={false}
                                         src={redcrossIcon}
                                         width="23px"
+                                        alt=""
                                         height="23px"
                                         className={styles["Cross_icon_class"]}
                                         onClick={() => {
@@ -1389,13 +1409,13 @@ const MeetingDetails = ({
                 </Col>
               </Row>
 
-              {Number(ediorRole.status) === 9 &&
+              {(Number(ediorRole.status) === 9 ||
+                Number(ediorRole.status) === 8 ||
+                Number(ediorRole.status) === 10) &&
               ediorRole.role === "Organizer" &&
               isEditMeeting === true ? (
                 <></>
-              ) : (Number(ediorRole.status) === 11 ||
-                  Number(ediorRole.status) === 12) &&
-                ediorRole.role === "Agenda Contributor" &&
+              ) : ediorRole.role === "Agenda Contributor" &&
                 isEditMeeting === true ? null : (
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
@@ -1443,13 +1463,13 @@ const MeetingDetails = ({
                       label: meetingDetails.ReminderFrequency.label,
                     }}
                     isDisabled={
-                      Number(ediorRole.status) === 9 &&
+                      (Number(ediorRole.status) === 9 ||
+                        Number(ediorRole.status) === 8 ||
+                        Number(ediorRole.status) === 10) &&
                       ediorRole.role === "Organizer" &&
                       isEditMeeting === true
                         ? true
-                        : (Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                          ediorRole.role === "Agenda Contributor" &&
+                        : ediorRole.role === "Agenda Contributor" &&
                           isEditMeeting === true
                         ? true
                         : false
@@ -1468,13 +1488,13 @@ const MeetingDetails = ({
                     isDisabled={
                       meetingDetails.ReminderFrequency.value === 0
                         ? true
-                        : Number(ediorRole.status) === 9 &&
+                        : (Number(ediorRole.status) === 9 ||
+                            Number(ediorRole.status) === 8 ||
+                            Number(ediorRole.status) === 10) &&
                           ediorRole.role === "Organizer" &&
                           isEditMeeting === true
                         ? true
-                        : (Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                          ediorRole.role === "Agenda Contributor" &&
+                        : ediorRole.role === "Agenda Contributor" &&
                           isEditMeeting === true
                         ? true
                         : false
@@ -1493,13 +1513,13 @@ const MeetingDetails = ({
                     isDisabled={
                       meetingDetails.ReminderFrequencyTwo.value === 0
                         ? true
-                        : Number(ediorRole.status) === 9 &&
+                        : (Number(ediorRole.status) === 9 ||
+                            Number(ediorRole.status) === 8 ||
+                            Number(ediorRole.status) === 10) &&
                           ediorRole.role === "Organizer" &&
                           isEditMeeting === true
                         ? true
-                        : (Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                          ediorRole.role === "Agenda Contributor" &&
+                        : ediorRole.role === "Agenda Contributor" &&
                           isEditMeeting === true
                         ? true
                         : false
@@ -1537,13 +1557,13 @@ const MeetingDetails = ({
                     maxLength={500}
                     value={meetingDetails.Notes}
                     disable={
-                      Number(ediorRole.status) === 9 &&
+                      (Number(ediorRole.status) === 9 ||
+                        Number(ediorRole.status) === 8 ||
+                        Number(ediorRole.status) === 10) &&
                       ediorRole.role === "Organizer" &&
                       isEditMeeting === true
                         ? true
-                        : (Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                          ediorRole.role === "Agenda Contributor" &&
+                        : ediorRole.role === "Agenda Contributor" &&
                           isEditMeeting === true
                         ? true
                         : false
@@ -1572,13 +1592,13 @@ const MeetingDetails = ({
                         onChange={handleRSPV}
                         checkedValue={meetingDetails.AllowRSPV}
                         disabled={
-                          Number(ediorRole.status) === 9 &&
+                          (Number(ediorRole.status) === 9 ||
+                            Number(ediorRole.status) === 8 ||
+                            Number(ediorRole.status) === 10) &&
                           ediorRole.role === "Organizer" &&
                           isEditMeeting === true
                             ? true
-                            : (Number(ediorRole.status) === 11 ||
-                                Number(ediorRole.status) === 12) &&
-                              ediorRole.role === "Agenda Contributor" &&
+                            : ediorRole.role === "Agenda Contributor" &&
                               isEditMeeting === true
                             ? true
                             : false
@@ -1602,13 +1622,13 @@ const MeetingDetails = ({
                         onChange={handleNotifyOrganizers}
                         checkedValue={meetingDetails.NotifyMeetingOrganizer}
                         disabled={
-                          Number(ediorRole.status) === 9 &&
+                          (Number(ediorRole.status) === 9 ||
+                            Number(ediorRole.status) === 8 ||
+                            Number(ediorRole.status) === 10) &&
                           ediorRole.role === "Organizer" &&
                           isEditMeeting === true
                             ? true
-                            : (Number(ediorRole.status) === 11 ||
-                                Number(ediorRole.status) === 12) &&
-                              ediorRole.role === "Agenda Contributor" &&
+                            : ediorRole.role === "Agenda Contributor" &&
                               isEditMeeting === true
                             ? true
                             : false
@@ -1638,13 +1658,13 @@ const MeetingDetails = ({
                       label: meetingDetails.RecurringOptions?.label,
                     }}
                     isDisabled={
-                      Number(ediorRole.status) === 9 &&
+                      (Number(ediorRole.status) === 9 ||
+                        Number(ediorRole.status) === 8 ||
+                        Number(ediorRole.status) === 10) &&
                       ediorRole.role === "Organizer" &&
                       isEditMeeting === true
                         ? true
-                        : (Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                          ediorRole.role === "Agenda Contributor" &&
+                        : ediorRole.role === "Agenda Contributor" &&
                           isEditMeeting === true
                         ? true
                         : false
@@ -1668,12 +1688,14 @@ const MeetingDetails = ({
             className={styles["Published"]}
             onClick={handleCancelMeetingButton}
           />
-          {Number(ediorRole.status) === 9 &&
+          {(Number(ediorRole.status) === 9 ||
+            Number(ediorRole.status) === 8 ||
+            Number(ediorRole.status) === 10) &&
           ediorRole.role === "Organizer" &&
-          isEditMeeting === true ? null : (Number(ediorRole.status) === 11 ||
-              Number(ediorRole.status) === 12) &&
-            ediorRole.role === "Agenda Contributor" &&
-            isEditMeeting === true ? null : Number(currentMeeting) === 0 ? (
+          isEditMeeting === true ? null : ediorRole.role ===
+              "Agenda Contributor" && isEditMeeting === true ? null : Number(
+              currentMeeting
+            ) === 0 ? (
             <>
               <Button
                 text={t("Save")}
@@ -1697,12 +1719,12 @@ const MeetingDetails = ({
             className={styles["Published"]}
             onClick={handleUpdateNext}
           />
-          {Number(ediorRole.status) === 9 &&
+          {(Number(ediorRole.status) === 9 ||
+            Number(ediorRole.status) === 8 ||
+            Number(ediorRole.status) === 10) &&
           ediorRole.role === "Organizer" &&
-          isEditMeeting === true ? null : (Number(ediorRole.status) === 11 ||
-              Number(ediorRole.status) === 12) &&
-            ediorRole.role === "Agenda Contributor" &&
-            isEditMeeting === true ? null : (
+          isEditMeeting === true ? null : ediorRole.role ===
+              "Agenda Contributor" && isEditMeeting === true ? null : (
             <Button
               disableBtn={
                 Number(currentMeeting) === 0 && publishedFlag === true

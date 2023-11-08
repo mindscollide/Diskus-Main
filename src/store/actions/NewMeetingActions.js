@@ -39,6 +39,11 @@ import {
   getUserWiseProposeDate,
   saveDocumentAgendaWiseMinutes,
   RetriveAgendaWiseDocuments,
+  getMeetingbyCommitteeIDRM,
+  setMeetingbyCommitteeIDRM,
+  DeleteDocumentGenralMinute,
+  DeleteAgendaWiseDocuments,
+  CreateUpdateMeetingDataroomMapped,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -48,6 +53,8 @@ import {
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import axios from "axios";
+import { getMeetingbyGroupIDRM } from "../../commen/apis/Api_config";
+import { setMeetingbyGroupIDRM } from "../../commen/apis/Api_config";
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -399,7 +406,9 @@ const SaveMeetingDetialsNewApiFunction = (
   setorganizers,
   setmeetingDetails,
   viewValue,
-  setCurrentMeetingID
+  setCurrentMeetingID,
+  currentMeeting,
+  meetingDetails
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -427,7 +436,9 @@ const SaveMeetingDetialsNewApiFunction = (
               setorganizers,
               setmeetingDetails,
               viewValue,
-              setCurrentMeetingID
+              setCurrentMeetingID,
+              currentMeeting,
+              meetingDetails
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -445,12 +456,38 @@ const SaveMeetingDetialsNewApiFunction = (
                   t("Record-found")
                 )
               );
+              let MappedData = {
+                MeetingID: response.data.responseResult.meetingID,
+                MeetingTitle: meetingDetails.MeetingTitle,
+                IsUpdateFlow: false,
+              };
+              console.log(MappedData, "MappedDataMappedData");
+              dispatch(
+                CreateUpdateMeetingDataRoomMapeedApiFunc(
+                  navigate,
+                  MappedData,
+                  t
+                )
+              );
 
               setCurrentMeetingID(response.data.responseResult.meetingID);
 
               if (viewValue === 1) {
                 setSceduleMeeting(false);
               } else if (viewValue === 2) {
+                let MappedData = {
+                  MeetingID: response.data.responseResult.meetingID,
+                  MeetingTitle: meetingDetails.MeetingTitle,
+                  IsUpdateFlow: false,
+                };
+                console.log(MappedData, "MappedDataMappedData");
+                dispatch(
+                  CreateUpdateMeetingDataRoomMapeedApiFunc(
+                    navigate,
+                    MappedData,
+                    t
+                  )
+                );
               } else if (viewValue === 3) {
                 setorganizers(true);
                 setmeetingDetails(false);
@@ -3589,7 +3626,7 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showUpdateAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  t("Record Updated")
+                  t("Record-updated")
                 )
               );
             } else if (
@@ -3600,7 +3637,7 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                 )
             ) {
               dispatch(
-                showUpdateAgendaWiseMinutesFailed(t("Record Not Updated"))
+                showUpdateAgendaWiseMinutesFailed(t("Record-not-updated"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3621,7 +3658,7 @@ const UpdateAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
             ) {
               dispatch(
                 showUpdateAgendaWiseMinutesFailed(
-                  t(" only a organizer can perform this operation")
+                  t("Only-a-organizer-can-perform-this-operation")
                 )
               );
             }
@@ -3705,7 +3742,7 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
               await dispatch(
                 showDeleteAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  t("Record Deleted")
+                  t("Record-deleted")
                 )
               );
               let DelteGetAll = {
@@ -3722,7 +3759,7 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
                 )
             ) {
               dispatch(
-                showDeleteAgendaWiseMinutesFailed(t("No Record Deleted"))
+                showDeleteAgendaWiseMinutesFailed(t("No-record-deleted"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3743,7 +3780,7 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
             ) {
               dispatch(
                 showDeleteAgendaWiseMinutesFailed(
-                  t("only a organizer can perform this operation")
+                  t("Only-a-organizer-can-perform-this-operation")
                 )
               );
             }
@@ -3948,7 +3985,7 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showAgendaWiseAddMinutesSuccess(
                   response.data.responseResult.minuteID,
-                  t("Response-saved")
+                  t("Record-saved")
                 )
               );
             } else if (
@@ -4048,7 +4085,7 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showSavedAgendaWiseDocumentSuccess(
                   response.data.responseResult,
-                  t("List Updated Successfully")
+                  t("List-updated-successfully")
                 )
               );
               let getAll = {
@@ -4148,7 +4185,7 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showUpdateMinutesSuccess(
                   response.data.responseResult,
-                  t("Response-updated")
+                  t("Record-updated")
                 )
               );
             } else if (
@@ -4563,14 +4600,431 @@ const showDeleteGeneralMeetingDocumentsFailed = (message) => {
   };
 };
 
-const DeleteGeneralMinuteDocuments = (navigate, Data, t, currentMeeting) => {
+const DeleteGeneralMinuteDocumentsApiFunc = (
+  navigate,
+  Data,
+  t,
+  currentMeeting,
+  MinuteData
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
-    dispatch(showDeleteAgendaWiseMinutesInit());
+    dispatch(showDeleteGeneralMeetingDocumentsInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", DeleteagendaWiseMinutes.RequestMethod);
+    form.append("RequestMethod", DeleteDocumentGenralMinute.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            DeleteGeneralMinuteDocumentsApiFunc(
+              navigate,
+              Data,
+              t,
+              currentMeeting,
+              MinuteData
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteGeneralMinuteDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showDeleteGeneralMeetingDocumentsSuccess(
+                  response.data.responseResult,
+                  t("Record-deleted")
+                )
+              );
+              let Erase = {
+                MinuteID: MinuteData.minuteID,
+              };
+              dispatch(
+                DeleteGeneralMinutesApiFunc(navigate, Erase, t, currentMeeting)
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteGeneralMinuteDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteGeneralMeetingDocumentsFailed(t("No-record-deleted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteGeneralMinuteDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteGeneralMeetingDocumentsFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showDeleteGeneralMeetingDocumentsFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showDeleteGeneralMeetingDocumentsFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          showDeleteGeneralMeetingDocumentsFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+//Documents Delete Agenda Wise
+
+const showDeleteAgendaWiseDocumentInit = () => {
+  return {
+    type: actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_INIT,
+  };
+};
+
+const showDeleteAgendaWiseDocumentSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showDeleteAgendaWiseDocumentFailed = (message) => {
+  return {
+    type: actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_FAILED,
+    message: message,
+  };
+};
+
+const DeleteAgendaWiseMinutesDocumentsApiFunc = (
+  navigate,
+  Data,
+  t,
+  currentMeeting,
+  AgendaWiseData
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showDeleteAgendaWiseDocumentInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", DeleteAgendaWiseDocuments.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            DeleteAgendaWiseMinutesDocumentsApiFunc(
+              navigate,
+              Data,
+              t,
+              currentMeeting,
+              AgendaWiseData
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteAgendaWiseMinuteDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showDeleteAgendaWiseDocumentSuccess(
+                  response.data.responseResult,
+                  t("Record-deleted")
+                )
+              );
+              let AgendaWiseDelData = {
+                MinuteID: AgendaWiseData.minuteID,
+              };
+              dispatch(
+                DeleteAgendaWiseMinutesApiFunc(
+                  navigate,
+                  AgendaWiseDelData,
+                  t,
+                  currentMeeting
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteAgendaWiseMinuteDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseDocumentFailed(t("No-record-deleted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_DeleteAgendaWiseMinuteDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
+
+          console.log(response, "response");
+          dispatch(
+            showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
+
+        console.log(response, "response");
+        dispatch(showDeleteAgendaWiseDocumentFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Create update Meeting Data Room Mapped
+
+const showCreateUpdateMeetingDataRoomInit = () => {
+  return {
+    type: actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_INIT,
+  };
+};
+
+const showCreateUpdateMeetingDataRoomSuccess = (response, message) => {
+  return {
+    type: actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showCreateUpdateMeetingDataRoomFailed = (response, message) => {
+  return {
+    type: actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_FAILED,
+    message: message,
+  };
+};
+
+const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
+  console.log(
+    { Data },
+    "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc"
+  );
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showCreateUpdateMeetingDataRoomInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      CreateUpdateMeetingDataroomMapped.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "headers");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(CreateUpdateMeetingDataRoomMapeedApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showCreateUpdateMeetingDataRoomSuccess(
+                  response.data.responseResult.folderID,
+                  t("Folder-mapped-with-data-room")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(
+                  t("Failed-to-save-or-map-folder")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showCreateUpdateMeetingDataRoomSuccess(
+                  response.data.responseResult,
+                  t("Updated-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(
+                  t("Unable-to-update-folder")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_05".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showCreateUpdateMeetingDataRoomSuccess(
+                  response.data.responseResult,
+                  t("New-mapping-created")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(
+                  t("Failed-to-create-new-mapping")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+// get Meeting By Group ID Init
+const getMeetingbyGroup_init = () => {
+  return {
+    type: actions.GETMEETINGBYGROUPID_INIT,
+  };
+};
+// get Meeting by Group ID Success
+const getMeetingbyGroup_success = (response, message) => {
+  return {
+    type: actions.GETMEETINGBYGROUPID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+// get Meeting by Group ID Failed
+const getMeetingbyGroup_fail = (message) => {
+  return {
+    type: actions.GETMEETINGBYGROUPID_FAIL,
+    message: message,
+  };
+};
+
+// Get Meeting by Group ID
+const getMeetingbyGroupApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getMeetingbyGroup_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getMeetingbyGroupIDRM.RequestMethod);
     axios({
       method: "post",
       url: meetingApi,
@@ -4583,9 +5037,6 @@ const DeleteGeneralMinuteDocuments = (navigate, Data, t, currentMeeting) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            DeleteGeneralMinuteDocuments(navigate, Data, t, currentMeeting)
-          );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -4594,64 +5045,344 @@ const DeleteGeneralMinuteDocuments = (navigate, Data, t, currentMeeting) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingsByGroupID_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                showDeleteAgendaWiseMinutesSuccess(
+              dispatch(
+                getMeetingbyGroup_success(
                   response.data.responseResult,
-                  t("Record Deleted")
+                  t("Record-found")
                 )
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingsByGroupID_02".toLowerCase()
                 )
             ) {
-              dispatch(
-                showDeleteAgendaWiseMinutesFailed(t("No Record Deleted"))
-              );
+              dispatch(getMeetingbyGroup_fail(t("No-record-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingsByGroupID_03".toLowerCase()
                 )
             ) {
-              dispatch(
-                showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_DeleteAgendaWiseMinute_04".toLowerCase()
-                )
-            ) {
-              dispatch(
-                showDeleteAgendaWiseMinutesFailed(
-                  t("only a organizer can perform this operation")
-                )
-              );
+              dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
             }
           } else {
             console.log(response, "response");
-            dispatch(
-              showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
-            );
+            dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
           }
         } else {
           console.log(response, "response");
-          dispatch(
-            showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong"))
-          );
+          dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         console.log(response, "response");
-        dispatch(showDeleteAgendaWiseMinutesFailed(t("Something-went-wrong")));
+        dispatch(getMeetingbyGroup_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// get Committee by Meeting ID
+const setMeetingByGroupID_init = () => {
+  return {
+    type: actions.SETMEETINGBYGROUPID_INIT,
+  };
+};
+const setMeetingByGroupID_success = (response, message) => {
+  return {
+    type: actions.SETMEETINGBYGROUPID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const setMeetingByGroupID_fail = (message) => {
+  return {
+    type: actions.SETMEETINGBYGROUPID_FAIL,
+    message: message,
+  };
+};
+const setMeetingByGroupIDApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(setMeetingByGroupID_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", setMeetingbyGroupIDRM.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetGroupMeeting_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                setMeetingByGroupID_success(
+                  response.data.responseResult,
+                  t("Record-save")
+                )
+              );
+              let ViewGroupID = localStorage.getItem("ViewGroupID");
+              let currentUserId = localStorage.getItem("userID");
+
+              let searchData = {
+                GroupID: Number(ViewGroupID),
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(currentUserId),
+                PageNumber: 1,
+                Length: 50,
+                PublishedMeetings: true,
+              };
+              dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetGroupMeeting_02".toLowerCase()
+                )
+            ) {
+              dispatch(setMeetingByGroupID_fail(t("No-record-save")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetGroupMeeting_03".toLowerCase()
+                )
+            ) {
+              dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(setMeetingByGroupID_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Set Meeting by Group ID
+
+const getMeetingByCommitteeID_init = () => {
+  return {
+    type: actions.GETMEETINGBYCOMMITTEEID_INIT,
+  };
+};
+const getMeetingByCommitteeID_success = (response, message) => {
+  return {
+    type: actions.GETMEETINGBYCOMMITTEEID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getMeetingByCommitteeID_fail = (message) => {
+  return {
+    type: actions.GETMEETINGBYCOMMITTEEID_FAIL,
+    message: message,
+  };
+};
+const getMeetingByCommitteeIDApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getMeetingByCommitteeID_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getMeetingbyCommitteeIDRM.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByCommitteeID_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getMeetingByCommitteeID_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByCommitteeID_02".toLowerCase()
+                )
+            ) {
+              dispatch(getMeetingByCommitteeID_fail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByCommitteeID_03".toLowerCase()
+                )
+            ) {
+              dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+          }
+        } else {
+          dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
+
+          console.log(response, "response");
+        }
+      })
+      .catch((response) => {
+        dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
+
+        console.log(response, "response");
+      });
+  };
+};
+
+// set Meeting by Committee ID
+const setMeetingbyCommitteeID_init = () => {
+  return {
+    type: actions.SETMEETINGBYCOMMITTEEID_INIT,
+  };
+};
+const setMeetingbyCommitteeID_success = (response, message) => {
+  return {
+    type: actions.SETMEETINGBYCOMMITTEEID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const setMeetingbyCommitteeID_fail = (message) => {
+  return {
+    type: actions.SETMEETINGBYCOMMITTEEID_FAIL,
+    message: message,
+  };
+};
+const setMeetingbyCommitteeIDApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(setMeetingbyCommitteeID_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", setMeetingbyCommitteeIDRM.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetCommitteeMeetings_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                setMeetingbyCommitteeID_success(
+                  response.data.responseResult,
+                  t("Record-save")
+                )
+              );
+              let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              let currentUserId = localStorage.getItem("userID");
+
+              let searchData = {
+                CommitteeID: Number(ViewCommitteeID),
+                Date: "",
+                Title: "",
+                HostName: "",
+                UserID: Number(currentUserId),
+                PageNumber: 1,
+                Length: 50,
+                PublishedMeetings: true,
+              };
+              dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetCommitteeMeetings_02".toLowerCase()
+                )
+            ) {
+              dispatch(setMeetingbyCommitteeID_fail(t("No-record-save")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SetCommitteeMeetings_03".toLowerCase()
+                )
+            ) {
+              dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(setMeetingbyCommitteeID_fail(t("Something-went-wrong")));
       });
   };
 };
@@ -4745,4 +5476,11 @@ export {
   uploadDocumentsMeetingAgendaWiseMinutesApi,
   saveFilesMeetingagendaWiseMinutesApi,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
+  setMeetingbyCommitteeIDApi,
+  getMeetingByCommitteeIDApi,
+  getMeetingbyGroupApi,
+  setMeetingByGroupIDApi,
+  DeleteGeneralMinuteDocumentsApiFunc,
+  DeleteAgendaWiseMinutesDocumentsApiFunc,
+  CreateUpdateMeetingDataRoomMapeedApiFunc,
 };

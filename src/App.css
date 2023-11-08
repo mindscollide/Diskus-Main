@@ -6258,3 +6258,8 @@ label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked.ant-checkbox-wrapper-dis
 .SelectOrganizersSelect_active__menu {
   z-index: 9999999999 !important;
 }
+
+.meeting-status-value {
+  font-family: "MontserratRegular" !important;
+  font-weight: 500 !important;
+}
