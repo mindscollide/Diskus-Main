@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table } from "../../../components/elements";
+import { Button, ResultMessage, Table } from "../../../components/elements";
 import { StatusValue } from "../../pages/meeting/statusJson";
 import {
   newTimeFormaterAsPerUTCFullDate,
@@ -19,6 +19,8 @@ import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import styles from "./Meeting.module.css";
 import { useSelector } from "react-redux";
+import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
+
 import {
   getMeetingByCommitteeIDApi,
   getMeetingbyGroupApi,
@@ -554,6 +556,24 @@ const CommitteeMeetingTab = () => {
   const handelCreateMeeting = () => {
     setCreateMeetingModal(true);
   };
+
+  const emptyText = () => {
+    return (
+      <ResultMessage
+        icon={
+          <img
+            src={NoMeetingsIcon}
+            alt=""
+            draggable="false"
+            className="nodata-table-icon"
+          />
+        }
+        title={t("No-new-meetings")}
+        subTitle={t("Anything-important-thats-needs-discussion")}
+      />
+    );
+  };
+
   return (
     <>
       {createMeetingModal && (
@@ -576,12 +596,12 @@ const CommitteeMeetingTab = () => {
       )}
       <Row>
         <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
-          {/* <Button
+          <Button
             text={t("Create-Meeting")}
             icon={<img draggable={false} src={addmore} alt="" />}
             className={styles["Create_Meeting_Button"]}
             onClick={handelCreateMeeting}
-          /> */}
+          />
         </Col>
       </Row>
       <Row>
@@ -593,25 +613,41 @@ const CommitteeMeetingTab = () => {
             pagination={false}
             size="small"
             className="newMeetingTable"
+            locale={{
+              emptyText: emptyText(), // Set your custom empty text here
+            }}
+            expandable={{
+              expandedRowRender: (record) => {
+                return record.meetingAgenda.map((data) => (
+                  <p className="meeting-expanded-row">
+                    {data.objMeetingAgenda.title}
+                  </p>
+                ));
+              },
+              rowExpandable: (record) =>
+                record.meetingAgenda.length > 0 ? true : false,
+            }}
           />
         </Col>
-        <Col
-          sm={12}
-          md={12}
-          lg={12}
-          className={"pagination-groups-table d-flex justify-content-center"}
-        >
-          <span className="PaginationStyle-TodoList">
-            <CustomPagination
-              current={currentPage}
-              showSizer={true}
-              onChange={handleChangePagination}
-              pageSizeOptionsValues={["30", "50", "100", "200"]}
-              total={totalRecords}
-              pageSize={pageSize}
-            />
-          </span>
-        </Col>
+        {rows && rows.length > 0 ? (
+          <Col
+            sm={12}
+            md={12}
+            lg={12}
+            className={"pagination-groups-table d-flex justify-content-center"}
+          >
+            <span className="PaginationStyle-TodoList">
+              <CustomPagination
+                current={currentPage}
+                showSizer={true}
+                onChange={handleChangePagination}
+                pageSizeOptionsValues={["30", "50", "100", "200"]}
+                total={totalRecords}
+                pageSize={pageSize}
+              />
+            </span>
+          </Col>
+        ) : null}
       </Row>
     </>
   );

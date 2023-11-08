@@ -70,7 +70,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
           >
             <div className="d-flex gap-3 mb-3">
               <Button
-                text={t("Committee-detail")}
+                text={t("Group-detail")}
                 className={
                   currentViewGroup === 1
                     ? styles["View-Group-details_active"]
