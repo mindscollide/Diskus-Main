@@ -1112,5 +1112,6 @@
   "Record-saved": "Record Saved",
   "Only-a-organizer-can-perform-this-operation": "only a organizer can perform this operation",
   "Record-not-updated": "Record Not Updated",
-  "Edit-new-meeting": "Edit New Meeting"
+  "Edit-new-meeting": "Edit New Meeting",
+  "No-record-found": "No Record Found"
 }
