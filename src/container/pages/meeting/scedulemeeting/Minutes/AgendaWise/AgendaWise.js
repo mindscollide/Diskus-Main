@@ -299,24 +299,14 @@ const AgendaWise = ({ currentMeeting }) => {
 
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText != "") {
-      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
+    if (source === "user" && plainText) {
+      console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
           value: content,
           errorMessage: "",
           errorStatus: false,
-        },
-      });
-    } else {
-      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: true,
         },
       });
     }
@@ -434,13 +424,6 @@ const AgendaWise = ({ currentMeeting }) => {
 
   const handleEditFunc = (data) => {
     setupdateData(data);
-    console.log(data, "handleEditFunchandleEditFunc");
-    let Data = {
-      FK_MeetingAgendaMinutesID: data.minuteID,
-    };
-    dispatch(
-      AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
-    );
     if (data.minutesDetails !== "") {
       console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
@@ -455,6 +438,13 @@ const AgendaWise = ({ currentMeeting }) => {
       console.log("data.minutesDetails is undefined or null");
     }
     setisEdit(true);
+    console.log(data, "handleEditFunchandleEditFunc");
+    let Data = {
+      FK_MeetingAgendaMinutesID: data.minuteID,
+    };
+    dispatch(
+      AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
+    );
   };
 
   useEffect(() => {

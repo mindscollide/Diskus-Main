@@ -3128,7 +3128,6 @@ const showSaveMinutesDocsFailed = (message) => {
 const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
-  let currentMeetingID = localStorage.getItem("meetingID");
   return (dispatch) => {
     dispatch(showSaveMinutesDocsInit());
     let form = new FormData();
@@ -3163,11 +3162,11 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
                   t("List-updated-successfully")
                 )
               );
-              dispatch(ShowADDGeneralMinutesFailed(""));
               let Meet = {
                 MeetingID: currentMeeting,
               };
               dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
+              dispatch(ShowADDGeneralMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
