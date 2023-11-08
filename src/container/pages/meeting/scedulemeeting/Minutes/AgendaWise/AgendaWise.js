@@ -20,6 +20,7 @@ import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
 import {
   convertintoGMTCalender,
+  newTimeFormaterAsPerUTCFullDate,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
@@ -825,7 +826,7 @@ const AgendaWise = ({ currentMeeting }) => {
                                   <span
                                     className={styles["Date_Minutes_And_time"]}
                                   >
-                                    {convertintoGMTCalender(
+                                    {newTimeFormaterAsPerUTCFullDate(
                                       data.lastUpdatedDate +
                                         data.lastUpdatedTime
                                     ).toString()}
