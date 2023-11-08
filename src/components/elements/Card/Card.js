@@ -36,6 +36,7 @@ const Card = ({
   handleMeetingClickOption,
   handlePollsClickOption,
   handleTasksClickOption,
+  handleClickDocumentOption,
 }) => {
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
@@ -265,12 +266,22 @@ const Card = ({
                         sm={12}
                         className="d-flex justify-content-start gap-2  ms-1 "
                       >
-                        <span>
-                          <img src={img1} width={15} draggable="false" />
-                        </span>
-                        <span className={styles["dropdown-text"]}>
-                          {t("Documents")}
-                        </span>
+                        <div
+                          className={"d-flex justify-content-start gap-2"}
+                          onClick={handleClickDocumentOption}
+                        >
+                          <span>
+                            <img
+                              src={img1}
+                              width={15}
+                              draggable="false"
+                              alt=""
+                            />
+                          </span>
+                          <span className={styles["dropdown-text"]}>
+                            {t("Documents")}
+                          </span>
+                        </div>
                       </Col>
                     </Row>
                     <hr className={styles["HR-line-Committee-group"]} />

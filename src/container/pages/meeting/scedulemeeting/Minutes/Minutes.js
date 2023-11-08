@@ -889,7 +889,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                     return (
                       <>
                         <section className={styles["Sizing_Saved_Minutes"]}>
-                          <Row className="mt-5">
+                          <Row className="mt-3">
                             <Col
                               lg={12}
                               md={12}

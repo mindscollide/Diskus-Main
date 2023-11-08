@@ -1598,5 +1598,6 @@
   "Record-not-updated": "Record Not Updated",
   "Edit-new-meeting": "Edit New Meeting",
   "The-meeting-must-be-in-a-proposed-state": "The meeting must be in a proposed state",
-  "The-user-must-be-an-organizer": "The user must be an organizer"
+  "The-user-must-be-an-organizer": "The user must be an organizer",
+  "No-record-found": "No Record Found"
 }

@@ -330,6 +330,21 @@ const Groups = () => {
     setShowActivegroup(true);
   };
 
+  const handleDocumentsClickTab = (data) => {
+    localStorage.setItem("ViewGroupID", data.groupID);
+    setViewGroupTab(1);
+    dispatch(
+      getbyGroupID(
+        navigate,
+        data.groupID,
+        t,
+        setViewGroupPage,
+        setUpdateComponentpage,
+        1
+      )
+    );
+  };
+
   const changeHandleStatus = (e, CardID, setEditdropdown) => {
     setStatusValue(e.key);
     setModalStatusChange(true);
@@ -467,6 +482,9 @@ const Groups = () => {
                                 }}
                                 handlePollsClickOption={() => {
                                   handlePollsClickTab(data);
+                                }}
+                                handleClickDocumentOption={() => {
+                                  handleDocumentsClickTab(data);
                                 }}
                                 creatorId={data.creatorID}
                                 flag={false}
