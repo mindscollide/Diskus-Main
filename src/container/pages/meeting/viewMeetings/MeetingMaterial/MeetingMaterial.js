@@ -271,7 +271,7 @@ const MeetingMaterial = ({
     let meetingMaterialData = {
       MeetingID: Number(currentMeeting),
     };
-    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
+    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   }, []);
 
   const handleCancelButton = () => {
