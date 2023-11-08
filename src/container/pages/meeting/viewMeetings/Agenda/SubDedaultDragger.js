@@ -22,7 +22,7 @@ const SubDedaultDragger = ({ setRows, rows, index, subIndex }) => {
         name: data.file.originFileObj.name,
         FileID: getRandomUniqueNumber().toString(),
       };
-      newRows[index].subAgenda[subIndex].Subfiles.push(fileData);
+      newRows[index].subAgenda[subIndex].subfiles.push(fileData);
       setRows(newRows);
     },
     onDrop(e) {
@@ -33,7 +33,7 @@ const SubDedaultDragger = ({ setRows, rows, index, subIndex }) => {
           name: fileDatas.file.originFileObj.name,
           FileID: getRandomUniqueNumber().toString(),
         };
-        newRows[index].subAgenda[subIndex].Subfiles.push(fileData);
+        newRows[index].subAgenda[subIndex].subfiles.push(fileData);
       });
       setRows(newRows);
       console.log("Dropped files", e.dataTransfer.files);

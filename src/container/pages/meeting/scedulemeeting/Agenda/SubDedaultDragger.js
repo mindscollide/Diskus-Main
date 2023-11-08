@@ -33,16 +33,16 @@ const SubDedaultDragger = ({
       const { status } = data.file;
       let newRows = [...rows];
       let fileSizeArr;
-      if (newRows[index].subAgenda[subIndex].Subfiles.length > 9) {
+      if (newRows[index].subAgenda[subIndex].subfiles.length > 9) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
-      } else if (newRows[index].subAgenda[subIndex].Subfiles.length > 0) {
+      } else if (newRows[index].subAgenda[subIndex].subfiles.length > 0) {
         let flag = false;
         let sizezero;
         let size;
-        newRows[index].subAgenda[subIndex].Subfiles.map((arData, index) => {
+        newRows[index].subAgenda[subIndex].subfiles.map((arData, index) => {
           if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
             flag = true;
           }
@@ -84,7 +84,7 @@ const SubDedaultDragger = ({
             FK_MAID: 0,
           };
           setFileForSend([...fileForSend, data.file.originFileObj]);
-          newRows[index].subAgenda[subIndex].Subfiles.push(file);
+          newRows[index].subAgenda[subIndex].subfiles.push(file);
           setRows(newRows);
           // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
@@ -119,7 +119,7 @@ const SubDedaultDragger = ({
             AgendaAttachmentsID: getRandomUniqueNumber(),
             FK_MAID: 0,
           };
-          newRows[index].subAgenda[subIndex].Subfiles.push(file);
+          newRows[index].subAgenda[subIndex].subfiles.push(file);
           setFileForSend([...fileForSend, data.file.originFileObj]);
           setRows(newRows);
         }
@@ -159,7 +159,7 @@ const SubDedaultDragger = ({
   //       OriginalAttachmentName: data.file.originFileObj.name,
   //       FK_MAID: 0,
   //     };
-  //     newRows[index].subAgenda[subIndex].Subfiles.push(fileData);
+  //     newRows[index].subAgenda[subIndex].subfiles.push(fileData);
   //     setRows(newRows);
   //   },
   //   onDrop(e) {
@@ -172,7 +172,7 @@ const SubDedaultDragger = ({
   //         OriginalAttachmentName: fileDatas.file.originFileObj.name,
   //         FK_MAID: 0,
   //       };
-  //       newRows[index].subAgenda[subIndex].Subfiles.push(fileData);
+  //       newRows[index].subAgenda[subIndex].subfiles.push(fileData);
   //     });
   //     setRows(newRows);
   //     console.log("Dropped files", e.dataTransfer.files);

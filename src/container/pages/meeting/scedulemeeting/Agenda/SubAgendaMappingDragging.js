@@ -971,7 +971,7 @@ const SubAgendaMappingDragging = ({
                                                     {subAgendaData.subSelectRadio ===
                                                     1 ? (
                                                       <>
-                                                        {subAgendaData.Subfiles
+                                                        {subAgendaData.subfiles
                                                           .length > 0 ? (
                                                           <>
                                                             <SubDocumnets

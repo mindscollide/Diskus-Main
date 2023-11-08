@@ -77,7 +77,7 @@ const Agenda = ({
           SubAgendaUrlFieldRadio: "",
           subAgendarequestContributorUrl: "",
           subAgendarequestContributorEnterNotes: "",
-          Subfiles: [],
+          subfiles: [],
         },
       ],
     },
@@ -111,7 +111,7 @@ const Agenda = ({
           SubAgendaUrlFieldRadio: "",
           subAgendarequestContributorUrl: "",
           subAgendarequestContributorEnterNotes: "",
-          Subfiles: [],
+          subfiles: [],
         },
       ],
     };

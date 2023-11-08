@@ -101,7 +101,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
           subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
-          Subfiles: [],
+          subfiles: [],
           IsLocked: false,
           VoteOwner: null,
           IsAttachment: false,
@@ -150,7 +150,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
           subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
-          Subfiles: [],
+          subfiles: [],
           IsLocked: false,
           VoteOwner: null,
           IsAttachment: false,
@@ -283,7 +283,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
         }
       });
 
-      // Update Subfiles property in SubAgenda objects
+      // Update subfiles property in SubAgenda objects
       let updatedSubAgenda = item.SubAgenda.map((subAgenda) => {
         let updatedSubFiles = subAgenda.Subfiles.map((subFile) => {
           let newAttachmentName = mappingObject[subFile.DisplayAttachmentName];
@@ -299,7 +299,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
 
         return {
           ...subAgenda,
-          Subfiles: updatedSubFiles,
+          subfiles: updatedSubFiles,
         };
       });
 
@@ -315,9 +315,25 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
       MeetingID: currentMeeting,
       AgendaList: updatedData,
     };
-    dispatch(AddUpdateAdvanceMeetingAgenda(Data, navigate, t));
+    dispatch(AddUpdateAdvanceMeetingAgenda(Data, navigate, t, currentMeeting));
   };
   console.log(open, "openopenopen");
+
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
+        undefined &&
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
+    ) {
+      setRows(
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList
+      );
+    } else {
+      setRows(rows);
+    }
+  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
+
   useEffect(() => {
     console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
     if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {

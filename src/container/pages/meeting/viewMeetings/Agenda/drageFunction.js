@@ -94,7 +94,7 @@ export const onDragEnd = (result, rows, setRows) => {
       const sourceSubAgenda = sourceParent.subAgenda[duplicatedObjectIndex];
 
       // Remove the attachment from the source sub-agenda
-      const movedAttachment = sourceSubAgenda.Subfiles.splice(
+      const movedAttachment = sourceSubAgenda.subfiles.splice(
         result.source.index,
         1
       )[0];
@@ -158,8 +158,8 @@ export const onDragEnd = (result, rows, setRows) => {
         1
       )[0];
 
-      // Add the removed attachment to the destination sub-agenda's Subfiles array
-      destinationSubAgenda.Subfiles.splice(
+      // Add the removed attachment to the destination sub-agenda's subfiles array
+      destinationSubAgenda.subfiles.splice(
         result.destination.index,
         0,
         movedAttachment
@@ -221,12 +221,12 @@ export const onDragEnd = (result, rows, setRows) => {
       const destinationSubAgenda =
         destinationParent.subAgenda[findDestinationSubAgendaIDIndex];
       // Remove the attachment from the source sub-agenda
-      const movedAttachment = sourceSubAgenda.Subfiles.splice(
+      const movedAttachment = sourceSubAgenda.subfiles.splice(
         result.source.index,
         1
       )[0];
-      // Add the removed attachment to the destination sub-agenda's Subfiles array
-      destinationSubAgenda.Subfiles.splice(
+      // Add the removed attachment to the destination sub-agenda's subfiles array
+      destinationSubAgenda.subfiles.splice(
         result.destination.index,
         0,
         movedAttachment
