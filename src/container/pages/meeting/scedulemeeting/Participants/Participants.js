@@ -501,83 +501,82 @@ const Participants = ({
                 />
               </Col>
             </Row>
-            <Row className="mt-3">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
-                {isEditable ? (
-                  <>
-                    <div className={styles["definedHeight"]}></div>
-                  </>
-                ) : (
-                  <>
-                    {((Number(ediorRole.status) === 9 ||
-                      Number(ediorRole.status) === 8 ||
-                      Number(ediorRole.status) === 10) &&
-                      ediorRole.role === "Organizer" &&
-                      isEditMeeting === true) ||
-                    (ediorRole.role === "Agenda Contributor" &&
-                      isEditMeeting === true) ? null : (
-                      <Button
-                        text={t("Propose-meeting-dates")}
-                        className={styles["Next_Organization"]}
-                        onClick={handleProposedmeetingDates}
-                      />
-                    )}
-
-                    <Button
-                      text={t("Cancel")}
-                      className={styles["Cancel_Organization"]}
-                      onClick={handleCancelParticipants}
-                    />
-
-                    <Button
-                      text={t("Previous")}
-                      className={styles["Cancel_Organization"]}
-                      onClick={previousTabOrganizer}
-                    />
-
-                    <Button
-                      text={t("Next")}
-                      className={styles["Cancel_Organization"]}
-                      onClick={nextTabOrganizer}
-                    />
-                    {((Number(ediorRole.status) === 9 ||
-                      Number(ediorRole.status) === 8 ||
-                      Number(ediorRole.status) === 10) &&
-                      ediorRole.role === "Organizer" &&
-                      isEditMeeting === true) ||
-                    (ediorRole.role === "Agenda Contributor" &&
-                      isEditMeeting === true) ? null : (
-                      <Button
-                        text={t("Published")}
-                        className={styles["Next_Organization"]}
-                        onClick={handleNextButton}
-                      />
-                    )}
-                  </>
-                )}
-              </Col>
-            </Row>
           </section>
+          <Row className="mt-3">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end gap-2"
+            >
+              {isEditable ? (
+                <>
+                  <div className={styles["definedHeight"]}></div>
+                </>
+              ) : (
+                <>
+                  {((Number(ediorRole.status) === 9 ||
+                    Number(ediorRole.status) === 8 ||
+                    Number(ediorRole.status) === 10) &&
+                    ediorRole.role === "Organizer" &&
+                    isEditMeeting === true) ||
+                  (ediorRole.role === "Agenda Contributor" &&
+                    isEditMeeting === true) ? null : (
+                    <Button
+                      text={t("Propose-meeting-dates")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleProposedmeetingDates}
+                    />
+                  )}
+
+                  <Button
+                    text={t("Cancel")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={handleCancelParticipants}
+                  />
+
+                  <Button
+                    text={t("Previous")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={previousTabOrganizer}
+                  />
+
+                  <Button
+                    text={t("Next")}
+                    className={styles["Cancel_Organization"]}
+                    onClick={nextTabOrganizer}
+                  />
+                  {((Number(ediorRole.status) === 9 ||
+                    Number(ediorRole.status) === 8 ||
+                    Number(ediorRole.status) === 10) &&
+                    ediorRole.role === "Organizer" &&
+                    isEditMeeting === true) ||
+                  (ediorRole.role === "Agenda Contributor" &&
+                    isEditMeeting === true) ? null : (
+                    <Button
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleNextButton}
+                    />
+                  )}
+                </>
+              )}
+            </Col>
+          </Row>
+
+          {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
+          {NewMeetingreducer.participantModal && (
+            <AddParticipantModal
+              setrspvRows={setrspvRows}
+              rspvRows={rspvRows}
+              currentMeeting={currentMeeting}
+            />
+          )}
+          {NewMeetingreducer.cancelPartipants && (
+            <CancelParticipants setSceduleMeeting={setSceduleMeeting} />
+          )}
         </>
       )}
-
-      {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
-      {NewMeetingreducer.participantModal && (
-        <AddParticipantModal
-          setrspvRows={setrspvRows}
-          rspvRows={rspvRows}
-          currentMeeting={currentMeeting}
-        />
-      )}
-      {NewMeetingreducer.cancelPartipants && (
-        <CancelParticipants setSceduleMeeting={setSceduleMeeting} />
-      )}
-      {/* {proposeMeeting && } */}
     </>
   );
 };
