@@ -28,6 +28,7 @@ const Organizers = ({
   setorganizers,
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
+  ediorRole
 }) => {
   const { t } = useTranslation();
 

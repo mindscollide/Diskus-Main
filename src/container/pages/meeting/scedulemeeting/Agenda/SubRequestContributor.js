@@ -123,8 +123,8 @@ const SubRequestContributor = ({
           <Select
             options={allAgendaContributors}
             value={{
-              value: subAgendaData.requestContributorURl,
-              label: subAgendaData.requestContributorURlName,
+              value: subAgendaData.subAgendarequestContributorUrl,
+              label: subAgendaData.subAgendarequestContributorUrlName,
             }}
             onChange={(value) => handleSelectChange(index, subIndex, value)}
             classNamePrefix={"SelectOrganizersSelect_active"}

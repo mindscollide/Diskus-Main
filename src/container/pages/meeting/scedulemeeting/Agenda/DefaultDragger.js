@@ -122,7 +122,7 @@ const DefaultDragger = ({
           let file = {
             DisplayAttachmentName: data.file.originFileObj.name,
             OriginalAttachmentName: data.file.originFileObj.name,
-            AgendaAttachmentsID: getRandomUniqueNumber().toString(),
+            AgendaAttachmentsID: getRandomUniqueNumber(),
             FK_MAID: 0,
           };
           setFileForSend([...fileForSend, data.file.originFileObj]);
@@ -158,7 +158,7 @@ const DefaultDragger = ({
           let file = {
             DisplayAttachmentName: data.file.originFileObj.name,
             OriginalAttachmentName: data.file.originFileObj.name,
-            AgendaAttachmentsID: getRandomUniqueNumber().toString(),
+            AgendaAttachmentsID: getRandomUniqueNumber(),
             FK_MAID: 0,
           };
           newRows[index].files.push(file);

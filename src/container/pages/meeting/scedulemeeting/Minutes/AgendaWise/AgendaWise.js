@@ -18,7 +18,11 @@ import Rightploygon from "../../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
-import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
+import {
+  convertintoGMTCalender,
+  newTimeFormaterAsPerUTCFullDate,
+  resolutionResultTable,
+} from "../../../../../../commen/functions/date_formater";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
 import {
   AddAgendaWiseMinutesApiFunc,
@@ -296,24 +300,14 @@ const AgendaWise = ({ currentMeeting }) => {
 
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText != "") {
-      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
+    if (source === "user" && plainText) {
+      console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
           value: content,
           errorMessage: "",
           errorStatus: false,
-        },
-      });
-    } else {
-      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: true,
         },
       });
     }
@@ -371,6 +365,7 @@ const AgendaWise = ({ currentMeeting }) => {
     setFileAttachments([]);
     setPreviousFileIDs([]);
     setAgendaOptions([]);
+    setFileForSend([]);
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -431,6 +426,20 @@ const AgendaWise = ({ currentMeeting }) => {
 
   const handleEditFunc = (data) => {
     setupdateData(data);
+    if (data.minutesDetails !== "") {
+      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
+      setAddNoteFields({
+        Description: {
+          value: data.minutesDetails,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+      setisEdit(true);
+    } else {
+      console.log("data.minutesDetails is undefined or null");
+    }
+    setisEdit(true);
     console.log(data, "handleEditFunchandleEditFunc");
     let Data = {
       FK_MeetingAgendaMinutesID: data.minuteID,
@@ -438,7 +447,6 @@ const AgendaWise = ({ currentMeeting }) => {
     dispatch(
       AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
     );
-    setisEdit(true);
   };
 
   useEffect(() => {
@@ -664,7 +672,7 @@ const AgendaWise = ({ currentMeeting }) => {
                                       src={CrossIcon}
                                       height="12.68px"
                                       width="12.68px"
-                                      onClick={() => handleRemoveFile(index)}
+                                      onClick={() => handleRemoveFile(data)}
                                     />
                                   </span>
                                   <section className={styles["Outer_Box"]}>
@@ -783,28 +791,43 @@ const AgendaWise = ({ currentMeeting }) => {
                                   <span className={styles["Title_File"]}>
                                     {expanded ? (
                                       <>
-                                        {data.minutesDetails.substring(0, 190)}
+                                        <span
+                                          dangerouslySetInnerHTML={{
+                                            __html:
+                                              data.minutesDetails.substring(
+                                                0,
+                                                120
+                                              ),
+                                          }}
+                                        ></span>
                                         ...
                                       </>
                                     ) : (
-                                      <>{data.minutesDetails}</>
+                                      <span
+                                        dangerouslySetInnerHTML={{
+                                          __html: data.minutesDetails,
+                                        }}
+                                      ></span>
                                     )}
 
                                     <span
                                       className={styles["Show_more_Styles"]}
                                       onClick={toggleExpansion}
                                     >
-                                      {expanded ? t("See-more") : t("See-less")}
+                                      {expanded &&
+                                      data.minutesDetails.substring(0, 120)
+                                        ? t("See-more")
+                                        : t("See-less")}
                                     </span>
                                   </span>
                                 </Col>
                               </Row>
-                              <Row className="mt-1">
+                              <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <span
                                     className={styles["Date_Minutes_And_time"]}
                                   >
-                                    {resolutionResultTable(
+                                    {newTimeFormaterAsPerUTCFullDate(
                                       data.lastUpdatedDate +
                                         data.lastUpdatedTime
                                     ).toString()}
