@@ -2,7 +2,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Committee.module.css";
 import { Button, Loader, Notification } from "../../components/elements";
 import React, { useEffect, useState } from "react";
-import { Pagination } from "antd";
 import NoCommitteeImg from "../../assets/images/No-Committee.svg";
 import { useTranslation } from "react-i18next";
 import archivedbtn from "../../assets/images/archivedbtn.png";
@@ -15,11 +14,9 @@ import ModalMarketingTeamCommittee from "../ModalMarketingTeamCommittee/ModalMar
 import committeeicon from "../../assets/images/Group 2584.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  committeeStatusUpdate,
   getallcommitteebyuserid_clear,
   getCommitteesbyCommitteeId,
   realtimeCommitteeStatusResponse,
-  viewDetailsCommitteeID,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import {
@@ -43,17 +40,11 @@ import Card from "../../components/elements/Card/Card";
 import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
 import { useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
-import { Plus } from "react-bootstrap-icons";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const Committee = () => {
-  const {
-    CommitteeReducer,
-    LanguageReducer,
-    talkStateData,
-    DataRoomReducer,
-    talkFeatureStates,
-  } = useSelector((state) => state);
+  const { CommitteeReducer, LanguageReducer, talkStateData, DataRoomReducer } =
+    useSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -70,7 +61,6 @@ const Committee = () => {
   const [marketingTeamModal, setMarketingTeamModal] = useState(false);
   const [committeeID, setCommitteeID] = useState(0);
   const [viewCommitteeTab, setViewCommitteeViewTab] = useState(0);
-  const [modalsure, setModalsure] = useState(false);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
   const [ViewcommitteeID, setViewCommitteeID] = useState(0);
@@ -458,6 +448,7 @@ const Committee = () => {
                       height="7.6px"
                       width="7.6px"
                       className={styles["PLusICon"]}
+                      alt=""
                     />
                   }
                 />
@@ -480,6 +471,7 @@ const Committee = () => {
                       width="18px"
                       height="18px"
                       className={styles["archivedbtnIcon"]}
+                      alt=""
                     />
                   }
                 />
@@ -554,6 +546,7 @@ const Committee = () => {
                                     src={committeeicon}
                                     width="32.88px"
                                     height="28.19px"
+                                    alt=""
                                   />
                                 }
                                 BtnText={
@@ -578,7 +571,11 @@ const Committee = () => {
                         >
                           <Row>
                             <Col sm={12} md={12} lg={12} className="mb-3">
-                              <img draggable="false" src={NoCommitteeImg} />
+                              <img
+                                draggable="false"
+                                src={NoCommitteeImg}
+                                alt=""
+                              />
                             </Col>
                             <Col
                               sm={12}
@@ -613,6 +610,7 @@ const Committee = () => {
                                     height="7.6px"
                                     width="7.6px"
                                     className={styles["PLusICon"]}
+                                    alt=""
                                   />
                                 }
                               />
