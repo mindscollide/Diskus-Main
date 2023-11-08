@@ -15,11 +15,17 @@ import { showSceduleProposedMeeting } from "../../../../../../../store/actions/N
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
 import { scheduleMeetingMainApi } from "../../../../../../../store/actions/NewMeetingActions";
-const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
+const SceduleProposedmeeting = ({
+  organizerRows,
+  proposedDates,
+  currentMeeting,
+}) => {
   console.log(
     proposedDates,
     "proposedDatesproposedDatesproposedDatesproposedDatesproposedDates"
   );
+
+  console.log(currentMeeting, "currentMeetingcurrentMeeting");
 
   let meetingID = Number(localStorage.getItem("MeetingId"));
 
@@ -119,7 +125,7 @@ const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
   // Api hit for schedule Meeting
   const scheduleHitButton = () => {
     let scheduleMeeting = {
-      MeetingID: 1666,
+      MeetingID: Number(currentMeeting),
       ProposedDateID: selectProposedDate[0].proposedDateID,
     };
     dispatch(scheduleMeetingMainApi(navigate, t, scheduleMeeting));

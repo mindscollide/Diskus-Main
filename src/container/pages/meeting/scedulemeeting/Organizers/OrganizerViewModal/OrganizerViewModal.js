@@ -19,7 +19,10 @@ import { useEffect, useState } from "react";
 import SceduleProposedmeeting from "../../meetingDetails/UnpublishedProposedMeeting/SceduleProposedMeeting/SceduleProposedmeeting";
 import moment from "moment";
 
-const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
+const OrganizerViewModal = ({
+  setViewProposeOrganizerPoll,
+  currentMeeting,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,6 +31,8 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   console.log(NewMeetingreducer, "attendanceMeetingReducer");
 
   let meetingID = Number(localStorage.getItem("meetingID"));
+
+  console.log(currentMeeting, "currentMeetingcurrentMeeting");
 
   //scheduleProposedMeeting Modal open state
   const [showScheduleProposedMeeting, setShowScheduleProposedMeeting] =
@@ -167,7 +172,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   // dispatch Api in useEffect
   useEffect(() => {
     let proposedData = {
-      MeetingID: 1828,
+      MeetingID: Number(currentMeeting),
     };
     dispatch(getUserProposedWiseApi(navigate, t, proposedData));
   }, []);
@@ -241,6 +246,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
           <SceduleProposedmeeting
             organizerRows={organizerRows}
             proposedDates={proposedDates}
+            currentMeeting={currentMeeting}
           />
         </Col>
       </Row>
