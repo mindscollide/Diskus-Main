@@ -357,6 +357,13 @@ const ParentAgenda = ({
     ),
   }));
 
+  console.log(
+    "fileDataPropfileDataProp",
+    fileForSend,
+
+    rows
+  );
+
   console.log("Presenters", presenters);
 
   console.log("allPresenters", allPresenters);
@@ -627,21 +634,21 @@ const ParentAgenda = ({
                                   apllyLockOnParentAgenda(index) ? true : false
                                 }
                               >
-                                <Radio value="1">
+                                <Radio value={1}>
                                   <span
                                     className={styles["Radio_Button_options"]}
                                   >
                                     {t("Document")}
                                   </span>
                                 </Radio>
-                                <Radio value="2">
+                                <Radio value={2}>
                                   <span
                                     className={styles["Radio_Button_options"]}
                                   >
                                     {t("URL")}
                                   </span>
                                 </Radio>
-                                <Radio value="3">
+                                <Radio value={3}>
                                   <span
                                     className={styles["Radio_Button_options"]}
                                   >
@@ -707,7 +714,7 @@ const ParentAgenda = ({
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                               >
-                                {data.selectedRadio === "1" ? (
+                                {data.selectedRadio === 1 ? (
                                   <>
                                     {data.files.length > 0 ? (
                                       <>
@@ -738,14 +745,14 @@ const ParentAgenda = ({
                                       />
                                     )}
                                   </>
-                                ) : data.selectedRadio === "2" ? (
+                                ) : data.selectedRadio === 2 ? (
                                   <Urls
                                     data={data}
                                     index={index}
                                     setRows={setRows}
                                     rows={rows}
                                   />
-                                ) : data.selectedRadio === "3" ? (
+                                ) : data.selectedRadio === 3 ? (
                                   <RequestContributor
                                     data={data}
                                     index={index}
@@ -773,6 +780,8 @@ const ParentAgenda = ({
               data={data}
               index={index}
               setRows={setRows}
+              fileForSend={fileForSend}
+              setFileForSend={setFileForSend}
               rows={rows}
               subexpandIndex={subexpandIndex}
               expandSubIndex={expandSubIndex}

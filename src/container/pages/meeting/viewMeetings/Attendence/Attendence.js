@@ -261,7 +261,7 @@ const Attendence = ({ advanceMeetingModalID }) => {
     });
     let Data = {
       MeetingAttendance: newData,
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(advanceMeetingModalID),
     };
     console.log(Data, "DataData");
     dispatch(saveMeetingAttendanceApi(navigate, t, Data));
