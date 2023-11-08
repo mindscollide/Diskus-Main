@@ -8,9 +8,12 @@ import {
   getAgendaAndVotingInfo,
   casteVoteForAgenda,
   viewAgendaVotingResults,
+  saveFilesRequestMethod,
+  uploadDocumentsRequestMethod,
   getAdvanceMeetingAgendabyMeetingID,
+  createUpdateMeetingDataRoomMap,
 } from "../../commen/apis/Api_config";
-import { meetingApi } from "../../commen/apis/Api_ends_points";
+import { meetingApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 
 const clearResponseMessage = (message) => {
   return {
@@ -651,6 +654,345 @@ const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t) => {
   };
 };
 
+const createUpdateMeetingDataRoomMap_init = () => {
+  return {
+    type: actions.CREATEUPDATEMEETINGDATAROOMMAP_INIT,
+  };
+};
+
+const createUpdateMeetingDataRoomMap_success = (response, message) => {
+  return {
+    type: actions.CREATEUPDATEMEETINGDATAROOMMAP_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const createUpdateMeetingDataRoomMap_fail = (message) => {
+  return {
+    type: actions.CREATEUPDATEMEETINGDATAROOMMAP_FAIL,
+    message: message,
+  };
+};
+
+// Folder ID
+const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(createUpdateMeetingDataRoomMap_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", createUpdateMeetingDataRoomMap.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(CreateUpdateMeetingDataRoomMap(navigate, t, data));
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult.isExecuted === true
+        ) {
+          if (
+            response.data.responseResult.responseMessage.toLowerCase() ===
+            "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_01".toLowerCase()
+          ) {
+            dispatch(
+              createUpdateMeetingDataRoomMap_success(
+                response.data.responseResult.folderID,
+                t("Folder-mapped-with-data-room")
+              )
+            );
+            localStorage.setItem("MeetingID", data.MeetingID);
+          } else if (
+            response.data.responseResult.responseMessage.toLowerCase() ===
+            "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_02".toLowerCase()
+          ) {
+            dispatch(
+              createUpdateMeetingDataRoomMap_fail(
+                t("Failed-to-save-or-map-folder")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage.toLowerCase() ===
+            "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_03".toLowerCase()
+          ) {
+            dispatch(
+              createUpdateMeetingDataRoomMap_success(
+                response.data.responseResult.folderID,
+                t("Update-successfullly")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage.toLowerCase() ===
+            "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_04".toLowerCase()
+          ) {
+            dispatch(
+              createUpdateMeetingDataRoomMap_fail(t("Unable-to-update-folder"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage.toLowerCase() ===
+            "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_05".toLowerCase()
+          ) {
+            dispatch(
+              createUpdateMeetingDataRoomMap_success(
+                response.data.responseResult.folderID,
+                t("New-mapped-created")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage.toLowerCase() ===
+            "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_06".toLowerCase()
+          ) {
+            dispatch(
+              createUpdateMeetingDataRoomMap_fail(
+                t("Failed-to-created-new-mapping")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage.toLowerCase() ===
+            "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_07".toLowerCase()
+          ) {
+            dispatch(
+              createUpdateMeetingDataRoomMap_fail(t("Something-went-wrong"))
+            );
+          } else {
+            dispatch(
+              createUpdateMeetingDataRoomMap_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            createUpdateMeetingDataRoomMap_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          createUpdateMeetingDataRoomMap_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+// Upload Documents Init
+const uploadDocument_init = () => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+  };
+};
+
+// Upload Documents Success
+const uploadDocument_success = (response, message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Upload Documents Fail
+const uploadDocument_fail = (message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Upload Documents API
+const UploadDocumentsAgendaApi = (navigate, t, data, folderID, newFolder) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return async (dispatch) => {
+    dispatch(uploadDocument_init());
+    let form = new FormData();
+    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            UploadDocumentsAgendaApi(navigate, t, data, folderID, newFolder)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                uploadDocument_success(response.data.responseResult, "")
+              );
+              await dispatch(
+                SaveFilesAgendaApi(
+                  navigate,
+                  t,
+                  response.data.responseResult,
+                  folderID,
+                  newFolder
+                )
+              );
+              // let newData = {
+              //   DisplayAttachmentName: data.displayFileName,
+              //   OriginalAttachmentName:
+              //     response.data.responseResult.fileID.toString(),
+              // };
+              // newfile.push(newData);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(uploadDocument_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(uploadDocument_fail(t("Something-went-wrong")));
+        }
+        // }
+      })
+      .catch((error) => {
+        dispatch(uploadDocument_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Save Files Init
+const saveFiles_init = () => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_INIT,
+  };
+};
+// Save Files Success
+const saveFiles_success = (response, message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+// Save Files Fail
+const saveFiles_fail = (message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Save Files API
+const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+  let Data = {
+    FolderID: folderID !== null ? folderID : 0,
+    Files: [
+      {
+        DisplayFileName: data.displayFileName,
+        DiskusFileName: JSON.parse(data.diskusFileName),
+        ShareAbleLink: data.shareAbleLink,
+        FK_UserID: JSON.parse(createrID),
+        FK_OrganizationID: JSON.parse(OrganizationID),
+      },
+    ],
+    UserID: JSON.parse(createrID),
+    Type: 0,
+  };
+  return async (dispatch) => {
+    dispatch(saveFiles_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveFilesAgendaApi(navigate, t, data, folderID, newFolder));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                )
+            ) {
+              newFolder.push({
+                pK_FileID: response.data.responseResult.fileID,
+                DisplayAttachmentName: data.displayFileName,
+              });
+              await dispatch(
+                saveFiles_success(response.data.responseResult, "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(saveFiles_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(saveFiles_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch(() => {
+        dispatch(saveFiles_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -660,4 +1002,7 @@ export {
   CasteVoteForAgenda,
   ViewAgendaVotingResults,
   GetAdvanceMeetingAgendabyMeetingID,
+  CreateUpdateMeetingDataRoomMap,
+  SaveFilesAgendaApi,
+  UploadDocumentsAgendaApi,
 };

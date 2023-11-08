@@ -10,6 +10,7 @@ const initialState = {
   CastAgendaVoteData: [],
   ViewAgendaVotingResultData: [],
   GetAdvanceMeetingAgendabyMeetingIDData: [],
+  MeetingAgendaFolderID: 0,
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -201,6 +202,29 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetAdvanceMeetingAgendabyMeetingIDData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CREATEUPDATEMEETINGDATAROOMMAP_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.CREATEUPDATEMEETINGDATAROOMMAP_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        MeetingAgendaFolderID: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CREATEUPDATEMEETINGDATAROOMMAP_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        MeetingAgendaFolderID: 0,
         ResponseMessage: action.message,
       };
     }

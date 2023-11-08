@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
@@ -7,7 +9,10 @@ import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
 import { useTranslation } from "react-i18next";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { showAgenItemsRemovedModal } from "../../../../../store/actions/NewMeetingActions";
+import {
+  showAgenItemsRemovedModal,
+  GetAllMeetingUserApiFunc,
+} from "../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import desh from "../../../../../assets/images/desh.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
@@ -53,11 +58,28 @@ const SubAgendaMappingDragging = ({
   const { t } = useTranslation();
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
+
+  let currentMeetingID = localStorage.getItem("meetingID");
+  const { NewMeetingreducer } = useSelector((state) => state);
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
+  const [allPresenters, setAllPresenters] = useState([]);
+  const [presenters, setPresenters] = useState([]);
   const dispatch = useDispatch();
   const { Dragger } = Upload;
 
+  const navigate = useNavigate();
+
+  function getCurrentUTCDate() {
+    const currentDate = new Date();
+    const year = currentDate.getUTCFullYear();
+    const month = String(currentDate.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(currentDate.getUTCDate()).padStart(2, "0");
+
+    return `${year}${month}${day}`;
+  }
+
+  const currentUTCDate = getCurrentUTCDate();
   // SubAgenda Select Options
   const SubAgendaoptions = [
     { value: "chocolate", label: "Chocolate" },
@@ -119,30 +141,79 @@ const SubAgendaMappingDragging = ({
   };
 
   // Function to handle changes in sub-agenda select
-  const handleSubAgendaSelectChange = (index, subIndex, value) => {
-    const updatedRows = [...rows];
+  // const handleSubAgendaSelectChange = (index, subIndex, value) => {
+  //   const updatedRows = [...rows];
+  //   let SelectValue = {
+  //     value: value.value,
+  //     label: value.label,
+  //   };
+  //   updatedRows[index].subAgenda[subIndex].selectedOption = SelectValue;
+  //   console.log(updatedRows, "SubagendaSelectSubagendaSelect");
+  //   setRows(updatedRows);
+  // };
+
+  const handleSelectChange = (index, subIndex, value) => {
+    console.log(value, "valuevaluevalue");
+    const updatedAgendaItems = [...rows];
     let SelectValue = {
       value: value.value,
       label: value.label,
     };
-    updatedRows[index].subAgenda[subIndex].selectedOption = SelectValue;
-    console.log(updatedRows, "SubagendaSelectSubagendaSelect");
-    setRows(updatedRows);
+    updatedAgendaItems[index].subAgenda[subIndex].presenterID =
+      SelectValue.value;
+    updatedAgendaItems[index].subAgenda[subIndex].presenterName =
+      SelectValue.label;
+    setRows(updatedAgendaItems);
   };
 
   // Function to handle changes in sub-agenda start date
   const handleSubAgendaStartDateChange = (index, subIndex, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].subAgenda[subIndex].startDate = date;
-    console.log(updatedRows, "startCasestartCasestartCase");
-    setRows(updatedRows);
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const updatedRows = [...rows];
+      updatedRows[index].subAgenda[subIndex].startDate =
+        currentUTCDate + formattedTime;
+      setRows(updatedRows);
+      // You can use 'formattedTime' as needed.
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
+    // const updatedRows = [...rows];
+    // updatedRows[index].subAgenda[subIndex].startDate = date;
+    // console.log(updatedRows, "startCasestartCasestartCase");
+    // setRows(updatedRows);
   };
 
   // Function to handle changes in sub-agenda end date
   const handleSubAgendaEndDateChange = (index, subIndex, date) => {
-    const updatedRows = [...rows];
-    updatedRows[index].subAgenda[subIndex].endDate = date;
-    setRows(updatedRows);
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const updatedRows = [...rows];
+      updatedRows[index].subAgenda[subIndex].endDate =
+        currentUTCDate + formattedTime;
+      setRows(updatedRows);
+      // You can use 'formattedTime' as needed.
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
   };
 
   //Function For removing Subagendas
@@ -207,6 +278,17 @@ const SubAgendaMappingDragging = ({
     setRows(updatedRows);
   };
 
+  const handleAgendaDescription = (index, subIndex, e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    const updatedAgendaItems = [...rows];
+    if (name === "Description") {
+      updatedAgendaItems[index].subAgenda[subIndex].description = value;
+    }
+    console.log(updatedAgendaItems, "Description");
+    setRows(updatedAgendaItems);
+  };
+
   const lockFunctionActiveSubMenus = (index, subindex) => {
     let cloneSubLockArry = [...subLockArry];
     console.log(index, subindex, "findsubIndexfindsubIndexfindsubIndex");
@@ -254,6 +336,64 @@ const SubAgendaMappingDragging = ({
       }
     }
   }, [currentLanguage]);
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(currentMeetingID),
+    };
+    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.getMeetingusers !== undefined &&
+      NewMeetingreducer.getMeetingusers !== null &&
+      NewMeetingreducer.getMeetingusers.length !== 0
+    ) {
+      const newData = {
+        meetingOrganizers: NewMeetingreducer.getMeetingusers.meetingOrganizers,
+        meetingParticipants:
+          NewMeetingreducer.getMeetingusers.meetingParticipants,
+        meetingAgendaContributors:
+          NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
+      };
+      setAllPresenters(newData);
+    }
+  }, [NewMeetingreducer?.getMeetingusers]);
+
+  useEffect(() => {
+    if (allPresenters.lenth > 0 || Object.keys(allPresenters).length > 0) {
+      console.log(
+        "Condition allPresenters",
+        ...allPresenters.meetingOrganizers
+      );
+      const allPresentersReducer = [
+        ...allPresenters.meetingOrganizers,
+        ...allPresenters.meetingAgendaContributors,
+        ...allPresenters.meetingParticipants,
+      ];
+      setPresenters(allPresentersReducer);
+    }
+  }, [allPresenters]);
+
+  const allSavedPresenters = presenters.map((presenter) => ({
+    value: presenter.userID,
+    label: (
+      <>
+        <Row>
+          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+            <img
+              src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
+              width="17px"
+              height="17px"
+              className={styles["Image_class_Agenda"]}
+            />
+            <span className={styles["Name_Class"]}>{presenter.userName}</span>
+          </Col>
+        </Row>
+      </>
+    ),
+  }));
 
   return (
     <>
@@ -405,6 +545,36 @@ const SubAgendaMappingDragging = ({
                                               </Col>
                                             </Row>
                                             <Select
+                                              options={allSavedPresenters}
+                                              value={{
+                                                value:
+                                                  subAgendaData.presenterID,
+                                                label:
+                                                  subAgendaData.presenterName,
+                                              }}
+                                              onChange={(value) =>
+                                                handleSelectChange(
+                                                  index,
+                                                  subIndex,
+                                                  value
+                                                )
+                                              }
+                                              isDisabled={
+                                                apllyLockOnParentAgenda(
+                                                  index
+                                                ) ||
+                                                apllyLockOnSubAgenda(
+                                                  index,
+                                                  subIndex
+                                                )
+                                                  ? true
+                                                  : false
+                                              }
+                                              classNamePrefix={
+                                                "SelectOrganizersSelect_active"
+                                              }
+                                            />
+                                            {/* <Select
                                               options={SubAgendaoptions}
                                               value={
                                                 subAgendaData.selectedOption
@@ -427,7 +597,7 @@ const SubAgendaMappingDragging = ({
                                                   ? true
                                                   : false
                                               }
-                                            />
+                                            /> */}
                                           </Col>
                                           <Col
                                             sm={12}
@@ -598,6 +768,32 @@ const SubAgendaMappingDragging = ({
                                           expandSubIndex === subIndex &&
                                           subExpand && (
                                             <>
+                                              <Row className="mb-2">
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <TextField
+                                                    applyClass="text-area-create-resolution"
+                                                    type="text"
+                                                    as={"textarea"}
+                                                    name={"Description"}
+                                                    value={
+                                                      subAgendaData.description
+                                                    }
+                                                    change={(e) =>
+                                                      handleAgendaDescription(
+                                                        index,
+                                                        subIndex,
+                                                        e
+                                                      )
+                                                    }
+                                                    rows="4"
+                                                    placeholder={t(
+                                                      "Enter-description"
+                                                    )}
+                                                    required={true}
+                                                    maxLength={500}
+                                                  />
+                                                </Col>
+                                              </Row>
                                               <Row className="mt-3">
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span

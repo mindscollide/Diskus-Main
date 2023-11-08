@@ -396,53 +396,6 @@ const ParentAgenda = ({
                                 </Radio>
                               </Radio.Group>
                             </Col>
-                            {/* <Col
-                              lg={6}
-                              md={6}
-                              sm={6}
-                              className="d-flex justify-content-end gap-4 align-items-center"
-                            >
-                              <img
-                                draggable={false}
-                                src={Key}
-                                width="24.07px"
-                                height="24.09px"
-                                className="cursor-pointer"
-                                onClick={
-                                  apllyLockOnParentAgenda(index)
-                                    ? ""
-                                    : openAdvancePermissionModal
-                                }
-                              />
-                              <img
-                                draggable={false}
-                                src={Cast}
-                                width="25.85px"
-                                height="25.89px"
-                                className="cursor-pointer"
-                                onClick={
-                                  apllyLockOnParentAgenda(index)
-                                    ? ""
-                                    : openVoteMOdal
-                                }
-                              />
-                              <img
-                                draggable={false}
-                                src={
-                                  apllyLockOnParentAgenda(index)
-                                    ? DarkLock
-                                    : Lock
-                                }
-                                width="18.87px"
-                                className={
-                                  apllyLockOnParentAgenda(index)
-                                    ? styles["lockBtn_inActive"]
-                                    : styles["lockBtn"]
-                                }
-                                height="26.72px"
-                                onClick={() => lockFunctionActive(index)}
-                              />
-                            </Col> */}
                           </Row>
                           <Droppable
                             droppableId={`parent-${data.ID}-parent-attachments`}

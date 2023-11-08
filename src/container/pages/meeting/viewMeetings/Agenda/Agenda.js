@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Agenda.module.css";
+import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { Button } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -12,6 +13,7 @@ import {
   showCancelModalAgenda,
   showImportPreviousAgendaModal,
 } from "../../../../../store/actions/NewMeetingActions";
+import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../store/actions/MeetingAgenda_action";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
@@ -37,7 +39,11 @@ const Agenda = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const navigate = useNavigate();
+  let currentMeetingID = Number(localStorage.getItem("meetingID"));
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
   const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
@@ -143,6 +149,28 @@ const Agenda = ({
     setAgenda(false);
     setMeetingMaterial(true);
   };
+
+  useEffect(() => {
+    let Data = {
+      MeetingID: 1216,
+    };
+    dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
+        undefined &&
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
+    ) {
+      setRows(
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList
+      );
+    }
+  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
+
+  console.log("MeetingAgendaReducer", MeetingAgendaReducer);
 
   return (
     <>

@@ -1063,6 +1063,7 @@ const NewMeeting = () => {
       ) : viewProposeOrganizerPoll ? (
         <OrganizerViewModal
           setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
+          currentMeeting={currentMeeting}
         />
       ) : (
         <>

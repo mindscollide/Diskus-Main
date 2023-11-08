@@ -49,6 +49,8 @@ const ParentAgenda = ({
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
   currentMeeting,
+  fileForSend,
+  setFileForSend,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -77,6 +79,7 @@ const ParentAgenda = ({
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState([]);
   const [allPresenters, setAllPresenters] = useState([]);
+  const [presenters, setPresenters] = useState([]);
   //Timepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -121,7 +124,8 @@ const ParentAgenda = ({
     const newSubAgenda = {
       SubAgendaID: getRandomUniqueNumber().toString(),
       SubTitle: "",
-      selectedOption: null,
+      presenterID: null,
+      presenterName: "",
       startDate: null,
       endDate: null,
       subSelectRadio: "1",
@@ -207,7 +211,8 @@ const ParentAgenda = ({
       value: value.value,
       label: value.label,
     };
-    updatedAgendaItems[index].selectedOption = SelectValue;
+    updatedAgendaItems[index].presenterID = SelectValue.value;
+    updatedAgendaItems[index].presenterName = SelectValue.label;
     setRows(updatedAgendaItems);
   };
 
@@ -276,7 +281,7 @@ const ParentAgenda = ({
     let value = e.target.value;
     const updatedAgendaItems = [...rows];
     if (name === "Description") {
-      updatedAgendaItems[index][name] = value;
+      updatedAgendaItems[index].description = value;
     }
     console.log(updatedAgendaItems, "Description");
     setRows(updatedAgendaItems);
@@ -317,6 +322,42 @@ const ParentAgenda = ({
       setAllPresenters(newData);
     }
   }, [NewMeetingreducer?.getMeetingusers]);
+
+  useEffect(() => {
+    if (allPresenters.lenth > 0 || Object.keys(allPresenters).length > 0) {
+      console.log(
+        "Condition allPresenters",
+        ...allPresenters.meetingOrganizers
+      );
+      const allPresentersReducer = [
+        ...allPresenters.meetingOrganizers,
+        ...allPresenters.meetingAgendaContributors,
+        ...allPresenters.meetingParticipants,
+      ];
+      setPresenters(allPresentersReducer);
+    }
+  }, [allPresenters]);
+
+  const allSavedPresenters = presenters.map((presenter) => ({
+    value: presenter.userID,
+    label: (
+      <>
+        <Row>
+          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+            <img
+              src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
+              width="17px"
+              height="17px"
+              className={styles["Image_class_Agenda"]}
+            />
+            <span className={styles["Name_Class"]}>{presenter.userName}</span>
+          </Col>
+        </Row>
+      </>
+    ),
+  }));
+
+  console.log("Presenters", presenters);
 
   console.log("allPresenters", allPresenters);
 
@@ -415,14 +456,18 @@ const ParentAgenda = ({
                             </Col>
                           </Row>
                           <Select
-                            options={options}
-                            value={data.selectedOption}
+                            options={allSavedPresenters}
+                            value={{
+                              value: data.presenterID,
+                              label: data.presenterName,
+                            }}
                             onChange={(value) =>
                               handleSelectChange(index, value)
                             }
                             isDisabled={
                               apllyLockOnParentAgenda(index) ? true : false
                             }
+                            classNamePrefix={"SelectOrganizersSelect_active"}
                           />
                           {/* <Select
                             options={optionsIndividualOpenCloseVoting}
@@ -553,7 +598,7 @@ const ParentAgenda = ({
                                 type="text"
                                 as={"textarea"}
                                 name={"Description"}
-                                value={data.Description}
+                                value={data.description}
                                 change={(e) =>
                                   handleAgendaDescription(index, e)
                                 }
@@ -672,11 +717,15 @@ const ParentAgenda = ({
                                           setRows={setRows}
                                           rows={rows}
                                           parentId={`parent-${data.ID}`}
+                                          setFileForSend={setFileForSend}
+                                          fileForSend={fileForSend}
                                         />
                                         <DefaultDragger
                                           setRows={setRows}
                                           rows={rows}
                                           index={index}
+                                          fileForSend={fileForSend}
+                                          setFileForSend={setFileForSend}
                                         />
                                       </>
                                     ) : (
@@ -684,6 +733,8 @@ const ParentAgenda = ({
                                         setRows={setRows}
                                         rows={rows}
                                         index={index}
+                                        fileForSend={fileForSend}
+                                        setFileForSend={setFileForSend}
                                       />
                                     )}
                                   </>

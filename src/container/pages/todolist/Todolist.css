@@ -1,6 +1,5 @@
-.todolist-title-col {
+p.todolist-title-col {
   cursor: pointer;
-  color: #505050;
   margin: 0px 20px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -9,6 +8,7 @@
   font-size: 14px;
   font-family: "MontserratSemiBold-600";
   color: #2197d7 !important;
+  width: 200px !important;
 }
 
 body[dir="rtl"] .todolist-title-col {
@@ -407,6 +407,7 @@ body[dir="rtl"] .PaginationStyle-TodoList {
   width: auto !important;
   padding: 8px 10px !important;
 }
+
 .Status-Todo
   div
   .rc-virtual-list
@@ -414,9 +415,11 @@ body[dir="rtl"] .PaginationStyle-TodoList {
   .rc-virtual-list-holder-inner {
   display: block !important;
 }
+
 td.ant-table-column-sort {
   background: transparent;
 }
+
 .ToDo .ant-table .ant-table-body {
   padding-right: 10px;
 }
