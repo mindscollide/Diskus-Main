@@ -1207,6 +1207,10 @@ const createUpdateMeetingDataRoomMap = {
   RequestMethod: "ServiceManager.CreateUpdateMeetingDataRoomMap",
 };
 
+const ScheduleMeetingOnSelectedDate = {
+  RequestMethod: "ServiceManager.ScheduleMeetingOnSelectedDate",
+};
+
 const getMeetingbyGroupIDRM = {
   RequestMethod: "ServiceManager.GetMeetingsByGroupID",
 };
@@ -1561,6 +1565,7 @@ export {
   RetriveAgendaWiseDocuments,
   DeleteDocumentGenralMinute,
   createUpdateMeetingDataRoomMap,
+  ScheduleMeetingOnSelectedDate,
   DeleteAgendaWiseDocuments,
   CreateUpdateMeetingDataroomMapped,
   UpdateMeetingUsershit,

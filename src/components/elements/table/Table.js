@@ -13,6 +13,7 @@ const CustomTable = ({
   onChange,
   locale,
   scroll,
+  footer,
   prefixClassName,
   size,
 }) => {
@@ -32,6 +33,7 @@ const CustomTable = ({
         // bordered
         pagination={pagination}
         expandable={expandable}
+        footer={footer}
         locale={locale}
         prefixCls={prefixClassName}
         scroll={scroll}
