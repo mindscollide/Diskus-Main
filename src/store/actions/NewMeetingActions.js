@@ -4822,6 +4822,17 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               dispatch(
                 showDeleteAgendaWiseDocumentFailed(t("No-record-deleted"))
               );
+              let AgendaWiseDelData = {
+                MinuteID: AgendaWiseData.minuteID,
+              };
+              dispatch(
+                DeleteAgendaWiseMinutesApiFunc(
+                  navigate,
+                  AgendaWiseDelData,
+                  t,
+                  currentMeeting
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

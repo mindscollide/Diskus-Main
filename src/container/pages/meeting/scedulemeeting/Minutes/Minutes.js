@@ -900,10 +900,15 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                       <span className={styles["Title_File"]}>
                                         {expanded ? (
                                           <>
-                                            {data.minutesDetails.substring(
-                                              0,
-                                              190
-                                            )}
+                                            <div
+                                              dangerouslySetInnerHTML={{
+                                                __html:
+                                                  data.minutesDetails.substring(
+                                                    0,
+                                                    120
+                                                  ),
+                                              }}
+                                            ></div>
                                             ...
                                           </>
                                         ) : (
