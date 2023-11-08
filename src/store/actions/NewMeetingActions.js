@@ -56,6 +56,7 @@ import * as actions from "../action_types";
 import axios from "axios";
 import { getMeetingbyGroupIDRM } from "../../commen/apis/Api_config";
 import { setMeetingbyGroupIDRM } from "../../commen/apis/Api_config";
+import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -5678,6 +5679,130 @@ const UpdateMeetingUserForAgendaContributor = (
   };
 };
 
+//Update Meeting Users For Organizers
+
+const UpdateMeetingUserOrganizersInit = () => {
+  return {
+    type: actions.UPDATE_MEETING_USERS_INIT,
+  };
+};
+
+const UpdateMeetingUserOrganizersSuccess = (response, message) => {
+  return {
+    type: actions.UPDATE_MEETING_USERS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const UpdateMeetingUserOrganizersFailed = (response, message) => {
+  return {
+    type: actions.UPDATE_MEETING_USERS_FAILED,
+    message: message,
+  };
+};
+
+const UpdateMeetingUserForOrganizers = (
+  navigate,
+  Data,
+  t,
+  saveMeetingFlag,
+  editMeetingFlag,
+  rowsData,
+  currentMeeting
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(UpdateMeetingUserOrganizersInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", UpdateMeetingUsershit.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            UpdateMeetingUserForOrganizers(
+              navigate,
+              Data,
+              t,
+              saveMeetingFlag,
+              editMeetingFlag,
+              rowsData,
+              currentMeeting
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_UpdateMeetingUsers_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                UpdateMeetingUserOrganizersSuccess(
+                  response.data.responseResult,
+                  t("Update-successful")
+                )
+              );
+              let Data = {
+                MeetingOrganizers: rowsData.map((item) => ({
+                  IsPrimaryOrganizer: item.isPrimaryOrganizer,
+                  IsOrganizerNotified: item.isOrganizerNotified,
+                  Title: item.organizerTitle,
+                  UserID: item.userID,
+                })),
+                MeetingID: currentMeeting,
+                IsOrganizerAddFlow: true,
+                NotificationMessage: rowsData[0].NotificationMessage,
+              };
+              dispatch(SaveMeetingOrganizers(navigate, Data, t));
+              dispatch(saveMeetingFlag(false));
+              dispatch(editMeetingFlag(false));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_UpdateMeetingUsers_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                UpdateMeetingUserOrganizersFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              UpdateMeetingUserOrganizersFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            UpdateMeetingUserOrganizersFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(UpdateMeetingUserOrganizersFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -5775,4 +5900,5 @@ export {
   CreateUpdateMeetingDataRoomMapeedApiFunc,
   UpdateMeetingUserApiFunc,
   UpdateMeetingUserForAgendaContributor,
+  UpdateMeetingUserForOrganizers,
 };
