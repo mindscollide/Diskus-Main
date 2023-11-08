@@ -18,7 +18,10 @@ import Rightploygon from "../../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
-import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
+import {
+  convertintoGMTCalender,
+  resolutionResultTable,
+} from "../../../../../../commen/functions/date_formater";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
 import {
   AddAgendaWiseMinutesApiFunc,
@@ -438,6 +441,19 @@ const AgendaWise = ({ currentMeeting }) => {
     dispatch(
       AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
     );
+    if (data.minutesDetails !== "") {
+      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
+      setAddNoteFields({
+        Description: {
+          value: data.minutesDetails,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+      setisEdit(true);
+    } else {
+      console.log("data.minutesDetails is undefined or null");
+    }
     setisEdit(true);
   };
 
@@ -783,7 +799,7 @@ const AgendaWise = ({ currentMeeting }) => {
                                   <span className={styles["Title_File"]}>
                                     {expanded ? (
                                       <>
-                                        <div
+                                        <span
                                           dangerouslySetInnerHTML={{
                                             __html:
                                               data.minutesDetails.substring(
@@ -791,32 +807,35 @@ const AgendaWise = ({ currentMeeting }) => {
                                                 120
                                               ),
                                           }}
-                                        ></div>
+                                        ></span>
                                         ...
                                       </>
                                     ) : (
-                                      <div
+                                      <span
                                         dangerouslySetInnerHTML={{
                                           __html: data.minutesDetails,
                                         }}
-                                      ></div>
+                                      ></span>
                                     )}
 
                                     <span
                                       className={styles["Show_more_Styles"]}
                                       onClick={toggleExpansion}
                                     >
-                                      {expanded ? t("See-more") : t("See-less")}
+                                      {expanded &&
+                                      data.minutesDetails.substring(0, 120)
+                                        ? t("See-more")
+                                        : t("See-less")}
                                     </span>
                                   </span>
                                 </Col>
                               </Row>
-                              <Row className="mt-1">
+                              <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <span
                                     className={styles["Date_Minutes_And_time"]}
                                   >
-                                    {resolutionResultTable(
+                                    {convertintoGMTCalender(
                                       data.lastUpdatedDate +
                                         data.lastUpdatedTime
                                     ).toString()}

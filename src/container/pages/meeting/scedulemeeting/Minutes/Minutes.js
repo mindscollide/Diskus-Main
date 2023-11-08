@@ -32,7 +32,12 @@ import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_ac
 import downArrow from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import moment from "moment";
-import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
+import {
+  convertintoGMTCalender,
+  newDateFormaterAsPerUTC,
+  newTimeFormaterAsPerUTCFullDate,
+  resolutionResultTable,
+} from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
@@ -900,7 +905,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                       <span className={styles["Title_File"]}>
                                         {expanded ? (
                                           <>
-                                            <div
+                                            <span
                                               dangerouslySetInnerHTML={{
                                                 __html:
                                                   data.minutesDetails.substring(
@@ -908,39 +913,40 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                                     120
                                                   ),
                                               }}
-                                            ></div>
+                                            ></span>
                                             ...
                                           </>
                                         ) : (
-                                          <div
+                                          <span
                                             dangerouslySetInnerHTML={{
                                               __html: data.minutesDetails,
                                             }}
-                                          ></div>
+                                          ></span>
                                         )}
 
                                         <span
                                           className={styles["Show_more_Styles"]}
                                           onClick={toggleExpansion}
                                         >
-                                          {expanded
+                                          {expanded &&
+                                          data.minutesDetails.substring(0, 120)
                                             ? t("See-more")
                                             : t("See-less")}
                                         </span>
                                       </span>
                                     </Col>
                                   </Row>
-                                  <Row className="mt-1">
+                                  <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <span
                                         className={
                                           styles["Date_Minutes_And_time"]
                                         }
                                       >
-                                        {resolutionResultTable(
+                                        {newTimeFormaterAsPerUTCFullDate(
                                           data.lastUpdatedDate +
                                             data.lastUpdatedTime
-                                        ).toString()}
+                                        )}
                                       </span>
                                     </Col>
                                   </Row>
