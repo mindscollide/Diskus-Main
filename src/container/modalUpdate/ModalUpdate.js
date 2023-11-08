@@ -1942,7 +1942,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
           setModalField={setModalField}
           modalField={modalField}
           modalBodyClassName="modalMeetingUpdateBody"
-          modalFooterClassName={"modalMeetingUpdateFooter"}
+          modalFooterClassName={
+            isDetails
+              ? "d-flex mt-4 "
+              : isAgenda
+              ? "d-block mt-4"
+              : "modalMeetingUpdateFooter"
+          }
           modalHeaderClassName={
             isPublishMeeting === true
               ? "d-none"

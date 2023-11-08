@@ -26,7 +26,12 @@ import {
 } from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import {
+  ViewMeeting,
+  allAssignessList,
+} from "../../../store/actions/Get_List_Of_Assignees";
+import CustomPagination from "../../../commen/functions/customPagination/Paginations";
+
 const CommitteeMeetingTab = () => {
   const { t } = useTranslation();
   const getMeetingbyGroupID = useSelector(
@@ -40,16 +45,46 @@ const CommitteeMeetingTab = () => {
   const dispatch = useDispatch();
   let currentUserId = localStorage.getItem("userID");
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const [pageSize, setPageSize] = useState(50);
+  const [currentPage, setCurrentPage] = useState(1);
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [viewMeetingModal, setViewMeetingModal] = useState(false);
   const [editMeetingModal, setEditMeetingModal] = useState(false);
+  const [calendarViewModal, setCalendarViewModal] = useState(false);
+  const [sceduleMeeting, setSceduleMeeting] = useState(false);
   let ViewGroupID = localStorage.getItem("ViewGroupID");
 
-  const handleViewMeeting = (meetingID, isQuickMeeting) => {
+  const handleViewMeeting = async (meetingID, isQuickMeeting) => {
+    let Data = { MeetingID: Number(meetingID) };
+    await dispatch(
+      ViewMeeting(
+        navigate,
+        Data,
+        t,
+        setViewMeetingModal,
+        setEditMeetingModal,
+        setCalendarViewModal,
+        setSceduleMeeting,
+        1
+      )
+    );
     setViewMeetingModal(true);
   };
-  const handleEditMeeting = (meetingID, isQuickMeeting) => {
-    setEditMeetingModal(true);
+  const handleEditMeeting = async (meetingID, isQuickMeeting) => {
+    let Data = { MeetingID: Number(meetingID) };
+    await dispatch(
+      ViewMeeting(
+        navigate,
+        Data,
+        t,
+        setViewMeetingModal,
+        setEditMeetingModal,
+        setCalendarViewModal,
+        setSceduleMeeting,
+        2
+      )
+    );
+    setViewMeetingModal(true);
   };
   useEffect(() => {
     let searchData = {
@@ -66,6 +101,21 @@ const CommitteeMeetingTab = () => {
     dispatch(allAssignessList(navigate, t));
   }, []);
 
+  const handleChangePagination = (current, pageSize) => {
+    setPageSize(current);
+    setCurrentPage(pageSize);
+    let searchData = {
+      GroupID: Number(ViewGroupID),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: Number(current),
+      Length: Number(pageSize),
+      PublishedMeetings: true,
+    };
+    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+  };
   useEffect(() => {
     try {
       if (getMeetingbyGroupID !== null && getMeetingbyGroupID !== undefined) {
@@ -544,6 +594,23 @@ const CommitteeMeetingTab = () => {
             size="small"
             className="newMeetingTable"
           />
+        </Col>
+        <Col
+          sm={12}
+          md={12}
+          lg={12}
+          className={"pagination-groups-table d-flex justify-content-center"}
+        >
+          <span className="PaginationStyle-TodoList">
+            <CustomPagination
+              current={currentPage}
+              showSizer={true}
+              onChange={handleChangePagination}
+              pageSizeOptionsValues={["30", "50", "100", "200"]}
+              total={totalRecords}
+              pageSize={pageSize}
+            />
+          </span>
         </Col>
       </Row>
     </>

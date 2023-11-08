@@ -423,7 +423,9 @@ const ViewMeeting = (
   setViewFlag,
   setEditFlag,
   setCalendarViewModal,
-  no
+  no,
+  setViewMeetingModal,
+  setEditMeetingModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -450,7 +452,9 @@ const ViewMeeting = (
               setViewFlag,
               setEditFlag,
               setCalendarViewModal,
-              no
+              no,
+              setViewMeetingModal,
+              setEditMeetingModal
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -475,6 +479,10 @@ const ViewMeeting = (
                 setEditFlag(true);
               } else if (no === 3) {
                 setCalendarViewModal(true);
+              } else if (no === 4) {
+                setViewMeetingModal(true);
+              } else if (no === 5) {
+                setEditMeetingModal(true);
               }
             } else if (
               response.data.responseResult.responseMessage

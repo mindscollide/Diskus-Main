@@ -16,7 +16,7 @@ import whitepresentIcon from "../../../../../assets/images/whitepresent.png";
 import whiteAbsentICon from "../../../../../assets/images/whiteabsent.png";
 import whiteworkhome from "../../../../../assets/images/whitehomework.png";
 import { useSelector } from "react-redux";
-const Attendence = () => {
+const Attendence = ({ currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -87,7 +87,7 @@ const Attendence = () => {
     {
       dataIndex: "userName",
       key: "userName",
-      render: (text) => (
+      render: (text, record) => (
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
@@ -96,7 +96,9 @@ const Attendence = () => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className={styles["Designation"]}>{text}</span>
+              <span className={styles["Designation"]}>
+                {record.designation}
+              </span>
             </Col>
           </Row>
         </>
@@ -243,7 +245,7 @@ const Attendence = () => {
   // dispatch Api in useEffect
   useEffect(() => {
     let meetingData = {
-      MeetingID: meetingID,
+      MeetingID: Number(currentMeeting),
     };
     dispatch(getAllAttendanceMeetingApi(navigate, t, meetingData));
   }, []);
@@ -259,7 +261,7 @@ const Attendence = () => {
     });
     let Data = {
       MeetingAttendance: newData,
-      MeetingID: meetingID,
+      MeetingID: 1785,
     };
     console.log(Data, "DataData");
     dispatch(saveMeetingAttendanceApi(navigate, t, Data));

@@ -378,6 +378,7 @@ const NewMeeting = () => {
           1
         )
       );
+      setViewFlag(true);
     } else {
       setAdvanceMeetingModalID(id);
       let Data = {
