@@ -117,12 +117,12 @@ const UnpublishedProposedMeeting = ({
     } else if (isAgendaContributor) {
     } else if (isOrganiser) {
       console.log("viewProposeDatePollHandlerviewProposeDatePollHandler");
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("View-not-available"),
-      });
-      // setViewProposeOrganizerPoll(true);
+      // setOpen({
+      //   ...open,
+      //   flag: true,
+      //   message: t("View-not-available"),
+      // });
+      setViewProposeOrganizerPoll(true);
     }
   };
 

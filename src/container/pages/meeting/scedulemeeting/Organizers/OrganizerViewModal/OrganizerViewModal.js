@@ -11,12 +11,18 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Paper } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserProposedWiseApi } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  getUserProposedWiseApi,
+  showSceduleProposedMeeting,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect, useState } from "react";
-
+import SceduleProposedmeeting from "../../meetingDetails/UnpublishedProposedMeeting/SceduleProposedMeeting/SceduleProposedmeeting";
 import moment from "moment";
 
-const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
+const OrganizerViewModal = ({
+  setViewProposeOrganizerPoll,
+  currentMeeting,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,62 +32,71 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
 
   let meetingID = Number(localStorage.getItem("meetingID"));
 
+  console.log(currentMeeting, "currentMeetingcurrentMeeting");
+
+  //scheduleProposedMeeting Modal open state
+  const [showScheduleProposedMeeting, setShowScheduleProposedMeeting] =
+    useState(false);
+  console.log(
+    showScheduleProposedMeeting,
+    "showScheduleProposedMeetingshowScheduleProposedMeeting"
+  );
+
   const [organizerRows, setOrganizerRows] = useState([]);
+  const [initialOrganizerRows, setInitialOrganizerRows] = useState([]);
+  const [proposedDates, setProposedDates] = useState([]);
   console.log(organizerRows, "attendenceRowsattendenceRows");
+
+  const [organizerColumnData, setOrganizerColumnData] = useState([
+    {
+      userName: "Mr Abdul Qadir",
+      designation: "CFO",
+      userEmail: "example1@company.com",
+      title: "Manager",
+    },
+    {
+      userName: "Mr Huzaeifa Jahangir",
+      designation: "Team Lead",
+      userEmail: "example2@company.com",
+      title: "Lead",
+    },
+    // Add more data as needed
+  ]);
 
   const organizerColumn = [
     {
       dataIndex: "userName",
       key: "userName",
-      render: (text) => (
+      render: (text, record) => (
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className={styles["PersonName"]}>{text}</span>
+              <span className={styles["PersonName"]}>{record.userName}</span>
             </Col>
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className={styles["Designation"]}>{text}</span>
-            </Col>
-          </Row>
-
-          <Row className="mt-4">
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["PersonName"]}>Hussain Raza</span>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Designation"]}>CTO</span>
+              <span className={styles["Designation"]}>
+                {record.designation}
+              </span>
             </Col>
           </Row>
         </>
       ),
     },
     {
-      dataIndex: "OtherData",
-      key: "OtherData",
-      render: (text) => (
+      dataIndex: "userEmail",
+      key: "userEmail",
+      render: (text, record) => (
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className={styles["PersonName"]}>Syed Ali Raza</span>
+              <span className={styles["PersonName"]}>{record.userEmail}</span>
             </Col>
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className={styles["Designation"]}>CFO</span>
-            </Col>
-          </Row>
-          <Row className="mt-4">
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["PersonName"]}>Hussain Raza</span>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Designation"]}>CTO</span>
+              <span className={styles["Designation"]}>{record.title}</span>
             </Col>
           </Row>
         </>
@@ -96,11 +111,58 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
       NewMeetingreducer.userWiseMeetingProposed !== undefined &&
       NewMeetingreducer.userWiseMeetingProposed.length > 0
     ) {
-      setOrganizerRows(NewMeetingreducer.userWiseMeetingProposed);
+      let ProposeDates;
+
+      NewMeetingreducer.userWiseMeetingProposed.forEach((datesData, index) => {
+        const uniqueData = new Set(
+          datesData.selectedProposedDates.map(JSON.stringify)
+        );
+        console.log(uniqueData, "uniqueDatauniqueDatauniqueDatauniqueData");
+        ProposeDates = Array.from(uniqueData).map(JSON.parse);
+
+        // ProposeDates.push(eachRecord.proposedDate);
+      });
+      console.log(ProposeDates, "ProposeDatesProposeDatesProposeDates");
+      setProposedDates(ProposeDates);
+      setInitialOrganizerRows(NewMeetingreducer.userWiseMeetingProposed);
     } else {
-      setOrganizerRows([]);
+      setInitialOrganizerRows([]);
     }
   }, [NewMeetingreducer.userWiseMeetingProposed]);
+
+  useEffect(() => {
+    const newOrganizerRows = [...initialOrganizerRows];
+
+    // Find the maximum number of selectedProposedDates objects in initialOrganizerRows
+    let maxSelectedProposedDates = 0;
+    initialOrganizerRows.forEach((organizer) => {
+      const numSelectedProposedDates = organizer.selectedProposedDates.length;
+      if (numSelectedProposedDates > maxSelectedProposedDates) {
+        maxSelectedProposedDates = numSelectedProposedDates;
+      }
+    });
+
+    // Create an object with maxSelectedProposedDates empty selectedProposedDates
+    // const yourNewObject = {
+    //   userID: 0,
+    //   userName: "Total",
+    //   designation: "",
+    //   userEmail: "",
+    //   title: "",
+    //   selectedProposedDates: Array(maxSelectedProposedDates).fill({
+    //     proposedDateID: 0,
+    //     proposedDate: "",
+    //     startTime: "",
+    //     endTime: "",
+    //     isSelected: false,
+    //     isTotal: 0,
+    //   }),
+    // };
+
+    // newOrganizerRows.push(yourNewObject);
+
+    setOrganizerRows(newOrganizerRows);
+  }, [initialOrganizerRows]);
 
   console.log(
     NewMeetingreducer.userWiseMeetingProposed,
@@ -110,7 +172,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   // dispatch Api in useEffect
   useEffect(() => {
     let proposedData = {
-      MeetingID: meetingID,
+      MeetingID: Number(currentMeeting),
     };
     dispatch(getUserProposedWiseApi(navigate, t, proposedData));
   }, []);
@@ -118,6 +180,15 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   const cancelHandler = () => {
     setViewProposeOrganizerPoll(false);
   };
+
+  const handleViewPollClick = () => {
+    setShowScheduleProposedMeeting(true);
+    dispatch(showSceduleProposedMeeting(true));
+  };
+  console.log(
+    handleViewPollClick,
+    "showScheduleProposedMeetingshowScheduleProposedMeeting"
+  );
 
   return (
     <section>
@@ -144,18 +215,39 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
                 className="d-flex justify-content-end"
               >
                 <Button
-                  text={"Cancel"}
+                  text={t("Cancel")}
                   onClick={cancelHandler}
                   className={styles["Cancel_Button_ProposeOrganizer"]}
                 />
               </Col>
             </Row>
+
             <Table
-              //   rows={organizerData}
+              rows={organizerRows}
               column={organizerColumn}
               pagination={false}
             />
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center mt-3"
+              >
+                <Button
+                  text={t("View-poll")}
+                  onClick={handleViewPollClick}
+                  className={styles["view-poll-organizer-btn"]}
+                />
+              </Col>
+            </Row>
           </Paper>
+
+          <SceduleProposedmeeting
+            organizerRows={organizerRows}
+            proposedDates={proposedDates}
+            currentMeeting={currentMeeting}
+          />
         </Col>
       </Row>
     </section>
