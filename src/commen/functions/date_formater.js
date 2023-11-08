@@ -111,7 +111,7 @@ export const newTimeFormaterAsPerUTC = (dateTime) => {
     dateTime.slice(12, 14) +
     ".000Z";
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  console.log(_dateTime, "checking12121");
+  console.log(_dateTime, "checking12121114");
   return moment(_dateTime).format("h:mm A");
 };
 
@@ -294,7 +294,7 @@ export const forHomeCalendar = (dateTime) => {
 };
 
 export const forMainCalendar = (dateTime) => {
-  console.log("newListnewListnewListcalender", dateTime);
+  // console.log("newListnewListnewListcalender", dateTime);
 
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -312,10 +312,16 @@ export const forMainCalendar = (dateTime) => {
   console.log("newListnewListnewListcalender", fullDateYear);
 
   let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
+  let _dateTime2 = new Date(fullDateYear);
+
   // let _dateTime = moment(fullDateYear, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
   //   "YYYYMMDD"
   // );
-  console.log("newListnewListnewListcalender", _dateTime);
+  console.log("newListnewListnewListcalender", {
+    _dateTime,
+    _dateTime2,
+    dateTime,
+  });
 
   return _dateTime;
 };

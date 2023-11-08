@@ -1088,7 +1088,7 @@ const Home = () => {
                     }}
                     column={columnsToDo}
                     className="dashboard-todo"
-                    labelTitle={t("Todo-list")}
+                    labelTitle={t("Tasks")}
                     scroll={{ y: 600 }}
                     pagination={false}
                   />
@@ -1108,7 +1108,7 @@ const Home = () => {
                             lg={12}
                             className="d-flex justify-content-between"
                           >
-                            <span>{t("Todo-list")}</span>
+                            <span>{t("Tasks")}</span>
                             {rowsToDo.length === 15 && (
                               <span
                                 className="cursor-pointer"
@@ -1135,7 +1135,7 @@ const Home = () => {
                 ) : (
                   <Paper>
                     <h1 className="todo-Heading color-5a5a5a MontserratSemiBold-600">
-                      {t("Todo-list")}
+                      {t("Tasks")}
                     </h1>
                     <ResultMessage
                       icon={

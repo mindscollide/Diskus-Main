@@ -594,7 +594,7 @@ const Sidebar = () => {
                           : "Meeting_Side_bar_Tag_todo mt-1"
                       }
                     >
-                      {t("To-do-list")}
+                      {t("Tasks")}
                     </span>
                   </div>
                 </Nav.Link>

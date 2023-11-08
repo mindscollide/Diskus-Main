@@ -25,8 +25,6 @@ const SceduleProposedmeeting = ({
     "proposedDatesproposedDatesproposedDatesproposedDatesproposedDates"
   );
 
-  console.log(currentMeeting, "currentMeetingcurrentMeeting");
-
   let meetingID = Number(localStorage.getItem("MeetingId"));
 
   const { t } = useTranslation();

@@ -374,8 +374,7 @@ const NewMeeting = () => {
           setEditFlag,
           setCalendarViewModal,
           setSceduleMeeting,
-          1,
-          
+          1
         )
       );
       setViewFlag(true);
