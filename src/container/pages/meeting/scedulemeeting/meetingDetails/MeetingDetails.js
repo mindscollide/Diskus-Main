@@ -377,8 +377,10 @@ const MeetingDetails = ({
           setSceduleMeeting,
           setorganizers,
           setmeetingDetails,
-          1,
-          setCurrentMeetingID
+          2,
+          setCurrentMeetingID,
+          currentMeeting,
+          meetingDetails
         )
       );
     } else {
@@ -526,6 +528,8 @@ const MeetingDetails = ({
           setSceduleMeeting,
           setorganizers,
           setmeetingDetails,
+          4,
+          setCurrentMeetingID,
           currentMeeting,
           meetingDetails
         )

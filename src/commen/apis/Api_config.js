@@ -1234,7 +1234,7 @@ const CreateUpdateMeetingDataroomMapped = {
   RequestMethod: "ServiceManager.CreateUpdateMeetingDataRoomMap",
 };
 
-const UpdateMeetingUsershit = {
+const UpdateMeetingUserhit = {
   RequestMethod: "ServiceManager.UpdateMeetingUsers",
 };
 
@@ -1572,6 +1572,6 @@ export {
   ScheduleMeetingOnSelectedDate,
   DeleteAgendaWiseDocuments,
   CreateUpdateMeetingDataroomMapped,
-  UpdateMeetingUsershit,
+  UpdateMeetingUserhit,
   addUpdateAdvanceMeetingAgenda,
 };

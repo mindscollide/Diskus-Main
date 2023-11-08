@@ -44,8 +44,8 @@ import {
   DeleteDocumentGenralMinute,
   DeleteAgendaWiseDocuments,
   CreateUpdateMeetingDataroomMapped,
-  UpdateMeetingUsershit,
   ScheduleMeetingOnSelectedDate,
+  UpdateMeetingUserhit,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -459,23 +459,23 @@ const SaveMeetingDetialsNewApiFunction = (
                   t("Record-found")
                 )
               );
-              let MappedData = {
-                MeetingID: response.data.responseResult.meetingID,
-                MeetingTitle: meetingDetails.MeetingTitle,
-                IsUpdateFlow: false,
-              };
-              console.log(MappedData, "MappedDataMappedData");
-              dispatch(
-                CreateUpdateMeetingDataRoomMapeedApiFunc(
-                  navigate,
-                  MappedData,
-                  t
-                )
-              );
 
               setCurrentMeetingID(response.data.responseResult.meetingID);
 
               if (viewValue === 1) {
+                let MappedData = {
+                  MeetingID: response.data.responseResult.meetingID,
+                  MeetingTitle: meetingDetails.MeetingTitle,
+                  IsUpdateFlow: false,
+                };
+                console.log(MappedData, "MappedDataMappedData");
+                dispatch(
+                  CreateUpdateMeetingDataRoomMapeedApiFunc(
+                    navigate,
+                    MappedData,
+                    t
+                  )
+                );
                 setSceduleMeeting(false);
               } else if (viewValue === 2) {
                 let MappedData = {
@@ -494,6 +494,20 @@ const SaveMeetingDetialsNewApiFunction = (
               } else if (viewValue === 3) {
                 setorganizers(true);
                 setmeetingDetails(false);
+              } else if (viewValue === 4) {
+                let MappedData = {
+                  MeetingID: response.data.responseResult.meetingID,
+                  MeetingTitle: meetingDetails.MeetingTitle,
+                  IsUpdateFlow: true,
+                };
+                console.log(MappedData, "MappedDataMappedData");
+                dispatch(
+                  CreateUpdateMeetingDataRoomMapeedApiFunc(
+                    navigate,
+                    MappedData,
+                    t
+                  )
+                );
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -2821,12 +2835,6 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               // dispatch(
               //   DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
               // );
-              let MeetingDocs = {
-                MDID: 1833,
-              };
-              dispatch(
-                DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
-              );
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
@@ -3114,7 +3122,6 @@ const showSaveMinutesDocsFailed = (message) => {
 const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
-  let currentMeetingID = localStorage.getItem("meetingID");
   return (dispatch) => {
     dispatch(showSaveMinutesDocsInit());
     let form = new FormData();
@@ -3149,11 +3156,11 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
                   t("List-updated-successfully")
                 )
               );
-              dispatch(ShowADDGeneralMinutesFailed(""));
               let Meet = {
-                MeetingID: currentMeeting,
+                MeetingID: Number(Data.FK_MDID),
               };
               dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
+              dispatch(ShowADDGeneralMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4671,6 +4678,12 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
               dispatch(
                 showDeleteGeneralMeetingDocumentsFailed(t("No-record-deleted"))
               );
+              let Erase = {
+                MinuteID: MinuteData.minuteID,
+              };
+              dispatch(
+                DeleteGeneralMinutesApiFunc(navigate, Erase, t, currentMeeting)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4801,6 +4814,17 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
             ) {
               dispatch(
                 showDeleteAgendaWiseDocumentFailed(t("No-record-deleted"))
+              );
+              let AgendaWiseDelData = {
+                MinuteID: AgendaWiseData.minuteID,
+              };
+              dispatch(
+                DeleteAgendaWiseMinutesApiFunc(
+                  navigate,
+                  AgendaWiseDelData,
+                  t,
+                  currentMeeting
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -5535,7 +5559,7 @@ const UpdateMeetingUserApiFunc = (
     dispatch(UpdateMeetingUserInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", UpdateMeetingUsershit.RequestMethod);
+    form.append("RequestMethod", UpdateMeetingUserhit.RequestMethod);
     axios({
       method: "post",
       url: dataRoomApi,
@@ -5591,7 +5615,9 @@ const UpdateMeetingUserApiFunc = (
                   IsParticipantsAddFlow: false,
                   NotificationMessage: "",
                 };
-                dispatch(SaveparticipantsApi(Data, navigate, t));
+                dispatch(
+                  SaveparticipantsApi(Data, navigate, t, currentMeeting)
+                );
               } else {
                 let Data = {
                   MeetingParticipants: newData,
@@ -5667,7 +5693,7 @@ const UpdateMeetingUserForAgendaContributor = (
     dispatch(UpdateMeetingUserAgendaContributorInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", UpdateMeetingUsershit.RequestMethod);
+    form.append("RequestMethod", UpdateMeetingUserhit.RequestMethod);
     axios({
       method: "post",
       url: dataRoomApi,
@@ -5826,7 +5852,7 @@ const UpdateMeetingUserForOrganizers = (
     dispatch(UpdateMeetingUserOrganizersInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", UpdateMeetingUsershit.RequestMethod);
+    form.append("RequestMethod", UpdateMeetingUserhit.RequestMethod);
     axios({
       method: "post",
       url: dataRoomApi,
@@ -5878,7 +5904,9 @@ const UpdateMeetingUserForOrganizers = (
                 IsOrganizerAddFlow: true,
                 NotificationMessage: rowsData[0].NotificationMessage,
               };
-              dispatch(SaveMeetingOrganizers(navigate, Data, t));
+              dispatch(
+                SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
+              );
               dispatch(saveMeetingFlag(false));
               dispatch(editMeetingFlag(false));
             } else if (

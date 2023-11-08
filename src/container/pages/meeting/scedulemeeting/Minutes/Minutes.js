@@ -32,7 +32,12 @@ import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_ac
 import downArrow from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import moment from "moment";
-import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
+import {
+  convertintoGMTCalender,
+  newDateFormaterAsPerUTC,
+  newTimeFormaterAsPerUTCFullDate,
+  resolutionResultTable,
+} from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
@@ -277,7 +282,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   //onChange function for React Quill
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText != "") {
+    if (source === "user" && plainText) {
       console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
@@ -285,16 +290,6 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
           value: content,
           errorMessage: "",
           errorStatus: false,
-        },
-      });
-    } else {
-      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: true,
         },
       });
     }
@@ -421,9 +416,9 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   //Edit Button Function
   const handleEditFunc = async (data) => {
     setupdateData(data);
-    console.log("handleEditFunccalled");
+    console.log(data, "handleEditFunccalled");
     console.log(data, "dataminutesDetails");
-    if (data.minutesDetails !== undefined && data.minutesDetails !== null) {
+    if (data.minutesDetails !== "") {
       console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         Description: {
@@ -443,10 +438,9 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
       RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Retrive, t)
     );
     // Ensure data.minutesDetails is not undefined or null before setting the state
-    
   };
 
-  console.log(updateData, "updateDataupdateData");
+  console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
 
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
@@ -528,6 +522,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     );
     setFileAttachments([]);
     setPreviousFileIDs([]);
+    setFileForSend([]);
     console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
@@ -562,7 +557,6 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   };
 
   //UPloading the Documents
-
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
       prevFiles.filter(
@@ -598,7 +592,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     setFileAttachments([]);
     setPreviousFileIDs([]);
   };
-
+  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   //Updating the text of min
   const handleUpdateFunc = async () => {
     console.log("UpdateCLickd");
@@ -784,9 +778,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                           src={CrossIcon}
                                           height="12.68px"
                                           width="12.68px"
-                                          onClick={() =>
-                                            handleRemoveFile(index)
-                                          }
+                                          onClick={() => handleRemoveFile(data)}
                                         />
                                       </span>
                                       <section className={styles["Outer_Box"]}>
@@ -911,38 +903,48 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                       <span className={styles["Title_File"]}>
                                         {expanded ? (
                                           <>
-                                            {data.minutesDetails.substring(
-                                              0,
-                                              190
-                                            )}
+                                            <span
+                                              dangerouslySetInnerHTML={{
+                                                __html:
+                                                  data.minutesDetails.substring(
+                                                    0,
+                                                    120
+                                                  ),
+                                              }}
+                                            ></span>
                                             ...
                                           </>
                                         ) : (
-                                          <>{data.minutesDetails}</>
+                                          <span
+                                            dangerouslySetInnerHTML={{
+                                              __html: data.minutesDetails,
+                                            }}
+                                          ></span>
                                         )}
 
                                         <span
                                           className={styles["Show_more_Styles"]}
                                           onClick={toggleExpansion}
                                         >
-                                          {expanded
+                                          {expanded &&
+                                          data.minutesDetails.substring(0, 120)
                                             ? t("See-more")
                                             : t("See-less")}
                                         </span>
                                       </span>
                                     </Col>
                                   </Row>
-                                  <Row className="mt-1">
+                                  <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <span
                                         className={
                                           styles["Date_Minutes_And_time"]
                                         }
                                       >
-                                        {resolutionResultTable(
+                                        {newTimeFormaterAsPerUTCFullDate(
                                           data.lastUpdatedDate +
                                             data.lastUpdatedTime
-                                        ).toString()}
+                                        )}
                                       </span>
                                     </Col>
                                   </Row>
