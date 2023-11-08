@@ -5519,6 +5519,104 @@ const UpdateMeetingUserApiFunc = (
   };
 };
 
+//Update Meeting Users For Agenda Contributor
+
+const UpdateMeetingUserAgendaContributorInit = () => {
+  return {
+    type: actions.UPDATE_MEETING_USERS_INIT,
+  };
+};
+
+const UpdateMeetingUserAgendaContributorSuccess = (response, message) => {
+  return {
+    type: actions.UPDATE_MEETING_USERS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const UpdateMeetingUserAgendaContributorFailed = (response, message) => {
+  return {
+    type: actions.UPDATE_MEETING_USERS_FAILED,
+    message: message,
+  };
+};
+
+const UpdateMeetingUserForAgendaContributor = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(UpdateMeetingUserAgendaContributorInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", UpdateMeetingUsershit.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(UpdateMeetingUserForAgendaContributor(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_UpdateMeetingUsers_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                UpdateMeetingUserAgendaContributorSuccess(
+                  response.data.responseResult,
+                  t("Update-successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_UpdateMeetingUsers_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                UpdateMeetingUserAgendaContributorFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(
+              UpdateMeetingUserAgendaContributorFailed(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(
+            UpdateMeetingUserAgendaContributorFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(
+          UpdateMeetingUserAgendaContributorFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
