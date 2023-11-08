@@ -23,6 +23,7 @@ import {
   showCrossConfirmationModal,
   showNotifyOrganizors,
   sendRecentNotificationOrganizerModal,
+  UpdateMeetingUserForOrganizers,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
@@ -503,20 +504,27 @@ const Organizers = ({
   };
 
   const saveMeetingOrganizers = () => {
+    let newarry = [];
+    rowsData.map((organizerData, organizerIndex) => {
+      newarry.push(organizerData.userID);
+    });
     let Data = {
-      MeetingOrganizers: rowsData.map((item) => ({
-        IsPrimaryOrganizer: item.isPrimaryOrganizer,
-        IsOrganizerNotified: item.isOrganizerNotified,
-        Title: item.organizerTitle,
-        UserID: item.userID,
-      })),
       MeetingID: currentMeeting,
-      IsOrganizerAddFlow: true,
-      NotificationMessage: rowsData[0].NotificationMessage,
+      MeetingAttendeRoleID: 1,
+      UpdatedUsers: newarry,
     };
-    dispatch(SaveMeetingOrganizers(navigate, Data, t));
-    dispatch(saveMeetingFlag(false));
-    dispatch(editMeetingFlag(false));
+    console.log(Data, "UpdateMeetingUserForOrganizers");
+    dispatch(
+      UpdateMeetingUserForOrganizers(
+        navigate,
+        Data,
+        t,
+        saveMeetingFlag,
+        editMeetingFlag,
+        rowsData,
+        currentMeeting
+      )
+    );
   };
 
   const editMeetingOrganizers = () => {
