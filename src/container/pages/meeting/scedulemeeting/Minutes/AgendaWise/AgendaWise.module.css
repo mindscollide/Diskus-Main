@@ -86,6 +86,8 @@
   font-family: "MontserratSemiBold" !important;
   font-size: 20px !important;
   color: #5a5a5a !important;
+  display: flex !important;
+  gap: 10px !important;
 }
 
 .Add-note-QuillRow {
