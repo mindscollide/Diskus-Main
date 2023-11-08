@@ -345,8 +345,7 @@ const SceduleMeeting = ({
                         }
                         onClick={ShowPolls}
                       />
-                      {(Number(ediorRole.status) === 10 ||
-                        Number(ediorRole.status) === 9) &&
+                      {Number(ediorRole.status) === 10 &&
                       ediorRole.role === "Organizer" &&
                       isEditMeeting === true ? (
                         <Button
