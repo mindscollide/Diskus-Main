@@ -205,21 +205,23 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                   "Meeting_MeetingServiceManager_ScheduleNewMeeting_01".toLowerCase()
                 )
             ) {
+              console.log({ calenderFlag, value }, "calenderFlagcalenderFlag");
+              await dispatch(SetLoaderFalse(false));
+              dispatch(meetingLoaderDashboard(false));
               await dispatch(
                 ShowNotification(t("The-record-has-been-saved-successfully"))
               );
+
               if (
                 calenderFlag &&
                 calenderFlag !== undefined &&
-                calenderFlag !== null
+                calenderFlag !== null &&
+                value === undefined
               ) {
                 await dispatch(getCalendarDataResponse(navigate, createrID, t));
-                await dispatch(SetLoaderFalse(false));
-                dispatch(meetingLoaderDashboard(false));
-                console.log(calenderFlag, "calenderFlagcalenderFlag");
-              } else if (value === undefined && value === null && value === 0) {
-                await dispatch(SetLoaderFalse(false));
-                dispatch(meetingLoaderDashboard(false));
+
+                console.log(calenderFlag, value, "calenderFlagcalenderFlag");
+              } else if (value === undefined && calenderFlag === undefined) {
                 console.log(calenderFlag, "calenderFlagcalenderFlag");
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent = parseInt(
@@ -235,12 +237,8 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                   PublishedMeetings: true,
                 };
                 await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                await dispatch(meetingLoaderDashboard(false));
-                await dispatch(SetLoaderFalse(false));
               }
               if (value === 1) {
-                await dispatch(SetLoaderFalse(false));
-                dispatch(meetingLoaderDashboard(false));
                 let ViewGroupID = localStorage.getItem("ViewGroupID");
                 let Data = {
                   MeetingID: Number(response.data.responseResult.mdid),
@@ -248,8 +246,6 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                 };
                 dispatch(setMeetingByGroupIDApi(navigate, t, Data));
               } else if (value === 2) {
-                await dispatch(SetLoaderFalse(false));
-                dispatch(meetingLoaderDashboard(false));
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
                 let Data = {

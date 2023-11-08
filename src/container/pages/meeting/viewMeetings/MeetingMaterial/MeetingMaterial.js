@@ -18,10 +18,11 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
 
 const MeetingMaterial = ({
-  setSceduleMeeting,
+  setViewAdvanceMeetingModal,
   setMeetingMaterial,
   setMinutes,
   currentMeeting,
+  advanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -269,7 +270,7 @@ const MeetingMaterial = ({
   // Api request on useEffect
   useEffect(() => {
     let meetingMaterialData = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   }, []);
@@ -325,7 +326,9 @@ const MeetingMaterial = ({
         </Col>
       </Row>
       {NewMeetingreducer.cancelMeetingMaterial && (
-        <CancelMeetingMaterial setSceduleMeeting={setSceduleMeeting} />
+        <CancelMeetingMaterial
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+        />
       )}
       {/* {NewMeetingreducer.Loading ? <Loader /> : null} */}
     </section>
