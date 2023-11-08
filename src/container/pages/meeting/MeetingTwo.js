@@ -337,8 +337,8 @@ const NewMeeting = () => {
       Title: "",
       HostName: "",
       UserID: Number(userID),
-      PageNumber: meetingpageRow !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PageNumber: 1,
+      Length: 50,
       PublishedMeetings: true,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -352,8 +352,8 @@ const NewMeeting = () => {
       Title: "",
       HostName: "",
       UserID: Number(userID),
-      PageNumber: meetingpageRow !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PageNumber: 1,
+      Length: 50,
       PublishedMeetings: false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));

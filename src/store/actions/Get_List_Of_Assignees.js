@@ -18,6 +18,8 @@ import {
   searchNewUserMeeting,
   setMeetingByGroupIDApi,
   setMeetingbyCommitteeIDApi,
+  getMeetingByCommitteeIDApi,
+  getMeetingbyGroupApi,
 } from "./NewMeetingActions";
 
 const ShowNotification = (message) => {
@@ -205,21 +207,23 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                   "Meeting_MeetingServiceManager_ScheduleNewMeeting_01".toLowerCase()
                 )
             ) {
+              console.log({ calenderFlag, value }, "calenderFlagcalenderFlag");
+              await dispatch(SetLoaderFalse(false));
+              dispatch(meetingLoaderDashboard(false));
               await dispatch(
                 ShowNotification(t("The-record-has-been-saved-successfully"))
               );
+
               if (
                 calenderFlag &&
                 calenderFlag !== undefined &&
-                calenderFlag !== null
+                calenderFlag !== null &&
+                value === undefined
               ) {
                 await dispatch(getCalendarDataResponse(navigate, createrID, t));
-                await dispatch(SetLoaderFalse(false));
-                dispatch(meetingLoaderDashboard(false));
-                console.log(calenderFlag, "calenderFlagcalenderFlag");
-              } else if (value === undefined && value === null && value === 0) {
-                await dispatch(SetLoaderFalse(false));
-                dispatch(meetingLoaderDashboard(false));
+
+                console.log(calenderFlag, value, "calenderFlagcalenderFlag");
+              } else if (value === undefined && calenderFlag === undefined) {
                 console.log(calenderFlag, "calenderFlagcalenderFlag");
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent = parseInt(
@@ -235,12 +239,8 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                   PublishedMeetings: true,
                 };
                 await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                await dispatch(meetingLoaderDashboard(false));
-                await dispatch(SetLoaderFalse(false));
               }
               if (value === 1) {
-                await dispatch(SetLoaderFalse(false));
-                dispatch(meetingLoaderDashboard(false));
                 let ViewGroupID = localStorage.getItem("ViewGroupID");
                 let Data = {
                   MeetingID: Number(response.data.responseResult.mdid),
@@ -248,8 +248,6 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                 };
                 dispatch(setMeetingByGroupIDApi(navigate, t, Data));
               } else if (value === 2) {
-                await dispatch(SetLoaderFalse(false));
-                dispatch(meetingLoaderDashboard(false));
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
                 let Data = {
@@ -295,7 +293,7 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
 };
 
 // update meeting
-const UpdateMeeting = (navigate, object, t) => {
+const UpdateMeeting = (navigate, object, t, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = JSON.parse(localStorage.getItem("userID"));
   // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
@@ -328,7 +326,7 @@ const UpdateMeeting = (navigate, object, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ScheduleNewMeeting(navigate, object, t));
+          dispatch(ScheduleNewMeeting(navigate, object, t, value));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -338,20 +336,49 @@ const UpdateMeeting = (navigate, object, t) => {
                   "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase()
                 )
             ) {
-              let meetingpageRow = localStorage.getItem("MeetingPageRows");
-              let meetingPageCurrent = parseInt(
-                localStorage.getItem("MeetingPageCurrent")
-              );
-              let searchData = {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(createrID),
-                PageNumber: Number(meetingPageCurrent),
-                Length: Number(meetingpageRow),
-                PublishedMeetings: true,
-              };
-              await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              if (value === 1) {
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                let Data = {
+                  CommitteeID: Number(ViewCommitteeID),
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(createrID),
+                  PageNumber: 1,
+                  Length: 50,
+                  PublishedMeetings: true,
+                };
+                dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+              } else if (value === 2) {
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+                let Data = {
+                  GroupID: Number(ViewGroupID),
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(createrID),
+                  PageNumber: 1,
+                  Length: 50,
+                  PublishedMeetings: true,
+                };
+                dispatch(getMeetingbyGroupApi(navigate, t, Data));
+              } else {
+                let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                let meetingPageCurrent = parseInt(
+                  localStorage.getItem("MeetingPageCurrent")
+                );
+                let searchData = {
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(createrID),
+                  PageNumber: Number(meetingPageCurrent),
+                  Length: Number(meetingpageRow),
+                  PublishedMeetings: true,
+                };
+                await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              }
+
               await dispatch(
                 ShowNotification(t("The-record-has-been-updated-successfully"))
               );
@@ -545,7 +572,7 @@ const CancelMeetingFail = (message) => {
 };
 
 //Cancel Meeting
-const CancelMeeting = (navigate, object, t) => {
+const CancelMeeting = (navigate, object, t, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = JSON.parse(localStorage.getItem("userID"));
   let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"));
@@ -593,7 +620,35 @@ const CancelMeeting = (navigate, object, t) => {
                   t("The-meeting-has-been-cancelled")
                 )
               );
-              await dispatch(searchUserMeeting(navigate, Data, t));
+              if (value === 1) {
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                let Data = {
+                  CommitteeID: Number(ViewCommitteeID),
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(createrID),
+                  PageNumber: 1,
+                  Length: 50,
+                  PublishedMeetings: true,
+                };
+                dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+              } else if (value === 2) {
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+                let Data = {
+                  GroupID: Number(ViewGroupID),
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(createrID),
+                  PageNumber: 1,
+                  Length: 50,
+                  PublishedMeetings: true,
+                };
+                dispatch(getMeetingbyGroupApi(navigate, t, Data));
+              } else {
+                await dispatch(searchUserMeeting(navigate, Data, t));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

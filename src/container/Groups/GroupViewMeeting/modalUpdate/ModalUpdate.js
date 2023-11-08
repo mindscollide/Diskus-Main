@@ -60,9 +60,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { assignees, uploadReducer, minuteofMeetingReducer } = useSelector(
-    (state) => state
-  );
+  const { assignees, uploadReducer, minuteofMeetingReducer, CommitteeReducer } =
+    useSelector((state) => state);
   let OrganizationId = localStorage.getItem("organizationID");
   const [isMinutes, setIsMinutes] = useState(false);
   const [isDetails, setIsDetails] = useState(true);
@@ -1375,38 +1374,38 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-    console.log("Input Value", value);
+    let getUserDetails =
+      CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
     if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees.length > 0
+      getUserDetails !== undefined &&
+      getUserDetails !== null &&
+      getUserDetails.length > 0
     ) {
-      return allAssignees
+      return getUserDetails
         .filter((item) => {
           const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
+          const assigneesName = item.userName.toLowerCase();
+          console.log("Input Value in searchTerm", searchTerm);
+          console.log("Input Value in assigneesName", assigneesName);
+
           return (
-            searchTerm &&
-            assigneesName.startsWith(searchTerm) &&
-            assigneesName !== searchTerm
+            searchTerm && assigneesName.startsWith(searchTerm)
+            // assigneesName !== searchTerm.toLowerCase()
           );
         })
         .slice(0, 10)
         .map((item) => (
           <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex flex-row align-items-center"
+            onClick={() => onSearch(item.userName, item.pK_UID)}
+            className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
             <img
-              draggable="false"
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
+              src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
               alt=""
               className="user-img"
             />
-            <p className="p-0 m-0">{item.name}</p>
+            <p className="p-0 m-0">{item.userName}</p>
           </div>
         ));
     } else {
@@ -1535,7 +1534,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-    await dispatch(UpdateMeeting(navigate, newData, t));
+    await dispatch(UpdateMeeting(navigate, newData, t, 2));
     await setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
@@ -1597,11 +1596,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
     await setIsMinutes(false);
     await setIsAgenda(false);
     await setIsAttendees(false);
-    let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
+    let meetingID = createMeeting.MeetingID;
     let Data = {
       MeetingID: meetingID,
     };
-    await dispatch(CancelMeeting(navigate, Data, t));
+    await dispatch(CancelMeeting(navigate, Data, t, 2));
     setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
