@@ -52,7 +52,12 @@ import AgendaWise from "./AgendaWise/AgendaWise";
 // import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 // import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
 // import AgendaImport from "./AgendaimportMinutes/AgendaImport";
-const Minutes = ({ setMinutes, currentMeeting }) => {
+const Minutes = ({
+  setMinutes,
+  advanceMeetingModalID,
+  setactionsPage,
+  setMeetingMaterial,
+}) => {
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
@@ -211,13 +216,13 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     },
   };
 
-  console.log(currentMeeting, "currentMeetingIDcurrentMeetingID");
-
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: advanceMeetingModalID,
     };
-    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    dispatch(
+      getAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
+    );
     return () => {
       setFileAttachments([]);
     };
@@ -443,7 +448,6 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
       RetriveDocumentsMeetingGenralMinutesApiFunc(navigate, Retrive, t)
     );
     // Ensure data.minutesDetails is not undefined or null before setting the state
-    
   };
 
   console.log(updateData, "updateDataupdateData");
@@ -488,10 +492,12 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   };
   const handleAddClick = async () => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: advanceMeetingModalID,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    dispatch(
+      ADDGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
+    );
     setFileAttachments([]);
   };
 
@@ -512,19 +518,19 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
     console.log(messages, "messagesmessages");
-    console.log(currentMeeting, "messagesmessages");
+    console.log(advanceMeetingModalID, "messagesmessages");
 
     console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: currentMeeting,
+      FK_MDID: advanceMeetingModalID,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
     dispatch(
-      SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+      SaveMinutesDocumentsApiFunc(navigate, docsData, t, advanceMeetingModalID)
     );
     setFileAttachments([]);
     setPreviousFileIDs([]);
@@ -547,7 +553,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   const handleRemovingTheMinutes = (MinuteData) => {
     console.log(MinuteData, "handleRemovingTheMinutes");
     let Data = {
-      MDID: currentMeeting,
+      MDID: advanceMeetingModalID,
       MeetingGeneralMinutesID: MinuteData.minuteID,
     };
     dispatch(
@@ -555,7 +561,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
         navigate,
         Data,
         t,
-        currentMeeting,
+        advanceMeetingModalID,
         MinuteData
       )
     );
@@ -624,13 +630,13 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
     console.log(messages, "messagesmessages");
-    console.log(currentMeeting, "messagesmessages");
+    console.log(advanceMeetingModalID, "messagesmessages");
 
     console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: currentMeeting,
+      FK_MDID: advanceMeetingModalID,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
@@ -672,7 +678,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
         </Col>
       </Row>
       {agenda ? (
-        <AgendaWise currentMeeting={currentMeeting} />
+        <AgendaWise advanceMeetingModalID={advanceMeetingModalID} />
       ) : general ? (
         <>
           <Row className="mt-4">

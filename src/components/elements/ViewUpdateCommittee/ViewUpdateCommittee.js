@@ -66,7 +66,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
                   onClick={() => setCurrentView(1)}
                 />
                 <Button
-                  text={t("Task")}
+                  text={t("Tasks")}
                   className={
                     currentView === 2
                       ? styles["View-committee-details_active"]

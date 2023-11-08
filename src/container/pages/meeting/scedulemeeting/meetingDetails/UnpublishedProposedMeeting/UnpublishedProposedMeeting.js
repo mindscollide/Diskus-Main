@@ -54,6 +54,7 @@ const UnpublishedProposedMeeting = ({
   setEdiorRole,
   setEditMeeting,
   setCurrentMeetingID,
+  ediorRole,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -82,6 +83,7 @@ const UnpublishedProposedMeeting = ({
   const handleDeleteMeetingModal = () => {
     dispatch(showDeleteMeetingModal(true));
   };
+  console.log("ediorRole", ediorRole);
 
   const enableScedulePrposedMeetingModal = () => {
     dispatch(showSceduleProposedMeeting(true));
@@ -128,10 +130,10 @@ const UnpublishedProposedMeeting = ({
 
   const handleOpenViewModal = async (data) => {
     setAdvanceMeetingModalID(data.pK_MDID);
-    let Data = {
-      MeetingID: Number(data.pK_MDID),
-    };
-    await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    // let Data = {
+    //   MeetingID: Number(data.pK_MDID),
+    // };
+    // await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
     setViewAdvanceMeetingModalUnpublish(true);
   };
 
@@ -158,10 +160,30 @@ const UnpublishedProposedMeeting = ({
       width: "130px",
       align: "left",
       render: (text, record) => {
+        const isParticipant = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Participant"
+        );
+        const isAgendaContributor = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+        );
         return (
           <span
             className={styles["meetingTitle_view"]}
-            onClick={() => handleOpenViewModal(record)}
+            onClick={() => {
+              setEdiorRole({
+                status: record.status,
+                role: isParticipant
+                  ? "Participant"
+                  : isAgendaContributor
+                  ? "Agenda Contributor"
+                  : "Organizer",
+              });
+              handleOpenViewModal(record);
+            }}
           >
             {text}
           </span>
@@ -368,7 +390,7 @@ const UnpublishedProposedMeeting = ({
                       setEditMeeting(true);
                     }}
                   />
-                ) : (
+                ) : isOrganiser ? (
                   <>
                     <img
                       src={deleteIcon}
@@ -401,7 +423,7 @@ const UnpublishedProposedMeeting = ({
                       }}
                     />
                   </>
-                )}
+                ) : null}
               </Col>
             </Row>
           </>

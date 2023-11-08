@@ -23,14 +23,23 @@ const Documents = ({
   const CrossDocument = (fileIndex, fileDataProp) => {
     console.log(fileDataProp, "fileDataPropfileDataProp");
     let optionscross = [...rows];
-    optionscross[index].files.splice(fileIndex, 1);
-    setRows(optionscross);
+    const updatedOptionsCross = optionscross.map((option) => {
+      if (option.files) {
+        option.files = option.files.filter(
+          (file) =>
+            file.DisplayAttachmentName !== fileDataProp.DisplayAttachmentName
+        );
+      }
+      return option;
+    });
+    setRows(updatedOptionsCross);
     setFileForSend((prevFiles) =>
       prevFiles.filter(
         (fileSend) => fileSend.name !== fileDataProp.DisplayAttachmentName
       )
     );
   };
+
   console.log("fileDataPropfileDataProp", fileForSend);
 
   // const handleRemoveFile = (data) => {

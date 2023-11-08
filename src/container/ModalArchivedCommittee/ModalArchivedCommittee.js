@@ -15,6 +15,7 @@ import CommitteeICon from "../../assets/images/CommitteeICon.svg";
 import right from "../../assets/images/rightchev.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
+import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const ModalArchivedCommittee = ({
   ModalTitle,
@@ -243,7 +244,7 @@ const ModalArchivedCommittee = ({
                               sm={12}
                               className={"pagination-groups-table"}
                             >
-                              <Pagination
+                              <CustomPagination
                                 total={totalLength}
                                 current={currentArPage}
                                 pageSize={8}

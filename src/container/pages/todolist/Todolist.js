@@ -824,7 +824,7 @@ const TodoList = () => {
       <div className="todolistContainer">
         <Row className="d-flex justify-content-start align-items-center   mt-3">
           <Col md={2} sm={4} lg={2} className="todolist-heading-size">
-            {t("Todo-list")}
+            {t("Tasks")}
           </Col>
 
           <Col lg={2} md={2} sm={4} className="todolist-create-btn">
@@ -832,7 +832,7 @@ const TodoList = () => {
               className={"btn btn-primary"}
               icon={<Plus width={20} height={20} fontWeight={800} />}
               variant={"Primary"}
-              text={t("Create-to-do-list")}
+              text={t("Create-a-task")}
               onClick={modalHandler}
             />
           </Col>

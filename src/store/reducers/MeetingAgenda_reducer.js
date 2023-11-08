@@ -11,6 +11,7 @@ const initialState = {
   ViewAgendaVotingResultData: [],
   GetAdvanceMeetingAgendabyMeetingIDData: [],
   MeetingAgendaFolderID: 0,
+  SaveUpdateAgendaData: [],
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -225,6 +226,29 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         MeetingAgendaFolderID: 0,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        SaveUpdateAgendaData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        SaveUpdateAgendaData: 0,
         ResponseMessage: action.message,
       };
     }
