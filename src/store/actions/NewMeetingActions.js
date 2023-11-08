@@ -44,8 +44,8 @@ import {
   DeleteDocumentGenralMinute,
   DeleteAgendaWiseDocuments,
   CreateUpdateMeetingDataroomMapped,
-  UpdateMeetingUsershit,
   ScheduleMeetingOnSelectedDate,
+  UpdateMeetingUserhit,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -2835,12 +2835,6 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               // dispatch(
               //   DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
               // );
-              // let MeetingDocs = {
-              //   MDID: 1833,
-              // };
-              // dispatch(
-              //   DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
-              // );
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
@@ -5565,7 +5559,7 @@ const UpdateMeetingUserApiFunc = (
     dispatch(UpdateMeetingUserInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", UpdateMeetingUsershit.RequestMethod);
+    form.append("RequestMethod", UpdateMeetingUserhit.RequestMethod);
     axios({
       method: "post",
       url: dataRoomApi,
@@ -5699,7 +5693,7 @@ const UpdateMeetingUserForAgendaContributor = (
     dispatch(UpdateMeetingUserAgendaContributorInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", UpdateMeetingUsershit.RequestMethod);
+    form.append("RequestMethod", UpdateMeetingUserhit.RequestMethod);
     axios({
       method: "post",
       url: dataRoomApi,
@@ -5858,7 +5852,7 @@ const UpdateMeetingUserForOrganizers = (
     dispatch(UpdateMeetingUserOrganizersInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", UpdateMeetingUsershit.RequestMethod);
+    form.append("RequestMethod", UpdateMeetingUserhit.RequestMethod);
     axios({
       method: "post",
       url: dataRoomApi,
