@@ -670,7 +670,7 @@ const AgendaWise = ({ currentMeeting }) => {
                                       src={CrossIcon}
                                       height="12.68px"
                                       width="12.68px"
-                                      onClick={() => handleRemoveFile(index)}
+                                      onClick={() => handleRemoveFile(data)}
                                     />
                                   </span>
                                   <section className={styles["Outer_Box"]}>

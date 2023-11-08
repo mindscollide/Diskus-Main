@@ -522,6 +522,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     );
     setFileAttachments([]);
     setPreviousFileIDs([]);
+    setFileForSend([]);
     console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
@@ -556,7 +557,6 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
   };
 
   //UPloading the Documents
-
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
       prevFiles.filter(
@@ -592,7 +592,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     setFileAttachments([]);
     setPreviousFileIDs([]);
   };
-
+  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   //Updating the text of min
   const handleUpdateFunc = async () => {
     console.log("UpdateCLickd");
@@ -778,9 +778,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
                                           src={CrossIcon}
                                           height="12.68px"
                                           width="12.68px"
-                                          onClick={() =>
-                                            handleRemoveFile(index)
-                                          }
+                                          onClick={() => handleRemoveFile(data)}
                                         />
                                       </span>
                                       <section className={styles["Outer_Box"]}>
