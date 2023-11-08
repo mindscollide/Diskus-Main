@@ -5580,6 +5580,7 @@ export {
   UpdateAgendaWiseMinutesApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   getUserProposedWiseApi,
+  UpateMeetingStatusLockApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   showGetAllMeetingDetialsFailed,
   uploadDocumentsMeetingAgendaWiseMinutesApi,

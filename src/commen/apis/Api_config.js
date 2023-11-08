@@ -1203,6 +1203,10 @@ const DeleteDocumentGenralMinute = {
   RequestMethod: "ServiceManager.DeleteGeneralMinuteDocuments",
 };
 
+const createUpdateMeetingDataRoomMap = {
+  RequestMethod: "ServiceManager.CreateUpdateMeetingDataRoomMap",
+};
+
 const ScheduleMeetingOnSelectedDate = {
   RequestMethod: "ServiceManager.ScheduleMeetingOnSelectedDate",
 };
@@ -1560,6 +1564,7 @@ export {
   saveDocumentAgendaWiseMinutes,
   RetriveAgendaWiseDocuments,
   DeleteDocumentGenralMinute,
+  createUpdateMeetingDataRoomMap,
   ScheduleMeetingOnSelectedDate,
   DeleteAgendaWiseDocuments,
   CreateUpdateMeetingDataroomMapped,

@@ -43,3 +43,22 @@ export const onlyNumberValidation = (value) => {
   let numberValidate = valueCheck !== "" ? true : false;
   return numberValidate;
 };
+
+export function removePropertiesFromObject(obj) {
+  for (var key in obj) {
+    if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
+      // If the current property is an object (but not an array), recursively remove properties from it
+      removePropertiesFromObject(obj[key]);
+    } else {
+      // Remove the specified properties
+      if (
+        key === "presenterName" ||
+        key === "subAgendarequestContributorUrlName" ||
+        key === "requestContributorURlName"
+      ) {
+        delete obj[key];
+      }
+    }
+  }
+  return obj;
+}

@@ -1,42 +1,57 @@
 {
-  "MeetingTitle": "asa",
-  "MeetingDescription": "asas",
-  "MeetingTypeID": 0,
-  "MeetingDate": "20231109",
-  "OrganizationId": 302,
-  "MeetingStartTime": "122131",
-  "MeetingEndTime": "122131",
-  "MeetingLocation": "as",
-  "IsVideoCall": false,
-  "IsChat": false,
-  "MeetingReminderID": [2],
-  "MeetingAgendas": [
+  "MeetingID": 1216,
+  "AgendaList": [
     {
-      "ObjMeetingAgenda": {
-        "Title": "sss",
-        "PresenterName": "",
-        "URLs": "",
-        "FK_MDID": 0
-      },
-      "MeetingAgendaAttachments": []
+      "ID": "100",
+      "Title": "Talha Title",
+      "Description": "Description",
+      "PresenterID": 1,
+      "StartDate": "20231114080000",
+      "EndDate": "20231114090000",
+      "SelectedRadio": 0,
+      "UrlFieldMain": "",
+      "RequestContributorURl": 0,
+      "MainNote": "",
+      "IsLocked": false,
+      "AgendaVotingID": 0,
+      "VoteOwner": null,
+      "IsAttachment": false,
+      "UserID": 0,
+      "Files": [
+        {
+          "AgendaAttachmentsID": 12,
+          "DisplayAttachmentName": "MyAttachement.pdf",
+          "OriginalAttachmentName": "213",
+          "FK_MAID": 100
+        }
+      ],
+      "SubAgenda": [
+        {
+          "SubAgendaID": "100",
+          "SubTitle": "Talha Title",
+          "Description": "Description",
+          "PresenterID": 1,
+          "StartDate": "20231114080000",
+          "EndDate": "20231114090000",
+          "SubSelectRadio": 0,
+          "SubAgendaUrlFieldRadio": "",
+          "SubAgendarequestContributorUrl": 0,
+          "SubAgendarequestContributorEnterNotes": "",
+          "IsLocked": false,
+          "AgendaVotingID": 0,
+          "VoteOwner": null,
+          "IsAttachment": false,
+          "UserID": 0,
+          "Subfiles": [
+            {
+              "AgendaAttachmentsID": 12,
+              "DisplayAttachmentName": "MyAttachement.pdf",
+              "OriginalAttachmentName": "213",
+              "FK_MAID": 100
+            }
+          ]
+        }
+      ]
     }
-  ],
-  "MeetingAttendees": [
-    {
-      "User": { "PK_UID": 802 },
-      "MeetingAttendeeRole": { "PK_MARID": 3 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    },
-    {
-      "User": { "PK_UID": 991 },
-      "MeetingAttendeeRole": { "PK_MARID": 2 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    },
-    {
-      "User": { "PK_UID": 779 },
-      "MeetingAttendeeRole": { "PK_MARID": 1 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    }
-  ],
-  "ExternalMeetingAttendees": []
+  ]
 }
