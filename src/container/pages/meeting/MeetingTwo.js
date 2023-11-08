@@ -1053,12 +1053,14 @@ const NewMeeting = () => {
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           unPublish={false}
           isOrganisers={isOrganisers}
+          currentMeeting={currentMeeting}
         />
       ) : viewAdvanceMeetingModalUnpublish ? (
         <ViewMeetingModal
           advanceMeetingModalID={advanceMeetingModalID}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
           unPublish={true}
+          currentMeeting={currentMeeting}
         />
       ) : viewProposeOrganizerPoll ? (
         <OrganizerViewModal

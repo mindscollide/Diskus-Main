@@ -5443,7 +5443,7 @@ const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
               dispatch(
                 scheduleMeetingSuccess(
                   response.data.responseResult.responseMessage,
-                  t("Record-found")
+                  t("Record-saved")
                 )
               );
               dispatch(showSceduleProposedMeeting(false));
@@ -5454,7 +5454,7 @@ const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
                   "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_02".toLowerCase()
                 )
             ) {
-              dispatch(scheduleMeetingFail(t("No-record-found")));
+              dispatch(scheduleMeetingFail(t("No-record-saved")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
