@@ -44,6 +44,7 @@ import {
   DeleteDocumentGenralMinute,
   DeleteAgendaWiseDocuments,
   CreateUpdateMeetingDataroomMapped,
+  UpdateMeetingUsershit,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -5424,7 +5425,7 @@ const UpdateMeetingUserApiFunc = (
     dispatch(UpdateMeetingUserInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", RetriveAgendaWiseDocuments.RequestMethod);
+    form.append("RequestMethod", UpdateMeetingUsershit.RequestMethod);
     axios({
       method: "post",
       url: dataRoomApi,
