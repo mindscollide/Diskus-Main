@@ -504,18 +504,27 @@ const Organizers = ({
   };
 
   const saveMeetingOrganizers = () => {
-    let Data = {};
-    // dispatch(
-    //   UpdateMeetingUserForOrganizers(
-    //     navigate,
-    //     Data,
-    //     t,
-    // saveMeetingFlag,
-    // editMeetingFlag,
-    // rowsData,
-    // currentMeeting
-    //   )
-    // );
+    let newarry = [];
+    rowsData.map((organizerData, organizerIndex) => {
+      newarry.push(organizerData.userID);
+    });
+    let Data = {
+      MeetingID: currentMeeting,
+      MeetingAttendeRoleID: 1,
+      UpdatedUsers: newarry,
+    };
+    console.log(Data, "UpdateMeetingUserForOrganizers");
+    dispatch(
+      UpdateMeetingUserForOrganizers(
+        navigate,
+        Data,
+        t,
+        saveMeetingFlag,
+        editMeetingFlag,
+        rowsData,
+        currentMeeting
+      )
+    );
   };
 
   const editMeetingOrganizers = () => {
