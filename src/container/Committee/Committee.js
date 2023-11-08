@@ -205,6 +205,7 @@ const Committee = () => {
 
   const viewTitleModal = (data) => {
     setViewCommitteeViewTab(1);
+    localStorage.setItem("ViewCommitteeID", data.committeeID);
 
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
