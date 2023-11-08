@@ -19,16 +19,19 @@ import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import styles from "./Meeting.module.css";
 import { useSelector } from "react-redux";
-import { searchNewUserMeeting } from "../../../store/actions/NewMeetingActions";
+import {
+  getMeetingByCommitteeIDApi,
+  getMeetingbyGroupApi,
+  searchNewUserMeeting,
+} from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 const CommitteeMeetingTab = () => {
   const { t } = useTranslation();
-  const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings
+  const getMeetingbyGroupID = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingbyGroupID
   );
-
   const [isOrganisers, setIsOrganisers] = useState(false);
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -40,6 +43,7 @@ const CommitteeMeetingTab = () => {
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [viewMeetingModal, setViewMeetingModal] = useState(false);
   const [editMeetingModal, setEditMeetingModal] = useState(false);
+  let ViewGroupID = localStorage.getItem("ViewGroupID");
 
   const handleViewMeeting = (meetingID, isQuickMeeting) => {
     setViewMeetingModal(true);
@@ -49,6 +53,7 @@ const CommitteeMeetingTab = () => {
   };
   useEffect(() => {
     let searchData = {
+      GroupID: Number(ViewGroupID),
       Date: "",
       Title: "",
       HostName: "",
@@ -57,17 +62,17 @@ const CommitteeMeetingTab = () => {
       Length: 50,
       PublishedMeetings: true,
     };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
     dispatch(allAssignessList(navigate, t));
   }, []);
 
   useEffect(() => {
     try {
-      if (searchMeetings !== null && searchMeetings !== undefined) {
-        setTotalRecords(searchMeetings.totalRecords);
-        if (Object.keys(searchMeetings.meetings).length > 0) {
+      if (getMeetingbyGroupID !== null && getMeetingbyGroupID !== undefined) {
+        setTotalRecords(getMeetingbyGroupID.totalRecords);
+        if (Object.keys(getMeetingbyGroupID.meetings).length > 0) {
           let newRowData = [];
-          searchMeetings.meetings.forEach((data, index) => {
+          getMeetingbyGroupID.meetings.forEach((data, index) => {
             try {
               newRowData.push({
                 dateOfMeeting: data.dateOfMeeting,
@@ -103,7 +108,7 @@ const CommitteeMeetingTab = () => {
         setRow([]);
       }
     } catch {}
-  }, [searchMeetings]);
+  }, [getMeetingbyGroupID]);
 
   const MeetingColoumns = [
     {
@@ -521,12 +526,12 @@ const CommitteeMeetingTab = () => {
       )}
       <Row>
         <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
-          <Button
+          {/* <Button
             text={t("Create-Meeting")}
             icon={<img draggable={false} src={addmore} alt="" />}
             className={styles["Create_Meeting_Button"]}
             onClick={handelCreateMeeting}
-          />
+          /> */}
         </Col>
       </Row>
       <Row>

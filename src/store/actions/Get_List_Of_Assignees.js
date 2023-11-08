@@ -14,7 +14,11 @@ import {
 import { getMeetingUserId, searchUserMeeting } from "./GetMeetingUserId";
 import { RefreshToken } from "../actions/Auth_action";
 import { getCalendarDataResponse } from "../actions/GetDataForCalendar";
-import { searchNewUserMeeting } from "./NewMeetingActions";
+import {
+  searchNewUserMeeting,
+  setMeetingByGroupIDApi,
+  setMeetingbyCommitteeIDApi,
+} from "./NewMeetingActions";
 
 const ShowNotification = (message) => {
   return {
@@ -157,7 +161,7 @@ const ScheduleMeetingFail = (message) => {
 };
 
 //SaveNONAPIDisputes
-const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
+const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
@@ -213,7 +217,9 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
                 await dispatch(SetLoaderFalse(false));
                 dispatch(meetingLoaderDashboard(false));
                 console.log(calenderFlag, "calenderFlagcalenderFlag");
-              } else {
+              } else if (value === undefined && value === null && value === 0) {
+                await dispatch(SetLoaderFalse(false));
+                dispatch(meetingLoaderDashboard(false));
                 console.log(calenderFlag, "calenderFlagcalenderFlag");
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent = parseInt(
@@ -231,6 +237,26 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
                 await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 await dispatch(meetingLoaderDashboard(false));
                 await dispatch(SetLoaderFalse(false));
+              }
+              if (value === 1) {
+                await dispatch(SetLoaderFalse(false));
+                dispatch(meetingLoaderDashboard(false));
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+                let Data = {
+                  MeetingID: Number(response.data.responseResult.mdid),
+                  GroupID: Number(ViewGroupID),
+                };
+                dispatch(setMeetingByGroupIDApi(navigate, t, Data));
+              } else if (value === 2) {
+                await dispatch(SetLoaderFalse(false));
+                dispatch(meetingLoaderDashboard(false));
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+                let Data = {
+                  MeetingID: Number(response.data.responseResult.mdid),
+                  CommitteeID: Number(ViewCommitteeID),
+                };
+                dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
               }
             } else if (
               response.data.responseResult.responseMessage
