@@ -8,7 +8,6 @@ p.todolist-title-col {
   font-size: 14px;
   font-family: "MontserratSemiBold-600";
   color: #2197d7 !important;
-  width: 200px !important;
 }
 
 body[dir="rtl"] .todolist-title-col {
