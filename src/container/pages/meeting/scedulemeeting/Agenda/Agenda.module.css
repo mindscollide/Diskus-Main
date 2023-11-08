@@ -446,3 +446,7 @@ body[dir="rtl"] .SubAgendaSection {
 /* .Padding_SubAgenda {
   padding: 0px 20px !important;
 } */
+
+.SelectOrganizersSelect_active {
+  z-index: 999999 !important;
+}

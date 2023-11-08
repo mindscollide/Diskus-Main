@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Agenda.module.css";
+import { useNavigate } from "react-router-dom";
+import { removePropertiesFromObject } from "../../../../../commen/functions/validations";
 import { Col, Row } from "react-bootstrap";
 import { Button } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -11,7 +13,12 @@ import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal"
 import {
   showCancelModalAgenda,
   showImportPreviousAgendaModal,
+  getAllAgendaContributorApi,
 } from "../../../../../store/actions/NewMeetingActions";
+import {
+  CreateUpdateMeetingDataRoomMap,
+  UploadDocumentsAgendaApi,
+} from "../../../../../store/actions/MeetingAgenda_action";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
@@ -29,10 +36,16 @@ import CancelAgenda from "./CancelAgenda/CancelAgenda";
 const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
+
+  const navigate = useNavigate();
+
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
   const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
+  const [fileForSend, setFileForSend] = useState([]);
 
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
 
@@ -43,24 +56,30 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
     {
       ID: getRandomUniqueNumber().toString(),
       title: "",
-      selectedOption: null,
+      presenterID: null,
+      description: "",
+      presenterName: "",
       startDate: null,
       endDate: null,
       selectedRadio: "1",
       urlFieldMain: "",
-      requestContributorURl: "",
+      requestContributorURl: 0,
       MainNote: "",
+      requestContributorURlName: "",
       files: [],
       subAgenda: [
         {
           SubAgendaID: getRandomUniqueNumber().toString(),
           SubTitle: "",
-          selectedOption: null,
+          description: "",
+          presenterID: null,
+          presenterName: "",
           startDate: null,
           endDate: null,
           subSelectRadio: "1",
           SubAgendaUrlFieldRadio: "",
-          subAgendarequestContributorUrl: "",
+          subAgendarequestContributorUrl: 0,
+          subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           Subfiles: [],
         },
@@ -77,26 +96,30 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
     const newMainAgenda = {
       ID: getRandomUniqueNumber().toString(),
       title: "",
+      presenterID: null,
       description: "",
-      selectedOption: null,
+      presenterName: "",
       startDate: null,
       endDate: null,
       selectedRadio: "1",
       urlFieldMain: "",
-      requestContributorURl: "",
+      requestContributorURl: 0,
       MainNote: "",
+      requestContributorURlName: "",
       files: [],
       subAgenda: [
         {
           SubAgendaID: getRandomUniqueNumber().toString(),
           SubTitle: "",
           description: "",
-          selectedOption: null,
+          presenterID: null,
+          presenterName: "",
           startDate: null,
           endDate: null,
           subSelectRadio: "1",
           SubAgendaUrlFieldRadio: "",
-          subAgendarequestContributorUrl: "",
+          subAgendarequestContributorUrl: 0,
+          subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           Subfiles: [],
         },
@@ -122,6 +145,121 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
     // setagendaViewPage(true);
     dispatch(showCancelModalAgenda(true));
   };
+
+  useEffect(() => {
+    let getAllData = {
+      MeetingID: currentMeeting !== null ? currentMeeting : 0,
+    };
+    let getFolderIDData = {
+      MeetingID: currentMeeting,
+      MeetingTitle:
+        NewMeetingreducer.getAllMeetingDetails.length !== 0
+          ? NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails
+              .meetingTitle
+          : "",
+      IsUpdateFlow: false,
+    };
+    dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    dispatch(CreateUpdateMeetingDataRoomMap(navigate, t, getFolderIDData));
+  }, []);
+
+  // // Function to capitalize the first letter of a string
+  const capitalizeFirstLetter = (s) => {
+    if (s.length > 0) {
+      return s[0].toUpperCase() + s.slice(1);
+    }
+    return s;
+  };
+
+  const capitalizeKeys = (obj) => {
+    if (Array.isArray(obj)) {
+      return obj.map((item) => capitalizeKeys(item));
+    } else if (typeof obj === "object" && obj !== null) {
+      const newObj = {};
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const newKey = capitalizeFirstLetter(key);
+          newObj[newKey] = capitalizeKeys(obj[key]);
+        }
+      }
+      return newObj;
+    } else {
+      return obj;
+    }
+  };
+
+  function removeProperties(data) {
+    if (Array.isArray(data)) {
+      // If data is an array, recursively process each element
+      return data.map((item) => removeProperties(item));
+    } else if (typeof data === "object" && data !== null) {
+      // If data is an object and not null, filter out the properties you want to remove
+      const {
+        presenterName,
+        requestContributorURl,
+        subAgendarequestContributorUrlName,
+        ...rest
+      } = data;
+      // Recursively process the remaining properties
+      for (const key in rest) {
+        rest[key] = removeProperties(rest[key]);
+      }
+      return rest;
+    } else {
+      // If data is neither an array nor an object, return it as is
+      return data;
+    }
+  }
+
+  const saveAgendaData = async () => {
+    console.log(
+      fileForSend,
+      "fileForSendfileForSendfileForSendfileForSendfileForSend"
+    );
+    let newFolder = [];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        UploadDocumentsAgendaApi(navigate, t, newData, 0, newFolder)
+      );
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+
+    let cleanedData = removeProperties(rows);
+
+    let capitalizedData = capitalizeKeys(cleanedData);
+
+    let mappingObject = {};
+    newFolder.forEach((folder) => {
+      mappingObject[folder.DisplayAttachmentName] = folder.pK_FileID.toString();
+    });
+
+    // Update capitalizedData with the mappingObject
+    let updatedData = capitalizedData.map((item) => {
+      let updatedFiles = item.Files.map((file) => {
+        let newAttachmentName = mappingObject[file.DisplayAttachmentName];
+        if (newAttachmentName) {
+          return {
+            ...file,
+            OriginalAttachmentName: newAttachmentName,
+          };
+        } else {
+          return file;
+        }
+      });
+
+      return {
+        ...item,
+        Files: updatedFiles,
+      };
+    });
+
+    console.log("Save Agenda Data", updatedData);
+  };
+
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
+  console.log("MeetingAgendaReducerMeetingAgendaReducer", MeetingAgendaReducer);
 
   return (
     <>
@@ -157,6 +295,8 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
                               return (
                                 <>
                                   <ParentAgenda
+                                    fileForSend={fileForSend}
+                                    setFileForSend={setFileForSend}
                                     currentMeeting={currentMeeting}
                                     data={data}
                                     index={index}
@@ -243,7 +383,11 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
                   className={styles["Agenda_Buttons"]}
                   onClick={EnableAgendaView}
                 />
-                <Button text={t("Save")} className={styles["Agenda_Buttons"]} />
+                <Button
+                  onClick={saveAgendaData}
+                  text={t("Save")}
+                  className={styles["Agenda_Buttons"]}
+                />
 
                 <Button
                   text={t("Save-and-publish")}

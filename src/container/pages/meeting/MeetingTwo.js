@@ -378,6 +378,7 @@ const NewMeeting = () => {
           1
         )
       );
+      setViewFlag(true);
     } else {
       setAdvanceMeetingModalID(id);
       let Data = {
@@ -1062,6 +1063,7 @@ const NewMeeting = () => {
       ) : viewProposeOrganizerPoll ? (
         <OrganizerViewModal
           setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
+          currentMeeting={currentMeeting}
         />
       ) : (
         <>

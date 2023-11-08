@@ -45,6 +45,7 @@ import {
   DeleteAgendaWiseDocuments,
   CreateUpdateMeetingDataroomMapped,
   UpdateMeetingUsershit,
+  ScheduleMeetingOnSelectedDate,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -3436,7 +3437,7 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
             ) {
               dispatch(
                 getProposedWiseSuccess(
-                  response.data.responseResult.responseMessage,
+                  response.data.responseResult.userWiseMeetingProposedDates,
                   t("Record-found")
                 )
               );
@@ -5389,6 +5390,114 @@ const setMeetingbyCommitteeIDApi = (navigate, t, Data) => {
   };
 };
 
+// schedule meeting on select date Init
+const scheduleMeetingInit = () => {
+  return {
+    type: actions.SCHEDULE_MEETING_ON_SELECT_DATE_INIT,
+  };
+};
+
+const scheduleMeetingSuccess = (response, message) => {
+  return {
+    type: actions.SCHEDULE_MEETING_ON_SELECT_DATE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const scheduleMeetingFail = (message) => {
+  return {
+    type: actions.SCHEDULE_MEETING_ON_SELECT_DATE_FAIL,
+    message: message,
+  };
+};
+
+const scheduleMeetingMainApi = (navigate, t, scheduleMeeting) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(scheduleMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", ScheduleMeetingOnSelectedDate.RequestMethod);
+    form.append("RequestData", JSON.stringify(scheduleMeeting));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(scheduleMeetingMainApi(navigate, t, scheduleMeeting));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                scheduleMeetingSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Record-found")
+                )
+              );
+              dispatch(showSceduleProposedMeeting(false));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_02".toLowerCase()
+                )
+            ) {
+              dispatch(scheduleMeetingFail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_03".toLowerCase()
+                )
+            ) {
+              dispatch(scheduleMeetingFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                scheduleMeetingFail(
+                  t("The-meeting-must-be-in-a-proposed-state")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleMeetingOnSelectedDate_05".toLowerCase()
+                )
+            ) {
+              dispatch(scheduleMeetingFail(t("The-user-must-be-an-organizer")));
+            } else {
+              dispatch(scheduleMeetingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(scheduleMeetingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(scheduleMeetingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(scheduleMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
 //Update Meeting Users For Participants
 
 const UpdateMeetingUserInit = () => {
@@ -5886,6 +5995,7 @@ export {
   UpdateAgendaWiseMinutesApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   getUserProposedWiseApi,
+  UpateMeetingStatusLockApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   showGetAllMeetingDetialsFailed,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
@@ -5901,4 +6011,5 @@ export {
   UpdateMeetingUserApiFunc,
   UpdateMeetingUserForAgendaContributor,
   UpdateMeetingUserForOrganizers,
+  scheduleMeetingMainApi,
 };
