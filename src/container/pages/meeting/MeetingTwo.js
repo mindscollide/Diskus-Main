@@ -57,7 +57,6 @@ import {
 } from "../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import NewEndLeaveMeeting from "./NewEndLeaveMeeting/NewEndLeaveMeeting";
-import PublishedMeeting from "./scedulemeeting/meetingDetails/PublishedMeeting/PublishedMeeting";
 import { useRef } from "react";
 
 import {
@@ -381,10 +380,6 @@ const NewMeeting = () => {
       setViewFlag(true);
     } else {
       setAdvanceMeetingModalID(id);
-      let Data = {
-        MeetingID: Number(id),
-      };
-      await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
       setViewAdvanceMeetingModal(true);
     }
   };
@@ -445,17 +440,30 @@ const NewMeeting = () => {
       key: "title",
       width: "115px",
       render: (text, record) => {
-        const isOrganiser = record.meetingAttendees.some(
+        const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
+            attendee.meetingAttendeeRole.role === "Participant"
+        );
+        const isAgendaContributor = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
         return (
           <span
             className={styles["meetingTitle"]}
             onClick={() => {
               handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
-              setIsOrganisers(isOrganiser);
+              setEdiorRole({
+                status: record.status,
+                role: isParticipant
+                  ? "Participant"
+                  : isAgendaContributor
+                  ? "Agenda Contributor"
+                  : "Organizer",
+              });
+              // setIsOrganisers(isOrganiser);
             }}
           >
             {text}
@@ -661,8 +669,12 @@ const NewMeeting = () => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            (attendee.meetingAttendeeRole.role === "Participant" ||
-              attendee.meetingAttendeeRole.role === "Agenda Contributor")
+            attendee.meetingAttendeeRole.role === "Participant"
+        );
+        const isAgendaContributor = record.meetingAttendees.some(
+          (attendee) =>
+            Number(attendee.user.pK_UID) === Number(currentUserId) &&
+            attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
@@ -675,6 +687,7 @@ const NewMeeting = () => {
         };
         if (Number(record.status) === 1) {
           if (isParticipant) {
+          } else if (isAgendaContributor) {
           } else {
             if (record.isQuickMeeting === true) {
               return (
@@ -697,7 +710,11 @@ const NewMeeting = () => {
                             setCalendarViewModal
                           )
                         );
-                        setIsOrganisers(isOrganiser);
+                        // setIsOrganisers(isOrganiser);
+                        setEdiorRole({
+                          status: record.status,
+                          role: "Organizer",
+                        });
                       }}
                     />
                   </Col>
@@ -721,7 +738,11 @@ const NewMeeting = () => {
                             setAdvanceMeetingModalID
                           )
                         );
-                        setIsOrganisers(isOrganiser);
+                        // setIsOrganisers(isOrganiser);
+                        setEdiorRole({
+                          status: record.status,
+                          role: "Organizer",
+                        });
                       }}
                     />
                   </Col>
@@ -737,7 +758,26 @@ const NewMeeting = () => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
-                  setIsOrganisers(isOrganiser);
+                  // setIsOrganisers(isOrganiser);
+                  setEdiorRole({
+                    status: record.status,
+                    role: "Participant",
+                  });
+                }}
+              />
+            );
+          } else if (isAgendaContributor) {
+            return (
+              <Button
+                text={t("Join-meeting")}
+                className={styles["joining-Meeting"]}
+                onClick={() => {
+                  handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
+                  // setIsOrganisers(isOrganiser);
+                  setEdiorRole({
+                    status: record.status,
+                    role: "Agenda Contributor",
+                  });
                 }}
               />
             );
@@ -748,7 +788,11 @@ const NewMeeting = () => {
                 className={styles["joining-Meeting"]}
                 onClick={() => {
                   handleViewMeeting(record.pK_MDID, record.isQuickMeeting);
-                  setIsOrganisers(isOrganiser);
+                  // setIsOrganisers(isOrganiser);
+                  setEdiorRole({
+                    status: record.status,
+                    role: "Organizer",
+                  });
                 }}
               />
             );
@@ -827,7 +871,6 @@ const NewMeeting = () => {
                 </Row>
               </>
             );
-          } else {
           }
         } else {
           if (isParticipant) {
@@ -851,7 +894,6 @@ const NewMeeting = () => {
                             isAgendaContributor,
                             record
                           );
-
                           setEdiorRole({
                             status: record.status,
                             role: "Organizer",
@@ -1052,13 +1094,16 @@ const NewMeeting = () => {
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           unPublish={false}
-          isOrganisers={isOrganisers}
+          ediorRole={ediorRole}
+          setEdiorRole={setEdiorRole}
         />
       ) : viewAdvanceMeetingModalUnpublish ? (
         <ViewMeetingModal
           advanceMeetingModalID={advanceMeetingModalID}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
           unPublish={true}
+          ediorRole={ediorRole}
+          setEdiorRole={setEdiorRole}
         />
       ) : viewProposeOrganizerPoll ? (
         <OrganizerViewModal
@@ -1296,6 +1341,7 @@ const NewMeeting = () => {
                     setEdiorRole={setEdiorRole}
                     setEditMeeting={setEditMeeting}
                     setCurrentMeetingID={setCurrentMeetingID}
+                    ediorRole={ediorRole}
                   />
                 ) : Number(currentView) === 1 ? (
                   <Row className="mt-2">

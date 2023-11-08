@@ -79,7 +79,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
                 onClick={() => setCurrentViewGroup(1)}
               />
               <Button
-                text={t("Task")}
+                text={t("Tasks")}
                 className={
                   currentViewGroup === 2
                     ? styles["View-Group-details_active"]

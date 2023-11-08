@@ -772,7 +772,7 @@ const OnboardDashboard = () => {
                   column={columnsToDo}
                   className="dashboard-todo_onboard"
                   rows={todoRow}
-                  labelTitle={t("Todo-list")}
+                  labelTitle={t("Tasks")}
                   scroll={{ y: 355 }}
                 />
               </Col>

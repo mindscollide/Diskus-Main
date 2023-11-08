@@ -23,7 +23,7 @@ const Actions = ({
   setSceduleMeeting,
   setactionsPage,
   setPolls,
-  currentMeeting,
+  advanceMeetingModalID,
   ediorRole,
   setEditMeeting,
   isEditMeeting,

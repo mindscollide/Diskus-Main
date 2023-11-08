@@ -269,9 +269,9 @@ const MeetingMaterial = ({
   // Api request on useEffect
   useEffect(() => {
     let meetingMaterialData = {
-      MeetingID: currentMeeting,
+      MeetingID: Number(currentMeeting),
     };
-    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
+    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   }, []);
 
   const handleCancelButton = () => {

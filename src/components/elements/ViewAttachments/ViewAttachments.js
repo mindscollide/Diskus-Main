@@ -126,7 +126,13 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                               size={78}
                               {...defaultStyles.gif}
                             />
-                          ) : null}
+                          ) : (
+                            <FileIcon
+                              extension={ext}
+                              size={78}
+                              {...defaultStyles.ext}
+                            />
+                          )}
                           <p className={styles["notes-attachment-text"]}>
                             {first}
                           </p>
