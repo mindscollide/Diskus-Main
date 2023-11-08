@@ -14,6 +14,7 @@ import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributo
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  UpdateMeetingUserForAgendaContributor,
   getAllAgendaContributorApi,
   showAddAgendaContributor,
   showAgendaContributorsModals,
@@ -462,45 +463,29 @@ const AgendaContributers = ({
   };
 
   const handleSaveBtn = () => {
-    if (isEditFlag === 1) {
-      let newData = [];
-      let copyData = [...rowsData];
-      copyData.forEach((data, index) => {
-        newData.push({
-          UserID: data.userID,
-          Title: data.Title,
-          AgendaListRightsAll: data.AgendaListRightsAll,
-          MeetingID: currentMeeting !== null ? Number(currentMeeting) : 1686,
-          IsContributorNotified: data.isContributedNotified,
-        });
-      });
-      let Data = {
-        AgendaContributors: newData,
-        MeetingID: Number(currentMeeting),
-        IsAgendaContributorAddFlow: false,
-        NotificationMessage: notifyMessageField,
-      };
-      dispatch(saveAgendaContributors(navigate, t, Data, currentMeeting));
-    } else {
-      let newData = [];
-      let copyData = [...rowsData];
-      copyData.forEach((data, index) => {
-        newData.push({
-          UserID: data.userID,
-          Title: data.Title,
-          AgendaListRightsAll: data.AgendaListRightsAll,
-          MeetingID: currentMeeting !== null ? Number(currentMeeting) : 1686,
-          IsContributorNotified: data.isContributedNotified,
-        });
-      });
-      let Data = {
-        AgendaContributors: newData,
-        MeetingID: Number(currentMeeting),
-        IsAgendaContributorAddFlow: true,
-        NotificationMessage: notifyMessageField,
-      };
-      dispatch(saveAgendaContributors(navigate, t, Data));
-    }
+    let newData = [];
+    let copyData = [...rowsData];
+    console.log(copyData, "copyDatacopyDatacopyData");
+    copyData.map((agendamembersData, agendamembersIndex) => {
+      newData.push(agendamembersData.userID);
+    });
+
+    let Data = {
+      MeetingID: currentMeeting,
+      MeetingAttendeRoleID: 1,
+      UpdatedUsers: newData,
+    };
+    dispatch(
+      UpdateMeetingUserForAgendaContributor(
+        navigate,
+        Data,
+        t,
+        rowsData,
+        currentMeeting,
+        isEditFlag,
+        notifyMessageField
+      )
+    );
   };
 
   useEffect(() => {

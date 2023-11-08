@@ -87,7 +87,7 @@ const Attendence = ({ currentMeeting }) => {
     {
       dataIndex: "userName",
       key: "userName",
-      render: (text) => (
+      render: (text, record) => (
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
@@ -96,7 +96,9 @@ const Attendence = ({ currentMeeting }) => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <span className={styles["Designation"]}>{text}</span>
+              <span className={styles["Designation"]}>
+                {record.designation}
+              </span>
             </Col>
           </Row>
         </>

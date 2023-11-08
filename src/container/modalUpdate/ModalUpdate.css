@@ -38,7 +38,7 @@ fieldset:disabled .btn {
   height: 20% !important;
   max-height: 20% !important;
   min-height: 20% !important;
-  display: block !important;
+  /* display: block !important; */
 }
 
 .modalMeetingUpdateBody {

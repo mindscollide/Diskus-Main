@@ -31,10 +31,6 @@ const MeetingMaterial = ({
 
   const [clicks, setClicks] = useState(0);
   const [dataCheck, setDataCheck] = useState([]);
-  console.log(dataCheck, "dataaChahaha");
-
-  // get meetingID from Local Storage
-  let meetingMaterialID = Number(localStorage.getItem("meetingID"));
 
   // row state for meeting Material
   const [rows, setRows] = useState([]);
