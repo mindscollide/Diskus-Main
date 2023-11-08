@@ -11,6 +11,9 @@ const initialState = {
   ViewAgendaVotingResultData: [],
   GetAdvanceMeetingAgendabyMeetingIDData: [],
   MeetingAgendaFolderID: 0,
+  UploadDocumentsResponse: null,
+  SaveFilesResponse: null,
+
   SaveUpdateAgendaData: [],
 };
 
@@ -249,6 +252,51 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         SaveUpdateAgendaData: 0,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVEFILES_AGENDA_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+    case actions.SAVEFILES_AGENDA_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        SaveFilesResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVEFILES_AGENDA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        SaveFilesResponse: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPLOAD_DOCUMENTS_AGENDA_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+    case actions.UPLOAD_DOCUMENTS_AGENDA_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        UploadDocumentsResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPLOAD_DOCUMENTS_AGENDA_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        UploadDocumentsResponse: [],
         ResponseMessage: action.message,
       };
     }

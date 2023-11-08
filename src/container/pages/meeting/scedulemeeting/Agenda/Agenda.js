@@ -318,20 +318,20 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
     dispatch(AddUpdateAdvanceMeetingAgenda(Data, navigate, t));
   };
   console.log(open, "openopenopen");
-  // useEffect(() => {
-  //   console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
-  //   if (MeetingAgendaReducer.ResponseMessage) {
-  //     setTimeout(
-  //       setOpen({
-  //         ...open,
-  //         flag: true,
-  //         message: "Record Saved",
-  //       }),
-  //       3000
-  //     );
-  //   }
-  //   // dispatch(clearResponseMessage(""));
-  // }, [MeetingAgendaReducer.ResponseMessage]);
+  useEffect(() => {
+    console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
+    if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
+      setTimeout(
+        setOpen({
+          ...open,
+          flag: true,
+          message: "Record Saved",
+        }),
+        3000
+      );
+    }
+    // dispatch(clearResponseMessage(""));
+  }, [MeetingAgendaReducer.ResponseMessage]);
 
   console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
   console.log(
@@ -517,10 +517,10 @@ const Agenda = ({ setSceduleMeeting, currentMeeting }) => {
       {NewMeetingreducer.cancelAgenda && (
         <CancelAgenda setSceduleMeeting={setSceduleMeeting} />
       )}
-      {DataRoomReducer.Loading === true ||
+      {/* {DataRoomReducer.Loading === true ||
       MeetingAgendaReducer.Loading === true ? (
         <Loader />
-      ) : null}
+      ) : null} */}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
