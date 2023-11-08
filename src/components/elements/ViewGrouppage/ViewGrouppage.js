@@ -49,6 +49,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   const handleClose = () => {
     localStorage.removeItem("ViewGroupID");
     setViewGroupPage(false);
+    console.log("Close Btn");
   };
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">

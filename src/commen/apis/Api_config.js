@@ -1207,6 +1207,21 @@ const ScheduleMeetingOnSelectedDate = {
   RequestMethod: "ServiceManager.ScheduleMeetingOnSelectedDate",
 };
 
+const getMeetingbyGroupIDRM = {
+  RequestMethod: "ServiceManager.GetMeetingsByGroupID",
+};
+
+const getMeetingbyCommitteeIDRM = {
+  RequestMethod: "ServiceManager.GetMeetingsByCommitteeID",
+};
+
+const setMeetingbyGroupIDRM = {
+  RequestMethod: "ServiceManager.SetGroupMeeting",
+};
+
+const setMeetingbyCommitteeIDRM = {
+  RequestMethod: "ServiceManager.SetCommitteeMeetings",
+};
 const DeleteAgendaWiseDocuments = {
   RequestMethod: "ServiceManager.DeleteAgendaWiseMinuteDocuments",
 };
@@ -1220,6 +1235,10 @@ const UpdateMeetingUsershit = {
 };
 
 export {
+  setMeetingbyCommitteeIDRM,
+  setMeetingbyGroupIDRM,
+  getMeetingbyCommitteeIDRM,
+  getMeetingbyGroupIDRM,
   deleteCommitteeTaskRM,
   deleteGroupTaskRM,
   deleteMeetingPollsRM,

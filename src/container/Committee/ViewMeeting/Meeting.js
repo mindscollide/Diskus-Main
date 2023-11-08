@@ -19,14 +19,17 @@ import { ChevronDown } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import styles from "./Meeting.module.css";
 import { useSelector } from "react-redux";
-import { searchNewUserMeeting } from "../../../store/actions/NewMeetingActions";
+import {
+  getMeetingByCommitteeIDApi,
+  searchNewUserMeeting,
+} from "../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 const CommitteeMeetingTab = () => {
   const { t } = useTranslation();
-  const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings
+  const getMeetingByCommitteeID = useSelector(
+    (state) => state.NewMeetingreducer.getMeetingByCommitteeID
   );
 
   const [isOrganisers, setIsOrganisers] = useState(false);
@@ -40,6 +43,7 @@ const CommitteeMeetingTab = () => {
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [viewMeetingModal, setViewMeetingModal] = useState(false);
   const [editMeetingModal, setEditMeetingModal] = useState(false);
+  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
   const handleViewMeeting = (meetingID, isQuickMeeting) => {
     setViewMeetingModal(true);
@@ -47,8 +51,10 @@ const CommitteeMeetingTab = () => {
   const handleEditMeeting = (meetingID, isQuickMeeting) => {
     setEditMeetingModal(true);
   };
+
   useEffect(() => {
     let searchData = {
+      CommitteeID: Number(ViewCommitteeID),
       Date: "",
       Title: "",
       HostName: "",
@@ -57,17 +63,20 @@ const CommitteeMeetingTab = () => {
       Length: 50,
       PublishedMeetings: true,
     };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
     dispatch(allAssignessList(navigate, t));
   }, []);
 
   useEffect(() => {
     try {
-      if (searchMeetings !== null && searchMeetings !== undefined) {
-        setTotalRecords(searchMeetings.totalRecords);
-        if (Object.keys(searchMeetings.meetings).length > 0) {
+      if (
+        getMeetingByCommitteeID !== null &&
+        getMeetingByCommitteeID !== undefined
+      ) {
+        setTotalRecords(getMeetingByCommitteeID.totalRecords);
+        if (Object.keys(getMeetingByCommitteeID.meetings).length > 0) {
           let newRowData = [];
-          searchMeetings.meetings.forEach((data, index) => {
+          getMeetingByCommitteeID.meetings.forEach((data, index) => {
             try {
               newRowData.push({
                 dateOfMeeting: data.dateOfMeeting,
@@ -103,7 +112,7 @@ const CommitteeMeetingTab = () => {
         setRow([]);
       }
     } catch {}
-  }, [searchMeetings]);
+  }, [getMeetingByCommitteeID]);
 
   const MeetingColoumns = [
     {
