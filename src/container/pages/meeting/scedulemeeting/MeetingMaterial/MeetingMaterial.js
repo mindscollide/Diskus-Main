@@ -21,6 +21,7 @@ const MeetingMaterial = ({
   setSceduleMeeting,
   setMeetingMaterial,
   setMinutes,
+  setAgenda,
   currentMeeting,
 }) => {
   const { t } = useTranslation();
@@ -283,6 +284,11 @@ const MeetingMaterial = ({
     setMinutes(true);
   };
 
+  const handlePreviousButtonMeetingMaterial = () => {
+    setMeetingMaterial(false);
+    setAgenda(true);
+  };
+
   return (
     <section>
       <Row className="mt-5">
@@ -301,7 +307,7 @@ const MeetingMaterial = ({
           lg={12}
           md={12}
           sm={12}
-          className="d-flex justify-content-end gap-2 mt-2"
+          className="d-flex justify-content-end gap-2 mt-3"
         >
           {/* <Button
             text={t("Clone-meeting")}
@@ -312,16 +318,17 @@ const MeetingMaterial = ({
             className={styles["Cancel_Classname"]}
             onClick={handleCancelButton}
           />
-          {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} />
+          <Button text={t("Save")} className={styles["Cancel_Classname"]} />
           <Button
-            text={t("Save-and-publish")}
+            text={t("Previous")}
             className={styles["Cancel_Classname"]}
+            onClick={handlePreviousButtonMeetingMaterial}
           />
           <Button
-            text={t("Save-and-next")}
+            text={t("Next")}
             className={styles["Save_Classname"]}
             onClick={handleSaveAndNext}
-          /> */}
+          />
         </Col>
       </Row>
       {NewMeetingreducer.cancelMeetingMaterial && (
