@@ -19,6 +19,7 @@ export const CancelParticipants = ({ setSceduleMeeting }) => {
   };
 
   const handleYesFunctionality = () => {
+    dispatch(showCancelModalPartipants(false));
     setSceduleMeeting(false);
   };
   return (

@@ -440,6 +440,9 @@ const SceduleMeeting = ({
                       setEditMeeting={setEditMeeting}
                       isEditMeeting={isEditMeeting}
                       ediorRole={ediorRole}
+                      setMeetingMaterial={setMeetingMaterial}
+                      setAgenda={setAgenda}
+                      setParticipants={setParticipants}
                     />
                   )}
                   {meetingMaterial && (
@@ -452,6 +455,7 @@ const SceduleMeeting = ({
                       setEditMeeting={setEditMeeting}
                       isEditMeeting={isEditMeeting}
                       ediorRole={ediorRole}
+                      setAgenda={setAgenda}
                     />
                   )}
                   {minutes && (
