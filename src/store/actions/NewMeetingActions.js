@@ -5542,7 +5542,15 @@ const UpdateMeetingUserAgendaContributorFailed = (response, message) => {
   };
 };
 
-const UpdateMeetingUserForAgendaContributor = (navigate, Data, t) => {
+const UpdateMeetingUserForAgendaContributor = (
+  navigate,
+  Data,
+  t,
+  rowsData,
+  currentMeeting,
+  isEditFlag,
+  notifyMessageField
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -5562,7 +5570,17 @@ const UpdateMeetingUserForAgendaContributor = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(UpdateMeetingUserForAgendaContributor(navigate, Data, t));
+          dispatch(
+            UpdateMeetingUserForAgendaContributor(
+              navigate,
+              Data,
+              t,
+              rowsData,
+              currentMeeting,
+              isEditFlag,
+              notifyMessageField
+            )
+          );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -5580,6 +5598,49 @@ const UpdateMeetingUserForAgendaContributor = (navigate, Data, t) => {
                   t("Update-successful")
                 )
               );
+              if (isEditFlag === 1) {
+                let newData = [];
+                let copyData = [...rowsData];
+                copyData.forEach((data, index) => {
+                  newData.push({
+                    UserID: data.userID,
+                    Title: data.Title,
+                    AgendaListRightsAll: data.AgendaListRightsAll,
+                    MeetingID:
+                      currentMeeting !== null ? Number(currentMeeting) : 1686,
+                    IsContributorNotified: data.isContributedNotified,
+                  });
+                });
+                let Data = {
+                  AgendaContributors: newData,
+                  MeetingID: Number(currentMeeting),
+                  IsAgendaContributorAddFlow: false,
+                  NotificationMessage: notifyMessageField,
+                };
+                dispatch(
+                  saveAgendaContributors(navigate, t, Data, currentMeeting)
+                );
+              } else {
+                let newData = [];
+                let copyData = [...rowsData];
+                copyData.forEach((data, index) => {
+                  newData.push({
+                    UserID: data.userID,
+                    Title: data.Title,
+                    AgendaListRightsAll: data.AgendaListRightsAll,
+                    MeetingID:
+                      currentMeeting !== null ? Number(currentMeeting) : 1686,
+                    IsContributorNotified: data.isContributedNotified,
+                  });
+                });
+                let Data = {
+                  AgendaContributors: newData,
+                  MeetingID: Number(currentMeeting),
+                  IsAgendaContributorAddFlow: true,
+                  NotificationMessage: notifyMessageField,
+                };
+                dispatch(saveAgendaContributors(navigate, t, Data));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5713,4 +5774,5 @@ export {
   DeleteAgendaWiseMinutesDocumentsApiFunc,
   CreateUpdateMeetingDataRoomMapeedApiFunc,
   UpdateMeetingUserApiFunc,
+  UpdateMeetingUserForAgendaContributor,
 };
