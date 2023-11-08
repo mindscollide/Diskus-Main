@@ -33,7 +33,7 @@ const Polls = ({
   setSceduleMeeting,
   setPolls,
   setAttendance,
-  currentMeeting,
+  advanceMeetingModalID,
   ediorRole,
   setEditMeeting,
   isEditMeeting,
@@ -52,7 +52,10 @@ const Polls = ({
   const [totalRecords, setTotalRecords] = useState(0);
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
-
+  console.log(
+    advanceMeetingModalID,
+    "currentMeetingcurrentMeetingcurrentMeeting"
+  );
   const enableAfterSavedViewPolls = () => {
     setafterViewPolls(true);
   };
@@ -84,13 +87,13 @@ const Polls = ({
   const handleDeletePoll = (record) => {
     let data = {
       PollID: record.pollID,
-      MeetingID: parseInt(currentMeeting),
+      MeetingID: parseInt(advanceMeetingModalID),
     };
-    dispatch(deleteMeetingPollApi(navigate, t, data, currentMeeting));
+    dispatch(deleteMeetingPollApi(navigate, t, data, advanceMeetingModalID));
   };
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: Number(advanceMeetingModalID),
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -104,7 +107,7 @@ const Polls = ({
     setPageNumber(current);
     setPageSize(pageSize);
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: advanceMeetingModalID,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -399,22 +402,21 @@ const Polls = ({
             {createpoll ? (
               <Createpolls
                 setCreatepoll={setCreatepoll}
-                currentMeeting={currentMeeting}
+                advanceMeetingModalID={advanceMeetingModalID}
               />
             ) : votePolls ? (
               <CastVotePollsMeeting setvotePolls={setvotePolls} />
             ) : editPolls ? (
               <EditPollsMeeting
                 setEditPolls={setEditPolls}
-                currentMeeting={currentMeeting}
+                advanceMeetingModalID={advanceMeetingModalID}
               />
             ) : (
               <>
-                {(Number(ediorRole?.status) === 10 ||
-                  Number(ediorRole?.status) === 9) &&
+                {Number(ediorRole?.status) === 10 &&
                 (ediorRole?.role === "Organizer" ||
-                  ediorRole?.role === "Agenda Contributor") &&
-                isEditMeeting === true ? (
+                  ediorRole?.role === "Agenda Contributor" ||
+                  ediorRole?.role === "Participant") ? (
                   <Row className="mt-4">
                     <Col
                       lg={12}
@@ -456,33 +458,23 @@ const Polls = ({
                             sm={12}
                             className="d-flex justify-content-end gap-2"
                           >
-                            <Button
-                              text={t("Clone-meeting")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={enableAfterSavedViewPolls}
-                            />
-
-                            <Button
+                            {/* <Button
                               text={t("Cancel")}
                               className={styles["Cancel_Button_Polls_meeting"]}
                               onClick={handleCacnelbutton}
                             />
 
                             <Button
-                              text={t("Save")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-
-                            <Button
-                              text={t("Save-and-publish")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-
-                            <Button
-                              text={t("Save-and-next")}
+                              text={t("Prev")}
                               className={styles["Save_Button_Polls_meeting"]}
                               onClick={handleSaveAndnext}
                             />
+
+                            <Button
+                              text={t("Next")}
+                              className={styles["Save_Button_Polls_meeting"]}
+                              onClick={handleSaveAndnext}
+                            /> */}
                           </Col>
                         </Row>
                       </>
