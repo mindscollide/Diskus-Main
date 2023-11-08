@@ -24,12 +24,12 @@ const SubDocumnets = ({
     console.log(subAgendaFiles, "fileDataPropfileDataProp");
     let optionscross = [...rows];
 
-    // Find the correct subAgenda and update its Subfiles array
+    // Find the correct subAgenda and update its subfiles array
     const updatedOptionsCross = optionscross.map((option) => {
       if (option.subAgenda) {
         option.subAgenda = option.subAgenda.map((subAgenda) => {
-          if (subAgenda.Subfiles) {
-            subAgenda.Subfiles = subAgenda.Subfiles.filter(
+          if (subAgenda.subfiles) {
+            subAgenda.subfiles = subAgenda.subfiles.filter(
               (file) =>
                 file.DisplayAttachmentName !==
                 subAgendaFiles.DisplayAttachmentName
@@ -54,7 +54,7 @@ const SubDocumnets = ({
 
   // const handlesubAgendaCrossFiles = (subAgendaFilesIndex) => {
   //   let optionscross = [...rows];
-  //   optionscross[index].subAgenda[subIndex].Subfiles.splice(
+  //   optionscross[index].subAgenda[subIndex].subfiles.splice(
   //     subAgendaFilesIndex,
   //     1
   //   );
@@ -66,8 +66,8 @@ const SubDocumnets = ({
       <Col lg={12} md={12} sm={12} className={styles["SubAgendaDocScroller"]}>
         <Row>
           <div className="d-flex gap-2 flex-wrap  mt-2">
-            {subAgendaData?.Subfiles?.length > 0
-              ? subAgendaData?.Subfiles?.map(
+            {subAgendaData?.subfiles?.length > 0
+              ? subAgendaData?.subfiles?.map(
                   (subAgendaFiles, subAgendaFilesIndex) => {
                     return (
                       <>

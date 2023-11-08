@@ -132,7 +132,7 @@ const ParentAgenda = ({
       SubAgendaUrlFieldRadio: "",
       subAgendarequestContributorUrl: "",
       subAgendarequestContributorEnterNotes: "",
-      Subfiles: [],
+      subfiles: [],
     };
     updatedRows[rowAgendaIndex].subAgenda.push(newSubAgenda);
     setRows(updatedRows);

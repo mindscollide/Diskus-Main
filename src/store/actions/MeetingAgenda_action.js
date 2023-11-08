@@ -1012,8 +1012,11 @@ const addUpdateAdvanceMeetingAgenda_fail = (message) => {
     message: message,
   };
 };
-const AddUpdateAdvanceMeetingAgenda = (Data, navigate, t) => {
+const AddUpdateAdvanceMeetingAgenda = (Data, navigate, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let getMeetingData = {
+    MeetingID: currentMeeting,
+  };
   return (dispatch) => {
     dispatch(addUpdateAdvanceMeetingAgenda_init());
     let form = new FormData();
@@ -1045,6 +1048,9 @@ const AddUpdateAdvanceMeetingAgenda = (Data, navigate, t) => {
                   response.data.responseResult,
                   t("Record-saved")
                 )
+              );
+              dispatch(
+                GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t)
               );
             } else if (
               response.data.responseResult.responseMessage
