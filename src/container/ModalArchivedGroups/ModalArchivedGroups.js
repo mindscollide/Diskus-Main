@@ -16,6 +16,7 @@ import {
   getGroups,
 } from "../../store/actions/Groups_actions";
 import { useNavigate } from "react-router-dom";
+import CustomPagination from "../../commen/functions/customPagination/Paginations";
 
 const ModalArchivedCommittee = ({
   ModalTitle,
@@ -249,7 +250,7 @@ const ModalArchivedCommittee = ({
                                 sm={12}
                                 className={"pagination-groups-table"}
                               >
-                                <Pagination
+                                <CustomPagination
                                   // defaultCurrent={currentposts}
                                   total={totalRecords}
                                   pageSize={8}
