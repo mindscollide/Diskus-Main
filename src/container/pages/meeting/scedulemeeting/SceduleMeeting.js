@@ -302,8 +302,8 @@ const SceduleMeeting = ({
                       ? true
                       : Number(currentMeeting) === 0
                       ? true
-                      // : false
-                      : true
+                      : // : false
+                        true
                   }
                   text={t("Actions")}
                   className={
@@ -453,6 +453,7 @@ const SceduleMeeting = ({
             {minutes && (
               <Minutes
                 setMinutes={setMinutes}
+                setSceduleMeeting={setSceduleMeeting}
                 currentMeeting={currentMeeting}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}

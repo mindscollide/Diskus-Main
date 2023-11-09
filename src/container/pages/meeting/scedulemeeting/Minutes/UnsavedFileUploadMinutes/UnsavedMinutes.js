@@ -2,21 +2,40 @@ import React from "react";
 import { Modal, Button } from "../../../../../../components/elements";
 import styles from "./UnsavedMinutes.module.css";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
-import { showUnsaveMinutesFileUpload } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  searchNewUserMeeting,
+  showUnsaveMinutesFileUpload,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 
-const UnsavedMinutes = ({ setMinutes }) => {
+const UnsavedMinutes = ({ setMinutes, setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleYesFunctionality = () => {
-    setMinutes(true);
+    setMinutes(false);
+    setSceduleMeeting(false);
     dispatch(showUnsaveMinutesFileUpload(false));
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
   return (
     <section>

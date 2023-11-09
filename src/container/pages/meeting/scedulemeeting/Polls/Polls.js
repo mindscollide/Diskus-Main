@@ -389,6 +389,10 @@ const Polls = ({
     setCreatepoll(true);
   };
 
+  const handleCancelPolls = () => {
+    dispatch(showCancelPolls(true));
+  };
+
   return (
     <>
       {afterViewPolls ? (
@@ -410,9 +414,9 @@ const Polls = ({
               />
             ) : (
               <>
-                {Number(ediorRole.status) === 10  &&
+                {Number(ediorRole.status) === 10 &&
                 (ediorRole.role === "Organizer" ||
-                  ediorRole.role === "Agenda Contributor"||
+                  ediorRole.role === "Agenda Contributor" ||
                   ediorRole?.role === "Participant") &&
                 isEditMeeting === true ? (
                   <Row className="mt-4">
@@ -530,6 +534,20 @@ const Polls = ({
                             </span>
                           </Col>
                         </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-end"
+                          >
+                            <Button
+                              text={"Cancel"}
+                              className={styles["Cancel_button_Polls"]}
+                              onClick={handleCancelPolls}
+                            />
+                          </Col>
+                        </Row>
                       </>
                     )}
                   </Col>
@@ -556,6 +574,7 @@ const Polls = ({
                 )}
               </>
             )}
+
             {NewMeetingreducer.cancelPolls && (
               <CancelPolls setSceduleMeeting={setSceduleMeeting} />
             )}
