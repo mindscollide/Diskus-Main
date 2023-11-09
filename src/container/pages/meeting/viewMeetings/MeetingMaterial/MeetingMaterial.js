@@ -18,10 +18,11 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
 
 const MeetingMaterial = ({
-  setSceduleMeeting,
+  setViewAdvanceMeetingModal,
   setMeetingMaterial,
   setMinutes,
   currentMeeting,
+  advanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -269,7 +270,7 @@ const MeetingMaterial = ({
   // Api request on useEffect
   useEffect(() => {
     let meetingMaterialData = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   }, []);
@@ -277,7 +278,11 @@ const MeetingMaterial = ({
   const handleCancelButton = () => {
     dispatch(showCancelMeetingMaterial(true));
   };
+  const handleClickSave = () => {
+    setMeetingMaterial(false);
 
+    setMinutes(true);
+  };
   const handleSaveAndNext = () => {
     setMeetingMaterial(false);
     setMinutes(true);
@@ -312,6 +317,11 @@ const MeetingMaterial = ({
             className={styles["Cancel_Classname"]}
             onClick={handleCancelButton}
           />
+          <Button
+            text={t("Save")}
+            onClick={handleClickSave}
+            className={styles["Save_Classname"]}
+          />
           {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} />
           <Button
             text={t("Save-and-publish")}
@@ -325,7 +335,9 @@ const MeetingMaterial = ({
         </Col>
       </Row>
       {NewMeetingreducer.cancelMeetingMaterial && (
-        <CancelMeetingMaterial setSceduleMeeting={setSceduleMeeting} />
+        <CancelMeetingMaterial
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+        />
       )}
       {/* {NewMeetingreducer.Loading ? <Loader /> : null} */}
     </section>

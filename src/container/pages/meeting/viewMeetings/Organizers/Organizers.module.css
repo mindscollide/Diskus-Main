@@ -81,7 +81,7 @@
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #6172d6  !important;
+  background: #6172d6 !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
 }
@@ -150,6 +150,9 @@
 }
 
 .Footer_button {
+  position: relative;
+  /* bottom: 50px !important; */
+  /* right: 45px; */
   display: flex !important;
   gap: 10px !important;
   justify-content: flex-end;

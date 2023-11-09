@@ -267,20 +267,20 @@ const Actions = ({
                               ediorRole.role === "Agenda Contributor") &&
                             isEditMeeting === true) ? (
                             <>
-                              <Button
+                              {/* <Button
                                 text={t("Save")}
                                 className={styles["CloneMeetingButton"]}
-                              />
-                              <Button
+                              /> */}
+                              {/* <Button
                                 text={t("Save-and-publish")}
                                 className={styles["CloneMeetingButton"]}
-                              />
-
+                              /> */}
+                              {/* 
                               <Button
                                 text={t("Save-and-next")}
                                 className={styles["SaveButtonActions"]}
                                 onClick={handleSaveAndnext}
-                              />
+                              /> */}
                             </>
                           ) : null}
                         </Col>
