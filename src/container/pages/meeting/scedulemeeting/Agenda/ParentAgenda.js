@@ -14,6 +14,7 @@ import {
   GetAllMeetingUserApiFunc,
   showVoteAgendaModal,
 } from "../../../../../store/actions/NewMeetingActions";
+import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import styles from "./Agenda.module.css";
 import Cast from "../../../../../assets/images/CAST.svg";
 import profile from "../../../../../assets/images/newprofile.png";
@@ -55,7 +56,9 @@ const ParentAgenda = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   console.log(rows, "rowsrowsrows");
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentMeetingID = localStorage.getItem("meetingID");
 
@@ -122,14 +125,14 @@ const ParentAgenda = ({
     const updatedRows = [...rows];
     const nextSubAgendaID = updatedRows[0].subAgenda.length.toString();
     const newSubAgenda = {
-      SubAgendaID: getRandomUniqueNumber().toString(),
-      SubTitle: "",
+      subAgendaID: getRandomUniqueNumber().toString() + "A",
+      subTitle: "",
       presenterID: null,
       presenterName: "",
       startDate: null,
       endDate: null,
       subSelectRadio: "1",
-      SubAgendaUrlFieldRadio: "",
+      subAgendaUrlFieldRadio: "",
       subAgendarequestContributorUrl: "",
       subAgendarequestContributorEnterNotes: "",
       subfiles: [],
@@ -218,26 +221,15 @@ const ParentAgenda = ({
 
   // Function to update the startDate for a specific row
   const handleStartDateChange = (index, date) => {
-    // console.log(date, "datedatedatedatedate");
-    // const updatedRows = [...rows];
-    // updatedRows[index].startDate = date;
-    // setRows(updatedRows);
-
+    console.log("handleStartDateChangehandleStartDateChange", date);
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const formattedDateTimeString =
+        newDate.toDateString() + " " + newDate.toTimeString();
+      const dateObject = new Date(formattedDateTimeString);
       const updatedRows = [...rows];
-      updatedRows[index].startDate = currentUTCDate + formattedTime;
+      updatedRows[index].startDate = dateObject;
       setRows(updatedRows);
-      // You can use 'formattedTime' as needed.
     } else {
       console.error("Invalid date and time object:", date);
     }
@@ -245,23 +237,14 @@ const ParentAgenda = ({
 
   // Function to update the endDate for a specific row
   const handleEndDateChange = (index, date) => {
-    // const updatedRows = [...rows];
-    // updatedRows[index].endDate = date;
-    // setRows(updatedRows);
-
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const formattedDateTimeString =
+        newDate.toDateString() + " " + newDate.toTimeString();
+      const dateObject = new Date(formattedDateTimeString);
+      // console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
-      updatedRows[index].endDate = currentUTCDate + formattedTime;
+      updatedRows[index].endDate = dateObject;
       setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
@@ -371,7 +354,7 @@ const ParentAgenda = ({
   console.log("Meeting Reducer", NewMeetingreducer);
 
   return (
-    <Draggable key={data.ID} draggableId={data.ID} index={index}>
+    <Draggable key={data.iD} draggableId={data.iD} index={index}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
@@ -380,7 +363,7 @@ const ParentAgenda = ({
         >
           {/* Main Agenda Items Mapping */}
           <span className="position-relative">
-            <Row key={data.ID} className="mt-4 m-0 p-0">
+            <Row key={data.iD} className="mt-4 m-0 p-0">
               <Col
                 lg={12}
                 md={12}
@@ -515,6 +498,7 @@ const ParentAgenda = ({
                                 locale={localValue}
                                 format="HH:mm A"
                                 selected={data.startDate}
+                                value={data.startDate}
                                 plugins={[<TimePicker hideSeconds />]}
                                 onChange={(date) =>
                                   handleStartDateChange(index, date)
@@ -555,6 +539,7 @@ const ParentAgenda = ({
                                 format="HH:mm A"
                                 calendar={calendarValue}
                                 locale={localValue}
+                                value={data.endDate}
                                 selected={data.endDate}
                                 plugins={[<TimePicker hideSeconds />]}
                                 onChange={(date) =>
@@ -706,7 +691,7 @@ const ParentAgenda = ({
                             </Col>
                           </Row>
                           <Droppable
-                            droppableId={`parent-${data.ID}-parent-attachments`}
+                            droppableId={`parent-${data.iD}-parent-attachments`}
                             type="attachment"
                           >
                             {(provided) => (
@@ -723,7 +708,7 @@ const ParentAgenda = ({
                                           index={index}
                                           setRows={setRows}
                                           rows={rows}
-                                          parentId={`parent-${data.ID}`}
+                                          parentId={`parent-${data.iD}`}
                                           setFileForSend={setFileForSend}
                                           fileForSend={fileForSend}
                                         />

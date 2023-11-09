@@ -440,6 +440,7 @@ const SceduleMeeting = ({
                       setEditMeeting={setEditMeeting}
                       isEditMeeting={isEditMeeting}
                       ediorRole={ediorRole}
+                      setEdiorRole={setEdiorRole}
                     />
                   )}
                   {meetingMaterial && (

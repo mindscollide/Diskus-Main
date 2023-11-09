@@ -37,10 +37,10 @@ const DefaultDragger = ({
   //     let newRows = [...rows];
   //     console.log("DATADATADATA", newRows);
   //     let fileData = {
-  //       AgendaAttachmentsID: getRandomUniqueNumber().toString(),
-  //       DisplayAttachmentName: data.file.originFileObj.name,
-  //       OriginalAttachmentName: data.file.originFileObj.name,
-  //       FK_MAID: 0,
+  //       agendaAttachmentsID: getRandomUniqueNumber().toString(),
+  //       displayAttachmentName: data.file.originFileObj.name,
+  //       originalAttachmentName: data.file.originFileObj.name,
+  //       fK_MAID: 0,
   //     };
   //     console.log("DATADATADATA", fileData);
   //     newRows[index].files.push(fileData);
@@ -53,10 +53,10 @@ const DefaultDragger = ({
   //     console.log("DATADATADATA", list);
   //     list.map((fileDatas, fileindex) => {
   //       let fileData = {
-  //         AgendaAttachmentsID: getRandomUniqueNumber().toString(),
-  //         DisplayAttachmentName: fileDatas.file.originFileObj.name,
-  //         OriginalAttachmentName: fileDatas.file.originFileObj.name,
-  //         FK_MAID: 0,
+  //         agendaAttachmentsID: getRandomUniqueNumber().toString(),
+  //         displayAttachmentName: fileDatas.file.originFileObj.name,
+  //         originalAttachmentName: fileDatas.file.originFileObj.name,
+  //         fK_MAID: 0,
   //       };
   //       newRows[index].files.push(fileData);
   //     });
@@ -85,7 +85,7 @@ const DefaultDragger = ({
         let sizezero;
         let size;
         newRows[index].files.map((arData, index) => {
-          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+          if (arData.displayAttachmentName === data.file.originFileObj.name) {
             flag = true;
           }
         });
@@ -120,10 +120,10 @@ const DefaultDragger = ({
           );
         } else {
           let file = {
-            DisplayAttachmentName: data.file.originFileObj.name,
-            OriginalAttachmentName: data.file.originFileObj.name,
-            AgendaAttachmentsID: getRandomUniqueNumber(),
-            FK_MAID: 0,
+            displayAttachmentName: data.file.originFileObj.name,
+            originalAttachmentName: data.file.originFileObj.name,
+            agendaAttachmentsID: getRandomUniqueNumber(),
+            fK_MAID: 0,
           };
           setFileForSend([...fileForSend, data.file.originFileObj]);
           newRows[index].files.push(file);
@@ -156,10 +156,10 @@ const DefaultDragger = ({
           );
         } else {
           let file = {
-            DisplayAttachmentName: data.file.originFileObj.name,
-            OriginalAttachmentName: data.file.originFileObj.name,
-            AgendaAttachmentsID: getRandomUniqueNumber(),
-            FK_MAID: 0,
+            displayAttachmentName: data.file.originFileObj.name,
+            originalAttachmentName: data.file.originFileObj.name,
+            agendaAttachmentsID: getRandomUniqueNumber(),
+            fK_MAID: 0,
           };
           newRows[index].files.push(file);
           setFileForSend([...fileForSend, data.file.originFileObj]);
@@ -174,10 +174,10 @@ const DefaultDragger = ({
     //   console.log("DATADATADATA", list);
     //   list.map((fileDatas, fileindex) => {
     //     let fileData = {
-    //       AgendaAttachmentsID: getRandomUniqueNumber().toString(),
-    //       DisplayAttachmentName: fileDatas.file.originFileObj.name,
-    //       OriginalAttachmentName: fileDatas.file.originFileObj.name,
-    //       FK_MAID: 0,
+    //       agendaAttachmentsID: getRandomUniqueNumber().toString(),
+    //       displayAttachmentName: fileDatas.file.originFileObj.name,
+    //       originalAttachmentName: fileDatas.file.originFileObj.name,
+    //       fK_MAID: 0,
     //     };
     //     newRows[index].files.push(fileData);
     //   });

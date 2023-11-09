@@ -634,3 +634,65 @@ export const utcConvertintoGMT = (date) => {
 export const convertDateinGMT = (date) => {
   return moment(date, "YYYYMMDD").format("Do-MMM-YYYY");
 };
+
+export const timeFormatFunction = (time) => {
+  let defaultDate = "1970-01-01T";
+  let fullDateTime =
+    defaultDate +
+    time.slice(0, 2) +
+    ":" +
+    time.slice(2, 4) +
+    ":" +
+    time.slice(4, 6) +
+    ".000Z";
+
+  let convertTime = new Date(fullDateTime);
+
+  return convertTime;
+};
+
+// this is time convertor of react multi date picker which i am getting in this formate "113046" this is using in meeting first time create
+export const convertUtcToGmt = (utcTime) => {
+  const currentDateTime = new Date();
+  const utcDateTime = `${utcTime.slice(0, 2)}:${utcTime.slice(
+    2,
+    4
+  )}:${utcTime.slice(4, 6)}`;
+  const utcDate = new Date(
+    `${currentDateTime.toISOString().split("T")[0]}T${utcDateTime}Z`
+  );
+
+  return utcDate;
+};
+// this is time convertor of react multi date picker which i am converting  in this formate "113046" this is using in meeting first time create
+
+export const convertDateFieldsToUTC = (rows) => {
+  const convertedRows = rows.map((row) => {
+    // Convert main agenda dates to UTC
+    row.startDate = convertDateToUTC(row.startDate);
+    row.endDate = convertDateToUTC(row.endDate);
+
+    // Convert sub agenda dates to UTC
+    row.subAgenda = row.subAgenda.map((subAgenda) => {
+      subAgenda.startDate = convertDateToUTC(subAgenda.startDate);
+      subAgenda.endDate = convertDateToUTC(subAgenda.endDate);
+      return subAgenda;
+    });
+
+    return row;
+  });
+
+  return convertedRows;
+};
+
+export const convertDateToUTC = (dateString) => {
+  const date = new Date(dateString);
+  const utcDate = new Date(date.toUTCString());
+
+  // Extract hours, minutes, and seconds and concatenate without colons
+  const hours = utcDate.getUTCHours().toString().padStart(2, "0");
+  const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
+  const seconds = utcDate.getUTCSeconds().toString().padStart(2, "0");
+
+  return hours + minutes + seconds;
+};

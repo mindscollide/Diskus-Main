@@ -135,8 +135,8 @@ const SubAgendaMappingDragging = ({
     let value = e.target.value;
     console.log(value, "valuevaluevalue");
     const updatedRows = [...rows];
-    if (name === "SubTitle") {
-      updatedRows[index].subAgenda[subIndex].SubTitle = value;
+    if (name === "subTitle") {
+      updatedRows[index].subAgenda[subIndex].subTitle = value;
     }
     console.log(updatedRows, "SubAgendaTitleSubAgendaTitle");
     setRows(updatedRows);
@@ -172,18 +172,12 @@ const SubAgendaMappingDragging = ({
   const handleSubAgendaStartDateChange = (index, subIndex, date) => {
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const formattedDateTimeString =
+        newDate.toDateString() + " " + newDate.toTimeString();
+      const dateObject = new Date(formattedDateTimeString);
+      console.log(dateObject, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
-      updatedRows[index].subAgenda[subIndex].startDate =
-        currentUTCDate + formattedTime;
+      updatedRows[index].subAgenda[subIndex].startDate = dateObject;
       setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
@@ -199,18 +193,12 @@ const SubAgendaMappingDragging = ({
   const handleSubAgendaEndDateChange = (index, subIndex, date) => {
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const formattedDateTimeString =
+        newDate.toDateString() + " " + newDate.toTimeString();
+      const dateObject = new Date(formattedDateTimeString);
+      console.log(dateObject, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
-      updatedRows[index].subAgenda[subIndex].endDate =
-        currentUTCDate + formattedTime;
+      updatedRows[index].subAgenda[subIndex].endDate = dateObject;
       setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
@@ -411,8 +399,8 @@ const SubAgendaMappingDragging = ({
                 {(provided) => (
                   <div ref={provided.innerRef} {...provided.droppableProps}>
                     <Draggable
-                      key={subAgendaData.SubAgendaID}
-                      draggableId={`subAgenda-${subAgendaData.SubAgendaID}`}
+                      key={subAgendaData.subAgendaID}
+                      draggableId={`subAgenda-${subAgendaData.subAgendaID}`}
                       index={subIndex}
                     >
                       {(provided, snapshot) => (
@@ -429,7 +417,7 @@ const SubAgendaMappingDragging = ({
                             >
                               <section className={styles["Padding_SubAgenda"]}>
                                 <Row
-                                  key={subAgendaData.SubAgendaID}
+                                  key={subAgendaData.subAgendaID}
                                   className="mt-3"
                                 >
                                   <Col lg={1} md={1} sm={1}></Col>
@@ -509,7 +497,7 @@ const SubAgendaMappingDragging = ({
                                             <TextField
                                               applyClass={"AgendaTextField"}
                                               labelClass={"d-none"}
-                                              name={"SubTitle"}
+                                              name={"subTitle"}
                                               disable={
                                                 apllyLockOnParentAgenda(
                                                   index
@@ -524,7 +512,7 @@ const SubAgendaMappingDragging = ({
                                               placeholder={t(
                                                 "Sub-Agenda-title"
                                               )}
-                                              value={subAgendaData.SubTitle}
+                                              value={subAgendaData.subTitle}
                                               change={(e) =>
                                                 handleSubAgendaTitleChange(
                                                   index,
@@ -645,6 +633,9 @@ const SubAgendaMappingDragging = ({
                                                   selected={
                                                     subAgendaData.startDate
                                                   }
+                                                  value={
+                                                    subAgendaData.startDate
+                                                  }
                                                   onChange={(date) =>
                                                     handleSubAgendaStartDateChange(
                                                       index,
@@ -706,6 +697,7 @@ const SubAgendaMappingDragging = ({
                                                   selected={
                                                     subAgendaData.endDate
                                                   }
+                                                  value={subAgendaData.endDate}
                                                   onChange={(date) =>
                                                     handleSubAgendaEndDateChange(
                                                       index,
@@ -960,7 +952,7 @@ const SubAgendaMappingDragging = ({
                                                 </Col>
                                               </Row>
                                               <Droppable
-                                                droppableId={`subAgendaID-${subAgendaData.SubAgendaID}-parent-${data.ID}-attachments`}
+                                                droppableId={`subAgendaID-${subAgendaData.subAgendaID}-parent-${data.iD}-attachments`}
                                                 type="attachment"
                                               >
                                                 {(provided) => (
@@ -984,7 +976,7 @@ const SubAgendaMappingDragging = ({
                                                               subIndex={
                                                                 subIndex
                                                               }
-                                                              parentId={`parent-${data.ID}`}
+                                                              parentId={`parent-${data.iD}`}
                                                               fileForSend={
                                                                 fileForSend
                                                               }

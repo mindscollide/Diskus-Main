@@ -959,7 +959,7 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
             ) {
               newFolder.push({
                 pK_FileID: response.data.responseResult.fileID,
-                DisplayAttachmentName: data.displayFileName,
+                displayAttachmentName: data.displayFileName,
               });
               await dispatch(
                 saveFiles_success(response.data.responseResult, "")
@@ -1049,7 +1049,7 @@ const AddUpdateAdvanceMeetingAgenda = (Data, navigate, t, currentMeeting) => {
                   t("Record-saved")
                 )
               );
-              dispatch(
+              await dispatch(
                 GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t)
               );
             } else if (

@@ -1,0 +1,66 @@
+{
+    "MeetingID": 2046,
+    "AgendaList": [
+        {
+            "Id": "504",
+            "Title": "1",
+            "PresenterID": 780,
+            "Description": "asdf",
+            "StartDate": "20231108145146",
+            "EndDate": "20231108145147",
+            "SelectedRadio": 3,
+            "UrlFieldMain": "asdf",
+            "RequestContributorURl": 780,
+            "MainNote": "asdfasdfasdfasdf",
+            "Files": [
+                {
+                    "DisplayAttachmentName": "scan1206.pdf",
+                    "OriginalAttachmentName": "scan1206.pdf",
+                    "AgendaAttachmentsID": 265,
+                    "FK_MAID": 0,
+                    "originalAttachmentName": "6568"
+                }
+            ],
+            "IsLocked": false,
+            "VoteOwner": null,
+            "IsAttachment": false,
+            "UserID": 802,
+            "SubAgenda": [
+                {
+                    "SubAgendaID": "828",
+                    "SubTitle": "fdsazxcvqwer",
+                    "Description": "zxcvzxcvcxzv",
+                    "AgendaVotingID": 0,
+                    "PresenterID": 802,
+                    "StartDate": "20231108145204",
+                    "EndDate": "20231108145204",
+                    "SubSelectRadio": 3,
+                    "SubAgendaUrlFieldRadio": "btbtbtbtbtbtbtbt",
+                    "SubAgendarequestContributorUrl": 822,
+                    "SubAgendarequestContributorEnterNotes": "vqvqvqvq",
+                    "Subfiles": [
+                        {
+                            "DisplayAttachmentName": "scan1201.pdf",
+                            "OriginalAttachmentName": "scan1201.pdf",
+                            "AgendaAttachmentsID": 568,
+                            "FK_MAID": 0
+                        }
+                    ],
+                    "IsLocked": false,
+                    "VoteOwner": null,
+                    "IsAttachment": false,
+                    "UserID": 802,
+                    "subfiles": [
+                        {
+                            "DisplayAttachmentName": "scan1201.pdf",
+                            "OriginalAttachmentName": "scan1201.pdf",
+                            "AgendaAttachmentsID": 568,
+                            "FK_MAID": 0,
+                            "originalAttachmentName": "6568"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
