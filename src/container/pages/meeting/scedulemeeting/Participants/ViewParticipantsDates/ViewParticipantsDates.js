@@ -55,20 +55,20 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
     return newDate;
   };
 
-  useEffect(() => {
+  const callApis = async () => {
     let Data = {
       MeetingID: Number(currentMeetingID),
     };
-
-    if (currentMeetingID > 0) {
-      dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
-      dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
-    } else {
-    }
+    await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+    await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
     return () => {
       localStorage.removeItem("viewProposeDatePollMeetingID");
     };
+  };
+  useEffect(() => {
+    callApis();
   }, []);
+
   //Fetching All Saved Data
   useEffect(() => {
     try {
@@ -162,6 +162,7 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   }, [getAllProposedDates]);
 
   const handleCheckboxChange = (data) => {
+    setSelectAll(false);
     if (checkedObjects.includes(data)) {
       setCheckedObjects(checkedObjects.filter((obj) => obj !== data));
       setSelectAll(false); // Uncheck select all if a checkbox is unchecked
@@ -282,6 +283,7 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
                                   md={12}
                                   sm={12}
                                   className={styles["Box_To_Show_Time"]}
+                                  key={index}
                                 >
                                   <Row className={styles["Inner_Send_class"]}>
                                     <Col lg={10} md={10} sm={12}>
