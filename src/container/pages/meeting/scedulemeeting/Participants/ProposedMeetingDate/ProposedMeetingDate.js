@@ -1,13 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import Select from "react-select";
 import styles from "./ProposedMeetingDate.module.css";
-import {
-  Button,
-  Checkbox,
-  Notification,
-} from "../../../../../../components/elements";
+import { Button, Notification } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-import BackArrow from "../../../../../../assets/images/Back Arrow.svg";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
 import DatePicker from "react-multi-date-picker";
 import arabic from "react-date-object/calendars/arabic";
@@ -22,14 +16,13 @@ import { useDispatch, useSelector } from "react-redux";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
 import moment from "moment";
-import { style } from "@mui/system";
 import UnsavedModal from "./UnsavedChangesModal/UnsavedModal";
 import {
   GetAllProposedMeetingDateApiFunc,
   setProposedMeetingDateApiFunc,
   showPrposedMeetingUnsavedModal,
+  GetAllMeetingDetailsApiFunc,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   convertGMTDateintoUTC,
@@ -46,45 +39,40 @@ const ProposedMeetingDate = ({
   const navigate = useNavigate();
   const calendRef = useRef();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const { NewMeetingreducer } = useSelector((state) => state);
   const [error, seterror] = useState(false);
   const [selectError, setSelectError] = useState(false);
   const [startDateError, setStartDateError] = useState(false);
-  // const [proposedMeetingDates, setProposedMeetingDates] = useState(false);
-  // console.log(proposedMeetingDates, "proposedMeetingDatesproposedMeetingDates");
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
+  );
+  const getAllProposedDates = useSelector(
+    (state) => state.NewMeetingreducer.getAllProposedDates
+  );
+  const prposedMeetingUnsavedModal = useSelector(
+    (state) => state.NewMeetingreducer.prposedMeetingUnsavedModal
+  );
 
-  const [proposedDatesData, setProposedDatesData] = useState([
-    {
-      deadLineDate: "",
-      proposedDates: [
-        {
-          endTime: "",
-          proposedDate: "",
-          proposedDateID: 0,
-          startTime: "",
-        },
-      ],
-    },
-  ]);
-  console.log(proposedDatesData, "proposedDatesDataproposedDatesData");
-  const [meetingDate, setMeetingDate] = useState("");
+  const [viewProposedModal, setViewProposedModal] = useState({
+    Title: "",
+    Description: "",
+    Location: "",
+    MeetingType: "",
+  });
+
   const [sendResponseVal, setSendResponseVal] = useState("");
   const [isEdit, setIsEdit] = useState(false);
 
   const [sendResponseBy, setSendResponseBy] = useState({
     date: "",
   });
-  console.log(sendResponseBy, "sendResponseBysendResponseBysendResponseBy");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
 
   const [endDateError, setEndDateError] = useState(false);
-  const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([
     {
       selectedOption: "",
@@ -95,7 +83,29 @@ const ProposedMeetingDate = ({
       startDateView: "",
     },
   ]);
-  console.log({ rows }, "rowsrowsrows");
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(currentMeeting),
+    };
+    dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (getAllMeetingDetails) {
+        if (getAllMeetingDetails.advanceMeetingDetails) {
+          setViewProposedModal({
+            Title: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
+            Description: getAllMeetingDetails.advanceMeetingDetails.description,
+            Location: getAllMeetingDetails.advanceMeetingDetails.location,
+            MeetingType:
+              getAllMeetingDetails.advanceMeetingDetails.meetingType.type,
+          });
+        }
+      }
+    } catch {}
+  }, [getAllMeetingDetails]);
+
   const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
@@ -172,14 +182,10 @@ const ProposedMeetingDate = ({
   const changeDateStartHandler = (date, index) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = convertGMTDateintoUTC(date);
-    console.log(DateDate, "updatedRows");
-    setMeetingDate(meetingDateValueFormat);
     const updatedRows = [...rows];
     updatedRows[index].selectedOption = DateDate.slice(0, 8);
     updatedRows[index].selectedOptionView = meetingDateValueFormat;
     updatedRows[index].isComing = false;
-
-    console.log(updatedRows, "updatedRows");
     setRows(updatedRows);
   };
 
@@ -192,13 +198,6 @@ const ProposedMeetingDate = ({
       ...sendResponseBy,
       date: DateDate.slice(0, 8),
     });
-  };
-
-  const handleSelectChange = (index, selectedOption) => {
-    const updatedRows = [...rows];
-    updatedRows[index].selectedOption = selectedOption;
-    setRows(updatedRows);
-    setSelectError(false); // Clear the select error
   };
 
   const validate = () => {
@@ -269,26 +268,12 @@ const ProposedMeetingDate = ({
     }
   }, [currentLanguage]);
 
-  const handleSend = () => {
-    // States For Error Handling
-    // setSelectError(true);
-    // setStartDateError(true);
-    // setEndDateError(true);
-  };
-
   const CancelModal = () => {
     setProposedMeetingDates(false);
     // setParticipants(true);
-
-    console.log("clicked");
     // setParticipants(true);
 
     // dispatch(showPrposedMeetingUnsavedModal(true));
-  };
-
-  const handlebackButtonFunctionality = () => {
-    setProposedMeetingDates(false);
-    setParticipants(true);
   };
 
   useEffect(() => {
@@ -298,19 +283,10 @@ const ProposedMeetingDate = ({
     dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
   }, []);
 
-  console.log(proposedDatesData, "proposedDatesDataproposedDatesData");
-
   useEffect(() => {
     try {
-      if (
-        NewMeetingreducer.getAllProposedDates !== null &&
-        NewMeetingreducer.getAllProposedDates !== undefined
-      ) {
-        const proposedMeetingData = NewMeetingreducer.getAllProposedDates;
-        console.log(
-          proposedMeetingData,
-          "proposedMeetingDataproposedMeetingData"
-        );
+      if (getAllProposedDates !== null && getAllProposedDates !== undefined) {
+        const proposedMeetingData = getAllProposedDates;
         if (proposedMeetingData.deadLineDate === "10000101") {
           setSendResponseVal("");
         } else {
@@ -359,19 +335,12 @@ const ProposedMeetingDate = ({
         );
 
         setRows(newDataforView);
-        console.log({ newDataforView }, "newDatanewDatanewData");
       }
     } catch (error) {
       console.error(error);
     }
-  }, [NewMeetingreducer.getAllProposedDates]);
+  }, [getAllProposedDates]);
 
-  console.log(rows, "rowsrowsrowsrowsrows");
-
-  const EnabletheViewProposedmeetingDates = () => {
-    setProposedMeetingDates(false);
-    setViewProposedMeetingDate(true);
-  };
   useEffect(() => {
     if (rows.length > 0) {
       if (
@@ -398,14 +367,6 @@ const ProposedMeetingDate = ({
           sm={12}
           className="d-flex align-items-center align-items-center gap-3"
         >
-          <img
-            draggable={false}
-            src={BackArrow}
-            width="20.5px"
-            height="18.13px"
-            className="cursor-pointer"
-            onClick={handlebackButtonFunctionality}
-          />
           <span className={styles["Prposed_Meeting_heading"]}>
             {t("Propose-meeting-date")}
           </span>
@@ -416,38 +377,22 @@ const ProposedMeetingDate = ({
           <Row>
             <Col lg={12} md={12} sm={12}>
               <span className={styles["Heading_prposed_meeting"]}>
-                IT Departmental Meeting lorem. Aenean posuere libero vel ipsum
-                digniss IT Departmental Meeting lorem. Aenean posuere libero vel
-                ipsum digniss
+                {viewProposedModal?.Title}
               </span>
             </Col>
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
               <span className={styles["Staff_meeting_Heading"]}>
-                Staff Meeting <span>(Conference Room)</span>
+                {viewProposedModal?.MeetingType}{" "}
+                <span>({viewProposedModal?.Location})</span>
               </span>
             </Col>
           </Row>
           <Row className="mt-2">
             <Col lg={12} md={12} sm={12}>
               <p className={styles["Paragraph_Styles"]}>
-                Description fits in here. Proin at malesuada lorem. Aenean
-                posuere libero vel ipsum dignissim ultricies viverra non tellus.
-                Fusce aliquet finibus nisl, et hendrerit nisl dignissim at.
-                Praesent luctus rutrum lacinia. Nulla lacinia feugiat sagittis.
-                Aenean at magna aliquet, dignissim ligula quis, ornare ante.
-                Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut
-                diam dui, iaculis nec dui vel, commodo dapibus libero.Vivamus
-                interdum purus sed pellentesque ultricies. Nullam ut nulla
-                libero. Nam libero urna, pharetra et dignissim in, malesuada at
-                urna. Aliquam erat volutpat. Curabitur molestie congue ipsum
-                vitae luctus. Cras sed dolor eget turpis condimentum maximus et
-                sit amet ipsum. Suspendisse non nulla vitae metus tincidunt
-                vulputate. Aenean malesuada lacinia ipsum, vitae porta ex
-                elementum ac. Nulla vestibulum cursus felis, vel molestie nibh
-                mollis sit amet. Suspendisse nec dui semper, lobortis est nec,
-                aliquet felis. Etiam sed odio in diam faucibus pretium.
+                {viewProposedModal?.Description}
               </p>
             </Col>
           </Row>
@@ -712,11 +657,11 @@ const ProposedMeetingDate = ({
                 className={styles["Cancel_Button_ProposedMeeting"]}
                 onClick={CancelModal}
               />
-              <Button
+              {/* <Button
                 text={t("View")}
                 className={styles["Save_Button_ProposedMeeting"]}
                 onClick={EnabletheViewProposedmeetingDates}
-              />
+              /> */}
               {!isEdit ? (
                 <>
                   <Button
@@ -739,7 +684,7 @@ const ProposedMeetingDate = ({
         </Col>
       </Row>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-      {NewMeetingreducer.prposedMeetingUnsavedModal && (
+      {prposedMeetingUnsavedModal && (
         <UnsavedModal
           setProposedMeetingDates={setProposedMeetingDates}
           setParticipants={setParticipants}
