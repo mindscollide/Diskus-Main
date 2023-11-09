@@ -23,9 +23,13 @@ const SceduleMeeting = ({
   currentMeeting,
   setCurrentMeetingID,
   ediorRole,
-  isEditMeeting,
   setEditMeeting,
   setEdiorRole,
+  setMeetingMaterial,
+  setAgenda,
+  setParticipants,
+  setSceduleMeeting,
+  isEditMeeting,
 }) => {
   const { t } = useTranslation();
 
@@ -302,8 +306,8 @@ const SceduleMeeting = ({
                       ? true
                       : Number(currentMeeting) === 0
                       ? true
-                      // : false
-                      : true
+                      : // : false
+                        true
                   }
                   text={t("Actions")}
                   className={

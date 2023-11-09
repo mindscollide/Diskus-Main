@@ -27,7 +27,7 @@ const RequestContributor = ({ data, index, setRows, rows }) => {
     let value = e.target.value;
     const updatedRows = [...rows];
     if (name === "MainNoteReqContributor") {
-      updatedRows[index].MainNote = value;
+      updatedRows[index].mainNote = value;
     }
     setRows(updatedRows);
     console.log(updatedRows, "MainNoteReqContributor");
@@ -74,6 +74,7 @@ const RequestContributor = ({ data, index, setRows, rows }) => {
       label: value.label,
     };
     updatedAgendaItems[index].requestContributorURl = SelectValue.value;
+    updatedAgendaItems[index].userID = SelectValue.value;
     updatedAgendaItems[index].requestContributorURlName = SelectValue.label;
     setRows(updatedAgendaItems);
   };
@@ -134,7 +135,7 @@ const RequestContributor = ({ data, index, setRows, rows }) => {
             type="text"
             as={"textarea"}
             name={"MainNoteReqContributor"}
-            value={data.MainNote}
+            value={data.mainNote}
             change={(e) => handleMainAgendaAdditionalMainReqNotes(index, e)}
             rows="4"
             placeholder={t("Enter-notes")}

@@ -27,7 +27,7 @@ const Documents = ({
       if (option.files) {
         option.files = option.files.filter(
           (file) =>
-            file.DisplayAttachmentName !== fileDataProp.DisplayAttachmentName
+            file.displayAttachmentName !== fileDataProp.displayAttachmentName
         );
       }
       return option;
@@ -35,7 +35,7 @@ const Documents = ({
     setRows(updatedOptionsCross);
     setFileForSend((prevFiles) =>
       prevFiles.filter(
-        (fileSend) => fileSend.name !== fileDataProp.DisplayAttachmentName
+        (fileSend) => fileSend.name !== fileDataProp.displayAttachmentName
       )
     );
   };
@@ -45,14 +45,14 @@ const Documents = ({
   // const handleRemoveFile = (data) => {
   //   setFileForSend((prevFiles) =>
   //     prevFiles.filter(
-  //       (fileSend) => fileSend.name !== data.DisplayAttachmentName
+  //       (fileSend) => fileSend.name !== data.displayAttachmentName
   //     )
   //   );
 
   //   setFileAttachments((prevFiles) =>
   //     prevFiles.filter(
   //       (fileSend) =>
-  //         fileSend.DisplayAttachmentName !== data.DisplayAttachmentName
+  //         fileSend.displayAttachmentName !== data.displayAttachmentName
   //     )
   //   );
   // };
@@ -66,8 +66,8 @@ const Documents = ({
               ? data?.files?.map((filesData, Fileindex) => {
                   return (
                     <Draggable
-                      key={filesData.AgendaAttachmentsID}
-                      draggableId={`parent-attachments-${parentId}-${filesData.AgendaAttachmentsID}`}
+                      key={filesData.agendaAttachmentsID}
+                      draggableId={`parent-attachments-${parentId}-${filesData.agendaAttachmentsID}`}
                       index={Fileindex}
                     >
                       {(provided) => (
@@ -90,12 +90,12 @@ const Documents = ({
                                       draggable={false}
                                       src={getIconSource(
                                         getFileExtension(
-                                          filesData.DisplayAttachmentName
+                                          filesData.displayAttachmentName
                                         )
                                       )}
                                     />
                                     <span className={styles["TitleFile"]}>
-                                      {filesData.DisplayAttachmentName}
+                                      {filesData.displayAttachmentName}
                                     </span>
                                   </Col>
                                   <Col
