@@ -13,7 +13,7 @@ import {
   saveMeetingFlag,
 } from "../../../../../../store/actions/MeetingOrganizers_action";
 
-const CancelModalOrganizer = ({ setSceduleMeeting, currentMeeting }) => {
+const CancelModalOrganizer = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,8 +28,6 @@ const CancelModalOrganizer = ({ setSceduleMeeting, currentMeeting }) => {
     setSceduleMeeting(false);
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
-    let Data = { MeetingID: currentMeeting };
-    dispatch(GetAllMeetingOrganizers(Data, navigate, t));
   };
 
   return (

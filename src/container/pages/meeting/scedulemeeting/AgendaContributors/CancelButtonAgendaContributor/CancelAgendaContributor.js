@@ -6,7 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-import { showCancelModalAgendaContributor } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  getAllAgendaContributorApi,
+  showCancelModalAgendaContributor,
+} from "../../../../../../store/actions/NewMeetingActions";
 
 const CancelAgendaContributor = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
