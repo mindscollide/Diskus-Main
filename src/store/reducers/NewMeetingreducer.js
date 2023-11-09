@@ -817,7 +817,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_PRPOSED_DATES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         getAllProposedDates: action.response,
         ResponseMessage: action.ResponseMessage,
       };
