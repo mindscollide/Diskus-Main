@@ -1,6 +1,10 @@
 import React from "react";
-import styles from "./CancelPolls.module.css";
-import { showCancelPolls } from "../../../../../../store/actions/NewMeetingActions";
+import styles from "./ViewPollsCancelModal.module.css";
+import {
+  searchNewUserMeeting,
+  showCancelPolls,
+  showUnsavedViewPollsModal,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -8,29 +12,44 @@ import { useSelector } from "react-redux";
 import { Modal } from "../../../../../../components/elements";
 import { Button, Col, Row } from "react-bootstrap";
 
-const CancelPolls = ({ setSceduleMeeting }) => {
+const ViewPollsCancelModal = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleNOFunctionality = () => {
-    dispatch(showCancelPolls(false));
+    dispatch(showUnsavedViewPollsModal(false));
   };
 
   const handleYesFunctionality = () => {
-    setSceduleMeeting(false);
+    showUnsavedViewPollsModal(false);
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelPolls}
-        setShow={dispatch(showCancelPolls)}
+        show={NewMeetingreducer.unsavedViewPollsModal}
+        setShow={dispatch(showUnsavedViewPollsModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showCancelPolls(false));
+          dispatch(showUnsavedViewPollsModal(false));
         }}
         ModalBody={
           <>
@@ -88,4 +107,4 @@ const CancelPolls = ({ setSceduleMeeting }) => {
   );
 };
 
-export default CancelPolls;
+export default ViewPollsCancelModal;
