@@ -59,6 +59,7 @@ const Minutes = ({
   advanceMeetingModalID,
   setactionsPage,
   setMeetingMaterial,
+  setSceduleMeeting,
 }) => {
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
@@ -1168,7 +1169,12 @@ const Minutes = ({
           />
         </Col>
       </Row>
-      {NewMeetingreducer.unsaveViewMinutesModal && <ViewUnsavedModal />}
+      {NewMeetingreducer.unsaveViewMinutesModal && (
+        <ViewUnsavedModal
+          setMinutes={setMinutes}
+          setSceduleMeeting={setSceduleMeeting}
+        />
+      )}
     </section>
     // <section>
     //   {NewMeetingreducer.afterImportState === true ? (

@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 
-const ViewUnsavedModal = ({ setMinutes }) => {
+const ViewUnsavedModal = ({ setMinutes, setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,7 +27,8 @@ const ViewUnsavedModal = ({ setMinutes }) => {
   };
 
   const handleYesFunctionality = () => {
-    setMinutes(true);
+    setMinutes(false);
+    setSceduleMeeting(false);
     dispatch(showUnsavedViewMinutesModal(false));
     let searchData = {
       Date: "",
