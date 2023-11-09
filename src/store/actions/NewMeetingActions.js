@@ -1674,14 +1674,15 @@ const GetAllMeetingDetailsApiFunc = (
   navigate,
   t,
   setCurrentMeetingID,
-  setSceduleMeeting
+  setSceduleMeeting,
+  newMeetingData
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showGetAllMeetingDetialsInit());
     let form = new FormData();
     form.append("RequestMethod", getAllMeetingDetailsByMeetingID.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestData", JSON.stringify(Data, newMeetingData));
     axios({
       method: "post",
       url: meetingApi,
@@ -1699,7 +1700,8 @@ const GetAllMeetingDetailsApiFunc = (
               navigate,
               t,
               setCurrentMeetingID,
-              setSceduleMeeting
+              setSceduleMeeting,
+              newMeetingData
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1717,8 +1719,10 @@ const GetAllMeetingDetailsApiFunc = (
                   t("Record-found")
                 )
               );
-              setSceduleMeeting(true);
-              setCurrentMeetingID(Data.MeetingID);
+              try {
+                setSceduleMeeting(true);
+                setCurrentMeetingID(Data.MeetingID);
+              } catch {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
