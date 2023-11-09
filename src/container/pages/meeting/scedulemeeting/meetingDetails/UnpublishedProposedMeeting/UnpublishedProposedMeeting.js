@@ -279,8 +279,6 @@ const UnpublishedProposedMeeting = ({
                       {record.meetingPoll?.totalNoOfDirectors}
                     </span>
                   )}
-
-                  {/* <img src={rspvGreenIcon} height="17.06px" width="17.06px" />  */}
                 </Col>
               </Row>
               <Row>
@@ -290,23 +288,26 @@ const UnpublishedProposedMeeting = ({
                   sm={12}
                   className={"newMeetingProgressbar"}
                 >
-                  {value === maxValue ? (
-                    <ProgressBar
-                      variant=""
-                      className="custom-progress"
-                      now={100}
-                    />
-                  ) : (
-                    <ProgressBar
-                      now={value}
-                      max={maxValue}
-                      className={"newMeetingProgressbar"}
-                    />
+                  {value === maxValue ? null : (
+                    <>
+                      {/* // <ProgressBar
+                    //   variant=""
+                    //   className="custom-progress"
+                    //   now={100}
+                    // /> */}
+                      <ProgressBar
+                        now={value}
+                        max={maxValue}
+                        className={"newMeetingProgressbar"}
+                      />
+                    </>
                   )}
                 </Col>
               </Row>
             </>
           );
+        } else {
+          return null;
         }
       },
     },
@@ -381,14 +382,15 @@ const UnpublishedProposedMeeting = ({
                   />
                 ) : isOrganiser ? (
                   <>
-                    <img
+                  {/* this function will add later */}
+                    {/* <img
                       src={deleteIcon}
                       className="cursor-pointer"
                       width="17.03px"
                       height="17.03px"
                       alt=""
                       draggable="false"
-                    />
+                    /> */}
                     <img
                       src={EditIcon}
                       className="cursor-pointer"
