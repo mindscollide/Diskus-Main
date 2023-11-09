@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 
-const CancelMeetingMaterial = ({ setSceduleMeeting }) => {
+const CancelMeetingMaterial = ({ setViewAdvanceMeetingModal }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,7 +19,8 @@ const CancelMeetingMaterial = ({ setSceduleMeeting }) => {
   };
 
   const handleYesFunctionality = () => {
-    setSceduleMeeting(false);
+    dispatch(showCancelMeetingMaterial(false));
+    setViewAdvanceMeetingModal(false);
   };
 
   return (

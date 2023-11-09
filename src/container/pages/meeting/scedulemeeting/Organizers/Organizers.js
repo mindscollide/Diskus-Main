@@ -24,6 +24,7 @@ import {
   showNotifyOrganizors,
   sendRecentNotificationOrganizerModal,
   UpdateMeetingUserForOrganizers,
+  showCancelModalOrganizers,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
@@ -88,10 +89,7 @@ const Organizers = ({
   };
 
   const handleCancelOrganizer = () => {
-    // dispatch(showCancelModalOrganizers(true));
-    setSceduleMeeting(false);
-    dispatch(saveMeetingFlag(false));
-    dispatch(editMeetingFlag(false));
+    dispatch(showCancelModalOrganizers(true));
   };
 
   const [inputValues, setInputValues] = useState({});
@@ -799,13 +797,13 @@ const Organizers = ({
                   />
 
                   <Button
-                    text={"Previous"}
+                    text={t("Previous")}
                     className={styles["Cancel_Organization"]}
                     onClick={previousTabOrganizer}
                   />
 
                   <Button
-                    text={"Next"}
+                    text={t("Next")}
                     className={styles["publish_button_Organization"]}
                     onClick={nextTabOrganizer}
                   />

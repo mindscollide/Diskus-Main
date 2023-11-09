@@ -19,6 +19,7 @@ const CancelMeetingMaterial = ({ setSceduleMeeting }) => {
   };
 
   const handleYesFunctionality = () => {
+    dispatch(showCancelMeetingMaterial(false));
     setSceduleMeeting(false);
   };
 

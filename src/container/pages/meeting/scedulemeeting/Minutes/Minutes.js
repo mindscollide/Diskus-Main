@@ -665,6 +665,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
           />
         </Col>
       </Row>
+
       {agenda ? (
         <AgendaWise currentMeeting={currentMeeting} />
       ) : general ? (
@@ -1143,6 +1144,14 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
           </Row>
         </>
       ) : null}
+      {/* <Row className="mt-5">
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Button
+            text={t("Cancel")}
+            className={styles["Cancel_button_Minutes"]}
+          />
+        </Col>
+      </Row> */}
     </section>
     // <section>
     //   {NewMeetingreducer.afterImportState === true ? (

@@ -45,7 +45,15 @@ import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 
-const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
+const Agenda = ({
+  currentMeeting,
+  setMeetingMaterial,
+  setAgenda,
+  setParticipants,
+  setSceduleMeeting,
+  currentMeeting,
+  isEditMeeting,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -178,7 +186,9 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
   };
 
   const handleSavedViewAgenda = () => {
-    setsavedViewAgenda(true);
+    setAgenda(false);
+    setMeetingMaterial(true);
+    // setsavedViewAgenda(true);
   };
 
   const EnableAgendaView = () => {
@@ -421,6 +431,11 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
     MeetingAgendaReducer,
     DataRoomReducer
   );
+  //handle previous button func
+  const handlePreviousButtonAgenda = () => {
+    setAgenda(false);
+    setParticipants(true);
+  };
 
   return (
     <>
@@ -551,12 +566,13 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
                 />
 
                 <Button
-                  text={t("Save-and-publish")}
+                  text={t("Previous")}
                   className={styles["Agenda_Buttons"]}
+                  onClick={handlePreviousButtonAgenda}
                 />
 
                 <Button
-                  text={t("Save-and-next")}
+                  text={t("Next")}
                   className={styles["Save_Agenda_btn"]}
                   onClick={handleSavedViewAgenda}
                 />

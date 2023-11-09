@@ -622,7 +622,7 @@
   "Send-again": "Send Again",
   "Your-one-stop-solution-to-meeting-management": "Your one-stop solution to meeting management",
   "next": "NEXT",
-  "Previous": "PREV",
+  "Previous": "Previous",
   "Back-to-sign-in": "Back to Sign In",
   "OTP-has-been-sent-to-your-email": "OTP has been sent to your email",
   "Please-enter-a-valid-email": "Please enter a valid email",
@@ -1599,5 +1599,6 @@
   "Edit-new-meeting": "Edit New Meeting",
   "The-meeting-must-be-in-a-proposed-state": "The meeting must be in a proposed state",
   "The-user-must-be-an-organizer": "The user must be an organizer",
+  "No-Meeting-Material": "No Meeting Material",
   "No-record-found": "No Record Found"
 }

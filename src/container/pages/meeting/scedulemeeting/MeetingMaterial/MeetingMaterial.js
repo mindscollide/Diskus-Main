@@ -7,7 +7,14 @@ import { Col, Row } from "react-bootstrap";
 import backDownArrow from "../../../../../assets/images/downDirect.png";
 import upArrow from "../../../../../assets/images/UpperArrow.svg";
 import PDFIcon from "../../../../../assets/images/pdf_icon.svg";
-import { Button, Table, Loader } from "../../../../../components/elements";
+import {
+  Button,
+  Table,
+  Loader,
+  ResultMessage,
+} from "../../../../../components/elements";
+import NoMeetingsIcon from "../../../../../assets/images/No-Meetings.png";
+
 import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
 import { useSelector } from "react-redux";
 import { showCancelMeetingMaterial } from "../../../../../store/actions/NewMeetingActions";
@@ -21,6 +28,7 @@ const MeetingMaterial = ({
   setSceduleMeeting,
   setMeetingMaterial,
   setMinutes,
+  setAgenda,
   currentMeeting,
 }) => {
   const { t } = useTranslation();
@@ -283,17 +291,51 @@ const MeetingMaterial = ({
     setMinutes(true);
   };
 
+  const handlePreviousButtonMeetingMaterial = () => {
+    setMeetingMaterial(false);
+    setAgenda(true);
+  };
+
   return (
     <section>
       <Row className="mt-5">
         <Col lg={12} md={12} sm={12}>
-          <Table
-            column={materialColoumn}
-            scroll={{ y: "46vh" }}
-            pagination={false}
-            className="Polling_table"
-            rows={rows}
-          />
+          {rows.length === 0 && !NewMeetingreducer.Loading ? (
+            <>
+              <ResultMessage
+                icon={
+                  <img
+                    alt="NonMeeting"
+                    draggable="false"
+                    src={NoMeetingsIcon}
+                    // className="nodata-table-icon"
+                  />
+                }
+              />
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <span className={styles["No-meeting-material-title"]}>
+                    {t("No-Meeting-Material")}
+                  </span>
+                </Col>
+              </Row>
+            </>
+          ) : (
+            <>
+              <Table
+                column={materialColoumn}
+                scroll={{ y: "46vh" }}
+                pagination={false}
+                className="Polling_table"
+                rows={rows}
+              />
+            </>
+          )}
         </Col>
       </Row>
       <Row>
@@ -301,7 +343,7 @@ const MeetingMaterial = ({
           lg={12}
           md={12}
           sm={12}
-          className="d-flex justify-content-end gap-2 mt-2"
+          className="d-flex justify-content-end gap-2 mt-3"
         >
           {/* <Button
             text={t("Clone-meeting")}
@@ -312,16 +354,17 @@ const MeetingMaterial = ({
             className={styles["Cancel_Classname"]}
             onClick={handleCancelButton}
           />
-          {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} />
+          <Button text={t("Save")} className={styles["Cancel_Classname"]} />
           <Button
-            text={t("Save-and-publish")}
+            text={t("Previous")}
             className={styles["Cancel_Classname"]}
+            onClick={handlePreviousButtonMeetingMaterial}
           />
           <Button
-            text={t("Save-and-next")}
+            text={t("Next")}
             className={styles["Save_Classname"]}
             onClick={handleSaveAndNext}
-          /> */}
+          />
         </Col>
       </Row>
       {NewMeetingreducer.cancelMeetingMaterial && (

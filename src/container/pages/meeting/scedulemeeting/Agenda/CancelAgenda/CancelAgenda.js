@@ -19,6 +19,7 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
   };
 
   const handleYesFunctionality = () => {
+    dispatch(showCancelModalAgenda(false));
     setSceduleMeeting(false);
   };
   return (

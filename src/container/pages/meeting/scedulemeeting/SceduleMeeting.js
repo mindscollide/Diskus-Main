@@ -23,9 +23,13 @@ const SceduleMeeting = ({
   currentMeeting,
   setCurrentMeetingID,
   ediorRole,
-  isEditMeeting,
   setEditMeeting,
   setEdiorRole,
+  setMeetingMaterial,
+  setAgenda,
+  setParticipants,
+  setSceduleMeeting,
+  isEditMeeting,
 }) => {
   const { t } = useTranslation();
 
@@ -194,317 +198,309 @@ const SceduleMeeting = ({
   };
 
   return (
-    <>
-      {proposedMeetingDates ? (
-        <ProposedMeetingDate
-          setProposedMeetingDates={setProposedMeetingDates}
-          setParticipants={setParticipants}
-          currentMeeting={currentMeeting}
-        />
-      ) : (
-        <>
-          <section>
-            <Row className="mt-2">
-              <Col lg={12} md={12} sm={12}>
-                {isEditMeeting ? (
-                  <span className={styles["Scedule_newMeeting_Heading"]}>
-                    {t("Edit-new-meeting")}
-                  </span>
-                ) : (
-                  <span className={styles["Scedule_newMeeting_Heading"]}>
-                    {t("Schedule-new-meeting")}
-                  </span>
-                )}
-
-                {/*               
-                    <span className={styles["Scedule_newMeeting_Heading"]}>
-                      {t("Schedule-new-meeting")}
-                    </span> */}
-              </Col>
-            </Row>
+    <section>
+      <Row className="mt-2">
+        <Col lg={12} md={12} sm={12}>
+          {isEditMeeting ? (
+            <span className={styles["Scedule_newMeeting_Heading"]}>
+              {t("Edit-new-meeting")}
+            </span>
+          ) : (
+            <span className={styles["Scedule_newMeeting_Heading"]}>
+              {t("Schedule-new-meeting")}
+            </span>
+          )}
+        </Col>
+      </Row>
+      <Row>
+        <Col lg={12} md={12} sm={12} className="mb-4">
+          <Paper className={styles["Scedule_meeting_paper"]}>
             <Row>
-              <Col lg={12} md={12} sm={12} className="mb-4">
-                <Paper className={styles["Scedule_meeting_paper"]}>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 flex-wrap"
-                    >
-                      <Button
-                        text={t("Meeting-details")}
-                        className={
-                          meetingDetails === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showMeetingDeitals}
-                      />
-                      <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
-                        text={t("Organizers")}
-                        className={
-                          organizers === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showOrganizers}
-                      />
-                      <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
-                        text={t("Agenda-contributors")}
-                        className={
-                          agendaContributors === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showAgendaContributers}
-                      />
-                      <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
-                        text={t("Participants")}
-                        className={
-                          participants === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showParticipants}
-                      />
-                      <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
-                        text={t("Agenda")}
-                        className={
-                          agenda === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showAgenda}
-                      />
-                      <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
-                        text={t("Meeting-material")}
-                        className={
-                          meetingMaterial === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showMeetingMaterial}
-                      />
-                      <Button
-                        disableBtn={
-                          (Number(ediorRole.status) === 1 ||
-                            Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                          (ediorRole.role === "Organizer" ||
-                            ediorRole.role === "Participant" ||
-                            ediorRole.role === "Agenda Contributor") &&
-                          isEditMeeting === true
-                            ? true
-                            : Number(currentMeeting) === 0
-                            ? true
-                            : false
-                        }
-                        text={t("Minutes")}
-                        className={
-                          minutes === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showMinutes}
-                      />
-                      <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
-                        text={t("Actions")}
-                        className={
-                          actionsPage === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={showActions}
-                      />
-                      <Button
-                        disableBtn={
-                          (Number(ediorRole.status) === 1 ||
-                            Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                          (ediorRole.role === "Organizer" ||
-                            ediorRole.role === "Participant" ||
-                            ediorRole.role === "Agenda Contributor") &&
-                          isEditMeeting === true
-                            ? true
-                            : Number(currentMeeting) === 0
-                            ? true
-                            : false
-                        }
-                        text={t("Polls")}
-                        className={
-                          polls === true
-                            ? styles["Schedule_meetings_options_active"]
-                            : styles["Schedule_meetings_options"]
-                        }
-                        onClick={ShowPolls}
-                      />
-                      {Number(ediorRole.status) === 10 &&
-                      ediorRole.role === "Organizer" &&
-                      isEditMeeting === true ? (
-                        <Button
-                          disableBtn={
-                            Number(currentMeeting) === 0 ? true : false
-                          }
-                          text={t("Attendence")}
-                          className={
-                            attendance === true
-                              ? styles["Schedule_meetings_options_active"]
-                              : styles["Schedule_meetings_options"]
-                          }
-                          onClick={showAttendance}
-                        />
-                      ) : null}
-                    </Col>
-                  </Row>
-
-                  {meetingDetails && (
-                    <MeetingDetails
-                      setorganizers={setorganizers}
-                      setmeetingDetails={setmeetingDetails}
-                      setSceduleMeeting={setSceduleMeeting}
-                      setAgendaContributors={setAgendaContributors}
-                      setParticipants={setParticipants}
-                      setAgenda={setAgenda}
-                      setMinutes={setMinutes}
-                      setactionsPage={setactionsPage}
-                      setAttendance={setAttendance}
-                      setPolls={setPolls}
-                      setMeetingMaterial={setMeetingMaterial}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      currentMeeting={currentMeeting}
-                      setEditMeeting={setEditMeeting}
-                      isEditMeeting={isEditMeeting}
-                      ediorRole={ediorRole}
-                    />
-                  )}
-                  {organizers && (
-                    <Organizers
-                      setorganizers={setorganizers}
-                      setmeetingDetails={setmeetingDetails}
-                      setSceduleMeeting={setSceduleMeeting}
-                      setAgendaContributors={setAgendaContributors}
-                      setParticipants={setParticipants}
-                      setAgenda={setAgenda}
-                      setMinutes={setMinutes}
-                      setactionsPage={setactionsPage}
-                      setAttendance={setAttendance}
-                      setPolls={setPolls}
-                      setMeetingMaterial={setMeetingMaterial}
-                      currentMeeting={currentMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      setEditMeeting={setEditMeeting}
-                      isEditMeeting={isEditMeeting}
-                      ediorRole={ediorRole}
-                    />
-                  )}
-                  {agendaContributors && (
-                    <AgendaContributers
-                      setorganizers={setorganizers}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      currentMeeting={currentMeeting}
-                      setSceduleMeeting={setSceduleMeeting}
-                      setAgendaContributors={setAgendaContributors}
-                      setParticipants={setParticipants}
-                      setEditMeeting={setEditMeeting}
-                      isEditMeeting={isEditMeeting}
-                      ediorRole={ediorRole}
-                    />
-                  )}
-                  {participants && (
-                    <Participants
-                      setParticipants={setParticipants}
-                      setAgenda={setAgenda}
-                      setProposedMeetingDates={setProposedMeetingDates}
-                      setSceduleMeeting={setSceduleMeeting}
-                      currentMeeting={currentMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      setAgendaContributors={setAgendaContributors}
-                      setEditMeeting={setEditMeeting}
-                      isEditMeeting={isEditMeeting}
-                      ediorRole={ediorRole}
-                    />
-                  )}
-
-                  {agenda && (
-                    <Agenda
-                      setSceduleMeeting={setSceduleMeeting}
-                      currentMeeting={currentMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      setEditMeeting={setEditMeeting}
-                      isEditMeeting={isEditMeeting}
-                      ediorRole={ediorRole}
-                      setEdiorRole={setEdiorRole}
-                    />
-                  )}
-                  {meetingMaterial && (
-                    <MeetingMaterial
-                      setSceduleMeeting={setSceduleMeeting}
-                      setMeetingMaterial={setMeetingMaterial}
-                      setMinutes={setMinutes}
-                      currentMeeting={currentMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      setEditMeeting={setEditMeeting}
-                      isEditMeeting={isEditMeeting}
-                      ediorRole={ediorRole}
-                    />
-                  )}
-                  {minutes && (
-                    <Minutes
-                      setMinutes={setMinutes}
-                      currentMeeting={currentMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      setEditMeeting={setEditMeeting}
-                      isEditMeeting={isEditMeeting}
-                      ediorRole={ediorRole}
-                    />
-                  )}
-                  {actionsPage && (
-                    <Actions
-                      setSceduleMeeting={setSceduleMeeting}
-                      setPolls={setPolls}
-                      setactionsPage={setactionsPage}
-                      currentMeeting={currentMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      setEditMeeting={setEditMeeting}
-                      isEditMeeting={isEditMeeting}
-                      ediorRole={ediorRole}
-                    />
-                  )}
-                  {polls && (
-                    <Polls
-                      setSceduleMeeting={setSceduleMeeting}
-                      setPolls={setPolls}
-                      setAttendance={setAttendance}
-                      currentMeeting={currentMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      setEditMeeting={setEditMeeting}
-                      isEditMeeting={isEditMeeting}
-                      ediorRole={ediorRole}
-                    />
-                  )}
-                  {attendance && (
-                    <Attendence
-                      currentMeeting={currentMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      setEditMeeting={setEditMeeting}
-                      isEditMeeting={isEditMeeting}
-                      ediorRole={ediorRole}
-                    />
-                  )}
-                </Paper>
+              <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Button
+                  text={t("Meeting-details")}
+                  className={
+                    meetingDetails === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
+                  onClick={showMeetingDeitals}
+                />
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Organizers")}
+                  className={
+                    organizers === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
+                  onClick={showOrganizers}
+                />
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Agenda-contributors")}
+                  className={
+                    agendaContributors === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
+                  onClick={showAgendaContributers}
+                />
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Participants")}
+                  className={
+                    participants === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
+                  onClick={showParticipants}
+                />
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Agenda")}
+                  className={
+                    agenda === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
+                  onClick={showAgenda}
+                />
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Meeting-material")}
+                  className={
+                    meetingMaterial === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
+                  onClick={showMeetingMaterial}
+                />
+                <Button
+                  disableBtn={
+                    (Number(ediorRole.status) === 1 ||
+                      Number(ediorRole.status) === 11 ||
+                      Number(ediorRole.status) === 12) &&
+                    (ediorRole.role === "Organizer" ||
+                      ediorRole.role === "Participant" ||
+                      ediorRole.role === "Agenda Contributor") &&
+                    isEditMeeting === true
+                      ? true
+                      : Number(currentMeeting) === 0
+                      ? true
+                      : isEditMeeting === false
+                      ? true
+                      : false
+                  }
+                  text={t("Minutes")}
+                  className={
+                    minutes === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
+                  onClick={showMinutes}
+                />
+                <Button
+                  disableBtn={
+                    isEditMeeting === false
+                      ? true
+                      : Number(currentMeeting) === 0
+                      ? true
+                      : // : false
+                        true
+                  }
+                  text={t("Actions")}
+                  className={
+                    actionsPage === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
+                  onClick={showActions}
+                />
+                <Button
+                  disableBtn={
+                    (Number(ediorRole.status) === 1 ||
+                      Number(ediorRole.status) === 11 ||
+                      Number(ediorRole.status) === 12) &&
+                    (ediorRole.role === "Organizer" ||
+                      ediorRole.role === "Participant" ||
+                      ediorRole.role === "Agenda Contributor") &&
+                    isEditMeeting === true
+                      ? true
+                      : Number(currentMeeting) === 0
+                      ? true
+                      : isEditMeeting === false
+                      ? true
+                      : false
+                  }
+                  text={t("Polls")}
+                  className={
+                    polls === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
+                  onClick={ShowPolls}
+                />
+                {(Number(ediorRole.status) === 10 ||
+                  Number(ediorRole.status) === 9) &&
+                ediorRole.role === "Organizer" &&
+                isEditMeeting === true ? (
+                  <Button
+                    disableBtn={Number(currentMeeting) === 0 ? true : false}
+                    text={t("Attendence")}
+                    className={
+                      attendance === true
+                        ? styles["Schedule_meetings_options_active"]
+                        : styles["Schedule_meetings_options"]
+                    }
+                    onClick={showAttendance}
+                  />
+                ) : null}
               </Col>
             </Row>
-          </section>
-        </>
-      )}
-    </>
+
+            {meetingDetails && (
+              <MeetingDetails
+                setorganizers={setorganizers}
+                setmeetingDetails={setmeetingDetails}
+                setSceduleMeeting={setSceduleMeeting}
+                setAgendaContributors={setAgendaContributors}
+                setParticipants={setParticipants}
+                setAgenda={setAgenda}
+                setMinutes={setMinutes}
+                setactionsPage={setactionsPage}
+                setAttendance={setAttendance}
+                setPolls={setPolls}
+                setMeetingMaterial={setMeetingMaterial}
+                setCurrentMeetingID={setCurrentMeetingID}
+                currentMeeting={currentMeeting}
+                setEditMeeting={setEditMeeting}
+                isEditMeeting={isEditMeeting}
+                ediorRole={ediorRole}
+              />
+            )}
+            {organizers && (
+              <Organizers
+                setorganizers={setorganizers}
+                setmeetingDetails={setmeetingDetails}
+                setSceduleMeeting={setSceduleMeeting}
+                setAgendaContributors={setAgendaContributors}
+                setParticipants={setParticipants}
+                setAgenda={setAgenda}
+                setMinutes={setMinutes}
+                setactionsPage={setactionsPage}
+                setAttendance={setAttendance}
+                setPolls={setPolls}
+                setMeetingMaterial={setMeetingMaterial}
+                currentMeeting={currentMeeting}
+                setCurrentMeetingID={setCurrentMeetingID}
+                setEditMeeting={setEditMeeting}
+                isEditMeeting={isEditMeeting}
+                ediorRole={ediorRole}
+              />
+            )}
+            {agendaContributors && (
+              <AgendaContributers
+                setorganizers={setorganizers}
+                setCurrentMeetingID={setCurrentMeetingID}
+                currentMeeting={currentMeeting}
+                setSceduleMeeting={setSceduleMeeting}
+                setAgendaContributors={setAgendaContributors}
+                setParticipants={setParticipants}
+                setEditMeeting={setEditMeeting}
+                isEditMeeting={isEditMeeting}
+                ediorRole={ediorRole}
+              />
+            )}
+            {participants && (
+              <Participants
+                setParticipants={setParticipants}
+                setAgenda={setAgenda}
+                setProposedMeetingDates={setProposedMeetingDates}
+                proposedMeetingDates={proposedMeetingDates}
+                setSceduleMeeting={setSceduleMeeting}
+                currentMeeting={currentMeeting}
+                setCurrentMeetingID={setCurrentMeetingID}
+                setAgendaContributors={setAgendaContributors}
+                setEditMeeting={setEditMeeting}
+                isEditMeeting={isEditMeeting}
+                ediorRole={ediorRole}
+              />
+            )}
+
+            {agenda && (
+              <Agenda
+                setSceduleMeeting={setSceduleMeeting}
+                currentMeeting={currentMeeting}
+                setCurrentMeetingID={setCurrentMeetingID}
+                setEditMeeting={setEditMeeting}
+                isEditMeeting={isEditMeeting}
+                ediorRole={ediorRole}
+                setMeetingMaterial={setMeetingMaterial}
+                setAgenda={setAgenda}
+                setParticipants={setParticipants}
+              />
+            )}
+            {meetingMaterial && (
+              <MeetingMaterial
+                setSceduleMeeting={setSceduleMeeting}
+                setMeetingMaterial={setMeetingMaterial}
+                setMinutes={setMinutes}
+                currentMeeting={currentMeeting}
+                setCurrentMeetingID={setCurrentMeetingID}
+                setEditMeeting={setEditMeeting}
+                isEditMeeting={isEditMeeting}
+                ediorRole={ediorRole}
+                setAgenda={setAgenda}
+              />
+            )}
+            {minutes && (
+              <Minutes
+                setMinutes={setMinutes}
+                currentMeeting={currentMeeting}
+                setCurrentMeetingID={setCurrentMeetingID}
+                setEditMeeting={setEditMeeting}
+                isEditMeeting={isEditMeeting}
+                ediorRole={ediorRole}
+              />
+            )}
+            {actionsPage && (
+              <Actions
+                setSceduleMeeting={setSceduleMeeting}
+                setPolls={setPolls}
+                setactionsPage={setactionsPage}
+                currentMeeting={currentMeeting}
+                setCurrentMeetingID={setCurrentMeetingID}
+                setEditMeeting={setEditMeeting}
+                isEditMeeting={isEditMeeting}
+                ediorRole={ediorRole}
+              />
+            )}
+            {polls && (
+              <Polls
+                setSceduleMeeting={setSceduleMeeting}
+                setPolls={setPolls}
+                setAttendance={setAttendance}
+                currentMeeting={currentMeeting}
+                setCurrentMeetingID={setCurrentMeetingID}
+                setEditMeeting={setEditMeeting}
+                isEditMeeting={isEditMeeting}
+                ediorRole={ediorRole}
+              />
+            )}
+            {attendance && (
+              <Attendence
+                currentMeeting={currentMeeting}
+                setCurrentMeetingID={setCurrentMeetingID}
+                setEditMeeting={setEditMeeting}
+                isEditMeeting={isEditMeeting}
+                ediorRole={ediorRole}
+              />
+            )}
+          </Paper>
+        </Col>
+      </Row>
+    </section>
   );
 };
 
