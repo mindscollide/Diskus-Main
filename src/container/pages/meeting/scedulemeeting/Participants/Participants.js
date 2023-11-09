@@ -14,6 +14,7 @@ import {
   GetAllParticipantsRoleNew,
   GetAllSavedparticipantsAPI,
   SaveparticipantsApi,
+  ShowNextConfirmationModal,
   UpdateMeetingUserApiFunc,
   showAddParticipantsModal,
   showCancelModalPartipants,
@@ -23,6 +24,7 @@ import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
 import { useEffect } from "react";
+import NextModal from "../meetingDetails/NextModal/NextModal";
 
 const Participants = ({
   setParticipants,
@@ -45,6 +47,7 @@ const Participants = ({
   const [particpantsRole, setParticpantsRole] = useState([]);
   const [inputValues, setInputValues] = useState({});
   const [editableSave, setEditableSave] = useState(0);
+  const [flag, setFlag] = useState(4);
   const [rspvRows, setrspvRows] = useState([]);
   //open row icon cross modal
   const openCrossIconModal = () => {
@@ -322,8 +325,7 @@ const Participants = ({
   };
 
   const nextTabOrganizer = () => {
-    setAgenda(true);
-    setParticipants(false);
+    dispatch(ShowNextConfirmationModal(true));
   };
 
   const previousTabOrganizer = () => {
@@ -561,6 +563,13 @@ const Participants = ({
           )}
           {NewMeetingreducer.cancelPartipants && (
             <CancelParticipants setSceduleMeeting={setSceduleMeeting} />
+          )}
+          {NewMeetingreducer.nextConfirmModal && (
+            <NextModal
+              setAgenda={setAgenda}
+              setParticipants={setParticipants}
+              flag={flag}
+            />
           )}
         </>
       )}
