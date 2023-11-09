@@ -70,13 +70,14 @@ const Participants = ({
     }),
   };
 
-  useEffect(() => {
-    setMenuIsOpen(true);
-  }, []);
-
   //For participants Role
   useEffect(() => {
+    setMenuIsOpen(true);
     dispatch(GetAllParticipantsRoleNew(navigate, t));
+    let Data = {
+      MeetingID: Number(currentMeeting),
+    };
+    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
   }, []);
 
   //Roles Drop Down Data
@@ -89,7 +90,6 @@ const Participants = ({
         let Newdata = [];
         NewMeetingreducer.getAllPartiicpantsRoles.participantRoles.map(
           (data, index) => {
-            console.log(data, "datadatadatas");
             Newdata.push({
               value: data.participantRoleID,
               label: data.participantRole,
@@ -100,15 +100,6 @@ const Participants = ({
       }
     } catch (error) {}
   }, [NewMeetingreducer.getAllPartiicpantsRoles]);
-
-  //get all saved participants
-
-  useEffect(() => {
-    let Data = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
-  }, []);
 
   useEffect(() => {
     let getAllData = [];
@@ -163,8 +154,6 @@ const Participants = ({
     );
     setrspvRows(removingfromrow);
   };
-
-  console.log("handleSelectChange", rspvRows);
 
   // Table coloumn
   const ParticipantsColoumn = [
@@ -329,7 +318,6 @@ const Participants = ({
 
   //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
-    // setParticipants(false);
     setProposedMeetingDates(true);
   };
 
@@ -337,6 +325,7 @@ const Participants = ({
     setAgenda(true);
     setParticipants(false);
   };
+
   const previousTabOrganizer = () => {
     setAgendaContributors(true);
     setParticipants(false);
@@ -387,8 +376,6 @@ const Participants = ({
   const handleSaveparticpants = () => {
     let newarry = [];
     let copyData = [...rspvRows];
-
-    console.log(copyData, "copyDatacopyDatacopyData");
     copyData.map((data, index) => {
       newarry.push(data.userID);
     });
