@@ -51,9 +51,6 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
 
   const navigate = useNavigate();
 
-  let currentUserID = Number(localStorage.getItem("userID"));
-
-  console.log("isEditMeetingisEditMeeting", isEditMeeting);
   const [allSavedPresenters, setAllSavedPresenters] = useState([]);
 
   const { NewMeetingreducer, MeetingAgendaReducer, DataRoomReducer } =
@@ -381,13 +378,38 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
         MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList;
       setRows((prevRows) => {
         const updatedRows = newData.map((agendaItem) => {
-          const { id, presenterID, ...rest } = agendaItem;
+          const { id, presenterID, subAgenda, ...rest } = agendaItem;
           const matchingPresenter = allSavedPresenters.find(
             (presenter) => presenter.value === presenterID
           );
 
+          const updatedSubAgenda = subAgenda
+            ? subAgenda.map((subAgendaItem) => {
+                const { subAgendaID, presenterID, ...subAgendaRest } =
+                  subAgendaItem;
+                const matchingSubPresenter = allSavedPresenters.find(
+                  (subPresenter) => subPresenter.value === presenterID
+                );
+
+                return {
+                  subAgendaID,
+                  ...subAgendaRest,
+                  presenterName: matchingSubPresenter
+                    ? matchingSubPresenter.label
+                    : "",
+                  startDate: subAgendaItem.startDate
+                    ? convertUtcToGmt(subAgendaItem.startDate)
+                    : null,
+                  endDate: subAgendaItem.endDate
+                    ? convertUtcToGmt(subAgendaItem.endDate)
+                    : null,
+                  subfiles: subAgendaItem.subfiles,
+                };
+              })
+            : null;
+
           return {
-            iD: id, // Replace 'id' with 'iD'
+            iD: id,
             ...rest,
             presenterName: matchingPresenter ? matchingPresenter.label : "",
             startDate: agendaItem.startDate
@@ -396,17 +418,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
             endDate: agendaItem.endDate
               ? convertUtcToGmt(agendaItem.endDate)
               : null,
-            subAgenda: agendaItem.subAgenda
-              ? agendaItem.subAgenda.map((subAgenda) => ({
-                  ...subAgenda,
-                  startDate: subAgenda.startDate
-                    ? convertUtcToGmt(subAgenda.startDate)
-                    : null,
-                  endDate: subAgenda.endDate
-                    ? convertUtcToGmt(subAgenda.endDate)
-                    : null,
-                }))
-              : null,
+            subAgenda: updatedSubAgenda,
           };
         });
 
