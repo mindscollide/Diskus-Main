@@ -14,6 +14,7 @@ import {
   GetAllParticipantsRoleNew,
   GetAllSavedparticipantsAPI,
   SaveparticipantsApi,
+  ShowNextConfirmationModal,
   UpdateMeetingUserApiFunc,
   showAddParticipantsModal,
   showCancelModalPartipants,
@@ -23,6 +24,7 @@ import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
 import { useEffect } from "react";
+import NextModal from "../meetingDetails/NextModal/NextModal";
 
 const Participants = ({
   setParticipants,
@@ -45,6 +47,7 @@ const Participants = ({
   const [particpantsRole, setParticpantsRole] = useState([]);
   const [inputValues, setInputValues] = useState({});
   const [editableSave, setEditableSave] = useState(0);
+  const [flag, setFlag] = useState(4);
   const [rspvRows, setrspvRows] = useState([]);
   //open row icon cross modal
   const openCrossIconModal = () => {
@@ -70,13 +73,14 @@ const Participants = ({
     }),
   };
 
-  useEffect(() => {
-    setMenuIsOpen(true);
-  }, []);
-
   //For participants Role
   useEffect(() => {
+    setMenuIsOpen(true);
     dispatch(GetAllParticipantsRoleNew(navigate, t));
+    let Data = {
+      MeetingID: Number(currentMeeting),
+    };
+    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
   }, []);
 
   //Roles Drop Down Data
@@ -89,7 +93,6 @@ const Participants = ({
         let Newdata = [];
         NewMeetingreducer.getAllPartiicpantsRoles.participantRoles.map(
           (data, index) => {
-            console.log(data, "datadatadatas");
             Newdata.push({
               value: data.participantRoleID,
               label: data.participantRole,
@@ -100,15 +103,6 @@ const Participants = ({
       }
     } catch (error) {}
   }, [NewMeetingreducer.getAllPartiicpantsRoles]);
-
-  //get all saved participants
-
-  useEffect(() => {
-    let Data = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
-  }, []);
 
   useEffect(() => {
     let getAllData = [];
@@ -163,8 +157,6 @@ const Participants = ({
     );
     setrspvRows(removingfromrow);
   };
-
-  console.log("handleSelectChange", rspvRows);
 
   // Table coloumn
   const ParticipantsColoumn = [
@@ -329,14 +321,13 @@ const Participants = ({
 
   //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
-    // setParticipants(false);
     setProposedMeetingDates(true);
   };
 
   const nextTabOrganizer = () => {
-    setAgenda(true);
-    setParticipants(false);
+    dispatch(ShowNextConfirmationModal(true));
   };
+
   const previousTabOrganizer = () => {
     setAgendaContributors(true);
     setParticipants(false);
@@ -387,8 +378,6 @@ const Participants = ({
   const handleSaveparticpants = () => {
     let newarry = [];
     let copyData = [...rspvRows];
-
-    console.log(copyData, "copyDatacopyDatacopyData");
     copyData.map((data, index) => {
       newarry.push(data.userID);
     });
@@ -398,7 +387,7 @@ const Participants = ({
       MeetingAttendeRoleID: 1,
       UpdatedUsers: newarry,
     };
-    console.log(Data, "UpdatedUsersUpdatedUsers");
+
     dispatch(
       UpdateMeetingUserApiFunc(
         navigate,
@@ -421,7 +410,7 @@ const Participants = ({
       setIsEditable(false);
     }
   }, [rspvRows]);
-  console.log(proposedMeetingDates, "proposedMeetingDatesproposedMeetingDates");
+
   return (
     <>
       {proposedMeetingDates ? (
@@ -574,6 +563,13 @@ const Participants = ({
           )}
           {NewMeetingreducer.cancelPartipants && (
             <CancelParticipants setSceduleMeeting={setSceduleMeeting} />
+          )}
+          {NewMeetingreducer.nextConfirmModal && (
+            <NextModal
+              setAgenda={setAgenda}
+              setParticipants={setParticipants}
+              flag={flag}
+            />
           )}
         </>
       )}

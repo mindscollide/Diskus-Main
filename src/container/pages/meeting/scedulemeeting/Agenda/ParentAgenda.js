@@ -13,7 +13,9 @@ import {
   showMainAgendaItemRemovedModal,
   GetAllMeetingUserApiFunc,
   showVoteAgendaModal,
+  UpateMeetingStatusLockApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
+import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import styles from "./Agenda.module.css";
 import Cast from "../../../../../assets/images/CAST.svg";
 import profile from "../../../../../assets/images/newprofile.png";
@@ -38,6 +40,7 @@ import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { async } from "q";
 
 const ParentAgenda = ({
   data,
@@ -51,11 +54,15 @@ const ParentAgenda = ({
   currentMeeting,
   fileForSend,
   setFileForSend,
+  setAllSavedPresenters,
+  allSavedPresenters,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   console.log(rows, "rowsrowsrows");
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentMeetingID = localStorage.getItem("meetingID");
 
@@ -122,14 +129,14 @@ const ParentAgenda = ({
     const updatedRows = [...rows];
     const nextSubAgendaID = updatedRows[0].subAgenda.length.toString();
     const newSubAgenda = {
-      SubAgendaID: getRandomUniqueNumber().toString(),
-      SubTitle: "",
+      subAgendaID: getRandomUniqueNumber().toString() + "A",
+      subTitle: "",
       presenterID: null,
       presenterName: "",
       startDate: null,
       endDate: null,
       subSelectRadio: "1",
-      SubAgendaUrlFieldRadio: "",
+      subAgendaUrlFieldRadio: "",
       subAgendarequestContributorUrl: "",
       subAgendarequestContributorEnterNotes: "",
       subfiles: [],
@@ -157,21 +164,26 @@ const ParentAgenda = ({
   };
 
   //Lock Functionality For SubAgendas Only
-  const lockFunctionActive = (data) => {
-    if (mainLock.length === 0) {
-      // If state is empty, add the data
-      setmainLock([data]);
-    } else {
-      const existingIndex = mainLock.findIndex((item) => item === data);
-      if (existingIndex >= 0) {
-        // If parentIndex exists, remove it
-        const updatedData = mainLock.filter((item) => item !== data);
-        setmainLock(updatedData);
-      } else {
-        // If parentIndex doesn't exist, add it
-        setmainLock([...mainLock, data]);
+  const lockFunctionActive = async (id, isLocked) => {
+    let Data = {
+      AgendaID: id,
+      Islocked: !isLocked,
+    };
+    await dispatch(UpateMeetingStatusLockApiFunc(navigate, t, Data));
+    setRows((prevRows) => {
+      // Find the index of the row with the given id
+      const rowIndex = prevRows.findIndex((row) => row.iD === id);
+
+      // If the row is found, update its isLocked value
+      if (rowIndex !== -1) {
+        const newRows = [...prevRows];
+        newRows[rowIndex].isLocked = !newRows[rowIndex].isLocked;
+        return newRows;
       }
-    }
+
+      // If the row is not found, return the original state
+      return prevRows;
+    });
   };
 
   //Lock For Main Agenda Will Locks Its childs Also
@@ -218,26 +230,15 @@ const ParentAgenda = ({
 
   // Function to update the startDate for a specific row
   const handleStartDateChange = (index, date) => {
-    // console.log(date, "datedatedatedatedate");
-    // const updatedRows = [...rows];
-    // updatedRows[index].startDate = date;
-    // setRows(updatedRows);
-
+    console.log("handleStartDateChangehandleStartDateChange", date);
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const formattedDateTimeString =
+        newDate.toDateString() + " " + newDate.toTimeString();
+      const dateObject = new Date(formattedDateTimeString);
       const updatedRows = [...rows];
-      updatedRows[index].startDate = currentUTCDate + formattedTime;
+      updatedRows[index].startDate = dateObject;
       setRows(updatedRows);
-      // You can use 'formattedTime' as needed.
     } else {
       console.error("Invalid date and time object:", date);
     }
@@ -245,23 +246,14 @@ const ParentAgenda = ({
 
   // Function to update the endDate for a specific row
   const handleEndDateChange = (index, date) => {
-    // const updatedRows = [...rows];
-    // updatedRows[index].endDate = date;
-    // setRows(updatedRows);
-
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+      const formattedDateTimeString =
+        newDate.toDateString() + " " + newDate.toTimeString();
+      const dateObject = new Date(formattedDateTimeString);
+      // console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
-      updatedRows[index].endDate = currentUTCDate + formattedTime;
+      updatedRows[index].endDate = dateObject;
       setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
@@ -337,25 +329,41 @@ const ParentAgenda = ({
       setPresenters(allPresentersReducer);
     }
   }, [allPresenters]);
+  useEffect(() => {
+    if (presenters.lenth > 0 || Object.keys(presenters).length > 0) {
+      const mappedPresenters = presenters.map((presenter) => ({
+        value: presenter.userID,
+        label: (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                <img
+                  alt=""
+                  src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
+                  width="17px"
+                  height="17px"
+                  className={styles["Image_class_Agenda"]}
+                />
+                <span className={styles["Name_Class"]}>
+                  {presenter.userName}
+                </span>
+              </Col>
+            </Row>
+          </>
+        ),
+      }));
+      setAllSavedPresenters((prevPresenters) => {
+        if (
+          JSON.stringify(prevPresenters) !== JSON.stringify(mappedPresenters)
+        ) {
+          return mappedPresenters;
+        }
+        return prevPresenters; // No change, return the current state
+      });
+    }
+  }, [presenters]);
 
-  const allSavedPresenters = presenters.map((presenter) => ({
-    value: presenter.userID,
-    label: (
-      <>
-        <Row>
-          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-            <img
-              src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-              width="17px"
-              height="17px"
-              className={styles["Image_class_Agenda"]}
-            />
-            <span className={styles["Name_Class"]}>{presenter.userName}</span>
-          </Col>
-        </Row>
-      </>
-    ),
-  }));
+  console.log("allSavedPresenters", allSavedPresenters);
 
   console.log(
     "fileDataPropfileDataProp",
@@ -369,25 +377,29 @@ const ParentAgenda = ({
   console.log("allPresenters", allPresenters);
 
   console.log("Meeting Reducer", NewMeetingreducer);
+  console.log("Meeting Reducer datadatadatadata", rows);
 
   return (
-    <Draggable key={data.ID} draggableId={data.ID} index={index}>
+    <Draggable key={data.iD} draggableId={data.iD} index={index}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           //   {...provided.dragHandleProps}
         >
+          {console.log("datadatadatadatadatadatadatadata", data)}
+
           {/* Main Agenda Items Mapping */}
           <span className="position-relative">
-            <Row key={data.ID} className="mt-4 m-0 p-0">
+            <Row key={data.iD} className="mt-4 m-0 p-0">
               <Col
                 lg={12}
                 md={12}
                 sm={12}
                 key={index + 1}
                 className={
-                  apllyLockOnParentAgenda(index)
+                  // apllyLockOnParentAgenda(index)
+                  data.isLocked
                     ? styles["BackGround_Agenda_InActive"]
                     : styles["BackGround_Agenda"]
                 }
@@ -422,6 +434,7 @@ const ParentAgenda = ({
                               ? styles["Arrow_Expanded"]
                               : styles["Arrow"]
                           }
+                          alt=""
                           onClick={() => {
                             handleExpandedBtn(index);
                           }}
@@ -450,7 +463,8 @@ const ParentAgenda = ({
                             value={data.title}
                             change={(e) => handleAgendaItemChange(index, e)}
                             disable={
-                              apllyLockOnParentAgenda(index) ? true : false
+                              // apllyLockOnParentAgenda(index) ? true : false
+                              data.isLocked
                             }
                           />
                         </Col>
@@ -472,7 +486,8 @@ const ParentAgenda = ({
                               handleSelectChange(index, value)
                             }
                             isDisabled={
-                              apllyLockOnParentAgenda(index) ? true : false
+                              // apllyLockOnParentAgenda(index) ? true : false
+                              data.isLocked
                             }
                             classNamePrefix={"SelectOrganizersSelect_active"}
                           />
@@ -515,12 +530,14 @@ const ParentAgenda = ({
                                 locale={localValue}
                                 format="HH:mm A"
                                 selected={data.startDate}
+                                value={data.startDate}
                                 plugins={[<TimePicker hideSeconds />]}
                                 onChange={(date) =>
                                   handleStartDateChange(index, date)
                                 }
                                 disabled={
-                                  apllyLockOnParentAgenda(index) ? true : false
+                                  // apllyLockOnParentAgenda(index) ? true : false
+                                  data.isLocked
                                 }
                               />
                             </Col>
@@ -531,6 +548,7 @@ const ParentAgenda = ({
                               className="d-flex justify-content-center align-items-center"
                             >
                               <img
+                                alt=""
                                 draggable={false}
                                 src={desh}
                                 width="19.02px"
@@ -555,19 +573,22 @@ const ParentAgenda = ({
                                 format="HH:mm A"
                                 calendar={calendarValue}
                                 locale={localValue}
+                                value={data.endDate}
                                 selected={data.endDate}
                                 plugins={[<TimePicker hideSeconds />]}
                                 onChange={(date) =>
                                   handleEndDateChange(index, date)
                                 } // Update end date
                                 disabled={
-                                  apllyLockOnParentAgenda(index) ? true : false
+                                  // apllyLockOnParentAgenda(index) ? true : false
+                                  data.isLocked
                                 }
                               />
                             </Col>
                           </Row>
                           {index !== 0 && (
                             <img
+                              alt=""
                               draggable={false}
                               src={redcrossIcon}
                               height="25px"
@@ -631,7 +652,8 @@ const ParentAgenda = ({
                                 }
                                 value={data.selectedRadio}
                                 disabled={
-                                  apllyLockOnParentAgenda(index) ? true : false
+                                  // apllyLockOnParentAgenda(index) ? true : false
+                                  data.isLocked
                                 }
                               >
                                 <Radio value={1}>
@@ -666,47 +688,52 @@ const ParentAgenda = ({
                               <img
                                 draggable={false}
                                 src={Key}
+                                alt=""
                                 width="24.07px"
                                 height="24.09px"
                                 className="cursor-pointer"
                                 onClick={
-                                  apllyLockOnParentAgenda(index)
+                                  // apllyLockOnParentAgenda(index)
+                                  data.isLocked
                                     ? ""
                                     : openAdvancePermissionModal
                                 }
                               />
                               <img
+                                alt=""
                                 draggable={false}
                                 src={Cast}
                                 width="25.85px"
                                 height="25.89px"
                                 className="cursor-pointer"
                                 onClick={
-                                  apllyLockOnParentAgenda(index)
-                                    ? ""
-                                    : openVoteMOdal
+                                  // apllyLockOnParentAgenda(index)
+                                  data.isLocked ? "" : openVoteMOdal
                                 }
                               />
                               <img
+                                alt=""
                                 draggable={false}
                                 src={
-                                  apllyLockOnParentAgenda(index)
-                                    ? DarkLock
-                                    : Lock
+                                  // apllyLockOnParentAgenda(index)
+                                  data.isLocked ? DarkLock : Lock
                                 }
                                 width="18.87px"
                                 className={
-                                  apllyLockOnParentAgenda(index)
+                                  // apllyLockOnParentAgenda(index)
+                                  data.isLocked
                                     ? styles["lockBtn_inActive"]
                                     : styles["lockBtn"]
                                 }
                                 height="26.72px"
-                                onClick={() => lockFunctionActive(index)}
+                                onClick={() =>
+                                  lockFunctionActive(data.iD, data.isLocked)
+                                }
                               />
                             </Col>
                           </Row>
                           <Droppable
-                            droppableId={`parent-${data.ID}-parent-attachments`}
+                            droppableId={`parent-${data.iD}-parent-attachments`}
                             type="attachment"
                           >
                             {(provided) => (
@@ -723,7 +750,7 @@ const ParentAgenda = ({
                                           index={index}
                                           setRows={setRows}
                                           rows={rows}
-                                          parentId={`parent-${data.ID}`}
+                                          parentId={`parent-${data.iD}`}
                                           setFileForSend={setFileForSend}
                                           fileForSend={fileForSend}
                                         />
@@ -786,7 +813,7 @@ const ParentAgenda = ({
               subexpandIndex={subexpandIndex}
               expandSubIndex={expandSubIndex}
               subExpand={subExpand}
-              apllyLockOnParentAgenda={apllyLockOnParentAgenda}
+              parentIslockedCheck={data.isLocked}
               subLockArry={subLockArry}
               setSubLockArray={setSubLockArray}
               agendaItemRemovedIndex={agendaItemRemovedIndex}
@@ -813,6 +840,7 @@ const ParentAgenda = ({
                         className="d-flex justify-content-center gap-2 align-items-center"
                       >
                         <img
+                          alt=""
                           draggable={false}
                           src={plusFaddes}
                           height="10.77px"

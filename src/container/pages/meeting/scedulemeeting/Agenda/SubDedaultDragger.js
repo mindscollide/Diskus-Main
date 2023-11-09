@@ -43,7 +43,7 @@ const SubDedaultDragger = ({
         let sizezero;
         let size;
         newRows[index].subAgenda[subIndex].subfiles.map((arData, index) => {
-          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+          if (arData.displayAttachmentName === data.file.originFileObj.name) {
             flag = true;
           }
         });
@@ -78,10 +78,10 @@ const SubDedaultDragger = ({
           );
         } else {
           let file = {
-            DisplayAttachmentName: data.file.originFileObj.name,
-            OriginalAttachmentName: data.file.originFileObj.name,
-            AgendaAttachmentsID: getRandomUniqueNumber(),
-            FK_MAID: 0,
+            displayAttachmentName: data.file.originFileObj.name,
+            originalAttachmentName: data.file.originFileObj.name,
+            agendaAttachmentsID: getRandomUniqueNumber(),
+            fK_MAID: 0,
           };
           setFileForSend([...fileForSend, data.file.originFileObj]);
           newRows[index].subAgenda[subIndex].subfiles.push(file);
@@ -114,10 +114,10 @@ const SubDedaultDragger = ({
           );
         } else {
           let file = {
-            DisplayAttachmentName: data.file.originFileObj.name,
-            OriginalAttachmentName: data.file.originFileObj.name,
-            AgendaAttachmentsID: getRandomUniqueNumber(),
-            FK_MAID: 0,
+            displayAttachmentName: data.file.originFileObj.name,
+            originalAttachmentName: data.file.originFileObj.name,
+            agendaAttachmentsID: getRandomUniqueNumber(),
+            fK_MAID: 0,
           };
           newRows[index].subAgenda[subIndex].subfiles.push(file);
           setFileForSend([...fileForSend, data.file.originFileObj]);
@@ -131,10 +131,10 @@ const SubDedaultDragger = ({
     //   console.log("DATADATADATA", list);
     //   list.map((fileDatas, fileindex) => {
     //     let fileData = {
-    //       AgendaAttachmentsID: getRandomUniqueNumber().toString(),
-    //       DisplayAttachmentName: fileDatas.file.originFileObj.name,
-    //       OriginalAttachmentName: fileDatas.file.originFileObj.name,
-    //       FK_MAID: 0,
+    //       agendaAttachmentsID: getRandomUniqueNumber().toString(),
+    //       displayAttachmentName: fileDatas.file.originFileObj.name,
+    //       originalAttachmentName: fileDatas.file.originFileObj.name,
+    //       fK_MAID: 0,
     //     };
     //     newRows[index].files.push(fileData);
     //   });
@@ -154,10 +154,10 @@ const SubDedaultDragger = ({
   //     const { status } = data.file;
   //     let newRows = [...rows];
   //     let fileData = {
-  //       AgendaAttachmentsID: getRandomUniqueNumber().toString(),
-  //       DisplayAttachmentName: data.file.originFileObj.name,
-  //       OriginalAttachmentName: data.file.originFileObj.name,
-  //       FK_MAID: 0,
+  //       agendaAttachmentsID: getRandomUniqueNumber().toString(),
+  //       displayAttachmentName: data.file.originFileObj.name,
+  //       originalAttachmentName: data.file.originFileObj.name,
+  //       fK_MAID: 0,
   //     };
   //     newRows[index].subAgenda[subIndex].subfiles.push(fileData);
   //     setRows(newRows);
@@ -167,10 +167,10 @@ const SubDedaultDragger = ({
   //     let newRows = [...rows];
   //     list.map((fileDatas, fileindex) => {
   //       let fileData = {
-  //         AgendaAttachmentsID: getRandomUniqueNumber().toString(),
-  //         DisplayAttachmentName: fileDatas.file.originFileObj.name,
-  //         OriginalAttachmentName: fileDatas.file.originFileObj.name,
-  //         FK_MAID: 0,
+  //         agendaAttachmentsID: getRandomUniqueNumber().toString(),
+  //         displayAttachmentName: fileDatas.file.originFileObj.name,
+  //         originalAttachmentName: fileDatas.file.originFileObj.name,
+  //         fK_MAID: 0,
   //       };
   //       newRows[index].subAgenda[subIndex].subfiles.push(fileData);
   //     });

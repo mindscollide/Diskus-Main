@@ -11,6 +11,11 @@ import {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Upload } from "antd";
+import {
+  convertDateFieldsToUTC,
+  convertUtcToGmt,
+  resolutionResultTable,
+} from "../../../../../commen/functions/date_formater";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import line from "../../../../../assets/images/LineAgenda.svg";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
@@ -24,6 +29,7 @@ import {
   UploadDocumentsAgendaApi,
   AddUpdateAdvanceMeetingAgenda,
   clearResponseMessage,
+  GetAdvanceMeetingAgendabyMeetingID,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
@@ -39,19 +45,13 @@ import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 
-const Agenda = ({
-  setSceduleMeeting,
-  currentMeeting,
-  setMeetingMaterial,
-  setAgenda,
-  setParticipants,
-}) => {
+const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  let currentUserID = Number(localStorage.getItem("userID"));
+  const [allSavedPresenters, setAllSavedPresenters] = useState([]);
 
   const { NewMeetingreducer, MeetingAgendaReducer, DataRoomReducer } =
     useSelector((state) => state);
@@ -75,7 +75,7 @@ const Agenda = ({
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
   const [rows, setRows] = useState([
     {
-      ID: getRandomUniqueNumber().toString(),
+      iD: getRandomUniqueNumber().toString() + "A",
       title: "",
       presenterID: null,
       description: "",
@@ -85,33 +85,33 @@ const Agenda = ({
       selectedRadio: 1,
       urlFieldMain: "",
       requestContributorURl: 0,
-      MainNote: "",
+      mainNote: "",
       requestContributorURlName: "",
       files: [],
-      IsLocked: false,
-      VoteOwner: null,
-      IsAttachment: false,
-      UserID: currentUserID,
+      isLocked: false,
+      voteOwner: null,
+      isAttachment: false,
+      userID: 0,
       subAgenda: [
         {
-          SubAgendaID: getRandomUniqueNumber().toString(),
-          SubTitle: "",
+          subAgendaID: getRandomUniqueNumber().toString() + "A",
+          subTitle: "",
           description: "",
-          AgendaVotingID: 0,
+          agendaVotingID: 0,
           presenterID: null,
           presenterName: "",
           startDate: null,
           endDate: null,
           subSelectRadio: 1,
-          SubAgendaUrlFieldRadio: "",
+          subAgendaUrlFieldRadio: "",
           subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           subfiles: [],
-          IsLocked: false,
-          VoteOwner: null,
-          IsAttachment: false,
-          UserID: currentUserID,
+          isLocked: false,
+          voteOwner: null,
+          isAttachment: false,
+          userID: 0,
         },
       ],
     },
@@ -124,7 +124,7 @@ const Agenda = ({
     const nextID = updatedRows.length.toString();
     console.log("addrow", (nextID + 1).toString());
     const newMainAgenda = {
-      ID: getRandomUniqueNumber().toString(),
+      iD: getRandomUniqueNumber().toString() + "A",
       title: "",
       presenterID: null,
       description: "",
@@ -134,33 +134,33 @@ const Agenda = ({
       selectedRadio: 1,
       urlFieldMain: "",
       requestContributorURl: 0,
-      MainNote: "",
+      mainNote: "",
       requestContributorURlName: "",
       files: [],
-      IsLocked: false,
-      VoteOwner: null,
-      IsAttachment: false,
-      UserID: currentUserID,
+      isLocked: false,
+      voteOwner: null,
+      isAttachment: false,
+      userID: 0,
       subAgenda: [
         {
-          SubAgendaID: getRandomUniqueNumber().toString(),
-          SubTitle: "",
+          subAgendaID: getRandomUniqueNumber().toString() + "A",
+          subTitle: "",
           description: "",
           presenterID: null,
           presenterName: "",
           startDate: null,
           endDate: null,
           subSelectRadio: 1,
-          AgendaVotingID: 0,
-          SubAgendaUrlFieldRadio: "",
+          agendaVotingID: 0,
+          subAgendaUrlFieldRadio: "",
           subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           subfiles: [],
-          IsLocked: false,
-          VoteOwner: null,
-          IsAttachment: false,
-          UserID: currentUserID,
+          isLocked: false,
+          voteOwner: null,
+          isAttachment: false,
+          userID: 0,
         },
       ],
     };
@@ -176,9 +176,7 @@ const Agenda = ({
   };
 
   const handleSavedViewAgenda = () => {
-    setAgenda(false);
-    setMeetingMaterial(true);
-    // setsavedViewAgenda(true);
+    setsavedViewAgenda(true);
   };
 
   const EnableAgendaView = () => {
@@ -204,16 +202,22 @@ const Agenda = ({
           : "",
       IsUpdateFlow: false,
     };
+    if (isEditMeeting === true) {
+      let getMeetingData = {
+        MeetingID: currentMeeting,
+      };
+      dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
+    }
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
     dispatch(CreateUpdateMeetingDataRoomMap(navigate, t, getFolderIDData));
   }, []);
 
   // // Function to capitalize the first letter of a string
-  const capitalizeFirstLetter = (s) => {
-    if (s.length > 0) {
-      return s[0].toUpperCase() + s.slice(1);
+  const capitalizeFirstLetter = (str) => {
+    if (str.toLowerCase() === "id") {
+      return str.toUpperCase();
     }
-    return s;
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   const capitalizeKeys = (obj) => {
@@ -257,34 +261,37 @@ const Agenda = ({
       fileForSend,
       "fileForSendfileForSendfileForSendfileForSendfileForSend"
     );
+
     let newFolder = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
         UploadDocumentsAgendaApi(navigate, t, newData, 0, newFolder)
       );
     });
+    const convertedRows = convertDateFieldsToUTC(rows);
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
 
-    let cleanedData = removeProperties(rows);
-    let capitalizedData = capitalizeKeys(cleanedData);
+    let cleanedData = removeProperties(convertedRows);
 
     let mappingObject = {};
     newFolder.forEach((folder) => {
       console.log("Save Agenda Data folderfolder", folder);
-      mappingObject[folder.DisplayAttachmentName] = folder.pK_FileID.toString();
+      mappingObject[folder.displayAttachmentName] = folder.pK_FileID.toString();
     });
-    console.log("Save Agenda Data capitalizedData", capitalizedData);
-
-    // Update Files property in capitalizedData
-    let updatedData = capitalizedData.map((item) => {
-      let updatedFiles = item.Files.map((file) => {
-        let newAttachmentName = mappingObject[file.DisplayAttachmentName];
+    console.log(
+      cleanedData,
+      "cleanedDatacleanedDatacleanedDatacleanedDatacleanedDatacleanedData"
+    );
+    // Update files property in capitalizedData
+    let updatedData = cleanedData.map((item) => {
+      let updatedFiles = item.files.map((file) => {
+        let newAttachmentName = mappingObject[file.displayAttachmentName];
         if (newAttachmentName) {
           return {
             ...file,
-            OriginalAttachmentName: newAttachmentName,
+            originalAttachmentName: newAttachmentName,
           };
         } else {
           return file;
@@ -292,13 +299,13 @@ const Agenda = ({
       });
 
       // Update subfiles property in SubAgenda objects
-      let updatedSubAgenda = item.SubAgenda.map((subAgenda) => {
-        let updatedSubFiles = subAgenda.Subfiles.map((subFile) => {
-          let newAttachmentName = mappingObject[subFile.DisplayAttachmentName];
+      let updatedSubAgenda = item.subAgenda.map((subAgenda) => {
+        let updatedSubFiles = subAgenda.subfiles.map((subFile) => {
+          let newAttachmentName = mappingObject[subFile.displayAttachmentName];
           if (newAttachmentName) {
             return {
               ...subFile,
-              OriginalAttachmentName: newAttachmentName,
+              originalAttachmentName: newAttachmentName,
             };
           } else {
             return subFile;
@@ -313,8 +320,8 @@ const Agenda = ({
 
       return {
         ...item,
-        Files: updatedFiles,
-        SubAgenda: updatedSubAgenda,
+        files: updatedFiles,
+        subAgenda: updatedSubAgenda,
       };
     });
 
@@ -323,24 +330,110 @@ const Agenda = ({
       MeetingID: currentMeeting,
       AgendaList: updatedData,
     };
-    dispatch(AddUpdateAdvanceMeetingAgenda(Data, navigate, t, currentMeeting));
+
+    let capitalizedData = capitalizeKeys(Data);
+
+    console.log("Save Agenda Data", capitalizedData);
+    dispatch(
+      AddUpdateAdvanceMeetingAgenda(
+        capitalizedData,
+        navigate,
+        t,
+        currentMeeting
+      )
+    );
   };
   console.log(open, "openopenopen");
+
+  // useEffect(() => {
+  //   if (
+  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
+  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
+  //       undefined &&
+  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
+  //   ) {
+  //     const modifiedData =
+  //       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
+  //         (item) => {
+  //           return { ...item, iD: item.id, id: undefined };
+  //         }
+  //       );
+
+  //     setRows(modifiedData);
+  //   } else {
+  //     setRows(rows);
+  //   }
+  // }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
 
   useEffect(() => {
     if (
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
         undefined &&
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length !==
+        0 &&
+      allSavedPresenters !== undefined
     ) {
-      setRows(
-        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList
-      );
+      let newData =
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList;
+      setRows((prevRows) => {
+        const updatedRows = newData.map((agendaItem) => {
+          const { id, presenterID, subAgenda, ...rest } = agendaItem;
+          const matchingPresenter = allSavedPresenters.find(
+            (presenter) => presenter.value === presenterID
+          );
+
+          const updatedSubAgenda = subAgenda
+            ? subAgenda.map((subAgendaItem) => {
+                const { subAgendaID, presenterID, ...subAgendaRest } =
+                  subAgendaItem;
+                const matchingSubPresenter = allSavedPresenters.find(
+                  (subPresenter) => subPresenter.value === presenterID
+                );
+
+                return {
+                  subAgendaID,
+                  ...subAgendaRest,
+                  presenterName: matchingSubPresenter
+                    ? matchingSubPresenter.label
+                    : "",
+                  startDate: subAgendaItem.startDate
+                    ? convertUtcToGmt(subAgendaItem.startDate)
+                    : null,
+                  endDate: subAgendaItem.endDate
+                    ? convertUtcToGmt(subAgendaItem.endDate)
+                    : null,
+                  subfiles: subAgendaItem.subfiles,
+                };
+              })
+            : null;
+
+          return {
+            iD: id,
+            ...rest,
+            presenterName: matchingPresenter ? matchingPresenter.label : "",
+            startDate: agendaItem.startDate
+              ? convertUtcToGmt(agendaItem.startDate)
+              : null,
+            endDate: agendaItem.endDate
+              ? convertUtcToGmt(agendaItem.endDate)
+              : null,
+            subAgenda: updatedSubAgenda,
+          };
+        });
+
+        return updatedRows;
+      });
     } else {
+      // Handle the case when the data is not available
       setRows(rows);
     }
-  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
+  }, [
+    MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
+    allSavedPresenters,
+  ]);
+
+  console.log("allSavedPresenters", allSavedPresenters);
 
   useEffect(() => {
     console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
@@ -354,7 +447,7 @@ const Agenda = ({
         3000
       );
     }
-    // dispatch(clearResponseMessage(""));
+    dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
 
   console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
@@ -363,11 +456,6 @@ const Agenda = ({
     MeetingAgendaReducer,
     DataRoomReducer
   );
-  //handle previous button func
-  const handlePreviousButtonAgenda = () => {
-    setAgenda(false);
-    setParticipants(true);
-  };
 
   return (
     <>
@@ -391,8 +479,8 @@ const Agenda = ({
                   className={styles["Scroller_Agenda"]}
                 >
                   <Droppable
-                    //  key={`main-agenda-${rows.ID}`}
-                    //  droppableId={`main-agenda-${rows.ID}`}
+                    //  key={`main-agenda-${rows.id}`}
+                    //  droppableId={`main-agenda-${rows.id}`}
                     droppableId="board"
                     type="PARENT"
                   >
@@ -408,6 +496,10 @@ const Agenda = ({
                                     currentMeeting={currentMeeting}
                                     data={data}
                                     index={index}
+                                    allSavedPresenters={allSavedPresenters}
+                                    setAllSavedPresenters={
+                                      setAllSavedPresenters
+                                    }
                                     rows={rows}
                                     setRows={setRows}
                                     setMainAgendaRemovalIndex={
@@ -498,13 +590,12 @@ const Agenda = ({
                 />
 
                 <Button
-                  text={t("Previous")}
+                  text={t("Save-and-publish")}
                   className={styles["Agenda_Buttons"]}
-                  onClick={handlePreviousButtonAgenda}
                 />
 
                 <Button
-                  text={t("Next")}
+                  text={t("Save-and-next")}
                   className={styles["Save_Agenda_btn"]}
                   onClick={handleSavedViewAgenda}
                 />

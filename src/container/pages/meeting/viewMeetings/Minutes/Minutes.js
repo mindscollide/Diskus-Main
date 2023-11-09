@@ -26,6 +26,7 @@ import {
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
   getAllGeneralMinutesApiFunc,
+  showUnsavedViewMinutesModal,
   uploadDocumentsMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
 import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
@@ -34,6 +35,7 @@ import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import moment from "moment";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
+import ViewUnsavedModal from "./UnsavedFileUploadMinutes/ViewUnsavedModal";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 // import { message, Upload } from "antd";
@@ -57,6 +59,7 @@ const Minutes = ({
   advanceMeetingModalID,
   setactionsPage,
   setMeetingMaterial,
+  setSceduleMeeting,
 }) => {
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
@@ -666,6 +669,10 @@ const Minutes = ({
     setShowMore(!showMore);
   };
 
+  const handleViewMinuteCancelButton = () => {
+    dispatch(showUnsavedViewMinutesModal(true));
+  };
+
   return (
     <section>
       <Row className="mt-3">
@@ -1153,6 +1160,21 @@ const Minutes = ({
           </Row>
         </>
       ) : null}
+      <Row className="mt-5">
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Button
+            text={t("Cancel")}
+            className={styles["Previous_Button"]}
+            onClick={handleViewMinuteCancelButton}
+          />
+        </Col>
+      </Row>
+      {NewMeetingreducer.unsaveViewMinutesModal && (
+        <ViewUnsavedModal
+          setMinutes={setMinutes}
+          setSceduleMeeting={setSceduleMeeting}
+        />
+      )}
     </section>
     // <section>
     //   {NewMeetingreducer.afterImportState === true ? (

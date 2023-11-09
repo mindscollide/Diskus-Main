@@ -1,53 +1,75 @@
-import React from "react";
-import styles from "./CancelPartipants.module.css";
+import React, { useState } from "react";
+import styles from "./NextModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
+import { ShowNextConfirmationModal } from "../../../../../../store/actions/NewMeetingActions";
 import { Button, Modal } from "../../../../../../components/elements";
-import {
-  searchNewUserMeeting,
-  showCancelModalPartipants,
-} from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
-
-export const CancelParticipants = ({ setSceduleMeeting }) => {
+import {
+  editMeetingFlag,
+  saveMeetingFlag,
+} from "../../../../../../store/actions/MeetingOrganizers_action";
+const NextModal = ({
+  setmeetingDetails,
+  setorganizers,
+  setAgendaContributors,
+  setParticipants,
+  setAgenda,
+  setMinutes,
+  setactionsPage,
+  setAttendance,
+  setPolls,
+  setMeetingMaterial,
+  setRowsData,
+  flag,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  let userID = localStorage.getItem("userID");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let currentView = localStorage.getItem("MeetingCurrentView");
   const handleNOFunctionality = () => {
-    dispatch(showCancelModalPartipants(false));
+    dispatch(ShowNextConfirmationModal(false));
   };
 
   const handleYesFunctionality = () => {
-    dispatch(showCancelModalPartipants(false));
-    setSceduleMeeting(false);
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(ShowNextConfirmationModal(false));
+    if (flag === 1) {
+      setmeetingDetails(false);
+      setorganizers(true);
+    } else if (flag === 2) {
+      setAgendaContributors(true);
+      setmeetingDetails(false);
+      setorganizers(false);
+      setParticipants(false);
+      setAgenda(false);
+      setMinutes(false);
+      setactionsPage(false);
+      setAttendance(false);
+      setPolls(false);
+      setMeetingMaterial(false);
+      setRowsData([]);
+      dispatch(saveMeetingFlag(false));
+      dispatch(editMeetingFlag(false));
+    } else if (flag === 3) {
+      setAgendaContributors(false);
+      setParticipants(true);
+    } else if (flag === 4) {
+      setAgenda(true);
+      setParticipants(false);
+    }
   };
+
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelPartipants}
-        setShow={dispatch(showCancelModalPartipants)}
+        show={NewMeetingreducer.nextConfirmModal}
+        setShow={dispatch(ShowNextConfirmationModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showCancelModalPartipants(false));
+          dispatch(ShowNextConfirmationModal(false));
         }}
         ModalBody={
           <>
@@ -104,3 +126,5 @@ export const CancelParticipants = ({ setSceduleMeeting }) => {
     </section>
   );
 };
+
+export default NextModal;

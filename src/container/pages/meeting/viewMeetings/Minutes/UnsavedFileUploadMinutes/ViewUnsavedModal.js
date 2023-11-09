@@ -1,32 +1,56 @@
 import React from "react";
 import { Modal, Button } from "../../../../../../components/elements";
-import styles from "./UnsavedMinutes.module.css";
+import styles from "./ViewUnsaved.module.css";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
-import { showUnsaveMinutesFileUpload } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  searchNewUserMeeting,
+  showUnsaveMinutesFileUpload,
+  showUnsavedViewMinutesModal,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 
-const UnsavedMinutes = ({ setMinutes }) => {
+const ViewUnsavedModal = ({ setMinutes, setSceduleMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
+
+  const handleNoFunctionality = () => {
+    dispatch(showUnsavedViewMinutesModal(false));
+  };
 
   const handleYesFunctionality = () => {
-    setMinutes(true);
-    dispatch(showUnsaveMinutesFileUpload(false));
+    setMinutes(false);
+    setSceduleMeeting(false);
+    dispatch(showUnsavedViewMinutesModal(false));
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.unsaveFileUploadMinutes}
-        setShow={dispatch(showUnsaveMinutesFileUpload)}
+        show={NewMeetingreducer.unsaveViewMinutesModal}
+        setShow={dispatch(showUnsavedViewMinutesModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showUnsaveMinutesFileUpload(false));
+          dispatch(showUnsavedViewMinutesModal(false));
         }}
         ModalBody={
           <>
@@ -68,6 +92,7 @@ const UnsavedMinutes = ({ setMinutes }) => {
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}
+                  onClick={handleNoFunctionality}
                 />
                 <Button
                   text={t("Yes")}
@@ -83,4 +108,4 @@ const UnsavedMinutes = ({ setMinutes }) => {
   );
 };
 
-export default UnsavedMinutes;
+export default ViewUnsavedModal;

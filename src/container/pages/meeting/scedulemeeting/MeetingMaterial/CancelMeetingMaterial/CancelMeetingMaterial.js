@@ -1,6 +1,9 @@
 import React from "react";
 import styles from "./CancelMeetingmaterial.module.css";
-import { showCancelMeetingMaterial } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  searchNewUserMeeting,
+  showCancelMeetingMaterial,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -13,7 +16,10 @@ const CancelMeetingMaterial = ({ setSceduleMeeting }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
   const handleNOFunctionality = () => {
     dispatch(showCancelMeetingMaterial(false));
   };
@@ -21,6 +27,17 @@ const CancelMeetingMaterial = ({ setSceduleMeeting }) => {
   const handleYesFunctionality = () => {
     dispatch(showCancelMeetingMaterial(false));
     setSceduleMeeting(false);
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   return (

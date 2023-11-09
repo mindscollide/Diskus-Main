@@ -19,13 +19,13 @@ import { GetAllMeetingDetailsApiFunc } from "../../../../store/actions/NewMeetin
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const SceduleMeeting = ({
-  setSceduleMeeting,
-  currentMeeting,
-  setCurrentMeetingID,
-  ediorRole,
-  isEditMeeting,
-  setEditMeeting,
   setEdiorRole,
+  setEditMeeting,
+  isEditMeeting,
+  ediorRole,
+  setCurrentMeetingID,
+  currentMeeting,
+  setSceduleMeeting,
 }) => {
   const { t } = useTranslation();
 
@@ -302,8 +302,8 @@ const SceduleMeeting = ({
                       ? true
                       : Number(currentMeeting) === 0
                       ? true
-                      // : false
-                      : true
+                      : // : false
+                        true
                   }
                   text={t("Actions")}
                   className={
@@ -453,6 +453,7 @@ const SceduleMeeting = ({
             {minutes && (
               <Minutes
                 setMinutes={setMinutes}
+                setSceduleMeeting={setSceduleMeeting}
                 currentMeeting={currentMeeting}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}

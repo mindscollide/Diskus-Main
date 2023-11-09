@@ -31,8 +31,8 @@ const SubDocumnets = ({
           if (subAgenda.subfiles) {
             subAgenda.subfiles = subAgenda.subfiles.filter(
               (file) =>
-                file.DisplayAttachmentName !==
-                subAgendaFiles.DisplayAttachmentName
+                file.displayAttachmentName !==
+                subAgendaFiles.displayAttachmentName
             );
           }
           return subAgenda;
@@ -47,7 +47,7 @@ const SubDocumnets = ({
     // Remove the file from the `fileForSend` state (if needed)
     setFileForSend((prevFiles) =>
       prevFiles.filter(
-        (fileSend) => fileSend.name !== subAgendaFiles.DisplayAttachmentName
+        (fileSend) => fileSend.name !== subAgendaFiles.displayAttachmentName
       )
     );
   };
@@ -72,8 +72,8 @@ const SubDocumnets = ({
                     return (
                       <>
                         <Draggable
-                          key={subAgendaFiles.AgendaAttachmentsID}
-                          draggableId={`parent-attachments-${parentId}-subAgendaID-${subAgendaData.SubAgendaID}-attachments-${subAgendaFiles.AgendaAttachmentsID}`}
+                          key={subAgendaFiles.agendaAttachmentsID}
+                          draggableId={`parent-attachments-${parentId}-subAgendaID-${subAgendaData.subAgendaID}-attachments-${subAgendaFiles.agendaAttachmentsID}`}
                           index={subAgendaFilesIndex}
                         >
                           {(provided) => (
@@ -104,7 +104,7 @@ const SubDocumnets = ({
                                         draggable={false}
                                         src={getIconSource(
                                           getFileExtension(
-                                            subAgendaFiles.DisplayAttachmentName
+                                            subAgendaFiles.displayAttachmentName
                                           )
                                         )}
                                         height="25.57px"
@@ -113,7 +113,7 @@ const SubDocumnets = ({
                                       <span
                                         className={styles["SubagendaFilesName"]}
                                       >
-                                        {subAgendaFiles.DisplayAttachmentName}
+                                        {subAgendaFiles.displayAttachmentName}
                                       </span>
                                     </Col>
                                     <Col lg={2} md={2} sm={2}>

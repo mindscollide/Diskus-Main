@@ -14,6 +14,7 @@ import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributo
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  ShowNextConfirmationModal,
   UpdateMeetingUserForAgendaContributor,
   getAllAgendaContributorApi,
   showAddAgendaContributor,
@@ -25,6 +26,7 @@ import tick from "../../../../../assets/images/PNG tick.png";
 import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
 import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgendaContributor";
 import { saveAgendaContributors } from "../../../../../store/actions/NewMeetingActions";
+import NextModal from "../meetingDetails/NextModal/NextModal";
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
@@ -49,6 +51,7 @@ const AgendaContributers = ({
   const [notifyMessageField, setNotifyMessageField] = useState("");
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
+  const [flag, setFlag] = useState(3);
   const [selectedOption, setSelectedOption] = useState({
     value: 1,
     label: (
@@ -404,8 +407,7 @@ const AgendaContributers = ({
   // };
 
   const nextTabOrganizer = () => {
-    setAgendaContributors(false);
-    setParticipants(true);
+    dispatch(ShowNextConfirmationModal(true));
   };
   const previousTabOrganizer = () => {
     setAgendaContributors(false);
@@ -718,6 +720,13 @@ const AgendaContributers = ({
           setNotifyMessageField={setNotifyMessageField}
           specificUser={specificUser}
           setSpecifiUser={setSpecifiUser}
+        />
+      )}
+      {NewMeetingreducer.nextConfirmModal && (
+        <NextModal
+          setAgendaContributors={setAgendaContributors}
+          setParticipants={setParticipants}
+          flag={flag}
         />
       )}
       {NewMeetingreducer.cancelAgendaContributor && (

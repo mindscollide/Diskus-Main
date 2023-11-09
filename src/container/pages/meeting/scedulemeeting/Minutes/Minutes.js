@@ -10,6 +10,7 @@ import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../assets/images/featherupload.svg";
 import Leftploygon from "../../../../../assets/images/Polygon 3.svg";
+import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 import file_image from "../../../../../assets/images/file_image.svg";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
@@ -26,6 +27,7 @@ import {
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
   getAllGeneralMinutesApiFunc,
+  showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
 import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
@@ -54,10 +56,9 @@ import AgendaWise from "./AgendaWise/AgendaWise";
 // import Clip from "../../../../../assets/images/ClipTurned.svg";
 // import profile from "../../../../../assets/images/newprofile.png";
 // import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
-// import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 // import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
 // import AgendaImport from "./AgendaimportMinutes/AgendaImport";
-const Minutes = ({ setMinutes, currentMeeting }) => {
+const Minutes = ({ setMinutes, currentMeeting, setSceduleMeeting }) => {
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
@@ -649,6 +650,10 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     setShowMore(!showMore);
   };
 
+  const handleUNsaveChangesModal = () => {
+    dispatch(showUnsaveMinutesFileUpload(true));
+  };
+
   return (
     <section>
       <Row className="mt-3">
@@ -1144,14 +1149,22 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
           </Row>
         </>
       ) : null}
-      {/* <Row className="mt-5">
+      <Row className="mt-5">
         <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
           <Button
             text={t("Cancel")}
             className={styles["Cancel_button_Minutes"]}
+            onClick={handleUNsaveChangesModal}
           />
         </Col>
-      </Row> */}
+      </Row>
+
+      {NewMeetingreducer.unsaveFileUploadMinutes && (
+        <UnsavedMinutes
+          setMinutes={setMinutes}
+          setSceduleMeeting={setSceduleMeeting}
+        />
+      )}
     </section>
     // <section>
     //   {NewMeetingreducer.afterImportState === true ? (
@@ -1680,8 +1693,7 @@ const Minutes = ({ setMinutes, currentMeeting }) => {
     //   )}
 
     //   {NewMeetingreducer.ImportPreviousMinutes && <ImportMinutesModal />}
-    //   {NewMeetingreducer.unsaveFileUploadMinutes && (
-    //     <UnsavedMinutes setMinutes={setMinutes} />
+
     //   )}
     // </section>
   );

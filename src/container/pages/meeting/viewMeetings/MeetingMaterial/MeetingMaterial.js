@@ -313,12 +313,12 @@ const MeetingMaterial = ({
             className={styles["Cancel_Classname"]}
           /> */}
           <Button
-            text={t("Cancel")}
-            className={styles["Cancel_Classname"]}
+            text={t("Previous")}
+            className={styles["Save_Classname"]}
             onClick={handleCancelButton}
           />
           <Button
-            text={t("Save")}
+            text={t("Next")}
             onClick={handleClickSave}
             className={styles["Save_Classname"]}
           />
