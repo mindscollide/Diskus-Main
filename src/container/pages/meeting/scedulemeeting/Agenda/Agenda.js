@@ -51,7 +51,6 @@ const Agenda = ({
   setAgenda,
   setParticipants,
   setSceduleMeeting,
-  currentMeeting,
   isEditMeeting,
 }) => {
   const { t } = useTranslation();
