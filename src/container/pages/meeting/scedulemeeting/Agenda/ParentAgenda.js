@@ -353,7 +353,6 @@ const ParentAgenda = ({
         ),
       }));
       setAllSavedPresenters((prevPresenters) => {
-        // Check if the new mapped values are different from the current state
         if (
           JSON.stringify(prevPresenters) !== JSON.stringify(mappedPresenters)
         ) {
