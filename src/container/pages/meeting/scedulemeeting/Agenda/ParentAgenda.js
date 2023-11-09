@@ -52,6 +52,8 @@ const ParentAgenda = ({
   currentMeeting,
   fileForSend,
   setFileForSend,
+  setAllSavedPresenters,
+  allSavedPresenters,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -320,25 +322,41 @@ const ParentAgenda = ({
       setPresenters(allPresentersReducer);
     }
   }, [allPresenters]);
+  useEffect(() => {
+    if (presenters.lenth > 0 || Object.keys(presenters).length > 0) {
+      const mappedPresenters = presenters.map((presenter) => ({
+        value: presenter.userID,
+        label: (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                <img
+                  src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
+                  width="17px"
+                  height="17px"
+                  className={styles["Image_class_Agenda"]}
+                />
+                <span className={styles["Name_Class"]}>
+                  {presenter.userName}
+                </span>
+              </Col>
+            </Row>
+          </>
+        ),
+      }));
+      setAllSavedPresenters((prevPresenters) => {
+        // Check if the new mapped values are different from the current state
+        if (
+          JSON.stringify(prevPresenters) !== JSON.stringify(mappedPresenters)
+        ) {
+          return mappedPresenters;
+        }
+        return prevPresenters; // No change, return the current state
+      });
+    }
+  }, [presenters]);
 
-  const allSavedPresenters = presenters.map((presenter) => ({
-    value: presenter.userID,
-    label: (
-      <>
-        <Row>
-          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-            <img
-              src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-              width="17px"
-              height="17px"
-              className={styles["Image_class_Agenda"]}
-            />
-            <span className={styles["Name_Class"]}>{presenter.userName}</span>
-          </Col>
-        </Row>
-      </>
-    ),
-  }));
+  console.log("allSavedPresenters", allSavedPresenters);
 
   console.log(
     "fileDataPropfileDataProp",

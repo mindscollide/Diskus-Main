@@ -4,10 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {
-  searchNewUserMeeting,
-  showCancelModalAgenda,
-} from "../../../../../../store/actions/NewMeetingActions";
+import { showCancelModalAgenda } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { Button, Modal } from "../../../../../../components/elements";
 
@@ -16,28 +13,13 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  let userID = localStorage.getItem("userID");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let currentView = localStorage.getItem("MeetingCurrentView");
+
   const handleNOFunctionality = () => {
     dispatch(showCancelModalAgenda(false));
   };
 
   const handleYesFunctionality = () => {
-    dispatch(showCancelModalAgenda(false));
     setSceduleMeeting(false);
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
   return (
     <section>
