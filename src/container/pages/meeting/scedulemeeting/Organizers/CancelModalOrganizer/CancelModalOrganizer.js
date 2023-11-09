@@ -8,11 +8,12 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import {
+  GetAllMeetingOrganizers,
   editMeetingFlag,
   saveMeetingFlag,
 } from "../../../../../../store/actions/MeetingOrganizers_action";
 
-const CancelModalOrganizer = ({ setSceduleMeeting }) => {
+const CancelModalOrganizer = ({ setSceduleMeeting, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,6 +28,8 @@ const CancelModalOrganizer = ({ setSceduleMeeting }) => {
     setSceduleMeeting(false);
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
+    let Data = { MeetingID: currentMeeting };
+    dispatch(GetAllMeetingOrganizers(Data, navigate, t));
   };
 
   return (

@@ -835,7 +835,10 @@ const Organizers = ({
         <SendNotificationOrganizer />
       ) : null}
       {NewMeetingreducer.cancelModalOrganizer && (
-        <CancelModalOrganizer setSceduleMeeting={setSceduleMeeting} />
+        <CancelModalOrganizer
+          setSceduleMeeting={setSceduleMeeting}
+          currentMeeting={currentMeeting}
+        />
       )}
     </>
   );
