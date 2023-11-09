@@ -83,6 +83,8 @@ const initialState = {
   setGroupwithMeetingID: null,
   getGroupwithMeetingID: null,
   scheduleMeetingProposed: "",
+  unsaveViewMinutesModal: false,
+  unsavedViewPollsModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1492,6 +1494,21 @@ const NewMeetingreducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.UNSAVE_VIEW_MINTUES_MODAL: {
+      return {
+        ...state,
+        unsaveViewMinutesModal: action.response,
+      };
+    }
+
+    case actions.UNSAVED_VIEW_POLLS_MODAL: {
+      return {
+        ...state,
+        unsavedViewPollsModal: action.response,
+      };
+    }
+
     default: {
       return { ...state };
     }

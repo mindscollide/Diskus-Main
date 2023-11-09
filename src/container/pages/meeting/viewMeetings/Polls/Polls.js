@@ -18,16 +18,18 @@ import {
   GetAllPollsByMeetingIdApiFunc,
   showCancelPolls,
   showUnsavedPollsMeeting,
+  showUnsavedViewPollsModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
-import CancelPolls from "./CancelPolls/CancelPolls";
+import CancelPolls from "./CancelPolls/ViewPollsCancelModal";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import {
   deleteMeetingPollApi,
   getPollsByPollIdApi,
 } from "../../../../../store/actions/Polls_actions";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
+import ViewPollsCancelModal from "./CancelPolls/ViewPollsCancelModal";
 
 const Polls = ({
   setSceduleMeeting,
@@ -392,6 +394,10 @@ const Polls = ({
     setCreatepoll(true);
   };
 
+  const handleViewPollsCancelButto = () => {
+    dispatch(showUnsavedViewPollsModal(true));
+  };
+
   return (
     <>
       {afterViewPolls ? (
@@ -522,6 +528,20 @@ const Polls = ({
                             </span>
                           </Col>
                         </Row>
+                        <Row className="mt-3">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-end"
+                          >
+                            <Button
+                              text={t("Cancel")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                              onClick={handleViewPollsCancelButto}
+                            />
+                          </Col>
+                        </Row>
                       </>
                     )}
                   </Col>
@@ -548,10 +568,8 @@ const Polls = ({
                 )}
               </>
             )}
-            {NewMeetingreducer.cancelPolls && (
-              <CancelPolls setSceduleMeeting={setSceduleMeeting} />
-            )}
           </section>
+          {NewMeetingreducer.unsavedViewPollsModal && <ViewPollsCancelModal />}
         </>
       )}
     </>

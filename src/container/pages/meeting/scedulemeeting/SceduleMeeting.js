@@ -457,6 +457,7 @@ const SceduleMeeting = ({
             {minutes && (
               <Minutes
                 setMinutes={setMinutes}
+                setSceduleMeeting={setSceduleMeeting}
                 currentMeeting={currentMeeting}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}

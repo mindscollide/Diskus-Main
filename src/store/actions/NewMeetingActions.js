@@ -5944,6 +5944,20 @@ const UpdateMeetingUserForOrganizers = (
   };
 };
 
+const showUnsavedViewMinutesModal = (response) => {
+  return {
+    type: actions.UNSAVE_VIEW_MINTUES_MODAL,
+    response: response,
+  };
+};
+
+const showUnsavedViewPollsModal = (response) => {
+  return {
+    type: actions.UNSAVED_VIEW_POLLS_MODAL,
+    response: response,
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -6044,4 +6058,6 @@ export {
   UpdateMeetingUserForAgendaContributor,
   UpdateMeetingUserForOrganizers,
   scheduleMeetingMainApi,
+  showUnsavedViewMinutesModal,
+  showUnsavedViewPollsModal,
 };

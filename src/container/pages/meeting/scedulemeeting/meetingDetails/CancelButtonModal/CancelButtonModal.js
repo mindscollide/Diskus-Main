@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import {
+  searchNewUserMeeting,
   showCancelModalmeetingDeitals,
   showGetAllMeetingDetialsFailed,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -19,6 +20,10 @@ const CancelButtonModal = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleNOFunctionality = () => {
     dispatch(showCancelModalmeetingDeitals(false));
@@ -68,6 +73,17 @@ const CancelButtonModal = ({
     ]);
     setSceduleMeeting(false);
     dispatch(showCancelModalmeetingDeitals(false));
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   return (

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styles from "./MeetingDetails.module.css";
+import styles from "./ViewMeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { Button, Notification } from "../../../../../components/elements";
-
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../assets/images/blue Camera.svg";
 import { useDispatch } from "react-redux";
@@ -14,8 +13,8 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
-import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
+import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -219,7 +218,8 @@ const ViewMeetingDetails = ({
       {meetingStatus === 10 && (
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-            {Number(ediorRole.status) === 10 && ediorRole.role === "Organizer" ? (
+            {Number(ediorRole.status) === 10 &&
+            ediorRole.role === "Organizer" ? (
               <Button
                 text={t("End-meeting")}
                 className={styles["LeaveMeetinButton"]}
@@ -420,7 +420,7 @@ const ViewMeetingDetails = ({
         >
           <Button
             text={t("Cancel")}
-            className={styles["Cancel_Meeting_SaveMeeting"]}
+            className={styles["Next_Meeting_SaveMeeting"]}
             onClick={handleCancelMeetingButton}
           />
           <Button

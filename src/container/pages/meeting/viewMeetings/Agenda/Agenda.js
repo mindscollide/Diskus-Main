@@ -235,11 +235,11 @@ const Agenda = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                <Button
+                {/* <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Button_Organizers_view"]}
                   onClick={handleCancelBtn}
-                />
+                /> */}
                 <Button
                   text={t("Previous")}
                   className={styles["Next_Button_Organizers_view"]}
