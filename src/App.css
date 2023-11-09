@@ -6037,7 +6037,7 @@ input[type="time"]::-webkit-clear-button {
 }
 
 .SceduleProposedMeeting tbody tr:last-child td:nth-child(2) {
-  border-bottom: 1px solid #6172d6;
+  /* border-bottom: 1px solid #6172d6; */
 }
 
 .AbstainProgressViewModal .ant-progress-success-bg,
