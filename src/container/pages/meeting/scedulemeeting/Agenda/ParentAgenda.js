@@ -13,6 +13,7 @@ import {
   showMainAgendaItemRemovedModal,
   GetAllMeetingUserApiFunc,
   showVoteAgendaModal,
+  UpateMeetingStatusLockApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import styles from "./Agenda.module.css";
@@ -39,6 +40,7 @@ import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { async } from "q";
 
 const ParentAgenda = ({
   data,
@@ -162,21 +164,26 @@ const ParentAgenda = ({
   };
 
   //Lock Functionality For SubAgendas Only
-  const lockFunctionActive = (data) => {
-    if (mainLock.length === 0) {
-      // If state is empty, add the data
-      setmainLock([data]);
-    } else {
-      const existingIndex = mainLock.findIndex((item) => item === data);
-      if (existingIndex >= 0) {
-        // If parentIndex exists, remove it
-        const updatedData = mainLock.filter((item) => item !== data);
-        setmainLock(updatedData);
-      } else {
-        // If parentIndex doesn't exist, add it
-        setmainLock([...mainLock, data]);
+  const lockFunctionActive = async (id, isLocked) => {
+    let Data = {
+      AgendaID: id,
+      Islocked: !isLocked,
+    };
+    await dispatch(UpateMeetingStatusLockApiFunc(navigate, t, Data));
+    setRows((prevRows) => {
+      // Find the index of the row with the given id
+      const rowIndex = prevRows.findIndex((row) => row.iD === id);
+
+      // If the row is found, update its isLocked value
+      if (rowIndex !== -1) {
+        const newRows = [...prevRows];
+        newRows[rowIndex].isLocked = !newRows[rowIndex].isLocked;
+        return newRows;
       }
-    }
+
+      // If the row is not found, return the original state
+      return prevRows;
+    });
   };
 
   //Lock For Main Agenda Will Locks Its childs Also
@@ -331,6 +338,7 @@ const ParentAgenda = ({
             <Row>
               <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                 <img
+                  alt=""
                   src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
                   width="17px"
                   height="17px"
@@ -369,6 +377,7 @@ const ParentAgenda = ({
   console.log("allPresenters", allPresenters);
 
   console.log("Meeting Reducer", NewMeetingreducer);
+  console.log("Meeting Reducer datadatadatadata", rows);
 
   return (
     <Draggable key={data.iD} draggableId={data.iD} index={index}>
@@ -378,6 +387,8 @@ const ParentAgenda = ({
           {...provided.draggableProps}
           //   {...provided.dragHandleProps}
         >
+          {console.log("datadatadatadatadatadatadatadata", data)}
+
           {/* Main Agenda Items Mapping */}
           <span className="position-relative">
             <Row key={data.iD} className="mt-4 m-0 p-0">
@@ -387,7 +398,8 @@ const ParentAgenda = ({
                 sm={12}
                 key={index + 1}
                 className={
-                  apllyLockOnParentAgenda(index)
+                  // apllyLockOnParentAgenda(index)
+                  data.isLocked
                     ? styles["BackGround_Agenda_InActive"]
                     : styles["BackGround_Agenda"]
                 }
@@ -422,6 +434,7 @@ const ParentAgenda = ({
                               ? styles["Arrow_Expanded"]
                               : styles["Arrow"]
                           }
+                          alt=""
                           onClick={() => {
                             handleExpandedBtn(index);
                           }}
@@ -450,7 +463,8 @@ const ParentAgenda = ({
                             value={data.title}
                             change={(e) => handleAgendaItemChange(index, e)}
                             disable={
-                              apllyLockOnParentAgenda(index) ? true : false
+                              // apllyLockOnParentAgenda(index) ? true : false
+                              data.isLocked
                             }
                           />
                         </Col>
@@ -472,7 +486,8 @@ const ParentAgenda = ({
                               handleSelectChange(index, value)
                             }
                             isDisabled={
-                              apllyLockOnParentAgenda(index) ? true : false
+                              // apllyLockOnParentAgenda(index) ? true : false
+                              data.isLocked
                             }
                             classNamePrefix={"SelectOrganizersSelect_active"}
                           />
@@ -521,7 +536,8 @@ const ParentAgenda = ({
                                   handleStartDateChange(index, date)
                                 }
                                 disabled={
-                                  apllyLockOnParentAgenda(index) ? true : false
+                                  // apllyLockOnParentAgenda(index) ? true : false
+                                  data.isLocked
                                 }
                               />
                             </Col>
@@ -532,6 +548,7 @@ const ParentAgenda = ({
                               className="d-flex justify-content-center align-items-center"
                             >
                               <img
+                                alt=""
                                 draggable={false}
                                 src={desh}
                                 width="19.02px"
@@ -563,13 +580,15 @@ const ParentAgenda = ({
                                   handleEndDateChange(index, date)
                                 } // Update end date
                                 disabled={
-                                  apllyLockOnParentAgenda(index) ? true : false
+                                  // apllyLockOnParentAgenda(index) ? true : false
+                                  data.isLocked
                                 }
                               />
                             </Col>
                           </Row>
                           {index !== 0 && (
                             <img
+                              alt=""
                               draggable={false}
                               src={redcrossIcon}
                               height="25px"
@@ -633,7 +652,8 @@ const ParentAgenda = ({
                                 }
                                 value={data.selectedRadio}
                                 disabled={
-                                  apllyLockOnParentAgenda(index) ? true : false
+                                  // apllyLockOnParentAgenda(index) ? true : false
+                                  data.isLocked
                                 }
                               >
                                 <Radio value={1}>
@@ -668,42 +688,47 @@ const ParentAgenda = ({
                               <img
                                 draggable={false}
                                 src={Key}
+                                alt=""
                                 width="24.07px"
                                 height="24.09px"
                                 className="cursor-pointer"
                                 onClick={
-                                  apllyLockOnParentAgenda(index)
+                                  // apllyLockOnParentAgenda(index)
+                                  data.isLocked
                                     ? ""
                                     : openAdvancePermissionModal
                                 }
                               />
                               <img
+                                alt=""
                                 draggable={false}
                                 src={Cast}
                                 width="25.85px"
                                 height="25.89px"
                                 className="cursor-pointer"
                                 onClick={
-                                  apllyLockOnParentAgenda(index)
-                                    ? ""
-                                    : openVoteMOdal
+                                  // apllyLockOnParentAgenda(index)
+                                  data.isLocked ? "" : openVoteMOdal
                                 }
                               />
                               <img
+                                alt=""
                                 draggable={false}
                                 src={
-                                  apllyLockOnParentAgenda(index)
-                                    ? DarkLock
-                                    : Lock
+                                  // apllyLockOnParentAgenda(index)
+                                  data.isLocked ? DarkLock : Lock
                                 }
                                 width="18.87px"
                                 className={
-                                  apllyLockOnParentAgenda(index)
+                                  // apllyLockOnParentAgenda(index)
+                                  data.isLocked
                                     ? styles["lockBtn_inActive"]
                                     : styles["lockBtn"]
                                 }
                                 height="26.72px"
-                                onClick={() => lockFunctionActive(index)}
+                                onClick={() =>
+                                  lockFunctionActive(data.iD, data.isLocked)
+                                }
                               />
                             </Col>
                           </Row>
@@ -788,7 +813,7 @@ const ParentAgenda = ({
               subexpandIndex={subexpandIndex}
               expandSubIndex={expandSubIndex}
               subExpand={subExpand}
-              apllyLockOnParentAgenda={apllyLockOnParentAgenda}
+              parentIslockedCheck={data.isLocked}
               subLockArry={subLockArry}
               setSubLockArray={setSubLockArray}
               agendaItemRemovedIndex={agendaItemRemovedIndex}
@@ -815,6 +840,7 @@ const ParentAgenda = ({
                         className="d-flex justify-content-center gap-2 align-items-center"
                       >
                         <img
+                          alt=""
                           draggable={false}
                           src={plusFaddes}
                           height="10.77px"

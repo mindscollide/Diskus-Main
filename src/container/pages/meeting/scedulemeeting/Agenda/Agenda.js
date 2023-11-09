@@ -51,9 +51,6 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
 
   const navigate = useNavigate();
 
-  let currentUserID = Number(localStorage.getItem("userID"));
-
-  console.log("isEditMeetingisEditMeeting", isEditMeeting);
   const [allSavedPresenters, setAllSavedPresenters] = useState([]);
 
   const { NewMeetingreducer, MeetingAgendaReducer, DataRoomReducer } =
