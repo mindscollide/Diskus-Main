@@ -19,17 +19,13 @@ import { GetAllMeetingDetailsApiFunc } from "../../../../store/actions/NewMeetin
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const SceduleMeeting = ({
-  setSceduleMeeting,
-  currentMeeting,
-  setCurrentMeetingID,
-  ediorRole,
-  setEditMeeting,
   setEdiorRole,
-  setMeetingMaterial,
-  setAgenda,
-  setParticipants,
-  setSceduleMeeting,
+  setEditMeeting,
   isEditMeeting,
+  ediorRole,
+  setCurrentMeetingID,
+  currentMeeting,
+  setSceduleMeeting,
 }) => {
   const { t } = useTranslation();
 
