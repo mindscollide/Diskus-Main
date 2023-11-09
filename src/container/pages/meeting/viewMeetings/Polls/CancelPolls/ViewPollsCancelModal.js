@@ -9,8 +9,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Modal } from "../../../../../../components/elements";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Modal } from "../../../../../../components/elements";
+import { Col, Row } from "react-bootstrap";
 
 const ViewPollsCancelModal = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
