@@ -13,13 +13,13 @@ const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
 
     const updatedRows = [...rows];
     console.log(
-      updatedRows[index].subAgenda[subIndex].SubAgendaUrlFieldRadio,
+      updatedRows[index].subAgenda[subIndex].subAgendaUrlFieldRadio,
       "updatedRowsupdatedRows"
     );
     if (name === "SubAgendaUrlRadioField") {
-      updatedRows[index].subAgenda[subIndex].SubAgendaUrlFieldRadio = value;
+      updatedRows[index].subAgenda[subIndex].subAgendaUrlFieldRadio = value;
       console.log(
-        updatedRows[index].subAgenda[subIndex].SubAgendaUrlFieldRadio,
+        updatedRows[index].subAgenda[subIndex].subAgendaUrlFieldRadio,
         "updatedRowsupdatedRows"
       );
     }
@@ -33,7 +33,7 @@ const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
           labelClass={"d-none"}
           placeholder={t("Enter-url")}
           name={"SubAgendaUrlRadioField"}
-          value={subAgendaData.SubAgendaUrlFieldRadio}
+          value={subAgendaData.subAgendaUrlFieldRadio}
           change={(e) => handleSubAgendaUrlEnterUrlField(index, subIndex, e)}
         />
       </Col>

@@ -43,13 +43,13 @@ export const onDragEnd = (result, rows, setRows) => {
     if (sourceParentType === "parent" && destinationParentType === "parent") {
       const sourceParentID = parseInt(result.source.droppableId.split("-")[1]);
       const sourceParentIndex = rows.findIndex(
-        (obj) => obj.ID === sourceParentID.toString()
+        (obj) => obj.iD === sourceParentID.toString()
       );
       const destinationParentID = parseInt(
         result.destination.droppableId.split("-")[1]
       );
       const destinationParentIndex = rows.findIndex(
-        (obj) => obj.ID === destinationParentID.toString()
+        (obj) => obj.iD === destinationParentID.toString()
       );
       // Attachment is moved between different parent agendas
       const sourceIndex = result.source.index;
@@ -78,18 +78,18 @@ export const onDragEnd = (result, rows, setRows) => {
       const subAgendaID = parts[subAgenda + 1];
       const sourceParentID = parts[parentIndex + 1];
       const findSourcePrentIndex = rows.findIndex(
-        (obj) => obj.ID === sourceParentID
+        (obj) => obj.iD === sourceParentID
       );
       const destinationParentID =
         parentsDestination[parentDestinationIndex + 1];
       const destinationParentIndex = rows.findIndex(
-        (obj) => obj.ID === destinationParentID
+        (obj) => obj.iD === destinationParentID
       );
       const destinationIndex = result.destination.index;
       // Get the source parent and sub-agenda objects
       const sourceParent = { ...rows[findSourcePrentIndex] };
       const duplicatedObjectIndex = sourceParent.subAgenda.findIndex(
-        (obj) => obj.SubAgendaID === subAgendaID
+        (obj) => obj.subAgendaID === subAgendaID
       );
       const sourceSubAgenda = sourceParent.subAgenda[duplicatedObjectIndex];
 
@@ -115,37 +115,37 @@ export const onDragEnd = (result, rows, setRows) => {
       // Attachment is moved from sub agenda to parent agenda
       const destination = result.destination.droppableId;
       const destinationParts = destination.split("-");
-      // destination Parent ID Index in responce
+      // destination Parent iD Index in responce
       const destinationParentIDIndex = destinationParts.indexOf("parent");
-      // destination Parent ID in responce
+      // destination Parent iD in responce
       const destinationParentID =
         destinationParts[destinationParentIDIndex + 1];
       // find index of parent in main json data
       const findDestinationParentIDIndex = rows.findIndex(
-        (obj) => obj.ID === destinationParentID
+        (obj) => obj.iD === destinationParentID
       );
 
       const destinationParent = { ...rows[findDestinationParentIDIndex] };
       //  sub agend index in responce
       const destinationSubAgendaIDIndex =
         destinationParts.indexOf("subAgendaID");
-      // sub Agenda ID in jason responce
+      // sub Agenda iD in jason responce
       const destinationSubAgendaID =
         destinationParts[destinationSubAgendaIDIndex + 1];
       // find sub Agenda of that parent index
       const findDestinationSubAgendaIDIndex =
         destinationParent.subAgenda.findIndex(
-          (obj) => obj.SubAgendaID === destinationSubAgendaID
+          (obj) => obj.subAgendaID === destinationSubAgendaID
         );
       const source = result.source.droppableId;
       const sourceParts = source.split("-");
-      // source parent ID index from responce
+      // source parent iD index from responce
       const parentSourceIndex = sourceParts.indexOf("parent");
-      // source parent ID  from responce
+      // source parent iD  from responce
       const ParentSourcID = sourceParts[parentSourceIndex + 1];
       // find parent index from main json
       const findSourceParentIDIndex = rows.findIndex(
-        (obj) => obj.ID === ParentSourcID
+        (obj) => obj.iD === ParentSourcID
       );
 
       // Find the source and destination parent agendas and sub-agendas
@@ -185,38 +185,38 @@ export const onDragEnd = (result, rows, setRows) => {
       const sourceSubAgendaID = sourceParts[sourceSubAgendaIndex + 1];
       const sourceParentID = sourceParts[sourceParentAgendaIndex + 1];
       const findSourcePrentIndex = rows.findIndex(
-        (obj) => obj.ID === sourceParentID
+        (obj) => obj.iD === sourceParentID
       );
       // Get the source parent and sub-agenda objects
       const sourceParent = { ...rows[findSourcePrentIndex] };
       const findSourceSubAgendaIndex = sourceParent.subAgenda.findIndex(
-        (obj) => obj.SubAgendaID === sourceSubAgendaID
+        (obj) => obj.subAgendaID === sourceSubAgendaID
       );
       const sourceSubAgenda = sourceParent.subAgenda[findSourceSubAgendaIndex];
 
       // for destination
       const destination = result.destination.droppableId;
       const destinationParts = destination.split("-");
-      // destination Parent ID Index in responce
+      // destination Parent iD Index in responce
       const destinationParentAgendaIDIndex = destinationParts.indexOf("parent");
       //  sub agend destination index in responce
       const destinationSubAgendaIDIndex =
         destinationParts.indexOf("subAgendaID");
-      // destination Parent ID in responce
+      // destination Parent iD in responce
       const destinationParentAgendaID =
         destinationParts[destinationParentAgendaIDIndex + 1];
-      // sub Agenda ID in jason responce
+      // sub Agenda iD in jason responce
       const destinationSubAgendaID =
         destinationParts[destinationSubAgendaIDIndex + 1];
       // find index of parent in main json data
       const findDestinationParentIDIndex = rows.findIndex(
-        (obj) => obj.ID === destinationParentAgendaID
+        (obj) => obj.iD === destinationParentAgendaID
       );
       const destinationParent = { ...rows[findDestinationParentIDIndex] };
       // find sub Agenda of that parent index
       const findDestinationSubAgendaIDIndex =
         destinationParent.subAgenda.findIndex(
-          (obj) => obj.SubAgendaID === destinationSubAgendaID
+          (obj) => obj.subAgendaID === destinationSubAgendaID
         );
       const destinationSubAgenda =
         destinationParent.subAgenda[findDestinationSubAgendaIDIndex];

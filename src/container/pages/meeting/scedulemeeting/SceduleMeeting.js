@@ -23,9 +23,13 @@ const SceduleMeeting = ({
   currentMeeting,
   setCurrentMeetingID,
   ediorRole,
-  isEditMeeting,
   setEditMeeting,
   setEdiorRole,
+  setMeetingMaterial,
+  setAgenda,
+  setParticipants,
+  setSceduleMeeting,
+  isEditMeeting,
 }) => {
   const { t } = useTranslation();
 
