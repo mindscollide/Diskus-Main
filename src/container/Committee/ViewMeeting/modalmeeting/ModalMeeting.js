@@ -46,7 +46,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { assignees, uploadReducer } = useSelector((state) => state);
+  const { assignees, uploadReducer, CommitteeReducer } = useSelector(
+    (state) => state
+  );
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
   const [isAgenda, setIsAgenda] = useState(false);
@@ -1045,17 +1047,17 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   };
 
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-    console.log("Input Value", allAssignees);
+    let getUserDetails =
+      CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
     if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees !== []
+      getUserDetails !== undefined &&
+      getUserDetails !== null &&
+      getUserDetails.length > 0
     ) {
-      return allAssignees
+      return getUserDetails
         .filter((item) => {
           const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
+          const assigneesName = item.userName.toLowerCase();
           console.log("Input Value in searchTerm", searchTerm);
           console.log("Input Value in assigneesName", assigneesName);
 
@@ -1067,17 +1069,16 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         .slice(0, 10)
         .map((item) => (
           <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
+            onClick={() => onSearch(item.userName, item.pK_UID)}
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
             <img
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
+              src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
               alt=""
               className="user-img"
             />
-            <p className="p-0 m-0">{item.name}</p>
+            <p className="p-0 m-0">{item.userName}</p>
           </div>
         ));
     } else {
@@ -1087,6 +1088,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   // for add Attendees handler
   const addAttendees = () => {
     let user1 = createMeeting.MeetingAttendees;
+    // let user1 = CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
     let List = addedParticipantNameList;
     let found = user1.find((element) => element.User.PK_UID === taskAssignedTo);
 

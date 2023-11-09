@@ -172,7 +172,7 @@ const ViewMeetingModal = ({
   console.log("ediorRole", ediorRole);
   return (
     <>
-      <section>
+      <section className="position-relative">
         <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["Scedule_newMeeting_Heading"]}>

@@ -7,7 +7,14 @@ import { Col, Row } from "react-bootstrap";
 import backDownArrow from "../../../../../assets/images/downDirect.png";
 import upArrow from "../../../../../assets/images/UpperArrow.svg";
 import PDFIcon from "../../../../../assets/images/pdf_icon.svg";
-import { Button, Table, Loader } from "../../../../../components/elements";
+import {
+  Button,
+  Table,
+  Loader,
+  ResultMessage,
+} from "../../../../../components/elements";
+import NoMeetingsIcon from "../../../../../assets/images/No-Meetings.png";
+
 import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
 import { useSelector } from "react-redux";
 import { showCancelMeetingMaterial } from "../../../../../store/actions/NewMeetingActions";
@@ -293,13 +300,42 @@ const MeetingMaterial = ({
     <section>
       <Row className="mt-5">
         <Col lg={12} md={12} sm={12}>
-          <Table
-            column={materialColoumn}
-            scroll={{ y: "46vh" }}
-            pagination={false}
-            className="Polling_table"
-            rows={rows}
-          />
+          {rows.length === 0 && !NewMeetingreducer.Loading ? (
+            <>
+              <ResultMessage
+                icon={
+                  <img
+                    alt="NonMeeting"
+                    draggable="false"
+                    src={NoMeetingsIcon}
+                    // className="nodata-table-icon"
+                  />
+                }
+              />
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <span className={styles["No-meeting-material-title"]}>
+                    {t("No-Meeting-Material")}
+                  </span>
+                </Col>
+              </Row>
+            </>
+          ) : (
+            <>
+              <Table
+                column={materialColoumn}
+                scroll={{ y: "46vh" }}
+                pagination={false}
+                className="Polling_table"
+                rows={rows}
+              />
+            </>
+          )}
         </Col>
       </Row>
       <Row>
