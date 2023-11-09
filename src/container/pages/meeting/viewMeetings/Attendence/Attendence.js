@@ -304,6 +304,10 @@ const Attendence = ({ advanceMeetingModalID }) => {
           className="d-flex justify-content-end gap-2 mt-4"
         >
           <Button
+            text={t("Cancel")}
+            className={styles["Cancel_Meeting_Details"]}
+          />
+          <Button
             text={t("Save")}
             onClick={() => saveHandler()}
             className={styles["CloneMeetingStyles"]}

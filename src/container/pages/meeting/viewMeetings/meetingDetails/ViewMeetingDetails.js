@@ -9,7 +9,9 @@ import { useDispatch } from "react-redux";
 import {
   ClearMessegeMeetingdetails,
   GetAllMeetingDetailsApiFunc,
+  searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
@@ -22,7 +24,9 @@ const ViewMeetingDetails = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
+  setMeetingDetails,
   ediorRole,
+  setAgenda,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -30,6 +34,13 @@ const ViewMeetingDetails = ({
   const { NewMeetingreducer } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
+
+  // For cancel with no modal Open
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
+
   const [rows, setRows] = useState([
     {
       selectedOption: "",
@@ -88,9 +99,26 @@ const ViewMeetingDetails = ({
   };
 
   //funciton cancel button
-  const handleCancelMeetingButton = (e) => {
-    setCancelModalView(true);
+  const handleCancelMeetingNoPopup = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setViewAdvanceMeetingModal(false);
+    setorganizers(false);
+    setmeetingDetails(false);
+    advanceMeetingModalID(false);
+    setViewAdvanceMeetingModal(false);
+    setAdvanceMeetingModalID(false);
   };
+
   let endMeetingRequest = {
     MeetingID: Number(advanceMeetingModalID),
     StatusID: 9,
@@ -420,8 +448,8 @@ const ViewMeetingDetails = ({
         >
           <Button
             text={t("Cancel")}
-            className={styles["Next_Meeting_SaveMeeting"]}
-            onClick={handleCancelMeetingButton}
+            className={styles["Cancel_Meeting_Details"]}
+            onClick={handleCancelMeetingNoPopup}
           />
           <Button
             text={t("Next")}

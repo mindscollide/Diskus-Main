@@ -5,7 +5,10 @@ import { Button, Table } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getAllAgendaContributorApi } from "../../../../../store/actions/NewMeetingActions";
+import {
+  getAllAgendaContributorApi,
+  searchNewUserMeeting,
+} from "../../../../../store/actions/NewMeetingActions";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
@@ -17,6 +20,7 @@ const AgendaContributers = ({
   setorganizers,
   setViewAdvanceMeetingModal,
   advanceMeetingModalID,
+  setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -25,6 +29,12 @@ const AgendaContributers = ({
   const [cancelModalView, setCancelModalView] = useState(false);
 
   const [rowsData, setRowsData] = useState([]);
+
+  // For cancel with no modal Open
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   useEffect(() => {
     let getAllData = {
@@ -72,6 +82,25 @@ const AgendaContributers = ({
   const handlePreviousBtn = () => {
     setorganizers(true);
     setAgendaContributors(false);
+  };
+
+  const handleCancelMeetingNoPopup = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setViewAdvanceMeetingModal(false);
+    setorganizers(false);
+    advanceMeetingModalID(false);
+    setViewAdvanceMeetingModal(false);
+    setAdvanceMeetingModalID(false);
   };
 
   const AgendaContributorViewColoumns = [
@@ -204,6 +233,11 @@ const AgendaContributers = ({
               className={styles["Cancel_Button_Organizers_view"]}
               onClick={handleCancelBtn}
             /> */}
+            <Button
+              text={t("Cancel")}
+              className={styles["Cancel_Meeting_Details"]}
+              onClick={handleCancelMeetingNoPopup}
+            />
             <Button
               text={t("Previous")}
               className={styles["Next_Button_Organizers_view"]}

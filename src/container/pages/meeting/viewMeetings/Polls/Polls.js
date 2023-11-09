@@ -464,6 +464,10 @@ const Polls = ({
                             sm={12}
                             className="d-flex justify-content-end gap-2"
                           >
+                            <Button
+                              text={t("Cancel")}
+                              className={styles["Cancel_Meeting_Details"]}
+                            />
                             {/* <Button
                               text={t("Cancel")}
                               className={styles["Cancel_Button_Polls_meeting"]}

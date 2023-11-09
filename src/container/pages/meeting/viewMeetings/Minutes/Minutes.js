@@ -1151,6 +1151,10 @@ const Minutes = ({
               className="d-flex justify-content-end gap-2"
             >
               <Button
+                text={t("Cancel")}
+                className={styles["Cancel_Meeting_Details"]}
+              />
+              <Button
                 text={t("Previous")}
                 className={styles["Previous_Button"]}
                 onClick={handlegoPrevTab}

@@ -241,6 +241,10 @@ const Agenda = ({
                   onClick={handleCancelBtn}
                 /> */}
                 <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Meeting_Details"]}
+                />
+                <Button
                   text={t("Previous")}
                   className={styles["Next_Button_Organizers_view"]}
                   onClick={handlePreviousBtn}

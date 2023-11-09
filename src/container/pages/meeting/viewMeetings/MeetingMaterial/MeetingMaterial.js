@@ -313,6 +313,10 @@ const MeetingMaterial = ({
             className={styles["Cancel_Classname"]}
           /> */}
           <Button
+            text={t("Cancel")}
+            className={styles["Cancel_Meeting_Details"]}
+          />
+          <Button
             text={t("Previous")}
             className={styles["Save_Classname"]}
             onClick={handleCancelButton}
