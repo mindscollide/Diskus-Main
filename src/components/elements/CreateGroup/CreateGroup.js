@@ -722,7 +722,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="Group_input_field  Create_group_Title_filed_margin"
+                          className="Group_input_field "
                         >
                           <Form.Control
                             applyClass="form-control2"
@@ -756,7 +756,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput Saved_money_Tagline"
+                          className="Group_input_field "
                         >
                           <TextField
                             applyClass="text-area-create-group"

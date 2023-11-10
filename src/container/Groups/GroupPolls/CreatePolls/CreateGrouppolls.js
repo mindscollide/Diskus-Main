@@ -49,7 +49,6 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
   const { NewMeetingreducer, PollsReducer, GroupsReducer } = useSelector(
     (state) => state
   );
-  console.log(GroupsReducer, "GroupsReducerGroupsReducer");
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");

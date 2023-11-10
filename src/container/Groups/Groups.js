@@ -45,8 +45,13 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 
 const Groups = () => {
   const { t } = useTranslation();
-  const { GroupsReducer, LanguageReducer, talkStateData, talkFeatureStates } =
-    useSelector((state) => state);
+  const {
+    GroupsReducer,
+    LanguageReducer,
+    DataRoomReducer,
+    talkStateData,
+    talkFeatureStates,
+  } = useSelector((state) => state);
   const [modalStatusChange, setModalStatusChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
@@ -226,29 +231,35 @@ const Groups = () => {
   const viewTitleModal = (data) => {
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupTab(1);
-    dispatch(
-      getbyGroupID(
-        navigate,
-        data.groupID,
-        t,
-        setViewGroupPage,
-        setUpdateComponentpage,
-        1
-      )
-    );
+    setViewGroupPage(true);
+
+    // dispatch(
+    //   getbyGroupID(
+    //     navigate,
+    //     data.groupID,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     1
+    //   )
+    // );
   };
   const viewmodal = (groupID, statusID) => {
     if (statusID === 1) {
-      dispatch(
-        getbyGroupID(
-          navigate,
-          groupID,
-          t,
-          setViewGroupPage,
-          setUpdateComponentpage,
-          statusID
-        )
-      );
+      localStorage.setItem("ViewGroupID", groupID);
+      setViewGroupTab(1);
+      setViewGroupPage(true);
+
+      // dispatch(
+      //   getbyGroupID(
+      //     navigate,
+      //     groupID,
+      //     t,
+      //     setViewGroupPage,
+      //     setUpdateComponentpage,
+      //     statusID
+      //   )
+      // );
     } else if (statusID === 2) {
     } else if (statusID === 3) {
       dispatch(
@@ -333,16 +344,17 @@ const Groups = () => {
   const handleDocumentsClickTab = (data) => {
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupTab(1);
-    dispatch(
-      getbyGroupID(
-        navigate,
-        data.groupID,
-        t,
-        setViewGroupPage,
-        setUpdateComponentpage,
-        1
-      )
-    );
+    setViewGroupPage(true);
+    // dispatch(
+    //   getbyGroupID(
+    //     navigate,
+    //     data.groupID,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     1
+    //   )
+    // );
   };
 
   const changeHandleStatus = (e, CardID, setEditdropdown) => {
@@ -707,6 +719,7 @@ const Groups = () => {
 
       {GroupsReducer.getAllLoading ||
       GroupsReducer.Loading ||
+      DataRoomReducer.Loading ||
       LanguageReducer.Loading ? (
         <Loader />
       ) : null}

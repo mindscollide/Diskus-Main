@@ -60,7 +60,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { assignees, uploadReducer, minuteofMeetingReducer, CommitteeReducer } =
+  const { assignees, uploadReducer, minuteofMeetingReducer, GroupsReducer } =
     useSelector((state) => state);
   let OrganizationId = localStorage.getItem("organizationID");
   const [isMinutes, setIsMinutes] = useState(false);
@@ -1374,8 +1374,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let getUserDetails =
-      CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
+    let getUserDetails = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
     if (
       getUserDetails !== undefined &&
       getUserDetails !== null &&

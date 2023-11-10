@@ -516,7 +516,7 @@ const Sidebar = () => {
                       : "m-0 p-0 iconSidebar"
                   }
                 >
-                  <div>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="37"

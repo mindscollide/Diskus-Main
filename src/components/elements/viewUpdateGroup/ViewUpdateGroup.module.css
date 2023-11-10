@@ -185,6 +185,7 @@ body[dir="rtl"] .ant-upload-text {
   margin-bottom: 10px !important;
   border-radius: 4px !important;
   margin: 5px !important;
+  cursor: pointer;
 }
 
 .Scroller_files {

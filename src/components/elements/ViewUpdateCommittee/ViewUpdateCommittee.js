@@ -57,7 +57,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage, viewCommitteeTab }) => {
             >
               <div className="d-flex gap-3 mb-3">
                 <Button
-                  text={t("Committee-detail")}
+                  text={t("Committee-details")}
                   className={
                     currentView === 1
                       ? styles["View-committee-details_active"]
