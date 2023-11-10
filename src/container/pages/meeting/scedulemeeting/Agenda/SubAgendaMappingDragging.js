@@ -216,10 +216,28 @@ const SubAgendaMappingDragging = ({
     let value = e.target.value;
     const updatedRows = [...rows];
     updatedRows[index].subAgenda[subIndex].subSelectRadio = value;
-    console.log(
-      updatedRows,
-      "handleSubAgendaRadioChangehandleSubAgendaRadioChange"
-    );
+    if (updatedRows[index].subAgenda[subIndex].subSelectRadio === 1) {
+      updatedRows[index].subAgenda[
+        subIndex
+      ].subAgendarequestContributorUrlName = "";
+      updatedRows[index].subAgenda[
+        subIndex
+      ].subAgendarequestContributorEnterNotes = "";
+      updatedRows[index].subAgenda[subIndex].subAgendaUrlFieldRadio = "";
+      updatedRows[index].subAgenda[subIndex].userID = 0;
+    } else if (updatedRows[index].subAgenda[subIndex].subSelectRadio === 2) {
+      updatedRows[index].subAgenda[subIndex].subfiles = [];
+      updatedRows[index].subAgenda[subIndex].mainNote = "";
+      updatedRows[index].subAgenda[subIndex].requestContributorURlName = "";
+      updatedRows[index].subAgenda[subIndex].userID = 0;
+    } else if (updatedRows[index].subAgenda[subIndex].subSelectRadio === 3) {
+      updatedRows[index].subAgenda[subIndex].subfiles = [];
+      updatedRows[index].subAgenda[subIndex].subAgendaUrlFieldRadio = "";
+    }
+    // console.log(
+    //   updatedRows,
+    //   "handleSubAgendaRadioChangehandleSubAgendaRadioChange"
+    // );
     setRows(updatedRows);
   };
 
