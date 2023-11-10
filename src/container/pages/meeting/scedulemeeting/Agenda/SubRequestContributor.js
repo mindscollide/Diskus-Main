@@ -16,6 +16,7 @@ const SubRequestContributor = ({
   subIndex,
   allUsersRC,
   setAllUsersRC,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
 
@@ -164,6 +165,12 @@ const SubRequestContributor = ({
             }}
             onChange={(value) => handleSelectChange(index, subIndex, value)}
             classNamePrefix={"SelectOrganizersSelect_active"}
+            isDisabled={
+              ediorRole.role === "Participant" ||
+              ediorRole.role === "Agenda Contributor"
+                ? true
+                : false
+            }
           />
           {/* <TextField
             labelClass={"d-none"}
@@ -190,6 +197,12 @@ const SubRequestContributor = ({
             value={subAgendaData.subAgendarequestContributorEnterNotes}
             change={(e) =>
               handleSubAgendaRequestContributorEnterNote(index, subIndex, e)
+            }
+            disable={
+              ediorRole.role === "Participant" ||
+              ediorRole.role === "Agenda Contributor"
+                ? true
+                : false
             }
           />
         </Col>

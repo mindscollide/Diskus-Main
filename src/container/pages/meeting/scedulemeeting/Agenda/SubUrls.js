@@ -3,7 +3,14 @@ import { Col, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 
-const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
+const SubUrls = ({
+  subAgendaData,
+  rows,
+  setRows,
+  index,
+  subIndex,
+  ediorRole,
+}) => {
   const { t } = useTranslation();
   // Function to handle changes in sub-agenda additional Enter URl Radio text field
   const handleSubAgendaUrlEnterUrlField = (index, subIndex, e) => {
@@ -35,6 +42,12 @@ const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
           name={"SubAgendaUrlRadioField"}
           value={subAgendaData.subAgendaUrlFieldRadio}
           change={(e) => handleSubAgendaUrlEnterUrlField(index, subIndex, e)}
+          disable={
+            ediorRole.role === "Participant" ||
+            ediorRole.role === "Agenda Contributor"
+              ? true
+              : false
+          }
         />
       </Col>
     </Row>

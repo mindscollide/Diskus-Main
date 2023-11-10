@@ -15,16 +15,11 @@ const RequestContributor = ({
   rows,
   allUsersRC,
   setAllUsersRC,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
 
   const { NewMeetingreducer } = useSelector((state) => state);
-
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
-
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
   const [agendaContributors, setAgendaContributors] = useState([]);
 
@@ -152,6 +147,12 @@ const RequestContributor = ({
             }}
             onChange={(value) => handleSelectChange(index, value)}
             classNamePrefix={"SelectOrganizersSelect_active"}
+            isDisabled={
+              ediorRole.role === "Participant" ||
+              ediorRole.role === "Agenda Contributor"
+                ? true
+                : false
+            }
           />
           {/* <TextField
             applyClass={"AgendaTextField"}
@@ -181,6 +182,12 @@ const RequestContributor = ({
             placeholder={t("Enter-notes")}
             required={true}
             maxLength={500}
+            disable={
+              ediorRole.role === "Participant" ||
+              ediorRole.role === "Agenda Contributor"
+                ? true
+                : false
+            }
           />
         </Col>
       </Row>

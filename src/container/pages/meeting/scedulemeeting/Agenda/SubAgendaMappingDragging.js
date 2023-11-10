@@ -59,12 +59,12 @@ const SubAgendaMappingDragging = ({
   setFileForSend,
   allUsersRC,
   setAllUsersRC,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  let currentMeetingID = localStorage.getItem("meetingID");
   const { NewMeetingreducer } = useSelector((state) => state);
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -83,54 +83,6 @@ const SubAgendaMappingDragging = ({
 
     return `${year}${month}${day}`;
   }
-
-  const currentUTCDate = getCurrentUTCDate();
-  // SubAgenda Select Options
-  const SubAgendaoptions = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
-
-  //Function For Dragging the SubAgendaItems
-  const onSubAgendaDragEnd = (result, index) => {
-    console.log(result, index, "resultresultresult");
-    if (!result.destination) return; // Dropped outside the list
-
-    const { source, destination } = result;
-
-    // Clone the entire rows array
-    const updatedRows = [...rows];
-
-    // Find the source and destination indices
-    const sourceIndex = source.index;
-    const destinationIndex = destination.index;
-
-    // Get the dragged item
-    const draggedItem = updatedRows[index].subAgenda[sourceIndex];
-    console.log(draggedItem, "draggedItemdraggedItem");
-    // Remove the item from the source index
-    updatedRows[index].subAgenda.splice(sourceIndex, 1);
-
-    // Insert the item at the correct destination index
-    updatedRows[index].subAgenda.splice(destinationIndex, 0, draggedItem);
-
-    // Update state with the reordered data
-    setRows(updatedRows);
-  };
-
-  const apllyLockOnSubAgenda = (parentIndex, subIndex) => {
-    const exists = subLockArry.some((item) => {
-      if (item.parentIndex === parentIndex) {
-        return item.SubIndexArray.some(
-          (subItem) => subItem.subIndex === subIndex
-        );
-      }
-      return false;
-    });
-
-    return exists;
-  };
 
   // Function to handle changes in sub-agenda title
   const handleSubAgendaTitleChange = (index, subIndex, e) => {
@@ -333,13 +285,6 @@ const SubAgendaMappingDragging = ({
     }
   }, [currentLanguage]);
 
-  // useEffect(() => {
-  //   let Data = {
-  //     MeetingID: Number(currentMeetingID),
-  //   };
-  //   dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-  // }, []);
-
   useEffect(() => {
     if (
       NewMeetingreducer.getMeetingusers !== undefined &&
@@ -359,10 +304,6 @@ const SubAgendaMappingDragging = ({
 
   useEffect(() => {
     if (allPresenters.lenth > 0 || Object.keys(allPresenters).length > 0) {
-      console.log(
-        "Condition allPresenters",
-        ...allPresenters.meetingOrganizers
-      );
       const allPresentersReducer = [
         ...allPresenters.meetingOrganizers,
         ...allPresenters.meetingAgendaContributors,
@@ -409,6 +350,12 @@ const SubAgendaMappingDragging = ({
                       key={subAgendaData.subAgendaID}
                       draggableId={`subAgenda-${subAgendaData.subAgendaID}`}
                       index={subIndex}
+                      isDragDisabled={
+                        ediorRole.role === "Participant" ||
+                        ediorRole.role === "Agenda Contributor"
+                          ? true
+                          : false
+                      }
                     >
                       {(provided, snapshot) => (
                         <div
@@ -434,7 +381,6 @@ const SubAgendaMappingDragging = ({
                                     sm={11}
                                     className={
                                       parentIslockedCheck ||
-                                      // apllyLockOnSubAgenda(index, subIndex)
                                       subAgendaData.isLocked
                                         ? styles["SubajendaBox_Inactive"]
                                         : styles["SubajendaBox"]
@@ -510,11 +456,12 @@ const SubAgendaMappingDragging = ({
                                               disable={
                                                 parentIslockedCheck ||
                                                 subAgendaData.isLocked
-                                                  ? // apllyLockOnSubAgenda(
-                                                    //   index,
-                                                    //   subIndex
-                                                    // )
-                                                    true
+                                                  ? true
+                                                  : ediorRole.role ===
+                                                      "Participant" ||
+                                                    ediorRole.role ===
+                                                      "Agenda Contributor"
+                                                  ? true
                                                   : false
                                               }
                                               placeholder={t(
@@ -560,41 +507,18 @@ const SubAgendaMappingDragging = ({
                                               isDisabled={
                                                 parentIslockedCheck ||
                                                 subAgendaData.isLocked
-                                                  ? // apllyLockOnSubAgenda(
-                                                    //   index,
-                                                    //   subIndex
-                                                    // )
-                                                    true
+                                                  ? true
+                                                  : ediorRole.role ===
+                                                      "Participant" ||
+                                                    ediorRole.role ===
+                                                      "Agenda Contributor"
+                                                  ? true
                                                   : false
                                               }
                                               classNamePrefix={
                                                 "SelectOrganizersSelect_active"
                                               }
                                             />
-                                            {/* <Select
-                                              options={SubAgendaoptions}
-                                              value={
-                                                subAgendaData.selectedOption
-                                              }
-                                              onChange={(value) =>
-                                                handleSubAgendaSelectChange(
-                                                  index,
-                                                  subIndex,
-                                                  value
-                                                )
-                                              }
-                                              isDisabled={
-                                                apllyLockOnParentAgenda(
-                                                  index
-                                                ) ||
-                                                apllyLockOnSubAgenda(
-                                                  index,
-                                                  subIndex
-                                                )
-                                                  ? true
-                                                  : false
-                                              }
-                                            /> */}
                                           </Col>
                                           <Col
                                             sm={12}
@@ -628,11 +552,12 @@ const SubAgendaMappingDragging = ({
                                                   disabled={
                                                     parentIslockedCheck ||
                                                     subAgendaData.isLocked
-                                                      ? // apllyLockOnSubAgenda(
-                                                        //   index,
-                                                        //   subIndex
-                                                        // )
-                                                        true
+                                                      ? true
+                                                      : ediorRole.role ===
+                                                          "Participant" ||
+                                                        ediorRole.role ===
+                                                          "Agenda Contributor"
+                                                      ? true
                                                       : false
                                                   }
                                                   format="HH:mm A"
@@ -692,11 +617,12 @@ const SubAgendaMappingDragging = ({
                                                   disabled={
                                                     parentIslockedCheck ||
                                                     subAgendaData.isLocked
-                                                      ? // apllyLockOnSubAgenda(
-                                                        //   index,
-                                                        //   subIndex
-                                                        // )
-                                                        true
+                                                      ? true
+                                                      : ediorRole.role ===
+                                                          "Participant" ||
+                                                        ediorRole.role ===
+                                                          "Agenda Contributor"
+                                                      ? true
                                                       : false
                                                   }
                                                   format="HH:mm A"
@@ -717,25 +643,29 @@ const SubAgendaMappingDragging = ({
                                                 />
                                               </Col>
                                             </Row>
-                                            <img
-                                              alt=""
-                                              draggable={false}
-                                              src={redcrossIcon}
-                                              height="25px"
-                                              width="25px"
-                                              className={
-                                                styles[
-                                                  "RedCross_Icon_class_SubAgenda"
-                                                ]
-                                              }
-                                              onClick={() => {
-                                                parentIslockedCheck ||
-                                                  handleCrossSubAjenda(
-                                                    index,
-                                                    subIndex
-                                                  );
-                                              }}
-                                            />
+                                            {ediorRole.role === "Participant" ||
+                                            ediorRole.role ===
+                                              "Agenda Contributor" ? null : (
+                                              <img
+                                                alt=""
+                                                draggable={false}
+                                                src={redcrossIcon}
+                                                height="25px"
+                                                width="25px"
+                                                className={
+                                                  styles[
+                                                    "RedCross_Icon_class_SubAgenda"
+                                                  ]
+                                                }
+                                                onClick={() => {
+                                                  parentIslockedCheck ||
+                                                    handleCrossSubAjenda(
+                                                      index,
+                                                      subIndex
+                                                    );
+                                                }}
+                                              />
+                                            )}
                                           </Col>
                                         </Row>
                                         <Row>
@@ -774,6 +704,17 @@ const SubAgendaMappingDragging = ({
                                                     name={"Description"}
                                                     value={
                                                       subAgendaData.description
+                                                    }
+                                                    disable={
+                                                      parentIslockedCheck ||
+                                                      subAgendaData.isLocked
+                                                        ? true
+                                                        : ediorRole.role ===
+                                                            "Participant" ||
+                                                          ediorRole.role ===
+                                                            "Agenda Contributor"
+                                                        ? true
+                                                        : false
                                                     }
                                                     change={(e) =>
                                                       handleAgendaDescription(
@@ -818,11 +759,7 @@ const SubAgendaMappingDragging = ({
                                                     disabled={
                                                       parentIslockedCheck ||
                                                       subAgendaData.isLocked
-                                                        ? // apllyLockOnSubAgenda(
-                                                          //   index,
-                                                          //   subIndex
-                                                          // )
-                                                          true
+                                                        ? true
                                                         : false
                                                     }
                                                   >
@@ -869,83 +806,80 @@ const SubAgendaMappingDragging = ({
                                                   sm={6}
                                                   className="d-flex justify-content-end gap-4 align-items-center"
                                                 >
-                                                  <img
-                                                    draggable={false}
-                                                    src={Key}
-                                                    width="24.07px"
-                                                    className="cursor-pointer"
-                                                    height="24.09px"
-                                                    onClick={
-                                                      parentIslockedCheck ||
-                                                      subAgendaData.isLocked
-                                                        ? // apllyLockOnSubAgenda(
-                                                          //   index,
-                                                          //   subIndex
-                                                          // )
-                                                          ""
-                                                        : openAdvancePermissionModal
-                                                    }
-                                                    alt=""
-                                                  />
-                                                  <img
-                                                    alt=""
-                                                    draggable={false}
-                                                    src={Cast}
-                                                    width="25.85px"
-                                                    height="25.89px"
-                                                    className="cursor-pointer"
-                                                    onClick={() =>
-                                                      parentIslockedCheck ||
-                                                      subAgendaData.isLocked
-                                                        ? // apllyLockOnSubAgenda(
-                                                          //   index,
-                                                          //   subIndex
-                                                          // )
-                                                          ""
-                                                        : openVoteMOdal(
-                                                            subAgendaData.subAgendaID,
-                                                            subAgendaData.agendaVotingID
-                                                          )
-                                                    }
-                                                  />
-                                                  <img
-                                                    draggable={false}
-                                                    src={
-                                                      parentIslockedCheck
-                                                        ? closedLocked
-                                                        : subAgendaData.isLocked
-                                                        ? // apllyLockOnSubAgenda(
-                                                          //     index,
-                                                          //     subIndex
-                                                          //   )
-                                                          DarkLock
-                                                        : Lock
-                                                    }
-                                                    alt=""
-                                                    width="18.87px"
-                                                    height="26.72px"
-                                                    className={
-                                                      parentIslockedCheck
-                                                        ? styles[
-                                                            "lockBtn_inActive"
-                                                          ]
-                                                        : subAgendaData.isLocked
-                                                        ? styles[
-                                                            "lockBtn_inActive_coursor"
-                                                          ]
-                                                        : styles["lockBtn"]
-                                                    }
-                                                    onClick={() => {
-                                                      if (parentIslockedCheck) {
-                                                      } else {
-                                                        lockFunctionActiveSubMenus(
-                                                          index,
-                                                          subAgendaData.subAgendaID,
+                                                  {ediorRole.role ===
+                                                    "Participant" ||
+                                                  ediorRole.role ===
+                                                    "Agenda Contributor" ? null : (
+                                                    <>
+                                                      <img
+                                                        draggable={false}
+                                                        src={Key}
+                                                        width="24.07px"
+                                                        className="cursor-pointer"
+                                                        height="24.09px"
+                                                        onClick={
+                                                          parentIslockedCheck ||
                                                           subAgendaData.isLocked
-                                                        );
-                                                      }
-                                                    }}
-                                                  />
+                                                            ? ""
+                                                            : openAdvancePermissionModal
+                                                        }
+                                                        alt=""
+                                                      />
+                                                      <img
+                                                        alt=""
+                                                        draggable={false}
+                                                        src={Cast}
+                                                        width="25.85px"
+                                                        height="25.89px"
+                                                        className="cursor-pointer"
+                                                        onClick={() =>
+                                                          parentIslockedCheck ||
+                                                          subAgendaData.isLocked
+                                                            ? ""
+                                                            : openVoteMOdal(
+                                                                subAgendaData.subAgendaID,
+                                                                subAgendaData.agendaVotingID
+                                                              )
+                                                        }
+                                                      />
+                                                      <img
+                                                        draggable={false}
+                                                        src={
+                                                          parentIslockedCheck
+                                                            ? closedLocked
+                                                            : subAgendaData.isLocked
+                                                            ? DarkLock
+                                                            : Lock
+                                                        }
+                                                        alt=""
+                                                        width="18.87px"
+                                                        height="26.72px"
+                                                        className={
+                                                          parentIslockedCheck
+                                                            ? styles[
+                                                                "lockBtn_inActive"
+                                                              ]
+                                                            : subAgendaData.isLocked
+                                                            ? styles[
+                                                                "lockBtn_inActive_coursor"
+                                                              ]
+                                                            : styles["lockBtn"]
+                                                        }
+                                                        onClick={() => {
+                                                          if (
+                                                            parentIslockedCheck
+                                                          ) {
+                                                          } else {
+                                                            lockFunctionActiveSubMenus(
+                                                              index,
+                                                              subAgendaData.subAgendaID,
+                                                              subAgendaData.isLocked
+                                                            );
+                                                          }
+                                                        }}
+                                                      />
+                                                    </>
+                                                  )}
                                                 </Col>
                                               </Row>
                                               <Droppable
@@ -980,23 +914,35 @@ const SubAgendaMappingDragging = ({
                                                               setFileForSend={
                                                                 setFileForSend
                                                               }
-                                                            />
-                                                            <SubDedaultDragger
-                                                              setRows={setRows}
-                                                              rows={rows}
-                                                              index={index}
-                                                              subIndex={
-                                                                subIndex
-                                                              }
-                                                              fileForSend={
-                                                                fileForSend
-                                                              }
-                                                              setFileForSend={
-                                                                setFileForSend
+                                                              ediorRole={
+                                                                ediorRole
                                                               }
                                                             />
+                                                            {ediorRole.role ===
+                                                            "Participant" ? null : (
+                                                              <SubDedaultDragger
+                                                                setRows={
+                                                                  setRows
+                                                                }
+                                                                rows={rows}
+                                                                index={index}
+                                                                subIndex={
+                                                                  subIndex
+                                                                }
+                                                                fileForSend={
+                                                                  fileForSend
+                                                                }
+                                                                setFileForSend={
+                                                                  setFileForSend
+                                                                }
+                                                                ediorRole={
+                                                                  ediorRole
+                                                                }
+                                                              />
+                                                            )}
                                                           </>
-                                                        ) : (
+                                                        ) : ediorRole.role ===
+                                                          "Participant" ? null : (
                                                           <SubDedaultDragger
                                                             setRows={setRows}
                                                             rows={rows}
@@ -1007,6 +953,9 @@ const SubAgendaMappingDragging = ({
                                                             }
                                                             setFileForSend={
                                                               setFileForSend
+                                                            }
+                                                            ediorRole={
+                                                              ediorRole
                                                             }
                                                           />
                                                         )}
@@ -1021,6 +970,7 @@ const SubAgendaMappingDragging = ({
                                                         setRows={setRows}
                                                         index={index}
                                                         subIndex={subIndex}
+                                                        ediorRole={ediorRole}
                                                       />
                                                     ) : subAgendaData.subSelectRadio ===
                                                       3 ? (
@@ -1036,6 +986,7 @@ const SubAgendaMappingDragging = ({
                                                         setAllUsersRC={
                                                           setAllUsersRC
                                                         }
+                                                        ediorRole={ediorRole}
                                                       />
                                                     ) : (
                                                       <></>
