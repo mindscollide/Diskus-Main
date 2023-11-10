@@ -122,13 +122,12 @@ const ParentAgenda = ({
       subTitle: "",
       description: "",
       agendaVotingID: 0,
-      presenterID: null,
+      presenterID: 0,
       presenterName: "",
-      startDate: null,
-      endDate: null,
+      startDate: "",
+      endDate: "",
       subSelectRadio: 1,
       subAgendaUrlFieldRadio: "",
-      // subAgendarequestContributorUrl: 0,
       subAgendarequestContributorUrlName: "",
       subAgendarequestContributorEnterNotes: "",
       subfiles: [],
@@ -275,8 +274,25 @@ const ParentAgenda = ({
 
   // Function to update the selected radio option for a specific row
   const handleRadioChange = (index, value) => {
+    console.log("handleRadioChange", index, value);
     const updatedRows = [...rows];
+    console.log("handleRadioChange", updatedRows[index]);
     updatedRows[index].selectedRadio = value;
+    console.log("handleRadioChange", updatedRows[index].selectedRadio);
+    if (updatedRows[index].selectedRadio === 1) {
+      updatedRows[index].urlFieldMain = "";
+      updatedRows[index].mainNote = "";
+      updatedRows[index].requestContributorURlName = "";
+      updatedRows[index].userID = 0;
+    } else if (updatedRows[index].selectedRadio === 2) {
+      updatedRows[index].files = [];
+      updatedRows[index].mainNote = "";
+      updatedRows[index].requestContributorURlName = "";
+      updatedRows[index].userID = 0;
+    } else if (updatedRows[index].selectedRadio === 3) {
+      updatedRows[index].files = [];
+      updatedRows[index].urlFieldMain = "";
+    }
     setRows(updatedRows);
   };
 
@@ -367,22 +383,6 @@ const ParentAgenda = ({
       });
     }
   }, [presenters]);
-
-  console.log("allSavedPresenters", allSavedPresenters);
-
-  console.log(
-    "fileDataPropfileDataProp",
-    fileForSend,
-
-    rows
-  );
-
-  console.log("Presenters", presenters);
-
-  console.log("allPresenters", allPresenters);
-
-  console.log("Meeting Reducer", NewMeetingreducer);
-  console.log("Meeting Reducer datadatadatadata", rows);
 
   return (
     <Draggable
