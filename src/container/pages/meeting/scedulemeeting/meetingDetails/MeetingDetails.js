@@ -677,6 +677,17 @@ const MeetingDetails = ({
     } catch (error) {}
   }, [NewMeetingreducer.recurring.meetingRecurrances]);
 
+  // UseEffect to set the default selected value when recurringDropDown changes
+  useEffect(() => {
+    if (recurringDropDown.length > 0) {
+      // Set the default value to the first item in the recurringDropDown
+      handleRecurringSelectoptions({
+        value: recurringDropDown[0].value,
+        label: recurringDropDown[0].label,
+      });
+    }
+  }, [recurringDropDown]);
+
   // Showing The reposnse messege
   useEffect(() => {
     if (
