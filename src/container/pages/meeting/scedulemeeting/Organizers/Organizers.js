@@ -26,6 +26,7 @@ import {
   UpdateMeetingUserForOrganizers,
   showCancelModalOrganizers,
   ShowNextConfirmationModal,
+  showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
@@ -45,6 +46,7 @@ import {
 } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
 import NextModal from "../meetingDetails/NextModal/NextModal";
+import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 
 const Organizers = ({
   setAgendaContributors,
@@ -76,7 +78,7 @@ const Organizers = ({
 
   const [viewOrganizers, setviewOrganizers] = useState(false);
   const [flag, setFlag] = useState(2);
-
+  const [prevFlag, setprevFlag] = useState(2);
   const [editState, setEditState] = useState(false);
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
@@ -419,19 +421,7 @@ const Organizers = ({
   };
 
   const previousTabOrganizer = () => {
-    setAgendaContributors(false);
-    setmeetingDetails(true);
-    setorganizers(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-    setRowsData([]);
-    dispatch(saveMeetingFlag(false));
-    dispatch(editMeetingFlag(false));
+    dispatch(showPreviousConfirmationModal(true));
   };
 
   const handlePublishButton = () => {
@@ -816,9 +806,7 @@ const Organizers = ({
           ) : null}
         </>
       )}
-
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-
       {NewMeetingreducer.adduserModal && <ModalOrganizor />}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.notifyOrganizors && <NotifyOrganizers />}
@@ -842,6 +830,22 @@ const Organizers = ({
           setMeetingMaterial={setMeetingMaterial}
           setRowsData={setRowsData}
           flag={flag}
+        />
+      )}
+      {NewMeetingreducer.ShowPreviousModal && (
+        <PreviousModal
+          setAgendaContributors={setAgendaContributors}
+          setmeetingDetails={setmeetingDetails}
+          setorganizers={setorganizers}
+          setParticipants={setParticipants}
+          setAgenda={setAgenda}
+          setMinutes={setMinutes}
+          setactionsPage={setactionsPage}
+          setAttendance={setAttendance}
+          setPolls={setPolls}
+          setMeetingMaterial={setMeetingMaterial}
+          setRowsData={setRowsData}
+          prevFlag={prevFlag}
         />
       )}
     </>

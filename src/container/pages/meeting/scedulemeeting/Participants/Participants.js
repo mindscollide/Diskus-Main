@@ -19,12 +19,14 @@ import {
   showAddParticipantsModal,
   showCancelModalPartipants,
   showCrossConfirmationModal,
+  showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
 import { useEffect } from "react";
 import NextModal from "../meetingDetails/NextModal/NextModal";
+import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 
 const Participants = ({
   setParticipants,
@@ -48,6 +50,8 @@ const Participants = ({
   const [inputValues, setInputValues] = useState({});
   const [editableSave, setEditableSave] = useState(0);
   const [flag, setFlag] = useState(4);
+  const [prevFlag, setprevFlag] = useState(4);
+
   const [rspvRows, setrspvRows] = useState([]);
   //open row icon cross modal
   const openCrossIconModal = () => {
@@ -329,8 +333,7 @@ const Participants = ({
   };
 
   const previousTabOrganizer = () => {
-    setAgendaContributors(true);
-    setParticipants(false);
+    dispatch(showPreviousConfirmationModal(true));
   };
 
   //canceling the participants page
@@ -569,6 +572,14 @@ const Participants = ({
               setAgenda={setAgenda}
               setParticipants={setParticipants}
               flag={flag}
+            />
+          )}
+
+          {NewMeetingreducer.ShowPreviousModal && (
+            <PreviousModal
+              setAgendaContributors={setAgendaContributors}
+              setParticipants={setParticipants}
+              prevFlag={prevFlag}
             />
           )}
         </>

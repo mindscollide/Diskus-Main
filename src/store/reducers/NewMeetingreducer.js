@@ -86,6 +86,7 @@ const initialState = {
   unsaveViewMinutesModal: false,
   unsavedViewPollsModal: false,
   nextConfirmModal: false,
+  ShowPreviousModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1514,6 +1515,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         nextConfirmModal: action.response,
+      };
+    }
+
+    case actions.PREVIOUS_MODAL: {
+      return {
+        ...state,
+        ShowPreviousModal: action.response,
       };
     }
 

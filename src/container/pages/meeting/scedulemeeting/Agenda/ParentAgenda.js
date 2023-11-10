@@ -57,6 +57,8 @@ const ParentAgenda = ({
   setFileForSend,
   setAllSavedPresenters,
   allSavedPresenters,
+  allUsersRC,
+  setAllUsersRC,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -506,17 +508,6 @@ const ParentAgenda = ({
                             }
                             classNamePrefix={"SelectOrganizersSelect_active"}
                           />
-                          {/* <Select
-                            options={optionsIndividualOpenCloseVoting}
-                            onChange={dropDownSelectOrganizers}
-                            value={{
-                              value: agendaDetails.organizerUserID,
-                              label: agendaDetails.organizerUserName,
-                            }}
-                            classNamePrefix={
-                              styles["SelectOrganizersSelect_active"]
-                            }
-                          /> */}
                         </Col>
                         <Col
                           sm={12}
@@ -800,6 +791,8 @@ const ParentAgenda = ({
                                     index={index}
                                     setRows={setRows}
                                     rows={rows}
+                                    allUsersRC={allUsersRC}
+                                    setAllUsersRC={setAllUsersRC}
                                   />
                                 ) : (
                                   <></>
@@ -839,6 +832,8 @@ const ParentAgenda = ({
               setSubExpand={setSubExpand}
               openAdvancePermissionModal={openAdvancePermissionModal}
               openVoteMOdal={openVoteMOdal}
+              allUsersRC={allUsersRC}
+              setAllUsersRC={setAllUsersRC}
             />
           }
           {/* sub Ajenda Button */}

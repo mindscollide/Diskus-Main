@@ -35,6 +35,8 @@ const Agenda = ({
   setAgenda,
   setMeetingMaterial,
   setViewAdvanceMeetingModal,
+  setPolls,
+  setMinutes,
   advanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
@@ -54,6 +56,7 @@ const Agenda = ({
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
+
   const [rows, setRows] = useState([
     {
       ID: getRandomUniqueNumber().toString(),
@@ -241,6 +244,11 @@ const Agenda = ({
                   onClick={handleCancelBtn}
                 /> */}
                 <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Meeting_Details"]}
+                  onClick={handleCancelBtn}
+                />
+                <Button
                   text={t("Previous")}
                   className={styles["Next_Button_Organizers_view"]}
                   onClick={handlePreviousBtn}
@@ -291,7 +299,9 @@ const Agenda = ({
           setCancelModalView={setCancelModalView}
           cancelModalView={cancelModalView}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-          setMeetingDetails={setAgenda}
+          setAgenda={setAgenda}
+          setPolls={setPolls}
+          setMinutes={setMinutes}
         />
       )}
     </>

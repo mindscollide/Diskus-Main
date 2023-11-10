@@ -57,6 +57,8 @@ const SubAgendaMappingDragging = ({
   openVoteMOdal,
   fileForSend,
   setFileForSend,
+  allUsersRC,
+  setAllUsersRC,
 }) => {
   const { t } = useTranslation();
   //Timepicker
@@ -1030,6 +1032,10 @@ const SubAgendaMappingDragging = ({
                                                         setRows={setRows}
                                                         index={index}
                                                         subIndex={subIndex}
+                                                        allUsersRC={allUsersRC}
+                                                        setAllUsersRC={
+                                                          setAllUsersRC
+                                                        }
                                                       />
                                                     ) : (
                                                       <></>

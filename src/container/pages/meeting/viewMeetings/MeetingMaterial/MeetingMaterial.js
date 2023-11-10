@@ -10,25 +10,41 @@ import PDFIcon from "../../../../../assets/images/pdf_icon.svg";
 import { Button, Table, Loader } from "../../../../../components/elements";
 import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
 import { useSelector } from "react-redux";
-import { showCancelMeetingMaterial } from "../../../../../store/actions/NewMeetingActions";
-import { getMeetingMaterialAPI } from "../../../../../store/actions/NewMeetingActions";
+import {
+  showCancelMeetingMaterial,
+  searchNewUserMeeting,
+  getMeetingMaterialAPI,
+} from "../../../../../store/actions/NewMeetingActions";
 import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
 
 const MeetingMaterial = ({
+  // setViewAdvanceMeetingModal,
+  // setMeetingMaterial,
+  // setMinutes,
+  // currentMeeting,
+  // advanceMeetingModalID,
+
   setViewAdvanceMeetingModal,
-  setMeetingMaterial,
-  setMinutes,
-  currentMeeting,
   advanceMeetingModalID,
+  setAdvanceMeetingModalID,
+  setMeetingMaterial,
+  setAgenda,
+  setMinutes,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   console.log(NewMeetingreducer, "parentAgendasparentAgendas");
+
+  // For cancel with no modal Open
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   const [clicks, setClicks] = useState(0);
   const [dataCheck, setDataCheck] = useState([]);
@@ -63,80 +79,6 @@ const MeetingMaterial = ({
       }, 300); // Reset after 300 milliseconds (adjust as needed)
     }
   };
-
-  // const materialColoumn = [
-  //   {
-  //     title: t("Document-name"),
-  //     dataIndex: "documentName",
-  //     key: "documentName",
-  //     width: "250px",
-  //     render: (text, data) => {
-  //       console.log(data, "dattatatatata");
-  //       let ext = data.documentName.split(".").pop();
-  //       const pdfData = {
-  //         taskId: data.agendaID,
-  //         commingFrom: 4,
-  //         fileName: data.documentName,
-  //         attachmentID: data.agendaID,
-  //       };
-  //       const pdfDataJson = JSON.stringify(pdfData);
-  //       console.log(pdfDataJson, "Pdfjajaaj");
-  //       if (ext === "pdf") {
-  //         return (
-  //           <>
-  //             <section
-  //               className={styles["docx-name-title"]}
-  //               onClick={(e) => viewHandlerOnclick(e, pdfDataJson)}
-  //             >
-  //               <img
-  //                 src={getIconSource(getFileExtension(data.documentName))} // Use ext here
-  //                 alt=""
-  //                 width={"25px"}
-  //                 height={"25px"}
-  //                 className="me-2"
-  //               />
-
-  //               <abbr title={text}>
-  //                 <span
-  //                   className={styles["docx-name-title"]}
-  //                   onDoubleClick={() => {
-  //                     console.log("Check double Click");
-  //                   }}
-  //                 >
-  //                   {text}
-  //                 </span>
-  //               </abbr>
-  //             </section>
-  //           </>
-  //         );
-  //       } else {
-  //         return (
-  //           <section className={styles["docx-name-title"]}>
-  //             <img
-  //               src={getIconSource(getFileExtension(data.documentName))} // Use ext here
-  //               alt=""
-  //               width={"25px"}
-  //               height={"25px"}
-  //               className="me-2"
-  //             />
-  //             <abbr title={text}>
-  //               <span className={styles["docx-name-title"]}>{text}</span>
-  //             </abbr>
-  //           </section>
-  //         );
-  //       }
-  //     },
-  //   },
-  //   {
-  //     title: t("Agenda-name"),
-  //     dataIndex: "agendaName",
-  //     key: "agendaName",
-  //     width: "250px",
-  //     render: (text) => (
-  //       <label className={styles["agenda-name-title"]}>{text}</label>
-  //     ),
-  //   },
-  // ];
 
   // Modify your materialColoumn definition to handle parent and child agendas
   const materialColoumn = [
@@ -254,6 +196,24 @@ const MeetingMaterial = ({
     },
   ];
 
+  const handleCancelMeetingNoPopup = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setViewAdvanceMeetingModal(false);
+    advanceMeetingModalID(false);
+    setViewAdvanceMeetingModal(false);
+    setAdvanceMeetingModalID(false);
+  };
+
   // To render data in table
   useEffect(() => {
     if (
@@ -312,6 +272,11 @@ const MeetingMaterial = ({
             text={t("Clone-meeting")}
             className={styles["Cancel_Classname"]}
           /> */}
+          <Button
+            text={t("Cancel")}
+            className={styles["Cancel_Meeting_Details"]}
+            onClick={handleCancelMeetingNoPopup}
+          />
           <Button
             text={t("Previous")}
             className={styles["Save_Classname"]}

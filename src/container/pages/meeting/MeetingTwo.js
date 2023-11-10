@@ -133,6 +133,10 @@ const NewMeeting = () => {
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
+  console.log(
+    viewAdvanceMeetingModal,
+    "viewAdvanceMeetingModalviewAdvanceMeetingModal"
+  );
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [ediorRole, setEdiorRole] = useState({ status: null, role: null });
   const [
