@@ -6383,4 +6383,5 @@ textarea {
   font-size: 12px !important;
   font-family: "MontserratMedium";
   box-shadow: none !important;
+  resize: none !important;
 }

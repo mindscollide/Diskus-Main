@@ -448,7 +448,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       setErrorBar(true);
       setOpen({
         flag: true,
-        message: t("Please fill all the fields"),
+        message: t("Please-fill-all-the-fields"),
       });
     }
   };
