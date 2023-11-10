@@ -806,7 +806,10 @@ const MeetingDetails = ({
     meetingDetails.ReminderFrequencyTwo,
     meetingDetails.ReminderFrequencyThree,
   ]);
-
+  console.log(
+    currentMeeting,
+    "currentMeetingcurrentMeetingcurrentMeetingcurrentMeeting"
+  );
   //Fetching All Saved Data
   useEffect(() => {
     console.log(
