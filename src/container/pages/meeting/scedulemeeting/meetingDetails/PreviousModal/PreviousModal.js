@@ -53,6 +53,11 @@ const PreviousModal = ({
       setMeetingMaterial(false);
     }
 
+    if (prevFlag === 6) {
+      setMeetingMaterial(true);
+      setMinutes(false);
+    }
+
     if (prevFlag === 2) {
       setmeetingDetails(true);
       setAgendaContributors(false);
