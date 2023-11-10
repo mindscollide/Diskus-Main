@@ -872,39 +872,42 @@ const ParentAgenda = ({
             />
           }
           {/* sub Ajenda Button */}
-          <Row className="mt-3">
-            <Col lg={12} md={12} sm={12}>
-              <Button
-                text={
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center gap-2 align-items-center"
-                      >
-                        <img
-                          alt=""
-                          draggable={false}
-                          src={plusFaddes}
-                          height="10.77px"
-                          width="10.77px"
-                        />
-                        <span className={styles["Add_Agen_Heading"]}>
-                          {t("Add-sub-agenda")}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                }
-                className={styles["AddMoreBtnAgenda"]}
-                onClick={() => {
-                  addSubAjendaRows(index);
-                }}
-              />
-            </Col>
-          </Row>
+          {ediorRole.role === "Participant" ||
+          ediorRole.role === "Agenda Contributor" ? null : (
+            <Row className="mt-3">
+              <Col lg={12} md={12} sm={12}>
+                <Button
+                  text={
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center gap-2 align-items-center"
+                        >
+                          <img
+                            alt=""
+                            draggable={false}
+                            src={plusFaddes}
+                            height="10.77px"
+                            width="10.77px"
+                          />
+                          <span className={styles["Add_Agen_Heading"]}>
+                            {t("Add-sub-agenda")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  }
+                  className={styles["AddMoreBtnAgenda"]}
+                  onClick={() => {
+                    addSubAjendaRows(index);
+                  }}
+                />
+              </Col>
+            </Row>
+          )}
         </div>
       )}
     </Draggable>

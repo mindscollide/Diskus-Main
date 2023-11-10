@@ -46,7 +46,12 @@ import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 
-const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting,ediorRole }) => {
+const Agenda = ({
+  setSceduleMeeting,
+  currentMeeting,
+  isEditMeeting,
+  ediorRole,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -539,36 +544,40 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting,ediorRole }) 
               </Row>
             </DragDropContext>
             {/* Seperator For Footer */}
-            <Row className="mt-3">
-              <Col lg={12} md={12} sm={12}>
-                <Button
-                  text={
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-center gap-2 align-items-center"
-                        >
-                          <img
-                            draggable={false}
-                            src={plusFaddes}
-                            height="10.77px"
-                            width="10.77px"
-                          />
-                          <span className={styles["Add_Agen_Heading"]}>
-                            {t("Add-agenda")}
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
-                  }
-                  className={styles["AddMoreBtnAgenda"]}
-                  onClick={addRow}
-                />
-              </Col>
-            </Row>
+            {ediorRole.role === "Participant" ||
+            ediorRole.role === "Agenda Contributor" ? null : (
+              <Row className="mt-3">
+                <Col lg={12} md={12} sm={12}>
+                  <Button
+                    text={
+                      <>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center gap-2 align-items-center"
+                          >
+                            <img
+                              draggable={false}
+                              src={plusFaddes}
+                              height="10.77px"
+                              width="10.77px"
+                              alt=""
+                            />
+                            <span className={styles["Add_Agen_Heading"]}>
+                              {t("Add-agenda")}
+                            </span>
+                          </Col>
+                        </Row>
+                      </>
+                    }
+                    className={styles["AddMoreBtnAgenda"]}
+                    onClick={addRow}
+                  />
+                </Col>
+              </Row>
+            )}
             <Row className="mt-4">
               <Col
                 lg={12}
