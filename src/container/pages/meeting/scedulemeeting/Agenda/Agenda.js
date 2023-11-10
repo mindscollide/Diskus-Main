@@ -46,7 +46,7 @@ import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 
-const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
+const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting,ediorRole }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -521,6 +521,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
                                       setAgendaItemRemovedIndex
                                     }
                                     setSubajendaRemoval={setSubajendaRemoval}
+                                    ediorRole={ediorRole}
                                   />
                                   {/* Line Seperator */}
                                   <Row className="mt-3">

@@ -61,7 +61,30 @@ const MeetingDetails = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const nextConfirmModal = useSelector(
+    (state) => state.NewMeetingreducer.nextConfirmModal
+  );
+  const cancelModalMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+  );
+  const getmeetingURL = useSelector(
+    (state) => state.NewMeetingreducer.getmeetingURL
+  );
+  const getALlMeetingTypes = useSelector(
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
+  );
+  const getAllReminderFrequency = useSelector(
+    (state) => state.NewMeetingreducer.getAllReminderFrequency
+  );
+  const recurring = useSelector((state) => state.NewMeetingreducer.recurring);
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
+  );
+  const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
+
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
   const [recurringDropDown, setRecurringDropDown] = useState([]);
@@ -172,7 +195,6 @@ const MeetingDetails = ({
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
         .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
       updatedRows[index].startDate = formattedTime;
       updatedRows[index].startTime = newDate;
@@ -209,7 +231,6 @@ const MeetingDetails = ({
     let newDate = new Date(date);
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = convertGMTDateintoUTC(date);
-    console.log(DateDate, "DateDateDateDateDateDate");
     setMeetingDate(meetingDateValueFormat);
     const updatedRows = [...rows];
     updatedRows[index].selectedOption = DateDate.slice(0, 8);
@@ -352,7 +373,6 @@ const MeetingDetails = ({
       newReminderData.length > 0 &&
       meetingDetails.Notes !== ""
     ) {
-      console.log("test");
       let data = {
         MeetingDetails: {
           MeetingTitle: meetingDetails.MeetingTitle,
@@ -372,7 +392,6 @@ const MeetingDetails = ({
           MeetingStatusID: 1,
         },
       };
-      console.log("test", data);
 
       dispatch(
         SaveMeetingDetialsNewApiFunction(
@@ -407,8 +426,6 @@ const MeetingDetails = ({
     if (meetingDetails.ReminderFrequencyThree.value !== 0) {
       newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
     }
-
-    console.log(newReminderData, "newReminderDatanewReminderData");
 
     rows.map((data, index) => {
       newArr.push({
@@ -684,16 +701,13 @@ const MeetingDetails = ({
   };
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.getmeetingURL !== null &&
-      NewMeetingreducer.getmeetingURL !== undefined
-    ) {
+    if (getmeetingURL !== null && getmeetingURL !== undefined) {
       setMeetingDetails({
         ...meetingDetails,
-        Link: NewMeetingreducer.getmeetingURL.videoURL,
+        Link: getmeetingURL.videoURL,
       });
     }
-  }, [NewMeetingreducer.getmeetingURL]);
+  }, [getmeetingURL]);
 
   //funciton cancel button
   const handleCancelMeetingButton = () => {
@@ -704,11 +718,11 @@ const MeetingDetails = ({
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.getALlMeetingTypes.meetingTypes !== null &&
-        NewMeetingreducer.getALlMeetingTypes.meetingTypes !== undefined
+        getALlMeetingTypes.meetingTypes !== null &&
+        getALlMeetingTypes.meetingTypes !== undefined
       ) {
         let Newdata = [];
-        NewMeetingreducer.getALlMeetingTypes.meetingTypes.map((data, index) => {
+        getALlMeetingTypes.meetingTypes.map((data, index) => {
           Newdata.push({
             value: data.pK_MTID,
             label: data.type,
@@ -717,40 +731,36 @@ const MeetingDetails = ({
         setmeetingTypeDropdown(Newdata);
       }
     } catch (error) {}
-  }, [NewMeetingreducer.getALlMeetingTypes.meetingTypes]);
+  }, [getALlMeetingTypes.meetingTypes]);
 
   //Reminder Frequency Drop Down Data
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.getAllReminderFrequency.meetingReminders !== null &&
-        NewMeetingreducer.getAllReminderFrequency.meetingReminders !== undefined
+        getAllReminderFrequency.meetingReminders !== null &&
+        getAllReminderFrequency.meetingReminders !== undefined
       ) {
         let Newdata = [];
-        NewMeetingreducer.getAllReminderFrequency.meetingReminders.map(
-          (data, index) => {
-            console.log(data, "datadatadatas");
-            Newdata.push({
-              value: data.pK_MRID,
-              label: data.description,
-            });
-          }
-        );
+        getAllReminderFrequency.meetingReminders.map((data, index) => {
+          Newdata.push({
+            value: data.pK_MRID,
+            label: data.description,
+          });
+        });
         setReminderFrequencyOne(Newdata);
       }
     } catch (error) {}
-  }, [NewMeetingreducer.getAllReminderFrequency.meetingReminders]);
+  }, [getAllReminderFrequency.meetingReminders]);
 
   //Recurring Drop Down Data
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.recurring.meetingRecurrances !== null &&
-        NewMeetingreducer.recurring.meetingRecurrances !== undefined
+        recurring.meetingRecurrances !== null &&
+        recurring.meetingRecurrances !== undefined
       ) {
         let Newdata = [];
-        NewMeetingreducer.recurring.meetingRecurrances.map((data, index) => {
-          console.log(data, "datadatadatas");
+        recurring.meetingRecurrances.map((data, index) => {
           Newdata.push({
             value: data.recurranceID,
             label: data.recurrance,
@@ -759,19 +769,19 @@ const MeetingDetails = ({
         setRecurringDropDown(Newdata);
       }
     } catch (error) {}
-  }, [NewMeetingreducer.recurring.meetingRecurrances]);
+  }, [recurring.meetingRecurrances]);
 
   // Showing The reposnse messege
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== t("No-record-found")
     ) {
       setOpen({
         ...open,
         flag: true,
-        message: NewMeetingreducer.ResponseMessage,
+        message: ResponseMessage,
       });
       setTimeout(() => {
         setOpen({
@@ -784,7 +794,7 @@ const MeetingDetails = ({
     } else {
       dispatch(ClearMessegeMeetingdetails());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   //For reminder frequency uniqueness
   useEffect(() => {
@@ -809,26 +819,15 @@ const MeetingDetails = ({
 
   //Fetching All Saved Data
   useEffect(() => {
-    console.log(
-      NewMeetingreducer.getAllMeetingDetails,
-      "getAllMeetingDetailsgetAllMeetingDetailsgetAllMeetingDetails"
-    );
     try {
-      if (
-        NewMeetingreducer.getAllMeetingDetails !== null &&
-        NewMeetingreducer.getAllMeetingDetails !== undefined
-      ) {
+      if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
         // setEditMeeting(true);
-        let MeetingData =
-          NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+        let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
         let getmeetingDates = MeetingData.meetingDates;
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
-        let getmeetingStatus = MeetingData.meetingStatus;
         let getmeetingType = MeetingData.meetingType;
         let wasPublishedFlag = MeetingData.wasMeetingPublished;
-        console.log(wasPublishedFlag, "getmeetingTypegetmeetingType");
-        // setCurrentMeetingID(getmeetingType.pK_MTID);
         setMeetingDetails({
           MeetingTitle: MeetingData.meetingTitle,
           MeetingType: {
@@ -903,8 +902,7 @@ const MeetingDetails = ({
         setPublishedFlag(wasPublishedFlag);
       }
     } catch {}
-  }, [NewMeetingreducer.getAllMeetingDetails]);
-  console.log("meetingDetailsmeetingDetails", meetingDetails);
+  }, [getAllMeetingDetails]);
   return (
     <section>
       <Row>
@@ -1125,7 +1123,7 @@ const MeetingDetails = ({
                     <Col lg={1} md={1} sm={12} className="d-flex gap-3 m-0 p-0">
                       <Button
                         icon={
-                          NewMeetingreducer.Loading ? (
+                          Loading ? (
                             <>
                               <Spinner
                                 className={styles["checkEmailSpinner"]}
@@ -1204,7 +1202,6 @@ const MeetingDetails = ({
                 >
                   {rows.length > 0
                     ? rows.map((data, index) => {
-                        console.log(data, "datadata");
                         return (
                           <>
                             <Row>
@@ -1749,14 +1746,14 @@ const MeetingDetails = ({
         </Col>
       </Row>
 
-      {NewMeetingreducer.cancelModalMeetingDetails && (
+      {cancelModalMeetingDetails && (
         <CancelButtonModal
           setSceduleMeeting={setSceduleMeeting}
           setMeetingDetails={setMeetingDetails}
           setRows={setRows}
         />
       )}
-      {NewMeetingreducer.nextConfirmModal && (
+      {nextConfirmModal && (
         <NextModal
           setmeetingDetails={setmeetingDetails}
           setorganizers={setorganizers}
