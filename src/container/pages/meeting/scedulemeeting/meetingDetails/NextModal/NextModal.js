@@ -58,6 +58,9 @@ const NextModal = ({
     } else if (flag === 4) {
       setAgenda(true);
       setParticipants(false);
+    } else if (flag === 5) {
+      setMeetingMaterial(false);
+      setMinutes(true);
     }
   };
 

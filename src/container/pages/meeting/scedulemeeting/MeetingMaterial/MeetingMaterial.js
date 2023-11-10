@@ -18,6 +18,7 @@ import NoMeetingsIcon from "../../../../../assets/images/No-Meetings.png";
 import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
 import { useSelector } from "react-redux";
 import {
+  ShowNextConfirmationModal,
   showCancelMeetingMaterial,
   showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -27,6 +28,7 @@ import {
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import NextModal from "../meetingDetails/NextModal/NextModal";
 
 const MeetingMaterial = ({
   setSceduleMeeting,
@@ -42,6 +44,7 @@ const MeetingMaterial = ({
   console.log(NewMeetingreducer, "parentAgendasparentAgendas");
 
   const [clicks, setClicks] = useState(0);
+  const [flag, setFlag] = useState(5);
   const [prevFlag, setprevFlag] = useState(5);
   const [dataCheck, setDataCheck] = useState([]);
 
@@ -292,8 +295,7 @@ const MeetingMaterial = ({
   };
 
   const handleSaveAndNext = () => {
-    setMeetingMaterial(false);
-    setMinutes(true);
+    dispatch(ShowNextConfirmationModal(true));
   };
 
   const handlePreviousButtonMeetingMaterial = () => {
@@ -373,6 +375,14 @@ const MeetingMaterial = ({
       </Row>
       {NewMeetingreducer.cancelMeetingMaterial && (
         <CancelMeetingMaterial setSceduleMeeting={setSceduleMeeting} />
+      )}
+
+      {NewMeetingreducer.nextConfirmModal && (
+        <NextModal
+          setMinutes={setMinutes}
+          setMeetingMaterial={setMeetingMaterial}
+          flag={flag}
+        />
       )}
 
       {NewMeetingreducer.ShowPreviousModal && (
