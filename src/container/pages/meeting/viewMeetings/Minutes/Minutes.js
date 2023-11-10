@@ -18,6 +18,8 @@ import AgendaImport from "./AgendaimportMinutes/AgendaImport";
 import profile from "../../../../../assets/images/newprofile.png";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
+
 import {
   ADDGeneralMinutesApiFunc,
   DeleteGeneralMinuteDocumentsApiFunc,
@@ -55,11 +57,13 @@ import ViewUnsavedModal from "./UnsavedFileUploadMinutes/ViewUnsavedModal";
 // import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
 // import AgendaImport from "./AgendaimportMinutes/AgendaImport";
 const Minutes = ({
+  setPolls,
   setMinutes,
   advanceMeetingModalID,
   setactionsPage,
   setMeetingMaterial,
   setSceduleMeeting,
+  setViewAdvanceMeetingModal,
 }) => {
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
@@ -183,6 +187,8 @@ const Minutes = ({
     },
   });
   const [notestext, setNotesText] = useState("");
+
+  const [cancelModalView, setCancelModalView] = useState(false);
 
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -670,7 +676,8 @@ const Minutes = ({
   };
 
   const handleViewMinuteCancelButton = () => {
-    dispatch(showUnsavedViewMinutesModal(true));
+    setCancelModalView(true);
+    // dispatch(showUnsavedViewMinutesModal(true));
   };
 
   return (
@@ -1177,6 +1184,17 @@ const Minutes = ({
         <ViewUnsavedModal
           setMinutes={setMinutes}
           setSceduleMeeting={setSceduleMeeting}
+        />
+      )}
+
+      {cancelModalView && (
+        <CancelButtonModal
+          setCancelModalView={setCancelModalView}
+          cancelModalView={cancelModalView}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          setAgenda={setAgenda}
+          setPolls={setPolls}
+          setMinutes={setMinutes}
         />
       )}
     </section>

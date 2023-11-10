@@ -97,10 +97,7 @@ const AgendaContributers = ({
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
-    setorganizers(false);
-    advanceMeetingModalID(false);
-    setViewAdvanceMeetingModal(false);
-    setAdvanceMeetingModalID(false);
+    setAgendaContributors(false);
   };
 
   const AgendaContributorViewColoumns = [

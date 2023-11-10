@@ -342,6 +342,7 @@ const ViewMeetingModal = ({
                   setMeetingMaterial={setMeetingMaterial}
                   setParticipants={setParticipants}
                   setAgenda={setAgenda}
+                  setPolls={setPolls}
                   advanceMeetingModalID={advanceMeetingModalID}
                   ediorRole={ediorRole}
                 />
@@ -350,6 +351,7 @@ const ViewMeetingModal = ({
                 <MeetingMaterial
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   advanceMeetingModalID={advanceMeetingModalID}
+                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   setMeetingMaterial={setMeetingMaterial}
                   setAgenda={setAgenda}
                   setMinutes={setMinutes}
@@ -361,10 +363,13 @@ const ViewMeetingModal = ({
                   {minutes && (
                     <Minutes
                       setMinutes={setMinutes}
+                      setPolls={setPolls}
+                      setAgenda={setAgenda}
                       setactionsPage={setactionsPage}
                       setMeetingMaterial={setMeetingMaterial}
                       ediorRole={ediorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
+                      setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                     />
                   )}
                   {actionsPage && (
@@ -381,6 +386,7 @@ const ViewMeetingModal = ({
                   {polls && (
                     <Polls
                       setPolls={setPolls}
+                      setAgenda={setAgenda}
                       setactionsPage={setactionsPage}
                       setAttendance={setAttendance}
                       ediorRole={ediorRole}
@@ -393,6 +399,8 @@ const ViewMeetingModal = ({
                     <Attendence
                       ediorRole={ediorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
+                      setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                      setAttendance={setAttendance}
                     />
                   )}
                 </>

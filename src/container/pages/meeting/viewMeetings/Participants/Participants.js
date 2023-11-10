@@ -99,10 +99,7 @@ const Participants = ({
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setParticipants(false);
     setAgenda(false);
-    setAgendaContributors(false);
     setViewAdvanceMeetingModal(false);
-    advanceMeetingModalID(false);
-    setAdvanceMeetingModalID(false);
   };
 
   const ParticipantsViewColoumn = [

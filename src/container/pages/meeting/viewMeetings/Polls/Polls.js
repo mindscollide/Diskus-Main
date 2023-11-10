@@ -30,12 +30,15 @@ import {
 } from "../../../../../store/actions/Polls_actions";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 import ViewPollsCancelModal from "./CancelPolls/ViewPollsCancelModal";
+import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 
 const Polls = ({
   setSceduleMeeting,
   setPolls,
+  setAgenda,
   setAttendance,
   advanceMeetingModalID,
+  setViewAdvanceMeetingModal,
   ediorRole,
   setEditMeeting,
   isEditMeeting,
@@ -52,6 +55,9 @@ const Polls = ({
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
+
+  const [cancelModalView, setCancelModalView] = useState(false);
+
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
   console.log(
@@ -395,7 +401,8 @@ const Polls = ({
   };
 
   const handleViewPollsCancelButto = () => {
-    dispatch(showUnsavedViewPollsModal(true));
+    setCancelModalView(true);
+    // dispatch(showUnsavedViewPollsModal(true));
   };
 
   return (
@@ -571,6 +578,15 @@ const Polls = ({
                   </Row>
                 )}
               </>
+            )}
+            {cancelModalView && (
+              <CancelButtonModal
+                setCancelModalView={setCancelModalView}
+                cancelModalView={cancelModalView}
+                setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                setPolls={setPolls}
+                setAgenda={setAgenda}
+              />
             )}
           </section>
           {NewMeetingreducer.unsavedViewPollsModal && <ViewPollsCancelModal />}

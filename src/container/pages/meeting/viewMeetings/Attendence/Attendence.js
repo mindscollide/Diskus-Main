@@ -15,8 +15,15 @@ import HomeworkIcon from "../../../../../assets/images/homework.svg";
 import whitepresentIcon from "../../../../../assets/images/whitepresent.png";
 import whiteAbsentICon from "../../../../../assets/images/whiteabsent.png";
 import whiteworkhome from "../../../../../assets/images/whitehomework.png";
+
+import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
+
 import { useSelector } from "react-redux";
-const Attendence = ({ advanceMeetingModalID }) => {
+const Attendence = ({
+  advanceMeetingModalID,
+  setAttendance,
+  setViewAdvanceMeetingModal,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,6 +36,8 @@ const Attendence = ({ advanceMeetingModalID }) => {
 
   const [attendenceRows, setAttendenceRows] = useState([]);
   console.log(attendenceRows, "attendenceRowsattendenceRows");
+
+  const [cancelModalView, setCancelModalView] = useState(false);
 
   console.log(meetingID, "meetingIDmeetingID");
 
@@ -280,6 +289,10 @@ const Attendence = ({ advanceMeetingModalID }) => {
     }
   };
 
+  const handleCancelBtn = () => {
+    setCancelModalView(true);
+  };
+
   return (
     <>
       <section className={styles["fixedHeight"]}>
@@ -306,6 +319,7 @@ const Attendence = ({ advanceMeetingModalID }) => {
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Meeting_Details"]}
+            onClick={handleCancelBtn}
           />
           <Button
             text={t("Save")}
@@ -319,6 +333,14 @@ const Attendence = ({ advanceMeetingModalID }) => {
           />
         </Col>
       </Row>
+      {cancelModalView && (
+        <CancelButtonModal
+          setCancelModalView={setCancelModalView}
+          cancelModalView={cancelModalView}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          setMeetingDetails={setAttendance}
+        />
+      )}
 
       {attendanceMeetingReducer.Loading ? <Loader /> : null}
     </>

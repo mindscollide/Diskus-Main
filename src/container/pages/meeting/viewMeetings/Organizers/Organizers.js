@@ -240,9 +240,6 @@ const Organizers = ({
     setViewAdvanceMeetingModal(false);
     setorganizers(false);
     setmeetingDetails(false);
-    advanceMeetingModalID(false);
-    setViewAdvanceMeetingModal(false);
-    setAdvanceMeetingModalID(false);
   };
 
   useEffect(() => {
