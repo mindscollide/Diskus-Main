@@ -13,6 +13,8 @@ const CancelButtonModal = ({
   setViewAdvanceMeetingModal,
   setMeetingDetails,
   setAgenda,
+  setPolls,
+  setMinutes,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -38,11 +40,12 @@ const CancelButtonModal = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setMeetingDetails(false);
+    // setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);
-    setCancelModalView(false);
     setAgenda(false);
     setCancelModalView(false);
+    setPolls(false);
+    setMinutes(false);
   };
 
   return (

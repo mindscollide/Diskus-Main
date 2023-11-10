@@ -308,6 +308,7 @@ const ViewMeetingModal = ({
                   setmeetingDetails={setmeetingDetails}
                   setorganizers={setorganizers}
                   advanceMeetingModalID={advanceMeetingModalID}
+                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   setAgendaContributors={setAgendaContributors}
                   ediorRole={ediorRole}
@@ -318,6 +319,7 @@ const ViewMeetingModal = ({
                   setorganizers={setorganizers}
                   setAgendaContributors={setAgendaContributors}
                   setParticipants={setParticipants}
+                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   advanceMeetingModalID={advanceMeetingModalID}
                   ediorRole={ediorRole}
@@ -329,6 +331,7 @@ const ViewMeetingModal = ({
                   setAgenda={setAgenda}
                   setAgendaContributors={setAgendaContributors}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   advanceMeetingModalID={advanceMeetingModalID}
                   ediorRole={ediorRole}
                 />
@@ -339,6 +342,7 @@ const ViewMeetingModal = ({
                   setMeetingMaterial={setMeetingMaterial}
                   setParticipants={setParticipants}
                   setAgenda={setAgenda}
+                  setPolls={setPolls}
                   advanceMeetingModalID={advanceMeetingModalID}
                   ediorRole={ediorRole}
                 />
@@ -347,6 +351,7 @@ const ViewMeetingModal = ({
                 <MeetingMaterial
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   advanceMeetingModalID={advanceMeetingModalID}
+                  setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   setMeetingMaterial={setMeetingMaterial}
                   setAgenda={setAgenda}
                   setMinutes={setMinutes}
@@ -358,10 +363,13 @@ const ViewMeetingModal = ({
                   {minutes && (
                     <Minutes
                       setMinutes={setMinutes}
+                      setPolls={setPolls}
+                      setAgenda={setAgenda}
                       setactionsPage={setactionsPage}
                       setMeetingMaterial={setMeetingMaterial}
                       ediorRole={ediorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
+                      setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                     />
                   )}
                   {actionsPage && (
@@ -378,6 +386,7 @@ const ViewMeetingModal = ({
                   {polls && (
                     <Polls
                       setPolls={setPolls}
+                      setAgenda={setAgenda}
                       setactionsPage={setactionsPage}
                       setAttendance={setAttendance}
                       ediorRole={ediorRole}
@@ -390,6 +399,8 @@ const ViewMeetingModal = ({
                     <Attendence
                       ediorRole={ediorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
+                      setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                      setAttendance={setAttendance}
                     />
                   )}
                 </>

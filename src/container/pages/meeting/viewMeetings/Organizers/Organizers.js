@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { searchNewUserMeeting } from "../../../../../store/actions/NewMeetingActions";
 import {
   clearResponseMessage,
   GetAllMeetingOrganizers,
@@ -20,12 +21,13 @@ import {
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 
 const Organizers = ({
-  setAgendaContributors,
+  ediorRole,
   setmeetingDetails,
   setorganizers,
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
-  ediorRole,
+  setAgendaContributors,
+  setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
 
@@ -36,6 +38,12 @@ const Organizers = ({
   let currentUserEmail = localStorage.getItem("userEmail");
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentUserName = localStorage.getItem("name");
+
+  // For cancel with no modal Open
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   const [viewOrganizers, setviewOrganizers] = useState(false);
   const [cancelModalView, setCancelModalView] = useState(false);
@@ -217,6 +225,23 @@ const Organizers = ({
     setRowsData([]);
   };
 
+  const handleCancelMeetingNoPopup = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setViewAdvanceMeetingModal(false);
+    setorganizers(false);
+    setmeetingDetails(false);
+  };
+
   useEffect(() => {
     if (
       MeetingOrganizersReducer.AllMeetingOrganizersData !== undefined &&
@@ -384,7 +409,11 @@ const Organizers = ({
               className={styles["Cancel_Organization"]}
               onClick={handleCancelOrganizer}
             /> */}
-
+            <Button
+              text={t("Cancel")}
+              className={styles["Cancel_Meeting_Details"]}
+              onClick={handleCancelMeetingNoPopup}
+            />
             <Button
               text={t("Previous")}
               className={styles["publish_button_Organization"]}
