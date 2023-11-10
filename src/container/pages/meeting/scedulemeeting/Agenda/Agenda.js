@@ -86,14 +86,13 @@ const Agenda = ({
       iD: getRandomUniqueNumber().toString() + "A",
       title: "",
       agendaVotingID: 0,
-      presenterID: null,
+      presenterID: 0,
       description: "",
       presenterName: "",
-      startDate: null,
-      endDate: null,
+      startDate: "",
+      endDate: "",
       selectedRadio: 1,
       urlFieldMain: "",
-      // requestContributorURl: 0,
       mainNote: "",
       requestContributorURlName: "",
       files: [],
@@ -108,13 +107,12 @@ const Agenda = ({
           subTitle: "",
           description: "",
           agendaVotingID: 0,
-          presenterID: null,
+          presenterID: 0,
           presenterName: "",
-          startDate: null,
-          endDate: null,
+          startDate: "",
+          endDate: "",
           subSelectRadio: 1,
           subAgendaUrlFieldRadio: "",
-          // subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           subfiles: [],
@@ -137,14 +135,13 @@ const Agenda = ({
       iD: getRandomUniqueNumber().toString() + "A",
       title: "",
       agendaVotingID: 0,
-      presenterID: null,
+      presenterID: 0,
       description: "",
       presenterName: "",
-      startDate: null,
-      endDate: null,
+      startDate: "",
+      endDate: "",
       selectedRadio: 1,
       urlFieldMain: "",
-      // requestContributorURl: 0,
       mainNote: "",
       requestContributorURlName: "",
       files: [],
@@ -158,14 +155,13 @@ const Agenda = ({
           agendaVotingID: 0,
           subTitle: "",
           description: "",
-          presenterID: null,
+          presenterID: 0,
           presenterName: "",
-          startDate: null,
-          endDate: null,
+          startDate: "",
+          endDate: "",
           subSelectRadio: 1,
           agendaVotingID: 0,
           subAgendaUrlFieldRadio: "",
-          // subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           subfiles: [],
@@ -261,6 +257,7 @@ const Agenda = ({
         presenterName,
         requestContributorURlName,
         subAgendarequestContributorUrlName,
+        userProfilePicture,
         ...rest
       } = data;
       for (const key in rest) {
@@ -273,84 +270,313 @@ const Agenda = ({
   }
 
   const saveAgendaData = async () => {
-    let newFolder = [];
-    const uploadPromises = fileForSend.map(async (newData) => {
-      await dispatch(
-        UploadDocumentsAgendaApi(navigate, t, newData, 0, newFolder)
-      );
-    });
-    const convertedRows = convertDateFieldsToUTC(rows);
+    let isValid = true;
+    let shouldResetFileForSend = true;
 
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
+    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+      const row = rows[rowIndex];
 
-    let cleanedData = removeProperties(convertedRows);
+      // Check conditions for the parent objects
+      if (row.title === "") {
+        console.log(`Parent object title is missing at index ${rowIndex}`);
+        setTimeout(
+          setOpen({
+            ...open,
+            flag: true,
+            message: `Title is missing in Agenda  ${rowIndex + 1} `,
+          }),
+          3000
+        );
+        isValid = false;
+        break;
+      }
 
-    let mappingObject = {};
-    newFolder.forEach((folder) => {
-      mappingObject[folder.displayAttachmentName] = folder.pK_FileID.toString();
-    });
-    console.log(
-      cleanedData,
-      "cleanedDatacleanedDatacleanedDatacleanedDatacleanedDatacleanedData"
-    );
-    // Update files property in capitalizedData
-    let updatedData = cleanedData.map((item) => {
-      let updatedFiles = item.files.map((file) => {
-        let newAttachmentName = mappingObject[file.displayAttachmentName];
-        if (newAttachmentName) {
-          return {
-            ...file,
-            originalAttachmentName: newAttachmentName,
-          };
-        } else {
-          return file;
+      if (row.startDate === "") {
+        setTimeout(
+          setOpen({
+            ...open,
+            flag: true,
+            message: `Start Date is missing in Agenda  ${rowIndex + 1} `,
+          }),
+          3000
+        );
+        isValid = false;
+        break;
+      }
+
+      if (row.endDate === "") {
+        setTimeout(
+          setOpen({
+            ...open,
+            flag: true,
+            message: `End Date is missing in Agenda  ${rowIndex + 1} `,
+          }),
+          3000
+        );
+        isValid = false;
+        break;
+      }
+
+      if (row.presenterID === 0) {
+        // console.log(
+        //   `Parent object presenterID is missing at index ${rowIndex}`
+        // );
+        setTimeout(
+          setOpen({
+            ...open,
+            flag: true,
+            message: `Presenter is missing in Agenda  ${rowIndex + 1} `,
+          }),
+          3000
+        );
+        isValid = false;
+        break;
+      }
+
+      if (row.selectedRadio === 1) {
+        shouldResetFileForSend = false;
+      }
+
+      if (row.selectedRadio === 2 && row.urlFieldMain === "") {
+        console.log(
+          `Parent object urlMain should not be empty at index ${rowIndex}`
+        );
+        setTimeout(
+          setOpen({
+            ...open,
+            flag: true,
+            message: `URL is missing in Agenda  ${rowIndex + 1} `,
+          }),
+          3000
+        );
+        isValid = false;
+        break;
+      }
+
+      if (
+        row.selectedRadio === 3 &&
+        (row.userID === 0 || row.mainNote === "")
+      ) {
+        // console.log(
+        //   `Parent object userID should not be 0 and mainNote should not be empty at index ${rowIndex}`
+        // );
+        setTimeout(
+          setOpen({
+            ...open,
+            flag: true,
+            message: `UserID/Note missing in Agenda  ${rowIndex + 1} `,
+          }),
+          3000
+        );
+        isValid = false;
+        break;
+      }
+
+      // Check conditions for subAgenda objects
+      if (row.subAgenda && row.subAgenda.length > 0) {
+        for (let subIndex = 0; subIndex < row.subAgenda.length; subIndex++) {
+          const subAgendaItem = row.subAgenda[subIndex];
+
+          if (subAgendaItem.subTitle === "") {
+            setTimeout(
+              setOpen({
+                ...open,
+                flag: true,
+                message: `Title is missing in Agenda  ${rowIndex + 1}.${
+                  subIndex + 1
+                }`,
+              }),
+              3000
+            );
+            isValid = false;
+            break;
+          }
+
+          if (subAgendaItem.startDate === "") {
+            setTimeout(
+              setOpen({
+                ...open,
+                flag: true,
+                message: `Start Date is missing in Agenda  ${rowIndex + 1}.${
+                  subIndex + 1
+                }`,
+              }),
+              3000
+            );
+            isValid = false;
+            break; // Stop processing if subAgenda startDate is missing
+          }
+
+          if (subAgendaItem.endDate === "") {
+            setTimeout(
+              setOpen({
+                ...open,
+                flag: true,
+                message: `End Date is missing in Agenda  ${rowIndex + 1}.${
+                  subIndex + 1
+                }`,
+              }),
+              3000
+            );
+            isValid = false;
+            break; // Stop processing if subAgenda endDate is missing
+          }
+
+          if (subAgendaItem.presenterID === 0) {
+            console.log(
+              `SubAgenda presenterID is missing at index ${rowIndex}, subAgenda index ${subIndex}`
+            );
+            setTimeout(
+              setOpen({
+                ...open,
+                flag: true,
+                message: `Presenter is missing in Agenda  ${rowIndex + 1}.${
+                  subIndex + 1
+                }`,
+              }),
+              3000
+            );
+            isValid = false;
+            break; // Stop processing if subAgenda presenterID is missing
+          }
+          if (subAgendaItem.subSelectRadio === 1) {
+            shouldResetFileForSend = false;
+          }
+          if (
+            subAgendaItem.subSelectRadio === 2 &&
+            subAgendaItem.subAgendaUrlFieldRadio === ""
+          ) {
+            setTimeout(
+              setOpen({
+                ...open,
+                flag: true,
+                message: `URL is missing in Agenda  ${rowIndex + 1}.${
+                  subIndex + 1
+                }`,
+              }),
+              3000
+            );
+            isValid = false;
+            break;
+          }
+
+          if (
+            subAgendaItem.subSelectRadio === 3 &&
+            (subAgendaItem.userID === 0 ||
+              subAgendaItem.subAgendarequestContributorEnterNotes === "")
+          ) {
+            setTimeout(
+              setOpen({
+                ...open,
+                flag: true,
+                message: `UserID/Note missing in Agenda  ${rowIndex + 1}.${
+                  subIndex + 1
+                }`,
+              }),
+              3000
+            );
+            isValid = false;
+            break;
+          }
         }
-      });
+      }
+    }
 
-      // Update subfiles property in SubAgenda objects
-      let updatedSubAgenda = item.subAgenda.map((subAgenda) => {
-        let updatedSubFiles = subAgenda.subfiles.map((subFile) => {
-          let newAttachmentName = mappingObject[subFile.displayAttachmentName];
+    if (shouldResetFileForSend) {
+      setFileForSend([]);
+    }
+
+    if (isValid) {
+      // All conditions are met, apply your feature here
+      console.log("All conditions met. Applying your feature...");
+      let newFolder = [];
+      console.log("fileForSendfileForSend", fileForSend);
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          UploadDocumentsAgendaApi(navigate, t, newData, 0, newFolder)
+        );
+      });
+      const convertedRows = convertDateFieldsToUTC(rows);
+
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
+      let cleanedData = removeProperties(convertedRows);
+
+      let mappingObject = {};
+      newFolder.forEach((folder) => {
+        mappingObject[folder.displayAttachmentName] =
+          folder.pK_FileID.toString();
+      });
+      console.log(
+        cleanedData,
+        "cleanedDatacleanedDatacleanedDatacleanedDatacleanedDatacleanedData"
+      );
+      // Update files property in capitalizedData
+      let updatedData = cleanedData.map((item) => {
+        let updatedFiles = item.files.map((file) => {
+          let newAttachmentName = mappingObject[file.displayAttachmentName];
           if (newAttachmentName) {
             return {
-              ...subFile,
+              ...file,
               originalAttachmentName: newAttachmentName,
             };
           } else {
-            return subFile;
+            return file;
           }
         });
 
+        // Update subfiles property in SubAgenda objects
+        let updatedSubAgenda = item.subAgenda.map((subAgenda) => {
+          let updatedSubFiles = subAgenda.subfiles.map((subFile) => {
+            let newAttachmentName =
+              mappingObject[subFile.displayAttachmentName];
+            if (newAttachmentName) {
+              return {
+                ...subFile,
+                originalAttachmentName: newAttachmentName,
+              };
+            } else {
+              return subFile;
+            }
+          });
+
+          return {
+            ...subAgenda,
+            subfiles: updatedSubFiles,
+          };
+        });
+
         return {
-          ...subAgenda,
-          subfiles: updatedSubFiles,
+          ...item,
+          files: updatedFiles,
+          subAgenda: updatedSubAgenda,
         };
       });
 
-      return {
-        ...item,
-        files: updatedFiles,
-        subAgenda: updatedSubAgenda,
+      let Data = {
+        MeetingID: currentMeeting,
+        AgendaList: updatedData,
       };
-    });
 
-    let Data = {
-      MeetingID: currentMeeting,
-      AgendaList: updatedData,
-    };
-
-    let capitalizedData = capitalizeKeys(Data);
-
-    dispatch(
-      AddUpdateAdvanceMeetingAgenda(
-        capitalizedData,
-        navigate,
-        t,
-        currentMeeting
-      )
-    );
+      let capitalizedData = capitalizeKeys(Data);
+      console.log("capitalizedData", capitalizedData);
+      dispatch(
+        AddUpdateAdvanceMeetingAgenda(
+          capitalizedData,
+          navigate,
+          t,
+          currentMeeting
+        )
+      );
+    } else {
+      console.log("Some conditions not met. Feature not applied.");
+    }
   };
+
+  // const saveAgendaData = async () => {
+
+  // };
 
   console.log(open, "openopenopen");
 
