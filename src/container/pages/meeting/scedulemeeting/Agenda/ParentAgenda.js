@@ -64,7 +64,6 @@ const ParentAgenda = ({
     (state) => state
   );
   let currentLanguage = localStorage.getItem("i18nextLng");
-  let currentMeetingID = localStorage.getItem("meetingID");
 
   function getCurrentUTCDate() {
     const currentDate = new Date();
@@ -109,6 +108,7 @@ const ParentAgenda = ({
                 width="17px"
                 height="17px"
                 className={styles["Image_class_Agenda"]}
+                alt=""
               />
               <span className={styles["Name_Class"]}>Oliver Davis</span>
             </Col>
@@ -119,10 +119,7 @@ const ParentAgenda = ({
   ];
   // Function For Expanding Main Agenda See More Options
   const handleExpandedBtn = (index) => {
-    console.log(index, "recordrecordrecordrecord");
     setExpandIndex((prevIndex) => (prevIndex === index ? -1 : index));
-    // setExpandIndex(index);
-    // setExpand(!expand);
   };
   //Add Function To Add SubAgendas
   const addSubAjendaRows = (rowAgendaIndex) => {
@@ -150,13 +147,14 @@ const ParentAgenda = ({
     setMainAgendaRemovalIndex(index);
   };
 
-  const openAdvancePermissionModal = () => {
-    dispatch(showAdvancePermissionModal(true));
+  const openAdvancePermissionModal = async () => {
     let meetingMaterialData = {
-      // MeetingID: Number(currentMeetingID),
-      MeetingID: 1785,
+      MeetingID: currentMeeting,
     };
-    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
+    await dispatch(
+      getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows)
+    );
+    dispatch(showAdvancePermissionModal(true));
   };
 
   const openVoteMOdal = () => {
@@ -171,12 +169,8 @@ const ParentAgenda = ({
     };
     let flag = await new Promise((resolve) => {
       dispatch(
-        UpateMeetingStatusLockApiFunc(
-          navigate,
-          t,
-          Data,
-          1,
-          (updatedFlag) => resolve(updatedFlag)
+        UpateMeetingStatusLockApiFunc(navigate, t, Data, 1, (updatedFlag) =>
+          resolve(updatedFlag)
         )
       );
     });
