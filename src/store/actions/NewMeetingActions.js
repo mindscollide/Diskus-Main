@@ -58,6 +58,7 @@ import axios from "axios";
 import { getMeetingbyGroupIDRM } from "../../commen/apis/Api_config";
 import { setMeetingbyGroupIDRM } from "../../commen/apis/Api_config";
 import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
+import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -461,6 +462,12 @@ const SaveMeetingDetialsNewApiFunction = (
               );
 
               setCurrentMeetingID(response.data.responseResult.meetingID);
+              let meetingData = {
+                MeetingID: response.data.responseResult.meetingID,
+              };
+              dispatch(
+                GetAdvanceMeetingAgendabyMeetingID(meetingData, navigate, t)
+              );
 
               if (viewValue === 1) {
                 let MappedData = {
