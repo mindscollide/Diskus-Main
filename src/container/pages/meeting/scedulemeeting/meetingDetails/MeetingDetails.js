@@ -677,16 +677,20 @@ const MeetingDetails = ({
     } catch (error) {}
   }, [NewMeetingreducer.recurring.meetingRecurrances]);
 
-  // UseEffect to set the default selected value when recurringDropDown changes
   useEffect(() => {
-    if (recurringDropDown.length > 0) {
+    // Check if the default value has not been set
+    if (
+      recurringDropDown.length > 0 &&
+      !meetingDetails.RecurringOptions?.value &&
+      !meetingDetails.RecurringOptions?.label
+    ) {
       // Set the default value to the first item in the recurringDropDown
       handleRecurringSelectoptions({
         value: recurringDropDown[0].value,
         label: recurringDropDown[0].label,
       });
     }
-  }, [recurringDropDown]);
+  }, [recurringDropDown, meetingDetails.RecurringOptions]);
 
   // Showing The reposnse messege
   useEffect(() => {
@@ -926,13 +930,15 @@ const MeetingDetails = ({
 
       if (
         MeetingData.meetingTitle === meetingDetails.MeetingTitle &&
-        getmeetingType.PK_MTID === getmeetingType.PK_MTID &&
+        JSON.stringify(getmeetingType.PK_MTID) !==
+          JSON.stringify(meetingDetails.MeetingType.PK_MTID) &&
         MeetingData.location === meetingDetails.Location &&
         MeetingData.description === meetingDetails.Description &&
         MeetingData.isTalkGroup === meetingDetails.groupChat &&
         MeetingData.videoCallURl === meetingDetails.Link &&
-        MeetingData.meetingDates === newArr.MeetingDate &&
-        MeetingData.meetingReminders === newReminderData &&
+        JSON.stringify(MeetingData.meetingDates) !== JSON.stringify(newArr) &&
+        JSON.stringify(MeetingData.meetingReminders) !==
+          JSON.stringify(newReminderData) &&
         MeetingData.notes === meetingDetails.Notes &&
         MeetingData.allowRSVP === meetingDetails.AllowRSPV &&
         MeetingData.notifyAdminOnRSVP ===
