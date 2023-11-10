@@ -1,66 +1,98 @@
-{
-    "MeetingID": 2046,
-    "AgendaList": [
-        {
-            "Id": "504",
-            "Title": "1",
-            "PresenterID": 780,
-            "Description": "asdf",
-            "StartDate": "20231108145146",
-            "EndDate": "20231108145147",
-            "SelectedRadio": 3,
-            "UrlFieldMain": "asdf",
-            "RequestContributorURl": 780,
-            "MainNote": "asdfasdfasdfasdf",
-            "Files": [
-                {
-                    "DisplayAttachmentName": "scan1206.pdf",
-                    "OriginalAttachmentName": "scan1206.pdf",
-                    "AgendaAttachmentsID": 265,
-                    "FK_MAID": 0,
-                    "originalAttachmentName": "6568"
-                }
-            ],
-            "IsLocked": false,
-            "VoteOwner": null,
-            "IsAttachment": false,
-            "UserID": 802,
-            "SubAgenda": [
-                {
-                    "SubAgendaID": "828",
-                    "SubTitle": "fdsazxcvqwer",
-                    "Description": "zxcvzxcvcxzv",
-                    "AgendaVotingID": 0,
-                    "PresenterID": 802,
-                    "StartDate": "20231108145204",
-                    "EndDate": "20231108145204",
-                    "SubSelectRadio": 3,
-                    "SubAgendaUrlFieldRadio": "btbtbtbtbtbtbtbt",
-                    "SubAgendarequestContributorUrl": 822,
-                    "SubAgendarequestContributorEnterNotes": "vqvqvqvq",
-                    "Subfiles": [
-                        {
-                            "DisplayAttachmentName": "scan1201.pdf",
-                            "OriginalAttachmentName": "scan1201.pdf",
-                            "AgendaAttachmentsID": 568,
-                            "FK_MAID": 0
-                        }
-                    ],
-                    "IsLocked": false,
-                    "VoteOwner": null,
-                    "IsAttachment": false,
-                    "UserID": 802,
-                    "subfiles": [
-                        {
-                            "DisplayAttachmentName": "scan1201.pdf",
-                            "OriginalAttachmentName": "scan1201.pdf",
-                            "AgendaAttachmentsID": 568,
-                            "FK_MAID": 0,
-                            "originalAttachmentName": "6568"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}
+[
+    {
+        "iD": "1685",
+        "title": "Testtt",
+        "description": "TEsttttt",
+        "startDate": "2023-11-10T07:38:43.000Z",
+        "endDate": "2023-11-10T08:38:44.000Z",
+        "selectedRadio": 3,
+        "urlFieldMain": "",
+        "requestContributorURl": 0,
+        "mainNote": "Test maaaaaaz",
+        "isLocked": false,
+        "agendaVotingID": 0,
+        "voteOwner": {
+            "userid": 0,
+            "currentVotingClosed": false
+        },
+        "isAttachment": false,
+        "files": [],
+        "presenterID": 780,
+        "presenterName": "",
+        "userID": 801,
+        "requestContributorURlName": "",
+        "subAgenda": [
+            {
+                "subAgendaID": "1686",
+                "subTitle": "zxcvasdfqwer",
+                "description": "yyyyyyyyy",
+                "startDate": "2023-11-10T07:38:59.000Z",
+                "endDate": "2023-11-10T08:39:00.000Z",
+                "subSelectRadio": 3,
+                "subAgendaUrlFieldRadio": "",
+                "subAgendarequestContributorUrl": 0,
+                "subAgendarequestContributorEnterNotes": "Jawad Notes",
+                "isLocked": false,
+                "agendaVotingID": 0,
+                "voteOwner": {
+                    "userid": 0,
+                    "currentVotingClosed": false
+                },
+                "isAttachment": false,
+                "subfiles": [],
+                "presenterID": 779,
+                "userID": 836,
+                "subAgendarequestContributorUrlName": "",
+                "presenterName": ""
+            }
+        ]
+    },
+    {
+        "iD": "1691",
+        "title": "Agenda Title 2",
+        "description": "Test ",
+        "startDate": "2023-11-10T11:59:47.000Z",
+        "endDate": "2023-11-10T11:59:47.000Z",
+        "selectedRadio": 2,
+        "urlFieldMain": "Testttt",
+        "requestContributorURl": 0,
+        "mainNote": "",
+        "isLocked": false,
+        "agendaVotingID": 0,
+        "voteOwner": {
+            "userid": 0,
+            "currentVotingClosed": false
+        },
+        "isAttachment": false,
+        "files": [],
+        "presenterID": 780,
+        "presenterName": "",
+        "userID": 0,
+        "requestContributorURlName": "",
+        "subAgenda": [
+            {
+                "subAgendaID": "1692",
+                "subTitle": "TEststttatatatat",
+                "description": "fdsasaa",
+                "startDate": "2023-11-10T11:59:59.000Z",
+                "endDate": "2023-11-10T12:00:00.000Z",
+                "subSelectRadio": 2,
+                "subAgendaUrlFieldRadio": "vczxqwer",
+                "subAgendarequestContributorUrl": 0,
+                "subAgendarequestContributorEnterNotes": "",
+                "isLocked": false,
+                "agendaVotingID": 0,
+                "voteOwner": {
+                    "userid": 0,
+                    "currentVotingClosed": false
+                },
+                "isAttachment": false,
+                "subfiles": [],
+                "presenterID": 779,
+                "userID": 0,
+                "subAgendarequestContributorUrlName": "",
+                "presenterName": ""
+            }
+        ]
+    }
+]

@@ -268,11 +268,6 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
   }
 
   const saveAgendaData = async () => {
-    console.log(
-      fileForSend,
-      "fileForSendfileForSendfileForSendfileForSendfileForSend"
-    );
-
     let newFolder = [];
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
@@ -288,7 +283,6 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
 
     let mappingObject = {};
     newFolder.forEach((folder) => {
-      console.log("Save Agenda Data folderfolder", folder);
       mappingObject[folder.displayAttachmentName] = folder.pK_FileID.toString();
     });
     console.log(
@@ -336,7 +330,6 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
       };
     });
 
-    console.log("Save Agenda Data", updatedData);
     let Data = {
       MeetingID: currentMeeting,
       AgendaList: updatedData,
@@ -344,7 +337,6 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
 
     let capitalizedData = capitalizeKeys(Data);
 
-    console.log("Save Agenda Data", capitalizedData);
     dispatch(
       AddUpdateAdvanceMeetingAgenda(
         capitalizedData,
@@ -354,6 +346,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
       )
     );
   };
+
   console.log(open, "openopenopen");
 
   useEffect(() => {
@@ -372,20 +365,20 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
         const updatedRows = newData.map((agendaItem) => {
           const { id, presenterID, userID, subAgenda, ...rest } = agendaItem;
           const matchingPresenter = allSavedPresenters.find(
-            (presenter) => presenter.value === userID
+            (presenter) => presenter.value === presenterID
           );
           const matchinguserID = allUsersRC.find(
             (rcuser) => rcuser.value === userID
           );
           const updatedSubAgenda = subAgenda
             ? subAgenda.map((subAgendaItem) => {
-                const { subAgendaID, presenterID, ...subAgendaRest } =
+                const { subAgendaID, presenterID, userID, ...subAgendaRest } =
                   subAgendaItem;
                 const matchingSubPresenter = allSavedPresenters.find(
                   (subPresenter) => subPresenter.value === presenterID
                 );
                 const matchingSubUserID = allUsersRC.find(
-                  (subRcuser) => subRcuser.value === presenterID
+                  (subRcuser) => subRcuser.value === userID
                 );
                 return {
                   subAgendaID,
