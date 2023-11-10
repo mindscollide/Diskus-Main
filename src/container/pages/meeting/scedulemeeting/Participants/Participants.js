@@ -577,7 +577,7 @@ const Participants = ({
 
           {NewMeetingreducer.ShowPreviousModal && (
             <PreviousModal
-              setAgenda={setAgenda}
+              setAgendaContributors={setAgendaContributors}
               setParticipants={setParticipants}
               prevFlag={prevFlag}
             />

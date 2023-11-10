@@ -41,6 +41,13 @@ const PreviousModal = ({
       setorganizers(true);
       setAgendaContributors(false);
     }
+
+    if (prevFlag === 4) {
+      console.log("hello i am coming");
+      setAgendaContributors(true);
+      setParticipants(false);
+    }
+
     if (prevFlag === 2) {
       setmeetingDetails(true);
       setAgendaContributors(false);
