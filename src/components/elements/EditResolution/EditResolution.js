@@ -2386,7 +2386,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                             styles["Choose_file_style"]
                                           }
                                         >
-                                          {t("Choose-file")}
+                                          {t("Choose-file")} {""}
                                         </span>
                                         <span className={styles["here_text"]}>
                                           {t("Here")}

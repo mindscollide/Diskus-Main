@@ -331,16 +331,16 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   const handleTimeChange = (newTime) => {
     let newDate = new Date(newTime);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getSeconds()).slice(-2);
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
         .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
       setCreateMeeting({
         ...createMeeting,
-        ["MeetingStartTime"]: formattedTime,
-        ["MeetingEndTime"]: formattedTime,
+        MeetingStartTime: formattedTime,
+        MeetingEndTime: formattedTime,
       });
       setCreateMeetingTime(newTime);
     }

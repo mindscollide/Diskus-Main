@@ -246,7 +246,8 @@
 }
 .text-area-create-group {
   font-size: 12px !important;
-  font-weight: 500 !important;
+  font-family: "MontserratMedium";
+  color: #5a5a5a !important;
 }
 
 .text-area-create-group::placeholder {

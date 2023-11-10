@@ -1888,7 +1888,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             <p className={styles["ant-upload-text"]}>
                               {t("Drag-&-drop-or")}
                               <span className={styles["Choose_file_style"]}>
-                                {t("Choose-file")}
+                                {t("Choose-file")} {""}
                               </span>
                               <span className={styles["here_text"]}>
                                 {t("Here")}

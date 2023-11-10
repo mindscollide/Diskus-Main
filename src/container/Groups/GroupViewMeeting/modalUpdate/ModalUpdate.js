@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ModalUpdate.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import {
+  convertTimetoGMT,
   createConvert,
   EditmeetingDateFormat,
   RemoveTimeDashes,
@@ -1322,10 +1323,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
           MeetingDate: viewData.meetingEvent.meetingDate,
           IsChat: viewData.meetingDetails.isChat,
           IsVideoCall: viewData.meetingDetails.isVideoCall,
-          MeetingStartTime: EditmeetingDateFormat(
+          MeetingStartTime: convertTimetoGMT(
             viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
           ),
-          MeetingEndTime: viewData.meetingEvent.endTime,
+          MeetingEndTime: convertTimetoGMT(
+            viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime
+          ),
           MeetingLocation: viewData.meetingEvent.location,
           MeetingReminderID: reminder,
           MeetingAgendas: meetingAgenAtc,
@@ -1900,9 +1903,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
     console.log(newTime, "newTimenewTimenewTime");
     let newDate = new Date(newTime);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getSeconds()).slice(-2);
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
         .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
