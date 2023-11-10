@@ -452,6 +452,7 @@ const SceduleMeeting = ({
             {minutes && (
               <Minutes
                 setMinutes={setMinutes}
+                setMeetingMaterial={setMeetingMaterial}
                 setSceduleMeeting={setSceduleMeeting}
                 currentMeeting={currentMeeting}
                 setCurrentMeetingID={setCurrentMeetingID}

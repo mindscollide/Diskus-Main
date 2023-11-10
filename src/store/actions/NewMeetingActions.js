@@ -6062,6 +6062,13 @@ const ShowNextConfirmationModal = (response) => {
   };
 };
 
+const showPreviousConfirmationModal = (response) => {
+  return {
+    type: actions.PREVIOUS_MODAL,
+    response: response,
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -6165,4 +6172,5 @@ export {
   showUnsavedViewMinutesModal,
   showUnsavedViewPollsModal,
   ShowNextConfirmationModal,
+  showPreviousConfirmationModal,
 };
