@@ -14,6 +14,7 @@ import {
   SelectBox,
   InputSearchFilter,
   Notification,
+  Loader,
 } from "./../../../components/elements";
 import userImage from "../../../assets/images/user.png";
 import styles from "./UpadateGroup.module.css";
@@ -48,7 +49,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     message: "",
   });
   const [erorbar, setErrorBar] = useState(false);
-  const { assignees, GroupsReducer } = useSelector((state) => state);
+  const { assignees, GroupsReducer, DataRoomReducer } = useSelector(
+    (state) => state
+  );
   const dispatch = useDispatch();
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
@@ -1565,6 +1568,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         onHide={() => setCloseConfirmationBox(false)}
       />
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
+      {DataRoomReducer.Loading ? <Loader /> : null}
     </>
   );
 };

@@ -25,14 +25,14 @@ import {
 // Upload Documents Init
 const uploadDocument_init = () => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+    type: actions.UPLOAD_COMMITTEESS_DOCUMENTS_INIT,
   };
 };
 
 // Upload Documents Success
 const uploadDocument_success = (response, message) => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    type: actions.UPLOAD_COMMITTEESS_DOCUMENTS_SUCCESS,
     response: response,
     message: message,
   };
@@ -41,7 +41,7 @@ const uploadDocument_success = (response, message) => {
 // Upload Documents Fail
 const uploadDocument_fail = (message) => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    type: actions.UPLOAD_COMMITTEESS_DOCUMENTS_FAIL,
     message: message,
   };
 };
@@ -137,13 +137,13 @@ const uploadDocumentsCommitteesApi = (
 // Save Files Init
 const saveFiles_init = () => {
   return {
-    type: actions.SAVEFILES_DATAROOM_INIT,
+    type: actions.SAVE_COMMITTEE_FILES_DOCUMENTS_INIT,
   };
 };
 // Save Files Success
 const saveFiles_success = (response, message) => {
   return {
-    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    type: actions.SAVE_COMMITTEE_FILES_DOCUMENTS_SUCCESS,
     response: response,
     message: message,
   };
@@ -151,7 +151,7 @@ const saveFiles_success = (response, message) => {
 // Save Files Fail
 const saveFiles_fail = (message) => {
   return {
-    type: actions.SAVEFILES_DATAROOM_FAIL,
+    type: actions.SAVE_COMMITTEE_FILES_DOCUMENTS_FAIL,
     message: message,
   };
 };

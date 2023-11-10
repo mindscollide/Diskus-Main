@@ -85,6 +85,7 @@ const initialState = {
   scheduleMeetingProposed: "",
   unsaveViewMinutesModal: false,
   unsavedViewPollsModal: false,
+  nextConfirmModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1506,6 +1507,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         unsavedViewPollsModal: action.response,
+      };
+    }
+
+    case actions.NEXT_CONFIRMATION_MODAL: {
+      return {
+        ...state,
+        nextConfirmModal: action.response,
       };
     }
 

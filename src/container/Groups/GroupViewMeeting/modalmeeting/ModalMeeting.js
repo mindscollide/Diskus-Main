@@ -46,7 +46,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { assignees, uploadReducer, CommitteeReducer } = useSelector(
+  const { assignees, uploadReducer, GroupsReducer } = useSelector(
     (state) => state
   );
   const [isDetails, setIsDetails] = useState(true);
@@ -1047,8 +1047,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   };
 
   const searchFilterHandler = (value) => {
-    let getUserDetails =
-      CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
+    let getUserDetails = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
     if (
       getUserDetails !== undefined &&
       getUserDetails !== null &&

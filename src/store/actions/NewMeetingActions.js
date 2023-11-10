@@ -6048,6 +6048,13 @@ const showUnsavedViewPollsModal = (response) => {
   };
 };
 
+const ShowNextConfirmationModal = (response) => {
+  return {
+    type: actions.NEXT_CONFIRMATION_MODAL,
+    response: response,
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -6150,4 +6157,5 @@ export {
   scheduleMeetingMainApi,
   showUnsavedViewMinutesModal,
   showUnsavedViewPollsModal,
+  ShowNextConfirmationModal,
 };

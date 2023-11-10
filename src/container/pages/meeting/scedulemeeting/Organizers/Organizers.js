@@ -25,6 +25,7 @@ import {
   sendRecentNotificationOrganizerModal,
   UpdateMeetingUserForOrganizers,
   showCancelModalOrganizers,
+  ShowNextConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
@@ -43,6 +44,7 @@ import {
   notificationSendData,
 } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
+import NextModal from "../meetingDetails/NextModal/NextModal";
 
 const Organizers = ({
   setAgendaContributors,
@@ -73,6 +75,7 @@ const Organizers = ({
   let currentUserName = localStorage.getItem("name");
 
   const [viewOrganizers, setviewOrganizers] = useState(false);
+  const [flag, setFlag] = useState(2);
 
   const [editState, setEditState] = useState(false);
 
@@ -447,19 +450,7 @@ const Organizers = ({
     // let Data = { meetingID: currentMeeting, StatusID: 1 };
     // dispatch(UpdateOrganizersMeeting(navigate, Data, t));
     // setRowsData([]);
-    setAgendaContributors(true);
-    setmeetingDetails(false);
-    setorganizers(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-    setRowsData([]);
-    dispatch(saveMeetingFlag(false));
-    dispatch(editMeetingFlag(false));
+    dispatch(ShowNextConfirmationModal(true));
   };
 
   const enableEditButton = () => {
@@ -836,6 +827,22 @@ const Organizers = ({
       ) : null}
       {NewMeetingreducer.cancelModalOrganizer && (
         <CancelModalOrganizer setSceduleMeeting={setSceduleMeeting} />
+      )}
+      {NewMeetingreducer.nextConfirmModal && (
+        <NextModal
+          setAgendaContributors={setAgendaContributors}
+          setmeetingDetails={setmeetingDetails}
+          setorganizers={setorganizers}
+          setParticipants={setParticipants}
+          setAgenda={setAgenda}
+          setMinutes={setMinutes}
+          setactionsPage={setactionsPage}
+          setAttendance={setAttendance}
+          setPolls={setPolls}
+          setMeetingMaterial={setMeetingMaterial}
+          setRowsData={setRowsData}
+          flag={flag}
+        />
       )}
     </>
   );
