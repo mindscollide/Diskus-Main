@@ -127,16 +127,24 @@ const ParentAgenda = ({
     const nextSubAgendaID = updatedRows[0].subAgenda.length.toString();
     const newSubAgenda = {
       subAgendaID: getRandomUniqueNumber().toString() + "A",
+      agendaVotingID: 0,
       subTitle: "",
+      description: "",
+      agendaVotingID: 0,
       presenterID: null,
       presenterName: "",
       startDate: null,
       endDate: null,
-      subSelectRadio: "1",
+      subSelectRadio: 1,
       subAgendaUrlFieldRadio: "",
-      subAgendarequestContributorUrl: "",
+      // subAgendarequestContributorUrl: 0,
+      subAgendarequestContributorUrlName: "",
       subAgendarequestContributorEnterNotes: "",
       subfiles: [],
+      isLocked: false,
+      voteOwner: null,
+      isAttachment: false,
+      userID: 0,
     };
     updatedRows[rowAgendaIndex].subAgenda.push(newSubAgenda);
     setRows(updatedRows);
@@ -298,13 +306,6 @@ const ParentAgenda = ({
       }
     }
   }, [currentLanguage]);
-
-  useEffect(() => {
-    let Data = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-  }, []);
 
   useEffect(() => {
     if (
