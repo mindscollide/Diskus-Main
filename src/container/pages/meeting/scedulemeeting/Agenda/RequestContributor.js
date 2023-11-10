@@ -73,7 +73,7 @@ const RequestContributor = ({ data, index, setRows, rows }) => {
       value: value.value,
       label: value.label,
     };
-    updatedAgendaItems[index].requestContributorURl = SelectValue.value;
+    // updatedAgendaItems[index].requestContributorURl = SelectValue.value;
     updatedAgendaItems[index].userID = SelectValue.value;
     updatedAgendaItems[index].requestContributorURlName = SelectValue.label;
     setRows(updatedAgendaItems);

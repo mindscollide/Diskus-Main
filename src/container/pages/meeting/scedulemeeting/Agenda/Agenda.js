@@ -23,6 +23,7 @@ import {
   showCancelModalAgenda,
   showImportPreviousAgendaModal,
   getAllAgendaContributorApi,
+  GetAllMeetingUserApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   CreateUpdateMeetingDataRoomMap,
@@ -77,6 +78,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
     {
       iD: getRandomUniqueNumber().toString() + "A",
       title: "",
+      agendaVotingID: 0,
       presenterID: null,
       description: "",
       presenterName: "",
@@ -84,7 +86,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
       endDate: null,
       selectedRadio: 1,
       urlFieldMain: "",
-      requestContributorURl: 0,
+      // requestContributorURl: 0,
       mainNote: "",
       requestContributorURlName: "",
       files: [],
@@ -95,6 +97,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
       subAgenda: [
         {
           subAgendaID: getRandomUniqueNumber().toString() + "A",
+          agendaVotingID: 0,
           subTitle: "",
           description: "",
           agendaVotingID: 0,
@@ -104,7 +107,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
           endDate: null,
           subSelectRadio: 1,
           subAgendaUrlFieldRadio: "",
-          subAgendarequestContributorUrl: 0,
+          // subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           subfiles: [],
@@ -126,6 +129,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
     const newMainAgenda = {
       iD: getRandomUniqueNumber().toString() + "A",
       title: "",
+      agendaVotingID: 0,
       presenterID: null,
       description: "",
       presenterName: "",
@@ -133,7 +137,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
       endDate: null,
       selectedRadio: 1,
       urlFieldMain: "",
-      requestContributorURl: 0,
+      // requestContributorURl: 0,
       mainNote: "",
       requestContributorURlName: "",
       files: [],
@@ -144,6 +148,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
       subAgenda: [
         {
           subAgendaID: getRandomUniqueNumber().toString() + "A",
+          agendaVotingID: 0,
           subTitle: "",
           description: "",
           presenterID: null,
@@ -153,7 +158,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
           subSelectRadio: 1,
           agendaVotingID: 0,
           subAgendaUrlFieldRadio: "",
-          subAgendarequestContributorUrl: 0,
+          // subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           subfiles: [],
@@ -202,12 +207,16 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
           : "",
       IsUpdateFlow: false,
     };
-    if (isEditMeeting === true) {
-      let getMeetingData = {
-        MeetingID: currentMeeting,
-      };
-      dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
-    }
+    // if (isEditMeeting === true) {
+    let getMeetingData = {
+      MeetingID: currentMeeting,
+    };
+    let Data = {
+      MeetingID: currentMeeting,
+    };
+    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+    dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
+    // }
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
     dispatch(CreateUpdateMeetingDataRoomMap(navigate, t, getFolderIDData));
   }, []);
@@ -350,20 +359,68 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
   //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
   //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
   //       undefined &&
-  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
+  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length !==
+  //       0 &&
+  //     allSavedPresenters !== undefined
   //   ) {
-  //     const modifiedData =
-  //       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
-  //         (item) => {
-  //           return { ...item, iD: item.id, id: undefined };
-  //         }
-  //       );
+  //     let newData =
+  //       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList;
+  //     setRows((prevRows) => {
+  //       const updatedRows = newData.map((agendaItem) => {
+  //         const { id, presenterID, subAgenda, ...rest } = agendaItem;
+  //         const matchingPresenter = allSavedPresenters.find(
+  //           (presenter) => presenter.value === presenterID
+  //         );
 
-  //     setRows(modifiedData);
+  //         const updatedSubAgenda = subAgenda
+  //           ? subAgenda.map((subAgendaItem) => {
+  //               const { subAgendaID, presenterID, ...subAgendaRest } =
+  //                 subAgendaItem;
+  //               const matchingSubPresenter = allSavedPresenters.find(
+  //                 (subPresenter) => subPresenter.value === presenterID
+  //               );
+
+  //               return {
+  //                 subAgendaID,
+  //                 ...subAgendaRest,
+  //                 presenterName: matchingSubPresenter
+  //                   ? matchingSubPresenter.label
+  //                   : "",
+  //                 startDate: subAgendaItem.startDate
+  //                   ? convertUtcToGmt(subAgendaItem.startDate)
+  //                   : null,
+  //                 endDate: subAgendaItem.endDate
+  //                   ? convertUtcToGmt(subAgendaItem.endDate)
+  //                   : null,
+  //                 subfiles: subAgendaItem.subfiles,
+  //               };
+  //             })
+  //           : null;
+
+  //         return {
+  //           iD: id,
+  //           ...rest,
+  //           presenterName: matchingPresenter ? matchingPresenter.label : "",
+  //           startDate: agendaItem.startDate
+  //             ? convertUtcToGmt(agendaItem.startDate)
+  //             : null,
+  //           endDate: agendaItem.endDate
+  //             ? convertUtcToGmt(agendaItem.endDate)
+  //             : null,
+  //           subAgenda: updatedSubAgenda,
+  //         };
+  //       });
+
+  //       return updatedRows;
+  //     });
   //   } else {
+  //     // Handle the case when the data is not available
   //     setRows(rows);
   //   }
-  // }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
+  // }, [
+  //   MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
+  //   allSavedPresenters,
+  // ]);
 
   useEffect(() => {
     if (
@@ -394,6 +451,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
                 return {
                   subAgendaID,
                   ...subAgendaRest,
+                  presenterID, // Retain presenterID
                   presenterName: matchingSubPresenter
                     ? matchingSubPresenter.label
                     : "",
@@ -411,6 +469,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
           return {
             iD: id,
             ...rest,
+            presenterID, // Retain presenterID
             presenterName: matchingPresenter ? matchingPresenter.label : "",
             startDate: agendaItem.startDate
               ? convertUtcToGmt(agendaItem.startDate)

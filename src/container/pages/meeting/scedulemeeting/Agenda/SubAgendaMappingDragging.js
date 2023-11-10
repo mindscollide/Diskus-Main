@@ -331,12 +331,12 @@ const SubAgendaMappingDragging = ({
     }
   }, [currentLanguage]);
 
-  useEffect(() => {
-    let Data = {
-      MeetingID: Number(currentMeetingID),
-    };
-    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-  }, []);
+  // useEffect(() => {
+  //   let Data = {
+  //     MeetingID: Number(currentMeetingID),
+  //   };
+  //   dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+  // }, []);
 
   useEffect(() => {
     if (
