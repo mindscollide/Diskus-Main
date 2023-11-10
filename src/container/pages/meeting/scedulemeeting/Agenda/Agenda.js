@@ -54,6 +54,8 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
 
   const [allSavedPresenters, setAllSavedPresenters] = useState([]);
 
+  const [allUsersRC, setAllUsersRC] = useState([]);
+
   const { NewMeetingreducer, MeetingAgendaReducer, DataRoomReducer } =
     useSelector((state) => state);
 
@@ -354,74 +356,6 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
   };
   console.log(open, "openopenopen");
 
-  // useEffect(() => {
-  //   if (
-  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
-  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
-  //       undefined &&
-  //     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length !==
-  //       0 &&
-  //     allSavedPresenters !== undefined
-  //   ) {
-  //     let newData =
-  //       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList;
-  //     setRows((prevRows) => {
-  //       const updatedRows = newData.map((agendaItem) => {
-  //         const { id, presenterID, subAgenda, ...rest } = agendaItem;
-  //         const matchingPresenter = allSavedPresenters.find(
-  //           (presenter) => presenter.value === presenterID
-  //         );
-
-  //         const updatedSubAgenda = subAgenda
-  //           ? subAgenda.map((subAgendaItem) => {
-  //               const { subAgendaID, presenterID, ...subAgendaRest } =
-  //                 subAgendaItem;
-  //               const matchingSubPresenter = allSavedPresenters.find(
-  //                 (subPresenter) => subPresenter.value === presenterID
-  //               );
-
-  //               return {
-  //                 subAgendaID,
-  //                 ...subAgendaRest,
-  //                 presenterName: matchingSubPresenter
-  //                   ? matchingSubPresenter.label
-  //                   : "",
-  //                 startDate: subAgendaItem.startDate
-  //                   ? convertUtcToGmt(subAgendaItem.startDate)
-  //                   : null,
-  //                 endDate: subAgendaItem.endDate
-  //                   ? convertUtcToGmt(subAgendaItem.endDate)
-  //                   : null,
-  //                 subfiles: subAgendaItem.subfiles,
-  //               };
-  //             })
-  //           : null;
-
-  //         return {
-  //           iD: id,
-  //           ...rest,
-  //           presenterName: matchingPresenter ? matchingPresenter.label : "",
-  //           startDate: agendaItem.startDate
-  //             ? convertUtcToGmt(agendaItem.startDate)
-  //             : null,
-  //           endDate: agendaItem.endDate
-  //             ? convertUtcToGmt(agendaItem.endDate)
-  //             : null,
-  //           subAgenda: updatedSubAgenda,
-  //         };
-  //       });
-
-  //       return updatedRows;
-  //     });
-  //   } else {
-  //     // Handle the case when the data is not available
-  //     setRows(rows);
-  //   }
-  // }, [
-  //   MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
-  //   allSavedPresenters,
-  // ]);
-
   useEffect(() => {
     if (
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
@@ -429,17 +363,20 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
         undefined &&
       MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length !==
         0 &&
-      allSavedPresenters !== undefined
+      allSavedPresenters !== undefined &&
+      allUsersRC !== undefined
     ) {
       let newData =
         MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList;
       setRows((prevRows) => {
         const updatedRows = newData.map((agendaItem) => {
-          const { id, presenterID, subAgenda, ...rest } = agendaItem;
+          const { id, presenterID, userID, subAgenda, ...rest } = agendaItem;
           const matchingPresenter = allSavedPresenters.find(
-            (presenter) => presenter.value === presenterID
+            (presenter) => presenter.value === userID
           );
-
+          const matchinguserID = allUsersRC.find(
+            (rcuser) => rcuser.value === userID
+          );
           const updatedSubAgenda = subAgenda
             ? subAgenda.map((subAgendaItem) => {
                 const { subAgendaID, presenterID, ...subAgendaRest } =
@@ -447,11 +384,17 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
                 const matchingSubPresenter = allSavedPresenters.find(
                   (subPresenter) => subPresenter.value === presenterID
                 );
-
+                const matchingSubUserID = allUsersRC.find(
+                  (subRcuser) => subRcuser.value === presenterID
+                );
                 return {
                   subAgendaID,
                   ...subAgendaRest,
                   presenterID, // Retain presenterID
+                  userID,
+                  subAgendarequestContributorUrlName: matchingSubUserID
+                    ? matchingSubUserID.label
+                    : "",
                   presenterName: matchingSubPresenter
                     ? matchingSubPresenter.label
                     : "",
@@ -469,8 +412,12 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
           return {
             iD: id,
             ...rest,
-            presenterID, // Retain presenterID
+            presenterID,
             presenterName: matchingPresenter ? matchingPresenter.label : "",
+            userID,
+            requestContributorURlName: matchinguserID
+              ? matchinguserID.label
+              : "",
             startDate: agendaItem.startDate
               ? convertUtcToGmt(agendaItem.startDate)
               : null,
@@ -484,15 +431,16 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
         return updatedRows;
       });
     } else {
-      // Handle the case when the data is not available
       setRows(rows);
     }
   }, [
     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
     allSavedPresenters,
+    allUsersRC,
   ]);
 
   console.log("allSavedPresenters", allSavedPresenters);
+  console.log("allRCUSERS", allUsersRC);
 
   useEffect(() => {
     console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
@@ -554,6 +502,8 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
                                     setFileForSend={setFileForSend}
                                     currentMeeting={currentMeeting}
                                     data={data}
+                                    allUsersRC={allUsersRC}
+                                    setAllUsersRC={setAllUsersRC}
                                     index={index}
                                     allSavedPresenters={allSavedPresenters}
                                     setAllSavedPresenters={
