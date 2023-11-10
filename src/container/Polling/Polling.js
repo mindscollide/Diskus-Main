@@ -109,7 +109,7 @@ const Polling = () => {
             check = 3;
           }
         } else {
-          check = 1;
+          check = 4;
         }
       }
       if (Object.keys(state.record).length > 0) {
