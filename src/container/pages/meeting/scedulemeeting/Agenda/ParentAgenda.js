@@ -166,11 +166,11 @@ const ParentAgenda = ({
     dispatch(showAdvancePermissionModal(true));
   };
 
-  const openVoteMOdal =async(AgendaID) => {
+  const openVoteMOdal =async(AgendaID,agendaVotingID) => {
     let Data = {
       AgendaID: AgendaID,
       MeetingID: currentMeeting,
-      AgendaVotingID: 1,
+      AgendaVotingID: agendaVotingID,
     };
    await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
   };
@@ -723,7 +723,7 @@ const ParentAgenda = ({
                                 className="cursor-pointer"
                                 onClick={()=>
                                   // apllyLockOnParentAgenda(index)
-                                  data.isLocked ? "" : openVoteMOdal(data.iD)
+                                  data.isLocked ? "" : openVoteMOdal(data.iD,data.agendaVotingID)
                                 }
                               />
                               <img
