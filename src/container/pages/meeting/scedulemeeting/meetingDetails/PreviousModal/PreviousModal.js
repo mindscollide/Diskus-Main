@@ -48,6 +48,11 @@ const PreviousModal = ({
       setParticipants(false);
     }
 
+    if (prevFlag === 5) {
+      setAgenda(true);
+      setMeetingMaterial(false);
+    }
+
     if (prevFlag === 2) {
       setmeetingDetails(true);
       setAgendaContributors(false);

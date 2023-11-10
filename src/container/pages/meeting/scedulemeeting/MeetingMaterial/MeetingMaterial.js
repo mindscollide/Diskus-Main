@@ -17,12 +17,16 @@ import NoMeetingsIcon from "../../../../../assets/images/No-Meetings.png";
 
 import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
 import { useSelector } from "react-redux";
-import { showCancelMeetingMaterial } from "../../../../../store/actions/NewMeetingActions";
+import {
+  showCancelMeetingMaterial,
+  showPreviousConfirmationModal,
+} from "../../../../../store/actions/NewMeetingActions";
 import { getMeetingMaterialAPI } from "../../../../../store/actions/NewMeetingActions";
 import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
+import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 
 const MeetingMaterial = ({
   setSceduleMeeting,
@@ -38,6 +42,7 @@ const MeetingMaterial = ({
   console.log(NewMeetingreducer, "parentAgendasparentAgendas");
 
   const [clicks, setClicks] = useState(0);
+  const [prevFlag, setprevFlag] = useState(5);
   const [dataCheck, setDataCheck] = useState([]);
 
   // row state for meeting Material
@@ -292,8 +297,7 @@ const MeetingMaterial = ({
   };
 
   const handlePreviousButtonMeetingMaterial = () => {
-    setMeetingMaterial(false);
-    setAgenda(true);
+    dispatch(showPreviousConfirmationModal(true));
   };
 
   return (
@@ -362,13 +366,21 @@ const MeetingMaterial = ({
           />
           <Button
             text={t("Next")}
-            className={styles["Save_Classname"]}
+            className={styles["Cancel_Classname"]}
             onClick={handleSaveAndNext}
           />
         </Col>
       </Row>
       {NewMeetingreducer.cancelMeetingMaterial && (
         <CancelMeetingMaterial setSceduleMeeting={setSceduleMeeting} />
+      )}
+
+      {NewMeetingreducer.ShowPreviousModal && (
+        <PreviousModal
+          setAgenda={setAgenda}
+          setMeetingMaterial={setMeetingMaterial}
+          prevFlag={prevFlag}
+        />
       )}
       {/* {NewMeetingreducer.Loading ? <Loader /> : null} */}
     </section>
