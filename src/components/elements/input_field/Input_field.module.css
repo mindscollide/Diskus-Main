@@ -244,6 +244,10 @@
   border: 1px solid #e1e1e1 !important;
   position: relative;
 }
+.text-area-create-group {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
 
 .text-area-create-group::placeholder {
   color: #e1e1e1 !important;

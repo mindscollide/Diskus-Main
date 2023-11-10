@@ -53,7 +53,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [createTodoTime, setCreateTodoTime] = useState("");
   const [createTodoDate, setCreateTodoDate] = useState("");
   const state = useSelector((state) => state);
-  const { toDoListReducer, CommitteeReducer } = state;
+  const { toDoListReducer, GroupsReducer } = state;
   const currentDate = new Date();
   const currentHours = currentDate.getHours().toString().padStart(2, "0");
   const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
@@ -399,8 +399,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let getUserDetails =
-      CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
+    let getUserDetails = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
     if (
       getUserDetails !== undefined &&
       getUserDetails !== null &&

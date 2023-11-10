@@ -17,6 +17,10 @@ import pdfIcon from "../../../assets/images/pdf_icon.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import file_image from "../../../assets/images/file_image.svg";
 import featherupload from "../../../assets/images/featherupload.svg";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../DataRoom/SearchFunctionality/option";
 const ViewCommitteeDetails = ({ setViewGroupPage }) => {
   const { Dragger } = Upload;
   const dispatch = useDispatch();
@@ -92,7 +96,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage }) => {
   };
 
   const handleDoubleCLickFile = (data) => {
-    let ext = data.DisplayAttachmentName.split(".").pop();
+    let ext = data.DisplayAttachmentName.split(".")[1];
     let pdfData = {
       taskId: data.pK_FileID,
       commingFrom: 4,
@@ -754,6 +758,8 @@ const ViewCommitteeDetails = ({ setViewGroupPage }) => {
                 {fileAttachments.length > 0
                   ? fileAttachments.map((data, index) => {
                       console.log(data, "datadatadata");
+                      let fileExt = data.DisplayAttachmentName.split(".")[1];
+                      console.log("fileExt", fileExt);
                       return (
                         <>
                           <Col lg={4} md={4} sm={4}>
@@ -796,7 +802,12 @@ const ViewCommitteeDetails = ({ setViewGroupPage }) => {
                                     className={styles["IconTextClass"]}
                                   >
                                     <img
-                                      src={pdfIcon}
+                                      src={getIconSource(
+                                        getFileExtension(
+                                          data.DisplayAttachmentName
+                                        )
+                                      )}
+                                      alt=""
                                       height="10px"
                                       width="10px"
                                       className={styles["IconPDF"]}

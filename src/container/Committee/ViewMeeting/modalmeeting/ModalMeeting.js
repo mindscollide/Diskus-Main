@@ -1048,7 +1048,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   const searchFilterHandler = (value) => {
     let getUserDetails =
-      CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
+      CommitteeReducer.getCommitteeByCommitteeID?.committeMembers;
     if (
       getUserDetails !== undefined &&
       getUserDetails !== null &&

@@ -385,7 +385,6 @@ const getbyGroupID = (
                 GroupID: Number(GroupId),
               };
               dispatch(RetriveDocumentsGroupsApiFunc(navigate, newData, t));
-              console.log(response, "response12123123");
               if (no === 1) {
                 setViewGroupPage(true);
                 setUpdateComponentpage(false);
@@ -807,7 +806,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
               await dispatch(
                 updateGroup_Succes(
                   response.data.responseResult,
-                  t("Group-updated")
+                  t("Updated-successfully")
                 )
               );
               console.log(response.data.responseResult, "updatedupdated");
@@ -933,10 +932,7 @@ const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
                 )
             ) {
               await dispatch(
-                updateGroupStatus_Success(
-                  response.data.responseResult,
-                  t("Group-status-update")
-                )
+                updateGroupStatus_Success(response.data.responseResult, "")
               );
               dispatch(getGroups(navigate, t, currentPage));
               setModalStatusChange(false);
@@ -1128,7 +1124,7 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
               await dispatch(
                 methodCreateUpdateDataRoadMapSuccess(
                   response.data.responseResult.folderID,
-                  t("Folder-mapped-with-data-room")
+                  ""
                 )
               );
             } else if (
@@ -1152,8 +1148,8 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
             ) {
               await dispatch(
                 methodCreateUpdateDataRoadMapSuccess(
-                  response.data.responseResult,
-                  t(" Folder-mapped-with-data-room")
+                  response.data.responseResult.folderID,
+                  ""
                 )
               );
             } else if (
@@ -1177,8 +1173,8 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
             ) {
               await dispatch(
                 methodCreateUpdateDataRoadMapSuccess(
-                  response.data.responseResult,
-                  t("New-mapping-created.")
+                  response.data.responseResult.folderID,
+                  ""
                 )
               );
             } else if (
@@ -1229,14 +1225,14 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
 // Upload Documents Init
 const uploadDocument_init = () => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+    type: actions.UPLOAD_GROUPS_DOCUMENTS_INIT,
   };
 };
 
 // Upload Documents Success
 const uploadDocument_success = (response, message) => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    type: actions.UPLOAD_GROUPS_DOCUMENTS_SUCCESS,
     response: response,
     message: message,
   };
@@ -1245,7 +1241,7 @@ const uploadDocument_success = (response, message) => {
 // Upload Documents Fail
 const uploadDocument_fail = (message) => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    type: actions.UPLOAD_GROUPS_DOCUMENTS_FAIL,
     message: message,
   };
 };
@@ -1270,7 +1266,9 @@ const uploadDocumentsGroupsApi = (navigate, t, data, folderID, newFolder) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(uploadDocumentsGroupsApi(navigate, t, data, folderID));
+          dispatch(
+            uploadDocumentsGroupsApi(navigate, t, data, folderID, newFolder)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1290,10 +1288,7 @@ const uploadDocumentsGroupsApi = (navigate, t, data, folderID, newFolder) => {
                 )
               );
               await dispatch(
-                uploadDocument_success(
-                  response.data.responseResult,
-                  t("Document-uploaded-successfully")
-                )
+                uploadDocument_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -1328,14 +1323,14 @@ const uploadDocumentsGroupsApi = (navigate, t, data, folderID, newFolder) => {
 // Save Files Init
 const saveFiles_init = () => {
   return {
-    type: actions.SAVEFILES_DATAROOM_INIT,
+    type: actions.SAVE_GROUP_FILES_DOCUMENTS_INIT,
   };
 };
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
   return {
-    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    type: actions.SAVE_GROUP_FILES_DOCUMENTS_SUCCESS,
     response: response,
     message: message,
   };
@@ -1344,7 +1339,7 @@ const saveFiles_success = (response, message) => {
 // Save Files Fail
 const saveFiles_fail = (message) => {
   return {
-    type: actions.SAVEFILES_DATAROOM_FAIL,
+    type: actions.SAVE_GROUP_FILES_DOCUMENTS_FAIL,
     message: message,
   };
 };
@@ -1399,9 +1394,7 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
                 DisplayAttachmentName: data.displayFileName,
               };
               newFolder.push(newData);
-              await dispatch(
-                saveFiles_success(newData, t("Files-saved-successfully"))
-              );
+              await dispatch(saveFiles_success(newData, ""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1508,10 +1501,7 @@ const SaveGroupsDocumentsApiFunc = (
                 )
             ) {
               await dispatch(
-                showSaveGroupDocsSuccess(
-                  response.data.responseResult,
-                  t("Update-successful")
-                )
+                showSaveGroupDocsSuccess(response.data.responseResult, "")
               );
               localStorage.removeItem("groupID");
               dispatch(getGroups(navigate, t, currentPage));
@@ -1549,8 +1539,6 @@ const SaveGroupsDocumentsApiFunc = (
         console.log(response, "response");
         dispatch(showSaveGroupDocsFailed(t("Something-went-wrong")));
         dispatch(methodCreateUpdateDataRoadMapFailed(""));
-        localStorage.removeItem("groupID");
-        dispatch(getGroups(navigate, t, currentPage));
       });
   };
 };

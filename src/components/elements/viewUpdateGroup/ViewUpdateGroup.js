@@ -15,6 +15,7 @@ import {
   Checkbox,
   SelectBox,
   InputSearchFilter,
+  Loader,
 } from "./../../../components/elements";
 import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -53,7 +54,7 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
     GroupID: 0,
   });
 
-  const { GroupsReducer } = useSelector((state) => state);
+  const { GroupsReducer, DataRoomReducer } = useSelector((state) => state);
 
   useEffect(() => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
@@ -277,8 +278,9 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
     setViewGroupPage(false);
   };
   return (
-    <section className="MontserratSemiBold-600 color-5a5a5a">
-      {/* <Row className="mt-3">
+    <>
+      <section className="MontserratSemiBold-600 color-5a5a5a">
+        {/* <Row className="mt-3">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["View-Group-heading"]}>
             {t("View-group")}
@@ -286,55 +288,115 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
         </Col>
       </Row> */}
 
-      {/* <Paper className={styles["View-group-paper"]}> */}
-      <Row>
-        <Col lg={6} md={6} sm={6}>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["View-group-Subheading"]}>
-                {t("Details")}
-              </span>
-            </Col>
-          </Row>
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Management-Heading-View-Group"]}>
-                {viewGroupDetails?.Title}
-              </span>
-            </Col>
-          </Row>
-          <Row className="mt-1">
-            <Col lg={12} md={12} sm={12}>
-              <p className={styles["paragraph-content-View-Group"]}>
-                {viewGroupDetails?.Description}
-              </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className={styles["scroll-bar-creategroup"]}
-            >
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["Create-group-Head-Heading"]}>
-                    {t("Group-head")}
-                  </span>
-                </Col>
-              </Row>
-              <Row className="mt-3">
-                {viewGroupDetails.GroupHeads !== null
-                  ? viewGroupDetails.GroupHeads.map((data, index) => {
-                      return (
-                        <>
-                          <Col
-                            lg={6}
-                            md={6}
-                            sm={12}
-                            className={styles["group-head-info"]}
-                          >
+        {/* <Paper className={styles["View-group-paper"]}> */}
+        <Row>
+          <Col lg={6} md={6} sm={6}>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <span className={styles["View-group-Subheading"]}>
+                  {t("Details")}
+                </span>
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col lg={12} md={12} sm={12}>
+                <span className={styles["Management-Heading-View-Group"]}>
+                  {viewGroupDetails?.Title}
+                </span>
+              </Col>
+            </Row>
+            <Row className="mt-1">
+              <Col lg={12} md={12} sm={12}>
+                <p className={styles["paragraph-content-View-Group"]}>
+                  {viewGroupDetails?.Description}
+                </p>
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["scroll-bar-creategroup"]}
+              >
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Create-group-Head-Heading"]}>
+                      {t("Group-head")}
+                    </span>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  {viewGroupDetails.GroupHeads !== null
+                    ? viewGroupDetails.GroupHeads.map((data, index) => {
+                        return (
+                          <>
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={12}
+                              className={styles["group-head-info"]}
+                            >
+                              <Row>
+                                <Col lg={3} md={3} sm={12}>
+                                  <img
+                                    src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                                    width={50}
+                                    height={50}
+                                    alt=""
+                                    draggable="false"
+                                  />
+                                </Col>
+                                <Col lg={9} md={9} sm={9} className="mt-1">
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <span
+                                        className={styles["name-create-group"]}
+                                      >
+                                        {data?.userName}
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <span
+                                        className={
+                                          styles["Designation-create-group"]
+                                        }
+                                      >
+                                        {data?.designation}
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <span
+                                        className={styles["email-create-group"]}
+                                      >
+                                        <a>{data?.emailAddress}</a>
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </>
+                        );
+                      })
+                    : null}
+                </Row>
+                <Row className="mt-3">
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["members-create-group-page"]}>
+                      {t("Members")}
+                    </span>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  {viewGroupDetails.GroupMembers !== null
+                    ? viewGroupDetails.GroupMembers.map((data, index) => {
+                        return (
+                          <Col lg={6} md={6} sm={12} className="mt-3">
                             <Row>
                               <Col lg={3} md={3} sm={12}>
                                 <img
@@ -345,8 +407,13 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
                                   draggable="false"
                                 />
                               </Col>
-                              <Col lg={9} md={9} sm={9} className="mt-1">
-                                <Row>
+                              <Col
+                                lg={9}
+                                md={9}
+                                sm={12}
+                                className={styles["group-head-info"]}
+                              >
+                                <Row className="mt-1">
                                   <Col lg={12} md={12} sm={12}>
                                     <span
                                       className={styles["name-create-group"]}
@@ -378,195 +445,136 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
                               </Col>
                             </Row>
                           </Col>
+                        );
+                      })
+                    : null}
+                </Row>
+              </Col>
+            </Row>
+          </Col>
+          <Col lg={6} md={6} sm={6}>
+            <Row className="mt-2">
+              <Col lg={12} md={12} sm={12}>
+                <Dragger
+                  {...props}
+                  className={styles["dragdrop_attachment_create_resolution"]}
+                >
+                  <p className="ant-upload-drag-icon">
+                    <span className={styles["create_resolution_dragger"]}>
+                      <img
+                        src={featherupload}
+                        width="18.87px"
+                        height="18.87px"
+                        draggable="false"
+                      />
+                    </span>
+                  </p>
+                  <p className={styles["ant-upload-text"]}>
+                    {t("Drag-&-drop-or")}
+                    <span className={styles["Choose_file_style"]}>
+                      {t("Choose-file")}
+                    </span>
+                    <span className={styles["here_text"]}>{t("Here")}</span>
+                  </p>
+                </Dragger>
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col lg={12} md={12} sm={12} className={styles["Scroller_files"]}>
+                {fileAttachments.length > 0
+                  ? fileAttachments.map((data, index) => {
+                      console.log(data, "fileAttachmentsfileAttachments");
+                      return (
+                        <>
+                          <Col
+                            lg={4}
+                            md={4}
+                            sm={4}
+                            className="position-relative gap-2 mt-2 "
+                          >
+                            {Number(data.fk_UserID) === Number(userID) && (
+                              <>
+                                <span className={styles["Crossicon_Class"]}>
+                                  <img
+                                    src={CrossIcon}
+                                    height="12.68px"
+                                    width="12.68px"
+                                    onClick={() => handleRemoveFile(data)}
+                                  />
+                                </span>
+                              </>
+                            )}
+
+                            <section
+                              className={styles["Outer_Box"]}
+                              onDoubleClick={() => handleDoubleCLickFile(data)}
+                            >
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <img
+                                    src={file_image}
+                                    width={"100%"}
+                                    alt=""
+                                    draggable="false"
+                                  />
+                                </Col>
+                              </Row>
+
+                              <section
+                                className={styles["backGround_name_Icon"]}
+                              >
+                                <Row className="mb-2">
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className={styles["IconTextClass"]}
+                                  >
+                                    <img
+                                      src={pdfIcon}
+                                      height="10px"
+                                      width="10px"
+                                      className={styles["IconPDF"]}
+                                    />
+                                    <span className={styles["FileName"]}>
+                                      {data.DisplayAttachmentName}
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </section>
+                            </section>
+                          </Col>
                         </>
                       );
                     })
                   : null}
-              </Row>
-              <Row className="mt-3">
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["members-create-group-page"]}>
-                    {t("Members")}
-                  </span>
-                </Col>
-              </Row>
-              <Row className="mt-3">
-                {viewGroupDetails.GroupMembers !== null
-                  ? viewGroupDetails.GroupMembers.map((data, index) => {
-                      return (
-                        <Col lg={6} md={6} sm={12} className="mt-3">
-                          <Row>
-                            <Col lg={3} md={3} sm={12}>
-                              <img
-                                src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
-                                width={50}
-                                height={50}
-                                alt=""
-                                draggable="false"
-                              />
-                            </Col>
-                            <Col
-                              lg={9}
-                              md={9}
-                              sm={12}
-                              className={styles["group-head-info"]}
-                            >
-                              <Row className="mt-1">
-                                <Col lg={12} md={12} sm={12}>
-                                  <span className={styles["name-create-group"]}>
-                                    {data?.userName}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={
-                                      styles["Designation-create-group"]
-                                    }
-                                  >
-                                    {data?.designation}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={styles["email-create-group"]}
-                                  >
-                                    <a>{data?.emailAddress}</a>
-                                  </span>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        </Col>
-                      );
-                    })
-                  : null}
-              </Row>
-            </Col>
-          </Row>
-        </Col>
-        <Col lg={6} md={6} sm={6}>
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12}>
-              <Dragger
-                {...props}
-                className={styles["dragdrop_attachment_create_resolution"]}
-              >
-                <p className="ant-upload-drag-icon">
-                  <span className={styles["create_resolution_dragger"]}>
-                    <img
-                      src={featherupload}
-                      width="18.87px"
-                      height="18.87px"
-                      draggable="false"
-                    />
-                  </span>
-                </p>
-                <p className={styles["ant-upload-text"]}>
-                  {t("Drag-&-drop-or")}
-                  <span className={styles["Choose_file_style"]}>
-                    {t("Choose-file")}
-                  </span>
-                  <span className={styles["here_text"]}>{t("Here")}</span>
-                </p>
-              </Dragger>
-            </Col>
-          </Row>
-          <Row className="mt-4">
-            <Col lg={12} md={12} sm={12} className={styles["Scroller_files"]}>
-              {fileAttachments.length > 0
-                ? fileAttachments.map((data, index) => {
-                    console.log(data, "fileAttachmentsfileAttachments");
-                    return (
-                      <>
-                        <Col
-                          lg={4}
-                          md={4}
-                          sm={4}
-                          className="position-relative gap-2 mt-2"
-                        >
-                          {Number(data.fk_UserID) === Number(userID) && (
-                            <>
-                              <span className={styles["Crossicon_Class"]}>
-                                <img
-                                  src={CrossIcon}
-                                  height="12.68px"
-                                  width="12.68px"
-                                  onClick={() => handleRemoveFile(data)}
-                                />
-                              </span>
-                            </>
-                          )}
-
-                          <section
-                            className={styles["Outer_Box"]}
-                            onDoubleClick={() => handleDoubleCLickFile(data)}
-                          >
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <img
-                                  src={file_image}
-                                  width={"100%"}
-                                  alt=""
-                                  draggable="false"
-                                />
-                              </Col>
-                            </Row>
-
-                            <section className={styles["backGround_name_Icon"]}>
-                              <Row className="mb-2">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className={styles["IconTextClass"]}
-                                >
-                                  <img
-                                    src={pdfIcon}
-                                    height="10px"
-                                    width="10px"
-                                    className={styles["IconPDF"]}
-                                  />
-                                  <span className={styles["FileName"]}>
-                                    {data.DisplayAttachmentName}
-                                  </span>
-                                </Col>
-                              </Row>
-                            </section>
-                          </section>
-                        </Col>
-                      </>
-                    );
-                  })
-                : null}
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          className="d-flex justify-content-end gap-2"
-        >
-          <Button
-            className={styles["Close-ViewGroup-btn"]}
-            text={t("Close")}
-            onClick={handleClose}
-          />
-          <Button
-            className={styles["Close-ViewGroup-btn"]}
-            text={t("Save")}
-            onClick={handleViewSave}
-          />
-        </Col>
-      </Row>
-      {/* </Paper> */}
-    </section>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <Row className="mt-4">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-end gap-2"
+          >
+            <Button
+              className={styles["Close-ViewGroup-btn"]}
+              text={t("Close")}
+              onClick={handleClose}
+            />
+            <Button
+              className={styles["Close-ViewGroup-btn"]}
+              text={t("Save")}
+              onClick={handleViewSave}
+            />
+          </Col>
+        </Row>
+        {/* </Paper> */}
+      </section>
+      {DataRoomReducer.Loading ? <Loader /> : null}
+    </>
   );
 };
 

@@ -52,81 +52,83 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
     console.log("Close Btn");
   };
   return (
-    <section className="MontserratSemiBold-600 color-5a5a5a">
-      <Row className="mt-3">
-        <Col lg={12} md={12} sm={12}>
-          <span className={styles["View-Committee-heading"]}>
-            {t("View-group")}
-          </span>
-        </Col>
-      </Row>
-      <Paper className={styles["View-group-paper"]}>
-        <Row>
-          <Col
-            sm={12}
-            md={12}
-            lg={12}
-            className="d-flex justify-content-between"
-          >
-            <div className="d-flex gap-3 mb-3">
-              <Button
-                text={t("Group-detail")}
-                className={
-                  currentViewGroup === 1
-                    ? styles["View-Group-details_active"]
-                    : styles["View-Group-details"]
-                }
-                onClick={() => setCurrentViewGroup(1)}
-              />
-              <Button
-                text={t("Tasks")}
-                className={
-                  currentViewGroup === 2
-                    ? styles["View-Group-details_active"]
-                    : styles["View-Group-details"]
-                }
-                onClick={() => setCurrentViewGroup(2)}
-              />
-              <Button
-                text={t("Polls")}
-                className={
-                  currentViewGroup === 3
-                    ? styles["View-Group-details_active"]
-                    : styles["View-Group-details"]
-                }
-                onClick={() => setCurrentViewGroup(3)}
-              />
-              <Button
-                text={t("Meetings")}
-                className={
-                  currentViewGroup === 4
-                    ? styles["View-Group-details_active"]
-                    : styles["View-Group-details"]
-                }
-                onClick={() => setCurrentViewGroup(4)}
-              />
-            </div>
-            <div>
-              <XLg size={"24px"} cursor="pointer" onClick={handleClose} />
-            </div>
+    <>
+      <section className="MontserratSemiBold-600 color-5a5a5a">
+        <Row className="mt-3">
+          <Col lg={12} md={12} sm={12}>
+            <span className={styles["View-Committee-heading"]}>
+              {t("View-group")}
+            </span>
           </Col>
         </Row>
+        <Paper className={styles["View-group-paper"]}>
+          <Row>
+            <Col
+              sm={12}
+              md={12}
+              lg={12}
+              className="d-flex justify-content-between"
+            >
+              <div className="d-flex gap-3 mb-3">
+                <Button
+                  text={t("Group-details")}
+                  className={
+                    currentViewGroup === 1
+                      ? styles["View-Group-details_active"]
+                      : styles["View-Group-details"]
+                  }
+                  onClick={() => setCurrentViewGroup(1)}
+                />
+                <Button
+                  text={t("Tasks")}
+                  className={
+                    currentViewGroup === 2
+                      ? styles["View-Group-details_active"]
+                      : styles["View-Group-details"]
+                  }
+                  onClick={() => setCurrentViewGroup(2)}
+                />
+                <Button
+                  text={t("Polls")}
+                  className={
+                    currentViewGroup === 3
+                      ? styles["View-Group-details_active"]
+                      : styles["View-Group-details"]
+                  }
+                  onClick={() => setCurrentViewGroup(3)}
+                />
+                <Button
+                  text={t("Meetings")}
+                  className={
+                    currentViewGroup === 4
+                      ? styles["View-Group-details_active"]
+                      : styles["View-Group-details"]
+                  }
+                  onClick={() => setCurrentViewGroup(4)}
+                />
+              </div>
+              <div>
+                <XLg size={"24px"} cursor="pointer" onClick={handleClose} />
+              </div>
+            </Col>
+          </Row>
 
-        {currentViewGroup === 1 ? (
-          <ViewUpdateGroup setViewGroupPage={setViewGroupPage} />
-        ) : currentViewGroup === 2 ? (
-          <>
-            <ViewGroupTodo />
-          </>
-        ) : currentViewGroup === 3 ? (
-          <>
-            <Polls view={2} />
-          </>
-        ) : currentViewGroup === 4 ? (
-          <GroupMeeting />
-        ) : null}
-      </Paper>
-    </section>
+          {currentViewGroup === 1 ? (
+            <ViewUpdateGroup setViewGroupPage={setViewGroupPage} />
+          ) : currentViewGroup === 2 ? (
+            <>
+              <ViewGroupTodo />
+            </>
+          ) : currentViewGroup === 3 ? (
+            <>
+              <Polls view={2} />
+            </>
+          ) : currentViewGroup === 4 ? (
+            <GroupMeeting />
+          ) : null}
+        </Paper>
+      </section>
+    </>
   );
 };
 

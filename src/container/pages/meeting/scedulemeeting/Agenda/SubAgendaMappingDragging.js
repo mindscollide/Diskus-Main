@@ -12,6 +12,7 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import {
   showAgenItemsRemovedModal,
   GetAllMeetingUserApiFunc,
+  UpateMeetingStatusLockApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import desh from "../../../../../assets/images/desh.svg";
@@ -275,71 +276,47 @@ const SubAgendaMappingDragging = ({
     if (name === "Description") {
       updatedAgendaItems[index].subAgenda[subIndex].description = value;
     }
-    console.log(updatedAgendaItems, "Description");
     setRows(updatedAgendaItems);
   };
 
-  const lockFunctionActiveSubMenus = (parentIndex, subindex) => {
-    let cloneSubLockArry = [...subLockArry];
-    console.log(index, subindex, "findsubIndexfindsubIndexfindsubIndex");
-    console.log(rows, "findsubIndexfindsubIndexfindsubIndex");
-    console.log(parentIndex, "findsubIndexfindsubIndexfindsubIndex");
-    setRows((prevRows) => {
-      // Find the parent row using parentIndex
-      const parentRow = prevRows[parentIndex];
-      console.log(parentRow, "findsubIndexfindsubIndexfindsubIndex");
-      console.log(
-        parentRow.subAgenda.findIndex((subMenu) => subMenu.subAgendaID),
-        "findsubIndexfindsubIndexfindsubIndex"
+  const lockFunctionActiveSubMenus = async (
+    parentIndex,
+    subAgendaID,
+    isLocked
+  ) => {
+    let Data = {
+      AgendaID: subAgendaID,
+      Islocked: !isLocked,
+    };
+    let flag = await new Promise((resolve) => {
+      dispatch(
+        UpateMeetingStatusLockApiFunc(navigate, t, Data, 1, (updatedFlag) =>
+          resolve(updatedFlag)
+        )
       );
-
-      // Find the index of the subMenu in the subAgenda array
-      const subMenuIndex = parentRow.subAgenda.findIndex(
-        (subMenu) => subMenu.subAgendaID === subindex
-      );
-      console.log(subMenuIndex, "findsubIndexfindsubIndexfindsubIndex");
-
-      // If the subMenu is found, update its isLocked value
-      if (subMenuIndex !== -1) {
-        const newRows = [...prevRows];
-        newRows[parentIndex].subAgenda[subMenuIndex].isLocked =
-          !newRows[parentIndex].subAgenda[subMenuIndex].isLocked;
-        return newRows;
-      }
-
-      // If the subMenu is not found, return the original state
-      return prevRows;
     });
-    // const parentIndexExists = cloneSubLockArry.findIndex(
-    //   (item) => item.parentIndex === index
-    // );
+    if (flag) {
+      setRows((prevRows) => {
+        // Find the parent row using parentIndex
+        const parentRow = prevRows[parentIndex];
+        // Find the index of the subMenu in the subAgenda array
+        const subMenuIndex = parentRow.subAgenda.findIndex(
+          (subMenu) => subMenu.subAgendaID === subAgendaID
+        );
 
-    // if (parentIndexExists >= 0) {
-    //   const existingParentIndexObj = cloneSubLockArry[parentIndexExists];
+        // If the subMenu is found, update its isLocked value
+        if (subMenuIndex !== -1) {
+          const newRows = [...prevRows];
+          newRows[parentIndex].subAgenda[subMenuIndex].isLocked =
+            !newRows[parentIndex].subAgenda[subMenuIndex].isLocked;
+          return newRows;
+        }
 
-    //   const subIndexExists = existingParentIndexObj.SubIndexArray.findIndex(
-    //     (item) => item.subIndex === subindex
-    //   );
-
-    //   if (subIndexExists >= 0) {
-    //     existingParentIndexObj.SubIndexArray.splice(subIndexExists, 1);
-
-    //     // If SubIndexArray is empty, remove the entire parent index object
-    //     if (existingParentIndexObj.SubIndexArray.length === 0) {
-    //       cloneSubLockArry.splice(parentIndexExists, 1);
-    //     }
-    //   } else {
-    //     existingParentIndexObj.SubIndexArray.push({ subIndex: subindex });
-    //   }
-    // } else {
-    //   let newData = {
-    //     parentIndex: index,
-    //     SubIndexArray: [{ subIndex: subindex }],
-    //   };
-    //   cloneSubLockArry.push(newData);
-    // }
-
-    // setSubLockArray(cloneSubLockArry);
+        // If the subMenu is not found, return the original state
+        return prevRows;
+      });
+    } else {
+    }
   };
 
   useEffect(() => {
@@ -958,7 +935,8 @@ const SubAgendaMappingDragging = ({
                                                       } else {
                                                         lockFunctionActiveSubMenus(
                                                           index,
-                                                          subIndex
+                                                          subAgendaData.subAgendaID,
+                                                          subAgendaData.isLocked
                                                         );
                                                       }
                                                     }}
