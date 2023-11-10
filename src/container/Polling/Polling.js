@@ -80,7 +80,6 @@ const Polling = () => {
     searchByName: "",
     searchByTitle: "",
   });
-  console.log(state, "statestatestate");
 
   let organizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
@@ -94,21 +93,26 @@ const Polling = () => {
 
   useEffect(() => {
     if (state !== null) {
+      console.log(state, "statestatestate");
       let check = 0;
       let data = {
-        PollID: Number(state.pollID),
+        PollID: Number(state.record.pollID),
         UserID: parseInt(userID),
       };
-      if (state.wasPollPublished) {
-        if (state.pollStatus.pollStatusId === 3) {
-          check = 4;
-        } else {
-          check = 3;
-        }
+      if (state.isVote) {
+        check = 5;
       } else {
-        check = 1;
+        if (state.record.wasPollPublished) {
+          if (state.record.pollStatus.pollStatusId === 3) {
+            check = 4;
+          } else {
+            check = 3;
+          }
+        } else {
+          check = 1;
+        }
       }
-      if (Object.keys(state).length > 0) {
+      if (Object.keys(state.record).length > 0) {
         dispatch(getPollsByPollIdApi(navigate, data, check, t));
       }
     }
@@ -159,22 +163,17 @@ const Polling = () => {
         PollsReducer.SearchPolls !== null &&
         PollsReducer.SearchPolls !== undefined
       ) {
-        console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
         if (PollsReducer.SearchPolls.polls.length > 0) {
-          console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
           setTotalRecords(PollsReducer.SearchPolls.totalRecords);
           setRows(PollsReducer.SearchPolls.polls);
         } else {
-          console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
           setRows([]);
         }
       } else {
-        console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
         setRows([]);
       }
     } catch (error) {}
   }, [PollsReducer.SearchPolls]);
-  console.log("PollsReducerPollsReducer", rows);
 
   useEffect(() => {
     if (currentLanguage === "ar") {

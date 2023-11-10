@@ -104,11 +104,11 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   };
 
   const onClickVoteBtn = (record) => {
-    navigate("/DisKus/polling", { state: record });
+    navigate("/DisKus/polling", { state: { record, isVote: false } });
   };
 
   const handleClickonTitle = (record) => {
-    navigate("/DisKus/polling", { state: record });
+    navigate("/DisKus/polling", { state: { record, isVote: false } });
     // if (Object.keys(record).length > 0) {
     //   if (record.pollStatus.pollStatusId === 1) {
     //     let data = {
@@ -294,7 +294,11 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() => navigate("/DisKus/polling", { state: record })}
+                  onClick={() =>
+                    navigate("/DisKus/polling", {
+                      state: { record, isVote: true },
+                    })
+                  }
 
                   // onClick={onClickVoteBtn () => navigate("/DisKus/polling")}
                 />
