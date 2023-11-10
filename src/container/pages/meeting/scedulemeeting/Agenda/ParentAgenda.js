@@ -292,13 +292,6 @@ const ParentAgenda = ({
   }, [currentLanguage]);
 
   useEffect(() => {
-    let Data = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-  }, []);
-
-  useEffect(() => {
     if (
       NewMeetingreducer.getMeetingusers !== undefined &&
       NewMeetingreducer.getMeetingusers !== null &&
