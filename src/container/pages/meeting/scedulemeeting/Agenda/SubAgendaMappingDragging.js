@@ -894,7 +894,7 @@ const SubAgendaMappingDragging = ({
                                                     width="25.85px"
                                                     height="25.89px"
                                                     className="cursor-pointer"
-                                                    onClick={
+                                                    onClick={() =>
                                                       parentIslockedCheck ||
                                                       subAgendaData.isLocked
                                                         ? // apllyLockOnSubAgenda(
@@ -902,7 +902,10 @@ const SubAgendaMappingDragging = ({
                                                           //   subIndex
                                                           // )
                                                           ""
-                                                        : openVoteMOdal
+                                                        : openVoteMOdal(
+                                                            subAgendaData.subAgendaID,
+                                                            subAgendaData.agendaVotingID
+                                                          )
                                                     }
                                                   />
                                                   <img

@@ -28,15 +28,6 @@ const CastVoteAgendaModal = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
   useEffect(() => {
-    let Data = {
-      AgendaID: "1222",
-      MeetingID: 1785,
-      AgendaVotingID: 1,
-    };
-    dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
-  }, []);
-
-  useEffect(() => {
     if (
       MeetingAgendaReducer.AgendaVotingInfoData !== undefined &&
       MeetingAgendaReducer.AgendaVotingInfoData !== null &&

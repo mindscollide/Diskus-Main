@@ -41,6 +41,7 @@ import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { async } from "q";
+import { GetAgendaAndVotingInfo } from "../../../../../store/actions/MeetingAgenda_action";
 
 const ParentAgenda = ({
   data,
@@ -167,8 +168,13 @@ const ParentAgenda = ({
     dispatch(showAdvancePermissionModal(true));
   };
 
-  const openVoteMOdal = () => {
-    dispatch(showVoteAgendaModal(true));
+  const openVoteMOdal =async(AgendaID,agendaVotingID) => {
+    let Data = {
+      AgendaID: AgendaID,
+      MeetingID: currentMeeting,
+      AgendaVotingID: agendaVotingID,
+    };
+   await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
   };
 
   //Lock Functionality For SubAgendas Only
@@ -706,9 +712,9 @@ const ParentAgenda = ({
                                 width="25.85px"
                                 height="25.89px"
                                 className="cursor-pointer"
-                                onClick={
+                                onClick={()=>
                                   // apllyLockOnParentAgenda(index)
-                                  data.isLocked ? "" : openVoteMOdal
+                                  data.isLocked ? "" : openVoteMOdal(data.iD,data.agendaVotingID)
                                 }
                               />
                               <img
