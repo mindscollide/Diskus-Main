@@ -534,20 +534,6 @@ const Polls = ({
                             </span>
                           </Col>
                         </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end"
-                          >
-                            <Button
-                              text={"Cancel"}
-                              className={styles["Cancel_button_Polls"]}
-                              onClick={handleCancelPolls}
-                            />
-                          </Col>
-                        </Row>
                       </>
                     )}
                   </Col>

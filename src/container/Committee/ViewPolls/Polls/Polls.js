@@ -28,9 +28,12 @@ import {
   GetPollsByCommitteeIDapi,
   deleteCommitteePollApi,
   getPollsByPollIdApi,
+  getPollsByPollIdforCommitteeApi,
 } from "../../../../store/actions/Polls_actions";
 import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
+
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
+import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -46,6 +49,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
   const [afterViewPolls, setafterViewPolls] = useState(false);
+  const [unPublished, setUnPublished] = useState(true);
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
   let OrganizationID = localStorage.getItem("organizationID");
@@ -64,7 +68,17 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       PollID: record.pollID,
       UserID: parseInt(userID),
     };
-    dispatch(getPollsByPollIdApi(navigate, data, 0, t, setEditPolls));
+    dispatch(
+      getPollsByPollIdforCommitteeApi(
+        navigate,
+        data,
+        1,
+        t,
+        setEditPolls,
+        setvotePolls,
+        setUnPublished
+      )
+    );
     dispatch(showunsavedEditPollsMeetings(false));
 
     // dispatch(showUnsavedPollsMeeting(false));
@@ -89,6 +103,48 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     setAttendance(true);
   };
 
+  const onClickVoteBtn = (record) => {
+    navigate("/DisKus/polling", { state: record });
+  };
+
+  const handleClickonTitle = (record) => {
+    navigate("/DisKus/polling", { state: record });
+    // if (Object.keys(record).length > 0) {
+    //   if (record.pollStatus.pollStatusId === 1) {
+    //     let data = {
+    //       PollID: record.pollID,
+    //       UserID: parseInt(userID),
+    //     };
+    //     dispatch(
+    //       getPollsByPollIdforCommitteeApi(
+    //         navigate,
+    //         data,
+    //         3,
+    //         t,
+    //         setEditPolls,
+    //         setvotePolls,
+    //         setUnPublished
+    //       )
+    //     );
+    //   }
+    // }
+    // if (Object.keys(record).length > 0) {
+    //   let data = {
+    //     PollID: record.pollID,
+    //     UserID: parseInt(userID),
+    //   };
+    //   dispatch(
+    //     getPollsByPollIdforCommitteeApi(
+    //       navigate,
+    //       data,
+    //       2,
+    //       t,
+    //       setEditPolls,
+    //       setvotePolls
+    //     )
+    //   );
+    // }
+  };
   useEffect(() => {
     let Data = {
       CommitteeID: Number(ViewCommitteeID),
@@ -129,11 +185,10 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       key: "pollTitle",
       width: "300px",
       render: (text, record) => {
-        console.log(record, "recordrecordrecordrecord");
         return (
           <span
             className={styles["DateClass"]}
-            onClick={() => navigate("/DisKus/polling")}
+            onClick={() => handleClickonTitle(record)}
           >
             {text}
           </span>
@@ -169,11 +224,15 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       render: (text, record) => {
         console.log(record, "recordrecord");
         if (record.pollStatus?.pollStatusId === 2) {
-          return <span className="text-success">{t("Published")}</span>;
+          return (
+            <span className={styles["text-success"]}>{t("Published")}</span>
+          );
         } else if (record.pollStatus?.pollStatusId === 1) {
-          return <span className="text-success">{t("Unpublished")}</span>;
+          return (
+            <span className={styles["text-success"]}>{t("Unpublished")}</span>
+          );
         } else if (record.pollStatus?.pollStatusId === 3) {
-          return <span className="text-success">{t("Expired")}</span>;
+          return <span className={styles["text-success"]}>{t("Expired")}</span>;
         }
       },
     },
@@ -195,7 +254,11 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         ),
       sortDirections: ["ascend", "descend"],
       render: (text, record) => {
-        return _justShowDateformatBilling(text + "000000");
+        return (
+          <span className={styles["text-success"]}>
+            {_justShowDateformatBilling(text + "000000")}
+          </span>
+        );
       },
     },
 
@@ -209,13 +272,18 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       title: t("Created-by"),
       dataIndex: "pollCreator",
       key: "pollCreator",
+      align: "center",
       width: "110px",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
+      render: (text, record) => {
+        return <span className={styles["text-success"]}>{text}</span>;
+      },
     },
     {
       title: t("Vote"),
       dataIndex: "Vote",
       width: "70px",
+      align: "center",
       render: (text, record) => {
         console.log("votevotevotevote", record);
         console.log("votevotevotevote", record.isVoter);
@@ -226,19 +294,25 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() => navigate("/DisKus/polling")}
+                  onClick={() => onClickVoteBtn(record)}
+                  // onClick={onClickVoteBtn () => navigate("/DisKus/polling")}
                 />
               );
             } else if (record.voteStatus === "Voted") {
               return (
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={styles["Background-nonvoted-Button"]}
-                >
-                  <span className={styles["Not-voted"]}>{t("Voted")}</span>
-                </Col>
+                <Button
+                  className={styles["votedButton"]}
+                  text={t("Voted")}
+                  // onClick={() => navigate("/DisKus/polling")}
+                />
+                // <Col
+                //   lg={12}
+                //   md={12}
+                //   sm={12}
+                //   className={styles["Background-nonvoted-Button"]}
+                // >
+                //   <span className={styles["votedButton"]}>{t("Voted")}</span>
+                // </Col>
               );
             }
           } else {
@@ -270,7 +344,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                     sm={12}
                     className={styles["Vote_Button_Polls"]}
                   >
-                    <span className={styles["Not-voted"]}>{t("Voted")}</span>
+                    <span className={styles["votedButton"]}>{t("Voted")}</span>
                   </Col>
                 );
               }
@@ -402,6 +476,8 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
               <CastVotePollsMeeting setvotePolls={setvotePolls} />
             ) : editPolls ? (
               <EditPollsMeeting setEditPolls={setEditPolls} />
+            ) : unPublished ? (
+              <ViewPollsUnPublished setUnPublished={setUnPublished} />
             ) : (
               <>
                 <Row className="mt-4">

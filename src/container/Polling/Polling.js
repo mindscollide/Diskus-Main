@@ -43,7 +43,7 @@ import {
   setviewpollProgressModal,
   viewVotesDetailsModal,
 } from "../../store/actions/Polls_actions";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   _justShowDateformatBilling,
@@ -61,6 +61,7 @@ const Polling = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { state } = useLocation();
   const { PollsReducer, LanguageReducer } = useSelector((state) => state);
   const [enterpressed, setEnterpressed] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
@@ -79,6 +80,7 @@ const Polling = () => {
     searchByName: "",
     searchByTitle: "",
   });
+  console.log(state, "statestatestate");
   let organizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
   const [isTotalRecords, setTotalRecords] = useState(0);

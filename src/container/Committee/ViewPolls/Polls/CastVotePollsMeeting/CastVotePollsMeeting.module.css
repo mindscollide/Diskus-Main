@@ -101,3 +101,18 @@
   font-family: "MontserratSemiBold" !important;
   font-size: 16px !important;
 }
+.Outer_Box_Members {
+  height: 50px !important;
+  width: 100% !important;
+  border: 1px solid #a2a2a2 !important;
+  border-radius: 4px !important;
+  padding: 0px 20px !important;
+}
+.ProfileStyles {
+  border-radius: 50% !important;
+}
+.Name_Members {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}

@@ -21,6 +21,10 @@
   color: #6172d6;
   font-size: 12px !important;
   cursor: pointer !important;
+  overflow: hidden !important;
+  width: 180px !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
 }
 /* .newMeetingProgressbar {
   background: #6172d6 !important;
@@ -41,10 +45,11 @@
   border-radius: 4px !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold-600";
+  white-space: nowrap;
 }
 
 .publish_meeting_btn_View_poll {
-  background: #4adede  !important;
+  background: #4adede !important;
   border: 1px solid #e1e1e1 !important;
   width: 145px !important;
   height: 36px !important;
