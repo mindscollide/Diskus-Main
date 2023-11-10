@@ -20,6 +20,7 @@ import {
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showCancelModalAgendaContributor,
+  showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
@@ -27,6 +28,7 @@ import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
 import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgendaContributor";
 import { saveAgendaContributors } from "../../../../../store/actions/NewMeetingActions";
 import NextModal from "../meetingDetails/NextModal/NextModal";
+import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
@@ -52,6 +54,7 @@ const AgendaContributers = ({
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
   const [flag, setFlag] = useState(3);
+  const [prevFlag, setprevFlag] = useState(3);
   const [selectedOption, setSelectedOption] = useState({
     value: 1,
     label: (
@@ -410,8 +413,7 @@ const AgendaContributers = ({
     dispatch(ShowNextConfirmationModal(true));
   };
   const previousTabOrganizer = () => {
-    setAgendaContributors(false);
-    setorganizers(true);
+    dispatch(showPreviousConfirmationModal(true));
   };
   const handleEditBtn = () => {
     setIsEditFlag(1);
@@ -729,6 +731,15 @@ const AgendaContributers = ({
           flag={flag}
         />
       )}
+
+      {NewMeetingreducer.ShowPreviousModal && (
+        <PreviousModal
+          setorganizers={setorganizers}
+          setAgendaContributors={setAgendaContributors}
+          prevFlag={prevFlag}
+        />
+      )}
+
       {NewMeetingreducer.cancelAgendaContributor && (
         <CancelAgendaContributor setSceduleMeeting={setSceduleMeeting} />
       )}
