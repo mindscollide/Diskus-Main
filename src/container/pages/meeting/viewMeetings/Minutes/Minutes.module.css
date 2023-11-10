@@ -476,3 +476,13 @@ body[dir="rtl"] .Leftpolygon {
   font-family: "MontserratSemiBold" !important;
   cursor: pointer !important;
 }
+
+.Cancel_Meeting_Details {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid#E1E1E1 !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}

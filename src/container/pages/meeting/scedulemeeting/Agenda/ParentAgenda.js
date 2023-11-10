@@ -41,6 +41,7 @@ import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { async } from "q";
+import { GetAgendaAndVotingInfo } from "../../../../../store/actions/MeetingAgenda_action";
 
 const ParentAgenda = ({
   data,
@@ -56,6 +57,8 @@ const ParentAgenda = ({
   setFileForSend,
   setAllSavedPresenters,
   allSavedPresenters,
+  allUsersRC,
+  setAllUsersRC,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -165,8 +168,13 @@ const ParentAgenda = ({
     dispatch(showAdvancePermissionModal(true));
   };
 
-  const openVoteMOdal = () => {
-    dispatch(showVoteAgendaModal(true));
+  const openVoteMOdal =async(AgendaID,agendaVotingID) => {
+    let Data = {
+      AgendaID: AgendaID,
+      MeetingID: currentMeeting,
+      AgendaVotingID: agendaVotingID,
+    };
+   await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
   };
 
   //Lock Functionality For SubAgendas Only
@@ -500,17 +508,6 @@ const ParentAgenda = ({
                             }
                             classNamePrefix={"SelectOrganizersSelect_active"}
                           />
-                          {/* <Select
-                            options={optionsIndividualOpenCloseVoting}
-                            onChange={dropDownSelectOrganizers}
-                            value={{
-                              value: agendaDetails.organizerUserID,
-                              label: agendaDetails.organizerUserName,
-                            }}
-                            classNamePrefix={
-                              styles["SelectOrganizersSelect_active"]
-                            }
-                          /> */}
                         </Col>
                         <Col
                           sm={12}
@@ -715,9 +712,9 @@ const ParentAgenda = ({
                                 width="25.85px"
                                 height="25.89px"
                                 className="cursor-pointer"
-                                onClick={
+                                onClick={()=>
                                   // apllyLockOnParentAgenda(index)
-                                  data.isLocked ? "" : openVoteMOdal
+                                  data.isLocked ? "" : openVoteMOdal(data.iD,data.agendaVotingID)
                                 }
                               />
                               <img
@@ -794,6 +791,8 @@ const ParentAgenda = ({
                                     index={index}
                                     setRows={setRows}
                                     rows={rows}
+                                    allUsersRC={allUsersRC}
+                                    setAllUsersRC={setAllUsersRC}
                                   />
                                 ) : (
                                   <></>
@@ -833,6 +832,8 @@ const ParentAgenda = ({
               setSubExpand={setSubExpand}
               openAdvancePermissionModal={openAdvancePermissionModal}
               openVoteMOdal={openVoteMOdal}
+              allUsersRC={allUsersRC}
+              setAllUsersRC={setAllUsersRC}
             />
           }
           {/* sub Ajenda Button */}

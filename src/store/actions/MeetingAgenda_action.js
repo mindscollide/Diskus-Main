@@ -15,6 +15,7 @@ import {
   addUpdateAdvanceMeetingAgenda,
 } from "../../commen/apis/Api_config";
 import { meetingApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
+import { showVoteAgendaModal } from "./NewMeetingActions";
 
 const clearResponseMessage = (message) => {
   return {
@@ -345,6 +346,8 @@ const GetAgendaAndVotingInfo = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_GetAgendaAndVotingInfo_01".toLowerCase()
                 )
             ) {
+              dispatch(showVoteAgendaModal(true));
+
               dispatch(
                 getAgendaAndVotingInfo_success(
                   response.data.responseResult,

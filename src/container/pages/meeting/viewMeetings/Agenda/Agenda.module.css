@@ -540,8 +540,8 @@ p.agendaCreater {
   padding-left: 10px;
   padding-right: 20px;
   font-size: 14px;
-  font-family: 'MontserratSemiBold';
-  color: #5A5A5A;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
 }
 
 .agendaCreationTime {
@@ -549,7 +549,7 @@ p.agendaCreater {
   padding-left: 10px;
   padding-right: 20px;
   font-size: 12px;
-  color: #5A5A5A;
+  color: #5a5a5a;
 }
 
 .Cancel_Button_Organizers_view {
@@ -686,6 +686,16 @@ p.agendaCreater {
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_Meeting_Details {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid#E1E1E1 !important;
+  color: #5a5a5a !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }

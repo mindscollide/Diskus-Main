@@ -268,6 +268,10 @@ const Actions = ({
                             isEditMeeting === true) ? (
                             <>
                               <Button
+                                text={t("Cancel")}
+                                className={styles["Cancel_Meeting_Details"]}
+                              />
+                              <Button
                                 text={t("Save")}
                                 className={styles["CloneMeetingButton"]}
                               />

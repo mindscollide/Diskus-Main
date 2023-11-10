@@ -1,17 +1,21 @@
 import React, { useState } from "react";
-import styles from "./NextModal.module.css";
+import styles from "./PreviousModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
-import { ShowNextConfirmationModal } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  ShowNextConfirmationModal,
+  showPreviousConfirmationModal,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import {
   editMeetingFlag,
   saveMeetingFlag,
 } from "../../../../../../store/actions/MeetingOrganizers_action";
-const NextModal = ({
+
+const PreviousModal = ({
   setmeetingDetails,
   setorganizers,
   setAgendaContributors,
@@ -23,24 +27,40 @@ const NextModal = ({
   setPolls,
   setMeetingMaterial,
   setRowsData,
-  flag,
+  prevFlag,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const handleNOFunctionality = () => {
-    dispatch(ShowNextConfirmationModal(false));
-  };
 
   const handleYesFunctionality = () => {
-    dispatch(ShowNextConfirmationModal(false));
-    if (flag === 1) {
-      setmeetingDetails(false);
+    dispatch(showPreviousConfirmationModal(false));
+    if (prevFlag === 3) {
+      console.log("hello i am coming");
       setorganizers(true);
-    } else if (flag === 2) {
+      setAgendaContributors(false);
+    }
+
+    if (prevFlag === 4) {
+      console.log("hello i am coming");
       setAgendaContributors(true);
-      setmeetingDetails(false);
+      setParticipants(false);
+    }
+
+    if (prevFlag === 5) {
+      setAgenda(true);
+      setMeetingMaterial(false);
+    }
+
+    if (prevFlag === 6) {
+      setMeetingMaterial(true);
+      setMinutes(false);
+    }
+
+    if (prevFlag === 2) {
+      setmeetingDetails(true);
+      setAgendaContributors(false);
       setorganizers(false);
       setParticipants(false);
       setAgenda(false);
@@ -52,27 +72,22 @@ const NextModal = ({
       setRowsData([]);
       dispatch(saveMeetingFlag(false));
       dispatch(editMeetingFlag(false));
-    } else if (flag === 3) {
-      setAgendaContributors(false);
-      setParticipants(true);
-    } else if (flag === 4) {
-      setAgenda(true);
-      setParticipants(false);
-    } else if (flag === 5) {
-      setMeetingMaterial(false);
-      setMinutes(true);
     }
+  };
+
+  const handleNOFunctionality = () => {
+    dispatch(showPreviousConfirmationModal(false));
   };
 
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.nextConfirmModal}
-        setShow={dispatch(ShowNextConfirmationModal)}
+        show={NewMeetingreducer.ShowPreviousModal}
+        setShow={dispatch(showPreviousConfirmationModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(ShowNextConfirmationModal(false));
+          dispatch(showPreviousConfirmationModal(false));
         }}
         ModalBody={
           <>
@@ -130,4 +145,4 @@ const NextModal = ({
   );
 };
 
-export default NextModal;
+export default PreviousModal;
