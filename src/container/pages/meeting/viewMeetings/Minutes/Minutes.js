@@ -58,6 +58,7 @@ import ViewUnsavedModal from "./UnsavedFileUploadMinutes/ViewUnsavedModal";
 // import AgendaImport from "./AgendaimportMinutes/AgendaImport";
 const Minutes = ({
   setPolls,
+  setAttendance,
   setMinutes,
   advanceMeetingModalID,
   setactionsPage,
@@ -1195,6 +1196,7 @@ const Minutes = ({
           setAgenda={setAgenda}
           setPolls={setPolls}
           setMinutes={setMinutes}
+          setAttendance={setAttendance}
         />
       )}
     </section>

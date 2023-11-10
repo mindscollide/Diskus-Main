@@ -11,12 +11,20 @@ import {
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
+import {
+  _justShowDateformat,
+  newDateFormaterAsPerUTC,
+  newTimeFormaterAsPerUTC,
+  newTimeFormaterAsPerUTCFullDate,
+  utcConvertintoGMT,
+} from "../../../../../commen/functions/date_formater";
 
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
+import moment from "moment";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -98,6 +106,27 @@ const ViewMeetingDetails = ({
     setorganizers(true);
   };
 
+  const handleEndDateChange = (index, date) => {
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getUTCHours()).slice(-2);
+      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+        .toString()
+        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+
+      const updatedRows = [...rows];
+      updatedRows[index].endDate = formattedTime;
+      updatedRows[index].endTime = newDate;
+      setRows(updatedRows);
+    } else {
+      console.error("Invalid date and time object:", date);
+    }
+  };
+
   //funciton cancel button
   const handleCancelMeetingNoPopup = () => {
     let searchData = {
@@ -112,7 +141,6 @@ const ViewMeetingDetails = ({
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
-    setorganizers(false);
     setmeetingDetails(false);
   };
 
@@ -326,10 +354,26 @@ const ViewMeetingDetails = ({
               </Row>
               <Row>
                 {rows.map((data, index) => {
+                  console.log(data, "datadtatdtatdta");
+
+                  const formattedStartDate = utcConvertintoGMT(
+                    data.selectedOption + data.startDate
+                  );
+                  const formattedEndDate = utcConvertintoGMT(
+                    data.selectedOption + data.endDate
+                  );
+
+                  console.log(
+                    { formattedStartDate, formattedEndDate },
+                    "testdatetimt"
+                  );
                   return (
                     <Col key={index} lg={12} md={12} sm={12}>
                       <span className={styles["SceduledDateTime"]}>
-                        {data.startDate} - {data.endDate}, {data.selectedOption}
+                        {moment(formattedStartDate).format("HH:MM a")} -{" "}
+                        {moment(formattedEndDate).format("HH:MM a")} ,{" "}
+                        {moment(formattedEndDate).format("DD MMM YYYY")}
+                        {/* {formattedStartDate} */}
                       </span>
                     </Col>
                   );
