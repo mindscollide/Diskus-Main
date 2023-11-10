@@ -364,6 +364,7 @@ const ViewMeetingModal = ({
                     <Minutes
                       setMinutes={setMinutes}
                       setPolls={setPolls}
+                      setAttendance={setAttendance}
                       setAgenda={setAgenda}
                       setactionsPage={setactionsPage}
                       setMeetingMaterial={setMeetingMaterial}
@@ -398,6 +399,9 @@ const ViewMeetingModal = ({
                   {attendance && (
                     <Attendence
                       ediorRole={ediorRole}
+                      setMinutes={setMinutes}
+                      setPolls={setPolls}
+                      setAgenda={setAgenda}
                       advanceMeetingModalID={advanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                       setAttendance={setAttendance}

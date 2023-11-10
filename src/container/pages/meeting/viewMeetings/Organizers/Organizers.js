@@ -239,7 +239,6 @@ const Organizers = ({
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
     setorganizers(false);
-    setmeetingDetails(false);
   };
 
   useEffect(() => {

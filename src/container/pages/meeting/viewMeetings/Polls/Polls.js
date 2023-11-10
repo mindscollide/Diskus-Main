@@ -19,6 +19,7 @@ import {
   showCancelPolls,
   showUnsavedPollsMeeting,
   showUnsavedViewPollsModal,
+  searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
@@ -39,6 +40,7 @@ const Polls = ({
   setAttendance,
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
+  setAdvanceMeetingModalID,
   ediorRole,
   setEditMeeting,
   isEditMeeting,
@@ -57,6 +59,11 @@ const Polls = ({
   const [totalRecords, setTotalRecords] = useState(0);
 
   const [cancelModalView, setCancelModalView] = useState(false);
+
+  // For cancel with no modal Open
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
@@ -395,6 +402,22 @@ const Polls = ({
     },
   ];
 
+  const handleCancelMeetingNoPopup = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setViewAdvanceMeetingModal(false);
+    setPolls(false);
+  };
+
   const handleCreatepolls = () => {
     dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(true);
@@ -549,7 +572,7 @@ const Polls = ({
                             <Button
                               text={t("Cancel")}
                               className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={handleViewPollsCancelButto}
+                              onClick={handleCancelMeetingNoPopup}
                             />
                           </Col>
                         </Row>

@@ -97,9 +97,8 @@ const Participants = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setParticipants(false);
-    setAgenda(false);
     setViewAdvanceMeetingModal(false);
+    setParticipants(false);
   };
 
   const ParticipantsViewColoumn = [
