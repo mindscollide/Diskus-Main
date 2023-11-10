@@ -81,6 +81,7 @@ const Polling = () => {
     searchByTitle: "",
   });
   console.log(state, "statestatestate");
+
   let organizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
   const [isTotalRecords, setTotalRecords] = useState(0);
@@ -91,6 +92,27 @@ const Polling = () => {
   const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
   const currentPageSize = localStorage.getItem("pollingPageSize");
 
+  useEffect(() => {
+    if (state !== null) {
+      let check = 0;
+      let data = {
+        PollID: Number(state.pollID),
+        UserID: parseInt(userID),
+      };
+      if (state.wasPollPublished) {
+        if (state.pollStatus.pollStatusId === 3) {
+          check = 4;
+        } else {
+          check = 3;
+        }
+      } else {
+        check = 1;
+      }
+      if (Object.keys(state).length > 0) {
+        dispatch(getPollsByPollIdApi(navigate, data, check, t));
+      }
+    }
+  }, [state]);
   useEffect(() => {
     if (currentPage !== null && currentPageSize !== null) {
       let data = {

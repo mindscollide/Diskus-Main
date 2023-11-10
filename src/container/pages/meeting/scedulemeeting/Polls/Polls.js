@@ -146,7 +146,7 @@ const Polls = ({
         return (
           <span
             className={styles["DateClass"]}
-            onClick={() => navigate("/DisKus/polling")}
+            onClick={() => navigate("/DisKus/polling", { state: record })}
           >
             {text}
           </span>
@@ -239,7 +239,7 @@ const Polls = ({
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() => navigate("/DisKus/polling")}
+                  onClick={() => navigate("/DisKus/polling", { state: record })}
                 />
               );
             } else if (record.voteStatus === "Voted") {

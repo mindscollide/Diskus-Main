@@ -49,7 +49,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
   const [afterViewPolls, setafterViewPolls] = useState(false);
-  const [unPublished, setUnPublished] = useState(true);
+  const [unPublished, setUnPublished] = useState(false);
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
   let OrganizationID = localStorage.getItem("organizationID");
@@ -294,7 +294,8 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() => onClickVoteBtn(record)}
+                  onClick={() => navigate("/DisKus/polling", { state: record })}
+
                   // onClick={onClickVoteBtn () => navigate("/DisKus/polling")}
                 />
               );
