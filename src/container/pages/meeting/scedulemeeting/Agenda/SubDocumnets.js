@@ -19,6 +19,7 @@ const SubDocumnets = ({
   fileForSend,
   setFileForSend,
   subIndex,
+  ediorRole,
 }) => {
   const handlesubAgendaCrossFiles = (subAgendaFilesIndex, subAgendaFiles) => {
     console.log(subAgendaFiles, "fileDataPropfileDataProp");
@@ -75,6 +76,12 @@ const SubDocumnets = ({
                           key={subAgendaFiles.agendaAttachmentsID}
                           draggableId={`parent-attachments-${parentId}-subAgendaID-${subAgendaData.subAgendaID}-attachments-${subAgendaFiles.agendaAttachmentsID}`}
                           index={subAgendaFilesIndex}
+                          isDragDisabled={
+                            ediorRole.role === "Participant" ||
+                            ediorRole.role === "Agenda Contributor"
+                              ? true
+                              : false
+                          }
                         >
                           {(provided) => (
                             <div
@@ -101,6 +108,7 @@ const SubDocumnets = ({
                                       className="d-flex gap-2 align-items-center"
                                     >
                                       <img
+                                        alt=""
                                         draggable={false}
                                         src={getIconSource(
                                           getFileExtension(
@@ -117,18 +125,22 @@ const SubDocumnets = ({
                                       </span>
                                     </Col>
                                     <Col lg={2} md={2} sm={2}>
-                                      <img
-                                        src={redcrossIcon}
-                                        height="19px"
-                                        width="19px"
-                                        className="cursor-pointer"
-                                        onClick={() =>
-                                          handlesubAgendaCrossFiles(
-                                            subAgendaFilesIndex,
-                                            subAgendaFiles
-                                          )
-                                        }
-                                      />
+                                      {ediorRole.role ===
+                                      "Participant" ? null : (
+                                        <img
+                                          alt=""
+                                          src={redcrossIcon}
+                                          height="19px"
+                                          width="19px"
+                                          className="cursor-pointer"
+                                          onClick={() =>
+                                            handlesubAgendaCrossFiles(
+                                              subAgendaFilesIndex,
+                                              subAgendaFiles
+                                            )
+                                          }
+                                        />
+                                      )}
                                     </Col>
                                   </Row>
                                 </section>

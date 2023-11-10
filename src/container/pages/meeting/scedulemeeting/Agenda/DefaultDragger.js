@@ -14,61 +14,17 @@ const DefaultDragger = ({
   rows,
   fileForSend,
   setFileForSend,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
-
-  const { NewMeetingReducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
-  );
-
+console.log("ediorRoleediorRoleediorRole",ediorRole)
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
 
-  //Uploader For Main Agendas File
-  // const props = {
-  //   name: "file",
-  //   multiple: true,
-  //   showUploadList: false,
-  //   onChange(data) {
-  //     const { status } = data.file;
-  //     console.log("DATADATADATA", data.file);
-  //     let newRows = [...rows];
-  //     console.log("DATADATADATA", newRows);
-  //     let fileData = {
-  //       agendaAttachmentsID: getRandomUniqueNumber().toString(),
-  //       displayAttachmentName: data.file.originFileObj.name,
-  //       originalAttachmentName: data.file.originFileObj.name,
-  //       fK_MAID: 0,
-  //     };
-  //     console.log("DATADATADATA", fileData);
-  //     newRows[index].files.push(fileData);
-  //     console.log("DATADATADATA", newRows);
-  //     setRows(newRows);
-  //   },
-  //   onDrop(e) {
-  //     let list = e.dataTransfer.files;
-  //     let newRows = [...rows];
-  //     console.log("DATADATADATA", list);
-  //     list.map((fileDatas, fileindex) => {
-  //       let fileData = {
-  //         agendaAttachmentsID: getRandomUniqueNumber().toString(),
-  //         displayAttachmentName: fileDatas.file.originFileObj.name,
-  //         originalAttachmentName: fileDatas.file.originFileObj.name,
-  //         fK_MAID: 0,
-  //       };
-  //       newRows[index].files.push(fileData);
-  //     });
-  //     setRows(newRows);
-  //     console.log("Dropped files", e.dataTransfer.files);
-  //   },
-  //   customRequest() {},
-  // };
-
   const props = {
     name: "file",
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
@@ -195,6 +151,7 @@ const DefaultDragger = ({
           <Dragger
             {...props}
             className={styles["dragdrop_attachment_create_resolution"]}
+            disabled={ediorRole.role === "Participant" ? true : false}
           >
             <Row>
               <Col
@@ -208,6 +165,7 @@ const DefaultDragger = ({
                   src={DrapDropIcon}
                   width={100}
                   className={styles["ClassImage"]}
+                  alt=""
                 />
               </Col>
               <Col lg={7} md={7} sm={12}>
