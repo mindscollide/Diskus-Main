@@ -11,7 +11,6 @@ import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
 import MeetingMaterial from "./MeetingMaterial/MeetingMaterial";
 import Minutes from "./Minutes/Minutes";
-import ProposedMeetingDate from "./Participants/ProposedMeetingDate/ProposedMeetingDate";
 import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
@@ -453,6 +452,7 @@ const SceduleMeeting = ({
             {minutes && (
               <Minutes
                 setMinutes={setMinutes}
+                setMeetingMaterial={setMeetingMaterial}
                 setSceduleMeeting={setSceduleMeeting}
                 currentMeeting={currentMeeting}
                 setCurrentMeetingID={setCurrentMeetingID}

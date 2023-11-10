@@ -17,6 +17,8 @@ const initialState = {
   savecommitteedocuments: null,
   reteriveCommitteeDocuments: null,
   committeeID: 0,
+  uploadCommitteeDocuments: null,
+  saveUploadCommitteeDocuments: null,
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
@@ -331,6 +333,50 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
       return {
         ...state,
         committeeID: action.payload,
+      };
+    }
+    case actions.UPLOAD_COMMITTEESS_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.UPLOAD_COMMITTEESS_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        uploadCommitteeDocuments: action.respose,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPLOAD_COMMITTEESS_DOCUMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        uploadCommitteeDocuments: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVE_COMMITTEE_FILES_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVE_COMMITTEE_FILES_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveUploadCommitteeDocuments: action.respose,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVE_COMMITTEE_FILES_DOCUMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        saveUploadCommitteeDocuments: null,
+        ResponseMessage: action.message,
       };
     }
 

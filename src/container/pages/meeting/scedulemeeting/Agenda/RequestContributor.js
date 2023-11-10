@@ -8,7 +8,14 @@ import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import { TextField } from "../../../../../components/elements";
 
-const RequestContributor = ({ data, index, setRows, rows }) => {
+const RequestContributor = ({
+  data,
+  index,
+  setRows,
+  rows,
+  allUsersRC,
+  setAllUsersRC,
+}) => {
   const { t } = useTranslation();
 
   const { NewMeetingreducer } = useSelector((state) => state);
@@ -73,30 +80,63 @@ const RequestContributor = ({ data, index, setRows, rows }) => {
       value: value.value,
       label: value.label,
     };
-    updatedAgendaItems[index].requestContributorURl = SelectValue.value;
+    // updatedAgendaItems[index].requestContributorURl = SelectValue.value;
     updatedAgendaItems[index].userID = SelectValue.value;
     updatedAgendaItems[index].requestContributorURlName = SelectValue.label;
     setRows(updatedAgendaItems);
   };
 
-  const allAgendaContributors = agendaContributors.map((contributor) => ({
-    value: contributor.userID,
-    label: (
-      <>
-        <Row>
-          <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-            <img
-              src={`data:image/jpeg;base64,${contributor.userProfilePicture.displayProfilePictureName}`}
-              width="17px"
-              height="17px"
-              className={styles["Image_class_Agenda"]}
-            />
-            <span className={styles["Name_Class"]}>{contributor.userName}</span>
-          </Col>
-        </Row>
-      </>
-    ),
-  }));
+  useEffect(() => {
+    if (
+      agendaContributors.lenth > 0 ||
+      Object.keys(agendaContributors).length > 0
+    ) {
+      const mappedUsers = agendaContributors.map((usersRC) => ({
+        value: usersRC.userID,
+        label: (
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                <img
+                  alt=""
+                  src={`data:image/jpeg;base64,${usersRC.userProfilePicture.displayProfilePictureName}`}
+                  width="17px"
+                  height="17px"
+                  className={styles["Image_class_Agenda"]}
+                />
+                <span className={styles["Name_Class"]}>{usersRC.userName}</span>
+              </Col>
+            </Row>
+          </>
+        ),
+      }));
+      setAllUsersRC((prevUsersRC) => {
+        if (JSON.stringify(prevUsersRC) !== JSON.stringify(mappedUsers)) {
+          return mappedUsers;
+        }
+        return prevUsersRC; // No change, return the current state
+      });
+    }
+  }, [agendaContributors]);
+
+  // const allAgendaContributors = agendaContributors.map((contributor) => ({
+  //   value: contributor.userID,
+  //   label: (
+  //     <>
+  //       <Row>
+  //         <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+  //           <img
+  //             src={`data:image/jpeg;base64,${contributor.userProfilePicture.displayProfilePictureName}`}
+  //             width="17px"
+  //             height="17px"
+  //             className={styles["Image_class_Agenda"]}
+  //           />
+  //           <span className={styles["Name_Class"]}>{contributor.userName}</span>
+  //         </Col>
+  //       </Row>
+  //     </>
+  //   ),
+  // }));
 
   console.log("New Meeting Reducer", NewMeetingreducer);
 
@@ -105,7 +145,7 @@ const RequestContributor = ({ data, index, setRows, rows }) => {
       <Row key={index + 5} className="mt-2">
         <Col lg={12} md={12} sm={12}>
           <Select
-            options={allAgendaContributors}
+            options={allUsersRC}
             value={{
               value: data.requestContributorURl,
               label: data.requestContributorURlName,

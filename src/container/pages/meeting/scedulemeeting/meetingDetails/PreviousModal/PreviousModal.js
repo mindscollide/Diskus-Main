@@ -1,35 +1,93 @@
-import React from "react";
-import styles from "./CancelAgenda.module.css";
+import React, { useState } from "react";
+import styles from "./PreviousModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
-import { showCancelModalAgenda } from "../../../../../../store/actions/NewMeetingActions";
-import { Col, Row } from "react-bootstrap";
+import {
+  ShowNextConfirmationModal,
+  showPreviousConfirmationModal,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { Button, Modal } from "../../../../../../components/elements";
+import { Col, Row } from "react-bootstrap";
+import {
+  editMeetingFlag,
+  saveMeetingFlag,
+} from "../../../../../../store/actions/MeetingOrganizers_action";
 
-const CancelAgenda = ({ setSceduleMeeting }) => {
+const PreviousModal = ({
+  setmeetingDetails,
+  setorganizers,
+  setAgendaContributors,
+  setParticipants,
+  setAgenda,
+  setMinutes,
+  setactionsPage,
+  setAttendance,
+  setPolls,
+  setMeetingMaterial,
+  setRowsData,
+  prevFlag,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
-  const handleNOFunctionality = () => {
-    dispatch(showCancelModalAgenda(false));
+  const handleYesFunctionality = () => {
+    dispatch(showPreviousConfirmationModal(false));
+    if (prevFlag === 3) {
+      console.log("hello i am coming");
+      setorganizers(true);
+      setAgendaContributors(false);
+    }
+
+    if (prevFlag === 4) {
+      console.log("hello i am coming");
+      setAgendaContributors(true);
+      setParticipants(false);
+    }
+
+    if (prevFlag === 5) {
+      setAgenda(true);
+      setMeetingMaterial(false);
+    }
+
+    if (prevFlag === 6) {
+      setMeetingMaterial(true);
+      setMinutes(false);
+    }
+
+    if (prevFlag === 2) {
+      setmeetingDetails(true);
+      setAgendaContributors(false);
+      setorganizers(false);
+      setParticipants(false);
+      setAgenda(false);
+      setMinutes(false);
+      setactionsPage(false);
+      setAttendance(false);
+      setPolls(false);
+      setMeetingMaterial(false);
+      setRowsData([]);
+      dispatch(saveMeetingFlag(false));
+      dispatch(editMeetingFlag(false));
+    }
   };
 
-  const handleYesFunctionality = () => {
-    setSceduleMeeting(false);
+  const handleNOFunctionality = () => {
+    dispatch(showPreviousConfirmationModal(false));
   };
+
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelAgenda}
-        setShow={dispatch(showCancelModalAgenda)}
+        show={NewMeetingreducer.ShowPreviousModal}
+        setShow={dispatch(showPreviousConfirmationModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showCancelModalAgenda(false));
+          dispatch(showPreviousConfirmationModal(false));
         }}
         ModalBody={
           <>
@@ -87,4 +145,4 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
   );
 };
 
-export default CancelAgenda;
+export default PreviousModal;

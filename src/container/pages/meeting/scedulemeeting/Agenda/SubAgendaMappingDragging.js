@@ -12,6 +12,7 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import {
   showAgenItemsRemovedModal,
   GetAllMeetingUserApiFunc,
+  UpateMeetingStatusLockApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import desh from "../../../../../assets/images/desh.svg";
@@ -43,7 +44,7 @@ const SubAgendaMappingDragging = ({
   subexpandIndex,
   expandSubIndex,
   subExpand,
-  apllyLockOnParentAgenda,
+  parentIslockedCheck,
   subLockArry,
   setSubLockArray,
   agendaItemRemovedIndex,
@@ -56,6 +57,8 @@ const SubAgendaMappingDragging = ({
   openVoteMOdal,
   fileForSend,
   setFileForSend,
+  allUsersRC,
+  setAllUsersRC,
 }) => {
   const { t } = useTranslation();
   //Timepicker
@@ -275,44 +278,47 @@ const SubAgendaMappingDragging = ({
     if (name === "Description") {
       updatedAgendaItems[index].subAgenda[subIndex].description = value;
     }
-    console.log(updatedAgendaItems, "Description");
     setRows(updatedAgendaItems);
   };
 
-  const lockFunctionActiveSubMenus = (index, subindex) => {
-    let cloneSubLockArry = [...subLockArry];
-    console.log(index, subindex, "findsubIndexfindsubIndexfindsubIndex");
-
-    const parentIndexExists = cloneSubLockArry.findIndex(
-      (item) => item.parentIndex === index
-    );
-
-    if (parentIndexExists >= 0) {
-      const existingParentIndexObj = cloneSubLockArry[parentIndexExists];
-
-      const subIndexExists = existingParentIndexObj.SubIndexArray.findIndex(
-        (item) => item.subIndex === subindex
+  const lockFunctionActiveSubMenus = async (
+    parentIndex,
+    subAgendaID,
+    isLocked
+  ) => {
+    let Data = {
+      AgendaID: subAgendaID,
+      Islocked: !isLocked,
+    };
+    let flag = await new Promise((resolve) => {
+      dispatch(
+        UpateMeetingStatusLockApiFunc(navigate, t, Data, 1, (updatedFlag) =>
+          resolve(updatedFlag)
+        )
       );
+    });
+    if (flag) {
+      setRows((prevRows) => {
+        // Find the parent row using parentIndex
+        const parentRow = prevRows[parentIndex];
+        // Find the index of the subMenu in the subAgenda array
+        const subMenuIndex = parentRow.subAgenda.findIndex(
+          (subMenu) => subMenu.subAgendaID === subAgendaID
+        );
 
-      if (subIndexExists >= 0) {
-        existingParentIndexObj.SubIndexArray.splice(subIndexExists, 1);
-
-        // If SubIndexArray is empty, remove the entire parent index object
-        if (existingParentIndexObj.SubIndexArray.length === 0) {
-          cloneSubLockArry.splice(parentIndexExists, 1);
+        // If the subMenu is found, update its isLocked value
+        if (subMenuIndex !== -1) {
+          const newRows = [...prevRows];
+          newRows[parentIndex].subAgenda[subMenuIndex].isLocked =
+            !newRows[parentIndex].subAgenda[subMenuIndex].isLocked;
+          return newRows;
         }
-      } else {
-        existingParentIndexObj.SubIndexArray.push({ subIndex: subindex });
-      }
-    } else {
-      let newData = {
-        parentIndex: index,
-        SubIndexArray: [{ subIndex: subindex }],
-      };
-      cloneSubLockArry.push(newData);
-    }
 
-    setSubLockArray(cloneSubLockArry);
+        // If the subMenu is not found, return the original state
+        return prevRows;
+      });
+    } else {
+    }
   };
 
   useEffect(() => {
@@ -327,12 +333,12 @@ const SubAgendaMappingDragging = ({
     }
   }, [currentLanguage]);
 
-  useEffect(() => {
-    let Data = {
-      MeetingID: Number(currentMeetingID),
-    };
-    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-  }, []);
+  // useEffect(() => {
+  //   let Data = {
+  //     MeetingID: Number(currentMeetingID),
+  //   };
+  //   dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+  // }, []);
 
   useEffect(() => {
     if (
@@ -373,6 +379,7 @@ const SubAgendaMappingDragging = ({
         <Row>
           <Col lg={12} md={12} sm={12} className="d-flex gap-2">
             <img
+              alt=""
               src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
               width="17px"
               height="17px"
@@ -426,8 +433,9 @@ const SubAgendaMappingDragging = ({
                                     md={11}
                                     sm={11}
                                     className={
-                                      apllyLockOnParentAgenda(index) ||
-                                      apllyLockOnSubAgenda(index, subIndex)
+                                      parentIslockedCheck ||
+                                      // apllyLockOnSubAgenda(index, subIndex)
+                                      subAgendaData.isLocked
                                         ? styles["SubajendaBox_Inactive"]
                                         : styles["SubajendaBox"]
                                     }
@@ -444,6 +452,7 @@ const SubAgendaMappingDragging = ({
                                           className={styles["backGorund"]}
                                         >
                                           <img
+                                            alt=""
                                             width="18.71px"
                                             height="9.36px"
                                             src={
@@ -461,7 +470,7 @@ const SubAgendaMappingDragging = ({
                                                 : styles["SubAgendaArrow"]
                                             }
                                             onClick={() => {
-                                              apllyLockOnParentAgenda(index) ||
+                                              parentIslockedCheck ||
                                                 handleSubMenuExpand(
                                                   index,
                                                   subIndex
@@ -499,14 +508,13 @@ const SubAgendaMappingDragging = ({
                                               labelClass={"d-none"}
                                               name={"subTitle"}
                                               disable={
-                                                apllyLockOnParentAgenda(
-                                                  index
-                                                ) ||
-                                                apllyLockOnSubAgenda(
-                                                  index,
-                                                  subIndex
-                                                )
-                                                  ? true
+                                                parentIslockedCheck ||
+                                                subAgendaData.isLocked
+                                                  ? // apllyLockOnSubAgenda(
+                                                    //   index,
+                                                    //   subIndex
+                                                    // )
+                                                    true
                                                   : false
                                               }
                                               placeholder={t(
@@ -550,14 +558,13 @@ const SubAgendaMappingDragging = ({
                                                 )
                                               }
                                               isDisabled={
-                                                apllyLockOnParentAgenda(
-                                                  index
-                                                ) ||
-                                                apllyLockOnSubAgenda(
-                                                  index,
-                                                  subIndex
-                                                )
-                                                  ? true
+                                                parentIslockedCheck ||
+                                                subAgendaData.isLocked
+                                                  ? // apllyLockOnSubAgenda(
+                                                    //   index,
+                                                    //   subIndex
+                                                    // )
+                                                    true
                                                   : false
                                               }
                                               classNamePrefix={
@@ -619,14 +626,13 @@ const SubAgendaMappingDragging = ({
                                                   disableDayPicker
                                                   inputClass="inputTImeMeeting"
                                                   disabled={
-                                                    apllyLockOnParentAgenda(
-                                                      index
-                                                    ) ||
-                                                    apllyLockOnSubAgenda(
-                                                      index,
-                                                      subIndex
-                                                    )
-                                                      ? true
+                                                    parentIslockedCheck ||
+                                                    subAgendaData.isLocked
+                                                      ? // apllyLockOnSubAgenda(
+                                                        //   index,
+                                                        //   subIndex
+                                                        // )
+                                                        true
                                                       : false
                                                   }
                                                   format="HH:mm A"
@@ -655,6 +661,7 @@ const SubAgendaMappingDragging = ({
                                                 className="d-flex justify-content-center align-items-center"
                                               >
                                                 <img
+                                                  alt=""
                                                   draggable={false}
                                                   src={desh}
                                                   width="19.02px"
@@ -683,14 +690,13 @@ const SubAgendaMappingDragging = ({
                                                   disableDayPicker
                                                   inputClass="inputTImeMeeting"
                                                   disabled={
-                                                    apllyLockOnParentAgenda(
-                                                      index
-                                                    ) ||
-                                                    apllyLockOnSubAgenda(
-                                                      index,
-                                                      subIndex
-                                                    )
-                                                      ? true
+                                                    parentIslockedCheck ||
+                                                    subAgendaData.isLocked
+                                                      ? // apllyLockOnSubAgenda(
+                                                        //   index,
+                                                        //   subIndex
+                                                        // )
+                                                        true
                                                       : false
                                                   }
                                                   format="HH:mm A"
@@ -712,6 +718,7 @@ const SubAgendaMappingDragging = ({
                                               </Col>
                                             </Row>
                                             <img
+                                              alt=""
                                               draggable={false}
                                               src={redcrossIcon}
                                               height="25px"
@@ -722,9 +729,7 @@ const SubAgendaMappingDragging = ({
                                                 ]
                                               }
                                               onClick={() => {
-                                                apllyLockOnParentAgenda(
-                                                  index
-                                                ) ||
+                                                parentIslockedCheck ||
                                                   handleCrossSubAjenda(
                                                     index,
                                                     subIndex
@@ -740,9 +745,7 @@ const SubAgendaMappingDragging = ({
                                                 styles["Show_More_Styles"]
                                               }
                                               onClick={() => {
-                                                apllyLockOnParentAgenda(
-                                                  index
-                                                ) ||
+                                                parentIslockedCheck ||
                                                   handleSubMenuExpand(
                                                     index,
                                                     subIndex
@@ -813,14 +816,13 @@ const SubAgendaMappingDragging = ({
                                                       )
                                                     }
                                                     disabled={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      ) ||
-                                                      apllyLockOnSubAgenda(
-                                                        index,
-                                                        subIndex
-                                                      )
-                                                        ? true
+                                                      parentIslockedCheck ||
+                                                      subAgendaData.isLocked
+                                                        ? // apllyLockOnSubAgenda(
+                                                          //   index,
+                                                          //   subIndex
+                                                          // )
+                                                          true
                                                         : false
                                                     }
                                                   >
@@ -874,77 +876,69 @@ const SubAgendaMappingDragging = ({
                                                     className="cursor-pointer"
                                                     height="24.09px"
                                                     onClick={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      ) ||
-                                                      apllyLockOnSubAgenda(
-                                                        index,
-                                                        subIndex
-                                                      )
-                                                        ? ""
+                                                      parentIslockedCheck ||
+                                                      subAgendaData.isLocked
+                                                        ? // apllyLockOnSubAgenda(
+                                                          //   index,
+                                                          //   subIndex
+                                                          // )
+                                                          ""
                                                         : openAdvancePermissionModal
                                                     }
+                                                    alt=""
                                                   />
                                                   <img
+                                                    alt=""
                                                     draggable={false}
                                                     src={Cast}
                                                     width="25.85px"
                                                     height="25.89px"
                                                     className="cursor-pointer"
                                                     onClick={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      ) ||
-                                                      apllyLockOnSubAgenda(
-                                                        index,
-                                                        subIndex
-                                                      )
-                                                        ? ""
+                                                      parentIslockedCheck ||
+                                                      subAgendaData.isLocked
+                                                        ? // apllyLockOnSubAgenda(
+                                                          //   index,
+                                                          //   subIndex
+                                                          // )
+                                                          ""
                                                         : openVoteMOdal
                                                     }
                                                   />
                                                   <img
                                                     draggable={false}
                                                     src={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      )
+                                                      parentIslockedCheck
                                                         ? closedLocked
-                                                        : apllyLockOnSubAgenda(
-                                                            index,
-                                                            subIndex
-                                                          )
-                                                        ? DarkLock
+                                                        : subAgendaData.isLocked
+                                                        ? // apllyLockOnSubAgenda(
+                                                          //     index,
+                                                          //     subIndex
+                                                          //   )
+                                                          DarkLock
                                                         : Lock
                                                     }
+                                                    alt=""
                                                     width="18.87px"
                                                     height="26.72px"
                                                     className={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      )
+                                                      parentIslockedCheck
                                                         ? styles[
                                                             "lockBtn_inActive"
                                                           ]
-                                                        : apllyLockOnSubAgenda(
-                                                            index,
-                                                            subIndex
-                                                          )
+                                                        : subAgendaData.isLocked
                                                         ? styles[
                                                             "lockBtn_inActive_coursor"
                                                           ]
                                                         : styles["lockBtn"]
                                                     }
                                                     onClick={() => {
-                                                      if (
-                                                        apllyLockOnParentAgenda(
-                                                          index
-                                                        )
-                                                      ) {
+                                                      if (parentIslockedCheck) {
                                                       } else {
                                                         lockFunctionActiveSubMenus(
                                                           index,
-                                                          subIndex
+                                                          subAgendaData.subAgendaID,
+                                                          subAgendaData.isLocked
                                                         );
                                                       }
                                                     }}
@@ -1035,6 +1029,10 @@ const SubAgendaMappingDragging = ({
                                                         setRows={setRows}
                                                         index={index}
                                                         subIndex={subIndex}
+                                                        allUsersRC={allUsersRC}
+                                                        setAllUsersRC={
+                                                          setAllUsersRC
+                                                        }
                                                       />
                                                     ) : (
                                                       <></>

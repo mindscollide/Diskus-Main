@@ -192,6 +192,7 @@ body[dir="rtl"] .ant-upload-text {
   border-radius: 4px !important;
   position: relative;
   margin: 5px;
+  cursor: pointer;
 }
 .Crossicon_Class {
   cursor: pointer !important;

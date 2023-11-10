@@ -197,62 +197,68 @@ const Committee = () => {
   const handleDocumentsClickTab = (data) => {
     setViewCommitteeViewTab(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
-
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      CommitteeID: JSON.parse(data.committeeID),
-      OrganizationId: OrganizationID,
-    };
-    dispatch(
-      getCommitteesbyCommitteeId(
-        navigate,
-        Data,
-        t,
-        setViewGroupPage,
-        setUpdateComponentpage,
-        1
-      )
-    );
+    setViewGroupPage(true);
+    // let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    // let Data = {
+    //   CommitteeID: JSON.parse(data.committeeID),
+    //   OrganizationId: OrganizationID,
+    // };
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     1
+    //   )
+    // );
   };
 
   // Click on title
   const viewTitleModal = (data) => {
     setViewCommitteeViewTab(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
-
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      CommitteeID: JSON.parse(data.committeeID),
-      OrganizationId: OrganizationID,
-    };
-    dispatch(
-      getCommitteesbyCommitteeId(
-        navigate,
-        Data,
-        t,
-        setViewGroupPage,
-        setUpdateComponentpage,
-        1
-      )
-    );
+    setViewGroupPage(true);
+    // let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    // let Data = {
+    //   CommitteeID: JSON.parse(data.committeeID),
+    //   OrganizationId: OrganizationID,
+    // };
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     1
+    //   )
+    // );
   };
 
   const viewUpdateModal = (committeeID, CommitteeStatusID) => {
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      CommitteeID: JSON.parse(committeeID),
-      OrganizationId: OrganizationID,
-    };
-    dispatch(
-      getCommitteesbyCommitteeId(
-        navigate,
-        Data,
-        t,
-        setViewGroupPage,
-        setUpdateComponentpage,
-        CommitteeStatusID
-      )
-    );
+    if (CommitteeStatusID === 1) {
+      setViewCommitteeViewTab(1);
+      localStorage.setItem("ViewCommitteeID", CommitteeStatusID);
+      setViewGroupPage(true);
+    } else {
+      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let Data = {
+        CommitteeID: JSON.parse(committeeID),
+        OrganizationId: OrganizationID,
+      };
+      dispatch(
+        getCommitteesbyCommitteeId(
+          navigate,
+          Data,
+          t,
+          setViewGroupPage,
+          setUpdateComponentpage,
+          CommitteeStatusID
+        )
+      );
+    }
   };
 
   const discussionGroupChat = (data) => {

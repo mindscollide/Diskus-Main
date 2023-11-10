@@ -36,6 +36,7 @@ import {
   GetAllMeetingRemindersApiFrequencyNew,
   GetAllMeetingTypesNewFunction,
   SaveMeetingDetialsNewApiFunction,
+  ShowNextConfirmationModal,
   showCancelModalmeetingDeitals,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
@@ -45,6 +46,7 @@ import {
   resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
+import NextModal from "./NextModal/NextModal";
 
 const MeetingDetails = ({
   setorganizers,
@@ -63,6 +65,7 @@ const MeetingDetails = ({
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
   const [recurringDropDown, setRecurringDropDown] = useState([]);
+  const [flag, setFlag] = useState(1);
 
   const [rows, setRows] = useState([
     {
@@ -234,8 +237,8 @@ const MeetingDetails = ({
   };
 
   const handleUpdateNext = () => {
-    setmeetingDetails(false);
-    setorganizers(true);
+    dispatch(ShowNextConfirmationModal(true));
+
     //Enable the Error Handling From here
     // setSaveMeeting(!saveMeeting);
 
@@ -1751,6 +1754,13 @@ const MeetingDetails = ({
           setSceduleMeeting={setSceduleMeeting}
           setMeetingDetails={setMeetingDetails}
           setRows={setRows}
+        />
+      )}
+      {NewMeetingreducer.nextConfirmModal && (
+        <NextModal
+          setmeetingDetails={setmeetingDetails}
+          setorganizers={setorganizers}
+          flag={flag}
         />
       )}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />

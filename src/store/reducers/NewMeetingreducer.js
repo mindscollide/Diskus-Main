@@ -85,6 +85,8 @@ const initialState = {
   scheduleMeetingProposed: "",
   unsaveViewMinutesModal: false,
   unsavedViewPollsModal: false,
+  nextConfirmModal: false,
+  ShowPreviousModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -817,7 +819,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_PRPOSED_DATES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         getAllProposedDates: action.response,
         ResponseMessage: action.ResponseMessage,
       };
@@ -1506,6 +1508,20 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         unsavedViewPollsModal: action.response,
+      };
+    }
+
+    case actions.NEXT_CONFIRMATION_MODAL: {
+      return {
+        ...state,
+        nextConfirmModal: action.response,
+      };
+    }
+
+    case actions.PREVIOUS_MODAL: {
+      return {
+        ...state,
+        ShowPreviousModal: action.response,
       };
     }
 

@@ -17,15 +17,13 @@ const initialState = {
   getAllLoading: false,
   FolderID: 0,
   groupDocuments: null,
+  uploadGroupDocuments: null,
+  saveUploadGroupDocuments: null,
 };
 
 const GroupsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GET_GROUPS_BYUSERID_INIT: {
-      console.log(
-        action.response,
-        "GET_GROUPS_BYUSERID_INITGET_GROUPS_BYUSERID_INIT"
-      );
       return {
         ...state,
         Loading: true,
@@ -317,13 +315,6 @@ const GroupsReducer = (state = initialState, action) => {
       };
     }
 
-    case actions.RETREIVE_GROUP_DOCUMENTS_INIT: {
-      return {
-        ...state,
-        Loading: true,
-      };
-    }
-
     case actions.RETREIVE_GROUP_DOCUMENTS_SUCCESS: {
       return {
         ...state,
@@ -337,6 +328,50 @@ const GroupsReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPLOAD_GROUPS_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.UPLOAD_GROUPS_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        uploadGroupDocuments: action.respose,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPLOAD_GROUPS_DOCUMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        uploadGroupDocuments: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVE_GROUP_FILES_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVE_GROUP_FILES_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveUploadGroupDocuments: action.respose,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVE_GROUP_FILES_DOCUMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        saveUploadGroupDocuments: null,
         ResponseMessage: action.message,
       };
     }

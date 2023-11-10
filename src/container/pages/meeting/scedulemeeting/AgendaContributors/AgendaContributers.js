@@ -14,17 +14,21 @@ import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributo
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  ShowNextConfirmationModal,
   UpdateMeetingUserForAgendaContributor,
   getAllAgendaContributorApi,
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showCancelModalAgendaContributor,
+  showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
 import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
 import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgendaContributor";
 import { saveAgendaContributors } from "../../../../../store/actions/NewMeetingActions";
+import NextModal from "../meetingDetails/NextModal/NextModal";
+import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
@@ -49,6 +53,8 @@ const AgendaContributers = ({
   const [notifyMessageField, setNotifyMessageField] = useState("");
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
+  const [flag, setFlag] = useState(3);
+  const [prevFlag, setprevFlag] = useState(3);
   const [selectedOption, setSelectedOption] = useState({
     value: 1,
     label: (
@@ -404,12 +410,10 @@ const AgendaContributers = ({
   // };
 
   const nextTabOrganizer = () => {
-    setAgendaContributors(false);
-    setParticipants(true);
+    dispatch(ShowNextConfirmationModal(true));
   };
   const previousTabOrganizer = () => {
-    setAgendaContributors(false);
-    setorganizers(true);
+    dispatch(showPreviousConfirmationModal(true));
   };
   const handleEditBtn = () => {
     setIsEditFlag(1);
@@ -720,6 +724,22 @@ const AgendaContributers = ({
           setSpecifiUser={setSpecifiUser}
         />
       )}
+      {NewMeetingreducer.nextConfirmModal && (
+        <NextModal
+          setAgendaContributors={setAgendaContributors}
+          setParticipants={setParticipants}
+          flag={flag}
+        />
+      )}
+
+      {NewMeetingreducer.ShowPreviousModal && (
+        <PreviousModal
+          setorganizers={setorganizers}
+          setAgendaContributors={setAgendaContributors}
+          prevFlag={prevFlag}
+        />
+      )}
+
       {NewMeetingreducer.cancelAgendaContributor && (
         <CancelAgendaContributor setSceduleMeeting={setSceduleMeeting} />
       )}

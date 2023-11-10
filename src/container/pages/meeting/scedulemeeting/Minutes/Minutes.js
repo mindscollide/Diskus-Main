@@ -27,6 +27,7 @@ import {
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
   getAllGeneralMinutesApiFunc,
+  showPreviousConfirmationModal,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -41,6 +42,7 @@ import {
   resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
+import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 // import { message, Upload } from "antd";
@@ -58,7 +60,12 @@ import AgendaWise from "./AgendaWise/AgendaWise";
 // import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 // import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
 // import AgendaImport from "./AgendaimportMinutes/AgendaImport";
-const Minutes = ({ setMinutes, currentMeeting, setSceduleMeeting }) => {
+const Minutes = ({
+  setMinutes,
+  currentMeeting,
+  setSceduleMeeting,
+  setMeetingMaterial,
+}) => {
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
@@ -161,6 +168,7 @@ const Minutes = ({ setMinutes, currentMeeting, setSceduleMeeting }) => {
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
   const [folderID, setFolderID] = useState(0);
+  const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [expandedFiles, setExpandedFiles] = useState([]);
@@ -654,6 +662,10 @@ const Minutes = ({ setMinutes, currentMeeting, setSceduleMeeting }) => {
     dispatch(showUnsaveMinutesFileUpload(true));
   };
 
+  const handlePreviousButton = () => {
+    dispatch(showPreviousConfirmationModal(true));
+  };
+
   return (
     <section>
       <Row className="mt-3">
@@ -1143,6 +1155,7 @@ const Minutes = ({ setMinutes, currentMeeting, setSceduleMeeting }) => {
               <Button
                 text={t("Previous")}
                 className={styles["Previous_Button"]}
+                onClick={handlePreviousButton}
               />
               <Button text={t("Next")} className={styles["Button_General"]} />
             </Col>
@@ -1163,6 +1176,14 @@ const Minutes = ({ setMinutes, currentMeeting, setSceduleMeeting }) => {
         <UnsavedMinutes
           setMinutes={setMinutes}
           setSceduleMeeting={setSceduleMeeting}
+        />
+      )}
+
+      {NewMeetingreducer.ShowPreviousModal && (
+        <PreviousModal
+          setMinutes={setMinutes}
+          setMeetingMaterial={setMeetingMaterial}
+          prevFlag={prevFlag}
         />
       )}
     </section>

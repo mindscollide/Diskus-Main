@@ -28,6 +28,7 @@ import {
   convertGMTDateintoUTC,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
+import { async } from "q";
 const ProposedMeetingDate = ({
   setProposedMeetingDates,
   setParticipants,
@@ -83,11 +84,15 @@ const ProposedMeetingDate = ({
       startDateView: "",
     },
   ]);
-  useEffect(() => {
+  const callApis = async () => {
     let Data = {
       MeetingID: Number(currentMeeting),
     };
-    dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+    await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+  };
+  useEffect(() => {
+    callApis();
   }, []);
 
   useEffect(() => {
@@ -275,13 +280,6 @@ const ProposedMeetingDate = ({
 
     // dispatch(showPrposedMeetingUnsavedModal(true));
   };
-
-  useEffect(() => {
-    let Data = {
-      MeetingID: currentMeeting,
-    };
-    dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
-  }, []);
 
   useEffect(() => {
     try {
