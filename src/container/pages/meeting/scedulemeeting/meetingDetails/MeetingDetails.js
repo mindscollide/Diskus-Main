@@ -915,13 +915,13 @@ const MeetingDetails = ({
 
       if (
         MeetingData.meetingTitle === meetingDetails.MeetingTitle &&
-        getmeetingType.PK_MTID !== getmeetingType.PK_MTID &&
+        getmeetingType.PK_MTID === getmeetingType.PK_MTID &&
         MeetingData.location === meetingDetails.Location &&
         MeetingData.description === meetingDetails.Description &&
         MeetingData.isTalkGroup === meetingDetails.groupChat &&
         MeetingData.videoCallURl === meetingDetails.Link &&
-        MeetingData.meetingDates !== newArr &&
-        MeetingData.meetingReminders !== newReminderData &&
+        MeetingData.meetingDates === newArr.MeetingDate &&
+        MeetingData.meetingReminders === newReminderData &&
         MeetingData.notes === meetingDetails.Notes &&
         MeetingData.allowRSVP === meetingDetails.AllowRSPV &&
         MeetingData.notifyAdminOnRSVP ===
@@ -938,6 +938,19 @@ const MeetingDetails = ({
     } catch (error) {
       console.error("Error in handleUpdateNext:", error);
     }
+  };
+
+  // custom react select styles recurring
+  const customStyles = {
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999, // Ensure the dropdown is rendered above other elements
+    }),
+    menu: (provided, state) => ({
+      ...provided,
+      marginTop: state.selectProps.menuPlacement === "top" ? "0" : null,
+      marginBottom: state.selectProps.menuPlacement === "bottom" ? "0" : null,
+    }),
   };
 
   return (
@@ -1714,6 +1727,9 @@ const MeetingDetails = ({
                         ? true
                         : false
                     }
+                    styles={customStyles}
+                    menuPlacement="top" // Set menuPlacement to 'top' to open the dropdown upwards
+                    menuPortalTarget={document.body}
                   />
                 </Col>
               </Row>
