@@ -266,10 +266,8 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   // Function for the Saved Add TExt filed
   const handleOptionTextChange = (e) => {
     let value = e.target.value;
-    console.log(value, "handleOptionTextChangehandleOptionTextChange");
     const updatedOptions = [...saveOptions];
     updatedOptions.votingAnswer = value;
-    console.log(updatedOptions, "updatedOptionsupdatedOptions");
     setSaveOptions(updatedOptions);
   };
 
