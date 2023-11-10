@@ -86,9 +86,9 @@ const SubRequestContributor = ({
       value: value.value,
       label: value.label,
     };
-    updatedAgendaItems[index].subAgenda[
-      subIndex
-    ].subAgendarequestContributorUrl = SelectValue.value;
+    // updatedAgendaItems[index].subAgenda[
+    //   subIndex
+    // ].subAgendarequestContributorUrl = SelectValue.value;
     updatedAgendaItems[index].subAgenda[subIndex].userID = SelectValue.value;
     updatedAgendaItems[index].subAgenda[
       subIndex

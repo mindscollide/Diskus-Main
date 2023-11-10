@@ -78,6 +78,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
     {
       iD: getRandomUniqueNumber().toString() + "A",
       title: "",
+      agendaVotingID: 0,
       presenterID: null,
       description: "",
       presenterName: "",
@@ -85,7 +86,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
       endDate: null,
       selectedRadio: 1,
       urlFieldMain: "",
-      requestContributorURl: 0,
+      // requestContributorURl: 0,
       mainNote: "",
       requestContributorURlName: "",
       files: [],
@@ -96,6 +97,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
       subAgenda: [
         {
           subAgendaID: getRandomUniqueNumber().toString() + "A",
+          agendaVotingID: 0,
           subTitle: "",
           description: "",
           agendaVotingID: 0,
@@ -105,7 +107,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
           endDate: null,
           subSelectRadio: 1,
           subAgendaUrlFieldRadio: "",
-          subAgendarequestContributorUrl: 0,
+          // subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           subfiles: [],
@@ -127,6 +129,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
     const newMainAgenda = {
       iD: getRandomUniqueNumber().toString() + "A",
       title: "",
+      agendaVotingID: 0,
       presenterID: null,
       description: "",
       presenterName: "",
@@ -134,7 +137,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
       endDate: null,
       selectedRadio: 1,
       urlFieldMain: "",
-      requestContributorURl: 0,
+      // requestContributorURl: 0,
       mainNote: "",
       requestContributorURlName: "",
       files: [],
@@ -145,6 +148,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
       subAgenda: [
         {
           subAgendaID: getRandomUniqueNumber().toString() + "A",
+          agendaVotingID: 0,
           subTitle: "",
           description: "",
           presenterID: null,
@@ -154,7 +158,7 @@ const Agenda = ({ setSceduleMeeting, currentMeeting, isEditMeeting }) => {
           subSelectRadio: 1,
           agendaVotingID: 0,
           subAgendaUrlFieldRadio: "",
-          subAgendarequestContributorUrl: 0,
+          // subAgendarequestContributorUrl: 0,
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           subfiles: [],
