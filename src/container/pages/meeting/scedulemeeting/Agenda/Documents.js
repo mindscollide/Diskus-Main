@@ -17,6 +17,7 @@ const Documents = ({
   parentId,
   setFileForSend,
   fileForSend,
+  ediorRole,
 }) => {
   const [files, setfiles] = useState([]);
 
@@ -69,6 +70,12 @@ const Documents = ({
                       key={filesData.agendaAttachmentsID}
                       draggableId={`parent-attachments-${parentId}-${filesData.agendaAttachmentsID}`}
                       index={Fileindex}
+                      isDragDisabled={
+                        ediorRole.role === "Participant" ||
+                        ediorRole.role === "Agenda Contributor"
+                          ? true
+                          : false
+                      }
                     >
                       {(provided) => (
                         <div
@@ -93,6 +100,7 @@ const Documents = ({
                                           filesData.displayAttachmentName
                                         )
                                       )}
+                                      alt=""
                                     />
                                     <span className={styles["TitleFile"]}>
                                       {filesData.displayAttachmentName}
@@ -104,16 +112,19 @@ const Documents = ({
                                     sm={12}
                                     className="d-flex justify-content-end align-items-center"
                                   >
-                                    <img
-                                      draggable={false}
-                                      src={redcrossIcon}
-                                      width="15px"
-                                      height="15px"
-                                      className="cursor-pointer"
-                                      onClick={() => {
-                                        CrossDocument(index, filesData);
-                                      }}
-                                    />
+                                    {ediorRole.role === "Participant" ? null : (
+                                      <img
+                                        draggable={false}
+                                        src={redcrossIcon}
+                                        width="15px"
+                                        height="15px"
+                                        className="cursor-pointer"
+                                        onClick={() => {
+                                          CrossDocument(index, filesData);
+                                        }}
+                                        alt=""
+                                      />
+                                    )}
                                   </Col>
                                 </Row>
                               </span>

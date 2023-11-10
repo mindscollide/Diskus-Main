@@ -5,7 +5,6 @@ import { Notification } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
 import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 import { useTranslation } from "react-i18next";
-import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import { getRandomUniqueNumber } from "./drageFunction";
 
 const SubDedaultDragger = ({
@@ -15,6 +14,7 @@ const SubDedaultDragger = ({
   subIndex,
   fileForSend,
   setFileForSend,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
   //Uploader Props For SubAgendas
@@ -125,60 +125,8 @@ const SubDedaultDragger = ({
         }
       }
     },
-    // onDrop(e) {
-    //   let list = e.dataTransfer.files;
-    //   let newRows = [...rows];
-    //   console.log("DATADATADATA", list);
-    //   list.map((fileDatas, fileindex) => {
-    //     let fileData = {
-    //       agendaAttachmentsID: getRandomUniqueNumber().toString(),
-    //       displayAttachmentName: fileDatas.file.originFileObj.name,
-    //       originalAttachmentName: fileDatas.file.originFileObj.name,
-    //       fK_MAID: 0,
-    //     };
-    //     newRows[index].files.push(fileData);
-    //   });
-    //   setRows(newRows);
-    //   setFileForSend([...fileForSend, fileDatas.file.originFileObj]);
-    //   console.log("Dropped files", e.dataTransfer.files);
-    // },
     customRequest() {},
   };
-
-  // const Subprops = {
-  //   name: "file",
-  //   // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-  //   multiple: true,
-  //   showUploadList: false,
-  //   onChange(data) {
-  //     const { status } = data.file;
-  //     let newRows = [...rows];
-  //     let fileData = {
-  //       agendaAttachmentsID: getRandomUniqueNumber().toString(),
-  //       displayAttachmentName: data.file.originFileObj.name,
-  //       originalAttachmentName: data.file.originFileObj.name,
-  //       fK_MAID: 0,
-  //     };
-  //     newRows[index].subAgenda[subIndex].subfiles.push(fileData);
-  //     setRows(newRows);
-  //   },
-  //   onDrop(e) {
-  //     let list = e.dataTransfer.files;
-  //     let newRows = [...rows];
-  //     list.map((fileDatas, fileindex) => {
-  //       let fileData = {
-  //         agendaAttachmentsID: getRandomUniqueNumber().toString(),
-  //         displayAttachmentName: fileDatas.file.originFileObj.name,
-  //         originalAttachmentName: fileDatas.file.originFileObj.name,
-  //         fK_MAID: 0,
-  //       };
-  //       newRows[index].subAgenda[subIndex].subfiles.push(fileData);
-  //     });
-  //     setRows(newRows);
-  //     console.log("Dropped files", e.dataTransfer.files);
-  //   },
-  //   customRequest() {},
-  // };
 
   return (
     <>
@@ -187,6 +135,7 @@ const SubDedaultDragger = ({
           <Dragger
             {...Subprops}
             className={styles["dragdrop_attachment_create_resolution"]}
+            disabled={ediorRole.role === "Participant" ? true : false}
           >
             <Row>
               <Col
@@ -200,6 +149,7 @@ const SubDedaultDragger = ({
                   src={DrapDropIcon}
                   width={100}
                   className={styles["ClassImage"]}
+                  alt=""
                 />
               </Col>
               <Col lg={7} md={7} sm={12}>

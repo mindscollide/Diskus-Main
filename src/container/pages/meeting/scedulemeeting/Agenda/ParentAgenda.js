@@ -59,26 +59,14 @@ const ParentAgenda = ({
   allSavedPresenters,
   allUsersRC,
   setAllUsersRC,
+  ediorRole,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  console.log(rows, "rowsrowsrows");
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
   let currentLanguage = localStorage.getItem("i18nextLng");
-
-  function getCurrentUTCDate() {
-    const currentDate = new Date();
-    const year = currentDate.getUTCFullYear();
-    const month = String(currentDate.getUTCMonth() + 1).padStart(2, "0");
-    const day = String(currentDate.getUTCDate()).padStart(2, "0");
-
-    return `${year}${month}${day}`;
-  }
-
-  const currentUTCDate = getCurrentUTCDate();
-
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
   const [subLockArry, setSubLockArray] = useState([]);
@@ -168,13 +156,13 @@ const ParentAgenda = ({
     dispatch(showAdvancePermissionModal(true));
   };
 
-  const openVoteMOdal =async(AgendaID,agendaVotingID) => {
+  const openVoteMOdal = async (AgendaID, agendaVotingID) => {
     let Data = {
       AgendaID: AgendaID,
       MeetingID: currentMeeting,
       AgendaVotingID: agendaVotingID,
     };
-   await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
+    await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
   };
 
   //Lock Functionality For SubAgendas Only
@@ -397,7 +385,17 @@ const ParentAgenda = ({
   console.log("Meeting Reducer datadatadatadata", rows);
 
   return (
-    <Draggable key={data.iD} draggableId={data.iD} index={index}>
+    <Draggable
+      key={data.iD}
+      draggableId={data.iD}
+      index={index}
+      isDragDisabled={
+        ediorRole.role === "Participant" ||
+        ediorRole.role === "Agenda Contributor"
+          ? true
+          : false
+      }
+    >
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
@@ -480,8 +478,12 @@ const ParentAgenda = ({
                             value={data.title}
                             change={(e) => handleAgendaItemChange(index, e)}
                             disable={
-                              // apllyLockOnParentAgenda(index) ? true : false
                               data.isLocked
+                                ? data.isLocked
+                                : ediorRole.role === "Participant" ||
+                                  ediorRole.role === "Agenda Contributor"
+                                ? true
+                                : false
                             }
                           />
                         </Col>
@@ -503,8 +505,12 @@ const ParentAgenda = ({
                               handleSelectChange(index, value)
                             }
                             isDisabled={
-                              // apllyLockOnParentAgenda(index) ? true : false
                               data.isLocked
+                                ? data.isLocked
+                                : ediorRole.role === "Participant" ||
+                                  ediorRole.role === "Agenda Contributor"
+                                ? true
+                                : false
                             }
                             classNamePrefix={"SelectOrganizersSelect_active"}
                           />
@@ -542,8 +548,12 @@ const ParentAgenda = ({
                                   handleStartDateChange(index, date)
                                 }
                                 disabled={
-                                  // apllyLockOnParentAgenda(index) ? true : false
                                   data.isLocked
+                                    ? data.isLocked
+                                    : ediorRole.role === "Participant" ||
+                                      ediorRole.role === "Agenda Contributor"
+                                    ? true
+                                    : false
                                 }
                               />
                             </Col>
@@ -586,27 +596,33 @@ const ParentAgenda = ({
                                   handleEndDateChange(index, date)
                                 } // Update end date
                                 disabled={
-                                  // apllyLockOnParentAgenda(index) ? true : false
                                   data.isLocked
+                                    ? data.isLocked
+                                    : ediorRole.role === "Participant" ||
+                                      ediorRole.role === "Agenda Contributor"
+                                    ? true
+                                    : false
                                 }
                               />
                             </Col>
                           </Row>
-                          {index !== 0 && (
-                            <img
-                              alt=""
-                              draggable={false}
-                              src={redcrossIcon}
-                              height="25px"
-                              width="25px"
-                              className={
-                                styles["RedCross_Icon_class_Main_agenda"]
-                              }
-                              onClick={() => {
-                                handleCrossIcon(index);
-                              }}
-                            />
-                          )}
+                          {index !== 0 &&
+                            (ediorRole.role === "Participant" ||
+                            ediorRole.role === "Agenda Contributor" ? null : (
+                              <img
+                                alt=""
+                                draggable={false}
+                                src={redcrossIcon}
+                                height="25px"
+                                width="25px"
+                                className={
+                                  styles["RedCross_Icon_class_Main_agenda"]
+                                }
+                                onClick={() => {
+                                  handleCrossIcon(index);
+                                }}
+                              />
+                            ))}
                         </Col>
                       </Row>
                       <Row className="mt-2">
@@ -640,6 +656,14 @@ const ParentAgenda = ({
                                 placeholder={t("Enter-description")}
                                 required={true}
                                 maxLength={500}
+                                disable={
+                                  data.isLocked
+                                    ? data.isLocked
+                                    : ediorRole.role === "Participant" ||
+                                      ediorRole.role === "Agenda Contributor"
+                                    ? true
+                                    : false
+                                }
                               />
                             </Col>
                           </Row>
@@ -657,10 +681,7 @@ const ParentAgenda = ({
                                   handleRadioChange(index, e.target.value)
                                 }
                                 value={data.selectedRadio}
-                                disabled={
-                                  // apllyLockOnParentAgenda(index) ? true : false
-                                  data.isLocked
-                                }
+                                disabled={data.isLocked}
                               >
                                 <Radio value={1}>
                                   <span
@@ -691,51 +712,55 @@ const ParentAgenda = ({
                               sm={6}
                               className="d-flex justify-content-end gap-4 align-items-center"
                             >
-                              <img
-                                draggable={false}
-                                src={Key}
-                                alt=""
-                                width="24.07px"
-                                height="24.09px"
-                                className="cursor-pointer"
-                                onClick={
-                                  // apllyLockOnParentAgenda(index)
-                                  data.isLocked
-                                    ? ""
-                                    : openAdvancePermissionModal
-                                }
-                              />
-                              <img
-                                alt=""
-                                draggable={false}
-                                src={Cast}
-                                width="25.85px"
-                                height="25.89px"
-                                className="cursor-pointer"
-                                onClick={()=>
-                                  // apllyLockOnParentAgenda(index)
-                                  data.isLocked ? "" : openVoteMOdal(data.iD,data.agendaVotingID)
-                                }
-                              />
-                              <img
-                                alt=""
-                                draggable={false}
-                                src={
-                                  // apllyLockOnParentAgenda(index)
-                                  data.isLocked ? DarkLock : Lock
-                                }
-                                width="18.87px"
-                                className={
-                                  // apllyLockOnParentAgenda(index)
-                                  data.isLocked
-                                    ? styles["lockBtn_inActive"]
-                                    : styles["lockBtn"]
-                                }
-                                height="26.72px"
-                                onClick={() =>
-                                  lockFunctionActive(data.iD, data.isLocked)
-                                }
-                              />
+                              {ediorRole.role === "Participant" ||
+                              ediorRole.role === "Agenda Contributor" ? null : (
+                                <>
+                                  <img
+                                    draggable={false}
+                                    src={Key}
+                                    alt=""
+                                    width="24.07px"
+                                    height="24.09px"
+                                    className="cursor-pointer"
+                                    onClick={
+                                      data.isLocked
+                                        ? ""
+                                        : openAdvancePermissionModal
+                                    }
+                                  />
+                                  <img
+                                    alt=""
+                                    draggable={false}
+                                    src={Cast}
+                                    width="25.85px"
+                                    height="25.89px"
+                                    className="cursor-pointer"
+                                    onClick={() =>
+                                      data.isLocked
+                                        ? ""
+                                        : openVoteMOdal(
+                                            data.iD,
+                                            data.agendaVotingID
+                                          )
+                                    }
+                                  />
+                                  <img
+                                    alt=""
+                                    draggable={false}
+                                    src={data.isLocked ? DarkLock : Lock}
+                                    width="18.87px"
+                                    className={
+                                      data.isLocked
+                                        ? styles["lockBtn_inActive"]
+                                        : styles["lockBtn"]
+                                    }
+                                    height="26.72px"
+                                    onClick={() =>
+                                      lockFunctionActive(data.iD, data.isLocked)
+                                    }
+                                  />
+                                </>
+                              )}
                             </Col>
                           </Row>
                           <Droppable
@@ -759,22 +784,29 @@ const ParentAgenda = ({
                                           parentId={`parent-${data.iD}`}
                                           setFileForSend={setFileForSend}
                                           fileForSend={fileForSend}
+                                          ediorRole={ediorRole}
                                         />
-                                        <DefaultDragger
-                                          setRows={setRows}
-                                          rows={rows}
-                                          index={index}
-                                          fileForSend={fileForSend}
-                                          setFileForSend={setFileForSend}
-                                        />
+                                        {ediorRole.role ===
+                                        "Participant" ? null : (
+                                          <DefaultDragger
+                                            setRows={setRows}
+                                            rows={rows}
+                                            index={index}
+                                            fileForSend={fileForSend}
+                                            setFileForSend={setFileForSend}
+                                            ediorRole={ediorRole}
+                                          />
+                                        )}
                                       </>
-                                    ) : (
+                                    ) : ediorRole.role ===
+                                      "Participant" ? null : (
                                       <DefaultDragger
                                         setRows={setRows}
                                         rows={rows}
                                         index={index}
                                         fileForSend={fileForSend}
                                         setFileForSend={setFileForSend}
+                                        ediorRole={ediorRole}
                                       />
                                     )}
                                   </>
@@ -784,6 +816,7 @@ const ParentAgenda = ({
                                     index={index}
                                     setRows={setRows}
                                     rows={rows}
+                                    ediorRole={ediorRole}
                                   />
                                 ) : data.selectedRadio === 3 ? (
                                   <RequestContributor
@@ -793,6 +826,7 @@ const ParentAgenda = ({
                                     rows={rows}
                                     allUsersRC={allUsersRC}
                                     setAllUsersRC={setAllUsersRC}
+                                    ediorRole={ediorRole}
                                   />
                                 ) : (
                                   <></>
@@ -834,42 +868,46 @@ const ParentAgenda = ({
               openVoteMOdal={openVoteMOdal}
               allUsersRC={allUsersRC}
               setAllUsersRC={setAllUsersRC}
+              ediorRole={ediorRole}
             />
           }
           {/* sub Ajenda Button */}
-          <Row className="mt-3">
-            <Col lg={12} md={12} sm={12}>
-              <Button
-                text={
-                  <>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center gap-2 align-items-center"
-                      >
-                        <img
-                          alt=""
-                          draggable={false}
-                          src={plusFaddes}
-                          height="10.77px"
-                          width="10.77px"
-                        />
-                        <span className={styles["Add_Agen_Heading"]}>
-                          {t("Add-sub-agenda")}
-                        </span>
-                      </Col>
-                    </Row>
-                  </>
-                }
-                className={styles["AddMoreBtnAgenda"]}
-                onClick={() => {
-                  addSubAjendaRows(index);
-                }}
-              />
-            </Col>
-          </Row>
+          {ediorRole.role === "Participant" ||
+          ediorRole.role === "Agenda Contributor" ? null : (
+            <Row className="mt-3">
+              <Col lg={12} md={12} sm={12}>
+                <Button
+                  text={
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center gap-2 align-items-center"
+                        >
+                          <img
+                            alt=""
+                            draggable={false}
+                            src={plusFaddes}
+                            height="10.77px"
+                            width="10.77px"
+                          />
+                          <span className={styles["Add_Agen_Heading"]}>
+                            {t("Add-sub-agenda")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  }
+                  className={styles["AddMoreBtnAgenda"]}
+                  onClick={() => {
+                    addSubAjendaRows(index);
+                  }}
+                />
+              </Col>
+            </Row>
+          )}
         </div>
       )}
     </Draggable>

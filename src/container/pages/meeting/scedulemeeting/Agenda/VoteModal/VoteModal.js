@@ -31,7 +31,6 @@ import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
 import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
 import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
 import Plus from "../../../../../../assets/images/Meeting plus.png";
-import profile from "../../../../../../assets/images/newprofile.png";
 import { validateInput } from "../../../../../../commen/functions/regex";
 const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const { t } = useTranslation();
