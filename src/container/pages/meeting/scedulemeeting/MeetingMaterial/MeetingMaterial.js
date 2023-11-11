@@ -163,7 +163,7 @@ const MeetingMaterial = ({
       render: (text, data) => {
         const ext = getFileExtension(text);
         const isPdf = ext.toLowerCase() === "pdf"; // Check if the file is a PDF
-
+        console.log("childAgendaElementschildAgendaElements", data);
         const parentPdfData = {
           taskId: data.agendaID,
           commingFrom: 4,
@@ -201,7 +201,9 @@ const MeetingMaterial = ({
                     }
                   >
                     <img
-                      src={getIconSource(childExt)}
+                      src={getIconSource(
+                        getFileExtension(childAgenda.displayFileName)
+                      )}
                       alt=""
                       width={"25px"}
                       height={"25px"}

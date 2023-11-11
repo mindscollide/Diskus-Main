@@ -123,12 +123,15 @@ const MeetingMaterial = ({
                     }
                   >
                     <img
-                      src={getIconSource(childExt)}
+                      src={getIconSource(
+                        getFileExtension(childAgenda.displayFileName)
+                      )}
                       alt=""
                       width={"25px"}
                       height={"25px"}
                       className="me-2"
                     />
+                    {console.log("getFileExtension(childAgenda.originalFileName)",childAgenda)}
                     <abbr title={childAgenda.originalFileName}>
                       <span className={styles["docx-name-title"]}>
                         {childAgenda.originalFileName}
@@ -151,6 +154,7 @@ const MeetingMaterial = ({
                 isPdf ? viewHandlerOnclick(e, parentPdfDataJson) : null
               }
             >
+              {console.log("childAgendaElementschildAgendaElements",NewMeetingreducer.meetingMaterial)}
               <img
                 src={getIconSource(ext)}
                 alt=""
