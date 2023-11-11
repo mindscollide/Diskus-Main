@@ -468,6 +468,8 @@ body[dir="rtl"] .Leftpolygon {
   font-family: "MontserratSemiBold" !important;
   font-size: 20px !important;
   color: #5a5a5a !important;
+  display: flex !important;
+  gap: 10px !important;
 }
 
 .Show_more {
@@ -477,12 +479,22 @@ body[dir="rtl"] .Leftpolygon {
   cursor: pointer !important;
 }
 
-.Cancel_Meeting_Details {
+.Cancel_button_Minutes {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
-  border: 1px solid#E1E1E1 !important;
   color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_button_Minutes:is(:active, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }
