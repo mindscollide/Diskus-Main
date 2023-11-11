@@ -39,6 +39,7 @@ const ParentAgenda = ({
   agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -68,24 +69,6 @@ const ParentAgenda = ({
 
   const openVoteMOdal = () => {
     dispatch(showVoteAgendaModal(true));
-  };
-
-  //Lock Functionality For SubAgendas Only
-  const lockFunctionActive = (data) => {
-    if (mainLock.length === 0) {
-      // If state is empty, add the data
-      setmainLock([data]);
-    } else {
-      const existingIndex = mainLock.findIndex((item) => item === data);
-      if (existingIndex >= 0) {
-        // If parentIndex exists, remove it
-        const updatedData = mainLock.filter((item) => item !== data);
-        setmainLock(updatedData);
-      } else {
-        // If parentIndex doesn't exist, add it
-        setmainLock([...mainLock, data]);
-      }
-    }
   };
 
   //Lock For Main Agenda Will Locks Its childs Also
@@ -198,10 +181,13 @@ const ParentAgenda = ({
                           </span>
                         </Col>
                         <Col lg={6} md={6} sm={12} className="text-end">
-                          <Button
-                            text={t("Start-voting")}
-                            className={styles["startVotingButton"]}
-                          />
+                          {Number(ediorRole.status) === 10 ? (
+                            <Button
+                              text={t("Start-voting")}
+                              className={styles["startVotingButton"]}
+                            />
+                          ) : null}
+
                           <Button
                             text={t("Cast-your-vote")}
                             className={styles["CastYourVoteButton"]}

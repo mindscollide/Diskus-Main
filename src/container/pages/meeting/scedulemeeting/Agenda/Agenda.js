@@ -508,10 +508,7 @@ const Agenda = ({
         mappingObject[folder.displayAttachmentName] =
           folder.pK_FileID.toString();
       });
-      console.log(
-        cleanedData,
-        "cleanedDatacleanedDatacleanedDatacleanedDatacleanedDatacleanedData"
-      );
+
       // Update files property in capitalizedData
       let updatedData = cleanedData.map((item) => {
         let updatedFiles = item.files.map((file) => {

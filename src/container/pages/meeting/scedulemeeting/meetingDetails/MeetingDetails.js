@@ -836,8 +836,8 @@ const MeetingDetails = ({
         setPublishedFlag(wasPublishedFlag);
       }
     } catch {}
-  }, [NewMeetingreducer.getAllMeetingDetails]);
-  console.log("meetingDetailsmeetingDetails", meetingDetails);
+  }, [getAllMeetingDetails]);
+
   function compareMeetings(meetingsArray1, meetingsArray2) {
     if (meetingsArray1.length !== meetingsArray2.length) {
       return false; // If the arrays have different lengths, they can't be equal

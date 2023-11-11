@@ -21,24 +21,18 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
 
 const MeetingMaterial = ({
-  // setViewAdvanceMeetingModal,
-  // setMeetingMaterial,
-  // setMinutes,
-  // currentMeeting,
-  // advanceMeetingModalID,
-
   setViewAdvanceMeetingModal,
   advanceMeetingModalID,
   setAdvanceMeetingModalID,
   setMeetingMaterial,
   setAgenda,
   setMinutes,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  console.log(NewMeetingreducer, "parentAgendasparentAgendas");
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
@@ -272,10 +266,6 @@ const MeetingMaterial = ({
           sm={12}
           className="d-flex justify-content-end gap-2 mt-2"
         >
-          {/* <Button
-            text={t("Clone-meeting")}
-            className={styles["Cancel_Classname"]}
-          /> */}
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Meeting_Details"]}
@@ -290,17 +280,14 @@ const MeetingMaterial = ({
             text={t("Next")}
             onClick={handleClickSave}
             className={styles["Save_Classname"]}
+            disableBtn={
+              Number(ediorRole.status) === 11 ||
+              Number(ediorRole.status) === 12 ||
+              Number(ediorRole.status) === 1
+                ? true
+                : false
+            }
           />
-          {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} />
-          <Button
-            text={t("Save-and-publish")}
-            className={styles["Cancel_Classname"]}
-          />
-          <Button
-            text={t("Save-and-next")}
-            className={styles["Save_Classname"]}
-            onClick={handleSaveAndNext}
-          /> */}
         </Col>
       </Row>
       {NewMeetingreducer.cancelMeetingMaterial && (
