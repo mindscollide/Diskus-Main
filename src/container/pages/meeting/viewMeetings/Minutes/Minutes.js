@@ -15,14 +15,11 @@ import file_image from "../../../../../assets/images/file_image.svg";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
 import Rightploygon from "../../../../../assets/images/Polygon right.svg";
-import AgendaImport from "./AgendaimportMinutes/AgendaImport";
-import profile from "../../../../../assets/images/newprofile.png";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
   ADDGeneralMinutesApiFunc,
   DeleteGeneralMinuteDocumentsApiFunc,
-  DeleteGeneralMinutesApiFunc,
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
@@ -31,139 +28,28 @@ import {
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
-import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
-import downArrow from "../../../../../assets/images/whitedown.png";
-import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
-import moment from "moment";
-import {
-  convertintoGMTCalender,
-  newDateFormaterAsPerUTC,
-  newTimeFormaterAsPerUTCFullDate,
-  resolutionResultTable,
-} from "../../../../../commen/functions/date_formater";
+import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
-import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 
-// import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
-// import { message, Upload } from "antd";
-// import download from "../../../../../assets/images/UploaderIcon.svg";
-// import scratch from "../../../../../assets/images/Scracher.svg";
-// import AgendaIcon from "../../../../../assets/images/AgendaFull.svg";
-// import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-// import ImportMinutesModal from "./ImportPreviousMinutesModal/ImportMinutesModal";
-// import {
-//   showImportPreviousMinutes,
-//   showUnsaveMinutesFileUpload,
-// } from "../../../../../store/actions/NewMeetingActions";
-// import Clip from "../../../../../assets/images/ClipTurned.svg";
-// import profile from "../../../../../assets/images/newprofile.png";
-// import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
-// import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
-// import AgendaImport from "./AgendaimportMinutes/AgendaImport";
 const Minutes = ({
   setMinutes,
-  currentMeeting,
-  setSceduleMeeting,
+  setPolls,
+  setAttendance,
+  // setAgenda,
+  setactionsPage,
   setMeetingMaterial,
+  ediorRole,
+  advanceMeetingModalID,
+  setViewAdvanceMeetingModal,
+  setSceduleMeeting,
 }) => {
-  // const { t } = useTranslation();
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const { Dragger } = Upload;
-  // const { NewMeetingreducer } = useSelector((state) => state);
-  // const [uploadbtn, setUploadbtn] = useState(false);
-  // const [createFromScratch, setCreateFromScratch] = useState(false);
-  // const [attachments, setAttachments] = useState([]);
-  // const [afterSaveFiles, setafterSaveFiles] = useState(false);
-  // const [agenda, setAgenda] = useState(false);
-  // const [afterSaveDocs, setafterSaveDocs] = useState([
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  // ]);
-  // const [docsName, setDocsName] = useState([
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  // ]);
-  // const handleImportPreviousModal = () => {
-  //   dispatch(showImportPreviousMinutes(true));
-  // };
-
-  // const handleUploadButton = () => {
-  //   setUploadbtn(true);
-  // };
-
-  // const handleUnsaveFileUploadMinues = () => {
-  //   dispatch(showUnsaveMinutesFileUpload(true));
-  // };
-
-  // const handleSaveFunctionality = () => {
-  //   setUploadbtn(false);
-  //   setafterSaveFiles(true);
-  // };
-
-  // const props = {
-  //   name: "file",
-  //   // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-  //   multiple: true,
-  //   showUploadList: false,
-  //   onChange(data) {
-  //     const { status } = data.file;
-  //     console.log(data.file, " datafiledatafiledatafile");
-  //     setAttachments([...attachments, data.file.originFileObj]);
-  //   },
-  //   onDrop(e) {
-  //     console.log("Dropped files", e.dataTransfer.files);
-  //   },
-  //   customRequest() {},
-  // };
-
-  // const handleRemoveFiles = (index) => {
-  //   let optionscross = [...attachments];
-  //   optionscross.splice(index, 1);
-  //   setAttachments(optionscross);
-  // };
-
-  // const handleEditButton = () => {
-  //   setUploadbtn(true);
-  // };
-
-  // const handleCreateFromScratch = () => {
-  //   setCreateFromScratch(true);
-  // };
-
-  // const handleAgenadFile = () => {
-  //   setAgenda(true);
-  // };
-
-  // Newly Implemented
-
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { NewMeetingreducer } = useSelector((state) => state);
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
-  const [general, setGeneral] = useState(false);
+  const [general, setGeneral] = useState(true);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
@@ -188,13 +74,11 @@ const Minutes = ({
       errorStatus: false,
     },
   });
-  const [notestext, setNotesText] = useState("");
 
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let userID = localStorage.getItem("userID");
-  const date = new Date();
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
@@ -225,13 +109,13 @@ const Minutes = ({
     },
   };
 
-  console.log(currentMeeting, "currentMeetingIDcurrentMeetingID");
-
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: advanceMeetingModalID,
     };
-    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    dispatch(
+      getAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
+    );
     return () => {
       setFileAttachments([]);
     };
@@ -243,14 +127,9 @@ const Minutes = ({
         NewMeetingreducer.generalMinutes !== null &&
         NewMeetingreducer.generalMinutes
       ) {
-        console.log(
-          NewMeetingreducer.generalMinutes,
-          "generalMinutesgeneralMinutes"
-        );
         if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
           let newarr = [];
           NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
-            console.log(data, "newarrnewarrnewarr");
             newarr.push(data);
             setMinuteID(data.minuteID);
           });
@@ -260,39 +139,10 @@ const Minutes = ({
     } catch {}
   }, [NewMeetingreducer.generalMinutes]);
 
-  // all Meeting Document
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
-  //       NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
-  //     ) {
-  //       console.log(
-  //         NewMeetingreducer.generalminutesDocumentForMeeting,
-  //         "NewMeetingreducergeneralminutesDocumentForMeeting"
-  //       );
-  //       if (
-  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
-  //       ) {
-  //         let FileID;
-  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
-  //           (docs, index) => {
-  //             docs.files.map((filedata, index) => {
-  //               console.log(filedata, "filedatafiledata");
-  //               FileID = filedata.pK_FileID;
-  //             });
-  //           }
-  //         );
-  //       }
-  //     }
-  //   } catch {}
-  // }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
-
   //onChange function for React Quill
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText) {
-      console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -425,10 +275,7 @@ const Minutes = ({
   //Edit Button Function
   const handleEditFunc = async (data) => {
     setupdateData(data);
-    console.log(data, "handleEditFunccalled");
-    console.log(data, "dataminutesDetails");
     if (data.minutesDetails !== "") {
-      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         Description: {
           value: data.minutesDetails,
@@ -438,7 +285,6 @@ const Minutes = ({
       });
       setisEdit(true);
     } else {
-      console.log("data.minutesDetails is undefined or null");
     }
     let Retrive = {
       FK_MeetingGeneralMinutesID: data.minuteID,
@@ -448,8 +294,6 @@ const Minutes = ({
     );
     // Ensure data.minutesDetails is not undefined or null before setting the state
   };
-
-  console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
 
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
@@ -491,10 +335,12 @@ const Minutes = ({
   };
   const handleAddClick = async () => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: advanceMeetingModalID,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    dispatch(
+      ADDGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
+    );
     setFileAttachments([]);
   };
 
@@ -514,25 +360,20 @@ const Minutes = ({
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    console.log(messages, "messagesmessages");
-    console.log(currentMeeting, "messagesmessages");
-
-    console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: currentMeeting,
+      FK_MDID: advanceMeetingModalID,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
     dispatch(
-      SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+      SaveMinutesDocumentsApiFunc(navigate, docsData, t, advanceMeetingModalID)
     );
     setFileAttachments([]);
     setPreviousFileIDs([]);
     setFileForSend([]);
-    console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -549,9 +390,8 @@ const Minutes = ({
   }, [NewMeetingreducer.addMinuteID]);
 
   const handleRemovingTheMinutes = (MinuteData) => {
-    console.log(MinuteData, "handleRemovingTheMinutes");
     let Data = {
-      MDID: currentMeeting,
+      MDID: advanceMeetingModalID,
       MeetingGeneralMinutesID: MinuteData.minuteID,
     };
     dispatch(
@@ -559,7 +399,7 @@ const Minutes = ({
         navigate,
         Data,
         t,
-        currentMeeting,
+        advanceMeetingModalID,
         MinuteData
       )
     );
@@ -589,7 +429,6 @@ const Minutes = ({
   };
 
   const handleResetBtnFunc = () => {
-    console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -601,10 +440,8 @@ const Minutes = ({
     setFileAttachments([]);
     setPreviousFileIDs([]);
   };
-  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   //Updating the text of min
   const handleUpdateFunc = async () => {
-    console.log("UpdateCLickd");
     let Data = {
       MinuteID: updateData.minuteID,
       MinuteText: addNoteFields.Description.value,
@@ -626,23 +463,16 @@ const Minutes = ({
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    console.log(messages, "messagesmessages");
-    console.log(currentMeeting, "messagesmessages");
-
-    console.log(newfile, "messagesmessages");
-
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: currentMeeting,
+      FK_MDID: advanceMeetingModalID,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    console.log(docsData, "messagesmessages");
     dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
     setisEdit(false);
     setFileAttachments([]);
-    console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -684,65 +514,74 @@ const Minutes = ({
       </Row>
 
       {agenda ? (
-        <AgendaWise currentMeeting={currentMeeting} />
+        <AgendaWise
+          advanceMeetingModalID={advanceMeetingModalID}
+          ediorRole={ediorRole}
+        />
       ) : general ? (
         <>
           <Row className="mt-4">
             <Col lg={6} md={6} sm={6}>
-              <Row className={styles["Add-note-QuillRow"]}>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={12}
-                  className={styles["Arabic_font_Applied"]}
-                >
-                  <ReactQuill
-                    ref={editorRef}
-                    theme="snow"
-                    value={addNoteFields.Description.value || ""}
-                    placeholder={t("Note-details")}
-                    onChange={onTextChange}
-                    modules={modules}
-                    className={styles["quill-height-addNote"]}
-                    style={{
-                      direction: currentLanguage === "ar" ? "rtl" : "ltr",
-                    }}
-                  />
-                </Col>
-              </Row>
-              {/* Button For Saving the The Minutes  */}
-              <Row className="mt-5">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex gap-2 justify-content-end"
-                >
-                  <Button
-                    text={t("Reset")}
-                    className={styles["Previous_Button"]}
-                    onClick={handleResetBtnFunc}
-                  />
-                  {isEdit === true ? (
-                    <>
-                      <Button
-                        text={t("Update")}
-                        className={styles["Button_General"]}
-                        onClick={handleUpdateFunc}
+              {ediorRole.role === "Organizer" &&
+              Number(ediorRole.status) === 10 ||
+              Number(ediorRole.status) === 9 ? (
+                <>
+                  <Row className={styles["Add-note-QuillRow"]}>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className={styles["Arabic_font_Applied"]}
+                    >
+                      <ReactQuill
+                        ref={editorRef}
+                        theme="snow"
+                        value={addNoteFields.Description.value || ""}
+                        placeholder={t("Note-details")}
+                        onChange={onTextChange}
+                        modules={modules}
+                        className={styles["quill-height-addNote"]}
+                        style={{
+                          direction: currentLanguage === "ar" ? "rtl" : "ltr",
+                        }}
                       />
-                    </>
-                  ) : (
-                    <>
+                    </Col>
+                  </Row>
+                  {/* Button For Saving the The Minutes  */}
+                  <Row className="mt-5">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 justify-content-end"
+                    >
                       <Button
-                        text={t("Save")}
-                        className={styles["Button_General"]}
-                        onClick={handleAddClick}
+                        text={t("Reset")}
+                        className={styles["Previous_Button"]}
+                        onClick={handleResetBtnFunc}
                       />
-                    </>
-                  )}
-                </Col>
-              </Row>
+                      {isEdit === true ? (
+                        <>
+                          <Button
+                            text={t("Update")}
+                            className={styles["Button_General"]}
+                            onClick={handleUpdateFunc}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            text={t("Save")}
+                            className={styles["Button_General"]}
+                            onClick={handleAddClick}
+                          />
+                        </>
+                      )}
+                    </Col>
+                  </Row>
+                </>
+              ) : null}
             </Col>
             <Col lg={6} md={6} sm={6}>
               {fileAttachments.length > 0 ? (
@@ -758,6 +597,7 @@ const Minutes = ({
                                 width="20px"
                                 height="15px"
                                 draggable="false"
+                                alt=""
                               />
                             }
                             onClick={SlideLeft}
@@ -789,16 +629,24 @@ const Minutes = ({
                                       sm={12}
                                       className="position-relative gap-2"
                                     >
-                                      <span
-                                        className={styles["Crossicon_Class"]}
-                                      >
-                                        <img
-                                          src={CrossIcon}
-                                          height="12.68px"
-                                          width="12.68px"
-                                          onClick={() => handleRemoveFile(data)}
-                                        />
-                                      </span>
+                                      {ediorRole.role === "Organizer" &&
+                                      Number(ediorRole.status) === 10 ||
+                                      Number(ediorRole.status) === 9 ? (
+                                        <span
+                                          className={styles["Crossicon_Class"]}
+                                        >
+                                          <img
+                                            src={CrossIcon}
+                                            height="12.68px"
+                                            width="12.68px"
+                                            onClick={() =>
+                                              handleRemoveFile(data)
+                                            }
+                                            alt=""
+                                          />
+                                        </span>
+                                      ) : null}
+
                                       <section className={styles["Outer_Box"]}>
                                         <Row>
                                           <Col lg={12} md={12} sm={12}>
@@ -830,6 +678,7 @@ const Minutes = ({
                                                 height="10px"
                                                 width="10px"
                                                 className={styles["IconPDF"]}
+                                                alt=""
                                               />
                                               <span
                                                 className={styles["FileName"]}
@@ -858,6 +707,7 @@ const Minutes = ({
                                 width="20px"
                                 height="15px"
                                 draggable="false"
+                                alt=""
                               />
                             }
                             onClick={Slideright}
@@ -869,33 +719,39 @@ const Minutes = ({
                   </Row>
                 </>
               ) : null}
-
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12}>
-                  <Dragger
-                    {...props}
-                    className={styles["dragdrop_attachment_create_resolution"]}
-                  >
-                    <p className="ant-upload-drag-icon">
-                      <span className={styles["create_resolution_dragger"]}>
-                        <img
-                          src={featherupload}
-                          width="18.87px"
-                          height="18.87px"
-                          draggable="false"
-                        />
-                      </span>
-                    </p>
-                    <p className={styles["ant-upload-text"]}>
-                      {t("Drag-&-drop-or")}
-                      <span className={styles["Choose_file_style"]}>
-                        {t("Choose-file")}
-                      </span>
-                      <span className={styles["here_text"]}>{t("Here")}</span>
-                    </p>
-                  </Dragger>
-                </Col>
-              </Row>
+              {ediorRole.role === "Organizer" &&
+              Number(ediorRole.status) === 10 ||
+              Number(ediorRole.status) === 9 ? (
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12}>
+                    <Dragger
+                      {...props}
+                      className={
+                        styles["dragdrop_attachment_create_resolution"]
+                      }
+                    >
+                      <p className="ant-upload-drag-icon">
+                        <span className={styles["create_resolution_dragger"]}>
+                          <img
+                            src={featherupload}
+                            width="18.87px"
+                            height="18.87px"
+                            draggable="false"
+                            alt=""
+                          />
+                        </span>
+                      </p>
+                      <p className={styles["ant-upload-text"]}>
+                        {t("Drag-&-drop-or")}
+                        <span className={styles["Choose_file_style"]}>
+                          {t("Choose-file")}
+                        </span>
+                        <span className={styles["here_text"]}>{t("Here")}</span>
+                      </p>
+                    </Dragger>
+                  </Col>
+                </Row>
+              ) : null}
             </Col>
           </Row>
           {/* Mapping of The Create Minutes */}
@@ -944,10 +800,14 @@ const Minutes = ({
                                           className={styles["Show_more_Styles"]}
                                           onClick={toggleExpansion}
                                         >
-                                          {expanded &&
+                                          {!expanded &&
                                           data.minutesDetails.substring(0, 120)
                                             ? t("See-more")
-                                            : t("See-less")}
+                                            : ""}
+                                          {expanded &&
+                                          data.minutesDetails.substring(0, 120)
+                                            ? t("See-less")
+                                            : ""}
                                         </span>
                                       </span>
                                     </Col>
@@ -976,6 +836,7 @@ const Minutes = ({
                                         height="39px"
                                         width="39px"
                                         className={styles["Profile_minutes"]}
+                                        alt=""
                                       />
                                     </Col>
                                     <Col
@@ -1003,22 +864,26 @@ const Minutes = ({
                                         </Col>
                                       </Row>
                                     </Col>
-                                    <Col
-                                      lg={3}
-                                      md={3}
-                                      sm={3}
-                                      className="d-flex justify-content-start align-items-center"
-                                    >
-                                      <img
-                                        draggable={false}
-                                        src={EditIcon}
-                                        height="21.55px"
-                                        width="21.55px"
-                                        className="cursor-pointer"
-                                        onClick={() => handleEditFunc(data)}
-                                        alt=""
-                                      />
-                                    </Col>
+                                    {ediorRole.role === "Organizer" &&
+                                    Number(ediorRole.status) === 10 ||
+                                    Number(ediorRole.status) === 9 ? (
+                                      <Col
+                                        lg={3}
+                                        md={3}
+                                        sm={3}
+                                        className="d-flex justify-content-start align-items-center"
+                                      >
+                                        <img
+                                          draggable={false}
+                                          src={EditIcon}
+                                          height="21.55px"
+                                          width="21.55px"
+                                          className="cursor-pointer"
+                                          onClick={() => handleEditFunc(data)}
+                                          alt=""
+                                        />
+                                      </Col>
+                                    ) : null}
                                   </Row>
                                 </Col>
                               </Row>
@@ -1102,6 +967,7 @@ const Minutes = ({
                                                             className={
                                                               styles["IconPDF"]
                                                             }
+                                                            alt=""
                                                           />
                                                           <span
                                                             className={
@@ -1127,15 +993,19 @@ const Minutes = ({
                                   </Row>
                                 </>
                               ) : null}
-
-                              <img
-                                draggable={false}
-                                src={RedCroseeIcon}
-                                height="20.76px"
-                                width="20.76px"
-                                className={styles["RedCrossClass"]}
-                                onClick={() => handleRemovingTheMinutes(data)}
-                              />
+                              {ediorRole.role === "Organizer" &&
+                              Number(ediorRole.status) === 10 ||
+                              Number(ediorRole.status) === 9 ? (
+                                <img
+                                  draggable={false}
+                                  src={RedCroseeIcon}
+                                  height="20.76px"
+                                  width="20.76px"
+                                  className={styles["RedCrossClass"]}
+                                  onClick={() => handleRemovingTheMinutes(data)}
+                                  alt=""
+                                />
+                              ) : null}
                             </Col>
                           </Row>
                         </section>
@@ -1152,12 +1022,6 @@ const Minutes = ({
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
-              <Button
-                text={t("Previous")}
-                className={styles["Previous_Button"]}
-                onClick={handlePreviousButton}
-              />
-              <Button text={t("Next")} className={styles["Button_General"]} />
             </Col>
           </Row>
         </>
@@ -1176,547 +1040,10 @@ const Minutes = ({
         <UnsavedMinutes
           setMinutes={setMinutes}
           setSceduleMeeting={setSceduleMeeting}
-        />
-      )}
-
-      {NewMeetingreducer.ShowPreviousModal && (
-        <PreviousModal
-          setMinutes={setMinutes}
-          setMeetingMaterial={setMeetingMaterial}
-          prevFlag={prevFlag}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
         />
       )}
     </section>
-    // <section>
-    //   {NewMeetingreducer.afterImportState === true ? (
-    //     <>
-    //       <Row>
-    //         <Col lg={12} md={12} sm={12} className={styles["Scroller_Minutes"]}>
-    //           <Row className="mt-3 gap-3">
-    //             {docsName.length > 0
-    //               ? docsName.map((data, index) => {
-    //                   return (
-    //                     <>
-    //                       <Col
-    //                         lg={6}
-    //                         md={6}
-    //                         sm={6}
-    //                         className={styles["Box_Minutes"]}
-    //                       >
-    //                         <Row>
-    //                           <Col lg={8} md={8} sm={8}>
-    //                             <Row className="mt-3">
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex align-items-center gap-3"
-    //                               >
-    //                                 <img draggable={false} src={Clip} />
-    //                                 <span className={styles["Title_File"]}>
-    //                                   {data.name}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row className="mt-1">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={
-    //                                     styles["Date_Minutes_And_time"]
-    //                                   }
-    //                                 >
-    //                                   4:00pm, 18th May, 2020
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                           <Col lg={4} md={4} sm={4} className="">
-    //                             <Row className="mt-3">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={styles["Uploaded_heading"]}
-    //                                 >
-    //                                   {t("Uploaded-by")}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row>
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex gap-2 align-items-center"
-    //                               >
-    //                                 <img
-    //                                   draggable={false}
-    //                                   src={profile}
-    //                                   height="27px"
-    //                                   width="27px"
-    //                                   className={styles["Profile_minutes"]}
-    //                                 />
-    //                                 <span className={styles["Name"]}>
-    //                                   Saaf Fudda
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                         </Row>
-    //                         <img
-    //                           draggable={false}
-    //                           src={RedCroseeIcon}
-    //                           height="20.76px"
-    //                           width="20.76px"
-    //                           className={styles["RedCrossClass"]}
-    //                         />
-    //                       </Col>
-    //                     </>
-    //                   );
-    //                 })
-    //               : null}
-    //           </Row>
-    //         </Col>
-    //       </Row>
-    //     </>
-    //   ) : uploadbtn ? (
-    //     <>
-    //       <Row className="mt-5">
-    //         <Col lg={12} md={12} sm={12}>
-    //           <Dragger
-    //             {...props}
-    //             className={styles["dragdrop_attachment_create_resolution"]}
-    //           >
-    //             <Row>
-    //               <Col
-    //                 lg={5}
-    //                 md={5}
-    //                 sm={12}
-    //                 className="d-flex justify-content-end align-items-center"
-    //               >
-    //                 <img
-    //                   draggable={false}
-    //                   src={DrapDropIcon}
-    //                   width={100}
-    //                   className={styles["ClassImage"]}
-    //                 />
-    //               </Col>
-    //               <Col lg={7} md={7} sm={12}>
-    //                 <Row className="mt-3">
-    //                   <Col
-    //                     lg={12}
-    //                     md={12}
-    //                     sm={12}
-    //                     className="d-flex justify-content-start"
-    //                   >
-    //                     <span className={styles["ant-upload-text-Meetings"]}>
-    //                       {t("Drop-files-here")}
-    //                     </span>
-    //                   </Col>
-    //                 </Row>
-    //                 <Row>
-    //                   <Col
-    //                     lg={12}
-    //                     md={12}
-    //                     sm={12}
-    //                     className="d-flex justify-content-start"
-    //                   >
-    //                     <span className={styles["Choose_file_style-Meeting"]}>
-    //                       {t("The-following-file-formats-are")}
-    //                     </span>
-    //                   </Col>
-    //                 </Row>
-    //                 <Row>
-    //                   <Col
-    //                     lg={12}
-    //                     md={12}
-    //                     sm={12}
-    //                     className="d-flex justify-content-start"
-    //                   >
-    //                     <span className={styles["Choose_file_style-Meeting"]}>
-    //                       {t("Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png")}
-    //                     </span>
-    //                   </Col>
-    //                 </Row>
-    //               </Col>
-    //             </Row>
-    //           </Dragger>
-    //         </Col>
-    //       </Row>
-    //       <Row>
-    //         <Col lg={12} md={12} sm={12}>
-    //           <Row className={styles["Scroller"]}>
-    //             {attachments.length > 0
-    //               ? attachments.map((data, index) => {
-    //                   return (
-    //                     <>
-    //                       <Col
-    //                         lg={6}
-    //                         md={6}
-    //                         sm={6}
-    //                         className={styles["Box_Minutes"]}
-    //                       >
-    //                         <Row>
-    //                           <Col lg={8} md={8} sm={8}>
-    //                             <Row className="mt-3">
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex align-items-center gap-3"
-    //                               >
-    //                                 <img draggable={false} src={Clip} />
-    //                                 <span className={styles["Title_File"]}>
-    //                                   {data.name}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row className="mt-1">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={
-    //                                     styles["Date_Minutes_And_time"]
-    //                                   }
-    //                                 >
-    //                                   4:00pm, 18th May, 2020
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                           <Col lg={4} md={4} sm={4} className="">
-    //                             <Row className="mt-3">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={styles["Uploaded_heading"]}
-    //                                 >
-    //                                   {t("Uploaded-by")}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row>
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex gap-2 align-items-center"
-    //                               >
-    //                                 <img
-    //                                   draggable={false}
-    //                                   src={profile}
-    //                                   height="27px"
-    //                                   width="27px"
-    //                                   className={styles["Profile_minutes"]}
-    //                                 />
-    //                                 <span className={styles["Name"]}>
-    //                                   Saaf Fudda
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                         </Row>
-    //                         <img
-    //                           draggable={false}
-    //                           src={RedCroseeIcon}
-    //                           height="20.76px"
-    //                           width="20.76px"
-    //                           className={styles["RedCrossClass"]}
-    //                           onClick={() => {
-    //                             handleRemoveFiles(index);
-    //                           }}
-    //                         />
-    //                       </Col>
-    //                     </>
-    //                   );
-    //                 })
-    //               : null}
-    //           </Row>
-    //         </Col>
-    //       </Row>
-    //       <Row className="mt-5">
-    //         <Col
-    //           lg={12}
-    //           md={12}
-    //           sm={12}
-    //           className="d-flex justify-content-end gap-2"
-    //         >
-    //           <Button
-    //             text={t("Clone-meeting")}
-    //             className={styles["Cancel_Minutes_upload_section"]}
-    //           />
-    //           <Button
-    //             text={t("Cancel")}
-    //             className={styles["Cancel_Minutes_upload_section"]}
-    //             onClick={handleUnsaveFileUploadMinues}
-    //           />
-    //           <Button
-    //             disableBtn={attachments.length <= 0 ? true : false}
-    //             text={t("Save")}
-    //             className={styles["Save_Minutes_upload_section"]}
-    //             onClick={handleSaveFunctionality}
-    //           />
-    //         </Col>
-    //       </Row>
-    //     </>
-    //   ) : afterSaveFiles ? (
-    //     <>
-    //       <Row className="mt-3 m-0 p-0">
-    //         <Col
-    //           lg={12}
-    //           md={12}
-    //           sm={12}
-    //           className="d-flex justify-content-end gap-2"
-    //         >
-    //           <Button
-    //             text={t("Invite-to-contribute")}
-    //             className={styles["InviteToContributeButton"]}
-    //           />
-    //           <Button
-    //             text={t("Publish-minutes")}
-    //             className={styles["InviteToContributeButton"]}
-    //           />
-    //           <Button
-    //             text={t("Edit")}
-    //             icon={
-    //               <img
-    //                 draggable={false}
-    //                 src={EditIcon}
-    //                 width="11.75px"
-    //                 height="11.75px"
-    //               />
-    //             }
-    //             className={styles["InviteToContributeButton"]}
-    //             onClick={handleEditButton}
-    //           />
-    //         </Col>
-    //       </Row>
-    //       <Row>
-    //         <Col lg={12} md={12} sm={12}>
-    //           <Row className={styles["Scroller_On_Save"]}>
-    //             {attachments.length > 0
-    //               ? attachments.map((data, index) => {
-    //                   return (
-    //                     <>
-    //                       <Col
-    //                         lg={6}
-    //                         md={6}
-    //                         sm={6}
-    //                         className={styles["Box_Minutes"]}
-    //                       >
-    //                         <Row>
-    //                           <Col lg={8} md={8} sm={8}>
-    //                             <Row className="mt-3">
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex align-items-center gap-3"
-    //                               >
-    //                                 <img draggable={false} src={Clip} />
-    //                                 <span className={styles["Title_File"]}>
-    //                                   {data.name}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row className="mt-1">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={
-    //                                     styles["Date_Minutes_And_time"]
-    //                                   }
-    //                                 >
-    //                                   4:00pm, 18th May, 2020
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                           <Col lg={4} md={4} sm={4} className="">
-    //                             <Row className="mt-3">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={styles["Uploaded_heading"]}
-    //                                 >
-    //                                   {t("Uploaded-by")}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row>
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex gap-2 align-items-center"
-    //                               >
-    //                                 <img
-    //                                   draggable={false}
-    //                                   src={profile}
-    //                                   height="27px"
-    //                                   width="27px"
-    //                                   className={styles["Profile_minutes"]}
-    //                                 />
-    //                                 <span className={styles["Name"]}>
-    //                                   Saaf Fudda
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                         </Row>
-    //                       </Col>
-    //                     </>
-    //                   );
-    //                 })
-    //               : null}
-    //           </Row>
-    //         </Col>
-    //       </Row>
-    //       <Row className="m-0 p-0 mt-5">
-    //         <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-    //           <Button
-    //             text={t("Save")}
-    //             className={styles["Save_Btn_After_save"]}
-    //           />
-    //         </Col>
-    //       </Row>
-    //     </>
-    //   ) : createFromScratch ? (
-    //     <CreateFromScratch />
-    //   ) : agenda ? (
-    //     <AgendaImport />
-    //   ) : (
-    //     <>
-    //       <Row className="m-0 p-0 mt-3">
-    //         <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-    //           <Button
-    //             text={t("Import-previous-minutes")}
-    //             className={styles["Minustes_Buttons_Import"]}
-    //             onClick={handleImportPreviousModal}
-    //           />
-    //         </Col>
-    //       </Row>
-    //       <Row className="d-flex justify-content-center gap-4 mt-5">
-    //         <Col lg={4} md={4} sm={4} className={styles["Box_For_Options"]}>
-    //           <Row className="mt-3">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Row>
-    //                 <Col lg={12} md={12} sm={12}>
-    //                   <Row>
-    //                     <Col lg={12} md={12} sm={12} className="mt-4">
-    //                       <img
-    //                         draggable={false}
-    //                         src={download}
-    //                         width="161.76px"
-    //                         height="161.76px"
-    //                       />
-    //                     </Col>
-    //                   </Row>
-    //                 </Col>
-    //               </Row>
-    //             </Col>
-    //           </Row>
-    //           <Row className="mt-4">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Button
-    //                 text={t("Upload")}
-    //                 className={styles["Upload_Btn_Styles"]}
-    //                 onClick={handleUploadButton}
-    //               />
-    //             </Col>
-    //           </Row>
-    //         </Col>
-    //         <Col lg={4} md={4} sm={4} className={styles["Box_For_Options"]}>
-    //           <Row className="mt-3">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Row>
-    //                 <Col lg={12} md={12} sm={12}>
-    //                   <Row className="mt-4">
-    //                     <Col lg={12} md={12} sm={12}>
-    //                       <img
-    //                         draggable={false}
-    //                         src={scratch}
-    //                         width="161.76px"
-    //                         height="161.76px"
-    //                       />
-    //                     </Col>
-    //                   </Row>
-    //                 </Col>
-    //               </Row>
-    //             </Col>
-    //           </Row>
-    //           <Row className="mt-4">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Button
-    //                 text={t("Create-from-scratch")}
-    //                 className={styles["Upload_Btn_Styles"]}
-    //                 onClick={handleCreateFromScratch}
-    //               />
-    //             </Col>
-    //           </Row>
-    //         </Col>
-    //         <Col lg={4} md={4} sm={4} className={styles["Box_For_Options"]}>
-    //           <Row className="mt-4">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Row>
-    //                 <Col lg={12} md={12} sm={12}>
-    //                   <Row className="mt-2">
-    //                     <Col lg={12} md={12} sm={12}>
-    //                       <img
-    //                         draggable={false}
-    //                         src={AgendaIcon}
-    //                         width="161.76px"
-    //                         height="161.76px"
-    //                         className={styles["AgendaIconStyles"]}
-    //                       />
-    //                     </Col>
-    //                   </Row>
-    //                 </Col>
-    //               </Row>
-    //             </Col>
-    //           </Row>
-    //           <Row className="mt-4">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Button
-    //                 text={t("Agenda")}
-    //                 className={styles["Upload_Btn_Styles"]}
-    //                 onClick={handleAgenadFile}
-    //               />
-    //             </Col>
-    //           </Row>
-    //         </Col>
-    //       </Row>
-    //     </>
-    //   )}
-
-    //   {NewMeetingreducer.ImportPreviousMinutes && <ImportMinutesModal />}
-
-    //   )}
-    // </section>
   );
 };
 

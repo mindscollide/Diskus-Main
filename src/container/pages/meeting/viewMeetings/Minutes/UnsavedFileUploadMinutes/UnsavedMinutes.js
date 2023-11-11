@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 
-const UnsavedMinutes = ({ setMinutes, setSceduleMeeting }) => {
+const UnsavedMinutes = ({ setMinutes, setSceduleMeeting ,setViewAdvanceMeetingModal}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,6 +24,7 @@ const UnsavedMinutes = ({ setMinutes, setSceduleMeeting }) => {
   const handleYesFunctionality = () => {
     setMinutes(false);
     setSceduleMeeting(false);
+    setViewAdvanceMeetingModal(false)
     dispatch(showUnsaveMinutesFileUpload(false));
     let searchData = {
       Date: "",

@@ -422,8 +422,7 @@ const Polls = ({
                 {Number(ediorRole.status) === 10 &&
                 (ediorRole.role === "Organizer" ||
                   ediorRole.role === "Agenda Contributor" ||
-                  ediorRole?.role === "Participant") &&
-                isEditMeeting === true ? (
+                  ediorRole?.role === "Participant")  ? (
                   <Row className="mt-4">
                     <Col
                       lg={12}

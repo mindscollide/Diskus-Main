@@ -24,6 +24,13 @@ const ViewMeetingModal = ({
   ediorRole,
   setEdiorRole,
 }) => {
+  console.log(
+    "advanceMeetingModalIDadvanceMeetingModal",
+    advanceMeetingModalID
+  );
+  console.log("advanceMeetingModalIDadvanceMeetingModal", unPublish);
+  console.log("advanceMeetingModalIDadvanceMeetingModal", ediorRole);
+
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
@@ -35,11 +42,13 @@ const ViewMeetingModal = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
+  const [seduleMeeting, setSceduleMeeting] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     return () => {
-      dispatch(cleareAllState())
+      dispatch(cleareAllState());
       setEdiorRole({ status: null, role: null });
       setAdvanceMeetingModalID(null);
     };
@@ -253,7 +262,15 @@ const ViewMeetingModal = ({
                           : styles["Schedule_meetings_options"]
                       }
                       onClick={showMinutes}
-                      disableBtn={unPublish ? true : false}
+                      disableBtn={
+                        unPublish
+                          ? true
+                          : Number(ediorRole.status) === 1 ||
+                            Number(ediorRole.status) === 11 ||
+                            Number(ediorRole.status) === 12
+                          ? true
+                          : false
+                      }
                     />
                     <Button
                       text={t("Actions")}
@@ -278,7 +295,8 @@ const ViewMeetingModal = ({
                           ? true
                           : Number(ediorRole.status) === 1 ||
                             Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12
+                            Number(ediorRole.status) === 12 ||
+                            Number(ediorRole.status) === 9
                           ? true
                           : false
                       }
@@ -292,6 +310,14 @@ const ViewMeetingModal = ({
                             : styles["Schedule_meetings_options"]
                         }
                         onClick={showAttendance}
+                        disableBtn={
+                          unPublish
+                            ? true
+                            : Number(ediorRole.status) === 10 &&
+                              ediorRole.role === "Organizer"
+                            ? false
+                            : true
+                        }
                       />
                     ) : null}
                   </>
@@ -378,6 +404,7 @@ const ViewMeetingModal = ({
                       ediorRole={ediorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                      setSceduleMeeting={setSceduleMeeting}
                     />
                   )}
                   {actionsPage && (
@@ -398,9 +425,9 @@ const ViewMeetingModal = ({
                       setactionsPage={setactionsPage}
                       setAttendance={setAttendance}
                       ediorRole={ediorRole}
-                      advanceMeetingModalID={advanceMeetingModalID}
+                      currentMeeting={advanceMeetingModalID}
                       setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                      setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                      setSceduleMeeting={setViewAdvanceMeetingModal}
                     />
                   )}
                   {attendance && (
