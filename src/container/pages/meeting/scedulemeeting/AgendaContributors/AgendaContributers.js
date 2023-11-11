@@ -410,10 +410,14 @@ const AgendaContributers = ({
   // };
 
   const nextTabOrganizer = () => {
-    dispatch(ShowNextConfirmationModal(true));
+    // dispatch(ShowNextConfirmationModal(true));
+    setAgendaContributors(false);
+    setParticipants(true);
   };
   const previousTabOrganizer = () => {
-    dispatch(showPreviousConfirmationModal(true));
+    // dispatch(showPreviousConfirmationModal(true));
+    setorganizers(true);
+    setAgendaContributors(false);
   };
   const handleEditBtn = () => {
     setIsEditFlag(1);

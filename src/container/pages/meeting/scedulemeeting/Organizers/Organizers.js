@@ -131,7 +131,7 @@ const Organizers = ({
       setRowsData([currentOrganizerData]);
       setOpen({
         open: false,
-        message:"",
+        message: "",
       });
     };
   }, []);
@@ -429,7 +429,20 @@ const Organizers = ({
   };
 
   const previousTabOrganizer = () => {
-    dispatch(showPreviousConfirmationModal(true));
+    // dispatch(showPreviousConfirmationModal(true));
+    setmeetingDetails(true);
+    setAgendaContributors(false);
+    setorganizers(false);
+    setParticipants(false);
+    setAgenda(false);
+    setMinutes(false);
+    setactionsPage(false);
+    setAttendance(false);
+    setPolls(false);
+    setMeetingMaterial(false);
+    setRowsData([]);
+    dispatch(saveMeetingFlag(false));
+    dispatch(editMeetingFlag(false));
   };
 
   const handlePublishButton = () => {
@@ -448,7 +461,20 @@ const Organizers = ({
     // let Data = { meetingID: currentMeeting, StatusID: 1 };
     // dispatch(UpdateOrganizersMeeting(navigate, Data, t));
     // setRowsData([]);
-    dispatch(ShowNextConfirmationModal(true));
+    // dispatch(ShowNextConfirmationModal(true));
+    setAgendaContributors(true);
+    setmeetingDetails(false);
+    setorganizers(false);
+    setParticipants(false);
+    setAgenda(false);
+    setMinutes(false);
+    setactionsPage(false);
+    setAttendance(false);
+    setPolls(false);
+    setMeetingMaterial(false);
+    setRowsData([]);
+    dispatch(saveMeetingFlag(false));
+    dispatch(editMeetingFlag(false));
   };
 
   const enableEditButton = () => {

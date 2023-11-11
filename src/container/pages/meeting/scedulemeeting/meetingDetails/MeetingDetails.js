@@ -162,7 +162,7 @@ const MeetingDetails = ({
     //Recurring Drop Down API
     dispatch(GetAllMeetingRecurringApiNew(navigate, t));
     //Calling getAll Meeting Details By Meeting ID
-    return()=>{
+    return () => {
       setMeetingDetails({
         MeetingTitle: "",
         MeetingType: 0,
@@ -190,7 +190,7 @@ const MeetingDetails = ({
           label: "",
         },
         IsVideoCall: false,
-      })
+      });
       setRows([
         {
           selectedOption: "",
@@ -200,8 +200,8 @@ const MeetingDetails = ({
           endDate: "",
           endTime: "",
         },
-      ])
-    }
+      ]);
+    };
   }, []);
 
   const handleMeetingSelectChange = (selectedOption) => {
@@ -1054,7 +1054,9 @@ const MeetingDetails = ({
     //   console.error("Error in handleUpdateNext:", error);
     // }
 
-    dispatch(ShowNextConfirmationModal(true));
+    // dispatch(ShowNextConfirmationModal(true));
+    setmeetingDetails(false);
+    setorganizers(true);
   };
 
   // custom react select styles recurring
