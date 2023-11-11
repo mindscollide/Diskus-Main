@@ -10,6 +10,7 @@ import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../assets/images/featherupload.svg";
 import Leftploygon from "../../../../../assets/images/Polygon 3.svg";
+import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 import file_image from "../../../../../assets/images/file_image.svg";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
@@ -18,8 +19,6 @@ import AgendaImport from "./AgendaimportMinutes/AgendaImport";
 import profile from "../../../../../assets/images/newprofile.png";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
-
 import {
   ADDGeneralMinutesApiFunc,
   DeleteGeneralMinuteDocumentsApiFunc,
@@ -28,16 +27,22 @@ import {
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
   getAllGeneralMinutesApiFunc,
-  showUnsavedViewMinutesModal,
+  showPreviousConfirmationModal,
+  showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
 } from "../../../../../store/actions/NewMeetingActions";
 import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
 import downArrow from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import moment from "moment";
-import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
+import {
+  convertintoGMTCalender,
+  newDateFormaterAsPerUTC,
+  newTimeFormaterAsPerUTCFullDate,
+  resolutionResultTable,
+} from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
-import ViewUnsavedModal from "./UnsavedFileUploadMinutes/ViewUnsavedModal";
+import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 
 // import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 // import { message, Upload } from "antd";
@@ -53,18 +58,13 @@ import ViewUnsavedModal from "./UnsavedFileUploadMinutes/ViewUnsavedModal";
 // import Clip from "../../../../../assets/images/ClipTurned.svg";
 // import profile from "../../../../../assets/images/newprofile.png";
 // import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
-// import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 // import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
 // import AgendaImport from "./AgendaimportMinutes/AgendaImport";
 const Minutes = ({
-  setPolls,
-  setAttendance,
   setMinutes,
-  advanceMeetingModalID,
-  setactionsPage,
-  setMeetingMaterial,
+  currentMeeting,
   setSceduleMeeting,
-  setViewAdvanceMeetingModal,
+  setMeetingMaterial,
 }) => {
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
@@ -168,6 +168,7 @@ const Minutes = ({
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
   const [folderID, setFolderID] = useState(0);
+  const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [expandedFiles, setExpandedFiles] = useState([]);
@@ -188,8 +189,6 @@ const Minutes = ({
     },
   });
   const [notestext, setNotesText] = useState("");
-
-  const [cancelModalView, setCancelModalView] = useState(false);
 
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -226,13 +225,13 @@ const Minutes = ({
     },
   };
 
+  console.log(currentMeeting, "currentMeetingIDcurrentMeetingID");
+
   useEffect(() => {
     let Data = {
-      MeetingID: advanceMeetingModalID,
+      MeetingID: currentMeeting,
     };
-    dispatch(
-      getAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
-    );
+    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     return () => {
       setFileAttachments([]);
     };
@@ -292,7 +291,7 @@ const Minutes = ({
   //onChange function for React Quill
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText != "") {
+    if (source === "user" && plainText) {
       console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
@@ -300,16 +299,6 @@ const Minutes = ({
           value: content,
           errorMessage: "",
           errorStatus: false,
-        },
-      });
-    } else {
-      console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: true,
         },
       });
     }
@@ -436,9 +425,9 @@ const Minutes = ({
   //Edit Button Function
   const handleEditFunc = async (data) => {
     setupdateData(data);
-    console.log("handleEditFunccalled");
+    console.log(data, "handleEditFunccalled");
     console.log(data, "dataminutesDetails");
-    if (data.minutesDetails !== undefined && data.minutesDetails !== null) {
+    if (data.minutesDetails !== "") {
       console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         Description: {
@@ -460,12 +449,7 @@ const Minutes = ({
     // Ensure data.minutesDetails is not undefined or null before setting the state
   };
 
-  const handlegoPrevTab = () => {
-    setMeetingMaterial(true);
-    setMinutes(false);
-  };
-
-  console.log(updateData, "updateDataupdateData");
+  console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
 
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
@@ -507,12 +491,10 @@ const Minutes = ({
   };
   const handleAddClick = async () => {
     let Data = {
-      MeetingID: advanceMeetingModalID,
+      MeetingID: currentMeeting,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(
-      ADDGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
-    );
+    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     setFileAttachments([]);
   };
 
@@ -533,22 +515,23 @@ const Minutes = ({
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
     console.log(messages, "messagesmessages");
-    console.log(advanceMeetingModalID, "messagesmessages");
+    console.log(currentMeeting, "messagesmessages");
 
     console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: advanceMeetingModalID,
+      FK_MDID: currentMeeting,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
     dispatch(
-      SaveMinutesDocumentsApiFunc(navigate, docsData, t, advanceMeetingModalID)
+      SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
     );
     setFileAttachments([]);
     setPreviousFileIDs([]);
+    setFileForSend([]);
     console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
@@ -568,7 +551,7 @@ const Minutes = ({
   const handleRemovingTheMinutes = (MinuteData) => {
     console.log(MinuteData, "handleRemovingTheMinutes");
     let Data = {
-      MDID: advanceMeetingModalID,
+      MDID: currentMeeting,
       MeetingGeneralMinutesID: MinuteData.minuteID,
     };
     dispatch(
@@ -576,14 +559,13 @@ const Minutes = ({
         navigate,
         Data,
         t,
-        advanceMeetingModalID,
+        currentMeeting,
         MinuteData
       )
     );
   };
 
   //UPloading the Documents
-
   const handleRemoveFile = (data) => {
     setFileForSend((prevFiles) =>
       prevFiles.filter(
@@ -619,7 +601,7 @@ const Minutes = ({
     setFileAttachments([]);
     setPreviousFileIDs([]);
   };
-
+  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   //Updating the text of min
   const handleUpdateFunc = async () => {
     console.log("UpdateCLickd");
@@ -645,13 +627,13 @@ const Minutes = ({
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
     console.log(messages, "messagesmessages");
-    console.log(advanceMeetingModalID, "messagesmessages");
+    console.log(currentMeeting, "messagesmessages");
 
     console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: advanceMeetingModalID,
+      FK_MDID: currentMeeting,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
@@ -676,9 +658,12 @@ const Minutes = ({
     setShowMore(!showMore);
   };
 
-  const handleViewMinuteCancelButton = () => {
-    setCancelModalView(true);
-    // dispatch(showUnsavedViewMinutesModal(true));
+  const handleUNsaveChangesModal = () => {
+    dispatch(showUnsaveMinutesFileUpload(true));
+  };
+
+  const handlePreviousButton = () => {
+    dispatch(showPreviousConfirmationModal(true));
   };
 
   return (
@@ -697,8 +682,9 @@ const Minutes = ({
           />
         </Col>
       </Row>
+
       {agenda ? (
-        <AgendaWise advanceMeetingModalID={advanceMeetingModalID} />
+        <AgendaWise currentMeeting={currentMeeting} />
       ) : general ? (
         <>
           <Row className="mt-4">
@@ -810,9 +796,7 @@ const Minutes = ({
                                           src={CrossIcon}
                                           height="12.68px"
                                           width="12.68px"
-                                          onClick={() =>
-                                            handleRemoveFile(index)
-                                          }
+                                          onClick={() => handleRemoveFile(data)}
                                         />
                                       </span>
                                       <section className={styles["Outer_Box"]}>
@@ -923,7 +907,7 @@ const Minutes = ({
                     return (
                       <>
                         <section className={styles["Sizing_Saved_Minutes"]}>
-                          <Row className="mt-5">
+                          <Row className="mt-3">
                             <Col
                               lg={12}
                               md={12}
@@ -937,38 +921,48 @@ const Minutes = ({
                                       <span className={styles["Title_File"]}>
                                         {expanded ? (
                                           <>
-                                            {data.minutesDetails.substring(
-                                              0,
-                                              190
-                                            )}
+                                            <span
+                                              dangerouslySetInnerHTML={{
+                                                __html:
+                                                  data.minutesDetails.substring(
+                                                    0,
+                                                    120
+                                                  ),
+                                              }}
+                                            ></span>
                                             ...
                                           </>
                                         ) : (
-                                          <>{data.minutesDetails}</>
+                                          <span
+                                            dangerouslySetInnerHTML={{
+                                              __html: data.minutesDetails,
+                                            }}
+                                          ></span>
                                         )}
 
                                         <span
                                           className={styles["Show_more_Styles"]}
                                           onClick={toggleExpansion}
                                         >
-                                          {expanded
+                                          {expanded &&
+                                          data.minutesDetails.substring(0, 120)
                                             ? t("See-more")
                                             : t("See-less")}
                                         </span>
                                       </span>
                                     </Col>
                                   </Row>
-                                  <Row className="mt-1">
+                                  <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <span
                                         className={
                                           styles["Date_Minutes_And_time"]
                                         }
                                       >
-                                        {resolutionResultTable(
+                                        {newTimeFormaterAsPerUTCFullDate(
                                           data.lastUpdatedDate +
                                             data.lastUpdatedTime
-                                        ).toString()}
+                                        )}
                                       </span>
                                     </Col>
                                   </Row>
@@ -1159,13 +1153,9 @@ const Minutes = ({
               className="d-flex justify-content-end gap-2"
             >
               <Button
-                text={t("Cancel")}
-                className={styles["Cancel_Meeting_Details"]}
-              />
-              <Button
                 text={t("Previous")}
                 className={styles["Previous_Button"]}
-                onClick={handlegoPrevTab}
+                onClick={handlePreviousButton}
               />
               <Button text={t("Next")} className={styles["Button_General"]} />
             </Col>
@@ -1176,27 +1166,24 @@ const Minutes = ({
         <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
           <Button
             text={t("Cancel")}
-            className={styles["Previous_Button"]}
-            onClick={handleViewMinuteCancelButton}
+            className={styles["Cancel_button_Minutes"]}
+            onClick={handleUNsaveChangesModal}
           />
         </Col>
       </Row>
-      {NewMeetingreducer.unsaveViewMinutesModal && (
-        <ViewUnsavedModal
+
+      {NewMeetingreducer.unsaveFileUploadMinutes && (
+        <UnsavedMinutes
           setMinutes={setMinutes}
           setSceduleMeeting={setSceduleMeeting}
         />
       )}
 
-      {cancelModalView && (
-        <CancelButtonModal
-          setCancelModalView={setCancelModalView}
-          cancelModalView={cancelModalView}
-          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-          setAgenda={setAgenda}
-          setPolls={setPolls}
+      {NewMeetingreducer.ShowPreviousModal && (
+        <PreviousModal
           setMinutes={setMinutes}
-          setAttendance={setAttendance}
+          setMeetingMaterial={setMeetingMaterial}
+          prevFlag={prevFlag}
         />
       )}
     </section>
@@ -1727,8 +1714,7 @@ const Minutes = ({
     //   )}
 
     //   {NewMeetingreducer.ImportPreviousMinutes && <ImportMinutesModal />}
-    //   {NewMeetingreducer.unsaveFileUploadMinutes && (
-    //     <UnsavedMinutes setMinutes={setMinutes} />
+
     //   )}
     // </section>
   );
