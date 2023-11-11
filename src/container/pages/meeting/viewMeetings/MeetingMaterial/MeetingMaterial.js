@@ -28,6 +28,7 @@ const MeetingMaterial = ({
   setAgenda,
   setMinutes,
   ediorRole,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -293,6 +294,8 @@ const MeetingMaterial = ({
       {NewMeetingreducer.cancelMeetingMaterial && (
         <CancelMeetingMaterial
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          setEdiorRole={setEdiorRole}
+          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
       {/* {NewMeetingreducer.Loading ? <Loader /> : null} */}

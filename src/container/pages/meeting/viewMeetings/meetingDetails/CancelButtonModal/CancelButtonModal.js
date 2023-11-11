@@ -6,7 +6,10 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { searchNewUserMeeting } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  cleareAllState,
+  searchNewUserMeeting,
+} from "../../../../../../store/actions/NewMeetingActions";
 const CancelButtonModal = ({
   setCancelModalView,
   cancelModalView,
@@ -16,6 +19,8 @@ const CancelButtonModal = ({
   setPolls,
   setMinutes,
   setAttendance,
+  setEdiorRole,
+  setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -40,6 +45,9 @@ const CancelButtonModal = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
+    dispatch(cleareAllState());
+    setEdiorRole({ status: null, role: null });
+    setAdvanceMeetingModalID(null);
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     // setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);

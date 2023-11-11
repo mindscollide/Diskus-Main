@@ -36,7 +36,7 @@ const ViewMeetingDetails = ({
   setMeetingDetails,
   ediorRole,
   setAgenda,
-  setEdiorRole
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -100,13 +100,7 @@ const ViewMeetingDetails = ({
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    console.log("GetAllMeetingDetailsApiFunc");
     dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
-    return()=>{
-      dispatch(cleareAllState())
-      setEdiorRole({ status: null, role: null });
-      setAdvanceMeetingModalID(null);
-    }
   }, []);
   const handleUpdateNext = () => {
     setmeetingDetails(false);
@@ -513,6 +507,8 @@ const ViewMeetingDetails = ({
           cancelModalView={cancelModalView}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
           setMeetingDetails={setmeetingDetails}
+          setEdiorRole={setEdiorRole}
+          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />

@@ -362,6 +362,7 @@ const ViewMeetingModal = ({
                   setAgenda={setAgenda}
                   setMinutes={setMinutes}
                   ediorRole={ediorRole}
+                  setEdiorRole={setEdiorRole}
                 />
               )}
               {unPublish ? null : (
