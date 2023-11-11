@@ -18,26 +18,19 @@ import Rightploygon from "../../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
-import {
-  convertintoGMTCalender,
-  newTimeFormaterAsPerUTCFullDate,
-  resolutionResultTable,
-} from "../../../../../../commen/functions/date_formater";
+import { newTimeFormaterAsPerUTCFullDate } from "../../../../../../commen/functions/date_formater";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
-  DeleteAgendaWiseMinutesApiFunc,
   DeleteAgendaWiseMinutesDocumentsApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
-  saveFilesMeetingagendaWiseMinutesApi,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
-  uploadDocumentsMeetingMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 
-const AgendaWise = ({ currentMeeting }) => {
+const AgendaWise = ({ currentMeeting, ediorRole }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -61,15 +54,11 @@ const AgendaWise = ({ currentMeeting }) => {
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
-  const [general, setGeneral] = useState(false);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [agenda, setAgenda] = useState(false);
   const [folderID, setFolderID] = useState(0);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const [expandedFiles, setExpandedFiles] = useState([]);
-  const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
   const [showMore, setShowMore] = useState(false);
@@ -563,211 +552,226 @@ const AgendaWise = ({ currentMeeting }) => {
 
   return (
     <section>
-      <Row className="mt-4">
-        <Col lg={6} md={6} sm={6}>
-          <Select options={agendaOptions} onChange={handleAgendaSelect} />
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col lg={6} md={6} sm={6}>
-          <Row className={styles["Add-note-QuillRow"]}>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              xs={12}
-              className={styles["Arabic_font_Applied"]}
-            >
-              <ReactQuill
-                ref={editorRef}
-                theme="snow"
-                value={addNoteFields.Description.value || ""}
-                placeholder={t("Note-details")}
-                onChange={onTextChange}
-                modules={modules}
-                className={styles["quill-height-addNote"]}
-                style={{
-                  direction: currentLanguage === "ar" ? "rtl" : "ltr",
-                }}
-              />
+      {ediorRole.role === "Organizer" &&
+      Number(ediorRole.status) === 10 ||
+      Number(ediorRole.status) === 9 ? (
+        <>
+          <Row className="mt-4">
+            <Col lg={6} md={6} sm={6}>
+              <Select options={agendaOptions} onChange={handleAgendaSelect} />
             </Col>
           </Row>
-          {/* Button For Saving the The Minutes  */}
-          <Row className="mt-5">
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-2 justify-content-end"
-            >
-              <Button
-                text={t("Reset")}
-                className={styles["Previous_Button"]}
-                onClick={handleResetBtnFunc}
-              />
-              {isEdit === true ? (
-                <>
-                  <Button
-                    text={t("Update")}
-                    className={styles["Button_General"]}
-                    onClick={handleUpdateFuncagendaWise}
+          <Row className="mt-4">
+            <Col lg={6} md={6} sm={6}>
+              <Row className={styles["Add-note-QuillRow"]}>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className={styles["Arabic_font_Applied"]}
+                >
+                  <ReactQuill
+                    ref={editorRef}
+                    theme="snow"
+                    value={addNoteFields.Description.value || ""}
+                    placeholder={t("Note-details")}
+                    onChange={onTextChange}
+                    modules={modules}
+                    className={styles["quill-height-addNote"]}
+                    style={{
+                      direction: currentLanguage === "ar" ? "rtl" : "ltr",
+                    }}
                   />
-                </>
-              ) : (
-                <>
-                  <Button
-                    text={t("Save")}
-                    className={styles["Button_General"]}
-                    onClick={handleAddClickAgendaWise}
-                  />
-                </>
-              )}
-            </Col>
-          </Row>
-        </Col>
-        <Col lg={6} md={6} sm={6}>
-          {fileAttachments.length > 0 ? (
-            <>
-              <Row className="mt-1">
-                <Col lg={1} md={1} sm={1} className="mt-4">
-                  {fileAttachments.length > 2 ? (
-                    <>
-                      <Button
-                        icon={
-                          <img
-                            src={Leftploygon}
-                            width="20px"
-                            height="15px"
-                            draggable="false"
-                          />
-                        }
-                        onClick={SlideLeft}
-                        className={styles["Leftpolygon"]}
-                      />
-                    </>
-                  ) : null}
-                </Col>
-                <Col lg={10} md={10} sm={10}>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="ScrolllerFiles_Committees"
-                      id="Slider"
-                    >
-                      {fileAttachments.length > 0
-                        ? fileAttachments.map((data, index) => {
-                            console.log(data, "datadatadata");
-                            return (
-                              <>
-                                <Col
-                                  lg={4}
-                                  md={4}
-                                  sm={12}
-                                  className="position-relative gap-2"
-                                >
-                                  <span className={styles["Crossicon_Class"]}>
-                                    <img
-                                      src={CrossIcon}
-                                      height="12.68px"
-                                      width="12.68px"
-                                      onClick={() => handleRemoveFile(data)}
-                                    />
-                                  </span>
-                                  <section className={styles["Outer_Box"]}>
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12}>
-                                        <img
-                                          src={file_image}
-                                          width={"100%"}
-                                          alt=""
-                                          draggable="false"
-                                        />
-                                      </Col>
-                                    </Row>
-
-                                    <section
-                                      className={styles["backGround_name_Icon"]}
-                                    >
-                                      <Row className="mb-2">
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={styles["IconTextClass"]}
-                                        >
-                                          <img
-                                            src={pdfIcon}
-                                            height="10px"
-                                            width="10px"
-                                            className={styles["IconPDF"]}
-                                          />
-                                          <span className={styles["FileName"]}>
-                                            {data.DisplayAttachmentName}
-                                          </span>
-                                        </Col>
-                                      </Row>
-                                    </section>
-                                  </section>
-                                </Col>
-                              </>
-                            );
-                          })
-                        : null}
-                    </Col>
-                  </Row>
-                </Col>
-                <Col lg={1} md={1} sm={1} className="mt-4">
-                  {fileAttachments.length > 2 ? (
-                    <>
-                      <Button
-                        icon={
-                          <img
-                            src={Rightploygon}
-                            width="20px"
-                            height="15px"
-                            draggable="false"
-                          />
-                        }
-                        onClick={Slideright}
-                        className={styles["Leftpolygon"]}
-                      />
-                    </>
-                  ) : null}
                 </Col>
               </Row>
-            </>
-          ) : null}
+              {/* Button For Saving the The Minutes  */}
+              <Row className="mt-5">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex gap-2 justify-content-end"
+                >
+                  <Button
+                    text={t("Reset")}
+                    className={styles["Previous_Button"]}
+                    onClick={handleResetBtnFunc}
+                  />
+                  {isEdit === true ? (
+                    <>
+                      <Button
+                        text={t("Update")}
+                        className={styles["Button_General"]}
+                        onClick={handleUpdateFuncagendaWise}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        text={t("Save")}
+                        className={styles["Button_General"]}
+                        onClick={handleAddClickAgendaWise}
+                      />
+                    </>
+                  )}
+                </Col>
+              </Row>
+            </Col>
+            <Col lg={6} md={6} sm={6}>
+              {fileAttachments.length > 0 ? (
+                <>
+                  <Row className="mt-1">
+                    <Col lg={1} md={1} sm={1} className="mt-4">
+                      {fileAttachments.length > 2 ? (
+                        <>
+                          <Button
+                            icon={
+                              <img
+                                src={Leftploygon}
+                                width="20px"
+                                height="15px"
+                                draggable="false"
+                              />
+                            }
+                            onClick={SlideLeft}
+                            className={styles["Leftpolygon"]}
+                          />
+                        </>
+                      ) : null}
+                    </Col>
+                    <Col lg={10} md={10} sm={10}>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="ScrolllerFiles_Committees"
+                          id="Slider"
+                        >
+                          {fileAttachments.length > 0
+                            ? fileAttachments.map((data, index) => {
+                                console.log(data, "datadatadata");
+                                return (
+                                  <>
+                                    <Col
+                                      lg={4}
+                                      md={4}
+                                      sm={12}
+                                      className="position-relative gap-2"
+                                    >
+                                      <span
+                                        className={styles["Crossicon_Class"]}
+                                      >
+                                        <img
+                                          src={CrossIcon}
+                                          height="12.68px"
+                                          width="12.68px"
+                                          onClick={() => handleRemoveFile(data)}
+                                        />
+                                      </span>
+                                      <section className={styles["Outer_Box"]}>
+                                        <Row>
+                                          <Col lg={12} md={12} sm={12}>
+                                            <img
+                                              src={file_image}
+                                              width={"100%"}
+                                              alt=""
+                                              draggable="false"
+                                            />
+                                          </Col>
+                                        </Row>
 
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12}>
-              <Dragger
-                {...props}
-                className={styles["dragdrop_attachment_create_resolution"]}
-              >
-                <p className="ant-upload-drag-icon">
-                  <span className={styles["create_resolution_dragger"]}>
-                    <img
-                      src={featherupload}
-                      width="18.87px"
-                      height="18.87px"
-                      draggable="false"
-                    />
-                  </span>
-                </p>
-                <p className={styles["ant-upload-text"]}>
-                  {t("Drag-&-drop-or")}
-                  <span className={styles["Choose_file_style"]}>
-                    {t("Choose-file")}
-                  </span>
-                  <span className={styles["here_text"]}>{t("Here")}</span>
-                </p>
-              </Dragger>
+                                        <section
+                                          className={
+                                            styles["backGround_name_Icon"]
+                                          }
+                                        >
+                                          <Row className="mb-2">
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className={
+                                                styles["IconTextClass"]
+                                              }
+                                            >
+                                              <img
+                                                src={pdfIcon}
+                                                height="10px"
+                                                width="10px"
+                                                className={styles["IconPDF"]}
+                                              />
+                                              <span
+                                                className={styles["FileName"]}
+                                              >
+                                                {data.DisplayAttachmentName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </section>
+                                      </section>
+                                    </Col>
+                                  </>
+                                );
+                              })
+                            : null}
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col lg={1} md={1} sm={1} className="mt-4">
+                      {fileAttachments.length > 2 ? (
+                        <>
+                          <Button
+                            icon={
+                              <img
+                                src={Rightploygon}
+                                width="20px"
+                                height="15px"
+                                draggable="false"
+                              />
+                            }
+                            onClick={Slideright}
+                            className={styles["Leftpolygon"]}
+                          />
+                        </>
+                      ) : null}
+                    </Col>
+                  </Row>
+                </>
+              ) : null}
+
+              <Row className="mt-2">
+                <Col lg={12} md={12} sm={12}>
+                  <Dragger
+                    {...props}
+                    className={styles["dragdrop_attachment_create_resolution"]}
+                  >
+                    <p className="ant-upload-drag-icon">
+                      <span className={styles["create_resolution_dragger"]}>
+                        <img
+                          src={featherupload}
+                          width="18.87px"
+                          height="18.87px"
+                          draggable="false"
+                        />
+                      </span>
+                    </p>
+                    <p className={styles["ant-upload-text"]}>
+                      {t("Drag-&-drop-or")}
+                      <span className={styles["Choose_file_style"]}>
+                        {t("Choose-file")}
+                      </span>
+                      <span className={styles["here_text"]}>{t("Here")}</span>
+                    </p>
+                  </Dragger>
+                </Col>
+              </Row>
             </Col>
           </Row>
-        </Col>
-      </Row>
+        </>
+      ) : null}
+
       {/* Mapping of The Create Minutes */}
       <Row className="mt-2">
         <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
@@ -814,10 +818,14 @@ const AgendaWise = ({ currentMeeting }) => {
                                       className={styles["Show_more_Styles"]}
                                       onClick={toggleExpansion}
                                     >
-                                      {expanded &&
-                                      data.minutesDetails.substring(0, 120)
-                                        ? t("See-more")
-                                        : t("See-less")}
+                                      {!expanded &&
+                                          data.minutesDetails.substring(0, 120)
+                                            ? t("See-more")
+                                            : ""}
+                                          {expanded &&
+                                          data.minutesDetails.substring(0, 120)
+                                            ? t("See-less")
+                                            : ""}
                                     </span>
                                   </span>
                                 </Col>
@@ -973,34 +981,42 @@ const AgendaWise = ({ currentMeeting }) => {
                                     </Col>
                                   </Row>
                                 </Col>
-                                <Col
-                                  lg={4}
-                                  md={4}
-                                  sm={4}
-                                  className="d-flex justify-content-start align-items-center"
-                                >
-                                  <img
-                                    draggable={false}
-                                    src={EditIcon}
-                                    height="21.55px"
-                                    width="21.55px"
-                                    className="cursor-pointer"
-                                    onClick={() => handleEditFunc(data)}
-                                  />
-                                </Col>
+                                {ediorRole.role === "Organizer" &&
+                                Number(ediorRole.status) === 10 ||
+                                Number(ediorRole.status) === 9 ? (
+                                  <Col
+                                    lg={4}
+                                    md={4}
+                                    sm={4}
+                                    className="d-flex justify-content-start align-items-center"
+                                  >
+                                    <img
+                                      draggable={false}
+                                      src={EditIcon}
+                                      height="21.55px"
+                                      width="21.55px"
+                                      className="cursor-pointer"
+                                      onClick={() => handleEditFunc(data)}
+                                    />
+                                  </Col>
+                                ) : null}
                               </Row>
                             </Col>
                           </Row>
-                          <img
-                            draggable={false}
-                            src={RedCroseeIcon}
-                            height="20.76px"
-                            width="20.76px"
-                            className={styles["RedCrossClass"]}
-                            onClick={() =>
-                              handleRemovingTheMinutesAgendaWise(data)
-                            }
-                          />
+                          {ediorRole.role === "Organizer" &&
+                          Number(ediorRole.status) === 10 ||
+                          Number(ediorRole.status) === 9 ? (
+                            <img
+                              draggable={false}
+                              src={RedCroseeIcon}
+                              height="20.76px"
+                              width="20.76px"
+                              className={styles["RedCrossClass"]}
+                              onClick={() =>
+                                handleRemovingTheMinutesAgendaWise(data)
+                              }
+                            />
+                          ) : null}
                         </Col>
                       </Row>
                     </section>
@@ -1017,8 +1033,8 @@ const AgendaWise = ({ currentMeeting }) => {
           sm={12}
           className="d-flex justify-content-end gap-2"
         >
-          <Button text={t("Previous")} className={styles["Previous_Button"]} />
-          <Button text={t("Next")} className={styles["Button_General"]} />
+          {/* <Button text={t("Previous")} className={styles["Previous_Button"]} />
+          <Button text={t("Next")} className={styles["Button_General"]} /> */}
         </Col>
       </Row>
     </section>
