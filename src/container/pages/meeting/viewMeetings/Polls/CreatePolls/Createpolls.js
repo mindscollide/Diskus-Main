@@ -41,7 +41,7 @@ import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPubli
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import { SavePollsApi } from "../../../../../../store/actions/Polls_actions";
 
-const Createpolls = ({ setCreatepoll, advanceMeetingModalID }) => {
+const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -184,7 +184,7 @@ const Createpolls = ({ setCreatepoll, advanceMeetingModalID }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: advanceMeetingModalID,
+      MeetingID: currentMeeting,
     };
     dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
   }, []);
@@ -484,7 +484,7 @@ const Createpolls = ({ setCreatepoll, advanceMeetingModalID }) => {
         PollAnswers: optionsListData,
       };
 
-      await dispatch(SavePollsApi(navigate, data, t, 2, advanceMeetingModalID));
+      await dispatch(SavePollsApi(navigate, data, t, 2, currentMeeting));
       setCreatepoll(false);
     } else {
       // setError(true);

@@ -18,29 +18,22 @@ import {
   GetAllPollsByMeetingIdApiFunc,
   showCancelPolls,
   showUnsavedPollsMeeting,
-  showUnsavedViewPollsModal,
-  searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
-import CancelPolls from "./CancelPolls/ViewPollsCancelModal";
+import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import {
   deleteMeetingPollApi,
   getPollsByPollIdApi,
 } from "../../../../../store/actions/Polls_actions";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
-import ViewPollsCancelModal from "./CancelPolls/ViewPollsCancelModal";
-import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 
 const Polls = ({
   setSceduleMeeting,
   setPolls,
-  setAgenda,
   setAttendance,
-  advanceMeetingModalID,
-  setViewAdvanceMeetingModal,
-  setAdvanceMeetingModalID,
+  currentMeeting,
   ediorRole,
   setEditMeeting,
   isEditMeeting,
@@ -57,20 +50,9 @@ const Polls = ({
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
-
-  const [cancelModalView, setCancelModalView] = useState(false);
-
-  // For cancel with no modal Open
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let currentView = localStorage.getItem("MeetingCurrentView");
-
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
-  console.log(
-    advanceMeetingModalID,
-    "currentMeetingcurrentMeetingcurrentMeeting"
-  );
+
   const enableAfterSavedViewPolls = () => {
     setafterViewPolls(true);
   };
@@ -102,13 +84,13 @@ const Polls = ({
   const handleDeletePoll = (record) => {
     let data = {
       PollID: record.pollID,
-      MeetingID: parseInt(advanceMeetingModalID),
+      MeetingID: parseInt(currentMeeting),
     };
-    dispatch(deleteMeetingPollApi(navigate, t, data, advanceMeetingModalID));
+    dispatch(deleteMeetingPollApi(navigate, t, data, currentMeeting));
   };
   useEffect(() => {
     let Data = {
-      MeetingID: Number(advanceMeetingModalID),
+      MeetingID: currentMeeting,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -122,7 +104,7 @@ const Polls = ({
     setPageNumber(current);
     setPageSize(pageSize);
     let Data = {
-      MeetingID: advanceMeetingModalID,
+      MeetingID: currentMeeting,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -160,7 +142,6 @@ const Polls = ({
       key: "pollTitle",
       width: "300px",
       render: (text, record) => {
-        console.log(record, "recordrecordrecordrecord");
         return (
           <span
             className={styles["DateClass"]}
@@ -408,30 +389,13 @@ const Polls = ({
     },
   ];
 
-  const handleCancelMeetingNoPopup = () => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setViewAdvanceMeetingModal(false);
-    setPolls(false);
-  };
-
   const handleCreatepolls = () => {
     dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(true);
   };
 
-  const handleViewPollsCancelButto = () => {
-    setCancelModalView(true);
-    // dispatch(showUnsavedViewPollsModal(true));
+  const handleCancelPolls = () => {
+    dispatch(showCancelPolls(true));
   };
 
   return (
@@ -444,21 +408,22 @@ const Polls = ({
             {createpoll ? (
               <Createpolls
                 setCreatepoll={setCreatepoll}
-                advanceMeetingModalID={advanceMeetingModalID}
+                currentMeeting={currentMeeting}
               />
             ) : votePolls ? (
               <CastVotePollsMeeting setvotePolls={setvotePolls} />
             ) : editPolls ? (
               <EditPollsMeeting
                 setEditPolls={setEditPolls}
-                advanceMeetingModalID={advanceMeetingModalID}
+                currentMeeting={currentMeeting}
               />
             ) : (
               <>
-                {Number(ediorRole?.status) === 10 &&
-                (ediorRole?.role === "Organizer" ||
-                  ediorRole?.role === "Agenda Contributor" ||
-                  ediorRole?.role === "Participant") ? (
+                {Number(ediorRole.status) === 10 &&
+                (ediorRole.role === "Organizer" ||
+                  ediorRole.role === "Agenda Contributor" ||
+                  ediorRole?.role === "Participant") &&
+                isEditMeeting === true ? (
                   <Row className="mt-4">
                     <Col
                       lg={12}
@@ -501,26 +466,32 @@ const Polls = ({
                             className="d-flex justify-content-end gap-2"
                           >
                             <Button
-                              text={t("Cancel")}
-                              className={styles["Cancel_Meeting_Details"]}
+                              text={t("Clone-meeting")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                              onClick={enableAfterSavedViewPolls}
                             />
-                            {/* <Button
+
+                            <Button
                               text={t("Cancel")}
                               className={styles["Cancel_Button_Polls_meeting"]}
                               onClick={handleCacnelbutton}
                             />
 
                             <Button
-                              text={t("Prev")}
-                              className={styles["Save_Button_Polls_meeting"]}
-                              onClick={handleSaveAndnext}
+                              text={t("Save")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
                             />
 
                             <Button
-                              text={t("Next")}
+                              text={t("Save-and-publish")}
+                              className={styles["Cancel_Button_Polls_meeting"]}
+                            />
+
+                            <Button
+                              text={t("Save-and-next")}
                               className={styles["Save_Button_Polls_meeting"]}
                               onClick={handleSaveAndnext}
-                            /> */}
+                            />
                           </Col>
                         </Row>
                       </>
@@ -568,20 +539,6 @@ const Polls = ({
                             </span>
                           </Col>
                         </Row>
-                        <Row className="mt-3">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end"
-                          >
-                            <Button
-                              text={t("Cancel")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={handleCancelMeetingNoPopup}
-                            />
-                          </Col>
-                        </Row>
                       </>
                     )}
                   </Col>
@@ -608,17 +565,11 @@ const Polls = ({
                 )}
               </>
             )}
-            {cancelModalView && (
-              <CancelButtonModal
-                setCancelModalView={setCancelModalView}
-                cancelModalView={cancelModalView}
-                setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                setPolls={setPolls}
-                setAgenda={setAgenda}
-              />
+
+            {NewMeetingreducer.cancelPolls && (
+              <CancelPolls setSceduleMeeting={setSceduleMeeting} />
             )}
           </section>
-          {NewMeetingreducer.unsavedViewPollsModal && <ViewPollsCancelModal />}
         </>
       )}
     </>
