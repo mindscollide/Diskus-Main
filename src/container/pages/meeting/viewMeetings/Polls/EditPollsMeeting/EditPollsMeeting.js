@@ -34,7 +34,7 @@ import {
 } from "../../../../../../commen/functions/date_formater";
 import { updatePollsApi } from "../../../../../../store/actions/Polls_actions";
 
-const EditPollsMeeting = ({ setEditPolls, advanceMeetingModalID }) => {
+const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -259,7 +259,7 @@ const EditPollsMeeting = ({ setEditPolls, advanceMeetingModalID }) => {
       };
 
       dispatch(
-        updatePollsApi(navigate, data, t, 2, setEditPolls, advanceMeetingModalID)
+        updatePollsApi(navigate, data, t, 2, setEditPolls, currentMeeting)
       );
     } else {
       setError(true);
