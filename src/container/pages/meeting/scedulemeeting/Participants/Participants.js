@@ -329,11 +329,15 @@ const Participants = ({
   };
 
   const nextTabOrganizer = () => {
-    dispatch(ShowNextConfirmationModal(true));
+    // dispatch(ShowNextConfirmationModal(true));
+    setAgenda(true);
+    setParticipants(false);
   };
 
   const previousTabOrganizer = () => {
-    dispatch(showPreviousConfirmationModal(true));
+    // dispatch(showPreviousConfirmationModal(true));
+    setAgendaContributors(true);
+    setParticipants(false);
   };
 
   //canceling the participants page

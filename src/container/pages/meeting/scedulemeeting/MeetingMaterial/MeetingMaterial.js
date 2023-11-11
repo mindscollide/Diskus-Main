@@ -297,11 +297,15 @@ const MeetingMaterial = ({
   };
 
   const handleSaveAndNext = () => {
-    dispatch(ShowNextConfirmationModal(true));
+    // dispatch(ShowNextConfirmationModal(true));
+    setMeetingMaterial(false);
+    setMinutes(true);
   };
 
   const handlePreviousButtonMeetingMaterial = () => {
-    dispatch(showPreviousConfirmationModal(true));
+    // dispatch(showPreviousConfirmationModal(true));
+    setAgenda(true);
+    setMeetingMaterial(false);
   };
 
   return (
