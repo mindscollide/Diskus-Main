@@ -136,11 +136,12 @@ const GroupViewPolls = ({
       key: "pollTitle",
       width: "300px",
       render: (text, record) => {
-        console.log(record, "recordrecordrecordrecord");
         return (
           <span
             className={styles["DateClass"]}
-            onClick={() => navigate("/DisKus/polling")}
+            onClick={() =>
+              navigate("/DisKus/polling", { state: { record, isVote: false } })
+            }
           >
             {text}
           </span>
@@ -233,7 +234,11 @@ const GroupViewPolls = ({
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() => navigate("/DisKus/polling")}
+                  onClick={() =>
+                    navigate("/DisKus/polling", {
+                      state: { record, isVote: true },
+                    })
+                  }
                 />
               );
             } else if (record.voteStatus === "Voted") {

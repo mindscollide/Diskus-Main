@@ -1323,7 +1323,7 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
             dispatch(
               createUpdateCommitteeDocuments_success(
                 response.data.responseResult.folderID,
-                t("Folder-mapped-with-data-room")
+                ""
               )
             );
             localStorage.setItem("CommitteeID", data.CommitteeID);
@@ -1343,7 +1343,7 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
             dispatch(
               createUpdateCommitteeDocuments_success(
                 response.data.responseResult.folderID,
-                t("Update-successfullly")
+                ""
               )
             );
           } else if (
@@ -1360,7 +1360,7 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
             dispatch(
               createUpdateCommitteeDocuments_success(
                 response.data.responseResult.folderID,
-                t("New-mapped-created")
+                ""
               )
             );
           } else if (

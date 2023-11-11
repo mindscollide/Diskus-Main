@@ -5706,7 +5706,9 @@ const UpdateMeetingUserApiFunc = (
                 newData.push({
                   UserID: data.userID,
                   Title: data.Title,
-                  ParticipantRoleID: data.participantRole.participantRoleID,
+                  ParticipantRoleID: data.participantRole.participantRoleID
+                    ? data.participantRole.participantRoleID
+                    : 0,
                 });
               });
               if (editableSave === 1) {

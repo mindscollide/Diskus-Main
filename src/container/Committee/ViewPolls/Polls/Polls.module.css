@@ -46,7 +46,7 @@
   font-family: "MontserratSemiBold" !important;
 }
 
-.Not_Vote_Button_Polls {
+/* .Not_Vote_Button_Polls {
   width: 64px !important;
   height: 23px !important;
   border-radius: 4px !important;
@@ -55,9 +55,9 @@
   color: #fff !important;
   background: #81db86 !important;
   font-family: "MontserratSemiBold" !important;
-}
+} */
 
-.Not_Vote_Button_Polls:is(:hover, :active, :focus, :focus-visible) {
+/* .Not_Vote_Button_Polls:is(:hover, :active, :focus, :focus-visible) {
   width: 64px !important;
   height: 23px !important;
   border-radius: 4px !important;
@@ -66,7 +66,7 @@
   color: #fff !important;
   background: #81db86 !important;
   font-family: "MontserratSemiBold" !important;
-}
+} */
 
 .DateClass {
   color: #2197d7 !important;
@@ -194,4 +194,37 @@
 body[dir="rtl"] .PaginationStyle-Resolution {
   width: auto !important;
   padding: 12px 10px !important;
+}
+.text-success {
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratMedium-500" !important;
+}
+.votedButton {
+  color: #6172d6 !important;
+  background-color: #ecefff !important;
+  font-family: "MontserratSemiBold" !important;
+  pointer-events: none;
+  font-size: 12px !important;
+  padding: 8px 20px;
+  white-space: nowrap;
+  border: none !important;
+
+  border-radius: 4px !important;
+}
+.Not_Vote_Button_Polls {
+  background-color: #81db86 !important;
+  font-family: "MontserratSemiBold" !important;
+  border: none !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  padding: 8px 20px;
+  white-space: nowrap;
+  border-radius: 4px !important;
+}
+.Not-voted {
+  font-size: 12px !important;
+  font-family: "MontserratMedium";
+  color: #5a5a5a !important;
+  white-space: nowrap;
 }

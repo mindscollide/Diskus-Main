@@ -448,7 +448,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       setErrorBar(true);
       setOpen({
         flag: true,
-        message: t("Please fill all the fields"),
+        message: t("Please-fill-all-the-fields"),
       });
     }
   };
@@ -1752,7 +1752,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             <p className={styles["ant-upload-text"]}>
                               {t("Drag-&-drop-or")}
                               <span className={styles["Choose_file_style"]}>
-                                {t("Choose-file")}
+                                {t("Choose-file")} {""}
                               </span>
                               <span className={styles["here_text"]}>
                                 {t("Here")}

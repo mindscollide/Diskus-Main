@@ -211,8 +211,8 @@ const UnpublishedProposedMeeting = ({
       title: <span> {t("Organizer")}</span>,
       dataIndex: "host",
       key: "host",
-      width: "73px",
-
+      width: "125px",
+      align: "center",
       sorter: (a, b) => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
@@ -224,7 +224,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Date-time"),
       dataIndex: "Date",
       key: "Date",
-      width: "125px",
+      width: "165px",
 
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
@@ -315,7 +315,7 @@ const UnpublishedProposedMeeting = ({
       title: t("Send-reponse-by"),
       dataIndex: "responseDeadLine",
       key: "responseDeadLine",
-      width: "100px",
+      width: "120px",
       render: (text, record) => {
         return (
           <span className="d-flex justify-content-center">
@@ -355,7 +355,7 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex  align-items-center gap-4"
+                className="d-flex  align-items-center justify-content-center gap-4"
               >
                 {isAgendaContributor ? (
                   <img
@@ -382,7 +382,7 @@ const UnpublishedProposedMeeting = ({
                   />
                 ) : isOrganiser ? (
                   <>
-                  {/* this function will add later */}
+                    {/* this function will add later */}
                     {/* <img
                       src={deleteIcon}
                       className="cursor-pointer"
@@ -425,6 +425,7 @@ const UnpublishedProposedMeeting = ({
       dataIndex: "Edit",
       key: "Edit",
       width: "90px",
+      align: "center",
       render: (text, record) => {
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>

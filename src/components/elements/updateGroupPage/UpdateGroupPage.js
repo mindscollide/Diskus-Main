@@ -1524,7 +1524,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             <p className={styles["ant-upload-text"]}>
                               {t("Drag-&-drop-or")}
                               <span className={styles["Choose_file_style"]}>
-                                {t("Choose-file")}
+                                {t("Choose-file")} {""}
                               </span>
                               <span className={styles["here_text"]}>
                                 {t("Here")}
@@ -1568,7 +1568,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         onHide={() => setCloseConfirmationBox(false)}
       />
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
-      {DataRoomReducer.Loading ? <Loader /> : null}
     </>
   );
 };

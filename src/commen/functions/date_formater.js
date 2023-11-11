@@ -696,3 +696,27 @@ export const convertDateToUTC = (dateString) => {
 
   return hours + minutes + seconds;
 };
+
+export const convertTimetoGMT = (dateString) => {
+  let fullDateyear =
+    dateString?.slice(0, 4) +
+    "-" +
+    dateString?.slice(4, 6) +
+    "-" +
+    dateString?.slice(6, 8) +
+    "T" +
+    dateString?.slice(8, 10) +
+    ":" +
+    dateString?.slice(10, 12) +
+    ":" +
+    dateString?.slice(12, 14) +
+    ".000Z";
+  const date = new Date(fullDateyear);
+
+  // Extract hours, minutes, and seconds and concatenate without colons
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const seconds = date.getSeconds().toString().padStart(2, "0");
+
+  return hours + minutes + seconds;
+};
