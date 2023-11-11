@@ -259,13 +259,13 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     case actions.SAVEFILES_AGENDA_INIT: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
       };
     }
     case actions.SAVEFILES_AGENDA_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         SaveFilesResponse: action.response,
         ResponseMessage: action.message,
       };
@@ -273,7 +273,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     case actions.SAVEFILES_AGENDA_FAIL: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         SaveFilesResponse: null,
         ResponseMessage: action.message,
       };
@@ -281,13 +281,13 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     case actions.UPLOAD_DOCUMENTS_AGENDA_INIT: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
       };
     }
     case actions.UPLOAD_DOCUMENTS_AGENDA_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         UploadDocumentsResponse: action.response,
         ResponseMessage: action.message,
       };
@@ -295,7 +295,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     case actions.UPLOAD_DOCUMENTS_AGENDA_FAIL: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         UploadDocumentsResponse: [],
         ResponseMessage: action.message,
       };

@@ -209,9 +209,7 @@ const MeetingMaterial = ({
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
-    advanceMeetingModalID(false);
-    setViewAdvanceMeetingModal(false);
-    setAdvanceMeetingModalID(false);
+    setMeetingMaterial(false);
   };
 
   // To render data in table
@@ -243,6 +241,12 @@ const MeetingMaterial = ({
 
     setMinutes(true);
   };
+
+  const prevHandlerClick = () => {
+    setMeetingMaterial(false);
+    setAgenda(true);
+  };
+
   const handleSaveAndNext = () => {
     setMeetingMaterial(false);
     setMinutes(true);
@@ -280,7 +284,7 @@ const MeetingMaterial = ({
           <Button
             text={t("Previous")}
             className={styles["Save_Classname"]}
-            onClick={handleCancelButton}
+            onClick={prevHandlerClick}
           />
           <Button
             text={t("Next")}

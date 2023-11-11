@@ -142,11 +142,12 @@ const Polls = ({
       key: "pollTitle",
       width: "300px",
       render: (text, record) => {
-        console.log(record, "recordrecordrecordrecord");
         return (
           <span
             className={styles["DateClass"]}
-            onClick={() => navigate("/DisKus/polling")}
+            onClick={() =>
+              navigate("/DisKus/polling", { state: { record, isVote: false } })
+            }
           >
             {text}
           </span>
@@ -239,7 +240,11 @@ const Polls = ({
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() => navigate("/DisKus/polling")}
+                  onClick={() =>
+                    navigate("/DisKus/polling", {
+                      state: { record, isVote: true },
+                    })
+                  }
                 />
               );
             } else if (record.voteStatus === "Voted") {
@@ -532,20 +537,6 @@ const Polls = ({
                                 "Be-the-first-to-create-a-poll-and-spark-the-conversation"
                               )}
                             </span>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end"
-                          >
-                            <Button
-                              text={"Cancel"}
-                              className={styles["Cancel_button_Polls"]}
-                              onClick={handleCancelPolls}
-                            />
                           </Col>
                         </Row>
                       </>

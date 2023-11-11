@@ -15,6 +15,7 @@ const CancelButtonModal = ({
   setAgenda,
   setPolls,
   setMinutes,
+  setAttendance,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ const CancelButtonModal = ({
     setCancelModalView(false);
     setPolls(false);
     setMinutes(false);
+    setAttendance(false);
   };
 
   return (

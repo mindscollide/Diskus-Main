@@ -43,7 +43,7 @@ import {
   setviewpollProgressModal,
   viewVotesDetailsModal,
 } from "../../store/actions/Polls_actions";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   _justShowDateformatBilling,
@@ -61,6 +61,7 @@ const Polling = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { state } = useLocation();
   const { PollsReducer, LanguageReducer } = useSelector((state) => state);
   const [enterpressed, setEnterpressed] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
@@ -79,6 +80,7 @@ const Polling = () => {
     searchByName: "",
     searchByTitle: "",
   });
+
   let organizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
   const [isTotalRecords, setTotalRecords] = useState(0);
@@ -89,6 +91,32 @@ const Polling = () => {
   const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
   const currentPageSize = localStorage.getItem("pollingPageSize");
 
+  useEffect(() => {
+    if (state !== null) {
+      console.log(state, "statestatestate");
+      let check = 0;
+      let data = {
+        PollID: Number(state.record.pollID),
+        UserID: parseInt(userID),
+      };
+      if (state.isVote) {
+        check = 5;
+      } else {
+        if (state.record.wasPollPublished) {
+          if (state.record.pollStatus.pollStatusId === 3) {
+            check = 4;
+          } else {
+            check = 3;
+          }
+        } else {
+          check = 4;
+        }
+      }
+      if (Object.keys(state.record).length > 0) {
+        dispatch(getPollsByPollIdApi(navigate, data, check, t));
+      }
+    }
+  }, [state]);
   useEffect(() => {
     if (currentPage !== null && currentPageSize !== null) {
       let data = {
@@ -135,22 +163,17 @@ const Polling = () => {
         PollsReducer.SearchPolls !== null &&
         PollsReducer.SearchPolls !== undefined
       ) {
-        console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
         if (PollsReducer.SearchPolls.polls.length > 0) {
-          console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
           setTotalRecords(PollsReducer.SearchPolls.totalRecords);
           setRows(PollsReducer.SearchPolls.polls);
         } else {
-          console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
           setRows([]);
         }
       } else {
-        console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
         setRows([]);
       }
     } catch (error) {}
   }, [PollsReducer.SearchPolls]);
-  console.log("PollsReducerPollsReducer", rows);
 
   useEffect(() => {
     if (currentLanguage === "ar") {

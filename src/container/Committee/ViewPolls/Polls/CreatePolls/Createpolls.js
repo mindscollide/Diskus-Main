@@ -524,6 +524,7 @@ const Createpolls = ({ setCreatepoll }) => {
                       name={"TitlePolls"}
                       value={pollsData.Title}
                       change={HandleChange}
+                      applyClass={"pollingCreateTitle"}
                     />
                   </Col>
                 </Row>
@@ -553,7 +554,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                         placeholder={
                                           "Option" + " " + parseInt(index + 1)
                                         }
-                                        applyClass={"PollingCreateModal"}
+                                        applyClass={"pollingCreateTitle"}
                                         labelClass="d-none"
                                         name={data.name}
                                         maxLength={500}
@@ -571,7 +572,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                         placeholder={
                                           "Option" + " " + parseInt(index + 1)
                                         }
-                                        applyClass={"PollingCreateModal"}
+                                        applyClass={"pollingCreateTitle"}
                                         labelClass="d-none"
                                         name={data.name}
                                         value={data.value}

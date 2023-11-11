@@ -20,6 +20,9 @@ import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonM
 
 import { useSelector } from "react-redux";
 const Attendence = ({
+  setPolls,
+  setMinutes,
+  setAgenda,
   advanceMeetingModalID,
   setAttendance,
   setViewAdvanceMeetingModal,
@@ -338,7 +341,10 @@ const Attendence = ({
           setCancelModalView={setCancelModalView}
           cancelModalView={cancelModalView}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-          setMeetingDetails={setAttendance}
+          setAgenda={setAgenda}
+          setPolls={setPolls}
+          setAttendance={setAttendance}
+          setMinutes={setMinutes}
         />
       )}
 

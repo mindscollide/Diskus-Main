@@ -12,6 +12,7 @@ import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal"
 import {
   showCancelModalAgenda,
   showImportPreviousAgendaModal,
+  searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../store/actions/MeetingAgenda_action";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
@@ -79,6 +80,13 @@ const Agenda = ({
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
+
+  // For cancel with no modal Open
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
+
   const [rows, setRows] = useState([
     {
       iD: getRandomUniqueNumber().toString() + "A",
@@ -130,9 +138,25 @@ const Agenda = ({
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
   }, []);
+  //   updatedRows.push(newMainAgenda);
+  //   setRows(updatedRows);
+  //   console.log(updatedRows, "updatedRowsupdatedRows");
+  // };
 
-  const handleCancelBtn = () => {
-    setCancelModalView(true);
+  const handleCancelMeetingNoPopup = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setViewAdvanceMeetingModal(false);
+    setAgenda(false);
   };
 
   const handlePreviousBtn = () => {
@@ -154,7 +178,10 @@ const Agenda = ({
       setRows(GetAdvanceMeetingAgendabyMeetingIDData.agendaList);
     }
   }, [GetAdvanceMeetingAgendabyMeetingIDData]);
-console.log("GetAdvanceMeetingAgendabyMeetingIDData",GetAdvanceMeetingAgendabyMeetingIDData)
+  console.log(
+    "GetAdvanceMeetingAgendabyMeetingIDData",
+    GetAdvanceMeetingAgendabyMeetingIDData
+  );
   return (
     <>
       {savedViewAgenda ? (
@@ -198,6 +225,7 @@ console.log("GetAdvanceMeetingAgendabyMeetingIDData",GetAdvanceMeetingAgendabyMe
                                       setAgendaItemRemovedIndex
                                     }
                                     setSubajendaRemoval={setSubajendaRemoval}
+                                    ediorRole={ediorRole}
                                   />
                                 </>
                               );
@@ -218,15 +246,10 @@ console.log("GetAdvanceMeetingAgendabyMeetingIDData",GetAdvanceMeetingAgendabyMe
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                {/* <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_Button_Organizers_view"]}
-                  onClick={handleCancelBtn}
-                /> */}
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Meeting_Details"]}
-                  onClick={handleCancelBtn}
+                  onClick={handleCancelMeetingNoPopup}
                 />
                 <Button
                   text={t("Previous")}
