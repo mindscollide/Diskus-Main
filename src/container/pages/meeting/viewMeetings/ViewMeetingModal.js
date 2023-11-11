@@ -14,6 +14,8 @@ import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
 import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
+import { cleareAllState } from "../../../../store/actions/NewMeetingActions";
+import { useDispatch } from "react-redux";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -33,10 +35,13 @@ const ViewMeetingModal = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     return () => {
+      dispatch(cleareAllState())
       setEdiorRole({ status: null, role: null });
+      setAdvanceMeetingModalID(null);
     };
   }, []);
 
@@ -169,7 +174,7 @@ const ViewMeetingModal = ({
     setmeetingDetails(false);
     setPolls(false);
   };
-  console.log("ediorRole", ediorRole);
+
   return (
     <>
       <section className="position-relative">
@@ -301,6 +306,7 @@ const ViewMeetingModal = ({
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   ediorRole={ediorRole}
+                  setEdiorRole={setEdiorRole}
                 />
               )}
               {organizers && (
@@ -356,6 +362,7 @@ const ViewMeetingModal = ({
                   setAgenda={setAgenda}
                   setMinutes={setMinutes}
                   ediorRole={ediorRole}
+                  setEdiorRole={setEdiorRole}
                 />
               )}
               {unPublish ? null : (

@@ -162,6 +162,46 @@ const MeetingDetails = ({
     //Recurring Drop Down API
     dispatch(GetAllMeetingRecurringApiNew(navigate, t));
     //Calling getAll Meeting Details By Meeting ID
+    return()=>{
+      setMeetingDetails({
+        MeetingTitle: "",
+        MeetingType: 0,
+        Location: "",
+        Description: "",
+        Link: "",
+        ReminderFrequency: {
+          value: 0,
+          label: "",
+        },
+        ReminderFrequencyTwo: {
+          value: 0,
+          label: "",
+        },
+        ReminderFrequencyThree: {
+          value: 0,
+          label: "",
+        },
+        Notes: "",
+        groupChat: false,
+        AllowRSPV: false,
+        NotifyMeetingOrganizer: false,
+        RecurringOptions: {
+          value: 0,
+          label: "",
+        },
+        IsVideoCall: false,
+      })
+      setRows([
+        {
+          selectedOption: "",
+          dateForView: "",
+          startDate: "",
+          startTime: "",
+          endDate: "",
+          endTime: "",
+        },
+      ])
+    }
   }, []);
 
   const handleMeetingSelectChange = (selectedOption) => {
@@ -836,8 +876,8 @@ const MeetingDetails = ({
         setPublishedFlag(wasPublishedFlag);
       }
     } catch {}
-  }, [NewMeetingreducer.getAllMeetingDetails]);
-  console.log("meetingDetailsmeetingDetails", meetingDetails);
+  }, [getAllMeetingDetails]);
+
   function compareMeetings(meetingsArray1, meetingsArray2) {
     if (meetingsArray1.length !== meetingsArray2.length) {
       return false; // If the arrays have different lengths, they can't be equal

@@ -51,15 +51,28 @@ const SubRequestContributor = ({
       <Row key={index + 5} className="mt-3">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["ContributorTitle_Heading"]}>
-            Get new computers from Techno City Mall. Also, Get a new graphics
-            card for the designer.
+            <div className={styles["agendaCreationDetail"]}>
+              <img
+                src={`data:image/jpeg;base64,${subAgendaData.userProfilePicture.displayProfilePictureName}`}
+                className={styles["Image"]}
+                alt=""
+                draggable={false}
+              />
+              <p className={styles["agendaCreater"]}>
+                {subAgendaData.userProfilePicture.orignalProfilePictureName}
+              </p>
+              <span className={styles["agendaCreationTime"]}>
+                {subAgendaData.userProfilePicture.orignalProfilePictureName}
+              </span>
+            </div>
+            .
           </span>
         </Col>
       </Row>
       <Row className="mt-2 mb-2">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["ContributorDescription"]}>
-            https://www.youtube.com/watch
+            {subAgendaData.subAgendarequestContributorEnterNotes}
           </span>
         </Col>
       </Row>

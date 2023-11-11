@@ -39,21 +39,44 @@ const Agenda = ({
   setPolls,
   setMinutes,
   advanceMeetingModalID,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let currentMeetingID = Number(localStorage.getItem("meetingID"));
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+
+  const agendaItemRemoved = useSelector(
+    (state) => state.NewMeetingreducer.agendaItemRemoved
+  );
+  const mainAgendaItemRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mainAgendaItemRemoved
+  );
+  const advancePermissionModal = useSelector(
+    (state) => state.NewMeetingreducer.advancePermissionModal
+  );
+  const advancePermissionConfirmation = useSelector(
+    (state) => state.NewMeetingreducer.advancePermissionConfirmation
+  );
+  const voteAgendaModal = useSelector(
+    (state) => state.NewMeetingreducer.voteAgendaModal
+  );
+  const voteConfirmationModal = useSelector(
+    (state) => state.NewMeetingreducer.voteConfirmationModal
+  );
+  const importPreviousAgendaModal = useSelector(
+    (state) => state.NewMeetingreducer.importPreviousAgendaModal
+  );
+  const cancelAgenda = useSelector(
+    (state) => state.NewMeetingreducer.cancelAgenda
+  );
+  const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
+    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
   );
   const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
   const [cancelModalView, setCancelModalView] = useState(false);
-
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
-
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
@@ -66,69 +89,59 @@ const Agenda = ({
 
   const [rows, setRows] = useState([
     {
-      ID: getRandomUniqueNumber().toString(),
+      iD: getRandomUniqueNumber().toString() + "A",
       title: "",
-      selectedOption: null,
+      agendaVotingID: 0,
+      presenterID: null,
+      description: "",
+      presenterName: "",
       startDate: null,
       endDate: null,
-      selectedRadio: "1",
+      selectedRadio: 1,
       urlFieldMain: "",
-      requestContributorURl: "",
-      MainNote: "",
+      // requestContributorURl: 0,
+      mainNote: "",
+      requestContributorURlName: "",
       files: [],
+      isLocked: false,
+      voteOwner: null,
+      isAttachment: false,
+      userID: 0,
       subAgenda: [
         {
-          SubAgendaID: getRandomUniqueNumber().toString(),
-          SubTitle: "",
-          selectedOption: null,
+          subAgendaID: getRandomUniqueNumber().toString() + "A",
+          agendaVotingID: 0,
+          subTitle: "",
+          description: "",
+          agendaVotingID: 0,
+          presenterID: null,
+          presenterName: "",
           startDate: null,
           endDate: null,
-          subSelectRadio: "1",
-          SubAgendaUrlFieldRadio: "",
-          subAgendarequestContributorUrl: "",
+          subSelectRadio: 1,
+          subAgendaUrlFieldRadio: "",
+          // subAgendarequestContributorUrl: 0,
+          subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
           subfiles: [],
+          isLocked: false,
+          voteOwner: null,
+          isAttachment: false,
+          userID: 0,
         },
       ],
     },
   ]);
-  console.log("result Dropped files", rows);
-
-  //Function For Adding Main Agendas
-  const addRow = () => {
-    const updatedRows = [...rows];
-    const nextID = updatedRows.length.toString();
-    console.log("addrow", (nextID + 1).toString());
-    const newMainAgenda = {
-      ID: getRandomUniqueNumber().toString(),
-      title: "",
-      selectedOption: null,
-      startDate: null,
-      endDate: null,
-      selectedRadio: "1",
-      urlFieldMain: "",
-      requestContributorURl: "",
-      MainNote: "",
-      files: [],
-      subAgenda: [
-        {
-          SubAgendaID: getRandomUniqueNumber().toString(),
-          SubTitle: "",
-          selectedOption: null,
-          startDate: null,
-          endDate: null,
-          subSelectRadio: "1",
-          SubAgendaUrlFieldRadio: "",
-          subAgendarequestContributorUrl: "",
-          subAgendarequestContributorEnterNotes: "",
-          subfiles: [],
-        },
-      ],
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
     };
-    updatedRows.push(newMainAgenda);
-    setRows(updatedRows);
-    console.log(updatedRows, "updatedRowsupdatedRows");
-  };
+    dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+  }, []);
+  //   updatedRows.push(newMainAgenda);
+  //   setRows(updatedRows);
+  //   console.log(updatedRows, "updatedRowsupdatedRows");
+  // };
 
   const handleCancelMeetingNoPopup = () => {
     let searchData = {
@@ -146,26 +159,6 @@ const Agenda = ({
     setAgenda(false);
   };
 
-  //SubAgenda Statemanagement
-
-  const handlePreviousAgenda = () => {
-    dispatch(showImportPreviousAgendaModal(true));
-  };
-
-  const handleSavedViewAgenda = () => {
-    setsavedViewAgenda(true);
-  };
-
-  const EnableAgendaView = () => {
-    // Enable View page From it
-    // setagendaViewPage(true);
-    dispatch(showCancelModalAgenda(true));
-  };
-
-  const handleCancelBtn = () => {
-    setCancelModalView(true);
-  };
-
   const handlePreviousBtn = () => {
     setAgenda(false);
     setParticipants(true);
@@ -177,27 +170,18 @@ const Agenda = ({
   };
 
   useEffect(() => {
-    let Data = {
-      MeetingID: 1216,
-    };
-    dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
-  }, []);
-
-  useEffect(() => {
     if (
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
-        undefined &&
-      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
+      GetAdvanceMeetingAgendabyMeetingIDData !== null &&
+      GetAdvanceMeetingAgendabyMeetingIDData !== undefined &&
+      GetAdvanceMeetingAgendabyMeetingIDData.length !== 0
     ) {
-      setRows(
-        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList
-      );
+      setRows(GetAdvanceMeetingAgendabyMeetingIDData.agendaList);
     }
-  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
-
-  console.log("MeetingAgendaReducer", MeetingAgendaReducer);
-
+  }, [GetAdvanceMeetingAgendabyMeetingIDData]);
+  console.log(
+    "GetAdvanceMeetingAgendabyMeetingIDData",
+    GetAdvanceMeetingAgendabyMeetingIDData
+  );
   return (
     <>
       {savedViewAgenda ? (
@@ -241,6 +225,7 @@ const Agenda = ({
                                       setAgendaItemRemovedIndex
                                     }
                                     setSubajendaRemoval={setSubajendaRemoval}
+                                    ediorRole={ediorRole}
                                   />
                                 </>
                               );
@@ -261,11 +246,6 @@ const Agenda = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                {/* <Button
-                  text={t("Cancel")}
-                  className={styles["Cancel_Button_Organizers_view"]}
-                  onClick={handleCancelBtn}
-                /> */}
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Meeting_Details"]}
@@ -287,7 +267,7 @@ const Agenda = ({
         </>
       )}
 
-      {NewMeetingreducer.agendaItemRemoved && (
+      {agendaItemRemoved && (
         <AgenItemremovedModal
           setRows={setRows}
           rows={rows}
@@ -297,7 +277,7 @@ const Agenda = ({
           agendaItemRemovedIndex={agendaItemRemovedIndex}
         />
       )}
-      {NewMeetingreducer.mainAgendaItemRemoved && (
+      {mainAgendaItemRemoved && (
         <MainAjendaItemRemoved
           mainAgendaRemovalIndex={mainAgendaRemovalIndex}
           setMainAgendaRemovalIndex={setMainAgendaRemovalIndex}
@@ -305,18 +285,14 @@ const Agenda = ({
           setRows={setRows}
         />
       )}
-      {NewMeetingreducer.advancePermissionModal && <AdvancePersmissionModal />}
-      {NewMeetingreducer.advancePermissionConfirmation && (
-        <PermissionConfirmation />
-      )}
-      {NewMeetingreducer.voteAgendaModal && (
+      {advancePermissionModal && <AdvancePersmissionModal />}
+      {advancePermissionConfirmation && <PermissionConfirmation />}
+      {voteAgendaModal && (
         <VoteModal setenableVotingPage={setenableVotingPage} />
       )}
-      {NewMeetingreducer.voteConfirmationModal && <VoteModalConfirm />}
-      {NewMeetingreducer.importPreviousAgendaModal && <ImportPrevious />}
-      {NewMeetingreducer.cancelAgenda && (
-        <CancelAgenda setSceduleMeeting={setSceduleMeeting} />
-      )}
+      {voteConfirmationModal && <VoteModalConfirm />}
+      {importPreviousAgendaModal && <ImportPrevious />}
+      {cancelAgenda && <CancelAgenda setSceduleMeeting={setSceduleMeeting} />}
       {cancelModalView && (
         <CancelButtonModal
           setCancelModalView={setCancelModalView}

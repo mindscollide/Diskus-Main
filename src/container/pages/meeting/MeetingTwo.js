@@ -323,15 +323,6 @@ const NewMeeting = () => {
     setQuickMeeting(true);
   };
 
-  //Modal For LEave Meeting
-  const EndMeetingModal = () => {
-    dispatch(showEndMeetingModal(true));
-  };
-  //Modal For End Meeting
-  const EndForAllModal = () => {
-    dispatch(showEndMeetingForAll(true));
-  };
-
   const eventClickHandler = () => {};
 
   //Published Meeting Page
@@ -1103,6 +1094,7 @@ const NewMeeting = () => {
         <ViewMeetingModal
           advanceMeetingModalID={advanceMeetingModalID}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
+          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           unPublish={true}
           ediorRole={ediorRole}
           setEdiorRole={setEdiorRole}

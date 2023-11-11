@@ -21,9 +21,7 @@ const Urls = ({ data, index, setRows, rows }) => {
   return (
     <Row key={index + 5} className="mt-3 mb-2">
       <Col lg={12} md={12} sm={12}>
-        <span className={styles["URLTitle_Heading"]}>
-          https://www.youtube.com/watch
-        </span>
+        <span className={styles["URLTitle_Heading"]}>{data.urlFieldMain}</span>
       </Col>
     </Row>
   );

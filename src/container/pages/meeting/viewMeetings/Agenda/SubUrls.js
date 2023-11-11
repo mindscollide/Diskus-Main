@@ -31,7 +31,7 @@ const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
     <Row className="mt-2">
       <Col lg={12} md={12} sm={12}>
         <span className={styles["URLTitle_Heading"]}>
-          https://www.youtube.com/watch
+          {subAgendaData.subAgendaUrlFieldRadio}
         </span>
       </Col>
     </Row>

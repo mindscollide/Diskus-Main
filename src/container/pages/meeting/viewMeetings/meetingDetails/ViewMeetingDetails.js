@@ -7,6 +7,7 @@ import Messegeblue from "../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../assets/images/blue Camera.svg";
 import { useDispatch } from "react-redux";
 import {
+  cleareAllState,
   ClearMessegeMeetingdetails,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
@@ -35,6 +36,7 @@ const ViewMeetingDetails = ({
   setMeetingDetails,
   ediorRole,
   setAgenda,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -98,7 +100,6 @@ const ViewMeetingDetails = ({
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    console.log("GetAllMeetingDetailsApiFunc");
     dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
   }, []);
   const handleUpdateNext = () => {
@@ -506,6 +507,8 @@ const ViewMeetingDetails = ({
           cancelModalView={cancelModalView}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
           setMeetingDetails={setmeetingDetails}
+          setEdiorRole={setEdiorRole}
+          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
