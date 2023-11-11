@@ -1094,6 +1094,7 @@ const NewMeeting = () => {
         <ViewMeetingModal
           advanceMeetingModalID={advanceMeetingModalID}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
+          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           unPublish={true}
           ediorRole={ediorRole}
           setEdiorRole={setEdiorRole}

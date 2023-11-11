@@ -7,6 +7,7 @@ import Messegeblue from "../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../assets/images/blue Camera.svg";
 import { useDispatch } from "react-redux";
 import {
+  cleareAllState,
   ClearMessegeMeetingdetails,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
@@ -35,6 +36,7 @@ const ViewMeetingDetails = ({
   setMeetingDetails,
   ediorRole,
   setAgenda,
+  setEdiorRole
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -100,6 +102,11 @@ const ViewMeetingDetails = ({
     };
     console.log("GetAllMeetingDetailsApiFunc");
     dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    return()=>{
+      dispatch(cleareAllState())
+      setEdiorRole({ status: null, role: null });
+      setAdvanceMeetingModalID(null);
+    }
   }, []);
   const handleUpdateNext = () => {
     setmeetingDetails(false);

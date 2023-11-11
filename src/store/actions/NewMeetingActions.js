@@ -1674,7 +1674,11 @@ const showGetAllMeetingDetialsFailed = (message) => {
     message: message,
   };
 };
-
+const cleareAllState = () => {
+  return {
+    type: actions.CLEARE_ALL_MEETING_STATE,
+  };
+};
 //GET ALL MEETING DETAILS API Function
 const GetAllMeetingDetailsApiFunc = (
   Data,
@@ -6175,4 +6179,5 @@ export {
   showUnsavedViewPollsModal,
   ShowNextConfirmationModal,
   showPreviousConfirmationModal,
+  cleareAllState,
 };

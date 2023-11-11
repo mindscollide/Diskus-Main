@@ -126,6 +126,14 @@ const Organizers = ({
   useEffect(() => {
     let Data = { MeetingID: currentMeeting };
     dispatch(GetAllMeetingOrganizers(Data, navigate, t));
+    return () => {
+      setInputValues({});
+      setRowsData([currentOrganizerData]);
+      setOpen({
+        open: false,
+        message:"",
+      });
+    };
   }, []);
 
   const handleInputChange = (userID, newValue) => {

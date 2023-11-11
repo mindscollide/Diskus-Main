@@ -43,6 +43,7 @@ const ParentAgenda = ({
 }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let currentUserID = localStorage.getItem("userID");
 
   const { NewMeetingreducer } = useSelector((state) => state);
 
@@ -112,8 +113,8 @@ const ParentAgenda = ({
 
   return (
     <Draggable
-      key={data.ID}
-      draggableId={data.ID}
+      key={data.id}
+      draggableId={data.id}
       index={index}
       isDragDisabled={true}
     >
@@ -121,7 +122,7 @@ const ParentAgenda = ({
         <div ref={provided.innerRef} {...provided.draggableProps}>
           {/* Main Agenda Items Mapping */}
           <span className="position-relative">
-            <Row key={data.ID} className="mt-4 m-0 p-0">
+            <Row key={data.id} className="mt-4 m-0 p-0">
               <Col
                 lg={12}
                 md={12}
@@ -181,23 +182,52 @@ const ParentAgenda = ({
                           </span>
                         </Col>
                         <Col lg={6} md={6} sm={12} className="text-end">
-                          {Number(ediorRole.status) === 10 ? (
+                          {Number(data.agendaVotingID) !== 0 &&
+                          Number(ediorRole.status) === 10 &&
+                          Number(data.voteOwner.userid) ===
+                            Number(currentUserID) &&
+                          data.voteOwner ? (
                             <Button
                               text={t("Start-voting")}
                               className={styles["startVotingButton"]}
                             />
+                          ) : Number(data.agendaVotingID) !== 0 &&
+                            Number(ediorRole.status) === 10 &&
+                            Number(data.voteOwner.userid) ===
+                              Number(currentUserID) &&
+                            !data.voteOwner ? (
+                            <Button
+                              text={t("End-voting")}
+                              className={styles["startVotingButton"]}
+                            />
                           ) : null}
 
-                          <Button
-                            text={t("Cast-your-vote")}
-                            className={styles["CastYourVoteButton"]}
-                            onClick={EnableCastVoteModal}
-                          />
-                          <Button
-                            text={t("View-votes")}
-                            className={styles["ViewVoteButton"]}
-                            onClick={EnableViewVoteModal}
-                          />
+                          {Number(data.agendaVotingID) === 0 ? null : Number(
+                              ediorRole.status
+                            ) === 10 &&
+                            Number(data.voteOwner.userid) !==
+                              Number(currentUserID) &&
+                            !data.voteOwner &&
+                            ediorRole.role !== "Organizer" ? (
+                            <Button
+                              text={t("Cast-your-vote")}
+                              className={styles["CastYourVoteButton"]}
+                              onClick={EnableCastVoteModal}
+                            />
+                          ) : null}
+                          {Number(data.agendaVotingID) === 0 ? null : Number(
+                              ediorRole.status
+                            ) === 10 &&
+                            Number(data.voteOwner.userid) !==
+                              Number(currentUserID) &&
+                            !data.voteOwner &&
+                            ediorRole.role === "Organizer" ? (
+                            <Button
+                              text={t("View-votes")}
+                              className={styles["ViewVoteButton"]}
+                              onClick={EnableViewVoteModal}
+                            />
+                          ) : null}
                         </Col>
                       </Row>
                       <Row className="mt-2">
@@ -220,15 +250,22 @@ const ParentAgenda = ({
                             <Col lg={12} md={12} sm={12}>
                               <div className={styles["agendaCreationDetail"]}>
                                 <img
-                                  src={profile}
+                                  src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                   className={styles["Image"]}
                                   alt=""
+                                  draggable={false}
                                 />
                                 <p className={styles["agendaCreater"]}>
-                                  Salman Memon
+                                  {
+                                    data.userProfilePicture
+                                      .orignalProfilePictureName
+                                  }
                                 </p>
                                 <span className={styles["agendaCreationTime"]}>
-                                  12:15 PM - 12:15 PM
+                                  {
+                                    data.userProfilePicture
+                                      .orignalProfilePictureName
+                                  }
                                 </span>
                               </div>
                             </Col>
@@ -256,9 +293,6 @@ const ParentAgenda = ({
                                   handleRadioChange(index, e.target.value)
                                 }
                                 value={data.selectedRadio}
-                                disabled={
-                                  apllyLockOnParentAgenda(index) ? true : false
-                                }
                               >
                                 <Radio value={1}>
                                   <span
@@ -295,7 +329,7 @@ const ParentAgenda = ({
                               >
                                 {data.selectedRadio === 1 &&
                                   Object.keys(data.files).length > 0 && (
-                                    <Row gutter={[16, 16]}>
+                                    <Row>
                                       {data.files.map(
                                         (filesData, fileIndex) => (
                                           <Col

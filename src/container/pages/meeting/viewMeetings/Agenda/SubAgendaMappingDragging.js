@@ -1,40 +1,32 @@
 import React, { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
-import { TextField, Button } from "../../../../../components/elements";
+import { Button } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
-import Select from "react-select";
-import DatePicker from "react-multi-date-picker";
 import profile from "../../../../../assets/images/newprofile.png";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import { useTranslation } from "react-i18next";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import {
   showAgenItemsRemovedModal,
   showCastVoteAgendaModal,
   showviewVotesAgenda,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
-import desh from "../../../../../assets/images/desh.svg";
-import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import { Radio } from "antd";
-import Key from "../../../../../assets/images/KEY.svg";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import closedLocked from "../../../../../assets/images/CloseLocked.svg";
-import DarkLock from "../../../../../assets/images/BlackLock.svg";
-import Lock from "../../../../../assets/images/LOCK.svg";
-import Cast from "../../../../../assets/images/CAST.svg";
-import { message, Upload } from "antd";
-import SubDocumnets from "./SubDocumnets";
+import { Upload } from "antd";
 import SubUrls from "./SubUrls";
 import SubRequestContributor from "./SubRequestContributor";
-import SubDedaultDragger from "./SubDedaultDragger";
 import dropmdownblack from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import { useEffect } from "react";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../DataRoom/SearchFunctionality/option";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -55,6 +47,7 @@ const SubAgendaMappingDragging = ({
   setSubExpand,
   openAdvancePermissionModal,
   openVoteMOdal,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
   //Timepicker
@@ -63,13 +56,7 @@ const SubAgendaMappingDragging = ({
   const [localValue, setLocalValue] = useState(gregorian_en);
   const dispatch = useDispatch();
   const { Dragger } = Upload;
-
-  // SubAgenda Select Options
-  const SubAgendaoptions = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
+  let currentUserID = localStorage.getItem("userID");
 
   //Function For Dragging the SubAgendaItems
   const onSubAgendaDragEnd = (result, index) => {
@@ -87,7 +74,6 @@ const SubAgendaMappingDragging = ({
 
     // Get the dragged item
     const draggedItem = updatedRows[index].subAgenda[sourceIndex];
-    console.log(draggedItem, "draggedItemdraggedItem");
     // Remove the item from the source index
     updatedRows[index].subAgenda.splice(sourceIndex, 1);
 
@@ -115,12 +101,10 @@ const SubAgendaMappingDragging = ({
   const handleSubAgendaTitleChange = (index, subIndex, e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log(value, "valuevaluevalue");
     const updatedRows = [...rows];
     if (name === "SubTitle") {
       updatedRows[index].subAgenda[subIndex].SubTitle = value;
     }
-    console.log(updatedRows, "SubAgendaTitleSubAgendaTitle");
     setRows(updatedRows);
   };
 
@@ -132,7 +116,6 @@ const SubAgendaMappingDragging = ({
       label: value.label,
     };
     updatedRows[index].subAgenda[subIndex].selectedOption = SelectValue;
-    console.log(updatedRows, "SubagendaSelectSubagendaSelect");
     setRows(updatedRows);
   };
 
@@ -140,7 +123,6 @@ const SubAgendaMappingDragging = ({
   const handleSubAgendaStartDateChange = (index, subIndex, date) => {
     const updatedRows = [...rows];
     updatedRows[index].subAgenda[subIndex].startDate = date;
-    console.log(updatedRows, "startCasestartCasestartCase");
     setRows(updatedRows);
   };
 
@@ -206,16 +188,11 @@ const SubAgendaMappingDragging = ({
     let value = e.target.value;
     const updatedRows = [...rows];
     updatedRows[index].subAgenda[subIndex].subSelectRadio = value;
-    console.log(
-      updatedRows,
-      "handleSubAgendaRadioChangehandleSubAgendaRadioChange"
-    );
     setRows(updatedRows);
   };
 
   const lockFunctionActiveSubMenus = (index, subindex) => {
     let cloneSubLockArry = [...subLockArry];
-    console.log(index, subindex, "findsubIndexfindsubIndexfindsubIndex");
 
     const parentIndexExists = cloneSubLockArry.findIndex(
       (item) => item.parentIndex === index
@@ -283,8 +260,8 @@ const SubAgendaMappingDragging = ({
                 {(provided) => (
                   <div ref={provided.innerRef} {...provided.droppableProps}>
                     <Draggable
-                      key={subAgendaData.SubAgendaID}
-                      draggableId={`subAgenda-${subAgendaData.SubAgendaID}`}
+                      key={subAgendaData.subAgendaID}
+                      draggableId={`subAgenda-${subAgendaData.subAgendaID}`}
                       index={subIndex}
                       isDragDisabled={true}
                     >
@@ -302,7 +279,7 @@ const SubAgendaMappingDragging = ({
                             >
                               <section className={styles["Padding_SubAgenda"]}>
                                 <Row
-                                  key={subAgendaData.SubAgendaID}
+                                  key={subAgendaData.subAgendaID}
                                   className="mt-3"
                                 >
                                   <Col lg={1} md={1} sm={1}></Col>
@@ -329,6 +306,7 @@ const SubAgendaMappingDragging = ({
                                           className={styles["backGorund"]}
                                         >
                                           <img
+                                            alt=""
                                             width="18.71px"
                                             height="9.36px"
                                             src={
@@ -368,9 +346,7 @@ const SubAgendaMappingDragging = ({
                                                 styles["AgendaTitle_Heading"]
                                               }
                                             >
-                                              1. Get new computers from Techno
-                                              City Mall. Also, Get a new
-                                              graphics card for the designer.
+                                              {subAgendaData.subTitle}
                                             </span>
                                           </Col>
                                           <Col
@@ -379,26 +355,72 @@ const SubAgendaMappingDragging = ({
                                             sm={12}
                                             className="text-end"
                                           >
-                                            <Button
-                                              text={t("Start-voting")}
-                                              className={
-                                                styles["startVotingButton"]
-                                              }
-                                            />
-                                            <Button
-                                              text={t("Cast-your-vote")}
-                                              className={
-                                                styles["CastYourVoteButton"]
-                                              }
-                                              onClick={EnableCastVoteModal}
-                                            />
-                                            <Button
-                                              text={t("View-votes")}
-                                              className={
-                                                styles["ViewVoteButton"]
-                                              }
-                                              onClick={EnableViewVoteModal}
-                                            />
+                                            {Number(
+                                              subAgendaData.agendaVotingID
+                                            ) !== 0 &&
+                                            Number(ediorRole.status) === 10 &&
+                                            Number(
+                                              subAgendaData.voteOwner.userid
+                                            ) === Number(currentUserID) &&
+                                            subAgendaData.voteOwner ? (
+                                              <Button
+                                                text={t("Start-voting")}
+                                                className={
+                                                  styles["startVotingButton"]
+                                                }
+                                              />
+                                            ) : Number(
+                                                subAgendaData.agendaVotingID
+                                              ) !== 0 &&
+                                              Number(ediorRole.status) === 10 &&
+                                              Number(
+                                                subAgendaData.voteOwner.userid
+                                              ) === Number(currentUserID) &&
+                                              !subAgendaData.voteOwner ? (
+                                              <Button
+                                                text={t("End-voting")}
+                                                className={
+                                                  styles["startVotingButton"]
+                                                }
+                                              />
+                                            ) : null}
+
+                                            {Number(
+                                              subAgendaData.agendaVotingID
+                                            ) === 0 ? null : Number(
+                                                ediorRole.status
+                                              ) === 10 &&
+                                              Number(
+                                                subAgendaData.voteOwner.userid
+                                              ) !== Number(currentUserID) &&
+                                              !subAgendaData.voteOwner &&
+                                              ediorRole.role !== "Organizer" ? (
+                                              <Button
+                                                text={t("Cast-your-vote")}
+                                                className={
+                                                  styles["CastYourVoteButton"]
+                                                }
+                                                onClick={EnableCastVoteModal}
+                                              />
+                                            ) : null}
+                                            {Number(
+                                              subAgendaData.agendaVotingID
+                                            ) === 0 ? null : Number(
+                                                ediorRole.status
+                                              ) === 10 &&
+                                              Number(
+                                                subAgendaData.voteOwner.userid
+                                              ) !== Number(currentUserID) &&
+                                              !subAgendaData.voteOwner &&
+                                              ediorRole.role === "Organizer" ? (
+                                              <Button
+                                                text={t("View-votes")}
+                                                className={
+                                                  styles["ViewVoteButton"]
+                                                }
+                                                onClick={EnableViewVoteModal}
+                                              />
+                                            ) : null}
                                           </Col>
                                         </Row>
 
@@ -408,15 +430,12 @@ const SubAgendaMappingDragging = ({
                                               className={
                                                 styles["Show_More_Styles"]
                                               }
-                                              onClick={() => {
-                                                apllyLockOnParentAgenda(
-                                                  index
-                                                ) ||
-                                                  handleSubMenuExpand(
-                                                    index,
-                                                    subIndex
-                                                  );
-                                              }}
+                                              onClick={() =>
+                                                handleSubMenuExpand(
+                                                  index,
+                                                  subIndex
+                                                )
+                                              }
                                             >
                                               {subexpandIndex === index &&
                                               expandSubIndex === subIndex &&
@@ -441,17 +460,23 @@ const SubAgendaMappingDragging = ({
                                                     }
                                                   >
                                                     <img
-                                                      src={profile}
+                                                      src={`data:image/jpeg;base64,${subAgendaData.userProfilePicture.displayProfilePictureName}`}
                                                       className={
                                                         styles["Image"]
                                                       }
+                                                      alt=""
+                                                      draggable={false}
                                                     />
                                                     <p
                                                       className={
                                                         styles["agendaCreater"]
                                                       }
                                                     >
-                                                      Salman Memon
+                                                      {
+                                                        subAgendaData
+                                                          .userProfilePicture
+                                                          .orignalProfilePictureName
+                                                      }
                                                     </p>
                                                     <span
                                                       className={
@@ -460,7 +485,11 @@ const SubAgendaMappingDragging = ({
                                                         ]
                                                       }
                                                     >
-                                                      12:15 PM - 12:15 PM
+                                                      {
+                                                        subAgendaData
+                                                          .userProfilePicture
+                                                          .orignalProfilePictureName
+                                                      }
                                                     </span>
                                                   </div>
                                                 </Col>
@@ -474,7 +503,7 @@ const SubAgendaMappingDragging = ({
                                                       ]
                                                     }
                                                   >
-                                                    Description
+                                                    {subAgendaData.description}
                                                   </span>
                                                 </Col>
                                               </Row>
@@ -502,19 +531,8 @@ const SubAgendaMappingDragging = ({
                                                         e
                                                       )
                                                     }
-                                                    disabled={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      ) ||
-                                                      apllyLockOnSubAgenda(
-                                                        index,
-                                                        subIndex
-                                                      )
-                                                        ? true
-                                                        : false
-                                                    }
                                                   >
-                                                    <Radio value="1">
+                                                    <Radio value={1}>
                                                       <span
                                                         className={
                                                           styles[
@@ -525,7 +543,7 @@ const SubAgendaMappingDragging = ({
                                                         {t("Document")}
                                                       </span>
                                                     </Radio>
-                                                    <Radio value="2">
+                                                    <Radio value={2}>
                                                       <span
                                                         className={
                                                           styles[
@@ -536,7 +554,7 @@ const SubAgendaMappingDragging = ({
                                                         {t("URL")}
                                                       </span>
                                                     </Radio>
-                                                    <Radio value="3">
+                                                    <Radio value={3}>
                                                       <span
                                                         className={
                                                           styles[
@@ -551,98 +569,9 @@ const SubAgendaMappingDragging = ({
                                                     </Radio>
                                                   </Radio.Group>
                                                 </Col>
-                                                {/* <Col
-                                                  lg={6}
-                                                  md={6}
-                                                  sm={6}
-                                                  className="d-flex justify-content-end gap-4 align-items-center"
-                                                >
-                                                  <img
-                                                    draggable={false}
-                                                    src={Key}
-                                                    width="24.07px"
-                                                    className="cursor-pointer"
-                                                    height="24.09px"
-                                                    onClick={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      ) ||
-                                                      apllyLockOnSubAgenda(
-                                                        index,
-                                                        subIndex
-                                                      )
-                                                        ? ""
-                                                        : openAdvancePermissionModal
-                                                    }
-                                                  />
-                                                  <img
-                                                    draggable={false}
-                                                    src={Cast}
-                                                    width="25.85px"
-                                                    height="25.89px"
-                                                    className="cursor-pointer"
-                                                    onClick={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      ) ||
-                                                      apllyLockOnSubAgenda(
-                                                        index,
-                                                        subIndex
-                                                      )
-                                                        ? ""
-                                                        : openVoteMOdal
-                                                    }
-                                                  />
-                                                  <img
-                                                    draggable={false}
-                                                    src={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      )
-                                                        ? closedLocked
-                                                        : apllyLockOnSubAgenda(
-                                                            index,
-                                                            subIndex
-                                                          )
-                                                        ? DarkLock
-                                                        : Lock
-                                                    }
-                                                    width="18.87px"
-                                                    height="26.72px"
-                                                    className={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      )
-                                                        ? styles[
-                                                            "lockBtn_inActive"
-                                                          ]
-                                                        : apllyLockOnSubAgenda(
-                                                            index,
-                                                            subIndex
-                                                          )
-                                                        ? styles[
-                                                            "lockBtn_inActive_coursor"
-                                                          ]
-                                                        : styles["lockBtn"]
-                                                    }
-                                                    onClick={() => {
-                                                      if (
-                                                        apllyLockOnParentAgenda(
-                                                          index
-                                                        )
-                                                      ) {
-                                                      } else {
-                                                        lockFunctionActiveSubMenus(
-                                                          index,
-                                                          subIndex
-                                                        );
-                                                      }
-                                                    }}
-                                                  />
-                                                </Col> */}
                                               </Row>
                                               <Droppable
-                                                droppableId={`subAgendaID-${subAgendaData.SubAgendaID}-parent-${data.ID}-attachments`}
+                                                droppableId={`subAgendaID-${subAgendaData.subAgendaID}-parent-${data.ID}-attachments`}
                                                 type="attachment"
                                               >
                                                 {(provided) => (
@@ -651,141 +580,60 @@ const SubAgendaMappingDragging = ({
                                                     ref={provided.innerRef}
                                                   >
                                                     {subAgendaData.subSelectRadio ===
-                                                    "1" ? (
-                                                      <>
+                                                      1 &&
+                                                      Object.keys(
+                                                        subAgendaData.subfiles
+                                                      ).length > 0 && (
                                                         <Row>
-                                                          <Col
-                                                            lg={3}
-                                                            md={3}
-                                                            sm={12}
-                                                          >
-                                                            <div
-                                                              className={
-                                                                styles[
-                                                                  "agendaFileAttachedView"
-                                                                ]
-                                                              }
-                                                            >
-                                                              <span
-                                                                className={
-                                                                  styles[
-                                                                    "agendaFileSpan"
-                                                                  ]
-                                                                }
+                                                          {subAgendaData.subfiles.map(
+                                                            (
+                                                              filesData,
+                                                              fileIndex
+                                                            ) => (
+                                                              <Col
+                                                                key={fileIndex}
+                                                                lg={3}
+                                                                md={3}
+                                                                sm={12}
                                                               >
-                                                                <img
-                                                                  src={pdfIcon}
-                                                                  alt=""
-                                                                  draggable="false"
-                                                                />{" "}
-                                                                Admin Dashboard
-                                                                Design 13
-                                                                february
-                                                                prototype -
-                                                                Copy.pdf
-                                                              </span>
-                                                            </div>
-                                                          </Col>
-                                                          <Col
-                                                            lg={3}
-                                                            md={3}
-                                                            sm={12}
-                                                          >
-                                                            <div
-                                                              className={
-                                                                styles[
-                                                                  "agendaFileAttachedView"
-                                                                ]
-                                                              }
-                                                            >
-                                                              <span
-                                                                className={
-                                                                  styles[
-                                                                    "agendaFileSpan"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                <img
-                                                                  src={pdfIcon}
-                                                                  alt=""
-                                                                  draggable="false"
-                                                                />{" "}
-                                                                Admin Dashboard
-                                                                Design 13
-                                                                february
-                                                                prototype -
-                                                                Copy.pdf
-                                                              </span>
-                                                            </div>
-                                                          </Col>
-                                                          <Col
-                                                            lg={3}
-                                                            md={3}
-                                                            sm={12}
-                                                          >
-                                                            <div
-                                                              className={
-                                                                styles[
-                                                                  "agendaFileAttachedView"
-                                                                ]
-                                                              }
-                                                            >
-                                                              <span
-                                                                className={
-                                                                  styles[
-                                                                    "agendaFileSpan"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                <img
-                                                                  src={pdfIcon}
-                                                                  alt=""
-                                                                  draggable="false"
-                                                                />{" "}
-                                                                Admin Dashboard
-                                                                Design 13
-                                                                february
-                                                                prototype -
-                                                                Copy.pdf
-                                                              </span>
-                                                            </div>
-                                                          </Col>
-                                                          <Col
-                                                            lg={3}
-                                                            md={3}
-                                                            sm={12}
-                                                          >
-                                                            <div
-                                                              className={
-                                                                styles[
-                                                                  "agendaFileAttachedView"
-                                                                ]
-                                                              }
-                                                            >
-                                                              <span
-                                                                className={
-                                                                  styles[
-                                                                    "agendaFileSpan"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                <img
-                                                                  src={pdfIcon}
-                                                                  alt=""
-                                                                  draggable="false"
-                                                                />{" "}
-                                                                Admin Dashboard
-                                                                Design 13
-                                                                february
-                                                                prototype -
-                                                                Copy.pdf
-                                                              </span>
-                                                            </div>
-                                                          </Col>
+                                                                <div
+                                                                  className={
+                                                                    styles[
+                                                                      "agendaFileAttachedView"
+                                                                    ]
+                                                                  }
+                                                                >
+                                                                  <span
+                                                                    className={
+                                                                      styles[
+                                                                        "agendaFileSpan"
+                                                                      ]
+                                                                    }
+                                                                  >
+                                                                    <img
+                                                                      draggable={
+                                                                        false
+                                                                      }
+                                                                      src={getIconSource(
+                                                                        getFileExtension(
+                                                                          filesData.displayAttachmentName
+                                                                        )
+                                                                      )}
+                                                                      alt=""
+                                                                    />{" "}
+                                                                    {
+                                                                      filesData.displayAttachmentName
+                                                                    }
+                                                                  </span>
+                                                                </div>
+                                                              </Col>
+                                                            )
+                                                          )}
                                                         </Row>
-                                                      </>
-                                                    ) : subAgendaData.subSelectRadio ===
-                                                      "2" ? (
+                                                      )}
+
+                                                    {subAgendaData.subSelectRadio ===
+                                                      2 && (
                                                       <SubUrls
                                                         subAgendaData={
                                                           subAgendaData
@@ -795,8 +643,9 @@ const SubAgendaMappingDragging = ({
                                                         index={index}
                                                         subIndex={subIndex}
                                                       />
-                                                    ) : subAgendaData.subSelectRadio ===
-                                                      "3" ? (
+                                                    )}
+                                                    {subAgendaData.subSelectRadio ===
+                                                      3 && (
                                                       <SubRequestContributor
                                                         subAgendaData={
                                                           subAgendaData
@@ -806,8 +655,6 @@ const SubAgendaMappingDragging = ({
                                                         index={index}
                                                         subIndex={subIndex}
                                                       />
-                                                    ) : (
-                                                      <></>
                                                     )}
                                                   </div>
                                                 )}

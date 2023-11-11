@@ -47,6 +47,7 @@ const SceduleMeeting = ({
     return () => {
       setEditMeeting(false);
       setEdiorRole({ status: null, role: null });
+      setCurrentMeetingID(0)
     };
   }, []);
 
