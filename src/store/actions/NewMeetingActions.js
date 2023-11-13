@@ -2475,7 +2475,7 @@ const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, callback) => {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_01"
+              "Meeting_MeetingServiceManager_UpdateMeetingAgendaLockStatus_01"
             ) {
               dispatch(
                 showUpdateMeetingAgendaLockStatusSuccess(
@@ -2486,7 +2486,7 @@ const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, callback) => {
               callback(true); // Pass the updated flag back to the callback
             } else if (
               response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_02"
+              "Meeting_MeetingServiceManager_UpdateMeetingAgendaLockStatus_02"
             ) {
               dispatch(
                 showUpdateMeetingAgendaLockStatusFailed(
@@ -2497,7 +2497,7 @@ const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, callback) => {
               callback(false);
             } else if (
               response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_03"
+              "Meeting_MeetingServiceManager_UpdateMeetingAgendaLockStatus_03"
             ) {
               dispatch(
                 showUpdateMeetingAgendaLockStatusFailed(

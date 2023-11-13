@@ -14,7 +14,10 @@ import Minutes from "./Minutes/Minutes";
 import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
-import { GetAllMeetingDetailsApiFunc } from "../../../../store/actions/NewMeetingActions";
+import {
+  GetAllMeetingDetailsApiFunc,
+  showCancelModalAgenda,
+} from "../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const SceduleMeeting = ({
@@ -47,7 +50,7 @@ const SceduleMeeting = ({
     return () => {
       setEditMeeting(false);
       setEdiorRole({ status: null, role: null });
-      setCurrentMeetingID(0)
+      setCurrentMeetingID(0);
     };
   }, []);
 
@@ -126,6 +129,7 @@ const SceduleMeeting = ({
     setAttendance(false);
     setPolls(false);
     setMeetingMaterial(false);
+    dispatch(showCancelModalAgenda(false));
   };
 
   const showMeetingMaterial = () => {

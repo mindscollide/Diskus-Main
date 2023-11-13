@@ -302,23 +302,23 @@ const MeetingDetails = ({
     // setSaveMeeting(!saveMeeting);
     let newArr = [];
     let newReminderData = [];
-    if (meetingDetails.ReminderFrequency !== 0) {
-      newReminderData.push(meetingDetails.ReminderFrequency);
+    if (meetingDetails.ReminderFrequency.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequency.value);
     }
-    if (meetingDetails.ReminderFrequencyTwo !== 0) {
-      newReminderData.push(meetingDetails.ReminderFrequencyTwo);
+    if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyTwo.value);
     }
-    if (meetingDetails.ReminderFrequencyThree !== 0) {
-      newReminderData.push(meetingDetails.ReminderFrequencyThree);
+    if (meetingDetails.ReminderFrequencyThree.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
     }
-    rows.map((data, index) => {
+
+    rows.forEach((data, index) => {
       newArr.push({
         MeetingDate: data.selectedOption,
         StartTime: data.startDate,
         EndTime: data.endDate,
       });
     });
-
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     if (
       meetingDetails.MeetingTitle !== "" &&
@@ -329,6 +329,11 @@ const MeetingDetails = ({
       newReminderData.length > 0 &&
       meetingDetails.Notes !== ""
     ) {
+      let recurringMeetingID =
+        meetingDetails.RecurringOptions.value !== 0
+          ? meetingDetails.RecurringOptions.value
+          : 1;
+
       let data = {
         MeetingDetails: {
           MeetingTitle: meetingDetails.MeetingTitle,
@@ -343,12 +348,11 @@ const MeetingDetails = ({
           Notes: meetingDetails.Notes,
           AllowRSVP: meetingDetails.AllowRSPV,
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
-          ReucurringMeetingID: meetingDetails.RecurringOptions,
+          ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
           MeetingStatusID: 1,
         },
       };
-
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
