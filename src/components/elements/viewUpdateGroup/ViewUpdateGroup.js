@@ -26,6 +26,10 @@ import {
   SaveGroupsDocumentsApiFunc,
   uploadDocumentsGroupsApi,
 } from "../../../store/actions/Groups_actions";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../container/DataRoom/SearchFunctionality/option";
 const ViewUpdateGroup = ({ setViewGroupPage }) => {
   let userID = localStorage.getItem("userID");
   console.log(userID, "userIDuserIDuserID");
@@ -95,7 +99,7 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
         let flag = false;
         let sizezero;
         let size;
-        fileAttachments.map((arData, index) => {
+        fileAttachments.forEach((arData, index) => {
           if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
             flag = true;
           }
@@ -531,10 +535,16 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
                                     className={styles["IconTextClass"]}
                                   >
                                     <img
-                                      src={pdfIcon}
+                                      src={getIconSource(
+                                        getFileExtension(
+                                          data.DisplayAttachmentName
+                                        )
+                                      )}
                                       height="10px"
                                       width="10px"
                                       className={styles["IconPDF"]}
+                                      alt=""
+                                      draggable="false"
                                     />
                                     <span className={styles["FileName"]}>
                                       {data.DisplayAttachmentName}
