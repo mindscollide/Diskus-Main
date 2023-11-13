@@ -297,6 +297,7 @@ const MeetingDetails = ({
     setRows(optionscross);
   };
 
+  console.log(meetingDetails, "meetingDetailsmeetingDetailsmeetingDetails");
   const handlePublish = () => {
     //Enable the Error Handling From here
     // setSaveMeeting(!saveMeeting);
@@ -791,14 +792,15 @@ const MeetingDetails = ({
     meetingDetails.ReminderFrequencyTwo,
     meetingDetails.ReminderFrequencyThree,
   ]);
-  console.log(
-    currentMeeting,
-    "currentMeetingcurrentMeetingcurrentMeetingcurrentMeeting"
-  );
+
   //Fetching All Saved Data
   useEffect(() => {
     try {
-      if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
+      if (
+        currentMeeting !== 0 &&
+        getAllMeetingDetails !== null &&
+        getAllMeetingDetails !== undefined
+      ) {
         // setEditMeeting(true);
         let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
         let getmeetingDates = MeetingData.meetingDates;
@@ -880,7 +882,7 @@ const MeetingDetails = ({
         setPublishedFlag(wasPublishedFlag);
       }
     } catch {}
-  }, [getAllMeetingDetails]);
+  }, [getAllMeetingDetails, currentMeeting]);
 
   function compareMeetings(meetingsArray1, meetingsArray2) {
     if (meetingsArray1.length !== meetingsArray2.length) {
