@@ -571,10 +571,6 @@ const Agenda = ({
     }
   };
 
-  // const saveAgendaData = async () => {
-
-  // };
-
   console.log(open, "openopenopen");
 
   useEffect(() => {
