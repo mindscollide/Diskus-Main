@@ -28,6 +28,9 @@ const downloadReducer = (state = initialState, action) => {
     case actions.SET_LOADER_FALSE_DOWNLOAD:
       return { ...state, Loading: false };
 
+    case action.ATTENDANCE_DOWNLOAD_LOADER_FAIL:
+      return { ...state, Loading: false };
+
     case actions.SHOW:
       return { ...state, ShowNotification: true, Message: action.message };
 
@@ -45,8 +48,8 @@ const downloadReducer = (state = initialState, action) => {
     case actions.DOWNLOAD_DOCUMENT_FILE_FAIL:
       return { ...state, Loading: false };
 
-    // case actions.DOWNLOAD_ATTENDANCE_REPORT_INIT:
-    //   return { ...state, Loading: false };
+    case actions.DOWNLOAD_ATTENDANCE_REPORT_INIT:
+      return { ...state, Loading: true };
 
     default:
       return { ...state };

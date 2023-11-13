@@ -829,73 +829,81 @@ const SubAgendaMappingDragging = ({
                                                   ediorRole.role ===
                                                     "Agenda Contributor" ? null : (
                                                     <>
-                                                      <img
-                                                        draggable={false}
-                                                        src={Key}
-                                                        width="24.07px"
-                                                        className="cursor-pointer"
-                                                        height="24.09px"
-                                                        onClick={
-                                                          parentIslockedCheck ||
-                                                          subAgendaData.isLocked
-                                                            ? ""
-                                                            : openAdvancePermissionModal
-                                                        }
-                                                        alt=""
-                                                      />
-                                                      <img
-                                                        alt=""
-                                                        draggable={false}
-                                                        src={Cast}
-                                                        width="25.85px"
-                                                        height="25.89px"
-                                                        className="cursor-pointer"
-                                                        onClick={() =>
-                                                          parentIslockedCheck ||
-                                                          subAgendaData.isLocked
-                                                            ? ""
-                                                            : openVoteMOdal(
-                                                                subAgendaData.subAgendaID,
-                                                                subAgendaData.agendaVotingID
-                                                              )
-                                                        }
-                                                      />
-                                                      <img
-                                                        draggable={false}
-                                                        src={
-                                                          parentIslockedCheck
-                                                            ? closedLocked
-                                                            : subAgendaData.isLocked
-                                                            ? DarkLock
-                                                            : Lock
-                                                        }
-                                                        alt=""
-                                                        width="18.87px"
-                                                        height="26.72px"
-                                                        className={
-                                                          parentIslockedCheck
-                                                            ? styles[
-                                                                "lockBtn_inActive"
-                                                              ]
-                                                            : subAgendaData.isLocked
-                                                            ? styles[
-                                                                "lockBtn_inActive_coursor"
-                                                              ]
-                                                            : styles["lockBtn"]
-                                                        }
-                                                        onClick={() => {
-                                                          if (
-                                                            parentIslockedCheck
-                                                          ) {
-                                                          } else {
-                                                            lockFunctionActiveSubMenus(
-                                                              index,
-                                                              subAgendaData.subAgendaID,
+                                                      {subAgendaData.subAgendaID.includes(
+                                                        "A"
+                                                      ) ? null : (
+                                                        <>
+                                                          <img
+                                                            draggable={false}
+                                                            src={Key}
+                                                            width="24.07px"
+                                                            className="cursor-pointer"
+                                                            height="24.09px"
+                                                            onClick={
+                                                              parentIslockedCheck ||
                                                               subAgendaData.isLocked
-                                                            );
-                                                          }
-                                                        }}
-                                                      />
+                                                                ? ""
+                                                                : openAdvancePermissionModal
+                                                            }
+                                                            alt=""
+                                                          />
+                                                          <img
+                                                            alt=""
+                                                            draggable={false}
+                                                            src={Cast}
+                                                            width="25.85px"
+                                                            height="25.89px"
+                                                            className="cursor-pointer"
+                                                            onClick={() =>
+                                                              parentIslockedCheck ||
+                                                              subAgendaData.isLocked
+                                                                ? ""
+                                                                : openVoteMOdal(
+                                                                    subAgendaData.subAgendaID,
+                                                                    subAgendaData.agendaVotingID
+                                                                  )
+                                                            }
+                                                          />
+                                                          <img
+                                                            draggable={false}
+                                                            src={
+                                                              parentIslockedCheck
+                                                                ? closedLocked
+                                                                : subAgendaData.isLocked
+                                                                ? DarkLock
+                                                                : Lock
+                                                            }
+                                                            alt=""
+                                                            width="18.87px"
+                                                            height="26.72px"
+                                                            className={
+                                                              parentIslockedCheck
+                                                                ? styles[
+                                                                    "lockBtn_inActive"
+                                                                  ]
+                                                                : subAgendaData.isLocked
+                                                                ? styles[
+                                                                    "lockBtn_inActive_coursor"
+                                                                  ]
+                                                                : styles[
+                                                                    "lockBtn"
+                                                                  ]
+                                                            }
+                                                            onClick={() => {
+                                                              if (
+                                                                parentIslockedCheck
+                                                              ) {
+                                                              } else {
+                                                                lockFunctionActiveSubMenus(
+                                                                  index,
+                                                                  subAgendaData.subAgendaID,
+                                                                  subAgendaData.isLocked
+                                                                );
+                                                              }
+                                                            }}
+                                                          />
+                                                        </>
+                                                      )}
                                                     </>
                                                   )}
                                                 </Col>

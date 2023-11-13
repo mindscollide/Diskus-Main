@@ -1242,6 +1242,11 @@ const addUpdateAdvanceMeetingAgenda = {
   RequestMethod: "ServiceManager.AddUpdateAdvanceMeetingAgenda",
 };
 
+// report download Attendance in Excel
+const downloadAttendanceReport = {
+  RequestMethod: "ServiceManager.AttendanceReport",
+};
+
 export {
   setMeetingbyCommitteeIDRM,
   setMeetingbyGroupIDRM,
@@ -1574,4 +1579,5 @@ export {
   CreateUpdateMeetingDataroomMapped,
   UpdateMeetingUserhit,
   addUpdateAdvanceMeetingAgenda,
+  downloadAttendanceReport,
 };

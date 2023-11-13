@@ -12,9 +12,7 @@ import {
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
-import {
-  utcConvertintoGMT,
-} from "../../../../../commen/functions/date_formater";
+import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
 
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -237,7 +235,6 @@ const ViewMeetingDetails = ({
           value: getmeetingRecurrance.recurranceID,
           label: getmeetingRecurrance.recurrance,
         },
-        Location: MeetingData.location,
         IsVideoCall: MeetingData.isVideo,
       });
       let newDateTimeData = [];

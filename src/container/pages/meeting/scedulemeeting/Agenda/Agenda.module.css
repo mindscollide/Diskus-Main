@@ -450,3 +450,7 @@ body[dir="rtl"] .SubAgendaSection {
 .SelectOrganizersSelect_active {
   z-index: 999999 !important;
 }
+
+.filter_grayscale {
+  filter: grayscale(1) !important;
+}
