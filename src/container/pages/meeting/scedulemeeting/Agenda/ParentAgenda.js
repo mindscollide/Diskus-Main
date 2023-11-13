@@ -715,50 +715,57 @@ const ParentAgenda = ({
                               {ediorRole.role === "Participant" ||
                               ediorRole.role === "Agenda Contributor" ? null : (
                                 <>
-                                  <img
-                                    draggable={false}
-                                    src={Key}
-                                    alt=""
-                                    width="24.07px"
-                                    height="24.09px"
-                                    className="cursor-pointer"
-                                    onClick={
-                                      data.isLocked
-                                        ? ""
-                                        : openAdvancePermissionModal
-                                    }
-                                  />
-                                  <img
-                                    alt=""
-                                    draggable={false}
-                                    src={Cast}
-                                    width="25.85px"
-                                    height="25.89px"
-                                    className="cursor-pointer"
-                                    onClick={() =>
-                                      data.isLocked
-                                        ? ""
-                                        : openVoteMOdal(
+                                  {data.iD.includes("A") ? null : (
+                                    <>
+                                      <img
+                                        draggable={false}
+                                        src={Key}
+                                        alt=""
+                                        width="24.07px"
+                                        height="24.09px"
+                                        className="cursor-pointer"
+                                        onClick={
+                                          data.isLocked
+                                            ? ""
+                                            : openAdvancePermissionModal
+                                        }
+                                      />
+                                      <img
+                                        alt=""
+                                        draggable={false}
+                                        src={Cast}
+                                        width="25.85px"
+                                        height="25.89px"
+                                        className="cursor-pointer"
+                                        onClick={() =>
+                                          data.isLocked
+                                            ? ""
+                                            : openVoteMOdal(
+                                                data.iD,
+                                                data.agendaVotingID
+                                              )
+                                        }
+                                      />
+                                      <img
+                                        alt=""
+                                        draggable={false}
+                                        src={data.isLocked ? DarkLock : Lock}
+                                        width="18.87px"
+                                        className={
+                                          data.isLocked
+                                            ? styles["lockBtn_inActive"]
+                                            : styles["lockBtn"]
+                                        }
+                                        height="26.72px"
+                                        onClick={() =>
+                                          lockFunctionActive(
                                             data.iD,
-                                            data.agendaVotingID
+                                            data.isLocked
                                           )
-                                    }
-                                  />
-                                  <img
-                                    alt=""
-                                    draggable={false}
-                                    src={data.isLocked ? DarkLock : Lock}
-                                    width="18.87px"
-                                    className={
-                                      data.isLocked
-                                        ? styles["lockBtn_inActive"]
-                                        : styles["lockBtn"]
-                                    }
-                                    height="26.72px"
-                                    onClick={() =>
-                                      lockFunctionActive(data.iD, data.isLocked)
-                                    }
-                                  />
+                                        }
+                                      />
+                                    </>
+                                  )}
                                 </>
                               )}
                             </Col>
