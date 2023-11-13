@@ -302,6 +302,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
   width: 180px !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
+  display: block !important;
 }
 
 .width-10 {

@@ -92,32 +92,6 @@ const Polling = () => {
   const currentPageSize = localStorage.getItem("pollingPageSize");
 
   useEffect(() => {
-    if (state !== null) {
-      console.log(state, "statestatestate");
-      let check = 0;
-      let data = {
-        PollID: Number(state.record.pollID),
-        UserID: parseInt(userID),
-      };
-      if (state.isVote) {
-        check = 5;
-      } else {
-        if (state.record.wasPollPublished) {
-          if (state.record.pollStatus.pollStatusId === 3) {
-            check = 4;
-          } else {
-            check = 3;
-          }
-        } else {
-          check = 4;
-        }
-      }
-      if (Object.keys(state.record).length > 0) {
-        dispatch(getPollsByPollIdApi(navigate, data, check, t));
-      }
-    }
-  }, [state]);
-  useEffect(() => {
     if (currentPage !== null && currentPageSize !== null) {
       let data = {
         UserID: parseInt(userID),
@@ -155,6 +129,33 @@ const Polling = () => {
       localStorage.removeItem("pollingPageSize");
     };
   }, []);
+
+  useEffect(() => {
+    if (state !== null) {
+      console.log(state, "statestatestate");
+      let check = 0;
+      let data = {
+        PollID: Number(state.record.pollID),
+        UserID: parseInt(userID),
+      };
+      if (state.isVote) {
+        check = 5;
+      } else {
+        if (state.record.wasPollPublished) {
+          if (state.record.pollStatus.pollStatusId === 3) {
+            check = 4;
+          } else {
+            check = 3;
+          }
+        } else {
+          check = 4;
+        }
+      }
+      if (Object.keys(state.record).length > 0) {
+        dispatch(getPollsByPollIdApi(navigate, data, check, t));
+      }
+    }
+  }, [state]);
 
   useEffect(() => {
     console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
