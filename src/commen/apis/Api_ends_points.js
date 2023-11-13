@@ -41,6 +41,9 @@ const PollURL = ":11018/Polls";
 // Video URL
 const videoURL = ":11019/Video";
 
+// Excel Report Download
+const reportExcelUrl = ":11020/ExcelReport";
+
 //this is our final api's
 const authenticationApi = baseURL + serviceAuthenticationURL;
 
@@ -82,6 +85,9 @@ const pollApi = baseURL + PollURL;
 
 const videoApi = baseURL + videoURL;
 
+// excel download Report
+const reportDownload = baseURL + reportExcelUrl;
+
 export {
   authenticationApi,
   toDoListApi,
@@ -100,4 +106,5 @@ export {
   getCalender,
   pollApi,
   videoApi,
+  reportDownload,
 };
