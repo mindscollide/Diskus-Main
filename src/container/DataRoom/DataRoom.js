@@ -1517,7 +1517,7 @@ const DataRoom = () => {
       },
     },
     {
-      title: currentFilter,
+      title: <span className="text-center">{currentFilter}</span>,
       dataIndex: "modifiedDate",
       key: "modifiedDate",
       width: "110px",

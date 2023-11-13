@@ -274,9 +274,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     }
   }, [postAssigneeComments.DeleteCommentsId]);
 
-  // for comment update
-  useEffect(() => {}, [taskAssigneeComments]);
-
   //Get All Assignees API hit
   useEffect(() => {
     if (viewFlagToDo) {
@@ -458,11 +455,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               <Row className="comment-Height" id="commentviews">
                 {taskAssigneeComments.length > 0
                   ? taskAssigneeComments.map((commentData, index) => {
-                      console.log(
-                        "commentDatacommentData",
-                        Number(commentData.userID) === Number(createrID),
-                        commentData
-                      );
+                      // console.log(
+                      //   "commentDatacommentData",
+                      //   Number(commentData.userID) === Number(createrID),
+                      //   commentData
+                      // );
                       if (Number(commentData.userID) === Number(createrID)) {
                         return (
                           <>

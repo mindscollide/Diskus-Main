@@ -402,6 +402,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const searchFilterHandler = (value) => {
     let getUserDetails =
       CommitteeReducer.getCommitteeByCommitteeID?.committeMembers;
+    console.log(getUserDetails, "getUserDetailsgetUserDetailsgetUserDetails");
     if (
       getUserDetails !== undefined &&
       getUserDetails !== null &&
@@ -422,12 +423,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         .slice(0, 10)
         .map((item) => (
           <div
-            onClick={() => onSearch(item.userName, item.pK_UID)}
+            onClick={() => onSearch(item.userName, item.pK_UID, item)}
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
             <img
-              src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
+              src={`data:image/jpeg;base64,${item?.userProfilePicture?.displayProfilePictureName}`}
               alt=""
               className="user-img"
             />
@@ -804,9 +805,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                                 <img
                                   draggable="false"
                                   alt=""
-                                  src={`data:image/jpeg;base64,${taskAssignedName.displayProfilePictureName}`}
+                                  src={`data:image/jpeg;base64,${taskAssignedName.userProfilePicture.displayProfilePictureName}`}
                                 />
-                                <p className=" m-0">{taskAssignedName.name}</p>
+                                <p className=" m-0">
+                                  {taskAssignedName.userName}
+                                </p>
                               </div>
                               <span className="todolist-remove-assignee-icon">
                                 <img
