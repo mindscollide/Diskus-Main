@@ -34,6 +34,7 @@ import {
   Table,
   TextField,
   ResultMessage,
+  Loader,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
 
@@ -54,6 +55,7 @@ import {
   showEndMeetingForAll,
   showEndMeetingModal,
 } from "../../../store/actions/NewMeetingActions";
+import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { useDispatch } from "react-redux";
 import NewEndLeaveMeeting from "./NewEndLeaveMeeting/NewEndLeaveMeeting";
 import { useRef } from "react";
@@ -82,7 +84,7 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const { talkStateData } = useSelector((state) => state);
+  const { talkStateData, downloadReducer } = useSelector((state) => state);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -426,6 +428,15 @@ const NewMeeting = () => {
     }
   }, [currentLanguage]);
 
+  // onClick to download Report Api on download Icon
+  const onClickDownloadIcon = async (meetingID) => {
+    let downloadData = {
+      MeetingID: Number(meetingID),
+    };
+    dispatch(downloadAttendanceReportApi(navigate, t, downloadData));
+    console.log(downloadData, "downloadDatadownloadData");
+  };
+
   const MeetingColoumns = [
     {
       title: <span>{t("Title")}</span>,
@@ -645,6 +656,7 @@ const NewMeeting = () => {
                       height="16.72px"
                       alt=""
                       draggable="false"
+                      onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
                   </Tooltip>
                 )}
@@ -1423,6 +1435,8 @@ const NewMeeting = () => {
       {editFlag ? (
         <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
+
+      {downloadReducer.Loading ? <Loader /> : null}
     </section>
   );
 };

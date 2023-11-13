@@ -2,10 +2,14 @@ import * as actions from "../action_types";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
-import { settingApi, meetingApi } from "../../commen/apis/Api_ends_points";
+import {
+  settingApi,
+  meetingApi,
+  reportDownload,
+} from "../../commen/apis/Api_ends_points";
 import {
   downloadDocument,
-  downloadMeetingAttendanceReport,
+  downloadAttendanceReport,
 } from "../../commen/apis/Api_config";
 import Helper from "../../commen/functions/history_logout";
 
@@ -33,6 +37,12 @@ const downloadFail = (response) => {
 const SetLoaderFalseDownload = () => {
   return {
     type: actions.SET_LOADER_FALSE_DOWNLOAD,
+  };
+};
+
+const SetAttendanceLoaderFail = () => {
+  return {
+    type: actions.ATTENDANCE_DOWNLOAD_LOADER_FAIL,
   };
 };
 
@@ -120,56 +130,55 @@ const DownloadFile = (navigate, data, t) => {
 };
 
 // const download Report Attendance Init
-// const attendanceDownloadInit = () => {
-//   return {
-//     type: actions.DOWNLOAD_ATTENDANCE_REPORT_INIT,
-//   };
-// };
+const attendanceDownloadInit = () => {
+  return {
+    type: actions.DOWNLOAD_ATTENDANCE_REPORT_INIT,
+  };
+};
 
 // const download Report Attendance main API
-// const downloadAttendanceReportApi = (navigate, t) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
-//   let form = new FormData();
-//   form.append("RequestMethod", downloadMeetingAttendanceReport.RequestMethod);
-//   form.append("RequestData", JSON.stringify());
-//   return (dispatch) => {
-//     console.log("reportDownloadStatusWiseApi");
-//     dispatch(attendanceDownloadInit());
-//     axios({
-//       method: "post",
-//       url: meetingApi,
-//       data: form,
-//       headers: {
-//         _token: token,
-//         "Content-Disposition": "attachment; filename=template.xlsx",
-//         "Content-Type":
-//           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-//       },
-//       responseType: "arraybuffer",
-//     })
-//       .then(async (response) => {
-//         console.log("downloadAttendanceReportApi", response);
+const downloadAttendanceReportApi = (navigate, t, downloadData) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let form = new FormData();
+  form.append("RequestMethod", downloadAttendanceReport.RequestMethod);
+  form.append("RequestData", JSON.stringify(downloadData));
+  return (dispatch) => {
+    console.log("downloadAttendanceReportApi");
+    dispatch(DownloadLoaderStart());
+    axios({
+      method: "post",
+      url: reportDownload,
+      data: form,
+      headers: {
+        _token: token,
+        "Content-Disposition": "attachment; filename=template.xlsx",
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      },
+      responseType: "arraybuffer",
+    })
+      .then(async (response) => {
+        console.log("downloadAttendanceReportApi", response);
 
-//         if (response.status === 417) {
-//           await dispatch(RefreshToken(navigate, t));
-//           dispatch(downloadAttendanceReportApi(navigate, t));
-//         } else if (response.status === 200) {
-//           const url = window.URL.createObjectURL(new Blob([response.data]));
-//           console.log("downloadAttendanceReportApi", url);
-//           const link = document.createElement("a");
-//           link.href = url;
-//           link.setAttribute("download", "download-Attendance-Report.xlsx");
-//           document.body.appendChild(link);
-//           link.click();
+        if (response.status === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(downloadAttendanceReportApi(navigate, t, downloadData));
+        } else if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          console.log("downloadAttendanceReportApi", url);
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "download-Attendance-Report.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          dispatch(SetLoaderFalseDownload(false));
+        }
+      })
+      .catch((response) => {
+        console.log("downloadAttendanceReportApi", response);
+        dispatch(downloadFail(response));
+      });
+  };
+};
 
-//           dispatch(DownloadLoaderStart(false));
-//         }
-//       })
-//       .catch((response) => {
-//         console.log("downloadAttendanceReportApi", response);
-//         dispatch(downloadFail(response));
-//       });
-//   };
-// };
-
-export { DownloadFile };
+export { DownloadFile, downloadAttendanceReportApi };
