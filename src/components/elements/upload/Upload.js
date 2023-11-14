@@ -22,7 +22,7 @@ const CustomUpload = ({
         disable={disable}
         onClick={onClick}
         size={1000}
-        accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg,.gif,.csv"
+        accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif, .csv"
         // inputProps={{ acceptOnly: '.doc, .docx, .xls, .xlsx,.pdf,.png' }}
         // restrictions={{
         //   allowedExtensions: [".doc", ".docx", ".xls", ".xlsx", ".pdf", ".png"],

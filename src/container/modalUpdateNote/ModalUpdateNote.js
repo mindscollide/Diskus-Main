@@ -1,9 +1,5 @@
-import React, { useState,  useEffect } from "react";
-import {
-  Button,
-  Modal,
-  Notification,
-} from "../../components/elements";
+import React, { useState, useEffect } from "react";
+import { Button, Modal, Notification } from "../../components/elements";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import CustomUpload from "./../../components/elements/upload/Upload";
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
@@ -304,7 +300,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         ext === "txt" ||
         ext === "jpg" ||
         ext === "jpeg" ||
-        ext === "gif"
+        ext === "gif" ||
+        ext === "csv"
       ) {
         let data;
         let sizezero;

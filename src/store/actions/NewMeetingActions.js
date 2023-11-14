@@ -66,6 +66,12 @@ const ClearMessegeMeetingdetails = () => {
   };
 };
 
+const CleareMessegeNewMeeting = () => {
+  return {
+    type: actions.CLEAR_MEETING_MESSAGES,
+  };
+};
+
 const showAddUserModal = (response) => {
   return {
     type: actions.NEW_MEETING_ADDUSER_MODAL,
@@ -462,12 +468,12 @@ const SaveMeetingDetialsNewApiFunction = (
               );
 
               setCurrentMeetingID(response.data.responseResult.meetingID);
-              let meetingData = {
-                MeetingID: response.data.responseResult.meetingID,
-              };
-              dispatch(
-                GetAdvanceMeetingAgendabyMeetingID(meetingData, navigate, t)
-              );
+              // let meetingData = {
+              //   MeetingID: response.data.responseResult.meetingID,
+              // };
+              // dispatch(
+              //   GetAdvanceMeetingAgendabyMeetingID(meetingData, navigate, t)
+              // );
 
               if (viewValue === 1) {
                 let MappedData = {
@@ -544,6 +550,20 @@ const SaveMeetingDetialsNewApiFunction = (
                 handleSaveMeetingFailed(
                   t(
                     "Consecutive-date-times-should-be-greater-than-previous-date-time"
+                  )
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(
+                  t(
+                    "Please-add-agenda-organizers-and-participants-to-publish-the-meeting"
                   )
                 )
               );
@@ -1404,7 +1424,7 @@ const saveAgendaContributors = (navigate, t, data, currentMeeting) => {
     MeetingID:
       currentMeeting !== null && currentMeeting !== undefined
         ? Number(currentMeeting)
-        : 1686,
+        : 0,
   };
   return (dispatch) => {
     dispatch(saveAgendaContributors_init());
@@ -3606,7 +3626,7 @@ const showGetAllAgendaWiseMinutesFailed = (message) => {
   };
 };
 
-const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
+const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -3626,7 +3646,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, Data, t));
+          dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, Data, t, ID));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -4103,6 +4123,10 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                   t("Record-saved")
                 )
               );
+              console.log(
+                response.data.responseResult,
+                "GetAllAgendaWiseMinutesApiFunc"
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4165,7 +4189,7 @@ const showSavedAgendaWiseDocumentFailed = (message) => {
   };
 };
 
-const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
+const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -4185,7 +4209,7 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, Data, t));
+          dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, Data, t, id));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -4204,7 +4228,7 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
                 )
               );
               let getAll = {
-                AgendaID: "1222",
+                AgendaID: id,
               };
               dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t));
             } else if (
@@ -5169,6 +5193,7 @@ const getMeetingbyGroupApi = (navigate, t, Data) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          dispatch(getMeetingbyGroupApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -5259,6 +5284,7 @@ const setMeetingByGroupIDApi = (navigate, t, Data) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          dispatch(setMeetingByGroupIDApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -5364,6 +5390,7 @@ const getMeetingByCommitteeIDApi = (navigate, t, Data) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -5455,6 +5482,7 @@ const setMeetingbyCommitteeIDApi = (navigate, t, Data) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -5850,7 +5878,7 @@ const UpdateMeetingUserForAgendaContributor = (
                     Title: data.Title,
                     AgendaListRightsAll: data.AgendaListRightsAll,
                     MeetingID:
-                      currentMeeting !== null ? Number(currentMeeting) : 1686,
+                      currentMeeting !== null ? Number(currentMeeting) : 0,
                     IsContributorNotified: data.isContributedNotified,
                   });
                 });
@@ -5882,7 +5910,9 @@ const UpdateMeetingUserForAgendaContributor = (
                   IsAgendaContributorAddFlow: true,
                   NotificationMessage: notifyMessageField,
                 };
-                dispatch(saveAgendaContributors(navigate, t, Data));
+                dispatch(
+                  saveAgendaContributors(navigate, t, Data, currentMeeting)
+                );
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -6075,7 +6105,14 @@ const showPreviousConfirmationModal = (response) => {
   };
 };
 
+const clearResponseMessage = () => {
+  return {
+    type: actions.NEWMEETING_RESPONSEMESSAGE,
+  };
+};
+
 export {
+  clearResponseMessage,
   getAllAgendaContributorApi,
   saveAgendaContributors,
   showAddUserModal,
@@ -6180,4 +6217,5 @@ export {
   ShowNextConfirmationModal,
   showPreviousConfirmationModal,
   cleareAllState,
+  CleareMessegeNewMeeting,
 };

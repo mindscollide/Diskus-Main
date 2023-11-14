@@ -114,6 +114,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   console.log("TaskAssignedToTaskAssignedTo", TaskAssignedTo);
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
+  console.log(assignees, "assigneesassigneesassigneesassignees");
   const [taskAssigneeLength, setTaskAssigneeLength] = useState(false);
   const [taskAssigneeApiData, setTaskAssigneeApiData] = useState([]);
 
@@ -238,7 +239,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         ext === "txt" ||
         ext === "jpg" ||
         ext === "jpeg" ||
-        ext === "gif"
+        ext === "gif" ||
+        ext === "csv"
       ) {
         let data;
         let sizezero;
@@ -396,10 +398,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const onChangeSearch = (e) => {
     setTaskAssignedToInput(e.target.value.trimStart());
   };
-
+  console.log(
+    GroupsReducer?.getGroupByGroupIdResponse?.groupMembers,
+    "getUserDetailsgetUserDetailsgetUserDetails"
+  );
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let getUserDetails = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
+    console.log(getUserDetails, "getUserDetailsgetUserDetailsgetUserDetails");
+
     if (
       getUserDetails !== undefined &&
       getUserDetails !== null &&
@@ -407,6 +414,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     ) {
       return getUserDetails
         .filter((item) => {
+          console.log(item, "getUserDetailsgetUserDetailsgetUserDetails");
+
           const searchTerm = value.toLowerCase();
           const assigneesName = item.userName.toLowerCase();
           console.log("Input Value in searchTerm", searchTerm);
@@ -420,12 +429,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         .slice(0, 10)
         .map((item) => (
           <div
-            onClick={() => onSearch(item.userName, item.pK_UID)}
+            onClick={() => onSearch(item.userName, item.pK_UID, item)}
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
             <img
-              src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
+              src={`data:image/jpeg;base64,${item?.userProfilePicture?.displayProfilePictureName}`}
               alt=""
               className="user-img"
             />
@@ -802,9 +811,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                                 <img
                                   draggable="false"
                                   alt=""
-                                  src={`data:image/jpeg;base64,${taskAssignedName.displayProfilePictureName}`}
+                                  src={`data:image/jpeg;base64,${taskAssignedName.userProfilePicture.displayProfilePictureName}`}
                                 />
-                                <p className=" m-0">{taskAssignedName.name}</p>
+                                <p className=" m-0">
+                                  {taskAssignedName.userName}
+                                </p>
                               </div>
                               <span className="todolist-remove-assignee-icon">
                                 <img

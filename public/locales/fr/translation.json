@@ -1069,7 +1069,6 @@
   "Folder-shared-against-different-users": "Folder shared against different users",
   "Folder-not-shared-against-any-users": "Folder not shared against any users",
   "Please-select-user": "Please select user",
-  "All-agenda-organizer": "All agenda contributor",
   "Previous": "Previous",
   "Atleast-one-agenda-contributor-should-be-selected": "Atleast one agenda contributor should be selected",
   "Atleast-one-participant-should-be-selected": "Atleast one Participant should be selected",
@@ -1113,5 +1112,9 @@
   "Only-a-organizer-can-perform-this-operation": "only a organizer can perform this operation",
   "Record-not-updated": "Record Not Updated",
   "Edit-new-meeting": "Edit New Meeting",
-  "No-record-found": "No Record Found"
+  "No-record-found": "No Record Found",
+  "Please-enter-video-link": "Please enter video link",
+  "Please-add-agenda-organizers-and-participants-to-publish-the-meeting": "Please Add Agenda,Organizers and Participants to Publish the Meeting",
+  "All-organizers": "All Organizers",
+  "All-agenda-organizer": "All Agenda Organizers"
 }

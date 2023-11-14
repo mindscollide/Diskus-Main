@@ -207,6 +207,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
+    console.log(
+      data.target.files[0],
+      "uploadFilesToDouploadFilesToDouploadFilesToDo"
+    );
     let fileSizeArr;
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
       setTimeout(
@@ -227,7 +231,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     } else {
       const uploadFilePath = data.target.value;
       const uploadedFile = data.target.files[0];
-      var ext = uploadedFile.name.split(".").pop();
+      let ext = uploadedFile.name.split(".").pop();
       let file = tasksAttachments.TasksAttachments;
       if (
         ext === "doc" ||
@@ -239,7 +243,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         ext === "txt" ||
         ext === "jpg" ||
         ext === "jpeg" ||
-        ext === "gif"
+        ext === "gif" ||
+        ext === "csv"
       ) {
         let data;
         let sizezero;

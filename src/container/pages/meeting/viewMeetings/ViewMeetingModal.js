@@ -433,12 +433,14 @@ const ViewMeetingModal = ({
                   {attendance && (
                     <Attendence
                       ediorRole={ediorRole}
+                      setEdiorRole={setEdiorRole}
                       setMinutes={setMinutes}
                       setPolls={setPolls}
                       setAgenda={setAgenda}
                       advanceMeetingModalID={advanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                       setAttendance={setAttendance}
+                      setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                     />
                   )}
                 </>

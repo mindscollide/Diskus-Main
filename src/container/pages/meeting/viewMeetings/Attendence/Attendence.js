@@ -26,6 +26,8 @@ const Attendence = ({
   advanceMeetingModalID,
   setAttendance,
   setViewAdvanceMeetingModal,
+  setEdiorRole,
+  setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -345,6 +347,8 @@ const Attendence = ({
           setPolls={setPolls}
           setAttendance={setAttendance}
           setMinutes={setMinutes}
+          setEdiorRole={setEdiorRole}
+          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
 

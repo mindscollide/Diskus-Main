@@ -1235,9 +1235,9 @@ h4.labelTitle {
   margin-top: 15px;
 }
 
-th.ant-table-cell {
+/* th.ant-table-cell {
   text-align: left !important;
-}
+} */
 
 /* .ant-table-wrapper.hello table {
   border-collapse: collapse;
