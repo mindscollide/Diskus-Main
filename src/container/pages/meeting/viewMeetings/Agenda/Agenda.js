@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./Agenda.module.css";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { Button } from "../../../../../components/elements";
+import { Button, Notification } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Upload } from "antd";
@@ -14,7 +14,10 @@ import {
   showImportPreviousAgendaModal,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
-import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../store/actions/MeetingAgenda_action";
+import {
+  GetAdvanceMeetingAgendabyMeetingID,
+  clearResponseMessage,
+} from "../../../../../store/actions/MeetingAgenda_action";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
@@ -29,6 +32,8 @@ import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
+import CastVoteAgendaModal from "./VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import ViewVoteModal from "./VotingPage/ViewVoteModal/ViewVoteModal";
 
 const Agenda = ({
   setSceduleMeeting,
@@ -72,6 +77,11 @@ const Agenda = ({
   const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
     (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
   );
+
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
+
   const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
@@ -80,6 +90,11 @@ const Agenda = ({
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
+
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
@@ -182,6 +197,31 @@ const Agenda = ({
     "GetAdvanceMeetingAgendabyMeetingIDData",
     GetAdvanceMeetingAgendabyMeetingIDData
   );
+
+  useEffect(() => {
+    console.log("openopenopen", MeetingAgendaReducer.ResponseMessage);
+    if (MeetingAgendaReducer.ResponseMessage === t("Record-saved")) {
+      setTimeout(
+        setOpen({
+          ...open,
+          flag: true,
+          message: "Record Saved",
+        }),
+        3000
+      );
+    } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
+      setTimeout(
+        setOpen({
+          ...open,
+          flag: true,
+          message: "Record Updated",
+        }),
+        3000
+      );
+    }
+    dispatch(clearResponseMessage(""));
+  }, [MeetingAgendaReducer.ResponseMessage]);
+
   return (
     <>
       {savedViewAgenda ? (
@@ -226,6 +266,9 @@ const Agenda = ({
                                     }
                                     setSubajendaRemoval={setSubajendaRemoval}
                                     ediorRole={ediorRole}
+                                    advanceMeetingModalID={
+                                      advanceMeetingModalID
+                                    }
                                   />
                                 </>
                               );
@@ -291,6 +334,10 @@ const Agenda = ({
         <VoteModal setenableVotingPage={setenableVotingPage} />
       )}
       {voteConfirmationModal && <VoteModalConfirm />}
+      {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
+      {NewMeetingreducer.viewVotesAgenda && (
+        <ViewVoteModal advanceMeetingModalID={advanceMeetingModalID} />
+      )}
       {importPreviousAgendaModal && <ImportPrevious />}
       {cancelAgenda && <CancelAgenda setSceduleMeeting={setSceduleMeeting} />}
       {cancelModalView && (
@@ -303,6 +350,7 @@ const Agenda = ({
           setMinutes={setMinutes}
         />
       )}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };

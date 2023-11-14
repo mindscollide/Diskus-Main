@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -14,6 +15,11 @@ import {
   showCastVoteAgendaModal,
   showviewVotesAgenda,
 } from "../../../../../store/actions/NewMeetingActions";
+import {
+  AgendaVotingStatusUpdate,
+  GetAgendaAndVotingInfo,
+  GetCurrentAgendaDetails,
+} from "../../../../../store/actions/MeetingAgenda_action";
 import styles from "./Agenda.module.css";
 import profile from "../../../../../assets/images/newprofile.png";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
@@ -40,8 +46,10 @@ const ParentAgenda = ({
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
   ediorRole,
+  advanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentUserID = localStorage.getItem("userID");
 
@@ -103,12 +111,56 @@ const ParentAgenda = ({
     }
   }, [currentLanguage]);
 
-  const EnableViewVoteModal = () => {
+  const EnableViewVoteModal = (record) => {
     dispatch(showviewVotesAgenda(true));
+    dispatch(GetCurrentAgendaDetails(record));
   };
 
-  const EnableCastVoteModal = () => {
+  const EnableCastVoteModal = async (record) => {
+    let Data = {
+      MeetingID: advanceMeetingModalID,
+      AgendaID: record.id ? record.id : record.subAgendaID,
+      AgendaVotingID: record.agendaVotingID,
+    };
+    await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
     dispatch(showCastVoteAgendaModal(true));
+    dispatch(GetCurrentAgendaDetails(record));
+  };
+
+  //Konsa user vote kar sakta hai
+  const checkUserAuthentication = (record) => {
+    let flag = record.agendaVoters.find(
+      (data, index) => data.userID === Number(currentUserID)
+    );
+    if (flag) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const startVoting = (record) => {
+    let Data = {
+      MeetingID: advanceMeetingModalID,
+      AgendaID: record.id ? record.id : record.subAgendaID,
+      AgendaVotingID: record.agendaVotingID,
+      DoVotingStart: true,
+    };
+    dispatch(
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+    );
+  };
+
+  const endVoting = (record) => {
+    let Data = {
+      MeetingID: advanceMeetingModalID,
+      AgendaID: record.id ? record.id : record.subAgendaID,
+      AgendaVotingID: record.agendaVotingID,
+      DoVotingStart: false,
+    };
+    dispatch(
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+    );
   };
 
   return (
@@ -186,19 +238,21 @@ const ParentAgenda = ({
                           Number(ediorRole.status) === 10 &&
                           Number(data.voteOwner.userid) ===
                             Number(currentUserID) &&
-                          data.voteOwner ? (
+                          !data.voteOwner?.currentVotingClosed ? (
                             <Button
                               text={t("Start-voting")}
                               className={styles["startVotingButton"]}
+                              onClick={() => startVoting(data)}
                             />
                           ) : Number(data.agendaVotingID) !== 0 &&
                             Number(ediorRole.status) === 10 &&
                             Number(data.voteOwner.userid) ===
                               Number(currentUserID) &&
-                            !data.voteOwner ? (
+                            data.voteOwner?.currentVotingClosed ? (
                             <Button
                               text={t("End-voting")}
                               className={styles["startVotingButton"]}
+                              onClick={() => endVoting(data)}
                             />
                           ) : null}
 
@@ -207,12 +261,13 @@ const ParentAgenda = ({
                             ) === 10 &&
                             Number(data.voteOwner.userid) !==
                               Number(currentUserID) &&
-                            !data.voteOwner &&
-                            ediorRole.role !== "Organizer" ? (
+                            data.voteOwner?.currentVotingClosed &&
+                            ediorRole.role !== "Organizer" &&
+                            checkUserAuthentication(data) ? (
                             <Button
                               text={t("Cast-your-vote")}
                               className={styles["CastYourVoteButton"]}
-                              onClick={EnableCastVoteModal}
+                              onClick={() => EnableCastVoteModal(data)}
                             />
                           ) : null}
                           {Number(data.agendaVotingID) === 0 ? null : Number(
@@ -220,12 +275,11 @@ const ParentAgenda = ({
                             ) === 10 &&
                             Number(data.voteOwner.userid) !==
                               Number(currentUserID) &&
-                            !data.voteOwner &&
-                            ediorRole.role === "Organizer" ? (
+                            data.voteOwner?.currentVotingClosed ? (
                             <Button
                               text={t("View-votes")}
                               className={styles["ViewVoteButton"]}
-                              onClick={EnableViewVoteModal}
+                              onClick={() => EnableViewVoteModal(data)}
                             />
                           ) : null}
                         </Col>
@@ -417,6 +471,8 @@ const ParentAgenda = ({
               setSubExpand={setSubExpand}
               openAdvancePermissionModal={openAdvancePermissionModal}
               openVoteMOdal={openVoteMOdal}
+              advanceMeetingModalID={advanceMeetingModalID}
+              ediorRole={ediorRole}
             />
           }
           {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}

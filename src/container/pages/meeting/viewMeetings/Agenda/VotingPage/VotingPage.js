@@ -12,7 +12,7 @@ import {
   showCastVoteAgendaModal,
   showviewVotesAgenda,
 } from "../../../../../../store/actions/NewMeetingActions";
-import CastVoteAgendaModal from "./CastVoteAgendaModal/CastVoteAgendaModal";
+// import CastVoteAgendaModal from "./CastVoteAgendaModal/CastVoteAgendaModal";
 
 const VotingPage = () => {
   const { t } = useTranslation();
@@ -88,7 +88,6 @@ const VotingPage = () => {
         </Col>
       </Row>
       {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
-      {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
     </section>
   );
 };

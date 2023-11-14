@@ -13,6 +13,7 @@ import {
   getAdvanceMeetingAgendabyMeetingID,
   createUpdateMeetingDataRoomMap,
   addUpdateAdvanceMeetingAgenda,
+  agendaVotingStatusUpdate,
 } from "../../commen/apis/Api_config";
 import { meetingApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import { showVoteAgendaModal } from "./NewMeetingActions";
@@ -346,7 +347,7 @@ const GetAgendaAndVotingInfo = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_GetAgendaAndVotingInfo_01".toLowerCase()
                 )
             ) {
-              dispatch(showVoteAgendaModal(true));
+              // dispatch(showVoteAgendaModal(true));
 
               dispatch(
                 getAgendaAndVotingInfo_success(
@@ -1097,6 +1098,137 @@ const AddUpdateAdvanceMeetingAgenda = (Data, navigate, t, currentMeeting) => {
   };
 };
 
+const agendaVotingStatusUpdate_init = () => {
+  return {
+    type: actions.START_END_AGENDAVOTING_INIT,
+  };
+};
+const agendaVotingStatusUpdate_success = (message) => {
+  return {
+    type: actions.START_END_AGENDAVOTING_SUCCESS,
+    message: message,
+  };
+};
+const agendaVotingStatusUpdate_fail = (message) => {
+  return {
+    type: actions.START_END_AGENDAVOTING_FAIL,
+    message: message,
+  };
+};
+const AgendaVotingStatusUpdate = (Data, navigate, t, advanceMeetingModalID) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(agendaVotingStatusUpdate_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", agendaVotingStatusUpdate.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AgendaVotingStatusUpdate_01".toLowerCase()
+                )
+            ) {
+              dispatch(agendaVotingStatusUpdate_success(t("Voting-started")));
+              let DataGet = {
+                MeetingID: Number(advanceMeetingModalID),
+              };
+              dispatch(
+                GetAdvanceMeetingAgendabyMeetingID(DataGet, navigate, t)
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AgendaVotingStatusUpdate_02".toLowerCase()
+                )
+            ) {
+              dispatch(agendaVotingStatusUpdate_fail(t("Voting-not-started")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AgendaVotingStatusUpdate_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                agendaVotingStatusUpdate_fail(
+                  t("The-voting-cant-be-started-until-the-meeting-starts")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AgendaVotingStatusUpdate_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                agendaVotingStatusUpdate_fail(
+                  t("Voting-has-already-been-started")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AgendaVotingStatusUpdate_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                agendaVotingStatusUpdate_fail(t("Voting-has-not-been-started"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AgendaVotingStatusUpdate_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                agendaVotingStatusUpdate_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                agendaVotingStatusUpdate_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(agendaVotingStatusUpdate_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(agendaVotingStatusUpdate_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(agendaVotingStatusUpdate_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const GetCurrentAgendaDetails = (response) => {
+  return {
+    type: actions.GET_CURRENT_AGENDA_DETAILS,
+    response: response,
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -1110,4 +1242,6 @@ export {
   SaveFilesAgendaApi,
   UploadDocumentsAgendaApi,
   AddUpdateAdvanceMeetingAgenda,
+  GetCurrentAgendaDetails,
+  AgendaVotingStatusUpdate,
 };
