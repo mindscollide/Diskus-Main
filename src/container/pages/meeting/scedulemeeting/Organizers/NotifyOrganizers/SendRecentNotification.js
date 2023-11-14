@@ -1,42 +1,42 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   Button,
   TextField,
   Checkbox,
-} from '../../../../../../components/elements'
-import { useTranslation } from 'react-i18next'
-import styles from './NotifyOrganizors.module.css'
-import { useDispatch, useSelector } from 'react-redux'
-import BlackCrossIcon from '../../../../../../assets/images/BlackCrossIconModals.svg'
+} from "../../../../../../components/elements";
+import { useTranslation } from "react-i18next";
+import styles from "./NotifyOrganizors.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import {
   selectedMeetingOrganizers,
   meetingOrganizers,
   notificationSendData,
   sendNotificationOrganizer,
   notificationUpdateData,
-} from '../../../../../../store/actions/MeetingOrganizers_action'
-import { useNavigate } from 'react-router-dom'
-import profile from '../../../../../../assets/images/newprofile.png'
-import { sendRecentNotificationOrganizerModal } from '../../../../../../store/actions/NewMeetingActions'
-import UpperArrow from '../../../../../../assets/images/UpperArrow.svg'
-import { Col, Row } from 'react-bootstrap'
-import { validateInput } from '../../../../../../commen/functions/regex'
-import downdirect from '../../../../../../assets/images/downDirect.png'
+} from "../../../../../../store/actions/MeetingOrganizers_action";
+import { useNavigate } from "react-router-dom";
+import profile from "../../../../../../assets/images/newprofile.png";
+import { sendRecentNotificationOrganizerModal } from "../../../../../../store/actions/NewMeetingActions";
+import UpperArrow from "../../../../../../assets/images/UpperArrow.svg";
+import { Col, Row } from "react-bootstrap";
+import { validateInput } from "../../../../../../commen/functions/regex";
+import downdirect from "../../../../../../assets/images/downDirect.png";
 
 const SendNotificationOrganizer = () => {
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state,
-  )
+    (state) => state
+  );
   const [notifyOrganizerData, setNotifyOrganizerData] = useState({
-    Messege: '',
+    Messege: "",
     allOrganizersAccept: false,
-  })
+  });
 
-  const [membersHide, setMembersHide] = useState(false)
+  const [membersHide, setMembersHide] = useState(false);
   // const [members, setMembers] = useState([
   //   {
   //     name: 'saif',
@@ -62,109 +62,113 @@ const SendNotificationOrganizer = () => {
   // ])
 
   // Initialize membersOrganizers state with the modified 'isOrganizerNotified' property
-  const initialMembersOrganizers = MeetingOrganizersReducer.NotificationSendData.map(
-    (member) => ({
+  const initialMembersOrganizers =
+    MeetingOrganizersReducer.NotificationSendData.map((member) => ({
       ...member,
       isOrganizerNotified: true,
-    }),
-  )
+    }));
 
   const [membersOrganizers, setMembersOrganizers] = useState(
-    initialMembersOrganizers,
-  )
+    initialMembersOrganizers
+  );
 
   // Initialize memberCheckboxes with all checkboxes initially checked
   const [memberCheckboxes, setMemberCheckboxes] = useState(
-    Array(initialMembersOrganizers.length).fill(true),
-  )
+    Array(initialMembersOrganizers.length).fill(true)
+  );
 
-  const [allOrganizersAccept, setAllOrganizersAccept] = useState(true)
+  const [allOrganizersAccept, setAllOrganizersAccept] = useState(true);
 
   const handleCrossIcon = () => {
-    dispatch(sendRecentNotificationOrganizerModal(false))
-  }
+    dispatch(sendRecentNotificationOrganizerModal(false));
+  };
 
   const HandleChange = (e, index) => {
-    let name = e.target.name
-    let value = e.target.value
-    if (name === 'Message') {
-      let valueCheck = validateInput(value)
-      if (valueCheck !== '') {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "Message") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
         setNotifyOrganizerData({
           ...notifyOrganizerData,
           Messege: valueCheck,
-        })
+        });
       } else {
         setNotifyOrganizerData({
           ...notifyOrganizerData,
-          Messege: '',
-        })
+          Messege: "",
+        });
       }
     }
-  }
+  };
 
   const handleAllowOrganizerCheck = () => {
-    const newState = !allOrganizersAccept
-    setAllOrganizersAccept(newState)
-    const updatedCheckboxes = membersOrganizers.map(() => newState)
+    const newState = !allOrganizersAccept;
+    setAllOrganizersAccept(newState);
+    const updatedCheckboxes = membersOrganizers.map(() => newState);
     const updatedMembers = membersOrganizers.map((member) => ({
       ...member,
       isOrganizerNotified: true,
-    }))
-    setMemberCheckboxes(updatedCheckboxes)
-    setMembersOrganizers(updatedMembers)
-  }
+    }));
+    setMemberCheckboxes(updatedCheckboxes);
+    setMembersOrganizers(updatedMembers);
+  };
 
   const handleHideItems = () => {
-    setMembersHide(!membersHide)
-  }
+    setMembersHide(!membersHide);
+  };
 
   const handleCheckboxChange = (index, isChecked, data) => {
-    const updatedCheckboxes = [...memberCheckboxes]
-    updatedCheckboxes[index] = isChecked
+    const updatedCheckboxes = [...memberCheckboxes];
+    updatedCheckboxes[index] = isChecked;
 
-    const updatedMembers = [...membersOrganizers]
-    updatedMembers[index] = { ...data, isOrganizerNotified: true }
+    const updatedMembers = [...membersOrganizers];
+    updatedMembers[index] = { ...data, isOrganizerNotified: true };
 
-    setMemberCheckboxes(updatedCheckboxes)
-    setMembersOrganizers(updatedMembers)
-  }
+    setMemberCheckboxes(updatedCheckboxes);
+    setMembersOrganizers(updatedMembers);
+  };
 
+  const [NotifyMessageError, setNotifyMessaegError] = useState(false);
   const sendNotification = () => {
-    let Data = {
-      UserID: MeetingOrganizersReducer.NotificationSendData[0].userID,
-      Message: notifyOrganizerData.Messege,
-      IsAgendaContributor: false,
+    if (notifyOrganizerData.Messege !== "") {
+      let Data = {
+        UserID: MeetingOrganizersReducer.NotificationSendData[0].userID,
+        Message: notifyOrganizerData.Messege,
+        IsAgendaContributor: false,
+      };
+      dispatch(sendNotificationOrganizer(Data, navigate, t));
+      dispatch(notificationUpdateData(membersOrganizers));
+      dispatch(sendRecentNotificationOrganizerModal(false));
+    } else {
+      setNotifyMessaegError(true);
     }
-    dispatch(sendNotificationOrganizer(Data, navigate, t))
-    dispatch(notificationUpdateData(membersOrganizers))
-    dispatch(sendRecentNotificationOrganizerModal(false))
-  }
+  };
 
   const handleCancelButton = () => {
-    dispatch(sendRecentNotificationOrganizerModal(false))
+    dispatch(sendRecentNotificationOrganizerModal(false));
     // dispatch(meetingOrganizers([]))
-  }
+  };
 
-  console.log('MeetingOrganizersReducer', MeetingOrganizersReducer)
+  console.log("MeetingOrganizersReducer", MeetingOrganizersReducer);
 
-  console.log('Checkboxes state check', memberCheckboxes, membersOrganizers)
+  console.log("Checkboxes state check", memberCheckboxes, membersOrganizers);
 
   return (
     <section>
       <Modal
         show={NewMeetingreducer.sendNotificationOrganizerModal}
         setShow={dispatch(sendRecentNotificationOrganizerModal)}
-        modalFooterClassName={'d-block'}
+        modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(sendRecentNotificationOrganizerModal(false))
+          dispatch(sendRecentNotificationOrganizerModal(false));
         }}
         ModalBody={
           <>
             <Row>
               <Col lg={5} md={5} sm={12}>
-                <span className={styles['Notify_organisors']}>
-                  {t('Notify-organizers')}
+                <span className={styles["Notify_organisors"]}>
+                  {t("Notify-organizers")}
                 </span>
               </Col>
               <Col lg={7} md={7} sm={12} className="d-flex justify-content-end">
@@ -183,15 +187,26 @@ const SendNotificationOrganizer = () => {
                 <TextField
                   applyClass="text-area-create-Notify-organizors"
                   type="text"
-                  as={'textarea'}
+                  as={"textarea"}
                   rows="4"
-                  placeholder={t('Message')}
+                  placeholder={t("Message")}
                   change={HandleChange}
                   value={notifyOrganizerData.Messege}
                   required={true}
                   name="Message"
                   maxLength={500}
                 />
+                {NotifyMessageError && notifyOrganizerData.Messege === "" ? (
+                  <span
+                    className={
+                      NotifyMessageError && notifyOrganizerData.Messege === ""
+                        ? `${styles["errorMessage-inLogin"]}`
+                        : `${styles["errorMessage-inLogin_hidden"]}`
+                    }
+                  >
+                    {t("Response-Message-is-required")}
+                  </span>
+                ) : null}
               </Col>
             </Row>
             <Row className="mt-2">
@@ -207,8 +222,8 @@ const SendNotificationOrganizer = () => {
                   disabled={true}
                   className="sendNotificationOrganizer"
                 />
-                <p className={styles['Check_box_title']}>
-                  {t('All-organizers')}
+                <p className={styles["Check_box_title"]}>
+                  {t("All-organizers")}
                 </p>
               </Col>
               <Col
@@ -222,7 +237,7 @@ const SendNotificationOrganizer = () => {
                   src={membersHide ? downdirect : UpperArrow}
                   width="18.4px"
                   height="9.2px"
-                  className={styles['UparrowClasss']}
+                  className={styles["UparrowClasss"]}
                   onClick={handleHideItems}
                 />
               </Col>
@@ -234,7 +249,7 @@ const SendNotificationOrganizer = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles['Scroller_notify']}
+                    className={styles["Scroller_notify"]}
                   >
                     <Row>
                       {membersOrganizers.map((data, index) => (
@@ -244,7 +259,7 @@ const SendNotificationOrganizer = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles['Box_for_Assignee']}
+                              className={styles["Box_for_Assignee"]}
                             >
                               <Row>
                                 <Col
@@ -258,7 +273,7 @@ const SendNotificationOrganizer = () => {
                                     src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
                                     width="33px"
                                     height="33px"
-                                    className={styles['ProfilePic']}
+                                    className={styles["ProfilePic"]}
                                   />
                                   <span>{data.userName}</span>
                                 </Col>
@@ -269,7 +284,7 @@ const SendNotificationOrganizer = () => {
                                       handleCheckboxChange(
                                         index,
                                         e.target.checked,
-                                        data,
+                                        data
                                       )
                                     }
                                     disabled={true}
@@ -298,14 +313,14 @@ const SendNotificationOrganizer = () => {
                 className="d-flex justify-content-end gap-2"
               >
                 <Button
-                  text={t('Cancel')}
-                  className={styles['Cancel_button_Notify']}
+                  text={t("Cancel")}
+                  className={styles["Cancel_button_Notify"]}
                   onClick={handleCancelButton}
                 />
                 <Button
-                  text={t('Send')}
+                  text={t("Send")}
                   onClick={sendNotification}
-                  className={styles['Send_Notify']}
+                  className={styles["Send_Notify"]}
                 />
               </Col>
             </Row>
@@ -313,7 +328,7 @@ const SendNotificationOrganizer = () => {
         }
       />
     </section>
-  )
-}
+  );
+};
 
-export default SendNotificationOrganizer
+export default SendNotificationOrganizer;

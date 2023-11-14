@@ -96,7 +96,10 @@ const Organizers = ({
   const handleCancelOrganizer = () => {
     dispatch(showCancelModalOrganizers(true));
   };
-
+  console.log(
+    currentMeeting,
+    "currentMeetingcurrentMeetingcurrentMeetingcurrentMeeting"
+  );
   const [inputValues, setInputValues] = useState({});
 
   const currentOrganizerData = {
@@ -200,6 +203,7 @@ const Organizers = ({
       key: "organizerTitle",
       width: "250px",
       render: (text, record) => {
+        console.log(text, record, "organizerTitleorganizerTitleorganizerTitle");
         if (
           (Number(ediorRole.status) === 9 ||
             Number(ediorRole.status) === 8 ||
@@ -221,7 +225,7 @@ const Organizers = ({
                   placeholder={t("Content-title")}
                   labelClass={"d-none"}
                   applyClass={"Organizer_table"}
-                  value={inputValues[record.userID] || ""} // Use the controlled value
+                  value={text} // Use the controlled value
                   change={(e) =>
                     handleInputChange(record.userID, e.target.value)
                   } // Update the inputValues when the user types
@@ -418,9 +422,22 @@ const Organizers = ({
   // const deleteRow = (record) => {}
 
   const deleteRow = (recordToDelete) => {
-    setRowsData((prevRowsData) =>
-      prevRowsData.filter((record) => record !== recordToDelete)
+    let findisPrimary = rowsData.filter(
+      (rowData, index) => rowData.isPrimaryOrganizer === true
     );
+    if (recordToDelete.isPrimaryOrganizer) {
+      if (findisPrimary.length === 1) {
+        setOpen({
+          message: t("Primary-organizer-doesn't-deleted"),
+          open: true,
+        });
+      } else {
+      }
+    } else {
+      setRowsData((prevRowsData) =>
+        prevRowsData.filter((record) => record !== recordToDelete)
+      );
+    }
   };
 
   const openAddUserModal = () => {
@@ -495,7 +512,7 @@ const Organizers = ({
   };
 
   const handleCancelEdit = () => {
-    setCurrentMeetingID(0);
+    // setCurrentMeetingID(0);
     setEditState(false);
     dispatch(meetingOrganizers([]));
     dispatch(selectedMeetingOrganizers([]));
@@ -518,29 +535,41 @@ const Organizers = ({
 
   const saveMeetingOrganizers = () => {
     let newarry = [];
-    rowsData.map((organizerData, organizerIndex) => {
+    rowsData.forEach((organizerData, organizerIndex) => {
       newarry.push(organizerData.userID);
     });
+    let findisOrganizerisExist = rowsData.some(
+      (data, index) => data.isPrimaryOrganizer === true
+    );
     let Data = {
       MeetingID: currentMeeting,
       MeetingAttendeRoleID: 1,
       UpdatedUsers: newarry,
     };
-    console.log(Data, "UpdateMeetingUserForOrganizers");
-    dispatch(
-      UpdateMeetingUserForOrganizers(
-        navigate,
-        Data,
-        t,
-        saveMeetingFlag,
-        editMeetingFlag,
-        rowsData,
-        currentMeeting
-      )
-    );
+    if (findisOrganizerisExist) {
+      dispatch(
+        UpdateMeetingUserForOrganizers(
+          navigate,
+          Data,
+          t,
+          saveMeetingFlag,
+          editMeetingFlag,
+          rowsData,
+          currentMeeting
+        )
+      );
+    } else {
+      setOpen({
+        message: t("At-least-one-primary-organize-is-required"),
+        open: true,
+      });
+    }
   };
 
   const editMeetingOrganizers = () => {
+    let findisOrganizerisExist = rowsData.some(
+      (data, index) => data.isPrimaryOrganizer === true
+    );
     let Data = {
       MeetingOrganizers: rowsData.map((item) => ({
         IsPrimaryOrganizer: item.isPrimaryOrganizer,
@@ -552,9 +581,16 @@ const Organizers = ({
       IsOrganizerAddFlow: false,
       NotificationMessage: rowsData[0].NotificationMessage,
     };
-    dispatch(SaveMeetingOrganizers(navigate, Data, t, currentMeeting));
-    dispatch(saveMeetingFlag(false));
-    dispatch(editMeetingFlag(false));
+    if (findisOrganizerisExist) {
+      dispatch(SaveMeetingOrganizers(navigate, Data, t, currentMeeting));
+      dispatch(saveMeetingFlag(false));
+      dispatch(editMeetingFlag(false));
+    } else {
+      setOpen({
+        message: t("At-least-one-primary-organizer-is-required"),
+        open: true,
+      });
+    }
   };
 
   useEffect(() => {

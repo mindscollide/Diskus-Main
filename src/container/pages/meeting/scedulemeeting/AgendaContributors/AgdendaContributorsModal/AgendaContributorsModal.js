@@ -442,22 +442,15 @@ const AgendaContributorsModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["OverAll_Padding"]}
+                className="d-flex justify-content-end"
               >
-                <Row className="mt-2">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Button
-                      text={t("Done")}
-                      className={styles["Done_btn_organizor_modal"]}
-                      onClick={handleClickDone}
-                    />
-                  </Col>
-                </Row>
+                {membersOrganizers.length > 0 && (
+                  <Button
+                    text={t("Done")}
+                    className={styles["Done_btn_organizor_modal"]}
+                    onClick={handleClickDone}
+                  />
+                )}
               </Col>
             </Row>
           </>
