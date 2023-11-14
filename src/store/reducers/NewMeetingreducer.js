@@ -1608,7 +1608,13 @@ const NewMeetingreducer = (state = initialState, action) => {
         unsavedViewPollsModal: false,
       };
     }
-    
+    case actions.NEWMEETING_RESPONSEMESSAGE: {
+      return {
+        ...state,
+        ResponseMessage: "",
+      };
+    }
+
     default: {
       return { ...state };
     }

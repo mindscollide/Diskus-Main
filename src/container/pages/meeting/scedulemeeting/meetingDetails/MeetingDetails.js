@@ -38,6 +38,7 @@ import {
   GetAllMeetingTypesNewFunction,
   SaveMeetingDetialsNewApiFunction,
   ShowNextConfirmationModal,
+  clearResponseMessage,
   showCancelModalmeetingDeitals,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
@@ -133,9 +134,9 @@ const MeetingDetails = ({
       label: "",
     },
     Notes: "",
-    groupChat: false,
-    AllowRSPV: false,
-    NotifyMeetingOrganizer: false,
+    groupChat: true,
+    AllowRSPV: true,
+    NotifyMeetingOrganizer: true,
     RecurringOptions: {
       value: 0,
       label: "",
@@ -404,7 +405,8 @@ const MeetingDetails = ({
       meetingDetails.Description !== "" &&
       newArr.length > 0 &&
       newReminderData.length > 0 &&
-      meetingDetails.Notes !== ""
+      meetingDetails.Notes !== "" &&
+      meetingDetails.Link !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       // Check if RecurringOptions.value is defined and use it
@@ -686,7 +688,7 @@ const MeetingDetails = ({
         getALlMeetingTypes.meetingTypes !== undefined
       ) {
         let Newdata = [];
-        getALlMeetingTypes.meetingTypes.map((data, index) => {
+        getALlMeetingTypes.meetingTypes.forEach((data, index) => {
           Newdata.push({
             value: data.pK_MTID,
             label: data.type,
@@ -769,9 +771,9 @@ const MeetingDetails = ({
           message: "",
         });
       }, 3000);
-      dispatch(ClearMessegeMeetingdetails());
+      dispatch(clearResponseMessage());
     } else {
-      dispatch(ClearMessegeMeetingdetails());
+      dispatch(clearResponseMessage());
     }
   }, [ResponseMessage]);
 
@@ -1318,6 +1320,7 @@ const MeetingDetails = ({
                                 }
                                 width="22.32px"
                                 height="14.75px"
+                                alt=""
                                 className={
                                   meetingDetails.IsVideoCall
                                     ? styles["Camera_icon_active_IconStyles"]
@@ -1355,10 +1358,24 @@ const MeetingDetails = ({
                         labelClass="d-none"
                         name={"Link"}
                         change={HandleChange}
+                        maxLength={500}
                         value={
                           meetingDetails.IsVideoCall ? meetingDetails.Link : ""
                         }
                       />
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              error && meetingDetails.Link === ""
+                                ? ` ${styles["errorMessage-inLogin"]} `
+                                : `${styles["errorMessage-inLogin_hidden"]}`
+                            }
+                          >
+                            {t("Please-enter-meeting-description")}
+                          </p>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
                 </Col>
@@ -1914,11 +1931,7 @@ const MeetingDetails = ({
           isEditMeeting === true ? null : ediorRole.role ===
               "Agenda Contributor" && isEditMeeting === true ? null : (
             <Button
-              disableBtn={
-                Number(currentMeeting) === 0 && publishedFlag === true
-                  ? true
-                  : false
-              }
+              disableBtn={Number(currentMeeting) === 0 ? true : false}
               text={t("Publish")}
               className={styles["Update_Next"]}
               onClick={handlePublish}

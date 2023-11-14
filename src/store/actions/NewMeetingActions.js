@@ -462,12 +462,12 @@ const SaveMeetingDetialsNewApiFunction = (
               );
 
               setCurrentMeetingID(response.data.responseResult.meetingID);
-              let meetingData = {
-                MeetingID: response.data.responseResult.meetingID,
-              };
-              dispatch(
-                GetAdvanceMeetingAgendabyMeetingID(meetingData, navigate, t)
-              );
+              // let meetingData = {
+              //   MeetingID: response.data.responseResult.meetingID,
+              // };
+              // dispatch(
+              //   GetAdvanceMeetingAgendabyMeetingID(meetingData, navigate, t)
+              // );
 
               if (viewValue === 1) {
                 let MappedData = {
@@ -544,6 +544,20 @@ const SaveMeetingDetialsNewApiFunction = (
                 handleSaveMeetingFailed(
                   t(
                     "Consecutive-date-times-should-be-greater-than-previous-date-time"
+                  )
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(
+                  t(
+                    "Please-add-agenda-organizers-and-participants-to-publish-the-meeting"
                   )
                 )
               );
@@ -1404,7 +1418,7 @@ const saveAgendaContributors = (navigate, t, data, currentMeeting) => {
     MeetingID:
       currentMeeting !== null && currentMeeting !== undefined
         ? Number(currentMeeting)
-        : 1686,
+        : 0,
   };
   return (dispatch) => {
     dispatch(saveAgendaContributors_init());
@@ -5854,7 +5868,7 @@ const UpdateMeetingUserForAgendaContributor = (
                     Title: data.Title,
                     AgendaListRightsAll: data.AgendaListRightsAll,
                     MeetingID:
-                      currentMeeting !== null ? Number(currentMeeting) : 1686,
+                      currentMeeting !== null ? Number(currentMeeting) : 0,
                     IsContributorNotified: data.isContributedNotified,
                   });
                 });
@@ -5886,7 +5900,9 @@ const UpdateMeetingUserForAgendaContributor = (
                   IsAgendaContributorAddFlow: true,
                   NotificationMessage: notifyMessageField,
                 };
-                dispatch(saveAgendaContributors(navigate, t, Data));
+                dispatch(
+                  saveAgendaContributors(navigate, t, Data, currentMeeting)
+                );
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -6079,7 +6095,14 @@ const showPreviousConfirmationModal = (response) => {
   };
 };
 
+const clearResponseMessage = () => {
+  return {
+    type: actions.NEWMEETING_RESPONSEMESSAGE,
+  };
+};
+
 export {
+  clearResponseMessage,
   getAllAgendaContributorApi,
   saveAgendaContributors,
   showAddUserModal,

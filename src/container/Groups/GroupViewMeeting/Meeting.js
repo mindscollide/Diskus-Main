@@ -86,7 +86,7 @@ const CommitteeMeetingTab = () => {
         2
       )
     );
-    setViewMeetingModal(true);
+    setEditMeetingModal(true);
   };
   useEffect(() => {
     let searchData = {

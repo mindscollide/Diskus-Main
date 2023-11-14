@@ -198,3 +198,6 @@ body[dir="rtl"] .ArabicFontSemiBold {
   max-height: 7vh !important;
   overflow-y: auto;
 }
+.deleteBtn img {
+  cursor: pointer !important;
+}

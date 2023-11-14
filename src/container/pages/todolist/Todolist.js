@@ -338,7 +338,7 @@ const TodoList = () => {
               draggable="false"
               className="data-img"
               src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
-              alt="userimage"
+              alt=""
             />
             {record?.name}
           </p>
@@ -372,7 +372,7 @@ const TodoList = () => {
                       draggable="false"
                       className="data-img"
                       src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
-                      alt="userimage"
+                      alt=""
                     />
 
                     {text[0].name}
@@ -383,7 +383,7 @@ const TodoList = () => {
                       draggable="false"
                       className="data-img"
                       src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
-                      alt="userimage"
+                      alt=""
                     />
                     {text[0].name}
                   </>
