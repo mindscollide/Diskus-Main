@@ -86,17 +86,23 @@ const NotifyAgendaModal = ({
     });
   };
 
+  const [NotifyMessageError, setNotifyMessaegError] = useState(false);
+
   const handleSendIcon = () => {
     if (specificUser !== 0) {
-      let Data = {
-        UserID: Number(userID),
-        Message: notifyMessageField,
-        IsAgendaContributor: false,
-      };
-      console.log(Data, "notificationData");
-      dispatch(SendNotificationApiFunc(Data, navigate, t));
-      dispatch(showAgendaContributorsModals(false));
-      setSpecifiUser(0);
+      if (notifyMessageField !== "") {
+        let Data = {
+          UserID: Number(userID),
+          Message: notifyMessageField,
+          IsAgendaContributor: false,
+        };
+        console.log(Data, "notificationData");
+        dispatch(SendNotificationApiFunc(Data, navigate, t));
+        dispatch(showAgendaContributorsModals(false));
+        setSpecifiUser(0);
+      } else {
+        setNotifyMessaegError(true);
+      }
     } else {
       dispatch(showAgendaContributorsModals(false));
     }
@@ -150,6 +156,17 @@ const NotifyAgendaModal = ({
                   required={true}
                   maxLength={500}
                 />
+                {NotifyMessageError && notifyMessageField === "" ? (
+                  <span
+                    className={
+                      NotifyMessageError && notifyOrganizerData.Messege === ""
+                        ? `${styles["errorMessage-inLogin"]}`
+                        : `${styles["errorMessage-inLogin_hidden"]}`
+                    }
+                  >
+                    {t("Response-Message-is-required")}
+                  </span>
+                ) : null}
               </Col>
             </Row>
             <Row className="mt-4">

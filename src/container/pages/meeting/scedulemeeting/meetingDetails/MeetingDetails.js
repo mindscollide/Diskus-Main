@@ -1779,7 +1779,7 @@ const MeetingDetails = ({
                             : `${styles["errorMessage-inLogin_hidden"]}`
                         }
                       >
-                        {t("Please-select-reminder-frequency")}
+                        {t("Please-enter-meeting-notes")}
                       </p>
                     </Col>
                   </Row>

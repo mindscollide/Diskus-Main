@@ -451,21 +451,19 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
         ModalFooter={
           <>
             <Row>
-              <Col lg={12} md={12} sm={12}>
-                <Row className="mt-2">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Button
-                      text={t("Done")}
-                      className={styles["Done_btn_organizor_modal"]}
-                      onClick={handleClickDone}
-                    />
-                  </Col>
-                </Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end"
+              >
+                {membersParticipants.length > 0 && (
+                  <Button
+                    text={t("Done")}
+                    className={styles["Done_btn_organizor_modal"]}
+                    onClick={handleClickDone}
+                  />
+                )}
               </Col>
             </Row>
           </>

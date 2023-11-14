@@ -5054,7 +5054,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
               await dispatch(
                 showCreateUpdateMeetingDataRoomSuccess(
                   response.data.responseResult.folderID,
-                  t("Folder-mapped-with-data-room")
+                  ""
                 )
               );
             } else if (
