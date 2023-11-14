@@ -531,13 +531,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   };
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
-    ) {
+    if (NewMeetingreducer.ResponseMessage !== "") {
       setOpen({
         ...open,
         flag: true,
