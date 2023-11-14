@@ -36,6 +36,12 @@ const mainLoaderStart = () => {
   };
 };
 
+const clearPollsMesseges = () => {
+  return {
+    type: actions.CLEAR_POLLS_MESSAGES,
+  };
+};
+
 const mainLoaderFail = (message) => {
   return {
     type: actions.GET_MAIN_LOADER_FAIL,
@@ -2489,4 +2495,5 @@ export {
   getTaskCommitteeIDApi,
   setTasksByCommitteeApi,
   getPollsByPollIdforCommitteeApi,
+  clearPollsMesseges,
 };
