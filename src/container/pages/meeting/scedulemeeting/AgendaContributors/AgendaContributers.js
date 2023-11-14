@@ -464,7 +464,7 @@ const AgendaContributers = ({
     let removenewData = rowsData.filter((data, index) => data.isEdit === true);
     setRowsData(removenewData);
     let getAllData = {
-      MeetingID: currentMeeting !== null ? Number(currentMeeting) : 1686,
+      MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
     // Create a copy of data with was coming

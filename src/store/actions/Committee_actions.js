@@ -1005,10 +1005,7 @@ const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
                 )
             ) {
               await dispatch(
-                updateCommitteeStatus_Success(
-                  response.data.responseResult.committeeMemberRoles,
-                  t("Record-updated-successfully")
-                )
+                updateCommitteeStatus_Success(response.data.responseResult, "")
               );
               setIsActive(false);
               dispatch(
