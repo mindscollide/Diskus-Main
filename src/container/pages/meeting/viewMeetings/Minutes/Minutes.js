@@ -3,7 +3,7 @@ import styles from "./Minutes.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../../../../components/elements";
+import { Button, Notification } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
 import { useRef } from "react";
@@ -19,11 +19,13 @@ import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
   ADDGeneralMinutesApiFunc,
+  CleareMessegeNewMeeting,
   DeleteGeneralMinuteDocumentsApiFunc,
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
   getAllGeneralMinutesApiFunc,
+  searchNewUserMeeting,
   showPreviousConfirmationModal,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
@@ -45,6 +47,9 @@ const Minutes = ({
 }) => {
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
   const { NewMeetingreducer } = useSelector((state) => state);
   const editorRef = useRef(null);
   const { Dragger } = Upload;
@@ -67,6 +72,7 @@ const Minutes = ({
     flag: false,
     message: "",
   });
+
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
       value: "",
@@ -130,6 +136,7 @@ const Minutes = ({
         if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
           let newarr = [];
           NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
+            console.log(data, "generalMinutesgeneralMinutes");
             newarr.push(data);
             setMinuteID(data.minuteID);
           });
@@ -489,12 +496,73 @@ const Minutes = ({
   };
 
   const handleUNsaveChangesModal = () => {
-    dispatch(showUnsaveMinutesFileUpload(true));
+    try {
+      const isDescriptionEmpty = addNoteFields.Description.value === "";
+      const areFileAttachmentsEmpty = fileAttachments.length === 0;
+
+      if (isDescriptionEmpty && areFileAttachmentsEmpty && isEdit === false) {
+        console.log(
+          addNoteFields.Description.value,
+          "setSceduleMeetingsetSceduleMeeting"
+        );
+
+        // Your code when both description and file attachments are empty
+        setMinutes(false);
+        setSceduleMeeting(false);
+        setViewAdvanceMeetingModal(false);
+        dispatch(showUnsaveMinutesFileUpload(false));
+
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      } else {
+        dispatch(showUnsaveMinutesFileUpload(true));
+      }
+    } catch (error) {}
   };
 
   const handlePreviousButton = () => {
     dispatch(showPreviousConfirmationModal(true));
   };
+  console.log(
+    NewMeetingreducer.ResponseMessage,
+    NewMeetingreducer,
+    "ResponseMessage222"
+  );
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
 
   return (
     <section>
@@ -522,8 +590,8 @@ const Minutes = ({
         <>
           <Row className="mt-4">
             <Col lg={6} md={6} sm={6}>
-              {ediorRole.role === "Organizer" &&
-              Number(ediorRole.status) === 10 ||
+              {(ediorRole.role === "Organizer" &&
+                Number(ediorRole.status) === 10) ||
               Number(ediorRole.status) === 9 ? (
                 <>
                   <Row className={styles["Add-note-QuillRow"]}>
@@ -629,8 +697,8 @@ const Minutes = ({
                                       sm={12}
                                       className="position-relative gap-2"
                                     >
-                                      {ediorRole.role === "Organizer" &&
-                                      Number(ediorRole.status) === 10 ||
+                                      {(ediorRole.role === "Organizer" &&
+                                        Number(ediorRole.status) === 10) ||
                                       Number(ediorRole.status) === 9 ? (
                                         <span
                                           className={styles["Crossicon_Class"]}
@@ -719,8 +787,8 @@ const Minutes = ({
                   </Row>
                 </>
               ) : null}
-              {ediorRole.role === "Organizer" &&
-              Number(ediorRole.status) === 10 ||
+              {(ediorRole.role === "Organizer" &&
+                Number(ediorRole.status) === 10) ||
               Number(ediorRole.status) === 9 ? (
                 <Row className="mt-2">
                   <Col lg={12} md={12} sm={12}>
@@ -864,8 +932,8 @@ const Minutes = ({
                                         </Col>
                                       </Row>
                                     </Col>
-                                    {ediorRole.role === "Organizer" &&
-                                    Number(ediorRole.status) === 10 ||
+                                    {(ediorRole.role === "Organizer" &&
+                                      Number(ediorRole.status) === 10) ||
                                     Number(ediorRole.status) === 9 ? (
                                       <Col
                                         lg={3}
@@ -993,8 +1061,8 @@ const Minutes = ({
                                   </Row>
                                 </>
                               ) : null}
-                              {ediorRole.role === "Organizer" &&
-                              Number(ediorRole.status) === 10 ||
+                              {(ediorRole.role === "Organizer" &&
+                                Number(ediorRole.status) === 10) ||
                               Number(ediorRole.status) === 9 ? (
                                 <img
                                   draggable={false}
@@ -1021,8 +1089,7 @@ const Minutes = ({
               md={12}
               sm={12}
               className="d-flex justify-content-end gap-2"
-            >
-            </Col>
+            ></Col>
           </Row>
         </>
       ) : null}
@@ -1043,6 +1110,7 @@ const Minutes = ({
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
         />
       )}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );
 };

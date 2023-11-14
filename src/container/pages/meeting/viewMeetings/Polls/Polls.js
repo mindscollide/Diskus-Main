@@ -8,13 +8,18 @@ import { Pagination, Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
-import { Button, Table } from "../../../../../components/elements";
+import {
+  Button,
+  Table,
+  Notification,
+} from "../../../../../components/elements";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "./CreatePolls/Createpolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import {
+  CleareMessegeNewMeeting,
   GetAllPollsByMeetingIdApiFunc,
   showCancelPolls,
   showUnsavedPollsMeeting,
@@ -24,6 +29,7 @@ import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import {
+  clearPollsMesseges,
   deleteMeetingPollApi,
   getPollsByPollIdApi,
 } from "../../../../../store/actions/Polls_actions";
@@ -41,7 +47,9 @@ const Polls = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, CommitteeReducer } = useSelector((state) => state);
+  const { NewMeetingreducer, CommitteeReducer, PollsReducer } = useSelector(
+    (state) => state
+  );
   const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
   const [editPolls, setEditPolls] = useState(false);
@@ -49,6 +57,10 @@ const Polls = ({
   const [afterViewPolls, setafterViewPolls] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const [totalRecords, setTotalRecords] = useState(0);
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
@@ -398,6 +410,32 @@ const Polls = ({
     dispatch(showCancelPolls(true));
   };
 
+  useEffect(() => {
+    if (
+      PollsReducer.ResponseMessage !== "" &&
+      PollsReducer.ResponseMessage !== t("Data-available") &&
+      PollsReducer.ResponseMessage !== t("No-data-available") &&
+      PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: PollsReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(clearPollsMesseges());
+    } else {
+      dispatch(clearPollsMesseges());
+    }
+  }, [PollsReducer.ResponseMessage]);
+
   return (
     <>
       {afterViewPolls ? (
@@ -422,7 +460,7 @@ const Polls = ({
                 {Number(ediorRole.status) === 10 &&
                 (ediorRole.role === "Organizer" ||
                   ediorRole.role === "Agenda Contributor" ||
-                  ediorRole?.role === "Participant")  ? (
+                  ediorRole?.role === "Participant") ? (
                   <Row className="mt-4">
                     <Col
                       lg={12}
@@ -464,32 +502,16 @@ const Polls = ({
                             sm={12}
                             className="d-flex justify-content-end gap-2"
                           >
-                            <Button
+                            {/* <Button
                               text={t("Clone-meeting")}
                               className={styles["Cancel_Button_Polls_meeting"]}
                               onClick={enableAfterSavedViewPolls}
-                            />
+                            /> */}
 
                             <Button
                               text={t("Cancel")}
                               className={styles["Cancel_Button_Polls_meeting"]}
                               onClick={handleCacnelbutton}
-                            />
-
-                            <Button
-                              text={t("Save")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-
-                            <Button
-                              text={t("Save-and-publish")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                            />
-
-                            <Button
-                              text={t("Save-and-next")}
-                              className={styles["Save_Button_Polls_meeting"]}
-                              onClick={handleSaveAndnext}
                             />
                           </Col>
                         </Row>
@@ -568,6 +590,11 @@ const Polls = ({
             {NewMeetingreducer.cancelPolls && (
               <CancelPolls setSceduleMeeting={setSceduleMeeting} />
             )}
+            <Notification
+              setOpen={setOpen}
+              open={open.flag}
+              message={open.message}
+            />
           </section>
         </>
       )}
