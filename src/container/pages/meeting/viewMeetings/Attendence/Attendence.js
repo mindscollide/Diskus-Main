@@ -19,6 +19,12 @@ import whiteworkhome from "../../../../../assets/images/whitehomework.png";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 
 import { useSelector } from "react-redux";
+import ModalCancelAttendance from "./ModalCancelAttendence/ModalCancelAttendance";
+import {
+  searchNewUserMeeting,
+  showAttendanceConfirmationModal,
+} from "../../../../../store/actions/NewMeetingActions";
+import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
 const Attendence = ({
   setPolls,
   setMinutes,
@@ -32,9 +38,15 @@ const Attendence = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   //reducer call from Attendance_Reducers
-  const { attendanceMeetingReducer } = useSelector((state) => state);
+  const { attendanceMeetingReducer, NewMeetingreducer } = useSelector(
+    (state) => state
+  );
   console.log(attendanceMeetingReducer, "attendanceMeetingReducer");
 
   let meetingID = Number(localStorage.getItem("meetingID"));
@@ -245,6 +257,10 @@ const Attendence = ({
       attendanceMeetingReducer.attendanceMeetings !== undefined &&
       attendanceMeetingReducer.attendanceMeetings.length > 0
     ) {
+      console.log(
+        attendanceMeetingReducer.attendanceMeetings,
+        "setAttendenceRowssetAttendenceRows"
+      );
       setAttendenceRows(attendanceMeetingReducer.attendanceMeetings);
     } else {
       setAttendenceRows([]);
@@ -295,7 +311,39 @@ const Attendence = ({
   };
 
   const handleCancelBtn = () => {
-    setCancelModalView(true);
+    let ReducerAttendeceData = deepEqual(
+      attendanceMeetingReducer.attendanceMeetings,
+      attendenceRows
+    );
+
+    console.log(
+      ReducerAttendeceData,
+      "ReducerAttendeceDataReducerAttendeceData"
+    );
+
+    if (ReducerAttendeceData) {
+      console.log(
+        ReducerAttendeceData,
+        "ReducerAttendeceDataReducerAttendeceData"
+      );
+
+      setViewAdvanceMeetingModal(false);
+      setAttendance(false);
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber:
+          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
+    } else {
+      dispatch(showAttendanceConfirmationModal(true));
+    }
   };
 
   return (
@@ -353,6 +401,12 @@ const Attendence = ({
       )}
 
       {attendanceMeetingReducer.Loading ? <Loader /> : null}
+      {NewMeetingreducer.attendanceConfirmationModal && (
+        <ModalCancelAttendance
+          setAttendance={setAttendance}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+        />
+      )}
     </>
   );
 };

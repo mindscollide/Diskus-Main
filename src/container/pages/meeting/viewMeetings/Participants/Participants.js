@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import styles from "./Participants.module.css";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import { Col, Row } from "react-bootstrap";
-import { Button, Table } from "../../../../../components/elements";
+import {
+  Button,
+  Table,
+  Notification,
+} from "../../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  CleareMessegeNewMeeting,
   GetAllSavedparticipantsAPI,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -28,6 +33,10 @@ const Participants = ({
   const { NewMeetingreducer } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
@@ -162,6 +171,32 @@ const Participants = ({
     },
   ];
 
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
+
   return (
     <>
       <section>
@@ -218,6 +253,11 @@ const Participants = ({
             setMeetingDetails={setParticipants}
           />
         )}
+        <Notification
+          setOpen={setOpen}
+          open={open.flag}
+          message={open.message}
+        />
       </section>
     </>
   );

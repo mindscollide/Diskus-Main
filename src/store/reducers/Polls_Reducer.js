@@ -37,6 +37,13 @@ const initialState = {
 
 const PollsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.CLEAR_POLLS_MESSAGES: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: "",
+      };
+    }
     case actions.SEARCH_POLLS_INIT: {
       return {
         ...state,

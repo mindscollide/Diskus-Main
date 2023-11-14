@@ -497,6 +497,8 @@ const SceduleMeeting = ({
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
                 ediorRole={ediorRole}
+                setAttendance={setAttendance}
+                setSceduleMeeting={setSceduleMeeting}
               />
             )}
           </Paper>

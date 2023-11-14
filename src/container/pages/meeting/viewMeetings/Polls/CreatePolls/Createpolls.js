@@ -9,7 +9,6 @@ import {
   TextField,
   Checkbox,
   Notification,
-  Loader,
 } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -33,13 +32,17 @@ import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
 import {
+  CleareMessegeNewMeeting,
   GetAllMeetingUserApiFunc,
   showUnsavedPollsMeeting,
 } from "../../../../../../store/actions/NewMeetingActions";
 import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
-import { SavePollsApi } from "../../../../../../store/actions/Polls_actions";
+import {
+  SavePollsApi,
+  clearPollsMesseges,
+} from "../../../../../../store/actions/Polls_actions";
 
 const Createpolls = ({ setCreatepoll, currentMeeting }) => {
   const { t } = useTranslation();
@@ -528,6 +531,32 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (
+      PollsReducer.ResponseMessage !== "" &&
+      PollsReducer.ResponseMessage !== t("Data-available") &&
+      PollsReducer.ResponseMessage !== t("No-data-available") &&
+      PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: PollsReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(clearPollsMesseges());
+    } else {
+      dispatch(clearPollsMesseges());
+    }
+  }, [PollsReducer.ResponseMessage]);
 
   return (
     <>

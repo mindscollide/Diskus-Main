@@ -8,6 +8,7 @@ import BlueCamera from "../../../../../assets/images/blue Camera.svg";
 import { useDispatch } from "react-redux";
 import {
   cleareAllState,
+  CleareMessegeNewMeeting,
   ClearMessegeMeetingdetails,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
@@ -259,6 +260,32 @@ const ViewMeetingDetails = ({
       setRows(newDateTimeData);
     }
   }, [NewMeetingreducer.getAllMeetingDetails]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
 
   return (
     <section>
