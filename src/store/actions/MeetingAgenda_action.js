@@ -15,7 +15,10 @@ import {
   addUpdateAdvanceMeetingAgenda,
 } from "../../commen/apis/Api_config";
 import { meetingApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
-import { showVoteAgendaModal } from "./NewMeetingActions";
+import {
+  GetAllAgendaWiseMinutesApiFunc,
+  showVoteAgendaModal,
+} from "./NewMeetingActions";
 
 const clearResponseMessage = (message) => {
   return {
@@ -610,6 +613,20 @@ const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t) => {
                   t("Record-found")
                 )
               );
+              console.log(
+                response.data.responseResult,
+                "getAdvanceMeetingAgendabyMeetingID_success"
+              );
+              let ID;
+              response.data.responseResult.agendaList.map((data, index) => {
+                console.log(data.id, "responseresponseresponse");
+                ID = data.id;
+              });
+
+              let newData = {
+                AgendaID: ID,
+              };
+              dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, newData, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

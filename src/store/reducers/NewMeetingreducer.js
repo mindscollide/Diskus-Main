@@ -69,7 +69,7 @@ const initialState = {
   generalMinutesDocument: [],
   generalminutesDocumentForMeeting: [],
   addMinuteID: 0,
-  agendaWiseMinutesReducer: [],
+  agendaWiseMinutesReducer: null,
   userWiseMeetingProposed: [],
   agendaWiseMinuteID: 0,
   RetriveAgendaWiseDocuments: [],
@@ -1212,6 +1212,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        agendaWiseMinutesReducer: null,
         ResponseMessage: action.message,
       };
     }
@@ -1608,7 +1609,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         unsavedViewPollsModal: false,
       };
     }
-    
+
     default: {
       return { ...state };
     }
