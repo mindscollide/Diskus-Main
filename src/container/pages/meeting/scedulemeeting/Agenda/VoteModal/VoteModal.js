@@ -24,6 +24,7 @@ import {
   SaveAgendaVoting,
   GetAllVotingResultDisplay,
   clearResponseMessage,
+  GetCurrentAgendaDetails,
 } from "../../../../../../store/actions/MeetingAgenda_action";
 import { GetAllSavedparticipantsAPI } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
@@ -49,6 +50,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   });
 
   const [agendaDetails, setAgendaDetails] = useState({
+    agendaTitle: "",
     agendaId: "",
     agendaVotingID: 2,
     isvotingClosed: false,
@@ -68,10 +70,12 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
 
   const [meetingParticipants, setMeetingParticipants] = useState([]);
 
+  const [currentAgendaDetails, setCurrentAgendaDetails] = useState([]);
+
   const [saveOptions, setSaveOptions] = useState([
-    { votingAnswer: "Pending", votingAnswerID: 0, agendaID: 1222 },
-    { votingAnswer: "Yes", votingAnswerID: 1, agendaID: 1222 },
-    { votingAnswer: "No", votingAnswerID: 2, agendaID: 1222 },
+    { votingAnswer: "Pending", votingAnswerID: 0 },
+    { votingAnswer: "Yes", votingAnswerID: 1 },
+    { votingAnswer: "No", votingAnswerID: 2 },
   ]);
 
   const [error, setError] = useState(false);
@@ -122,7 +126,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         {
           votingAnswer: saveOptions.votingAnswer,
           votingAnswerID: 0,
-          agendaID: 1222,
         },
       ]);
       setAddOptions(false);
@@ -284,10 +287,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   };
 
   useEffect(() => {
-    let dataForAgendaDetails = {
-      AgendaVotingID: 4,
-      MeetingID: currentMeeting,
-    };
+    // let dataForAgendaDetails = {
+    //   AgendaVotingID: agendaDetails.agendaVotingID,
+    //   MeetingID: currentMeeting,
+    // };
     let dataForAllOrganizers = { MeetingID: currentMeeting };
     let dataForAllMeetingParticipants = {
       MeetingID: currentMeeting,
@@ -297,7 +300,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     );
 
     dispatch(GetAllMeetingOrganizers(dataForAllOrganizers, navigate, t));
-    dispatch(GetAgendaVotingDetails(dataForAgendaDetails, navigate, t));
+    // dispatch(GetAgendaVotingDetails(dataForAgendaDetails, navigate, t));
     dispatch(GetAllVotingResultDisplay(navigate, t));
   }, []);
 
@@ -315,42 +318,88 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     }
   }, [MeetingAgendaReducer.MeetingAgendaVotingDetailsData]);
 
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.GetCurrentAgendaDetails !== null &&
+      MeetingAgendaReducer.GetCurrentAgendaDetails !== undefined &&
+      MeetingAgendaReducer.GetCurrentAgendaDetails.length !== 0
+    ) {
+      setCurrentAgendaDetails(MeetingAgendaReducer.GetCurrentAgendaDetails);
+    } else {
+      setCurrentAgendaDetails([]);
+    }
+  }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
+
   console.log("agendaVotingDetails", agendaVotingDetails);
 
   useEffect(() => {
-    setAgendaDetails({
-      ...agendaDetails,
-      votingResultDisplay: agendaVotingDetails?.votingResultDisplay?.result,
-      votingResultDisplayID:
-        agendaVotingDetails?.votingResultDisplay?.votingResultDisplayID,
-      agendaId: agendaVotingDetails?.agendaId,
-      agendaVotingID: agendaVotingDetails?.agendaVotingID,
-      isvotingClosed: agendaVotingDetails?.isvotingClosed,
-      userID: agendaVotingDetails?.userID,
-      voteQuestion: agendaVotingDetails?.voteQuestion,
-    });
-    const newSaveOptions = [...saveOptions];
-    let votingAnswerData = agendaVotingDetails.votingAnswers;
-
-    if (Array.isArray(votingAnswerData)) {
-      votingAnswerData.forEach((item) => {
-        if (
-          !newSaveOptions.some(
-            (option) => option.votingAnswer === item.votingAnswer
-          )
-        ) {
-          newSaveOptions.push({
-            votingAnswer: item.votingAnswer,
-            votingAnswerID: item.votingAnswerID,
-            agendaID: item.agendaID,
-          });
-        }
+    if (agendaVotingDetails.length !== 0) {
+      setAgendaDetails({
+        ...agendaDetails,
+        agendaTitle:
+          currentAgendaDetails && "title" in currentAgendaDetails
+            ? currentAgendaDetails.title
+            : currentAgendaDetails
+            ? currentAgendaDetails.subTitle
+            : "Default Title",
+        votingResultDisplay: agendaVotingDetails?.votingResultDisplay?.result,
+        votingResultDisplayID:
+          agendaVotingDetails?.votingResultDisplay?.votingResultDisplayID,
+        agendaId:
+          currentAgendaDetails && "iD" in currentAgendaDetails
+            ? currentAgendaDetails.iD
+            : currentAgendaDetails
+            ? currentAgendaDetails.subAgendaID
+            : 0,
+        agendaVotingID: agendaVotingDetails.agendaVotingID,
+        isvotingClosed: agendaVotingDetails.isvotingClosed,
+        userID: agendaVotingDetails.userID,
+        voteQuestion: agendaVotingDetails.voteQuestion,
       });
-      setSaveOptions(newSaveOptions);
-    } else {
-      setSaveOptions(saveOptions);
+      const newSaveOptions = [...saveOptions];
+      let votingAnswerData = agendaVotingDetails.votingAnswers;
+
+      if (Array.isArray(votingAnswerData)) {
+        votingAnswerData.forEach((item) => {
+          if (
+            !newSaveOptions.some(
+              (option) => option.votingAnswer === item.votingAnswer
+            )
+          ) {
+            newSaveOptions.push({
+              votingAnswer: item.votingAnswer,
+              votingAnswerID: item.votingAnswerID,
+              agendaID: item.agendaID,
+            });
+          }
+        });
+        setSaveOptions(newSaveOptions);
+      } else {
+        setSaveOptions(saveOptions);
+      }
     }
   }, [agendaVotingDetails]);
+
+  useEffect(() => {
+    if (currentAgendaDetails.length !== 0) {
+      setAgendaDetails({
+        ...agendaDetails,
+        agendaTitle:
+          currentAgendaDetails && "title" in currentAgendaDetails
+            ? currentAgendaDetails.title
+            : currentAgendaDetails
+            ? currentAgendaDetails.subTitle
+            : "Default Title",
+        agendaId:
+          currentAgendaDetails && "iD" in currentAgendaDetails
+            ? currentAgendaDetails.iD
+            : currentAgendaDetails
+            ? currentAgendaDetails.subAgendaID
+            : 0,
+        agendaVotingID: currentAgendaDetails.agendaVotingID,
+      });
+    }
+  }, [currentAgendaDetails]);
 
   useEffect(() => {
     if (
@@ -567,30 +616,26 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       typeof agendaVotingDetails
     );
     let votingOptionData = saveOptions.map((item) => ({
-      AgendaID: "1222",
+      AgendaID: agendaDetails.agendaId,
       VotingAnswer: item.votingAnswer,
-      VotingAnswerID: item.votingAnswerID,
     }));
     let participantData = meetingParticipants.map((item) => ({
-      AgendaID: "1222",
+      AgendaID: agendaDetails.agendaId,
       UserID: item.userID,
-      AgendaVotingID: 0,
+      AgendaVotingID: agendaDetails.agendaVotingID,
     }));
 
     console.log("votingOptionData", typeof votingOptionData);
     if (Object.keys(votingOptionData).length >= 2) {
       let Data = {
         AgendaVoting: {
-          AgendaVotingID:
-            Object.keys(agendaVotingDetails).length > 0
-              ? agendaDetails.agendaVotingID
-              : 0,
-          AgendaID: "1222",
+          AgendaVotingID: agendaDetails.agendaVotingID,
+          AgendaID: agendaDetails.agendaId,
           VoteQuestion: agendaDetails.voteQuestion,
           VotingResultDisplayID: agendaDetails.votingResultDisplayID,
-          IsVotingClosed: agendaVotingDetails.isvotingClosed,
+          IsVotingClosed: agendaDetails.isvotingClosed,
           UserID: agendaDetails.organizerUserID,
-          IsAddFlow: Object.keys(agendaVotingDetails).length > 0 ? false : true,
+          IsAddFlow: agendaDetails.agendaVotingID === 0 ? true : false,
           VotingAnswers: votingOptionData,
           AgendaVotingParticipants: participantData,
         },
@@ -599,6 +644,28 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       console.log("Save Agenda Voting Data", Data);
       dispatch(SaveAgendaVoting(Data, navigate, t));
       dispatch(showVoteAgendaModal(false));
+      setAgendaDetails({
+        ...agendaDetails,
+        agendaTitle: "",
+        agendaId: "",
+        agendaVotingID: 0,
+        isvotingClosed: false,
+        userID: 0,
+        voteQuestion: "",
+        organizerUserID: 0,
+        organizerUserName: "",
+        votingResultDisplay: "",
+        votingResultDisplayID: 0,
+      });
+      setOrganizers([]);
+      setVotingResultDisplayData([]);
+      setMeetingParticipants([]);
+      setSaveOptions(
+        { votingAnswer: "Pending", votingAnswerID: 0 },
+        { votingAnswer: "Yes", votingAnswerID: 1 },
+        { votingAnswer: "No", votingAnswerID: 2 }
+      );
+      dispatch(GetCurrentAgendaDetails([]));
     } else {
       setTimeout(
         setOpen({
@@ -614,8 +681,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     dispatch(showVoteAgendaModal(false));
     setAgendaDetails({
       ...agendaDetails,
+      agendaTitle: "",
       agendaId: "",
-      agendaVotingID: 2,
+      agendaVotingID: 0,
       isvotingClosed: false,
       userID: 0,
       voteQuestion: "",
@@ -628,9 +696,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     setVotingResultDisplayData([]);
     setMeetingParticipants([]);
     setSaveOptions(
-      { votingAnswer: "Pending", votingAnswerID: 0, agendaID: 1222 },
-      { votingAnswer: "Yes", votingAnswerID: 1, agendaID: 1222 },
-      { votingAnswer: "No", votingAnswerID: 2, agendaID: 1222 }
+      { votingAnswer: "Pending", votingAnswerID: 0 },
+      { votingAnswer: "Yes", votingAnswerID: 1 },
+      { votingAnswer: "No", votingAnswerID: 2 }
     );
   };
 
@@ -719,7 +787,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Vote_title"]}>
-                      Get new computers from Techno City Mall. Also, Get a ne...
+                      {agendaDetails.agendaTitle}
                     </span>
                   </Col>
                 </Row>
@@ -1043,11 +1111,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                   text={t("Cancel")}
                   className={styles["Cancel_Vote_Modal"]}
                   onClick={openConfirmationModal}
-                />
-                <Button
-                  text={t("CastVotePage")}
-                  className={styles["Cancel_Vote_Modal"]}
-                  onClick={castVotePage}
                 />
                 <Button
                   text={t("Save")}

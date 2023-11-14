@@ -1247,6 +1247,10 @@ const downloadAttendanceReport = {
   RequestMethod: "ServiceManager.AttendanceReport",
 };
 
+const agendaVotingStatusUpdate = {
+  RequestMethod: "ServiceManager.AgendaVotingStatusUpdate",
+};
+
 export {
   setMeetingbyCommitteeIDRM,
   setMeetingbyGroupIDRM,
@@ -1580,4 +1584,5 @@ export {
   UpdateMeetingUserhit,
   addUpdateAdvanceMeetingAgenda,
   downloadAttendanceReport,
+  agendaVotingStatusUpdate,
 };

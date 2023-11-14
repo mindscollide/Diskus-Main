@@ -6,11 +6,18 @@ import styles from "./Agenda.module.css";
 import profile from "../../../../../assets/images/newprofile.png";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import {
-  showAgenItemsRemovedModal,
+  showAdvancePermissionModal,
+  showVoteAgendaModal,
   showCastVoteAgendaModal,
   showviewVotesAgenda,
 } from "../../../../../store/actions/NewMeetingActions";
+import {
+  AgendaVotingStatusUpdate,
+  GetAgendaAndVotingInfo,
+  GetCurrentAgendaDetails,
+} from "../../../../../store/actions/MeetingAgenda_action";
 import { useDispatch } from "react-redux";
 import { Radio } from "antd";
 import arabic from "react-date-object/calendars/arabic";
@@ -48,10 +55,12 @@ const SubAgendaMappingDragging = ({
   openAdvancePermissionModal,
   openVoteMOdal,
   ediorRole,
+  advanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const dispatch = useDispatch();
@@ -135,7 +144,7 @@ const SubAgendaMappingDragging = ({
 
   //Function For removing Subagendas
   const handleCrossSubAjenda = (index, subIndex) => {
-    dispatch(showAgenItemsRemovedModal(true));
+    // dispatch(showAgenItemsRemovedModal(true));
     setAgendaItemRemovedIndex(index);
     setSubajendaRemoval(subIndex);
   };
@@ -238,12 +247,44 @@ const SubAgendaMappingDragging = ({
     }
   }, [currentLanguage]);
 
-  const EnableViewVoteModal = () => {
+  const EnableViewVoteModal = (record) => {
     dispatch(showviewVotesAgenda(true));
+    dispatch(GetCurrentAgendaDetails(record));
   };
 
-  const EnableCastVoteModal = () => {
+  const EnableCastVoteModal = async (record) => {
+    let Data = {
+      MeetingID: advanceMeetingModalID,
+      AgendaID: record.id ? record.id : record.subAgendaID,
+      AgendaVotingID: record.agendaVotingID,
+    };
+    await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
     dispatch(showCastVoteAgendaModal(true));
+    dispatch(GetCurrentAgendaDetails(record));
+  };
+
+  const startVoting = (record) => {
+    let Data = {
+      MeetingID: advanceMeetingModalID,
+      AgendaID: record.id ? record.id : record.subAgendaID,
+      AgendaVotingID: record.agendaVotingID,
+      DoVotingStart: true,
+    };
+    dispatch(
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+    );
+  };
+
+  const endVoting = (record) => {
+    let Data = {
+      MeetingID: advanceMeetingModalID,
+      AgendaID: record.id ? record.id : record.subAgendaID,
+      AgendaVotingID: record.agendaVotingID,
+      DoVotingStart: false,
+    };
+    dispatch(
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
+    );
   };
 
   return (
@@ -362,11 +403,15 @@ const SubAgendaMappingDragging = ({
                                             Number(
                                               subAgendaData.voteOwner.userid
                                             ) === Number(currentUserID) &&
-                                            subAgendaData.voteOwner ? (
+                                            !subAgendaData.voteOwner
+                                              ?.currentVotingClosed ? (
                                               <Button
                                                 text={t("Start-voting")}
                                                 className={
                                                   styles["startVotingButton"]
+                                                }
+                                                onClick={() =>
+                                                  startVoting(subAgendaData)
                                                 }
                                               />
                                             ) : Number(
@@ -376,11 +421,15 @@ const SubAgendaMappingDragging = ({
                                               Number(
                                                 subAgendaData.voteOwner.userid
                                               ) === Number(currentUserID) &&
-                                              !subAgendaData.voteOwner ? (
+                                              subAgendaData.voteOwner
+                                                ?.currentVotingClosed ? (
                                               <Button
                                                 text={t("End-voting")}
                                                 className={
                                                   styles["startVotingButton"]
+                                                }
+                                                onClick={() =>
+                                                  endVoting(subAgendaData)
                                                 }
                                               />
                                             ) : null}
@@ -393,14 +442,19 @@ const SubAgendaMappingDragging = ({
                                               Number(
                                                 subAgendaData.voteOwner.userid
                                               ) !== Number(currentUserID) &&
-                                              !subAgendaData.voteOwner &&
+                                              subAgendaData.voteOwner
+                                                ?.currentVotingClosed &&
                                               ediorRole.role !== "Organizer" ? (
                                               <Button
                                                 text={t("Cast-your-vote")}
                                                 className={
                                                   styles["CastYourVoteButton"]
                                                 }
-                                                onClick={EnableCastVoteModal}
+                                                onClick={() =>
+                                                  EnableCastVoteModal(
+                                                    subAgendaData
+                                                  )
+                                                }
                                               />
                                             ) : null}
                                             {Number(
@@ -411,14 +465,18 @@ const SubAgendaMappingDragging = ({
                                               Number(
                                                 subAgendaData.voteOwner.userid
                                               ) !== Number(currentUserID) &&
-                                              !subAgendaData.voteOwner &&
-                                              ediorRole.role === "Organizer" ? (
+                                              subAgendaData.voteOwner
+                                                ?.currentVotingClosed ? (
                                               <Button
                                                 text={t("View-votes")}
                                                 className={
                                                   styles["ViewVoteButton"]
                                                 }
-                                                onClick={EnableViewVoteModal}
+                                                onClick={() =>
+                                                  EnableViewVoteModal(
+                                                    subAgendaData
+                                                  )
+                                                }
                                               />
                                             ) : null}
                                           </Col>
