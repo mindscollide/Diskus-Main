@@ -183,8 +183,8 @@ const Agenda = ({
     dispatch(showImportPreviousAgendaModal(true));
   };
 
-  const handleSavedViewAgenda = () => {
-    setsavedViewAgenda(true);
+  const handleNextAgenda = () => {
+    // setsavedViewAgenda(true);
   };
 
   const EnableAgendaView = () => {
@@ -813,11 +813,11 @@ const Agenda = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                <Button
+                {/* <Button
                   text={t("Import-previous-agenda")}
                   className={styles["Agenda_Buttons"]}
                   onClick={handlePreviousAgenda}
-                />
+                /> */}
                 <Button
                   text={t("Cancel")}
                   className={styles["Agenda_Buttons"]}
@@ -828,16 +828,16 @@ const Agenda = ({
                   text={t("Save")}
                   className={styles["Agenda_Buttons"]}
                 />
-
+                {/* 
                 <Button
                   text={t("Save-and-publish")}
                   className={styles["Agenda_Buttons"]}
-                />
+                /> */}
 
                 <Button
-                  text={t("Save-and-next")}
+                  text={t("Next")}
                   className={styles["Save_Agenda_btn"]}
-                  onClick={handleSavedViewAgenda}
+                  onClick={handleNextAgenda}
                 />
               </Col>
             </Row>
