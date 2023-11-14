@@ -211,11 +211,12 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                           className="d-flex gap-2 align-items-center"
                         >
                           <img
-                            src={GroupIcon}
+                            src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
                             height="16.45px"
                             width="18.32px"
-                            draggable="false"
                             alt=""
+                            draggable="false"
+                            className={styles["Image_class_Agenda"]}
                           />
                           <span className={styles["NameDropDown"]}>
                             {MorganizerData.userName}
@@ -283,7 +284,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                           className="d-flex gap-2 align-items-center"
                         >
                           <img
-                            src={GroupIcon}
+                            src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
                             height="16.45px"
                             width="18.32px"
                             alt=""
