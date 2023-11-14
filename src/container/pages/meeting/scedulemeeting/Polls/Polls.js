@@ -408,7 +408,11 @@ const Polls = ({
   };
 
   useEffect(() => {
-    if (NewMeetingreducer.ResponseMessage !== "") {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" ||
+      NewMeetingreducer.ResponseMessage !== t("Record-not-found") ||
+      NewMeetingreducer.ResponseMessage !== t("Record-found")
+    ) {
       setOpen({
         ...open,
         flag: true,

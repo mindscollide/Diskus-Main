@@ -361,12 +361,12 @@ const MeetingMaterial = ({
             text={t("Clone-meeting")}
             className={styles["Cancel_Classname"]}
           /> */}
-          <Button
+          {/* <Button
             text={t("Cancel")}
             className={styles["Cancel_Classname"]}
             onClick={handleCancelButton}
-          />
-          <Button text={t("Save")} className={styles["Cancel_Classname"]} />
+          /> */}
+          {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} /> */}
           <Button
             text={t("Previous")}
             className={styles["Cancel_Classname"]}
