@@ -8,13 +8,18 @@ import { Pagination, Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
-import { Button, Table } from "../../../../../components/elements";
+import {
+  Button,
+  Table,
+  Notification,
+} from "../../../../../components/elements";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "./CreatePolls/Createpolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import {
+  CleareMessegeNewMeeting,
   GetAllPollsByMeetingIdApiFunc,
   showCancelPolls,
   showUnsavedPollsMeeting,
@@ -50,6 +55,10 @@ const Polls = ({
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
 
@@ -398,6 +407,26 @@ const Polls = ({
     dispatch(showCancelPolls(true));
   };
 
+  useEffect(() => {
+    if (NewMeetingreducer.ResponseMessage !== "") {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
+
   return (
     <>
       {afterViewPolls ? (
@@ -569,6 +598,11 @@ const Polls = ({
             {NewMeetingreducer.cancelPolls && (
               <CancelPolls setSceduleMeeting={setSceduleMeeting} />
             )}
+            <Notification
+              setOpen={setOpen}
+              open={open.flag}
+              message={open.message}
+            />
           </section>
         </>
       )}

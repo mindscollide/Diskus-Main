@@ -66,6 +66,12 @@ const ClearMessegeMeetingdetails = () => {
   };
 };
 
+const CleareMessegeNewMeeting = () => {
+  return {
+    type: actions.CLEAR_MEETING_MESSAGES,
+  };
+};
+
 const showAddUserModal = (response) => {
   return {
     type: actions.NEW_MEETING_ADDUSER_MODAL,
@@ -3606,7 +3612,7 @@ const showGetAllAgendaWiseMinutesFailed = (message) => {
   };
 };
 
-const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
+const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -3626,7 +3632,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, Data, t));
+          dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, Data, t, ID));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -4103,6 +4109,10 @@ const AddAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                   t("Record-saved")
                 )
               );
+              console.log(
+                response.data.responseResult,
+                "GetAllAgendaWiseMinutesApiFunc"
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4165,7 +4175,7 @@ const showSavedAgendaWiseDocumentFailed = (message) => {
   };
 };
 
-const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
+const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -4185,7 +4195,7 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, Data, t));
+          dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, Data, t, id));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -4204,7 +4214,7 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t) => {
                 )
               );
               let getAll = {
-                AgendaID: "1222",
+                AgendaID: id,
               };
               dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t));
             } else if (
@@ -6184,4 +6194,5 @@ export {
   ShowNextConfirmationModal,
   showPreviousConfirmationModal,
   cleareAllState,
+  CleareMessegeNewMeeting,
 };

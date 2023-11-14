@@ -33,6 +33,7 @@ import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
 import {
+  CleareMessegeNewMeeting,
   GetAllMeetingUserApiFunc,
   showUnsavedPollsMeeting,
 } from "../../../../../../store/actions/NewMeetingActions";
@@ -528,6 +529,26 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (NewMeetingreducer.ResponseMessage !== "") {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
 
   return (
     <>
