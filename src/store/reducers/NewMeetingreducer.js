@@ -91,6 +91,13 @@ const initialState = {
 
 const NewMeetingreducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.CLEAR_MEETING_MESSAGES: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: "",
+      };
+    }
     case actions.SEND_NOTIFICATION_ORGANIZORS_MODAL: {
       return {
         ...state,

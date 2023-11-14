@@ -3,7 +3,7 @@ import styles from "./Minutes.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../../../../components/elements";
+import { Button, Notification } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
 import { useRef } from "react";
@@ -21,6 +21,7 @@ import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
   ADDGeneralMinutesApiFunc,
+  CleareMessegeNewMeeting,
   DeleteGeneralMinuteDocumentsApiFunc,
   DeleteGeneralMinutesApiFunc,
   RetriveDocumentsMeetingGenralMinutesApiFunc,
@@ -666,6 +667,32 @@ const Minutes = ({
     dispatch(showPreviousConfirmationModal(true));
   };
 
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
+
   return (
     <section>
       <Row className="mt-3">
@@ -1186,6 +1213,7 @@ const Minutes = ({
           prevFlag={prevFlag}
         />
       )}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
     // <section>
     //   {NewMeetingreducer.afterImportState === true ? (

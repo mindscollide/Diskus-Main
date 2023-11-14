@@ -3,7 +3,7 @@ import styles from "./AgendaWise.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button } from "../../../../../../components/elements";
+import { Button, Notification } from "../../../../../../components/elements";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { useRef } from "react";
@@ -27,6 +27,7 @@ import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/acti
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
+  CleareMessegeNewMeeting,
   DeleteAgendaWiseMinutesApiFunc,
   DeleteAgendaWiseMinutesDocumentsApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
@@ -569,6 +570,32 @@ const AgendaWise = ({ currentMeeting }) => {
     setShowMore(!showMore);
   };
 
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
+
   return (
     <section>
       <Row className="mt-4">
@@ -1029,6 +1056,7 @@ const AgendaWise = ({ currentMeeting }) => {
           <Button text={t("Next")} className={styles["Button_General"]} />
         </Col>
       </Row>
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );
 };

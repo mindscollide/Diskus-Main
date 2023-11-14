@@ -6,6 +6,7 @@ import {
   Button,
   TextField,
   Checkbox,
+  Notification,
 } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -27,7 +28,10 @@ import makeAnimated from "react-select/animated";
 import Profile from "../../../../../../assets/images/newprofile.png";
 import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedEditPollsMeeting from "./UnsavedEditPollsMeeting/UnsavedEditPollsMeeting";
-import { showunsavedEditPollsMeetings } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  CleareMessegeNewMeeting,
+  showunsavedEditPollsMeetings,
+} from "../../../../../../store/actions/NewMeetingActions";
 import {
   convertGMTDateintoUTC,
   convertintoGMTCalender,
@@ -401,6 +405,32 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
     }
   }, [PollsReducer.Allpolls]);
 
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
+
   return (
     <section>
       <Row>
@@ -696,6 +726,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       {NewMeetingreducer.unsavedEditPollsMeeting && (
         <UnsavedEditPollsMeeting setEditPolls={setEditPolls} />
       )}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );
 };

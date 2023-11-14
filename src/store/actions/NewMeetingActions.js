@@ -66,6 +66,12 @@ const ClearMessegeMeetingdetails = () => {
   };
 };
 
+const CleareMessegeNewMeeting = () => {
+  return {
+    type: actions.CLEAR_MEETING_MESSAGES,
+  };
+};
+
 const showAddUserModal = (response) => {
   return {
     type: actions.NEW_MEETING_ADDUSER_MODAL,
@@ -6188,4 +6194,5 @@ export {
   ShowNextConfirmationModal,
   showPreviousConfirmationModal,
   cleareAllState,
+  CleareMessegeNewMeeting,
 };
