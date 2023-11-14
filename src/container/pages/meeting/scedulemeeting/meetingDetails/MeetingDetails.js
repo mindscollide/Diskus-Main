@@ -337,6 +337,7 @@ const MeetingDetails = ({
 
       let data = {
         MeetingDetails: {
+          MeetingID: Number(currentMeeting) !== 0 ? Number(currentMeeting) : 0,
           MeetingTitle: meetingDetails.MeetingTitle,
           MeetingType: meetingDetails.MeetingType,
           Location: meetingDetails.Location,
@@ -413,6 +414,7 @@ const MeetingDetails = ({
 
       let data = {
         MeetingDetails: {
+          MeetingID: 0,
           MeetingTitle: meetingDetails.MeetingTitle,
           MeetingType: meetingDetails.MeetingType,
           Location: meetingDetails.Location,

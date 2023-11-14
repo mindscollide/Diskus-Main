@@ -829,7 +829,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            getDocumentsAndFolderApi(navigate, statusID, t, no, order, sort)
+            getDocumentsAndFolderApi(navigate, statusID, t, no, sort, order)
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -932,7 +932,8 @@ const getDocumentsAndFolderApiScrollbehaviour = (
               navigate,
               statusID,
               t,
-              sRows
+              sRows,
+              filterValue
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1144,7 +1145,7 @@ const shareFilesApi = (navigate, FileData, t, setShareFile) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(shareFilesApi(navigate, FileData, t));
+          dispatch(shareFilesApi(navigate, FileData, t, setShareFile));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2276,7 +2277,7 @@ const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, no));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
