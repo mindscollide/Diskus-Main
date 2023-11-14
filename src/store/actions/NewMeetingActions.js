@@ -5169,6 +5169,7 @@ const getMeetingbyGroupApi = (navigate, t, Data) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          dispatch(getMeetingbyGroupApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -5259,6 +5260,7 @@ const setMeetingByGroupIDApi = (navigate, t, Data) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          dispatch(setMeetingByGroupIDApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -5364,6 +5366,7 @@ const getMeetingByCommitteeIDApi = (navigate, t, Data) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -5455,6 +5458,7 @@ const setMeetingbyCommitteeIDApi = (navigate, t, Data) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {

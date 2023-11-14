@@ -23,6 +23,7 @@ import {
 } from "../../../../../components/elements";
 import desh from "../../../../../assets/images/desh.svg";
 import {
+  containsStringandNumericCharacters,
   regexOnlyCharacters,
   urlPatternValidation,
   validateInput,
@@ -337,6 +338,7 @@ const MeetingDetails = ({
 
       let data = {
         MeetingDetails: {
+          MeetingID: Number(currentMeeting) !== 0 ? Number(currentMeeting) : 0,
           MeetingTitle: meetingDetails.MeetingTitle,
           MeetingType: meetingDetails.MeetingType,
           Location: meetingDetails.Location,
@@ -413,6 +415,7 @@ const MeetingDetails = ({
 
       let data = {
         MeetingDetails: {
+          MeetingID: 0,
           MeetingTitle: meetingDetails.MeetingTitle,
           MeetingType: meetingDetails.MeetingType,
           Location: meetingDetails.Location,
@@ -556,11 +559,11 @@ const MeetingDetails = ({
     let name = e.target.name;
     let value = e.target.value;
     if (name === "Meetingtitle") {
-      let valueCheck = validateInput(value);
+      let valueCheck = containsStringandNumericCharacters(value);
       if (valueCheck !== "") {
         setMeetingDetails({
           ...meetingDetails,
-          MeetingTitle: valueCheck,
+          MeetingTitle: valueCheck.trimStart(),
         });
       } else {
         setMeetingDetails({
