@@ -1569,5 +1569,11 @@
   "The-meeting-must-be-in-a-proposed-state": "The meeting must be in a proposed state",
   "The-user-must-be-an-organizer": "The user must be an organizer",
   "No-Meeting-Material": "No Meeting Material",
-  "No-record-found": "No Record Found"
+  "No-record-found": "No Record Found",
+  "Please-enter-video-link": "Please enter video link",
+  "Please-add-agenda-organizers-and-participants-to-publish-the-meeting": "Please Add Agenda,Organizers and Participants to Publish the Meeting",
+  "All-organizers": "All Organizers",
+  "All-agenda-organizer": "All Agenda Organizers",
+  "Please-enter-meeting-notes": "Please Enter Meeting Notes",
+  "Response-Message-is-required": "Response Message is required"
 }

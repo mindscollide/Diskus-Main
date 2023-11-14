@@ -238,7 +238,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         ext === "txt" ||
         ext === "jpg" ||
         ext === "jpeg" ||
-        ext === "gif"
+        ext === "gif" ||
+        ext === "csv"
       ) {
         let data;
         let sizezero;

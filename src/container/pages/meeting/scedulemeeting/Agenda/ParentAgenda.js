@@ -41,7 +41,11 @@ import { getRandomUniqueNumber } from "./drageFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { async } from "q";
-import { GetAgendaAndVotingInfo } from "../../../../../store/actions/MeetingAgenda_action";
+import {
+  GetAgendaAndVotingInfo,
+  GetCurrentAgendaDetails,
+  GetAgendaVotingDetails,
+} from "../../../../../store/actions/MeetingAgenda_action";
 
 const ParentAgenda = ({
   data,
@@ -155,13 +159,25 @@ const ParentAgenda = ({
     dispatch(showAdvancePermissionModal(true));
   };
 
-  const openVoteMOdal = async (AgendaID, agendaVotingID) => {
+  const openVoteMOdal = async (AgendaID, agendaVotingID, agendaDetails) => {
     let Data = {
       AgendaID: AgendaID,
       MeetingID: currentMeeting,
       AgendaVotingID: agendaVotingID,
     };
-    await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
+    let dataForAgendaDetails = {
+      AgendaVotingID: agendaVotingID,
+      MeetingID: currentMeeting,
+    };
+    if (Data.AgendaVotingID !== 0) {
+      await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
+      dispatch(showVoteAgendaModal(true));
+      dispatch(GetCurrentAgendaDetails(agendaDetails));
+      dispatch(GetAgendaVotingDetails(dataForAgendaDetails, navigate, t));
+    } else {
+      dispatch(GetCurrentAgendaDetails(agendaDetails));
+      dispatch(showVoteAgendaModal(true));
+    }
   };
 
   //Lock Functionality For SubAgendas Only
@@ -742,7 +758,8 @@ const ParentAgenda = ({
                                             ? ""
                                             : openVoteMOdal(
                                                 data.iD,
-                                                data.agendaVotingID
+                                                data.agendaVotingID,
+                                                data
                                               )
                                         }
                                       />

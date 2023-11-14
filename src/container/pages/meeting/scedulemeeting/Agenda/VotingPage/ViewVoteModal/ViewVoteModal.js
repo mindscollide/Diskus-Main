@@ -173,10 +173,10 @@ const ViewVoteModal = () => {
 
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let Data = { AgendaVotingID: 1, MeetingID: 1785 };
-    dispatch(ViewAgendaVotingResults(Data, navigate, t));
-  }, []);
+  // useEffect(() => {
+  //   let Data = { AgendaVotingID: 1, MeetingID: 1785 };
+  //   dispatch(ViewAgendaVotingResults(Data, navigate, t));
+  // }, []);
 
   useEffect(() => {
     if (

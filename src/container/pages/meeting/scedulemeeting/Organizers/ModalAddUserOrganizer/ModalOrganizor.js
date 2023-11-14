@@ -462,6 +462,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                                             src={`data:image/jpeg;base64,${data.displayPicture}`}
                                             width="33px"
                                             height="33px"
+                                            alt=""
                                           />
                                           <span
                                             className={styles["Name_cards"]}
@@ -477,6 +478,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                                             onClick={cancellAnyUser}
                                             draggable="false"
                                             style={{ cursor: "pointer" }}
+                                            alt=""
                                           />
                                         </Col>
                                       </Row>
@@ -496,27 +498,31 @@ const ModalOrganizor = ({ currentMeeting }) => {
         }
         ModalFooter={
           <>
+            {/* {membersOrganizers} */}
             <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["OverAll_styling"]}
+                className="d-flex justify-content-end"
               >
-                <Row className="mt-2">
+                {/* <Row className="mt-2">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
                     className="d-flex justify-content-end"
-                  >
-                    <Button
-                      text={t("Done")}
-                      className={styles["Done_btn_organizor_modal"]}
-                      onClick={saveOrganizers}
-                    />
-                  </Col>
-                </Row>
+                  > */}
+                {membersOrganizers.length > 0 && (
+                  <Button
+                    text={t("Done")}
+                    className={styles["Done_btn_organizor_modal"]}
+                    onClick={saveOrganizers}
+                  />
+                )}
+
+                {/* </Col> */}
+                {/* </Row> */}
               </Col>
             </Row>
           </>

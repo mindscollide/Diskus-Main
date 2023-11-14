@@ -453,7 +453,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         ext === "txt" ||
         ext === "jpg" ||
         ext === "jpeg" ||
-        ext === "gif"
+        ext === "gif" ||
+        ext === "csv"
       ) {
         let data;
         let sizezero;
