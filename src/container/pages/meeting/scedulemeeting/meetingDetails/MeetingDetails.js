@@ -1358,7 +1358,6 @@ const MeetingDetails = ({
                         labelClass="d-none"
                         name={"Link"}
                         change={HandleChange}
-                        maxLength={500}
                         value={
                           meetingDetails.IsVideoCall ? meetingDetails.Link : ""
                         }
@@ -1367,12 +1366,14 @@ const MeetingDetails = ({
                         <Col>
                           <p
                             className={
-                              error && meetingDetails.Link === ""
+                              error &&
+                              !meetingDetails.IsVideoCall &&
+                              meetingDetails.Link === ""
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
                             }
                           >
-                            {t("Please-enter-meeting-description")}
+                            {t("Please-enter-video-link")}
                           </p>
                         </Col>
                       </Row>
@@ -1515,6 +1516,7 @@ const MeetingDetails = ({
                                       draggable={false}
                                       src={desh}
                                       width="19.02px"
+                                      alt=""
                                     />
                                   </Col>
                                   <Col
@@ -1732,10 +1734,7 @@ const MeetingDetails = ({
                   <Col>
                     <p
                       className={
-                        error &&
-                        meetingDetails.ReminderFrequency === 0 &&
-                        meetingDetails.ReminderFrequencyTwo === 0 &&
-                        meetingDetails.ReminderFrequencyThree === 0
+                        error && meetingDetails.ReminderFrequency.value === 0
                           ? ` ${styles["errorMessage-inLogin"]} `
                           : `${styles["errorMessage-inLogin_hidden"]}`
                       }
@@ -1775,7 +1774,7 @@ const MeetingDetails = ({
                     <Col>
                       <p
                         className={
-                          error && meetingDetails.Notes === 0
+                          error && meetingDetails.Notes === ""
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
                         }
