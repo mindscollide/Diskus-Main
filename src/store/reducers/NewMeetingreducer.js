@@ -69,7 +69,7 @@ const initialState = {
   generalMinutesDocument: [],
   generalminutesDocumentForMeeting: [],
   addMinuteID: 0,
-  agendaWiseMinutesReducer: [],
+  agendaWiseMinutesReducer: null,
   userWiseMeetingProposed: [],
   agendaWiseMinuteID: 0,
   RetriveAgendaWiseDocuments: [],
@@ -91,6 +91,13 @@ const initialState = {
 
 const NewMeetingreducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.CLEAR_MEETING_MESSAGES: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: "",
+      };
+    }
     case actions.SEND_NOTIFICATION_ORGANIZORS_MODAL: {
       return {
         ...state,
@@ -975,6 +982,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        generalMinutes: [],
         ResponseMessage: action.ResponseMessage,
       };
     }
@@ -1212,6 +1220,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        agendaWiseMinutesReducer: null,
         ResponseMessage: action.message,
       };
     }

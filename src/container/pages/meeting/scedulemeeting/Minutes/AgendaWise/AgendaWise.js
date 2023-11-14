@@ -3,7 +3,7 @@ import styles from "./AgendaWise.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button } from "../../../../../../components/elements";
+import { Button, Notification } from "../../../../../../components/elements";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { useRef } from "react";
@@ -27,6 +27,7 @@ import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/acti
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
+  CleareMessegeNewMeeting,
   DeleteAgendaWiseMinutesApiFunc,
   DeleteAgendaWiseMinutesDocumentsApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
@@ -74,6 +75,7 @@ const AgendaWise = ({ currentMeeting }) => {
   const [agendaOptions, setAgendaOptions] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [showMoreIndex, setShowMoreIndex] = useState(0);
+  const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
       id: 0,
@@ -83,14 +85,9 @@ const AgendaWise = ({ currentMeeting }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: 1216,
+      MeetingID: currentMeeting,
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
-
-    let newData = {
-      AgendaID: "1222",
-    };
-    dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, newData, t));
   }, []);
 
   useEffect(() => {
@@ -116,9 +113,12 @@ const AgendaWise = ({ currentMeeting }) => {
           }
         );
         setAgendaOptions(NewData);
+        setAgendaID(NewData);
       }
     } catch {}
   }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList]);
+
+  console.log(agendaOptions, "agendaOptionsagendaOptions");
 
   useEffect(() => {
     try {
@@ -138,6 +138,8 @@ const AgendaWise = ({ currentMeeting }) => {
           }
         );
         setMessages(agendaWiseArr);
+      } else {
+        setMessages([]);
       }
     } catch {}
   }, [NewMeetingreducer.agendaWiseMinutesReducer]);
@@ -324,9 +326,16 @@ const AgendaWise = ({ currentMeeting }) => {
     });
   };
 
+  console.log(agendaID, "agendaIDagendaIDagendaID");
+  let id;
+  agendaID.map((data, index) => {
+    console.log(data, "handleAddClickAgendaWisehandleAddClickAgendaWise");
+    id = data.value;
+  });
+
   const handleAddClickAgendaWise = async () => {
     let Data = {
-      AgendaID: "1222",
+      AgendaID: id,
       MinuteText: addNoteFields.Description.value,
     };
     console.log(Data, "addNoteFieldsaddNoteFields");
@@ -360,7 +369,7 @@ const AgendaWise = ({ currentMeeting }) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t));
+    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, id));
 
     setFileAttachments([]);
     setPreviousFileIDs([]);
@@ -513,7 +522,7 @@ const AgendaWise = ({ currentMeeting }) => {
       }),
     };
     console.log(docsData, "messagesmessages");
-    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t));
+    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, id));
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -560,6 +569,26 @@ const AgendaWise = ({ currentMeeting }) => {
     setShowMoreIndex(index);
     setShowMore(!showMore);
   };
+
+  useEffect(() => {
+    if (NewMeetingreducer.ResponseMessage !== "") {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
 
   return (
     <section>
@@ -1021,6 +1050,7 @@ const AgendaWise = ({ currentMeeting }) => {
           <Button text={t("Next")} className={styles["Button_General"]} />
         </Col>
       </Row>
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );
 };
