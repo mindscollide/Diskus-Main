@@ -30,6 +30,7 @@ const AdvancePersmissionModal = () => {
   const [sidebarindex, setSidebarindex] = useState(0);
   const [selectedRole, setSelectedRole] = useState("All");
   const [subAgendaExpand, setsubAgendaExpand] = useState(false);
+  const [AgendaID, setAgendaID] = useState(0);
   // Initialize state for members data
   const [memberData, setMemberData] = useState([
     {
@@ -98,6 +99,7 @@ const AdvancePersmissionModal = () => {
 
   //SideBar Options Click
   const handleOptionsClickSideBar = (index, agendaID) => {
+    setAgendaID(agendaID);
     let NewData = {
       AgendaID: agendaID,
     };
@@ -123,7 +125,7 @@ const AdvancePersmissionModal = () => {
       });
     });
     let Data = {
-      AgendaID: "1223",
+      AgendaID: AgendaID,
       UserAttachmentPermissions: newarray,
     };
     console.log(Data, "AgendaIDAgendaID");
@@ -167,8 +169,9 @@ const AdvancePersmissionModal = () => {
             });
           });
           setMembers(agendaUserRightsarray);
+        } else {
+          setMembers([]);
         }
-        console.log(NewMeetingreducer, "agendaRightsagendaRights");
       }
     } catch {}
   }, [NewMeetingreducer.agendaRights]);
@@ -651,7 +654,6 @@ const AdvancePersmissionModal = () => {
                             }
                           })
                           .map((data, index) => {
-                            console.log(data, "isLastItemisLastItem");
                             const isLastItem = index === members.length - 1;
 
                             return (

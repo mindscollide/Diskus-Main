@@ -836,16 +836,27 @@ const SubAgendaMappingDragging = ({
                                                           <img
                                                             draggable={false}
                                                             src={Key}
+                                                            alt=""
                                                             width="24.07px"
-                                                            className="cursor-pointer"
                                                             height="24.09px"
-                                                            onClick={
+                                                            className={`cursor-pointer ${
                                                               parentIslockedCheck ||
                                                               subAgendaData.isLocked
-                                                                ? ""
-                                                                : openAdvancePermissionModal
-                                                            }
-                                                            alt=""
+                                                                ? "disabled"
+                                                                : ""
+                                                            }`}
+                                                            onClick={() => {
+                                                              if (
+                                                                !(
+                                                                  parentIslockedCheck ||
+                                                                  subAgendaData.isLocked
+                                                                )
+                                                              ) {
+                                                                openAdvancePermissionModal(
+                                                                  subAgendaData.subAgendaID
+                                                                );
+                                                              }
+                                                            }}
                                                           />
                                                           <img
                                                             alt=""
