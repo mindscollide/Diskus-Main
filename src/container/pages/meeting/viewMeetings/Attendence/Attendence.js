@@ -19,6 +19,9 @@ import whiteworkhome from "../../../../../assets/images/whitehomework.png";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 
 import { useSelector } from "react-redux";
+import ModalCancelAttendance from "./ModalCancelAttendence/ModalCancelAttendance";
+import { showAttendanceConfirmationModal } from "../../../../../store/actions/NewMeetingActions";
+import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
 const Attendence = ({
   setPolls,
   setMinutes,
@@ -34,7 +37,9 @@ const Attendence = ({
   const navigate = useNavigate();
 
   //reducer call from Attendance_Reducers
-  const { attendanceMeetingReducer } = useSelector((state) => state);
+  const { attendanceMeetingReducer, NewMeetingreducer } = useSelector(
+    (state) => state
+  );
   console.log(attendanceMeetingReducer, "attendanceMeetingReducer");
 
   let meetingID = Number(localStorage.getItem("meetingID"));
@@ -245,6 +250,10 @@ const Attendence = ({
       attendanceMeetingReducer.attendanceMeetings !== undefined &&
       attendanceMeetingReducer.attendanceMeetings.length > 0
     ) {
+      console.log(
+        attendanceMeetingReducer.attendanceMeetings,
+        "setAttendenceRowssetAttendenceRows"
+      );
       setAttendenceRows(attendanceMeetingReducer.attendanceMeetings);
     } else {
       setAttendenceRows([]);
@@ -295,7 +304,16 @@ const Attendence = ({
   };
 
   const handleCancelBtn = () => {
-    setCancelModalView(true);
+    let ReducerAttendeceData = deepEqual(
+      attendanceMeetingReducer.attendanceMeetings,
+      attendenceRows
+    );
+
+    if (ReducerAttendeceData) {
+      setAttendance(false);
+    } else {
+      dispatch(showAttendanceConfirmationModal(true));
+    }
   };
 
   return (
@@ -353,6 +371,9 @@ const Attendence = ({
       )}
 
       {attendanceMeetingReducer.Loading ? <Loader /> : null}
+      {NewMeetingreducer.attendanceConfirmationModal && (
+        <ModalCancelAttendance />
+      )}
     </>
   );
 };

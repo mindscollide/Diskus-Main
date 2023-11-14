@@ -6089,6 +6089,13 @@ const showPreviousConfirmationModal = (response) => {
   };
 };
 
+const showAttendanceConfirmationModal = (response) => {
+  return {
+    type: actions.ATTENDENCE_ASSURANCE_MODAL,
+    response: response,
+  };
+};
+
 export {
   getAllAgendaContributorApi,
   saveAgendaContributors,
@@ -6195,4 +6202,5 @@ export {
   showPreviousConfirmationModal,
   cleareAllState,
   CleareMessegeNewMeeting,
+  showAttendanceConfirmationModal,
 };
