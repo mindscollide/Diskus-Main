@@ -204,7 +204,7 @@ const SendNotificationOrganizer = () => {
                         : `${styles["errorMessage-inLogin_hidden"]}`
                     }
                   >
-                    {t("Response-Message-is-required")}
+                    {t("Please-enter-message")}
                   </span>
                 ) : null}
               </Col>
