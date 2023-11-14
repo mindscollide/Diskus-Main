@@ -3,7 +3,7 @@ import styles from "./AgendaWise.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button } from "../../../../../../components/elements";
+import { Button, Notification } from "../../../../../../components/elements";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { useRef } from "react";
@@ -23,6 +23,7 @@ import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/acti
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
+  CleareMessegeNewMeeting,
   DeleteAgendaWiseMinutesDocumentsApiFunc,
   GetAllAgendaWiseMinutesApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
@@ -549,11 +550,41 @@ const AgendaWise = ({ currentMeeting, ediorRole }) => {
     setShowMoreIndex(index);
     setShowMore(!showMore);
   };
+  console.log(
+    NewMeetingreducer.ResponseMessage,
+    NewMeetingreducer,
+    "ResponseMessage222"
+  );
+  useEffect(() => {
+    console.log(NewMeetingreducer.ResponseMessage, "ResponseMessage2");
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
 
   return (
     <section>
-      {ediorRole.role === "Organizer" &&
-      Number(ediorRole.status) === 10 ||
+      {(ediorRole.role === "Organizer" && Number(ediorRole.status) === 10) ||
       Number(ediorRole.status) === 9 ? (
         <>
           <Row className="mt-4">
@@ -819,13 +850,13 @@ const AgendaWise = ({ currentMeeting, ediorRole }) => {
                                       onClick={toggleExpansion}
                                     >
                                       {!expanded &&
-                                          data.minutesDetails.substring(0, 120)
-                                            ? t("See-more")
-                                            : ""}
-                                          {expanded &&
-                                          data.minutesDetails.substring(0, 120)
-                                            ? t("See-less")
-                                            : ""}
+                                      data.minutesDetails.substring(0, 120)
+                                        ? t("See-more")
+                                        : ""}
+                                      {expanded &&
+                                      data.minutesDetails.substring(0, 120)
+                                        ? t("See-less")
+                                        : ""}
                                     </span>
                                   </span>
                                 </Col>
@@ -981,8 +1012,8 @@ const AgendaWise = ({ currentMeeting, ediorRole }) => {
                                     </Col>
                                   </Row>
                                 </Col>
-                                {ediorRole.role === "Organizer" &&
-                                Number(ediorRole.status) === 10 ||
+                                {(ediorRole.role === "Organizer" &&
+                                  Number(ediorRole.status) === 10) ||
                                 Number(ediorRole.status) === 9 ? (
                                   <Col
                                     lg={4}
@@ -1003,8 +1034,8 @@ const AgendaWise = ({ currentMeeting, ediorRole }) => {
                               </Row>
                             </Col>
                           </Row>
-                          {ediorRole.role === "Organizer" &&
-                          Number(ediorRole.status) === 10 ||
+                          {(ediorRole.role === "Organizer" &&
+                            Number(ediorRole.status) === 10) ||
                           Number(ediorRole.status) === 9 ? (
                             <img
                               draggable={false}
@@ -1037,6 +1068,7 @@ const AgendaWise = ({ currentMeeting, ediorRole }) => {
           <Button text={t("Next")} className={styles["Button_General"]} /> */}
         </Col>
       </Row>
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );
 };

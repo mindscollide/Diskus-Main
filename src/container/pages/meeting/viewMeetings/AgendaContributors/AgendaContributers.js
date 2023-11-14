@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AgendaContributors.module.css";
 import { Col, Row } from "react-bootstrap";
-import { Button, Table } from "../../../../../components/elements";
+import {
+  Button,
+  Table,
+  Notification,
+} from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  CleareMessegeNewMeeting,
   getAllAgendaContributorApi,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -29,7 +34,10 @@ const AgendaContributers = ({
   const [cancelModalView, setCancelModalView] = useState(false);
 
   const [rowsData, setRowsData] = useState([]);
-
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -200,6 +208,31 @@ const AgendaContributers = ({
     },
   ];
 
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    } else {
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
   return (
     <>
       <section>
@@ -256,6 +289,8 @@ const AgendaContributers = ({
           setMeetingDetails={setAgendaContributors}
         />
       )}
+
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };
