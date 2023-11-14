@@ -860,7 +860,8 @@ const SubAgendaMappingDragging = ({
                                                                 ? ""
                                                                 : openVoteMOdal(
                                                                     subAgendaData.subAgendaID,
-                                                                    subAgendaData.agendaVotingID
+                                                                    subAgendaData.agendaVotingID,
+                                                                    subAgendaData
                                                                   )
                                                             }
                                                           />

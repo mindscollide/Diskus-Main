@@ -670,6 +670,15 @@ const Agenda = ({
         }),
         3000
       );
+    } else if (MeetingAgendaReducer.ResponseMessage === t("Record-updated")) {
+      setTimeout(
+        setOpen({
+          ...open,
+          flag: true,
+          message: "Record Updated",
+        }),
+        3000
+      );
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);

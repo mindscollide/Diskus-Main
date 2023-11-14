@@ -87,8 +87,8 @@ const VotingPage = () => {
           <Button text={t("Next")} className={styles["Next_button"]} />
         </Col>
       </Row>
-      {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
-      {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
+      {/* {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />} */}
+      {/* {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />} */}
     </section>
   );
 };

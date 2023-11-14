@@ -13,8 +13,8 @@ const initialState = {
   MeetingAgendaFolderID: 0,
   UploadDocumentsResponse: null,
   SaveFilesResponse: null,
-
   SaveUpdateAgendaData: [],
+  GetCurrentAgendaDetails: [],
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -298,6 +298,34 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         // Loading: false,
         UploadDocumentsResponse: [],
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.START_END_AGENDAVOTING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.START_END_AGENDAVOTING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.START_END_AGENDAVOTING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_CURRENT_AGENDA_DETAILS: {
+      return {
+        ...state,
+        GetCurrentAgendaDetails: action.response,
       };
     }
 
