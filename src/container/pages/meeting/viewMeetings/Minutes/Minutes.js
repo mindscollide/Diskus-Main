@@ -500,7 +500,7 @@ const Minutes = ({
       const isDescriptionEmpty = addNoteFields.Description.value === "";
       const areFileAttachmentsEmpty = fileAttachments.length === 0;
 
-      if (isDescriptionEmpty && areFileAttachmentsEmpty) {
+      if (isDescriptionEmpty && areFileAttachmentsEmpty && isEdit === false) {
         console.log(
           addNoteFields.Description.value,
           "setSceduleMeetingsetSceduleMeeting"
@@ -525,12 +525,9 @@ const Minutes = ({
         };
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       } else {
-        // Your code when either description or file attachments are not empty
         dispatch(showUnsaveMinutesFileUpload(true));
       }
-    } catch (error) {
-      // Handle errors appropriately
-    }
+    } catch (error) {}
   };
 
   const handlePreviousButton = () => {
