@@ -20,7 +20,10 @@ import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonM
 
 import { useSelector } from "react-redux";
 import ModalCancelAttendance from "./ModalCancelAttendence/ModalCancelAttendance";
-import { showAttendanceConfirmationModal } from "../../../../../store/actions/NewMeetingActions";
+import {
+  searchNewUserMeeting,
+  showAttendanceConfirmationModal,
+} from "../../../../../store/actions/NewMeetingActions";
 import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
 const Attendence = ({
   setPolls,
@@ -35,6 +38,10 @@ const Attendence = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   //reducer call from Attendance_Reducers
   const { attendanceMeetingReducer, NewMeetingreducer } = useSelector(
@@ -309,8 +316,31 @@ const Attendence = ({
       attendenceRows
     );
 
+    console.log(
+      ReducerAttendeceData,
+      "ReducerAttendeceDataReducerAttendeceData"
+    );
+
     if (ReducerAttendeceData) {
+      console.log(
+        ReducerAttendeceData,
+        "ReducerAttendeceDataReducerAttendeceData"
+      );
+
+      setViewAdvanceMeetingModal(false);
       setAttendance(false);
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber:
+          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
     } else {
       dispatch(showAttendanceConfirmationModal(true));
     }
@@ -372,7 +402,10 @@ const Attendence = ({
 
       {attendanceMeetingReducer.Loading ? <Loader /> : null}
       {NewMeetingreducer.attendanceConfirmationModal && (
-        <ModalCancelAttendance />
+        <ModalCancelAttendance
+          setAttendance={setAttendance}
+          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+        />
       )}
     </>
   );

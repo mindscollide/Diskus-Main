@@ -3,16 +3,26 @@ import styles from "./ModalCancelAttendance.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { showAttendanceConfirmationModal } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  searchNewUserMeeting,
+  showAttendanceConfirmationModal,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
-const ModalCancelAttendance = () => {
+const ModalCancelAttendance = ({
+  setAttendance,
+  setViewAdvanceMeetingModal,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleNOFunctionality = () => {
     dispatch(showAttendanceConfirmationModal(false));
@@ -20,6 +30,19 @@ const ModalCancelAttendance = () => {
 
   const handleYesFunctionality = () => {
     dispatch(showAttendanceConfirmationModal(false));
+    setAttendance(false);
+    setViewAdvanceMeetingModal(false);
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
   return (
     <section>
