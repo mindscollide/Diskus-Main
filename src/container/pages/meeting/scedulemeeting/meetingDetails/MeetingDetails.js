@@ -1446,7 +1446,16 @@ const MeetingDetails = ({
                                           : false
                                       }
                                     />
-                                    <Row>
+                                    <p
+                                      className={
+                                        error && data.selectedOption === ""
+                                          ? ` ${styles["errorMessage-inLogin"]} `
+                                          : `${styles["errorMessage-inLogin_hidden"]}`
+                                      }
+                                    >
+                                      {t("Scheduled-date-is-required")}
+                                    </p>
+                                    {/* <Row>
                                       <Col>
                                         <p
                                           className={
@@ -1458,7 +1467,7 @@ const MeetingDetails = ({
                                           {t("Please-select-data-and-time")}
                                         </p>
                                       </Col>
-                                    </Row>
+                                    </Row> */}
                                   </Col>
                                   <Col
                                     lg={3}
@@ -1505,6 +1514,15 @@ const MeetingDetails = ({
                                           : false
                                       }
                                     />
+                                    <p
+                                      className={
+                                        error && data.startTime === ""
+                                          ? ` ${styles["errorMessage-inLogin"]} `
+                                          : `${styles["errorMessage-inLogin_hidden"]}`
+                                      }
+                                    >
+                                      {t("start-time-is-required")}
+                                    </p>
                                   </Col>
                                   <Col
                                     lg={1}
@@ -1560,6 +1578,15 @@ const MeetingDetails = ({
                                           : false
                                       }
                                     />
+                                    <p
+                                      className={
+                                        error && data.endTime === ""
+                                          ? ` ${styles["errorMessage-inLogin"]} `
+                                          : `${styles["errorMessage-inLogin_hidden"]}`
+                                      }
+                                    >
+                                      {t("end-time-is-required")}
+                                    </p>
                                   </Col>
                                   <Col
                                     lg={1}
@@ -1588,22 +1615,6 @@ const MeetingDetails = ({
                                     )}
                                   </Col>
                                 </Row>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col>
-                                <p
-                                  className={
-                                    error &&
-                                    rows.selectedOption === "" &&
-                                    rows.startDate === "" &&
-                                    rows.endDate === ""
-                                      ? ` ${styles["errorMessage-inLogin"]} `
-                                      : `${styles["errorMessage-inLogin_hidden"]}`
-                                  }
-                                >
-                                  {t("Please-select-data-and-time")}
-                                </p>
                               </Col>
                             </Row>
                           </>
@@ -1637,6 +1648,7 @@ const MeetingDetails = ({
                                 draggable={false}
                                 src={plusFaddes}
                                 width="15.87px"
+                                alt=""
                                 height="15.87px"
                               />
                               <span className={styles["Add_dates_label"]}>
