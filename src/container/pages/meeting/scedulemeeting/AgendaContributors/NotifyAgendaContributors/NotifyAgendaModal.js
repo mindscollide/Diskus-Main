@@ -159,7 +159,7 @@ const NotifyAgendaModal = ({
                 {NotifyMessageError && notifyMessageField === "" ? (
                   <span
                     className={
-                      NotifyMessageError && notifyOrganizerData.Messege === ""
+                      NotifyMessageError && notifyMessageField === ""
                         ? `${styles["errorMessage-inLogin"]}`
                         : `${styles["errorMessage-inLogin_hidden"]}`
                     }
