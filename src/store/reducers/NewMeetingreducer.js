@@ -733,7 +733,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getPollsMeetingID: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -741,7 +741,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -757,7 +757,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getMeetingusers: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -765,7 +765,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -780,7 +780,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -788,7 +788,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -804,7 +804,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         setMeetingProposeDate: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -812,7 +812,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -828,7 +828,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: true,
         getAllProposedDates: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -836,7 +836,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -852,7 +852,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         meetingResponse: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -860,7 +860,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -877,7 +877,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         meetingMaterial: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -886,7 +886,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         meetingMaterial: [],
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -901,7 +901,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -909,7 +909,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -925,7 +925,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         agendaRights: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -934,7 +934,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         agendaRights: null,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -950,7 +950,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         attachmentsPermission: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -958,7 +958,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -974,7 +974,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         generalMinutes: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -983,7 +983,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         generalMinutes: [],
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1237,7 +1237,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         userWiseMeetingProposed: action.response,
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 
@@ -1246,7 +1246,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         userWiseMeetingProposed: [],
-        ResponseMessage: action.ResponseMessage,
+        ResponseMessage: action.message,
       };
     }
 

@@ -550,8 +550,13 @@ const AgendaWise = ({ currentMeeting, ediorRole }) => {
     setShowMoreIndex(index);
     setShowMore(!showMore);
   };
-
+  console.log(
+    NewMeetingreducer.ResponseMessage,
+    NewMeetingreducer,
+    "ResponseMessage222"
+  );
   useEffect(() => {
+    console.log(NewMeetingreducer.ResponseMessage, "ResponseMessage2");
     if (
       NewMeetingreducer.ResponseMessage !== "" &&
       NewMeetingreducer.ResponseMessage !== t("Data-available") &&

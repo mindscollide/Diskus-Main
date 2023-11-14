@@ -496,7 +496,11 @@ const Minutes = ({
   const handlePreviousButton = () => {
     dispatch(showPreviousConfirmationModal(true));
   };
-
+  console.log(
+    NewMeetingreducer.ResponseMessage,
+    NewMeetingreducer,
+    "ResponseMessage222"
+  );
   useEffect(() => {
     if (
       NewMeetingreducer.ResponseMessage !== "" &&
