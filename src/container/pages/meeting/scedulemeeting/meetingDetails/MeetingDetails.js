@@ -284,7 +284,17 @@ const MeetingDetails = ({
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
     if (isValidRow(lastRow)) {
-      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+      setRows([
+        ...rows,
+        {
+          selectedOption: "",
+          dateForView: "",
+          startDate: "",
+          startTime: "",
+          endDate: "",
+          endTime: "",
+        },
+      ]);
     }
   };
 
@@ -1516,7 +1526,7 @@ const MeetingDetails = ({
                                     />
                                     <p
                                       className={
-                                        error && data.startTime === ""
+                                        error && data.startDate === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
                                       }
@@ -1580,7 +1590,7 @@ const MeetingDetails = ({
                                     />
                                     <p
                                       className={
-                                        error && data.endTime === ""
+                                        error && data.endDate === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
                                       }

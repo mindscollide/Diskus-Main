@@ -1122,7 +1122,7 @@
   "end-time-is-required": "end time is required",
   "start-time-is-required": "start time is required",
   "Scheduled-date-is-required": "Scheduled date is required",
-  "At-least-one-primary-organize-is-required": "At least one primary organize is required",
+  "At-least-one-primary-organizer-is-required": "At least one primary organizer is required",
   "Primary-organizer-doesn't-deleted": "Primary organizer doesn't deleted",
   "Role-is-required": "Role is required"
 }

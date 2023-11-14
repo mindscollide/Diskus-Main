@@ -5896,7 +5896,7 @@ const UpdateMeetingUserForAgendaContributor = (
                     Title: data.Title,
                     AgendaListRightsAll: data.AgendaListRightsAll,
                     MeetingID:
-                      currentMeeting !== null ? Number(currentMeeting) : 1686,
+                      currentMeeting !== null ? Number(currentMeeting) : 0,
                     IsContributorNotified: data.isContributedNotified,
                   });
                 });
@@ -5977,7 +5977,8 @@ const UpdateMeetingUserForOrganizers = (
   saveMeetingFlag,
   editMeetingFlag,
   rowsData,
-  currentMeeting
+  currentMeeting,
+  isEdit
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
@@ -6006,7 +6007,8 @@ const UpdateMeetingUserForOrganizers = (
               saveMeetingFlag,
               editMeetingFlag,
               rowsData,
-              currentMeeting
+              currentMeeting,
+              isEdit
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -6034,7 +6036,7 @@ const UpdateMeetingUserForOrganizers = (
                   UserID: item.userID,
                 })),
                 MeetingID: currentMeeting,
-                IsOrganizerAddFlow: true,
+                IsOrganizerAddFlow: isEdit === 1 ? true : false,
                 NotificationMessage: rowsData[0].NotificationMessage,
               };
               dispatch(
