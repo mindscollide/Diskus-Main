@@ -49,6 +49,7 @@ import {
 } from "../../../../../commen/functions/date_formater";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import NextModal from "./NextModal/NextModal";
+import { areAllValuesNotEmpty } from "../../../../../commen/functions/CompareArrayObjectValues";
 
 const MeetingDetails = ({
   setorganizers,
@@ -403,10 +404,9 @@ const MeetingDetails = ({
       meetingDetails.MeetingType !== 0 &&
       meetingDetails.Location !== "" &&
       meetingDetails.Description !== "" &&
-      newArr.length > 0 &&
+      areAllValuesNotEmpty(newArr) &&
       newReminderData.length > 0 &&
-      meetingDetails.Notes !== "" &&
-      meetingDetails.Link !== ""
+      meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       // Check if RecurringOptions.value is defined and use it
@@ -482,7 +482,7 @@ const MeetingDetails = ({
       meetingDetails.MeetingType !== 0 &&
       meetingDetails.Location !== "" &&
       meetingDetails.Description !== "" &&
-      newArr.length > 0 &&
+      areAllValuesNotEmpty(newArr) &&
       newReminderData.length > 0 &&
       meetingDetails.Notes !== ""
     ) {
