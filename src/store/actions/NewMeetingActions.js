@@ -2376,7 +2376,7 @@ const meetingMaterialFail = (message) => {
 };
 
 //Aun work on meeting Material Main API
-const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
+const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(meetingMaterialInit());
@@ -2394,7 +2394,7 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
-          dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData));
+          dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, id));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2407,12 +2407,8 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows) => {
                   t("Record-found")
                 )
               );
-              let newID;
-              rows.map((data, index) => {
-                newID = data.ID;
-              });
               let NewData = {
-                AgendaID: "1222",
+                AgendaID: id,
               };
               dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
             } else if (

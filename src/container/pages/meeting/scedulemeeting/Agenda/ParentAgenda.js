@@ -149,12 +149,12 @@ const ParentAgenda = ({
     setMainAgendaRemovalIndex(index);
   };
 
-  const openAdvancePermissionModal = async () => {
+  const openAdvancePermissionModal = async (id) => {
     let meetingMaterialData = {
       MeetingID: currentMeeting,
     };
     await dispatch(
-      getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows)
+      getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
     );
     dispatch(showAdvancePermissionModal(true));
   };
@@ -739,12 +739,15 @@ const ParentAgenda = ({
                                         alt=""
                                         width="24.07px"
                                         height="24.09px"
-                                        className="cursor-pointer"
-                                        onClick={
-                                          data.isLocked
-                                            ? ""
-                                            : openAdvancePermissionModal
-                                        }
+                                        className={`cursor-pointer ${
+                                          data.isLocked ? "locked-cursor" : ""
+                                        }`}
+                                        role="button"
+                                        onClick={() => {
+                                          if (!data.isLocked) {
+                                            openAdvancePermissionModal(data.iD);
+                                          }
+                                        }}
                                       />
                                       <img
                                         alt=""
