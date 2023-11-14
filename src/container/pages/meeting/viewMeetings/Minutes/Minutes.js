@@ -25,6 +25,7 @@ import {
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
   getAllGeneralMinutesApiFunc,
+  searchNewUserMeeting,
   showPreviousConfirmationModal,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
@@ -46,6 +47,9 @@ const Minutes = ({
 }) => {
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
   const { NewMeetingreducer } = useSelector((state) => state);
   const editorRef = useRef(null);
   const { Dragger } = Upload;
@@ -68,6 +72,7 @@ const Minutes = ({
     flag: false,
     message: "",
   });
+
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
       value: "",
@@ -131,6 +136,7 @@ const Minutes = ({
         if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
           let newarr = [];
           NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
+            console.log(data, "generalMinutesgeneralMinutes");
             newarr.push(data);
             setMinuteID(data.minuteID);
           });
@@ -490,7 +496,41 @@ const Minutes = ({
   };
 
   const handleUNsaveChangesModal = () => {
-    dispatch(showUnsaveMinutesFileUpload(true));
+    try {
+      const isDescriptionEmpty = addNoteFields.Description.value === "";
+      const areFileAttachmentsEmpty = fileAttachments.length === 0;
+
+      if (isDescriptionEmpty && areFileAttachmentsEmpty) {
+        console.log(
+          addNoteFields.Description.value,
+          "setSceduleMeetingsetSceduleMeeting"
+        );
+
+        // Your code when both description and file attachments are empty
+        setMinutes(false);
+        setSceduleMeeting(false);
+        setViewAdvanceMeetingModal(false);
+        dispatch(showUnsaveMinutesFileUpload(false));
+
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      } else {
+        // Your code when either description or file attachments are not empty
+        dispatch(showUnsaveMinutesFileUpload(true));
+      }
+    } catch (error) {
+      // Handle errors appropriately
+    }
   };
 
   const handlePreviousButton = () => {
