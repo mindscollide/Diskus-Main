@@ -256,7 +256,7 @@ const Minutes = ({
           });
           setMessages(newarr);
         }
-      }
+      } else setMessages([]);
     } catch {}
   }, [NewMeetingreducer.generalMinutes]);
 

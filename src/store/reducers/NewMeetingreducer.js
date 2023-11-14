@@ -975,6 +975,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        generalMinutes: [],
         ResponseMessage: action.ResponseMessage,
       };
     }
