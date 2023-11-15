@@ -692,7 +692,6 @@ const Organizers = ({
             userName: organizer.userName,
             NotificationMessage: organizer.NotificationMessage,
           });
-          setNotificationMessage(organizer.NotificationMessage);
         }
       });
 
