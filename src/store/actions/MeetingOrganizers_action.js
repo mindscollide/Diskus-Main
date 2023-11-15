@@ -360,6 +360,42 @@ const UpdateOrganizersMeeting = (
               dispatch(
                 updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updateOrganizerMeetingStatus_fail(
+                  t("Add-meeting-agenda-to-publish")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updateOrganizerMeetingStatus_fail(
+                  t("Add-meeting-organizers-to-publish")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updateOrganizerMeetingStatus_fail(
+                  t("Add-meeting-participants-to-publish")
+                )
+              );
             } else {
               dispatch(
                 updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))

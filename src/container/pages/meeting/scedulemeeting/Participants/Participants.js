@@ -4,7 +4,12 @@ import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import addmore from "../../../../../assets/images/addmore.png";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { Col, Row } from "react-bootstrap";
-import { Button, Table, TextField } from "../../../../../components/elements";
+import {
+  Button,
+  Notification,
+  Table,
+  TextField,
+} from "../../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +56,10 @@ const Participants = ({
   const [editableSave, setEditableSave] = useState(0);
   const [flag, setFlag] = useState(4);
   const [prevFlag, setprevFlag] = useState(4);
-
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
   const [rspvRows, setrspvRows] = useState([]);
   //open row icon cross modal
   const openCrossIconModal = () => {
@@ -383,6 +391,9 @@ const Participants = ({
   };
 
   const handleSaveparticpants = () => {
+    let findshouldnotempty = rspvRows.every(
+      (newData, index) => Object.keys(newData.participantRole).length > 0
+    );
     let newarry = [];
     let copyData = [...rspvRows];
     copyData.map((data, index) => {
@@ -395,16 +406,23 @@ const Participants = ({
       UpdatedUsers: newarry,
     };
 
-    dispatch(
-      UpdateMeetingUserApiFunc(
-        navigate,
-        Data,
-        t,
-        rspvRows,
-        editableSave,
-        currentMeeting
-      )
-    );
+    if (findshouldnotempty) {
+      dispatch(
+        UpdateMeetingUserApiFunc(
+          navigate,
+          Data,
+          t,
+          rspvRows,
+          editableSave,
+          currentMeeting
+        )
+      );
+    } else {
+      setOpen({
+        message: t("Role-is-required"),
+        open: true,
+      });
+    }
   };
 
   useEffect(() => {
@@ -586,6 +604,11 @@ const Participants = ({
               prevFlag={prevFlag}
             />
           )}
+          <Notification
+            message={open.message}
+            setOpen={setOpen}
+            open={open.open}
+          />
         </>
       )}
     </>

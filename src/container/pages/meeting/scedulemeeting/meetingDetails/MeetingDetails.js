@@ -49,6 +49,7 @@ import {
 } from "../../../../../commen/functions/date_formater";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import NextModal from "./NextModal/NextModal";
+import { areAllValuesNotEmpty } from "../../../../../commen/functions/CompareArrayObjectValues";
 
 const MeetingDetails = ({
   setorganizers,
@@ -283,7 +284,17 @@ const MeetingDetails = ({
   const addRow = () => {
     const lastRow = rows[rows.length - 1];
     if (isValidRow(lastRow)) {
-      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+      setRows([
+        ...rows,
+        {
+          selectedOption: "",
+          dateForView: "",
+          startDate: "",
+          startTime: "",
+          endDate: "",
+          endTime: "",
+        },
+      ]);
     }
   };
 
@@ -403,10 +414,9 @@ const MeetingDetails = ({
       meetingDetails.MeetingType !== 0 &&
       meetingDetails.Location !== "" &&
       meetingDetails.Description !== "" &&
-      newArr.length > 0 &&
+      areAllValuesNotEmpty(newArr) &&
       newReminderData.length > 0 &&
-      meetingDetails.Notes !== "" &&
-      meetingDetails.Link !== ""
+      meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       // Check if RecurringOptions.value is defined and use it
@@ -482,7 +492,7 @@ const MeetingDetails = ({
       meetingDetails.MeetingType !== 0 &&
       meetingDetails.Location !== "" &&
       meetingDetails.Description !== "" &&
-      newArr.length > 0 &&
+      areAllValuesNotEmpty(newArr) &&
       newReminderData.length > 0 &&
       meetingDetails.Notes !== ""
     ) {
@@ -1446,7 +1456,16 @@ const MeetingDetails = ({
                                           : false
                                       }
                                     />
-                                    <Row>
+                                    <p
+                                      className={
+                                        error && data.selectedOption === ""
+                                          ? ` ${styles["errorMessage-inLogin"]} `
+                                          : `${styles["errorMessage-inLogin_hidden"]}`
+                                      }
+                                    >
+                                      {t("Scheduled-date-is-required")}
+                                    </p>
+                                    {/* <Row>
                                       <Col>
                                         <p
                                           className={
@@ -1458,7 +1477,7 @@ const MeetingDetails = ({
                                           {t("Please-select-data-and-time")}
                                         </p>
                                       </Col>
-                                    </Row>
+                                    </Row> */}
                                   </Col>
                                   <Col
                                     lg={3}
@@ -1505,6 +1524,15 @@ const MeetingDetails = ({
                                           : false
                                       }
                                     />
+                                    <p
+                                      className={
+                                        error && data.startDate === ""
+                                          ? ` ${styles["errorMessage-inLogin"]} `
+                                          : `${styles["errorMessage-inLogin_hidden"]}`
+                                      }
+                                    >
+                                      {t("start-time-is-required")}
+                                    </p>
                                   </Col>
                                   <Col
                                     lg={1}
@@ -1560,6 +1588,15 @@ const MeetingDetails = ({
                                           : false
                                       }
                                     />
+                                    <p
+                                      className={
+                                        error && data.endDate === ""
+                                          ? ` ${styles["errorMessage-inLogin"]} `
+                                          : `${styles["errorMessage-inLogin_hidden"]}`
+                                      }
+                                    >
+                                      {t("end-time-is-required")}
+                                    </p>
                                   </Col>
                                   <Col
                                     lg={1}
@@ -1588,22 +1625,6 @@ const MeetingDetails = ({
                                     )}
                                   </Col>
                                 </Row>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col>
-                                <p
-                                  className={
-                                    error &&
-                                    rows.selectedOption === "" &&
-                                    rows.startDate === "" &&
-                                    rows.endDate === ""
-                                      ? ` ${styles["errorMessage-inLogin"]} `
-                                      : `${styles["errorMessage-inLogin_hidden"]}`
-                                  }
-                                >
-                                  {t("Please-select-data-and-time")}
-                                </p>
                               </Col>
                             </Row>
                           </>
@@ -1637,6 +1658,7 @@ const MeetingDetails = ({
                                 draggable={false}
                                 src={plusFaddes}
                                 width="15.87px"
+                                alt=""
                                 height="15.87px"
                               />
                               <span className={styles["Add_dates_label"]}>
