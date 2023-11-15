@@ -35,6 +35,7 @@ import {
   TextField,
   ResultMessage,
   Loader,
+  Notification,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
 
@@ -77,14 +78,18 @@ import CustomPagination from "../../../commen/functions/customPagination/Paginat
 import ViewParticipantsDates from "./scedulemeeting/Participants/ViewParticipantsDates/ViewParticipantsDates";
 import ViewMeetingModal from "./viewMeetings/ViewMeetingModal";
 import OrganizerViewModal from "./scedulemeeting/Organizers/OrganizerViewModal/OrganizerViewModal";
-import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
+import {
+  UpdateOrganizersMeeting,
+  clearResponseMessage,
+} from "../../../store/actions/MeetingOrganizers_action";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const { talkStateData, downloadReducer } = useSelector((state) => state);
+  const { talkStateData, downloadReducer, MeetingOrganizersReducer } =
+    useSelector((state) => state);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -116,7 +121,10 @@ const NewMeeting = () => {
   const [viewFlag, setViewFlag] = useState(false);
   const [currentMeeting, setCurrentMeetingID] = useState(0);
   const [isEditMeeting, setEditMeeting] = useState(false);
-
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
 
@@ -1076,7 +1084,26 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingPageCurrent", current);
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
-
+  useEffect(() => {
+    if (
+      MeetingOrganizersReducer.ResponseMessage !== "" &&
+      MeetingOrganizersReducer.ResponseMessage !== undefined &&
+      MeetingOrganizersReducer.ResponseMessage !== t("Record-found") &&
+      MeetingOrganizersReducer.ResponseMessage !== t("No-records-found")
+    ) {
+      setOpen({
+        message: MeetingOrganizersReducer.ResponseMessage,
+        open: true,
+      });
+      setTimeout(() => {
+        setOpen({
+          message: "",
+          open: false,
+        });
+        dispatch(clearResponseMessage(""));
+      }, 4000);
+    }
+  }, [MeetingOrganizersReducer.ResponseMessage]);
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
@@ -1437,6 +1464,7 @@ const NewMeeting = () => {
       ) : null}
 
       {downloadReducer.Loading ? <Loader /> : null}
+      <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </section>
   );
 };
