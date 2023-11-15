@@ -318,9 +318,6 @@ const Agenda = ({
       }
 
       if (row.presenterID === 0) {
-        // console.log(
-        //   `Parent object presenterID is missing at index ${rowIndex}`
-        // );
         setTimeout(
           setOpen({
             ...open,

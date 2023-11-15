@@ -217,8 +217,11 @@ const saveAgendaVoting_fail = (message) => {
     message: message,
   };
 };
-const SaveAgendaVoting = (Data, navigate, t) => {
+const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let getAgendaData = {
+    MeetingID: currentMeeting,
+  };
   return (dispatch) => {
     dispatch(saveAgendaVoting_init());
     let form = new FormData();
@@ -250,6 +253,9 @@ const SaveAgendaVoting = (Data, navigate, t) => {
                   response.data.responseResult,
                   t("Record-saved")
                 )
+              );
+              dispatch(
+                GetAdvanceMeetingAgendabyMeetingID(getAgendaData, navigate, t)
               );
             } else if (
               response.data.responseResult.responseMessage
