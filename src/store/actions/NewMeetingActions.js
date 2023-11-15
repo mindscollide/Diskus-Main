@@ -6032,7 +6032,6 @@ const UpdateMeetingUserForOrganizers = (
                 )
               );
               if (editFlag === 2) {
-                let editNotify;
                 let Data = {
                   MeetingOrganizers: rowsData.map((item) => {
                     console.log(item, "itemitemitemitem");
@@ -6048,7 +6047,7 @@ const UpdateMeetingUserForOrganizers = (
                   NotificationMessage: notificationMessage,
                 };
                 console.log(Data, "itemitemitemitem");
-                console.log(editNotify, "itemitemitemitem");
+                console.log(notificationMessage, "itemitemitemitem");
 
                 dispatch(
                   SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
@@ -6056,7 +6055,6 @@ const UpdateMeetingUserForOrganizers = (
                 dispatch(saveMeetingFlag(false));
                 dispatch(editMeetingFlag(false));
               } else {
-                let Notfymessege;
                 let Data = {
                   MeetingOrganizers: rowsData.map((item) => {
                     console.log(item, "itemitemitemitem");
