@@ -34,6 +34,8 @@ import {
   CreateToDoList,
   GetTodoListByUser,
   HideNotificationTodo,
+  uploadDocumentsTaskApi,
+  saveTaskDocumentsAndAssigneesApi,
 } from "./../../store/actions/ToDoList_action";
 import { useDispatch, useSelector } from "react-redux";
 import TodoList from "../pages/todolist/Todolist";
@@ -117,6 +119,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [assignees, setAssignees] = useState([]);
   const [taskAssigneeLength, setTaskAssigneeLength] = useState(false);
   const [taskAssigneeApiData, setTaskAssigneeApiData] = useState([]);
+  const [createTaskID, setCreateTaskID] = useState(0);
 
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
@@ -499,110 +502,79 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         message: t("Please-select-title-for-the-task"),
       });
     } else {
-      if (Object.keys(fileForSend).length > 0) {
-        let newfile = [];
-        const uploadPromises = fileForSend.map((newData) => {
-          // Return the promise from FileUploadToDo
-          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
-        });
-
-        // Wait for all uploadPromises to resolve
-        await Promise.all(uploadPromises);
-        // uploadFiles(fileForSend)
-        // .then((response) => {
-        console.log("newfilenewfile", newfile);
-        console.log("newfilenewfile", TasksAttachments);
-        console.log("newfilenewfile", newfile.length);
-        console.log("newfilenewfile", Object.keys(TasksAttachments).length);
-        let Data;
-        TasksAttachments = newfile;
-        if (TaskAssignedTo.length > 0) {
-          Data = {
-            Task,
-            TaskCreatorID,
-            TaskAssignedTo,
-            TasksAttachments,
-          };
-        } else {
-          Data = {
-            Task,
-            TaskCreatorID,
-            TaskAssignedTo: taskAssignedTO,
-            TasksAttachments,
-          };
-        }
-        // let Data = {
-        //   Task,
-        //   TaskCreatorID,
-        //   TaskAssignedTo,
-        //   TasksAttachments,
-        // }
-        dispatch(CreateToDoList(navigate, Data, t));
-        setShow(false);
-        setTask({
-          ...task,
-          PK_TID: 1,
-          Title: "",
-          Description: "",
-          IsMainTask: true,
-          DeadLineDate: "",
-          DeadLineTime: "",
-          CreationDateTime: "",
-        });
-        setCreateTodoDate("");
-        setCreateTodoTime("");
-        setTaskAssignedTo([]);
-        setAssignees([]);
-        setTasksAttachments({ ["TasksAttachments"]: [] });
-        setTaskAssignedName([]);
-        setToDoDate("");
-        setFileForSend([]);
-        setFileSize(0);
-        // })
-        // .catch((error) => {
-        //   console.log(error);
-        // });
+      let Data;
+      if (TaskAssignedTo.length > 0) {
+        Data = {
+          Task,
+          TaskCreatorID,
+          TaskAssignedTo,
+          // TasksAttachments,
+        };
       } else {
-        let Data;
-        if (TaskAssignedTo.length > 0) {
-          Data = {
-            Task,
-            TaskCreatorID,
-            TaskAssignedTo,
-            TasksAttachments,
-          };
-        } else {
-          Data = {
-            Task,
-            TaskCreatorID,
-            TaskAssignedTo: taskAssignedTO,
-            TasksAttachments,
-          };
-        }
-        dispatch(CreateToDoList(navigate, Data, t));
-        setShow(false);
-        setTask({
-          ...task,
-          PK_TID: 1,
-          Title: "",
-          Description: "",
-          IsMainTask: true,
-          DeadLineDate: "",
-          DeadLineTime: "",
-          CreationDateTime: "",
-        });
-        setCreateTodoDate("");
-        setCreateTodoTime("");
-        setTaskAssignedTo([]);
-        setTasksAttachments({ ["TasksAttachments"]: [] });
-        setTaskAssignedName([]);
-        setToDoDate("");
-        setAssignees([]);
-        setFileForSend([]);
-        setFileSize(0);
+        Data = {
+          Task,
+          TaskCreatorID,
+          TaskAssignedTo: taskAssignedTO,
+          // TasksAttachments,
+        };
       }
+      dispatch(CreateToDoList(navigate, Data, t, 4, setCreateTaskID));
     }
   };
+  const uploadTaskDocuments = async (folderID) => {
+    let newfile = [];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsTaskApi(navigate, t, newData, folderID, newfile)
+      );
+    });
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+    let newAttachmentData = newfile.map((data, index) => {
+      return {
+        DisplayAttachmentName: data.DisplayAttachmentName,
+        OriginalAttachmentName: data.pK_FileID.toString(),
+        FK_TID: Number(createTaskID),
+      };
+    });
+
+    let Data = {
+      TaskCreatorID: TaskCreatorID,
+      TaskAssignedTo:
+        TaskAssignedTo.length > 0
+          ? TaskAssignedTo.map((data, index) => data)
+          : [TaskCreatorID],
+      TaskID: Number(createTaskID),
+      TasksAttachments: newAttachmentData,
+    };
+    await dispatch(
+      saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
+    );
+    setTask({
+      ...task,
+      PK_TID: 1,
+      Title: "",
+      Description: "",
+      IsMainTask: true,
+      DeadLineDate: "",
+      DeadLineTime: "",
+      CreationDateTime: "",
+    });
+    setCreateTodoDate("");
+    setCreateTodoTime("");
+    setTaskAssignedTo([]);
+    setTaskAssignedName([]);
+    setToDoDate("");
+    setAssignees([]);
+    setFileForSend([]);
+    setTasksAttachments({ TasksAttachments: [] });
+  };
+
+  useEffect(() => {
+    if (toDoListReducer.todoDocumentsMapping !== 0) {
+      uploadTaskDocuments(toDoListReducer.todoDocumentsMapping);
+    }
+  }, [toDoListReducer.todoDocumentsMapping]);
 
   const handleDeleteAttendee = (data, index) => {
     let newDataAssignees = [...assignees];
@@ -985,6 +957,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                                             src={deleteButtonCreateMeeting}
                                             width={15}
                                             height={15}
+                                            alt=""
                                             onClick={() =>
                                               deleteFilefromAttachments(
                                                 data,

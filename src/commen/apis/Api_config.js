@@ -1251,7 +1251,20 @@ const agendaVotingStatusUpdate = {
   RequestMethod: "ServiceManager.AgendaVotingStatusUpdate",
 };
 
+const saveTaskandAssgineesRM = {
+  RequestMethod: "ServiceManager.SaveTaskDocumentsAndAssignees",
+};
+
+const createupdateTaskDataroom = {
+  RequestMethod: "ServiceManager.CreateUpdateToDoDataRoomMap",
+};
+const saveTaskDocuments = {
+  RequestMethod: "ServiceManager.SaveToDoDocuments",
+};
 export {
+  saveTaskandAssgineesRM,
+  saveTaskDocuments,
+  createupdateTaskDataroom,
   setMeetingbyCommitteeIDRM,
   setMeetingbyGroupIDRM,
   getMeetingbyCommitteeIDRM,
