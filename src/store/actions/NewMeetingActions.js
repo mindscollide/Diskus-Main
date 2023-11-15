@@ -567,6 +567,38 @@ const SaveMeetingDetialsNewApiFunction = (
                   )
                 )
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(t("Add-meeting-agenda-to-publish"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(t("Add-meeting-organizers-to-publish"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_08".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(
+                  t("Add-meeting-participants-to-publish")
+                )
+              );
             } else {
               dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
             }

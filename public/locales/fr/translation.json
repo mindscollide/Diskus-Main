@@ -1124,5 +1124,8 @@
   "Scheduled-date-is-required": "Scheduled date is required",
   "At-least-one-primary-organizer-is-required": "At least one primary organizer is required",
   "Primary-organizer-doesn't-deleted": "Primary organizer doesn't deleted",
-  "Role-is-required": "Role is required"
+  "Role-is-required": "Role is required",
+  "Add-meeting-agenda-to-publish": "Add Meeting Agenda To Publish",
+  "Add-meeting-organizers-to-publish": "Add Meeting Organizers To Publish",
+  "Add-meeting-participants-to-publish": "Add Meeting Participants To Publish"
 }
