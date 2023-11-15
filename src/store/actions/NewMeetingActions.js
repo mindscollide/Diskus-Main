@@ -561,11 +561,7 @@ const SaveMeetingDetialsNewApiFunction = (
                 )
             ) {
               dispatch(
-                handleSaveMeetingFailed(
-                  t(
-                    "Please-add-agenda-organizers-and-participants-to-publish-the-meeting"
-                  )
-                )
+                handleSaveMeetingFailed(t("Add-meeting-agenda-to-publish"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -575,23 +571,13 @@ const SaveMeetingDetialsNewApiFunction = (
                 )
             ) {
               dispatch(
-                handleSaveMeetingFailed(t("Add-meeting-agenda-to-publish"))
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SaveMeetingDetails_07".toLowerCase()
-                )
-            ) {
-              dispatch(
                 handleSaveMeetingFailed(t("Add-meeting-organizers-to-publish"))
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SaveMeetingDetails_08".toLowerCase()
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_07".toLowerCase()
                 )
             ) {
               dispatch(
