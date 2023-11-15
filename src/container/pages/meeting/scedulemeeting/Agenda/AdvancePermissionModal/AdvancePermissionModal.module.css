@@ -396,3 +396,21 @@ aside.ant-layout-sider.ant-layout-sider-dark {
 .tranisitionStyle {
   transition: ease-in-out 0.1s;
 }
+
+.Scroller_Advanced_Permission_Modal {
+  height: 38vh !important;
+  overflow-x: hidden !important;
+  margin-left: -5px !important;
+}
+
+.Scroller_Advanced_Permission_Modal::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Advanced_Permission_Modal::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

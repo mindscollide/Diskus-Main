@@ -5977,8 +5977,11 @@ const UpdateMeetingUserForOrganizers = (
   saveMeetingFlag,
   editMeetingFlag,
   rowsData,
-  currentMeeting
+  currentMeeting,
+  editFlag,
+  notificationMessage
 ) => {
+  console.log(notificationMessage, "notificationMessagenotificationMessage");
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -6006,7 +6009,9 @@ const UpdateMeetingUserForOrganizers = (
               saveMeetingFlag,
               editMeetingFlag,
               rowsData,
-              currentMeeting
+              currentMeeting,
+              editFlag,
+              notificationMessage
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -6026,22 +6031,55 @@ const UpdateMeetingUserForOrganizers = (
                   t("Update-successful")
                 )
               );
-              let Data = {
-                MeetingOrganizers: rowsData.map((item) => ({
-                  IsPrimaryOrganizer: item.isPrimaryOrganizer,
-                  IsOrganizerNotified: item.isOrganizerNotified,
-                  Title: item.organizerTitle,
-                  UserID: item.userID,
-                })),
-                MeetingID: currentMeeting,
-                IsOrganizerAddFlow: true,
-                NotificationMessage: rowsData[0].NotificationMessage,
-              };
-              dispatch(
-                SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
-              );
-              dispatch(saveMeetingFlag(false));
-              dispatch(editMeetingFlag(false));
+              if (editFlag === 2) {
+                let editNotify;
+                let Data = {
+                  MeetingOrganizers: rowsData.map((item) => {
+                    console.log(item, "itemitemitemitem");
+                    return {
+                      IsPrimaryOrganizer: item.isPrimaryOrganizer,
+                      IsOrganizerNotified: item.isOrganizerNotified,
+                      Title: item.organizerTitle,
+                      UserID: item.userID,
+                    };
+                  }),
+                  MeetingID: currentMeeting,
+                  IsOrganizerAddFlow: false,
+                  NotificationMessage: notificationMessage,
+                };
+                console.log(Data, "itemitemitemitem");
+                console.log(editNotify, "itemitemitemitem");
+
+                dispatch(
+                  SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
+                );
+                dispatch(saveMeetingFlag(false));
+                dispatch(editMeetingFlag(false));
+              } else {
+                let Notfymessege;
+                let Data = {
+                  MeetingOrganizers: rowsData.map((item) => {
+                    console.log(item, "itemitemitemitem");
+                    return {
+                      IsPrimaryOrganizer: item.isPrimaryOrganizer,
+                      IsOrganizerNotified: item.isOrganizerNotified,
+                      Title: item.organizerTitle,
+                      UserID: item.userID,
+                    };
+                  }),
+                  MeetingID: currentMeeting,
+                  IsOrganizerAddFlow: true,
+                  NotificationMessage: notificationMessage,
+                };
+                console.log(Data, "itemitemitemitem");
+                console.log(notificationMessage, "itemitemitemitem");
+
+                dispatch(
+                  SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
+                );
+                dispatch(saveMeetingFlag(false));
+                dispatch(editMeetingFlag(false));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

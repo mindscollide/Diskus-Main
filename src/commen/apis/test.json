@@ -1,28 +1,37 @@
 {
-  "AgendaContributors": [
+  "MeetingOrganizers": [
     {
-      "UserID": 801,
-      "Title": "as",
-      "AgendaListRightsAll": true,
-      "MeetingID": 2114,
-      "IsContributorNotified": true
+      "IsPrimaryOrganizer": true,
+      "IsOrganizerNotified": false,
+      "Title": "",
+      "UserID": 984
     },
     {
-      "UserID": 779,
-      "Title": "as",
-      "AgendaListRightsAll": true,
-      "MeetingID": 2114,
-      "IsContributorNotified": true
+      "IsPrimaryOrganizer": false,
+      "IsOrganizerNotified": true,
+      "Title": "Saif",
+      "UserID": 985
     },
     {
-      "UserID": 780,
-      "Title": "as",
-      "AgendaListRightsAll": true,
-      "MeetingID": 2114,
-      "IsContributorNotified": true
+      "IsPrimaryOrganizer": false,
+      "IsOrganizerNotified": true,
+      "Title": "ccccc",
+      "UserID": 987,
+      "Notfymessege": "hello there i am five "
+    },
+    {
+      "IsPrimaryOrganizer": false,
+      "IsOrganizerNotified": true,
+      "Title": "aun",
+      "UserID": 986
+    },
+    {
+      "IsPrimaryOrganizer": false,
+      "IsOrganizerNotified": true,
+      "Title": "huzeifa ",
+      "UserID": 983
     }
   ],
-  "MeetingID": 2114,
-  "IsAgendaContributorAddFlow": true,
-  "NotificationMessage": ""
+  "MeetingID": 2137,
+  "IsOrganizerAddFlow": true
 }

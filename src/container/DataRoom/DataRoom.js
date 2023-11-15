@@ -45,6 +45,8 @@ import ModalOptionsFolder from "./ModalUploadOptions_Folder/ModalOptions_Folder"
 import {
   clearDataResponseMessage,
   dataBehaviour,
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFolderApiFunc,
   deleteFileDataroom,
   deleteFolder,
   FileisExist,
@@ -414,8 +416,20 @@ const DataRoom = () => {
     setShowrenamenotification(false);
   };
 
-  const showRequestingAccessModal = () => {
+  const showRequestingAccessModal = (record) => {
+    console.log(record, "showRequestingAccessModalshowRequestingAccessModal");
     // setRequestingAccess(true);
+    if (record.isFolder === true) {
+      let data = {
+        FolderID: Number(record.id),
+      };
+      dispatch(DataRoomDownloadFolderApiFunc(navigate, data, t, data.name));
+    } else {
+      let data = {
+        FileID: Number(record.id),
+      };
+      dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, data.name));
+    }
   };
 
   const showShareFolderModal = (id, name) => {
@@ -982,7 +996,7 @@ const DataRoom = () => {
                           height="10.71px"
                           width="15.02px"
                           className={styles["download__Icon_img"]}
-                          onClick={showRequestingAccessModal}
+                          onClick={() => showRequestingAccessModal(record)}
                         />
                       </span>
                     </Tooltip>
@@ -1211,7 +1225,7 @@ const DataRoom = () => {
                           height="10.71px"
                           width="15.02px"
                           className={styles["download__Icon_img"]}
-                          onClick={showRequestingAccessModal}
+                          onClick={() => showRequestingAccessModal(record)}
                         />
                       </span>
                     </Tooltip>
@@ -1646,7 +1660,7 @@ const DataRoom = () => {
                           height="10.71px"
                           width="15.02px"
                           className={styles["download__Icon_img"]}
-                          onClick={showRequestingAccessModal}
+                          onClick={() => showRequestingAccessModal(record)}
                         />
                       </span>
                     </Tooltip>
@@ -1875,7 +1889,7 @@ const DataRoom = () => {
                           height="10.71px"
                           width="15.02px"
                           className={styles["download__Icon_img"]}
-                          onClick={showRequestingAccessModal}
+                          onClick={() => showRequestingAccessModal(record)}
                         />
                       </span>
                     </Tooltip>

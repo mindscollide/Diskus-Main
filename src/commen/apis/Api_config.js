@@ -1251,6 +1251,14 @@ const agendaVotingStatusUpdate = {
   RequestMethod: "ServiceManager.AgendaVotingStatusUpdate",
 };
 
+const dataRoomFileDownloadService = {
+  RequestMethod: "ServiceManager.DownloadFile",
+};
+
+const dataRoomFolderDownloadService = {
+  RequestMethod: "ServiceManager.DownloadFolder",
+};
+
 export {
   setMeetingbyCommitteeIDRM,
   setMeetingbyGroupIDRM,
@@ -1585,4 +1593,6 @@ export {
   addUpdateAdvanceMeetingAgenda,
   downloadAttendanceReport,
   agendaVotingStatusUpdate,
+  dataRoomFileDownloadService,
+  dataRoomFolderDownloadService,
 };
