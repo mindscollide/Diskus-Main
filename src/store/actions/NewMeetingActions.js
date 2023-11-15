@@ -418,7 +418,8 @@ const SaveMeetingDetialsNewApiFunction = (
   viewValue,
   setCurrentMeetingID,
   currentMeeting,
-  meetingDetails
+  meetingDetails,
+  setDataroomMapFolderId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -448,7 +449,8 @@ const SaveMeetingDetialsNewApiFunction = (
               viewValue,
               setCurrentMeetingID,
               currentMeeting,
-              meetingDetails
+              meetingDetails,
+              setDataroomMapFolderId
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -486,7 +488,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
-                    t
+                    t,
+                    setDataroomMapFolderId
                   )
                 );
                 setSceduleMeeting(false);
@@ -501,7 +504,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
-                    t
+                    t,
+                    setDataroomMapFolderId
                   )
                 );
               } else if (viewValue === 3) {
@@ -518,7 +522,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
-                    t
+                    t,
+                    setDataroomMapFolderId
                   )
                 );
               }
@@ -5027,7 +5032,12 @@ const showCreateUpdateMeetingDataRoomFailed = (response, message) => {
   };
 };
 
-const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
+const CreateUpdateMeetingDataRoomMapeedApiFunc = (
+  navigate,
+  Data,
+  t,
+  setDataroomMapFolderId
+) => {
   console.log(
     { Data },
     "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc"
@@ -5071,6 +5081,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
                   ""
                 )
               );
+              setDataroomMapFolderId(response.data.responseResult.folderID);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

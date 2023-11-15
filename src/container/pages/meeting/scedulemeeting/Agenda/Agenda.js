@@ -51,6 +51,7 @@ const Agenda = ({
   currentMeeting,
   isEditMeeting,
   ediorRole,
+  dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
