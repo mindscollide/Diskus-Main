@@ -1729,14 +1729,14 @@ const GetAllMeetingDetailsApiFunc = (
   t,
   setCurrentMeetingID,
   setSceduleMeeting,
-  newMeetingData
+  setDataroomMapFolderId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showGetAllMeetingDetialsInit());
     let form = new FormData();
     form.append("RequestMethod", getAllMeetingDetailsByMeetingID.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data, newMeetingData));
+    form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
       url: meetingApi,
@@ -1755,7 +1755,7 @@ const GetAllMeetingDetailsApiFunc = (
               t,
               setCurrentMeetingID,
               setSceduleMeeting,
-              newMeetingData
+              setDataroomMapFolderId
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1773,9 +1773,35 @@ const GetAllMeetingDetailsApiFunc = (
                   t("Record-found")
                 )
               );
+              localStorage.setItem(
+                "currentMeetingLS",
+                response.data.responseResult.advanceMeetingDetails.meetingID
+              );
+              console.log(
+                response.data.responseResult,
+                "showGetAllMeetingDetialsSuccessshowGetAllMeetingDetialsSuccess"
+              );
+
               try {
                 setSceduleMeeting(true);
                 setCurrentMeetingID(Data.MeetingID);
+                let MappedData = {
+                  MeetingID:
+                    response.data.responseResult.advanceMeetingDetails
+                      .meetingID,
+                  MeetingTitle:
+                    response.data.responseResult.advanceMeetingDetails
+                      .meetingTitle,
+                  IsUpdateFlow: true,
+                };
+                dispatch(
+                  CreateUpdateMeetingDataRoomMapeedApiFunc(
+                    navigate,
+                    MappedData,
+                    t,
+                    setDataroomMapFolderId
+                  )
+                );
               } catch {}
             } else if (
               response.data.responseResult.responseMessage
@@ -5107,6 +5133,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                   t("Updated-successfully")
                 )
               );
+              setDataroomMapFolderId(response.data.responseResult.folderID);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5132,6 +5159,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                   t("New-mapping-created")
                 )
               );
+              setDataroomMapFolderId(response.data.responseResult.folderID);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -6305,4 +6333,5 @@ export {
   cleareAllState,
   CleareMessegeNewMeeting,
   showAttendanceConfirmationModal,
+  showAllMeetingParticipantsSuccess,
 };

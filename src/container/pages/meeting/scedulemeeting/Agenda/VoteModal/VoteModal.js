@@ -17,6 +17,7 @@ import Cast from "../../../../../../assets/images/CAST.svg";
 import {
   showVoteAgendaModal,
   showVoteConfirmationModal,
+  showAllMeetingParticipantsSuccess,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAllMeetingOrganizers } from "../../../../../../store/actions/MeetingOrganizers_action";
 import {
@@ -628,6 +629,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     console.log("votingOptionData", typeof votingOptionData);
     if (Object.keys(votingOptionData).length >= 2) {
       let Data = {
+        MeetingID: currentMeeting,
         AgendaVoting: {
           AgendaVotingID: agendaDetails.agendaVotingID,
           AgendaID: agendaDetails.agendaId,
@@ -642,7 +644,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       };
 
       console.log("Save Agenda Voting Data", Data);
-      dispatch(SaveAgendaVoting(Data, navigate, t));
+      dispatch(SaveAgendaVoting(Data, navigate, t, currentMeeting));
       dispatch(showVoteAgendaModal(false));
       setAgendaDetails({
         ...agendaDetails,
@@ -700,6 +702,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       { votingAnswer: "Yes", votingAnswerID: 1 },
       { votingAnswer: "No", votingAnswerID: 2 }
     );
+    dispatch(showAllMeetingParticipantsSuccess([], ""));
   };
 
   const castVotePage = () => {
