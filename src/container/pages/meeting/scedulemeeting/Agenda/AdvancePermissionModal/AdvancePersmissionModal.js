@@ -25,7 +25,9 @@ const AdvancePersmissionModal = () => {
   const navigate = useNavigate();
   const { SubMenu } = Menu;
   const { Sider } = Layout;
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
   const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
   const [sidebarindex, setSidebarindex] = useState(0);
   const [selectedRole, setSelectedRole] = useState("All");
@@ -131,6 +133,29 @@ const AdvancePersmissionModal = () => {
     console.log(Data, "AgendaIDAgendaID");
     dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
   };
+
+  useEffect(() => {
+    try {
+      if (
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
+          undefined
+      ) {
+        console.log(
+          MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
+          "GetAdvanceMeetingAgendabyMeetingIDData"
+        );
+        let agendaListArry = [];
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
+          (agenda, index) => {
+            console.log(agenda, "agendaagendaagenda");
+            agendaListArry.push(agenda);
+          }
+        );
+        setsidebarOptions(agendaListArry);
+      }
+    } catch {}
+  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
 
   useEffect(() => {
     try {
@@ -275,11 +300,11 @@ const AdvancePersmissionModal = () => {
                                           onClick={() =>
                                             handleOptionsClickSideBarMainAgenda(
                                               index,
-                                              data.agendaID
+                                              data.id
                                             )
                                           }
                                         >
-                                          {data.agendaName}
+                                          {data.title}
                                         </span>
                                       </span>
 
@@ -399,7 +424,7 @@ const AdvancePersmissionModal = () => {
                                         </>
                                       ) : null} */}
                                       <Row className="mt-2">
-                                        {data?.childAgendas?.map(
+                                        {data?.subAgenda?.map(
                                           (SubAgendaData, SubAgendaIndex) => {
                                             console.log(
                                               SubAgendaData,
@@ -456,12 +481,12 @@ const AdvancePersmissionModal = () => {
                                                             onClick={() =>
                                                               handleOptionsClickSideBar(
                                                                 index,
-                                                                SubAgendaData.agendaID
+                                                                SubAgendaData.subAgendaID
                                                               )
                                                             }
                                                           >
                                                             {
-                                                              SubAgendaData.agendaName
+                                                              SubAgendaData.subTitle
                                                             }
                                                           </span>
                                                         </span>
