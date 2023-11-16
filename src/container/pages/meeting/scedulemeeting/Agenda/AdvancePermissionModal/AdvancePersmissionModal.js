@@ -19,7 +19,7 @@ import Minus from "../../../../../../assets/images/SVGMINUS.svg";
 import profile from "../../../../../../assets/images/newprofile.png";
 import Key from "../../../../../../assets/images/KEY.svg";
 import { style } from "@mui/system";
-const AdvancePersmissionModal = () => {
+const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,7 +32,6 @@ const AdvancePersmissionModal = () => {
   const [sidebarindex, setSidebarindex] = useState(0);
   const [selectedRole, setSelectedRole] = useState("All");
   const [subAgendaExpand, setsubAgendaExpand] = useState(false);
-  const [AgendaID, setAgendaID] = useState(0);
   // Initialize state for members data
   const [memberData, setMemberData] = useState([
     {
@@ -49,6 +48,25 @@ const AdvancePersmissionModal = () => {
     { value: "Agenda Contributor", label: "Agenda Contributor" },
   ];
   const [members, setMembers] = useState([]);
+
+  useEffect(() => {
+    return () => {
+      setSelectedID(0);
+      setExpandmenuIntroduction(false);
+      setSidebarindex(0);
+      setSelectedRole("All");
+      setsubAgendaExpand(false);
+      setMemberData([
+        {
+          userName: "",
+          canView: false,
+          canModify: false,
+        },
+      ]);
+      setsidebarOptions([]);
+    };
+  }, []);
+
   const OpenConfirmation = () => {
     dispatch(showAdvancePermissionModal(false));
     dispatch(showAdvancePermissionConfirmation(true));
@@ -90,18 +108,15 @@ const AdvancePersmissionModal = () => {
       });
     });
   };
-  console.log(members, "membersmembersmembers");
+
   // Function to handle role selection
   const handleRoleSelect = (selectedOption) => {
-    console.log(selectedOption, "selectedOptionselectedOption");
     setSelectedRole(selectedOption.value);
   };
 
-  // Function to filter members based on the selected role
-
-  //SideBar Options Click
-  const handleOptionsClickSideBar = (index, agendaID) => {
-    setAgendaID(agendaID);
+  //SideBar Options Click subAgenda
+  const handleOptionsClickSideBar = (agendaID) => {
+    setSelectedID(agendaID);
     let NewData = {
       AgendaID: agendaID,
     };
@@ -109,7 +124,8 @@ const AdvancePersmissionModal = () => {
   };
 
   //SideBar Options Click MainAgenda
-  const handleOptionsClickSideBarMainAgenda = (index, agendaID) => {
+  const handleOptionsClickSideBarMainAgenda = (agendaID) => {
+    setSelectedID(agendaID);
     let NewData = {
       AgendaID: agendaID,
     };
@@ -119,7 +135,6 @@ const AdvancePersmissionModal = () => {
   const handleSaveAdvancedPermissionModal = () => {
     let newarray = [];
     members.map((data, index) => {
-      console.log(data, "UserAttachmentPermissions");
       newarray.push({
         UserID: data.userID,
         CanView: data.canView,
@@ -127,11 +142,11 @@ const AdvancePersmissionModal = () => {
       });
     });
     let Data = {
-      AgendaID: AgendaID,
+      AgendaID: selectedID,
       UserAttachmentPermissions: newarray,
     };
     console.log(Data, "AgendaIDAgendaID");
-    dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
+    // dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
   };
 
   useEffect(() => {
@@ -141,14 +156,9 @@ const AdvancePersmissionModal = () => {
         MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
           undefined
       ) {
-        console.log(
-          MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
-          "GetAdvanceMeetingAgendabyMeetingIDData"
-        );
         let agendaListArry = [];
         MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
           (agenda, index) => {
-            console.log(agenda, "agendaagendaagenda");
             agendaListArry.push(agenda);
           }
         );
@@ -169,6 +179,7 @@ const AdvancePersmissionModal = () => {
             NewMeetingreducer.agendaRights.agendaUserRights;
 
           getUserrightsdetails.map((agendaRightsData, agendaRightsIndex) => {
+            console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
             agendaUserRightsarray.push({
               userName: agendaRightsData.userName,
               canView: agendaRightsData.canView,
@@ -295,11 +306,15 @@ const AdvancePersmissionModal = () => {
                                         </span>{" "}
                                         <span
                                           className={
-                                            styles["Heading_introductions"]
+                                            Number(selectedID) ===
+                                            Number(data.id)
+                                              ? styles[
+                                                  "Heading_introductions_active"
+                                                ]
+                                              : styles["Heading_introductions"]
                                           }
                                           onClick={() =>
                                             handleOptionsClickSideBarMainAgenda(
-                                              index,
                                               data.id
                                             )
                                           }
@@ -307,21 +322,6 @@ const AdvancePersmissionModal = () => {
                                           {data.title}
                                         </span>
                                       </span>
-
-                                      {/* <img
-                                        src={
-                                          sidebarindex === index &&
-                                          expandmenuIntroduction === true
-                                            ? Minus
-                                            : PlusIcon
-                                        }
-                                        height="14px"
-                                        width="14px"
-                                        className={styles["Plus_icon-Class"]}
-                                        onClick={() => {
-                                          handleExpandIntroduction(index);
-                                        }}
-                                      /> */}
                                     </section>
                                     <section
                                       className={
@@ -331,98 +331,6 @@ const AdvancePersmissionModal = () => {
                                           : styles["Hidden"]
                                       }
                                     >
-                                      {/* {sidebarindex === index &&
-                                      expandmenuIntroduction === true ? (
-                                        <>
-                                          <Row className="mt-2">
-                                            <Col lg={7} md={7} sm={7}>
-                                              <Row>
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className="d-flex gap-1"
-                                                >
-                                                  <img
-                                                    src={profile}
-                                                    height="19px"
-                                                    width="19px"
-                                                    className={
-                                                      styles["Profile"]
-                                                    }
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["ParticipantName"]
-                                                    }
-                                                  >
-                                                    Salman Memon
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                            <Col
-                                              lg={5}
-                                              md={5}
-                                              sm={5}
-                                              className="d-flex align-items-center gap-1"
-                                            >
-                                              <span
-                                                className={
-                                                  styles["Times_styles"]
-                                                }
-                                              >
-                                                12:15 PM
-                                              </span>
-                                              <span
-                                                className={styles["minus_sign"]}
-                                              ></span>
-                                              <span
-                                                className={
-                                                  styles["Times_styles"]
-                                                }
-                                              >
-                                                12:15 PM
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row
-                                            className={
-                                              styles["tranisitionStyle"]
-                                            }
-                                          >
-                                            {data.IntroductionFiles.map(
-                                              (Filesdata, Filesindex) => {
-                                                return (
-                                                  <>
-                                                    <Col
-                                                      lg={4}
-                                                      md={4}
-                                                      sm={12}
-                                                      className="flex-wrap my-1 text-center   d-flex justify-content-center"
-                                                    >
-                                                      <img
-                                                        src={PDF}
-                                                        height="38.57px"
-                                                        width="38.57px"
-                                                      />
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "attachment_line"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {Filesdata.name}
-                                                      </span>
-                                                    </Col>
-                                                  </>
-                                                );
-                                              }
-                                            )}
-                                          </Row>
-                                        </>
-                                      ) : null} */}
                                       <Row className="mt-2">
                                         {data?.subAgenda?.map(
                                           (SubAgendaData, SubAgendaIndex) => {
@@ -470,9 +378,18 @@ const AdvancePersmissionModal = () => {
                                                       >
                                                         <span
                                                           className={
-                                                            styles[
-                                                              "Heading_introductions"
-                                                            ]
+                                                            Number(
+                                                              selectedID
+                                                            ) ===
+                                                            Number(
+                                                              SubAgendaData.subAgendaID
+                                                            )
+                                                              ? styles[
+                                                                  "Heading_introductions_active"
+                                                                ]
+                                                              : styles[
+                                                                  "Heading_introductions"
+                                                                ]
                                                           }
                                                         >
                                                           {index + 1}.
@@ -480,7 +397,6 @@ const AdvancePersmissionModal = () => {
                                                           <span
                                                             onClick={() =>
                                                               handleOptionsClickSideBar(
-                                                                index,
                                                                 SubAgendaData.subAgendaID
                                                               )
                                                             }
@@ -673,6 +589,7 @@ const AdvancePersmissionModal = () => {
                               })
                               .map((data, index) => {
                                 const isLastItem = index === members.length - 1;
+                                console.log(data, "mapmapmapmapmapmap");
 
                                 return (
                                   <>

@@ -65,6 +65,7 @@ const ParentAgenda = ({
   allUsersRC,
   setAllUsersRC,
   ediorRole,
+  setSelectedID,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -153,6 +154,7 @@ const ParentAgenda = ({
   };
 
   const openAdvancePermissionModal = async (id, flag) => {
+    setSelectedID(id);
     let meetingMaterialData = {
       MeetingID: currentMeetingIDLS,
     };
