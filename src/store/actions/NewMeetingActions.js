@@ -468,7 +468,10 @@ const SaveMeetingDetialsNewApiFunction = (
                   t("Record-found")
                 )
               );
-
+              localStorage.setItem(
+                "currentMeetingLS",
+                response.data.responseResult.meetingID
+              );
               setCurrentMeetingID(response.data.responseResult.meetingID);
               // let meetingData = {
               //   MeetingID: response.data.responseResult.meetingID,

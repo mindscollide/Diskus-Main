@@ -50,6 +50,16 @@ import {
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import NextModal from "./NextModal/NextModal";
 import { areAllValuesNotEmpty } from "../../../../../commen/functions/CompareArrayObjectValues";
+import {
+  getAgendaAndVotingInfo_success,
+  GetCurrentAgendaDetails,
+  getAgendaVotingDetails_success,
+  saveFiles_success,
+  saveAgendaVoting_success,
+  addUpdateAdvanceMeetingAgenda_success,
+  uploadDocument_success,
+  getAllVotingResultDisplay_success,
+} from "../../../../../store/actions/MeetingAgenda_action";
 
 const MeetingDetails = ({
   setorganizers,
@@ -1101,6 +1111,17 @@ const MeetingDetails = ({
       marginBottom: state.selectProps.menuPlacement === "bottom" ? "0" : null,
     }),
   };
+
+  useEffect(() => {
+    dispatch(getAgendaAndVotingInfo_success([], ""));
+    dispatch(GetCurrentAgendaDetails([]));
+    dispatch(getAgendaVotingDetails_success([], ""));
+    dispatch(saveFiles_success(null, ""));
+    dispatch(saveAgendaVoting_success([], ""));
+    dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
+    dispatch(uploadDocument_success(null, ""));
+    dispatch(getAllVotingResultDisplay_success([], ""));
+  }, []);
 
   return (
     <section>

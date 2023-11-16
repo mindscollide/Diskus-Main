@@ -287,7 +287,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const handleVotingChange = () => {
     setAgendaDetails({
       ...agendaDetails,
-      isvotingClosed: !agendaDetails.isvotingClosed,
+      isvotingClosed: false,
     });
   };
 
@@ -357,7 +357,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
             ? currentAgendaDetails.subAgendaID
             : 0,
         agendaVotingID: agendaVotingDetails.agendaVotingID,
-        isvotingClosed: agendaVotingDetails.isvotingClosed,
+        isvotingClosed: false,
         userID: agendaVotingDetails.userID,
         voteQuestion: agendaVotingDetails.voteQuestion,
       });
@@ -633,7 +633,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           AgendaID: agendaDetails.agendaId,
           VoteQuestion: agendaDetails.voteQuestion,
           VotingResultDisplayID: agendaDetails.votingResultDisplayID,
-          IsVotingClosed: agendaDetails.isvotingClosed,
+          IsVotingClosed: false,
           UserID: agendaDetails.organizerUserID,
           IsAddFlow: agendaDetails.agendaVotingID === 0 ? true : false,
           VotingAnswers: votingOptionData,
