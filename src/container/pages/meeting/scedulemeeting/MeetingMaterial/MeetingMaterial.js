@@ -82,79 +82,31 @@ const MeetingMaterial = ({
   // Modify your materialColoumn definition to handle parent and child agendas
   const materialColoumn = [
     {
-      title: t("Document-name"),
-      dataIndex: "documentName",
-      key: "documentName",
+      title: "Document Name",
+      dataIndex: "displayFileName",
+      key: "displayFileName",
       width: "250px",
-      render: (text, data) => {
+      render: (text, record) => {
         const ext = getFileExtension(text);
         const isPdf = ext.toLowerCase() === "pdf"; // Check if the file is a PDF
-        console.log("childAgendaElementschildAgendaElements", data);
-        const parentPdfData = {
-          taskId: data.agendaID,
+
+        const documentData = {
+          taskId: record.agendaID,
           commingFrom: 4,
           fileName: text,
-          attachmentID: data.agendaID,
+          attachmentID: record.attachmentID,
         };
-        const parentPdfDataJson = JSON.stringify(parentPdfData);
-
-        const childAgendaElements = data.childAgendas
-          ? data.childAgendas.map((childAgenda) => {
-              const childExt = getFileExtension(childAgenda.originalFileName);
-              const isChildPdf = childExt.toLowerCase() === "pdf"; // Check if the child file is a PDF
-
-              const childPdfData = {
-                taskId: childAgenda.agendaID,
-                commingFrom: 4,
-                fileName: childAgenda.originalFileName,
-                attachmentID: childAgenda.attachmentID,
-              };
-              const childPdfDataJson = JSON.stringify(childPdfData);
-
-              return (
-                <div key={childAgenda.agendaID}>
-                  <section
-                    className={styles["docx-name-title"]}
-                    onClick={(e) =>
-                      isChildPdf
-                        ? viewHandlerOnclick(e, childPdfDataJson)
-                        : null
-                    }
-                    onDoubleClick={(e) =>
-                      isChildPdf
-                        ? viewHandlerOnclick(e, childPdfDataJson)
-                        : null
-                    }
-                  >
-                    <img
-                      src={getIconSource(
-                        getFileExtension(childAgenda.displayFileName)
-                      )}
-                      alt=""
-                      width={"25px"}
-                      height={"25px"}
-                      className="me-2"
-                    />
-                    <abbr title={childAgenda.originalFileName}>
-                      <span className={styles["docx-name-title"]}>
-                        {childAgenda.originalFileName}
-                      </span>
-                    </abbr>
-                  </section>
-                </div>
-              );
-            })
-          : null;
+        const documentDataJson = JSON.stringify(documentData);
 
         return (
           <div>
             <section
               className={styles["docx-name-title"]}
               onClick={(e) =>
-                isPdf ? viewHandlerOnclick(e, parentPdfDataJson) : null
+                isPdf ? viewHandlerOnclick(e, documentDataJson) : null
               }
               onDoubleClick={(e) =>
-                isPdf ? viewHandlerOnclick(e, parentPdfDataJson) : null
+                isPdf ? viewHandlerOnclick(e, documentDataJson) : null
               }
             >
               <img
@@ -164,36 +116,21 @@ const MeetingMaterial = ({
                 height={"25px"}
                 className="me-2"
               />
-              <abbr title={text}>
-                <span className={styles["docx-name-title"]}>{text}</span>
+              <abbr title={`${text} - ${record.agendaID}`}>
+                <span className={styles["docx-name-title"]}>
+                  {text} - {record.agendaID}
+                </span>
               </abbr>
             </section>
-            {childAgendaElements}
           </div>
         );
       },
     },
     {
-      title: t("Agenda-name"),
+      title: "Agenda Name",
       dataIndex: "agendaName",
       key: "agendaName",
       width: "250px",
-      render: (text, data) => {
-        const childAgendas = data.childAgendas || [];
-        return (
-          <div>
-            <label className={styles["agenda-name-title"]}>{text}</label>
-            {childAgendas.map((childAgenda) => (
-              <div
-                key={childAgenda.agendaID}
-                className={styles["agenda-name-title"]}
-              >
-                {childAgenda.agendaName}
-              </div>
-            ))}
-          </div>
-        );
-      },
     },
   ];
 
@@ -213,8 +150,7 @@ const MeetingMaterial = ({
   // Api request on useEffect
   useEffect(() => {
     let meetingMaterialData = {
-      // MeetingID: Number(currentMeeting),
-      MeetingID: 1785,
+      MeetingID: Number(currentMeeting),
     };
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   }, []);
