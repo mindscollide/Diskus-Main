@@ -2426,7 +2426,7 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
             ) {
               dispatch(
                 meetingMaterialSuccess(
-                  response.data.responseResult.parentAgendas,
+                  response.data.responseResult.meetingMaterial,
                   t("Record-found")
                 )
               );
