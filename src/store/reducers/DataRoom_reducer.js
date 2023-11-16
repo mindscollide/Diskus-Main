@@ -40,6 +40,8 @@ const initialState = {
   updateFolderGeneralAccess: null,
   FolderisExistMessage: "",
   FileisExistMessage: "",
+  Fail: false,
+  FolderFail: false,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -657,6 +659,59 @@ const DataRoomReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.DATA_ROOM_FILE_DOWNLOAD: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DATA_ROOM_FILE_DOWNLOAD_LOADER_FALSED: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.DATA_ROOM_FILE_DOWNLOAD_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        Fail: true,
+        ResponseMessage:
+          action.response.responseMessage !== undefined
+            ? action.response.responseMessage
+            : action.response.responseResult.recordeMessage,
+      };
+    }
+
+    case actions.DATA_ROOM_FOLDER_DOWNLOAD: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DATA_ROOM_FOLDER_DOWNLOAD_LOADER_FALSE: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.DATA_ROOM_FOLDER_DOWNLOAD_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        FolderFail: true,
+        ResponseMessage:
+          action.response.responseMessage !== undefined
+            ? action.response.responseMessage
+            : action.response.responseResult.recordeMessage,
+      };
+    }
+
     default:
       return { ...state };
   }
