@@ -2461,10 +2461,6 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
                 response.data.responseResult,
                 "meetingMaterialSuccess"
               );
-              let NewData = {
-                AgendaID: id,
-              };
-              dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_02"

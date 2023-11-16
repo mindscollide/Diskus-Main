@@ -133,27 +133,6 @@ const AdvancePersmissionModal = () => {
   };
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.meetingMaterialData !== null &&
-      NewMeetingreducer.meetingMaterialData !== undefined
-    ) {
-      console.log(
-        NewMeetingreducer.meetingMaterialData,
-        "NewMeetingreducermeetingMaterial"
-      );
-      console.log(NewMeetingreducer, "NewMeetingreducermeetingMaterial");
-      let newData = [];
-      // NewMeetingreducer.meetingMaterialData.meetingMaterial.map(
-      //   (meetingMaterialData, meetingMaterialIndex) => {
-      //     console.log(meetingMaterialData, "meetingMatingMaterialData");
-      //     newData.push(meetingMaterialData);
-      //   }
-      // );
-      // setsidebarOptions(newData);
-    }
-  }, [NewMeetingreducer.meetingMaterialData]);
-
-  useEffect(() => {
     try {
       if (
         NewMeetingreducer.agendaRights !== null &&

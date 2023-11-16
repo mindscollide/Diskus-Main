@@ -45,6 +45,7 @@ import {
   GetAgendaAndVotingInfo,
   GetCurrentAgendaDetails,
   GetAgendaVotingDetails,
+  GetAdvanceMeetingAgendabyMeetingID,
 } from "../../../../../store/actions/MeetingAgenda_action";
 
 const ParentAgenda = ({
@@ -82,6 +83,7 @@ const ParentAgenda = ({
   const [subExpand, setSubExpand] = useState([]);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenters, setPresenters] = useState([]);
+  const [flag, setFlag] = useState(0);
   //Timepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -150,12 +152,22 @@ const ParentAgenda = ({
     setMainAgendaRemovalIndex(index);
   };
 
-  const openAdvancePermissionModal = async (id) => {
+  const openAdvancePermissionModal = async (id, flag) => {
     let meetingMaterialData = {
       MeetingID: currentMeetingIDLS,
     };
-    await dispatch(
-      getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
+    // await dispatch(
+    //   getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
+    // );
+    dispatch(
+      GetAdvanceMeetingAgendabyMeetingID(
+        meetingMaterialData,
+        navigate,
+        t,
+        rows,
+        id,
+        flag
+      )
     );
     dispatch(showAdvancePermissionModal(true));
   };
@@ -746,7 +758,10 @@ const ParentAgenda = ({
                                         role="button"
                                         onClick={() => {
                                           if (!data.isLocked) {
-                                            openAdvancePermissionModal(data.iD);
+                                            openAdvancePermissionModal(
+                                              data.iD,
+                                              1
+                                            );
                                           }
                                         }}
                                       />
