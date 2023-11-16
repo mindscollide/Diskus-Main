@@ -17,6 +17,7 @@ import Cast from "../../../../../../assets/images/CAST.svg";
 import {
   showVoteAgendaModal,
   showVoteConfirmationModal,
+  showAllMeetingParticipantsSuccess,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAllMeetingOrganizers } from "../../../../../../store/actions/MeetingOrganizers_action";
 import {
@@ -37,6 +38,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  let currentAgendaVotingID = Number(
+    localStorage.getItem("currentAgendaVotingID")
+  );
 
   // let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
@@ -282,7 +287,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const handleVotingChange = () => {
     setAgendaDetails({
       ...agendaDetails,
-      isvotingClosed: !agendaDetails.isvotingClosed,
+      isvotingClosed: false,
     });
   };
 
@@ -352,7 +357,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
             ? currentAgendaDetails.subAgendaID
             : 0,
         agendaVotingID: agendaVotingDetails.agendaVotingID,
-        isvotingClosed: agendaVotingDetails.isvotingClosed,
+        isvotingClosed: false,
         userID: agendaVotingDetails.userID,
         voteQuestion: agendaVotingDetails.voteQuestion,
       });
@@ -402,16 +407,34 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   }, [currentAgendaDetails]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.getAllSavedparticipants !== undefined &&
-      NewMeetingreducer.getAllSavedparticipants !== null &&
-      NewMeetingreducer.getAllSavedparticipants.length !== 0
-    ) {
-      setMeetingParticipants(NewMeetingreducer.getAllSavedparticipants);
+    if (currentAgendaVotingID === 0) {
+      if (
+        NewMeetingreducer.getAllSavedparticipants !== undefined &&
+        NewMeetingreducer.getAllSavedparticipants !== null &&
+        NewMeetingreducer.getAllSavedparticipants.length !== 0
+      ) {
+        setMeetingParticipants(NewMeetingreducer.getAllSavedparticipants);
+      } else {
+        setMeetingParticipants([]);
+      }
     } else {
-      setMeetingParticipants([]);
+      if (
+        MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
+        MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
+        MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
+      ) {
+        setMeetingParticipants(
+          MeetingAgendaReducer.MeetingAgendaVotingDetailsData
+            .agendaVotingDetails.votingMembers
+        );
+      } else {
+        setMeetingParticipants([]);
+      }
     }
-  }, [NewMeetingreducer.getAllSavedparticipants]);
+  }, [
+    NewMeetingreducer.getAllSavedparticipants,
+    MeetingAgendaReducer.MeetingAgendaVotingDetailsData,
+  ]);
 
   const MeetingColoumns = [
     {
@@ -438,12 +461,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           </Row>
         </>
       ),
-      dataIndex: "participantRole",
-      key: "participantRole",
+      dataIndex: "participantTitle",
+      key: "participantTitle",
       width: "100px",
-      render: (text, record) => {
-        return <>{text.participantRole}</>;
-      },
     },
     {
       title: (
@@ -460,27 +480,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       width: "150px",
     },
     {
-      title: (
-        <>
-          <Button
-            text={
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Add_more_Class"]}
-                  >
-                    <span>{t("Add-more")}</span>
-                  </Col>
-                </Row>
-              </>
-            }
-            className={styles["Add_more_Btn"]}
-          />
-        </>
-      ),
       dataIndex: "userID",
       key: "userID",
       width: "80px",
@@ -628,12 +627,13 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     console.log("votingOptionData", typeof votingOptionData);
     if (Object.keys(votingOptionData).length >= 2) {
       let Data = {
+        MeetingID: currentMeeting,
         AgendaVoting: {
           AgendaVotingID: agendaDetails.agendaVotingID,
           AgendaID: agendaDetails.agendaId,
           VoteQuestion: agendaDetails.voteQuestion,
           VotingResultDisplayID: agendaDetails.votingResultDisplayID,
-          IsVotingClosed: agendaDetails.isvotingClosed,
+          IsVotingClosed: false,
           UserID: agendaDetails.organizerUserID,
           IsAddFlow: agendaDetails.agendaVotingID === 0 ? true : false,
           VotingAnswers: votingOptionData,
@@ -642,7 +642,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       };
 
       console.log("Save Agenda Voting Data", Data);
-      dispatch(SaveAgendaVoting(Data, navigate, t));
+      dispatch(SaveAgendaVoting(Data, navigate, t, currentMeeting));
       dispatch(showVoteAgendaModal(false));
       setAgendaDetails({
         ...agendaDetails,
@@ -700,6 +700,8 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       { votingAnswer: "Yes", votingAnswerID: 1 },
       { votingAnswer: "No", votingAnswerID: 2 }
     );
+    dispatch(showAllMeetingParticipantsSuccess([], ""));
+    localStorage.setItem("currentAgendaVotingID", 0);
   };
 
   const castVotePage = () => {
@@ -729,6 +731,8 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   }, [MeetingAgendaReducer.ResponseMessage]);
 
   console.log("MeetingAgendaReducer", MeetingAgendaReducer);
+
+  console.log("MeetingParticipants", meetingParticipants);
 
   console.log("MeetingOrganizersReducer", MeetingOrganizersReducer);
 

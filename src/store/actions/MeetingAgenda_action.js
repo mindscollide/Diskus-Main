@@ -14,10 +14,12 @@ import {
   createUpdateMeetingDataRoomMap,
   addUpdateAdvanceMeetingAgenda,
   agendaVotingStatusUpdate,
+  saveMeetingDocuments,
 } from "../../commen/apis/Api_config";
 import { meetingApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import {
   GetAllAgendaWiseMinutesApiFunc,
+  GetAllUserAgendaRightsApiFunc,
   showVoteAgendaModal,
 } from "./NewMeetingActions";
 
@@ -217,8 +219,11 @@ const saveAgendaVoting_fail = (message) => {
     message: message,
   };
 };
-const SaveAgendaVoting = (Data, navigate, t) => {
+const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let getAgendaData = {
+    MeetingID: currentMeeting,
+  };
   return (dispatch) => {
     dispatch(saveAgendaVoting_init());
     let form = new FormData();
@@ -250,6 +255,9 @@ const SaveAgendaVoting = (Data, navigate, t) => {
                   response.data.responseResult,
                   t("Record-saved")
                 )
+              );
+              dispatch(
+                GetAdvanceMeetingAgendabyMeetingID(getAgendaData, navigate, t)
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -577,7 +585,14 @@ const getAdvanceMeetingAgendabyMeetingID_fail = (message) => {
     message: message,
   };
 };
-const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t) => {
+const GetAdvanceMeetingAgendabyMeetingID = (
+  Data,
+  navigate,
+  t,
+  rows,
+  id,
+  flag
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAdvanceMeetingAgendabyMeetingID_init());
@@ -598,7 +613,16 @@ const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+          dispatch(
+            GetAdvanceMeetingAgendabyMeetingID(
+              Data,
+              navigate,
+              t,
+              rows,
+              id,
+              flag
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -614,20 +638,23 @@ const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t) => {
                   t("Record-found")
                 )
               );
-              console.log(
-                response.data.responseResult,
-                "getAdvanceMeetingAgendabyMeetingID_success"
-              );
-              let ID;
-              response.data.responseResult.agendaList.map((data, index) => {
-                console.log(data.id, "responseresponseresponse");
-                ID = data.id;
-              });
+              if (flag === 1) {
+                let NewData = {
+                  AgendaID: id,
+                };
+                dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+              } else {
+                let ID;
+                response.data.responseResult.agendaList.map((data, index) => {
+                  console.log(data.id, "responseresponseresponse");
+                  ID = data.id;
+                });
 
-              let newData = {
-                AgendaID: ID,
-              };
-              dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, newData, t));
+                let newData = {
+                  AgendaID: ID,
+                };
+                dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, newData, t));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1015,6 +1042,86 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
   };
 };
 
+// Upload Documents Init
+const saveMeetingDocuments_init = () => {
+  return {
+    type: actions.SAVE_DOCUMENTS_AGENDA_INIT,
+  };
+};
+
+// Upload Documents Success
+const saveMeetingDocuments_success = (response, message) => {
+  return {
+    type: actions.SAVE_DOCUMENTS_AGENDA_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Upload Documents Fail
+const saveMeetingDocuments_fail = (message) => {
+  return {
+    type: actions.SAVE_DOCUMENTS_AGENDA_FAIL,
+    message: message,
+  };
+};
+
+// Upload Documents API
+const SaveMeetingDocuments = (data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(saveMeetingDocuments_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveMeetingDocuments.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveMeetingDocuments(data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveMeetingDocuments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                saveMeetingDocuments_success(response.data.responseResult, "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_SaveMeetingDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
+        }
+        // }
+      })
+      .catch((error) => {
+        dispatch(saveMeetingDocuments_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 const addUpdateAdvanceMeetingAgenda_init = () => {
   return {
     type: actions.SAVEUPDATE_ADVANCEMEETINGAGENDA_INIT,
@@ -1069,6 +1176,82 @@ const AddUpdateAdvanceMeetingAgenda = (Data, navigate, t, currentMeeting) => {
                   response.data.responseResult,
                   t("Record-saved")
                 )
+              );
+              const saveDocumentsData = Data;
+              const agendaList = response.data.responseResult.agendaIds;
+              console.log("saveDocumentsData", saveDocumentsData);
+              console.log("saveDocumentsData agendaList", agendaList);
+              // Function to replace IDs in the saveDocumentsData
+              function replaceIDs(documents) {
+                documents.forEach((doc) => {
+                  const mainMatch = agendaList.find(
+                    (item) => item.frontendid === doc.ID
+                  );
+                  if (mainMatch) {
+                    doc.ID = mainMatch.databaseID;
+                  }
+                  doc.SubAgenda.forEach((subAgenda) => {
+                    const subMatch = agendaList.find(
+                      (item) => item.frontendid === subAgenda.SubAgendaID
+                    );
+                    if (subMatch) {
+                      subAgenda.SubAgendaID = subMatch.databaseID;
+                    }
+                  });
+                });
+              }
+
+              // Replace IDs in the main AgendaList
+              replaceIDs(saveDocumentsData.AgendaList);
+
+              console.log("saveDocumentsData", saveDocumentsData);
+
+              const newUpdateFileList = {
+                MeetingID: saveDocumentsData.MeetingID,
+                UpdateFileList: [],
+              };
+
+              saveDocumentsData.AgendaList.forEach((agendas) => {
+                const agendaID = agendas.ID;
+                const subAgendaID =
+                  agendas.SubAgenda.length > 0
+                    ? agendas.SubAgenda[0].SubAgendaID
+                    : null;
+
+                const agendaFiles = agendas.Files.map((file) => {
+                  return { PK_FileID: parseInt(file.OriginalAttachmentName) };
+                });
+
+                const subAgendaFiles =
+                  agendas.SubAgenda.length > 0
+                    ? agendas.SubAgenda[0].Subfiles.map((file) => {
+                        return {
+                          PK_FileID: parseInt(file.OriginalAttachmentName),
+                        };
+                      })
+                    : [];
+
+                if (agendaFiles.length > 0) {
+                  newUpdateFileList.UpdateFileList.push({
+                    AgendaID: agendaID,
+                    FileIds: agendaFiles,
+                  });
+                }
+
+                if (subAgendaID && subAgendaFiles.length > 0) {
+                  newUpdateFileList.UpdateFileList.push({
+                    AgendaID: subAgendaID,
+                    FileIds: subAgendaFiles,
+                  });
+                }
+              });
+
+              console.log(
+                "saveDocumentsData newUpdateFileList ",
+                newUpdateFileList
+              );
+              await dispatch(
+                SaveMeetingDocuments(newUpdateFileList, navigate, t)
               );
               await dispatch(
                 GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t)
@@ -1261,4 +1444,11 @@ export {
   AddUpdateAdvanceMeetingAgenda,
   GetCurrentAgendaDetails,
   AgendaVotingStatusUpdate,
+  getAgendaAndVotingInfo_success,
+  getAgendaVotingDetails_success,
+  saveFiles_success, //null emptystring
+  saveAgendaVoting_success,
+  addUpdateAdvanceMeetingAgenda_success,
+  uploadDocument_success,
+  getAllVotingResultDisplay_success,
 };

@@ -45,6 +45,7 @@ const UnpublishedProposedMeeting = ({
   setEditMeeting,
   setCurrentMeetingID,
   ediorRole,
+  setDataroomMapFolderId,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -102,27 +103,17 @@ const UnpublishedProposedMeeting = ({
     isOrganiser,
     id
   ) => {
+    localStorage.setItem("viewProposeDatePollMeetingID", id);
     if (isParticipant) {
       setViewProposeDatePoll(true);
-      localStorage.setItem("viewProposeDatePollMeetingID", id);
     } else if (isAgendaContributor) {
     } else if (isOrganiser) {
-      console.log("viewProposeDatePollHandlerviewProposeDatePollHandler");
-      // setOpen({
-      //   ...open,
-      //   flag: true,
-      //   message: t("View-not-available"),
-      // });
       setViewProposeOrganizerPoll(true);
     }
   };
 
   const handleOpenViewModal = async (data) => {
     setAdvanceMeetingModalID(data.pK_MDID);
-    // let Data = {
-    //   MeetingID: Number(data.pK_MDID),
-    // };
-    // await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
     setViewAdvanceMeetingModalUnpublish(true);
   };
 
@@ -136,7 +127,8 @@ const UnpublishedProposedMeeting = ({
         navigate,
         t,
         setCurrentMeetingID,
-        setSceduleMeeting
+        setSceduleMeeting,
+        setDataroomMapFolderId
       )
     );
   };

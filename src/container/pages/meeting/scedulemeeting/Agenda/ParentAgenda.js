@@ -45,6 +45,7 @@ import {
   GetAgendaAndVotingInfo,
   GetCurrentAgendaDetails,
   GetAgendaVotingDetails,
+  GetAdvanceMeetingAgendabyMeetingID,
 } from "../../../../../store/actions/MeetingAgenda_action";
 
 const ParentAgenda = ({
@@ -64,12 +65,14 @@ const ParentAgenda = ({
   allUsersRC,
   setAllUsersRC,
   ediorRole,
+  setSelectedID,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
+  let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
@@ -81,6 +84,7 @@ const ParentAgenda = ({
   const [subExpand, setSubExpand] = useState([]);
   const [allPresenters, setAllPresenters] = useState([]);
   const [presenters, setPresenters] = useState([]);
+  const [flag, setFlag] = useState(0);
   //Timepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -149,12 +153,23 @@ const ParentAgenda = ({
     setMainAgendaRemovalIndex(index);
   };
 
-  const openAdvancePermissionModal = async (id) => {
+  const openAdvancePermissionModal = async (id, flag) => {
+    setSelectedID(id);
     let meetingMaterialData = {
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingIDLS,
     };
-    await dispatch(
-      getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
+    // await dispatch(
+    //   getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
+    // );
+    dispatch(
+      GetAdvanceMeetingAgendabyMeetingID(
+        meetingMaterialData,
+        navigate,
+        t,
+        rows,
+        id,
+        flag
+      )
     );
     dispatch(showAdvancePermissionModal(true));
   };
@@ -162,21 +177,23 @@ const ParentAgenda = ({
   const openVoteMOdal = async (AgendaID, agendaVotingID, agendaDetails) => {
     let Data = {
       AgendaID: AgendaID,
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingIDLS,
       AgendaVotingID: agendaVotingID,
     };
     let dataForAgendaDetails = {
       AgendaVotingID: agendaVotingID,
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingIDLS,
     };
     if (Data.AgendaVotingID !== 0) {
       await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
       dispatch(showVoteAgendaModal(true));
       dispatch(GetCurrentAgendaDetails(agendaDetails));
       dispatch(GetAgendaVotingDetails(dataForAgendaDetails, navigate, t));
+      localStorage.setItem("currentAgendaVotingID", Data.AgendaVotingID);
     } else {
       dispatch(GetCurrentAgendaDetails(agendaDetails));
       dispatch(showVoteAgendaModal(true));
+      localStorage.setItem("currentAgendaVotingID", 0);
     }
   };
 
@@ -745,7 +762,10 @@ const ParentAgenda = ({
                                         role="button"
                                         onClick={() => {
                                           if (!data.isLocked) {
-                                            openAdvancePermissionModal(data.iD);
+                                            openAdvancePermissionModal(
+                                              data.iD,
+                                              1
+                                            );
                                           }
                                         }}
                                       />

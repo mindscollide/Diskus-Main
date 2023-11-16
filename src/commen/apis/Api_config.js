@@ -1251,6 +1251,10 @@ const agendaVotingStatusUpdate = {
   RequestMethod: "ServiceManager.AgendaVotingStatusUpdate",
 };
 
+const saveMeetingDocuments = {
+  RequestMethod: "ServiceManager.SaveMeetingDocuments",
+};
+
 // get All Meeting Tasks in Action
 const getMeetingTasksAction = {
   RequestMethod: "ServiceManager.GetMeetingTasks",
@@ -1274,6 +1278,7 @@ const createupdateTaskDataroom = {
 const saveTaskDocuments = {
   RequestMethod: "ServiceManager.SaveToDoDocuments",
 };
+
 export {
   saveTaskandAssgineesRM,
   saveTaskDocuments,
@@ -1611,6 +1616,7 @@ export {
   addUpdateAdvanceMeetingAgenda,
   downloadAttendanceReport,
   agendaVotingStatusUpdate,
+  saveMeetingDocuments,
   getMeetingTasksAction,
   dataRoomFileDownloadService,
   dataRoomFolderDownloadService,

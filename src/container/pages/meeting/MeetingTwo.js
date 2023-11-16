@@ -53,8 +53,6 @@ import {
   clearMeetingState,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
-  showEndMeetingForAll,
-  showEndMeetingModal,
 } from "../../../store/actions/NewMeetingActions";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { useDispatch } from "react-redux";
@@ -99,7 +97,11 @@ const NewMeeting = () => {
   const endMeetingModal = useSelector(
     (state) => state.NewMeetingreducer.endMeetingModal
   );
-
+  const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
+  console.log(
+    dataroomMapFolderId,
+    "dataroomMapFolderIddataroomMapFolderIddataroomMapFolderId"
+  );
   let currentLanguage = localStorage.getItem("i18nextLng");
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
@@ -417,7 +419,8 @@ const NewMeeting = () => {
           navigate,
           t,
           setCurrentMeetingID,
-          setSceduleMeeting
+          setSceduleMeeting,
+          setDataroomMapFolderId
         )
       );
     } else {
@@ -1115,6 +1118,8 @@ const NewMeeting = () => {
           setEdiorRole={setEdiorRole}
           setEditMeeting={setEditMeeting}
           isEditMeeting={isEditMeeting}
+          setDataroomMapFolderId={setDataroomMapFolderId}
+          dataroomMapFolderId={dataroomMapFolderId}
         />
       ) : viewProposeDatePoll ? (
         <ViewParticipantsDates
@@ -1375,6 +1380,7 @@ const NewMeeting = () => {
                     setEditMeeting={setEditMeeting}
                     setCurrentMeetingID={setCurrentMeetingID}
                     ediorRole={ediorRole}
+                    setDataroomMapFolderId={setDataroomMapFolderId}
                   />
                 ) : Number(currentView) === 1 ? (
                   <Row className="mt-2">

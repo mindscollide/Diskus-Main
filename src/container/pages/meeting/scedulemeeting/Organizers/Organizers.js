@@ -44,6 +44,16 @@ import {
   editMeetingFlag,
   notificationSendData,
 } from "../../../../../store/actions/MeetingOrganizers_action";
+import {
+  getAgendaAndVotingInfo_success,
+  GetCurrentAgendaDetails,
+  getAgendaVotingDetails_success,
+  saveFiles_success,
+  saveAgendaVoting_success,
+  addUpdateAdvanceMeetingAgenda_success,
+  uploadDocument_success,
+  getAllVotingResultDisplay_success,
+} from "../../../../../store/actions/MeetingAgenda_action";
 import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
@@ -80,7 +90,7 @@ const Organizers = ({
   const [flag, setFlag] = useState(2);
   const [prevFlag, setprevFlag] = useState(2);
   const [editState, setEditState] = useState(false);
-  const [editFlag, setEditFlag] = useState(2);
+  const [editFlag, setEditFlag] = useState(0);
   const [notificationMessage, setNotificationMessage] = useState("");
   console.log(notificationMessage, "notificationMessagenotificationMessage");
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
@@ -559,9 +569,8 @@ const Organizers = ({
           editMeetingFlag,
           rowsData,
           currentMeeting,
-          editFlag,
-          notificationMessage,
-          1
+          1,
+          notificationMessage
         )
       );
     } else {
@@ -597,9 +606,8 @@ const Organizers = ({
           editMeetingFlag,
           rowsData,
           currentMeeting,
-          editFlag,
-          notificationMessage,
-          2
+          2,
+          notificationMessage
         )
       );
     } else {
@@ -778,6 +786,17 @@ const Organizers = ({
     dispatch(clearResponseMessage(""));
   }, [MeetingOrganizersReducer.ResponseMessage]);
 
+  useEffect(() => {
+    dispatch(getAgendaAndVotingInfo_success([], ""));
+    dispatch(GetCurrentAgendaDetails([]));
+    dispatch(getAgendaVotingDetails_success([], ""));
+    dispatch(saveFiles_success(null, ""));
+    dispatch(saveAgendaVoting_success([], ""));
+    dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
+    dispatch(uploadDocument_success(null, ""));
+    dispatch(getAllVotingResultDisplay_success([], ""));
+  }, []);
+
   return (
     <>
       {viewOrganizers ? (
@@ -807,7 +826,7 @@ const Organizers = ({
                         <Button
                           text={t("Save")}
                           className={styles["Next_Organization"]}
-                          onClick={saveMeetingOrganizers}
+                          onClick={() => saveMeetingOrganizers(1)}
                         />
                       </Col>
                     </Row>
@@ -827,7 +846,7 @@ const Organizers = ({
                         <Button
                           text={t("Save")}
                           className={styles["Next_Organization"]}
-                          onClick={editMeetingOrganizers}
+                          onClick={() => editMeetingOrganizers(2)}
                         />
                       </Col>
                     </Row>

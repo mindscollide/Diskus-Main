@@ -50,6 +50,16 @@ import {
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import NextModal from "./NextModal/NextModal";
 import { areAllValuesNotEmpty } from "../../../../../commen/functions/CompareArrayObjectValues";
+import {
+  getAgendaAndVotingInfo_success,
+  GetCurrentAgendaDetails,
+  getAgendaVotingDetails_success,
+  saveFiles_success,
+  saveAgendaVoting_success,
+  addUpdateAdvanceMeetingAgenda_success,
+  uploadDocument_success,
+  getAllVotingResultDisplay_success,
+} from "../../../../../store/actions/MeetingAgenda_action";
 
 const MeetingDetails = ({
   setorganizers,
@@ -397,12 +407,6 @@ const MeetingDetails = ({
     let newReminderData = [];
     if (meetingDetails.ReminderFrequency.value !== 0) {
       newReminderData.push(meetingDetails.ReminderFrequency.value);
-    }
-    if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
-      newReminderData.push(meetingDetails.ReminderFrequencyTwo.value);
-    }
-    if (meetingDetails.ReminderFrequencyThree.value !== 0) {
-      newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
     }
 
     rows.map((data, index) => {
@@ -1102,6 +1106,17 @@ const MeetingDetails = ({
     }),
   };
 
+  useEffect(() => {
+    dispatch(getAgendaAndVotingInfo_success([], ""));
+    dispatch(GetCurrentAgendaDetails([]));
+    dispatch(getAgendaVotingDetails_success([], ""));
+    dispatch(saveFiles_success(null, ""));
+    dispatch(saveAgendaVoting_success([], ""));
+    dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
+    dispatch(uploadDocument_success(null, ""));
+    dispatch(getAllVotingResultDisplay_success([], ""));
+  }, []);
+
   return (
     <section>
       <Row>
@@ -1376,26 +1391,11 @@ const MeetingDetails = ({
                         applyClass={"meetinInnerSearch"}
                         labelClass="d-none"
                         name={"Link"}
-                        change={HandleChange}
+                        // change={HandleChange}
                         value={
                           meetingDetails.IsVideoCall ? meetingDetails.Link : ""
                         }
                       />
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              error &&
-                              !meetingDetails.IsVideoCall &&
-                              meetingDetails.Link === ""
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
-                            {t("Please-enter-video-link")}
-                          </p>
-                        </Col>
-                      </Row>
                     </Col>
                   </Row>
                 </Col>

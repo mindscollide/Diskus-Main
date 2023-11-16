@@ -28,6 +28,8 @@ const SceduleMeeting = ({
   setCurrentMeetingID,
   currentMeeting,
   setSceduleMeeting,
+  setDataroomMapFolderId,
+  dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
 
@@ -42,6 +44,8 @@ const SceduleMeeting = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
+  // const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
