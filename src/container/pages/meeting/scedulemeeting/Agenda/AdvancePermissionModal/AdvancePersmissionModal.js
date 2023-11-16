@@ -134,19 +134,24 @@ const AdvancePersmissionModal = () => {
 
   useEffect(() => {
     if (
-      NewMeetingreducer.meetingMaterial !== null &&
-      NewMeetingreducer.meetingMaterial !== undefined
+      NewMeetingreducer.meetingMaterialData !== null &&
+      NewMeetingreducer.meetingMaterialData !== undefined
     ) {
-      let newData = [];
-      NewMeetingreducer.meetingMaterial.map(
-        (meetingMaterialData, meetingMaterialIndex) => {
-          console.log(meetingMaterialData, "meetingMatingMaterialData");
-          newData.push(meetingMaterialData);
-        }
+      console.log(
+        NewMeetingreducer.meetingMaterialData,
+        "NewMeetingreducermeetingMaterial"
       );
-      setsidebarOptions(newData);
+      console.log(NewMeetingreducer, "NewMeetingreducermeetingMaterial");
+      let newData = [];
+      // NewMeetingreducer.meetingMaterialData.meetingMaterial.map(
+      //   (meetingMaterialData, meetingMaterialIndex) => {
+      //     console.log(meetingMaterialData, "meetingMatingMaterialData");
+      //     newData.push(meetingMaterialData);
+      //   }
+      // );
+      // setsidebarOptions(newData);
     }
-  }, [NewMeetingreducer.meetingMaterial]);
+  }, [NewMeetingreducer.meetingMaterialData]);
 
   useEffect(() => {
     try {
@@ -260,7 +265,7 @@ const AdvancePersmissionModal = () => {
                       <Row className="mt-2">
                         {sidebarOptions.length > 0
                           ? sidebarOptions.map((data, index) => {
-                              console.log(data, "indexindex");
+                              console.log(data, "sidebarOptionssidebarOptions");
                               const isLastItem =
                                 index === sidebarOptions.length - 1;
 

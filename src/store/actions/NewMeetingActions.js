@@ -2383,6 +2383,7 @@ const meetingMaterialInit = () => {
 
 //Aun work on meeting Material Success
 const meetingMaterialSuccess = (response, message) => {
+  console.log(response, "responseresponseresponse");
   return {
     type: actions.GET_ALL_MEETING_MATERIAL_SUCCESS,
     response: response,
@@ -2426,9 +2427,13 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
             ) {
               dispatch(
                 meetingMaterialSuccess(
-                  response.data.responseResult.parentAgendas,
+                  response.data.responseResult,
                   t("Record-found")
                 )
+              );
+              console.log(
+                response.data.responseResult,
+                "meetingMaterialSuccess"
               );
               let NewData = {
                 AgendaID: id,
