@@ -146,7 +146,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
       UserAttachmentPermissions: newarray,
     };
     console.log(Data, "AgendaIDAgendaID");
-    // dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
+    dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
   };
 
   useEffect(() => {
