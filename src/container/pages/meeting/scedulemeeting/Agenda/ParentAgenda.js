@@ -70,6 +70,7 @@ const ParentAgenda = ({
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
+  let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const [mainLock, setmainLock] = useState([]);
@@ -151,7 +152,7 @@ const ParentAgenda = ({
 
   const openAdvancePermissionModal = async (id) => {
     let meetingMaterialData = {
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingIDLS,
     };
     await dispatch(
       getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
@@ -162,12 +163,12 @@ const ParentAgenda = ({
   const openVoteMOdal = async (AgendaID, agendaVotingID, agendaDetails) => {
     let Data = {
       AgendaID: AgendaID,
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingIDLS,
       AgendaVotingID: agendaVotingID,
     };
     let dataForAgendaDetails = {
       AgendaVotingID: agendaVotingID,
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingIDLS,
     };
     if (Data.AgendaVotingID !== 0) {
       await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
