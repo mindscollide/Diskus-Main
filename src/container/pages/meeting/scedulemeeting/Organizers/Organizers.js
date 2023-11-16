@@ -559,9 +559,8 @@ const Organizers = ({
           editMeetingFlag,
           rowsData,
           currentMeeting,
-          editFlag,
-          notificationMessage,
-          1
+          1,
+          notificationMessage
         )
       );
     } else {
@@ -598,8 +597,7 @@ const Organizers = ({
           rowsData,
           currentMeeting,
           editFlag,
-          notificationMessage,
-          2
+          notificationMessage
         )
       );
     } else {

@@ -6008,8 +6008,7 @@ const UpdateMeetingUserForOrganizers = (
   rowsData,
   currentMeeting,
   editFlag,
-  notificationMessage,
-  isEdit
+  notificationMessage
 ) => {
   console.log(notificationMessage, "notificationMessagenotificationMessage");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -6041,8 +6040,7 @@ const UpdateMeetingUserForOrganizers = (
               rowsData,
               currentMeeting,
               editFlag,
-              notificationMessage,
-              isEdit
+              notificationMessage
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -6077,8 +6075,8 @@ const UpdateMeetingUserForOrganizers = (
                   IsOrganizerAddFlow: false,
                   NotificationMessage: notificationMessage,
                 };
-                console.log(Data, "itemitemitemitem");
-                console.log(notificationMessage, "itemitemitemitem");
+                // console.log(Data, "itemitemitemitem");
+                // console.log(notificationMessage, "itemitemitemitem");
 
                 dispatch(
                   SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
@@ -6109,17 +6107,7 @@ const UpdateMeetingUserForOrganizers = (
                 dispatch(saveMeetingFlag(false));
                 dispatch(editMeetingFlag(false));
               }
-              let Data = {
-                MeetingOrganizers: rowsData.map((item) => ({
-                  IsPrimaryOrganizer: item.isPrimaryOrganizer,
-                  IsOrganizerNotified: item.isOrganizerNotified,
-                  Title: item.organizerTitle,
-                  UserID: item.userID,
-                })),
-                MeetingID: currentMeeting,
-                IsOrganizerAddFlow: isEdit === 1 ? true : false,
-                NotificationMessage: rowsData[0].NotificationMessage,
-              };
+
               dispatch(
                 SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
               );
