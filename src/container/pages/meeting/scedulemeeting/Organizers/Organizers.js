@@ -90,7 +90,7 @@ const Organizers = ({
   const [flag, setFlag] = useState(2);
   const [prevFlag, setprevFlag] = useState(2);
   const [editState, setEditState] = useState(false);
-  const [editFlag, setEditFlag] = useState(2);
+  const [editFlag, setEditFlag] = useState(0);
   const [notificationMessage, setNotificationMessage] = useState("");
   console.log(notificationMessage, "notificationMessagenotificationMessage");
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
@@ -569,9 +569,8 @@ const Organizers = ({
           editMeetingFlag,
           rowsData,
           currentMeeting,
-          editFlag,
-          notificationMessage,
-          1
+          1,
+          notificationMessage
         )
       );
     } else {
@@ -607,9 +606,8 @@ const Organizers = ({
           editMeetingFlag,
           rowsData,
           currentMeeting,
-          editFlag,
-          notificationMessage,
-          2
+          2,
+          notificationMessage
         )
       );
     } else {
@@ -828,7 +826,7 @@ const Organizers = ({
                         <Button
                           text={t("Save")}
                           className={styles["Next_Organization"]}
-                          onClick={saveMeetingOrganizers}
+                          onClick={() => saveMeetingOrganizers(1)}
                         />
                       </Col>
                     </Row>
@@ -848,7 +846,7 @@ const Organizers = ({
                         <Button
                           text={t("Save")}
                           className={styles["Next_Organization"]}
-                          onClick={editMeetingOrganizers}
+                          onClick={() => editMeetingOrganizers(2)}
                         />
                       </Col>
                     </Row>
