@@ -6073,7 +6073,7 @@ const UpdateMeetingUserForOrganizers = (
                   }),
                   MeetingID: currentMeeting,
                   IsOrganizerAddFlow: false,
-                  NotificationMessage: notificationMessage,
+                  NotificationMessage: "",
                 };
                 // console.log(Data, "itemitemitemitem");
                 // console.log(notificationMessage, "itemitemitemitem");
