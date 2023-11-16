@@ -408,12 +408,6 @@ const MeetingDetails = ({
     if (meetingDetails.ReminderFrequency.value !== 0) {
       newReminderData.push(meetingDetails.ReminderFrequency.value);
     }
-    if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
-      newReminderData.push(meetingDetails.ReminderFrequencyTwo.value);
-    }
-    if (meetingDetails.ReminderFrequencyThree.value !== 0) {
-      newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
-    }
 
     rows.map((data, index) => {
       newArr.push({
@@ -1397,26 +1391,11 @@ const MeetingDetails = ({
                         applyClass={"meetinInnerSearch"}
                         labelClass="d-none"
                         name={"Link"}
-                        change={HandleChange}
+                        // change={HandleChange}
                         value={
                           meetingDetails.IsVideoCall ? meetingDetails.Link : ""
                         }
                       />
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              error &&
-                              !meetingDetails.IsVideoCall &&
-                              meetingDetails.Link === ""
-                                ? ` ${styles["errorMessage-inLogin"]} `
-                                : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
-                            {t("Please-enter-video-link")}
-                          </p>
-                        </Col>
-                      </Row>
                     </Col>
                   </Row>
                 </Col>

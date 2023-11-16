@@ -1,11 +1,6 @@
 import React from "react";
 import styles from "./OrganizerViewModal.module.css";
-import {
-  Button,
-  Checkbox,
-  Notification,
-  Table,
-} from "../../../../../../components/elements";
+import { Button, Table } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -17,51 +12,25 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect, useState } from "react";
 import SceduleProposedmeeting from "../../meetingDetails/UnpublishedProposedMeeting/SceduleProposedMeeting/SceduleProposedmeeting";
-import moment from "moment";
 
-const OrganizerViewModal = ({
-  setViewProposeOrganizerPoll,
-  currentMeeting,
-}) => {
+const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //reducer call from Attendance_Reducers
-  const { NewMeetingreducer } = useSelector((state) => state);
-  console.log(NewMeetingreducer, "attendanceMeetingReducer");
-
-  let meetingID = Number(localStorage.getItem("meetingID"));
-
-  console.log(currentMeeting, "currentMeetingcurrentMeeting");
-
-  //scheduleProposedMeeting Modal open state
-  const [showScheduleProposedMeeting, setShowScheduleProposedMeeting] =
-    useState(false);
-  console.log(
-    showScheduleProposedMeeting,
-    "showScheduleProposedMeetingshowScheduleProposedMeeting"
+  const sceduleproposedMeeting = useSelector(
+    (state) => state.NewMeetingreducer.sceduleproposedMeeting
+  );
+  const userWiseMeetingProposed = useSelector(
+    (state) => state.NewMeetingreducer.userWiseMeetingProposed
+  );
+  let viewProposeDatePollMeetingID = Number(
+    localStorage.getItem("viewProposeDatePollMeetingID")
   );
 
   const [organizerRows, setOrganizerRows] = useState([]);
   const [initialOrganizerRows, setInitialOrganizerRows] = useState([]);
   const [proposedDates, setProposedDates] = useState([]);
-  console.log(organizerRows, "attendenceRowsattendenceRows");
-
-  const [organizerColumnData, setOrganizerColumnData] = useState([
-    {
-      userName: "Mr Abdul Qadir",
-      designation: "CFO",
-      userEmail: "example1@company.com",
-      title: "Manager",
-    },
-    {
-      userName: "Mr Huzaeifa Jahangir",
-      designation: "Team Lead",
-      userEmail: "example2@company.com",
-      title: "Lead",
-    },
-    // Add more data as needed
-  ]);
 
   const organizerColumn = [
     {
@@ -103,36 +72,40 @@ const OrganizerViewModal = ({
       ),
     },
   ];
-
+  // dispatch Api in useEffect
+  useEffect(() => {
+    let proposedData = {
+      MeetingID: Number(viewProposeDatePollMeetingID),
+    };
+    dispatch(getUserProposedWiseApi(navigate, t, proposedData));
+    return () => {
+      localStorage.removeItem("viewProposeDatePollMeetingID");
+    };
+  }, []);
   // for rendering data in table
   useEffect(() => {
     if (
-      NewMeetingreducer.userWiseMeetingProposed !== null &&
-      NewMeetingreducer.userWiseMeetingProposed !== undefined &&
-      NewMeetingreducer.userWiseMeetingProposed.length > 0
+      userWiseMeetingProposed !== null &&
+      userWiseMeetingProposed !== undefined &&
+      userWiseMeetingProposed.length > 0
     ) {
       let ProposeDates;
 
-      NewMeetingreducer.userWiseMeetingProposed.forEach((datesData, index) => {
+      userWiseMeetingProposed.forEach((datesData, index) => {
         const uniqueData = new Set(
           datesData.selectedProposedDates.map(JSON.stringify)
         );
-        console.log(uniqueData, "uniqueDatauniqueDatauniqueDatauniqueData");
         ProposeDates = Array.from(uniqueData).map(JSON.parse);
-
-        // ProposeDates.push(eachRecord.proposedDate);
       });
-      console.log(ProposeDates, "ProposeDatesProposeDatesProposeDates");
       setProposedDates(ProposeDates);
-      setInitialOrganizerRows(NewMeetingreducer.userWiseMeetingProposed);
+      setInitialOrganizerRows(userWiseMeetingProposed);
     } else {
       setInitialOrganizerRows([]);
     }
-  }, [NewMeetingreducer.userWiseMeetingProposed]);
+  }, [userWiseMeetingProposed]);
 
   useEffect(() => {
     const newOrganizerRows = [...initialOrganizerRows];
-
     // Find the maximum number of selectedProposedDates objects in initialOrganizerRows
     let maxSelectedProposedDates = 0;
     initialOrganizerRows.forEach((organizer) => {
@@ -142,53 +115,16 @@ const OrganizerViewModal = ({
       }
     });
 
-    // Create an object with maxSelectedProposedDates empty selectedProposedDates
-    // const yourNewObject = {
-    //   userID: 0,
-    //   userName: "Total",
-    //   designation: "",
-    //   userEmail: "",
-    //   title: "",
-    //   selectedProposedDates: Array(maxSelectedProposedDates).fill({
-    //     proposedDateID: 0,
-    //     proposedDate: "",
-    //     startTime: "",
-    //     endTime: "",
-    //     isSelected: false,
-    //     isTotal: 0,
-    //   }),
-    // };
-
-    // newOrganizerRows.push(yourNewObject);
-
     setOrganizerRows(newOrganizerRows);
   }, [initialOrganizerRows]);
-
-  console.log(
-    NewMeetingreducer.userWiseMeetingProposed,
-    "NewMeetingreduceruserWiseMeetingProposed"
-  );
-
-  // dispatch Api in useEffect
-  useEffect(() => {
-    let proposedData = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(getUserProposedWiseApi(navigate, t, proposedData));
-  }, []);
 
   const cancelHandler = () => {
     setViewProposeOrganizerPoll(false);
   };
 
   const handleViewPollClick = () => {
-    setShowScheduleProposedMeeting(true);
     dispatch(showSceduleProposedMeeting(true));
   };
-  console.log(
-    handleViewPollClick,
-    "showScheduleProposedMeetingshowScheduleProposedMeeting"
-  );
 
   return (
     <section>
@@ -242,12 +178,13 @@ const OrganizerViewModal = ({
               </Col>
             </Row>
           </Paper>
-
-          <SceduleProposedmeeting
-            organizerRows={organizerRows}
-            proposedDates={proposedDates}
-            currentMeeting={currentMeeting}
-          />
+          {sceduleproposedMeeting ? (
+            <SceduleProposedmeeting
+              organizerRows={organizerRows}
+              proposedDates={proposedDates}
+              currentMeeting={viewProposeDatePollMeetingID}
+            />
+          ) : null}
         </Col>
       </Row>
     </section>

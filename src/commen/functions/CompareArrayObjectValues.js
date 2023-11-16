@@ -29,6 +29,7 @@ export const deepEqual = (obj1, obj2) => {
 };
 
 export const areAllValuesNotEmpty = (arrayOfObjects) => {
+  console.log("areAllValuesNotEmpty",arrayOfObjects)
   for (let i = 0; i < arrayOfObjects.length; i++) {
     const currentObject = arrayOfObjects[i];
 
