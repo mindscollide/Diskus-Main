@@ -175,9 +175,11 @@ const ParentAgenda = ({
       dispatch(showVoteAgendaModal(true));
       dispatch(GetCurrentAgendaDetails(agendaDetails));
       dispatch(GetAgendaVotingDetails(dataForAgendaDetails, navigate, t));
+      localStorage.setItem("currentAgendaVotingID", Data.AgendaVotingID);
     } else {
       dispatch(GetCurrentAgendaDetails(agendaDetails));
       dispatch(showVoteAgendaModal(true));
+      localStorage.setItem("currentAgendaVotingID", 0);
     }
   };
 
