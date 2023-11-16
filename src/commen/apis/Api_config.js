@@ -1251,6 +1251,11 @@ const agendaVotingStatusUpdate = {
   RequestMethod: "ServiceManager.AgendaVotingStatusUpdate",
 };
 
+// get All Meeting Tasks in Action
+const getMeetingTasksAction = {
+  RequestMethod: "ServiceManager.GetMeetingTasks",
+};
+
 export {
   setMeetingbyCommitteeIDRM,
   setMeetingbyGroupIDRM,
@@ -1585,4 +1590,5 @@ export {
   addUpdateAdvanceMeetingAgenda,
   downloadAttendanceReport,
   agendaVotingStatusUpdate,
+  getMeetingTasksAction,
 };

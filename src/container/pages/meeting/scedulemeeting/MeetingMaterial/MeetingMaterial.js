@@ -79,80 +79,6 @@ const MeetingMaterial = ({
     }
   };
 
-  // const materialColoumn = [
-  //   {
-  //     title: t("Document-name"),
-  //     dataIndex: "documentName",
-  //     key: "documentName",
-  //     width: "250px",
-  //     render: (text, data) => {
-  //       console.log(data, "dattatatatata");
-  //       let ext = data.documentName.split(".").pop();
-  //       const pdfData = {
-  //         taskId: data.agendaID,
-  //         commingFrom: 4,
-  //         fileName: data.documentName,
-  //         attachmentID: data.agendaID,
-  //       };
-  //       const pdfDataJson = JSON.stringify(pdfData);
-  //       console.log(pdfDataJson, "Pdfjajaaj");
-  //       if (ext === "pdf") {
-  //         return (
-  //           <>
-  //             <section
-  //               className={styles["docx-name-title"]}
-  //               onClick={(e) => viewHandlerOnclick(e, pdfDataJson)}
-  //             >
-  //               <img
-  //                 src={getIconSource(getFileExtension(data.documentName))} // Use ext here
-  //                 alt=""
-  //                 width={"25px"}
-  //                 height={"25px"}
-  //                 className="me-2"
-  //               />
-
-  //               <abbr title={text}>
-  //                 <span
-  //                   className={styles["docx-name-title"]}
-  //                   onDoubleClick={() => {
-  //                     console.log("Check double Click");
-  //                   }}
-  //                 >
-  //                   {text}
-  //                 </span>
-  //               </abbr>
-  //             </section>
-  //           </>
-  //         );
-  //       } else {
-  //         return (
-  //           <section className={styles["docx-name-title"]}>
-  //             <img
-  //               src={getIconSource(getFileExtension(data.documentName))} // Use ext here
-  //               alt=""
-  //               width={"25px"}
-  //               height={"25px"}
-  //               className="me-2"
-  //             />
-  //             <abbr title={text}>
-  //               <span className={styles["docx-name-title"]}>{text}</span>
-  //             </abbr>
-  //           </section>
-  //         );
-  //       }
-  //     },
-  //   },
-  //   {
-  //     title: t("Agenda-name"),
-  //     dataIndex: "agendaName",
-  //     key: "agendaName",
-  //     width: "250px",
-  //     render: (text) => (
-  //       <label className={styles["agenda-name-title"]}>{text}</label>
-  //     ),
-  //   },
-  // ];
-
   // Modify your materialColoumn definition to handle parent and child agendas
   const materialColoumn = [
     {
@@ -287,7 +213,8 @@ const MeetingMaterial = ({
   // Api request on useEffect
   useEffect(() => {
     let meetingMaterialData = {
-      MeetingID: Number(currentMeeting),
+      // MeetingID: Number(currentMeeting),
+      MeetingID: 1785,
     };
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
   }, []);
