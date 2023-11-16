@@ -39,6 +39,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  let currentAgendaVotingID = Number(
+    localStorage.getItem("currentAgendaVotingID")
+  );
+
   // let currentMeetingID = Number(localStorage.getItem("meetingID"));
 
   const { NewMeetingreducer, MeetingAgendaReducer, MeetingOrganizersReducer } =
@@ -403,16 +407,34 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   }, [currentAgendaDetails]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.getAllSavedparticipants !== undefined &&
-      NewMeetingreducer.getAllSavedparticipants !== null &&
-      NewMeetingreducer.getAllSavedparticipants.length !== 0
-    ) {
-      setMeetingParticipants(NewMeetingreducer.getAllSavedparticipants);
+    if (currentAgendaVotingID === 0) {
+      if (
+        NewMeetingreducer.getAllSavedparticipants !== undefined &&
+        NewMeetingreducer.getAllSavedparticipants !== null &&
+        NewMeetingreducer.getAllSavedparticipants.length !== 0
+      ) {
+        setMeetingParticipants(NewMeetingreducer.getAllSavedparticipants);
+      } else {
+        setMeetingParticipants([]);
+      }
     } else {
-      setMeetingParticipants([]);
+      if (
+        MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== undefined &&
+        MeetingAgendaReducer.MeetingAgendaVotingDetailsData !== null &&
+        MeetingAgendaReducer.MeetingAgendaVotingDetailsData.length !== 0
+      ) {
+        setMeetingParticipants(
+          MeetingAgendaReducer.MeetingAgendaVotingDetailsData
+            .agendaVotingDetails.votingMembers
+        );
+      } else {
+        setMeetingParticipants([]);
+      }
     }
-  }, [NewMeetingreducer.getAllSavedparticipants]);
+  }, [
+    NewMeetingreducer.getAllSavedparticipants,
+    MeetingAgendaReducer.MeetingAgendaVotingDetailsData,
+  ]);
 
   const MeetingColoumns = [
     {
@@ -439,12 +461,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           </Row>
         </>
       ),
-      dataIndex: "participantRole",
-      key: "participantRole",
+      dataIndex: "participantTitle",
+      key: "participantTitle",
       width: "100px",
-      render: (text, record) => {
-        return <>{text.participantRole}</>;
-      },
     },
     {
       title: (
@@ -461,27 +480,6 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       width: "150px",
     },
     {
-      title: (
-        <>
-          <Button
-            text={
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Add_more_Class"]}
-                  >
-                    <span>{t("Add-more")}</span>
-                  </Col>
-                </Row>
-              </>
-            }
-            className={styles["Add_more_Btn"]}
-          />
-        </>
-      ),
       dataIndex: "userID",
       key: "userID",
       width: "80px",
@@ -703,6 +701,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
       { votingAnswer: "No", votingAnswerID: 2 }
     );
     dispatch(showAllMeetingParticipantsSuccess([], ""));
+    localStorage.setItem("currentAgendaVotingID", 0);
   };
 
   const castVotePage = () => {
@@ -732,6 +731,8 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
   }, [MeetingAgendaReducer.ResponseMessage]);
 
   console.log("MeetingAgendaReducer", MeetingAgendaReducer);
+
+  console.log("MeetingParticipants", meetingParticipants);
 
   console.log("MeetingOrganizersReducer", MeetingOrganizersReducer);
 
