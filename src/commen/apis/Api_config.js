@@ -1255,7 +1255,34 @@ const saveMeetingDocuments = {
   RequestMethod: "ServiceManager.SaveMeetingDocuments",
 };
 
+// get All Meeting Tasks in Action
+const getMeetingTasksAction = {
+  RequestMethod: "ServiceManager.GetMeetingTasks",
+};
+
+const dataRoomFileDownloadService = {
+  RequestMethod: "ServiceManager.DownloadFile",
+};
+
+const dataRoomFolderDownloadService = {
+  RequestMethod: "ServiceManager.DownloadFolder",
+};
+
+const saveTaskandAssgineesRM = {
+  RequestMethod: "ServiceManager.SaveTaskDocumentsAndAssignees",
+};
+
+const createupdateTaskDataroom = {
+  RequestMethod: "ServiceManager.CreateUpdateToDoDataRoomMap",
+};
+const saveTaskDocuments = {
+  RequestMethod: "ServiceManager.SaveToDoDocuments",
+};
+
 export {
+  saveTaskandAssgineesRM,
+  saveTaskDocuments,
+  createupdateTaskDataroom,
   setMeetingbyCommitteeIDRM,
   setMeetingbyGroupIDRM,
   getMeetingbyCommitteeIDRM,
@@ -1590,4 +1617,7 @@ export {
   downloadAttendanceReport,
   agendaVotingStatusUpdate,
   saveMeetingDocuments,
+  getMeetingTasksAction,
+  dataRoomFileDownloadService,
+  dataRoomFolderDownloadService,
 };

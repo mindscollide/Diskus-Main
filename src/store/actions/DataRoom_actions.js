@@ -25,8 +25,13 @@ import {
   checkFileLinkRM,
   requestAccessRM,
   updateFolderGeneralAccessRM,
+  dataRoomFileDownloadService,
+  dataRoomFolderDownloadService,
 } from "../../commen/apis/Api_config";
-import { dataRoomApi } from "../../commen/apis/Api_ends_points";
+import {
+  DataRoomAllFilesDownloads,
+  dataRoomApi,
+} from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 
@@ -3099,6 +3104,205 @@ const updateFolderGeneralAccessApi = (navigate, t, data) => {
       });
   };
 };
+
+const DownloadFileForDataRoomStart = () => {
+  return {
+    type: actions.DATA_ROOM_FILE_DOWNLOAD,
+  };
+};
+
+const DownloadFileForDataRoomEnded = () => {
+  return {
+    type: actions.DATA_ROOM_FILE_DOWNLOAD_LOADER_FALSED,
+  };
+};
+
+const downloadFail = (response) => {
+  return {
+    type: actions.DATA_ROOM_FILE_DOWNLOAD_FAILED,
+    response: response,
+  };
+};
+
+// DownloadFile
+// const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   let form = new FormData();
+//   form.append("RequestMethod", dataRoomFileDownloadService.RequestMethod);
+//   form.append("RequestData", JSON.stringify(data));
+//   var ext = Name.split(".").pop();
+//   let contentType;
+//   if (ext === "doc") {
+//     contentType = "application/msword";
+//   } else if (ext === "docx") {
+//     contentType =
+//       "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+//   } else if (ext === "xls") {
+//     contentType =
+//       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+//   } else if (ext === "xlsx") {
+//     contentType =
+//       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+//   } else if (ext === "pdf") {
+//     contentType = "application/pdf";
+//   } else if (ext === "png") {
+//     contentType = "image/png";
+//   } else if (ext === "txt") {
+//     contentType = "text/plain";
+//   } else if (ext === "jpg") {
+//     contentType = "image/jpeg";
+//   } else if (ext === "jpeg") {
+//     contentType = "image/jpeg";
+//   } else {
+//     console.log();
+//   }
+//   return (dispatch) => {
+//     dispatch(DownloadFileForDataRoomStart());
+//     axios({
+//       method: "post",
+//       url: DataRoomAllFilesDownloads,
+//       data: form,
+//       headers: {
+//         _token: token,
+//         "Content-Disposition": "attachment; filename=template." + ext,
+//         // "Content-Type":
+//         //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+//         "Content-Type": contentType,
+//       },
+//       responseType: "blob",
+//     })
+//       .then(async (response) => {
+//         if (response.status === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
+//         } else if (response.status === 200) {
+//           const url = window.URL.createObjectURL(new Blob([response.data]));
+//           const link = document.createElement("a");
+//           link.href = url;
+//           link.setAttribute("download", Name);
+//           document.body.appendChild(link);
+//           link.click();
+//           console.log(response);
+//           dispatch(DownloadFileForDataRoomEnded(false));
+//         }
+//       })
+//       .catch((response) => {
+//         dispatch(downloadFail(response));
+//       });
+//   };
+// };
+
+const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  console.log("datadata", JSON.stringify(data));
+  let form = new FormData();
+  form.append("RequestMethod", dataRoomFileDownloadService.RequestMethod);
+  form.append("RequestData", JSON.stringify(data));
+
+  return (dispatch) => {
+    dispatch(DownloadFileForDataRoomStart());
+
+    axios({
+      method: "post",
+      url: DataRoomAllFilesDownloads,
+      data: form,
+      headers: {
+        _token: token,
+        "Content-Disposition": `attachment; filename=${Name}`,
+        "Content-Type": "application/octet-stream", // Use a generic Content-Type
+      },
+      responseType: "arraybuffer",
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, Name));
+        } else if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", Name);
+          document.body.appendChild(link);
+          link.click();
+          console.log("download", response);
+          dispatch(DownloadFileForDataRoomEnded(false));
+        } else {
+          dispatch(downloadFail(response));
+        }
+      })
+      .catch((response) => {
+        console.log("download err", response);
+        dispatch(downloadFail(response));
+      });
+  };
+};
+
+const DownloadFolderForDataRoomStart = () => {
+  return {
+    type: actions.DATA_ROOM_FOLDER_DOWNLOAD,
+  };
+};
+
+const DownloadFolderForDataRoomEnded = () => {
+  return {
+    type: actions.DATA_ROOM_FOLDER_DOWNLOAD_LOADER_FALSE,
+  };
+};
+
+const downloadFolderFail = (response) => {
+  return {
+    type: actions.DATA_ROOM_FOLDER_DOWNLOAD_FAILED,
+    response: response,
+  };
+};
+
+const DataRoomDownloadFolderApiFunc = (navigate, data, t, Name) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  console.log("datadata", JSON.stringify(data));
+  let form = new FormData();
+  form.append("RequestMethod", dataRoomFolderDownloadService.RequestMethod);
+  form.append("RequestData", JSON.stringify(data));
+
+  return (dispatch) => {
+    dispatch(DownloadFolderForDataRoomStart());
+
+    axios({
+      method: "post",
+      url: DataRoomAllFilesDownloads,
+      data: form,
+      headers: {
+        _token: token,
+        "Content-Disposition": `attachment; filename=${Name}.zip`,
+        "Content-Type": "application/zip", // Set the content type to zip
+      },
+      responseType: "arraybuffer",
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DataRoomDownloadFolderApiFunc(navigate, data, t, Name));
+        } else if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", `${Name}.zip`);
+          document.body.appendChild(link);
+          link.click();
+          console.log("download", response);
+          dispatch(DownloadFolderForDataRoomEnded(false));
+        } else {
+          dispatch(downloadFail(response));
+        }
+      })
+      .catch((response) => {
+        console.log("download err", response);
+        dispatch(downloadFolderFail(response));
+      });
+  };
+};
+
 export {
   createFolderLink_fail,
   createFileLink_fail,
@@ -3133,4 +3337,6 @@ export {
   searchDocumentsAndFoldersApi,
   IsFileisExist,
   getRecentDocumentsApi,
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFolderApiFunc,
 };

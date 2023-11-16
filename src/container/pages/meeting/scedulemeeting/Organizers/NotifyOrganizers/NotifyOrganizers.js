@@ -23,7 +23,7 @@ import { Col, Row } from "react-bootstrap";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import downdirect from "../../../../../../assets/images/downDirect.png";
 
-const NotifyOrganizers = () => {
+const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -87,11 +87,13 @@ const NotifyOrganizers = () => {
     if (name === "Message") {
       let valueCheck = validateInput(value);
       if (valueCheck !== "") {
+        setNotificationMessage(valueCheck);
         setNotifyOrganizerData({
           ...notifyOrganizerData,
           Messege: valueCheck,
         });
       } else {
+        setNotificationMessage("");
         setNotifyOrganizerData({
           ...notifyOrganizerData,
           Messege: "",
@@ -134,7 +136,7 @@ const NotifyOrganizers = () => {
         ...member,
         NotificationMessage: notifyOrganizerData.Messege,
       }));
-
+      console.log(updatedMembersOrganizers, "updatedMembersOrganizers");
       dispatch(meetingOrganizers(updatedMembersOrganizers));
     } else {
       setNotifyMessaegError(true);
@@ -205,15 +207,15 @@ const NotifyOrganizers = () => {
                   rows="4"
                   placeholder={t("Message")}
                   change={HandleChange}
-                  value={notifyOrganizerData.Messege}
+                  value={notificationMessage}
                   required={true}
                   name="Message"
                   maxLength={500}
                 />
-                {NotifyMessageError && notifyOrganizerData.Messege === "" ? (
+                {NotifyMessageError && notificationMessage === "" ? (
                   <span
                     className={
-                      NotifyMessageError && notifyOrganizerData.Messege === ""
+                      NotifyMessageError && notificationMessage === ""
                         ? `${styles["errorMessage-inLogin"]}`
                         : `${styles["errorMessage-inLogin_hidden"]}`
                     }

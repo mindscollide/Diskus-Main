@@ -24,6 +24,8 @@ import {
   ViewToDoList,
   clearResponce,
   SearchTodoListApi,
+  saveTaskDocumentsAndAssigneesApi,
+  saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 
@@ -287,22 +289,27 @@ const TodoList = () => {
   };
 
   const deleteTodolist = async (record) => {
-    await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false));
-    if (todoListPageSize !== null && todoListCurrentPage !== null) {
-      dispatch(
-        SearchTodoListApi(
-          navigate,
-          searchData,
-          todoListCurrentPage,
-          todoListPageSize,
-          t
-        )
-      );
-    } else {
-      localStorage.setItem("todoListPage", 1);
-      localStorage.setItem("todoListRow", 50);
-      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
-    }
+    let NewData = {
+      ToDoID: Number(record.pK_TID),
+      UpdateFileList: [],
+    };
+    dispatch(saveTaskDocumentsApi(navigate, NewData, t, 2, setShow));
+    // await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false));
+    // if (todoListPageSize !== null && todoListCurrentPage !== null) {
+    //   dispatch(
+    //     SearchTodoListApi(
+    //       navigate,
+    //       searchData,
+    //       todoListCurrentPage,
+    //       todoListPageSize,
+    //       t
+    //     )
+    //   );
+    // } else {
+    //   localStorage.setItem("todoListPage", 1);
+    //   localStorage.setItem("todoListRow", 50);
+    //   dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
+    // }
   };
 
   const columnsToDo = [
@@ -558,7 +565,7 @@ const TodoList = () => {
         if (parseInt(record?.pK_UID) === parseInt(createrID)) {
           return (
             <i
-              className="meeting-editbutton"
+              className="meeting-editbutton cursor-pointer"
               onClick={(e) => deleteTodolist(index)}
             >
               <img draggable="false" src={del} alt="" />

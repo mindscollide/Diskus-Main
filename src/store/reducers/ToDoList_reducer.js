@@ -20,10 +20,132 @@ const initialState = {
   deleteCommentSpinner: false,
   deleteGroupTask: null,
   deleteCommitteeTask: null,
+  todoDocumentsMapping: 0,
+  todoDocumentsUpload: [],
+  todoSaveFilesTodo: [],
+  saveTodoDocuments: null,
+  saveTaskandAssignees: null,
 };
 
 const toDoListReducer = (state = initialState, action) => {
   switch (action.type) {
+    // Mapping for Task create
+    case actions.CREATEUPDATETASKDATAROOMMAP_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.CREATEUPDATETASKDATAROOMMAP_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        todoDocumentsMapping: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CREATEUPDATETASKDATAROOMMAP_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        todoDocumentsMapping: 0,
+        ResponseMessage: action.message,
+      };
+    }
+    // Upload Documents for Task
+    case actions.UPLOAD_DOCUMENTS_TASKS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.UPLOAD_DOCUMENTS_TASKS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        todoDocumentsUpload: [...state.todoDocumentsUpload, action.response],
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPLOAD_DOCUMENTS_TASKS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        todoDocumentsUpload: [],
+        ResponseMessage: action.message,
+      };
+    }
+    // Save Documents and Files for Task
+    case actions.SAVEFILES_TASKS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVEFILES_TASKS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        todoSaveFilesTodo: [...state.todoSaveFilesTodo, action.response],
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVEFILES_TASKS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        todoSaveFilesTodo: [],
+        ResponseMessage: action.message,
+      };
+    }
+    // Save Tasks Documents
+    case actions.SAVE_TASK_DOCUMENTS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVE_TASK_DOCUMENTS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveTodoDocuments: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVE_TASK_DOCUMENTS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        saveTodoDocuments: null,
+        ResponseMessage: action.message,
+      };
+    }
+    // Save Task and Assignees Information
+    case actions.SAVETASKDOCUMENTSANDASSIGNEES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVETASKDOCUMENTSANDASSIGNEES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        saveTaskandAssignees: action.resoponse,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVETASKDOCUMENTSANDASSIGNEES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        saveTaskandAssignees: null,
+        ResponseMessage: action.message,
+      };
+    }
+    // OLD WORK
     case actions.GET_TODOLIST_LOADER_START:
       return { ...state, Loading: true };
     case actions.DELETE_TODO_COMMENT_ID: {
