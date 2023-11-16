@@ -6083,7 +6083,7 @@ const UpdateMeetingUserForOrganizers = (
                 );
                 dispatch(saveMeetingFlag(false));
                 dispatch(editMeetingFlag(false));
-              } else {
+              } else if (editFlag === 1) {
                 let Data = {
                   MeetingOrganizers: rowsData.map((item) => {
                     console.log(item, "itemitemitemitem");
@@ -6107,12 +6107,6 @@ const UpdateMeetingUserForOrganizers = (
                 dispatch(saveMeetingFlag(false));
                 dispatch(editMeetingFlag(false));
               }
-
-              dispatch(
-                SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
-              );
-              dispatch(saveMeetingFlag(false));
-              dispatch(editMeetingFlag(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
