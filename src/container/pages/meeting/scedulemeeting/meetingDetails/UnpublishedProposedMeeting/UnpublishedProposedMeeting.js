@@ -45,6 +45,7 @@ const UnpublishedProposedMeeting = ({
   setEditMeeting,
   setCurrentMeetingID,
   ediorRole,
+  setDataroomMapFolderId,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -136,7 +137,8 @@ const UnpublishedProposedMeeting = ({
         navigate,
         t,
         setCurrentMeetingID,
-        setSceduleMeeting
+        setSceduleMeeting,
+        setDataroomMapFolderId
       )
     );
   };

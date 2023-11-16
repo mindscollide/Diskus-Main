@@ -1251,6 +1251,10 @@ const agendaVotingStatusUpdate = {
   RequestMethod: "ServiceManager.AgendaVotingStatusUpdate",
 };
 
+const saveMeetingDocuments = {
+  RequestMethod: "ServiceManager.SaveMeetingDocuments",
+};
+
 export {
   setMeetingbyCommitteeIDRM,
   setMeetingbyGroupIDRM,
@@ -1585,4 +1589,5 @@ export {
   addUpdateAdvanceMeetingAgenda,
   downloadAttendanceReport,
   agendaVotingStatusUpdate,
+  saveMeetingDocuments,
 };

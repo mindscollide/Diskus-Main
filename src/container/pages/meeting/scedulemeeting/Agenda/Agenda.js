@@ -67,6 +67,8 @@ const Agenda = ({
 
   let meetingTitle = localStorage.getItem("MeetingTitle");
 
+  let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
+
   const { Dragger } = Upload;
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
@@ -196,10 +198,10 @@ const Agenda = ({
 
   useEffect(() => {
     let getAllData = {
-      MeetingID: currentMeeting !== null ? currentMeeting : 0,
+      MeetingID: currentMeetingIDLS !== null ? currentMeetingIDLS : 0,
     };
     let getFolderIDData = {
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingIDLS,
       MeetingTitle:
         NewMeetingreducer.getAllMeetingDetails !== null
           ? NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails
@@ -213,10 +215,10 @@ const Agenda = ({
     };
     // if (isEditMeeting === true) {
     let getMeetingData = {
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingIDLS,
     };
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingIDLS,
     };
     dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
     dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
@@ -491,7 +493,13 @@ const Agenda = ({
       console.log("fileForSendfileForSend", fileForSend);
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
-          UploadDocumentsAgendaApi(navigate, t, newData, 0, newFolder)
+          UploadDocumentsAgendaApi(
+            navigate,
+            t,
+            newData,
+            dataroomMapFolderId,
+            newFolder
+          )
         );
       });
       const convertedRows = convertDateFieldsToUTC(rows);
@@ -550,18 +558,17 @@ const Agenda = ({
       });
 
       let Data = {
-        MeetingID: currentMeeting,
+        MeetingID: currentMeetingIDLS,
         AgendaList: updatedData,
       };
 
       let capitalizedData = capitalizeKeys(Data);
-      console.log("capitalizedData", capitalizedData);
       dispatch(
         AddUpdateAdvanceMeetingAgenda(
           capitalizedData,
           navigate,
           t,
-          currentMeeting
+          currentMeetingIDLS
         )
       );
     } else {
