@@ -60,6 +60,7 @@ const MeetingDetails = ({
   ediorRole,
   setEditMeeting,
   isEditMeeting,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -91,6 +92,7 @@ const MeetingDetails = ({
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
   const [recurringDropDown, setRecurringDropDown] = useState([]);
+
   const [flag, setFlag] = useState(1);
 
   const [rows, setRows] = useState([
@@ -379,7 +381,8 @@ const MeetingDetails = ({
           2,
           setCurrentMeetingID,
           currentMeeting,
-          meetingDetails
+          meetingDetails,
+          setDataroomMapFolderId
         )
       );
     } else {
@@ -457,7 +460,8 @@ const MeetingDetails = ({
           2,
           setCurrentMeetingID,
           currentMeeting,
-          meetingDetails
+          meetingDetails,
+          setDataroomMapFolderId
         )
       );
       localStorage.setItem("MeetingTitle", meetingDetails.MeetingTitle);
@@ -487,6 +491,10 @@ const MeetingDetails = ({
         EndTime: data.endDate,
       });
     });
+    let recurringMeetingID =
+      meetingDetails.RecurringOptions.value !== 0
+        ? meetingDetails.RecurringOptions.value
+        : 1;
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
@@ -512,7 +520,7 @@ const MeetingDetails = ({
           Notes: meetingDetails.Notes,
           AllowRSVP: meetingDetails.AllowRSPV,
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
-          ReucurringMeetingID: meetingDetails.RecurringOptions.value,
+          ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
           MeetingStatusID: 11,
           // IsComingFromApi: true,
@@ -529,7 +537,8 @@ const MeetingDetails = ({
           4,
           setCurrentMeetingID,
           currentMeeting,
-          meetingDetails
+          meetingDetails,
+          setDataroomMapFolderId
         )
       );
     } else {

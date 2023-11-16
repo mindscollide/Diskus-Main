@@ -80,7 +80,9 @@ const Organizers = ({
   const [flag, setFlag] = useState(2);
   const [prevFlag, setprevFlag] = useState(2);
   const [editState, setEditState] = useState(false);
-
+  const [editFlag, setEditFlag] = useState(2);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  console.log(notificationMessage, "notificationMessagenotificationMessage");
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
@@ -116,6 +118,7 @@ const Organizers = ({
   };
 
   const [rowsData, setRowsData] = useState([currentOrganizerData]);
+  console.log(rowsData, "rowsDatarowsDatarowsDatarowsData");
 
   const [transformedData, setTransformedData] = useState({
     MeetingOrganizers: [],
@@ -556,6 +559,8 @@ const Organizers = ({
           editMeetingFlag,
           rowsData,
           currentMeeting,
+          editFlag,
+          notificationMessage,
           1
         )
       );
@@ -568,18 +573,20 @@ const Organizers = ({
   };
 
   const editMeetingOrganizers = () => {
-    let findisOrganizerisExist = rowsData.some(
-      (data, index) => data.isPrimaryOrganizer === true
-    );
     let newarry = [];
     rowsData.forEach((organizerData, organizerIndex) => {
       newarry.push(organizerData.userID);
     });
+    let findisOrganizerisExist = rowsData.some(
+      (data, index) => data.isPrimaryOrganizer === true
+    );
+
     let Data = {
       MeetingID: currentMeeting,
       MeetingAttendeRoleID: 1,
       UpdatedUsers: newarry,
     };
+
     if (findisOrganizerisExist) {
       dispatch(
         UpdateMeetingUserForOrganizers(
@@ -590,6 +597,8 @@ const Organizers = ({
           editMeetingFlag,
           rowsData,
           currentMeeting,
+          editFlag,
+          notificationMessage,
           2
         )
       );
@@ -646,6 +655,8 @@ const Organizers = ({
       setRowsData(updatedMeetingOrganizers);
     }
   }, [MeetingOrganizersReducer.AllMeetingOrganizersData]);
+
+  console.log(rowsData, "setRowsDatasetRowsData");
 
   useEffect(() => {
     if (
@@ -908,7 +919,12 @@ const Organizers = ({
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {NewMeetingreducer.adduserModal && <ModalOrganizor />}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
-      {NewMeetingreducer.notifyOrganizors && <NotifyOrganizers />}
+      {NewMeetingreducer.notifyOrganizors && (
+        <NotifyOrganizers
+          notificationMessage={notificationMessage}
+          setNotificationMessage={setNotificationMessage}
+        />
+      )}
       {NewMeetingreducer.sendNotificationOrganizerModal === true ? (
         <SendNotificationOrganizer />
       ) : null}

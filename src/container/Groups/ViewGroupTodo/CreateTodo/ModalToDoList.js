@@ -34,6 +34,8 @@ import {
   CreateToDoList,
   GetTodoListByUser,
   HideNotificationTodo,
+  saveTaskDocumentsAndAssigneesApi,
+  uploadDocumentsTaskApi,
 } from "../../../../store/actions/ToDoList_action";
 import { useDispatch, useSelector } from "react-redux";
 import { FileUploadToDo } from "../../../../store/actions/Upload_action";
@@ -80,6 +82,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   let createrID = localStorage.getItem("userID");
 
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const [createTaskID, setCreateTaskID] = useState(0);
 
   useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
@@ -462,15 +465,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Save To-Do List Function
   const createToDoList = async () => {
-    let TasksAttachments = tasksAttachments.TasksAttachments;
     let taskAssignedTO = [...TaskAssignedTo];
     if (taskAssignedTO.length === 0) {
       taskAssignedTO.push(Number(createrID));
       setTaskAssignedTo(taskAssignedTO);
     }
-    console.log(taskAssignedTO, "taskAssignedTOtaskAssignedTO");
     let newDate = createTodoDate;
-    let newTime = task.DeadLineTime;
     let finalDateTime;
     if (createTodoDate !== "" && task.DeadLineTime !== "") {
       finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
@@ -507,110 +507,79 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         message: t("Please-select-title-for-the-task"),
       });
     } else {
-      if (Object.keys(fileForSend).length > 0) {
-        let newfile = [];
-        const uploadPromises = fileForSend.map((newData) => {
-          // Return the promise from FileUploadToDo
-          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
-        });
-
-        // Wait for all uploadPromises to resolve
-        await Promise.all(uploadPromises);
-        // uploadFiles(fileForSend)
-        // .then((response) => {
-        console.log("newfilenewfile", newfile);
-        console.log("newfilenewfile", TasksAttachments);
-        console.log("newfilenewfile", newfile.length);
-        console.log("newfilenewfile", Object.keys(TasksAttachments).length);
-        let Data;
-        TasksAttachments = newfile;
-        if (TaskAssignedTo.length > 0) {
-          Data = {
-            Task,
-            TaskCreatorID,
-            TaskAssignedTo,
-            TasksAttachments,
-          };
-        } else {
-          Data = {
-            Task,
-            TaskCreatorID,
-            TaskAssignedTo: taskAssignedTO,
-            TasksAttachments,
-          };
-        }
-        // let Data = {
-        //   Task,
-        //   TaskCreatorID,
-        //   TaskAssignedTo,
-        //   TasksAttachments,
-        // }
-        dispatch(CreateToDoList(navigate, Data, t, 2));
-        setShow(false);
-        setTask({
-          ...task,
-          PK_TID: 1,
-          Title: "",
-          Description: "",
-          IsMainTask: true,
-          DeadLineDate: "",
-          DeadLineTime: "",
-          CreationDateTime: "",
-        });
-        setCreateTodoDate("");
-        setCreateTodoTime("");
-        setTaskAssignedTo([]);
-        setAssignees([]);
-        setTasksAttachments({ ["TasksAttachments"]: [] });
-        setTaskAssignedName([]);
-        setToDoDate("");
-        setFileForSend([]);
-        setFileSize(0);
-        // })
-        // .catch((error) => {
-        //   console.log(error);
-        // });
+      let Data;
+      if (TaskAssignedTo.length > 0) {
+        Data = {
+          Task,
+          TaskCreatorID,
+          TaskAssignedTo,
+          // TasksAttachments,
+        };
       } else {
-        let Data;
-        if (TaskAssignedTo.length > 0) {
-          Data = {
-            Task,
-            TaskCreatorID,
-            TaskAssignedTo,
-            TasksAttachments,
-          };
-        } else {
-          Data = {
-            Task,
-            TaskCreatorID,
-            TaskAssignedTo: taskAssignedTO,
-            TasksAttachments,
-          };
-        }
-        dispatch(CreateToDoList(navigate, Data, t, 2));
-        setShow(false);
-        setTask({
-          ...task,
-          PK_TID: 1,
-          Title: "",
-          Description: "",
-          IsMainTask: true,
-          DeadLineDate: "",
-          DeadLineTime: "",
-          CreationDateTime: "",
-        });
-        setCreateTodoDate("");
-        setCreateTodoTime("");
-        setTaskAssignedTo([]);
-        setTasksAttachments({ ["TasksAttachments"]: [] });
-        setTaskAssignedName([]);
-        setToDoDate("");
-        setAssignees([]);
-        setFileForSend([]);
-        setFileSize(0);
+        Data = {
+          Task,
+          TaskCreatorID,
+          TaskAssignedTo: taskAssignedTO,
+          // TasksAttachments,
+        };
       }
+      dispatch(CreateToDoList(navigate, Data, t, 4, setCreateTaskID));
     }
   };
+  const uploadTaskDocuments = async (folderID) => {
+    let newfile = [];
+    const uploadPromises = fileForSend.map(async (newData) => {
+      await dispatch(
+        uploadDocumentsTaskApi(navigate, t, newData, folderID, newfile)
+      );
+    });
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+    let newAttachmentData = newfile.map((data, index) => {
+      return {
+        DisplayAttachmentName: data.DisplayAttachmentName,
+        OriginalAttachmentName: data.pK_FileID.toString(),
+        FK_TID: Number(createTaskID),
+      };
+    });
+
+    let Data = {
+      TaskCreatorID: TaskCreatorID,
+      TaskAssignedTo:
+        TaskAssignedTo.length > 0
+          ? TaskAssignedTo.map((data, index) => data)
+          : [TaskCreatorID],
+      TaskID: Number(createTaskID),
+      TasksAttachments: newAttachmentData,
+    };
+    await dispatch(
+      saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 3, setShow)
+    );
+    setTask({
+      ...task,
+      PK_TID: 1,
+      Title: "",
+      Description: "",
+      IsMainTask: true,
+      DeadLineDate: "",
+      DeadLineTime: "",
+      CreationDateTime: "",
+    });
+    setCreateTodoDate("");
+    setCreateTodoTime("");
+    setTaskAssignedTo([]);
+    setTaskAssignedName([]);
+    setToDoDate("");
+    setAssignees([]);
+    setFileForSend([]);
+    setTasksAttachments({ TasksAttachments: [] });
+  };
+
+  useEffect(() => {
+    if (toDoListReducer.todoDocumentsMapping !== 0) {
+      uploadTaskDocuments(toDoListReducer.todoDocumentsMapping);
+    }
+  }, [toDoListReducer.todoDocumentsMapping]);
 
   const handleDeleteAttendee = (data, index) => {
     let newDataAssignees = [...assignees];

@@ -418,7 +418,8 @@ const SaveMeetingDetialsNewApiFunction = (
   viewValue,
   setCurrentMeetingID,
   currentMeeting,
-  meetingDetails
+  meetingDetails,
+  setDataroomMapFolderId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -448,7 +449,8 @@ const SaveMeetingDetialsNewApiFunction = (
               viewValue,
               setCurrentMeetingID,
               currentMeeting,
-              meetingDetails
+              meetingDetails,
+              setDataroomMapFolderId
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -486,7 +488,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
-                    t
+                    t,
+                    setDataroomMapFolderId
                   )
                 );
                 setSceduleMeeting(false);
@@ -501,7 +504,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
-                    t
+                    t,
+                    setDataroomMapFolderId
                   )
                 );
               } else if (viewValue === 3) {
@@ -518,7 +522,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
-                    t
+                    t,
+                    setDataroomMapFolderId
                   )
                 );
               }
@@ -5027,7 +5032,12 @@ const showCreateUpdateMeetingDataRoomFailed = (response, message) => {
   };
 };
 
-const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
+const CreateUpdateMeetingDataRoomMapeedApiFunc = (
+  navigate,
+  Data,
+  t,
+  setDataroomMapFolderId
+) => {
   console.log(
     { Data },
     "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc"
@@ -5071,6 +5081,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
                   ""
                 )
               );
+              setDataroomMapFolderId(response.data.responseResult.folderID);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5996,8 +6007,11 @@ const UpdateMeetingUserForOrganizers = (
   editMeetingFlag,
   rowsData,
   currentMeeting,
+  editFlag,
+  notificationMessage,
   isEdit
 ) => {
+  console.log(notificationMessage, "notificationMessagenotificationMessage");
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -6026,6 +6040,8 @@ const UpdateMeetingUserForOrganizers = (
               editMeetingFlag,
               rowsData,
               currentMeeting,
+              editFlag,
+              notificationMessage,
               isEdit
             )
           );
@@ -6046,6 +6062,53 @@ const UpdateMeetingUserForOrganizers = (
                   t("Update-successful")
                 )
               );
+              if (editFlag === 2) {
+                let Data = {
+                  MeetingOrganizers: rowsData.map((item) => {
+                    console.log(item, "itemitemitemitem");
+                    return {
+                      IsPrimaryOrganizer: item.isPrimaryOrganizer,
+                      IsOrganizerNotified: item.isOrganizerNotified,
+                      Title: item.organizerTitle,
+                      UserID: item.userID,
+                    };
+                  }),
+                  MeetingID: currentMeeting,
+                  IsOrganizerAddFlow: false,
+                  NotificationMessage: notificationMessage,
+                };
+                console.log(Data, "itemitemitemitem");
+                console.log(notificationMessage, "itemitemitemitem");
+
+                dispatch(
+                  SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
+                );
+                dispatch(saveMeetingFlag(false));
+                dispatch(editMeetingFlag(false));
+              } else {
+                let Data = {
+                  MeetingOrganizers: rowsData.map((item) => {
+                    console.log(item, "itemitemitemitem");
+                    return {
+                      IsPrimaryOrganizer: item.isPrimaryOrganizer,
+                      IsOrganizerNotified: item.isOrganizerNotified,
+                      Title: item.organizerTitle,
+                      UserID: item.userID,
+                    };
+                  }),
+                  MeetingID: currentMeeting,
+                  IsOrganizerAddFlow: true,
+                  NotificationMessage: notificationMessage,
+                };
+                console.log(Data, "itemitemitemitem");
+                console.log(notificationMessage, "itemitemitemitem");
+
+                dispatch(
+                  SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
+                );
+                dispatch(saveMeetingFlag(false));
+                dispatch(editMeetingFlag(false));
+              }
               let Data = {
                 MeetingOrganizers: rowsData.map((item) => ({
                   IsPrimaryOrganizer: item.isPrimaryOrganizer,

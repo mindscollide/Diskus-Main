@@ -34,6 +34,7 @@ import {
   clearResponce,
   SearchTodoListApi,
   deleteGroupTaskApi,
+  saveTaskDocumentsApi,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 
@@ -183,11 +184,16 @@ const CreateTodoCommittee = () => {
   };
 
   const deleteTodolist = async (record) => {
-    let Data = {
-      FK_TID: record.pK_TID,
-      GroupID: Number(ViewGroupID),
+    let NewData = {
+      ToDoID: Number(record.pK_TID),
+      UpdateFileList: [],
     };
-    dispatch(deleteGroupTaskApi(navigate, t, Data));
+    dispatch(saveTaskDocumentsApi(navigate, NewData, t, 4, setShow));
+    // let Data = {
+    //   FK_TID: record.pK_TID,
+    //   GroupID: Number(ViewGroupID),
+    // };
+    // dispatch(deleteGroupTaskApi(navigate, t, Data));
   };
 
   const columnsToDo = [

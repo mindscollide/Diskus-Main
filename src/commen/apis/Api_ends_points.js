@@ -44,6 +44,10 @@ const videoURL = ":11019/Video";
 // Excel Report Download
 const reportExcelUrl = ":11020/ExcelReport";
 
+//File Download Data Room
+
+const DataRoomFilesDownloads = ":11017/Report";
+
 //this is our final api's
 const authenticationApi = baseURL + serviceAuthenticationURL;
 
@@ -88,6 +92,8 @@ const videoApi = baseURL + videoURL;
 // excel download Report
 const reportDownload = baseURL + reportExcelUrl;
 
+const DataRoomAllFilesDownloads = baseURL + DataRoomFilesDownloads;
+
 export {
   authenticationApi,
   toDoListApi,
@@ -107,4 +113,5 @@ export {
   pollApi,
   videoApi,
   reportDownload,
+  DataRoomAllFilesDownloads,
 };
