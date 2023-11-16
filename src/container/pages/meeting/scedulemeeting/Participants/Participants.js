@@ -26,6 +26,16 @@ import {
   showCrossConfirmationModal,
   showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
+import {
+  getAgendaAndVotingInfo_success,
+  GetCurrentAgendaDetails,
+  getAgendaVotingDetails_success,
+  saveFiles_success,
+  saveAgendaVoting_success,
+  addUpdateAdvanceMeetingAgenda_success,
+  uploadDocument_success,
+  getAllVotingResultDisplay_success,
+} from "../../../../../store/actions/MeetingAgenda_action";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
@@ -435,6 +445,17 @@ const Participants = ({
       setIsEditable(false);
     }
   }, [rspvRows]);
+
+  useEffect(() => {
+    dispatch(getAgendaAndVotingInfo_success([], ""));
+    dispatch(GetCurrentAgendaDetails([]));
+    dispatch(getAgendaVotingDetails_success([], ""));
+    dispatch(saveFiles_success(null, ""));
+    dispatch(saveAgendaVoting_success([], ""));
+    dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
+    dispatch(uploadDocument_success(null, ""));
+    dispatch(getAllVotingResultDisplay_success([], ""));
+  }, []);
 
   return (
     <>

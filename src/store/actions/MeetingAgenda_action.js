@@ -1444,4 +1444,11 @@ export {
   AddUpdateAdvanceMeetingAgenda,
   GetCurrentAgendaDetails,
   AgendaVotingStatusUpdate,
+  getAgendaAndVotingInfo_success,
+  getAgendaVotingDetails_success,
+  saveFiles_success, //null emptystring
+  saveAgendaVoting_success,
+  addUpdateAdvanceMeetingAgenda_success,
+  uploadDocument_success,
+  getAllVotingResultDisplay_success,
 };

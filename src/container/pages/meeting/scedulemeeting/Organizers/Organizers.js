@@ -44,6 +44,16 @@ import {
   editMeetingFlag,
   notificationSendData,
 } from "../../../../../store/actions/MeetingOrganizers_action";
+import {
+  getAgendaAndVotingInfo_success,
+  GetCurrentAgendaDetails,
+  getAgendaVotingDetails_success,
+  saveFiles_success,
+  saveAgendaVoting_success,
+  addUpdateAdvanceMeetingAgenda_success,
+  uploadDocument_success,
+  getAllVotingResultDisplay_success,
+} from "../../../../../store/actions/MeetingAgenda_action";
 import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
@@ -775,6 +785,17 @@ const Organizers = ({
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingOrganizersReducer.ResponseMessage]);
+
+  useEffect(() => {
+    dispatch(getAgendaAndVotingInfo_success([], ""));
+    dispatch(GetCurrentAgendaDetails([]));
+    dispatch(getAgendaVotingDetails_success([], ""));
+    dispatch(saveFiles_success(null, ""));
+    dispatch(saveAgendaVoting_success([], ""));
+    dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
+    dispatch(uploadDocument_success(null, ""));
+    dispatch(getAllVotingResultDisplay_success([], ""));
+  }, []);
 
   return (
     <>
