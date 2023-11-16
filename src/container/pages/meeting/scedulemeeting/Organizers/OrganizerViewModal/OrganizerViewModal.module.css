@@ -25,9 +25,11 @@
 .Cancel_Button_ProposeOrganizer {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  color: #ffffff !important;
-  background: #5f78d6 !important;
-  border: none !important;
+  color: #5a5a5a  !important;
+  /* color: #ffffff !important; */
+  /* background: #5f78d6 !important; */
+  background: #ffffff !important;
+  border: 1px solid #e1e1e1 !important;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
 }
