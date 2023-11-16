@@ -1,7 +1,7 @@
 import * as actions from "../action_types";
 import axios from "axios";
 import { RefreshToken } from "../actions/Auth_action";
-import { toDoListApi } from "../../commen/apis/Api_ends_points";
+import { dataRoomApi, toDoListApi } from "../../commen/apis/Api_ends_points";
 import {
   createToDoList,
   getAllAssigneesToDoList,
@@ -14,6 +14,11 @@ import {
   DeleteCommentRM,
   deleteCommitteeTaskRM,
   deleteGroupTaskRM,
+  saveFilesRequestMethod,
+  uploadDocumentsRequestMethod,
+  saveTaskandAssgineesRM,
+  createupdateTaskDataroom,
+  saveTaskDocuments,
 } from "../../commen/apis/Api_config";
 import {
   getTaskCommitteeIDApi,
@@ -21,6 +26,7 @@ import {
   setTasksByCommitteeApi,
   setTasksByGroupApi,
 } from "./Polls_actions";
+import { updateTodoStatusFunc } from "./GetTodos";
 
 const ShowNotification = (message) => {
   console.log("message", message);
@@ -197,7 +203,7 @@ const setTodoStatusDataFormSocket = (response) => {
 };
 //Creating A ToDoList
 
-const CreateToDoList = (navigate, object, t, value) => {
+const CreateToDoList = (navigate, object, t, value, setCreateTaskID) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let meetingPage = JSON.parse(localStorage.getItem("todoListPage"));
   let meetingRow = JSON.parse(localStorage.getItem("todoListRow"));
@@ -225,7 +231,7 @@ const CreateToDoList = (navigate, object, t, value) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(CreateToDoList(navigate, object, t));
+          dispatch(CreateToDoList(navigate, object, t, value, setCreateTaskID));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -238,36 +244,56 @@ const CreateToDoList = (navigate, object, t, value) => {
               await dispatch(
                 ShowNotification(t("The-record-has-been-saved-successfully"))
               );
-              dispatch(SetLoaderFalse());
+              await dispatch(SetLoaderFalse());
+              setCreateTaskID(Number(response.data.responseResult.tid));
+              let Data = {
+                ToDoID: Number(response.data.responseResult.tid),
+                ToDoTitle: object.Task.Title,
+                IsUpdateFlow: false,
+                AssigneeList: object.TaskAssignedTo.map(
+                  (newData, index) => newData
+                ),
+              };
+              await dispatch(createUpdateTaskDataRoomApi(navigate, Data, t));
+              // if (value === 1) {
+              //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
-              if (value === 1) {
-                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              //   let data = {
+              //     FK_TID: Number(response.data.responseResult.tid),
+              //     CommitteeID: Number(ViewCommitteeID),
+              //   };
 
-                let data = {
-                  FK_TID: Number(response.data.responseResult.tid),
-                  CommitteeID: Number(ViewCommitteeID),
-                };
+              //   dispatch(setTasksByCommitteeApi(navigate, t, data));
+              // } else if (value === 2) {
+              //   let ViewGroupID = localStorage.getItem("ViewGroupID");
 
-                dispatch(setTasksByCommitteeApi(navigate, t, data));
-              } else if (value === 2) {
-                let ViewGroupID = localStorage.getItem("ViewGroupID");
-
-                let data = {
-                  FK_TID: Number(response.data.responseResult.tid),
-                  GroupID: Number(ViewGroupID),
-                };
-                dispatch(setTasksByGroupApi(navigate, t, data));
-              } else {
-                await dispatch(
-                  SearchTodoListApi(
-                    navigate,
-                    dataForList,
-                    meetingPage,
-                    meetingRow,
-                    t
-                  )
-                );
-              }
+              //   let data = {
+              //     FK_TID: Number(response.data.responseResult.tid),
+              //     GroupID: Number(ViewGroupID),
+              //   };
+              //   dispatch(setTasksByGroupApi(navigate, t, data));
+              // } else if (value === 4) {
+              //   setCreateTaskID(Number(response.data.responseResult.tid));
+              //   let Data = {
+              //     ToDoID: Number(response.data.responseResult.tid),
+              //     ToDoTitle: object.Task.Title,
+              //     IsUpdateFlow: false,
+              //     AssigneeList: object.TaskAssignedTo.map(
+              //       (newData, index) => newData
+              //     ),
+              //   };
+              //   dispatch(createUpdateTaskDataRoomApi(navigate, Data, t));
+              //   console.log("DataDataDataDataData", { Data });
+              //   // await dispatch(
+              //   //   SearchTodoListApi(
+              //   //     navigate,
+              //   //     dataForList,
+              //   //     meetingPage,
+              //   //     meetingRow,
+              //   //     t
+              //   //   )
+              //   // );
+              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1119,7 +1145,625 @@ const deleteCommitteeTaskApi = (navigate, t, Data) => {
   };
 };
 
+// Upload Documents Init
+const uploadDocument_init = () => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_TASKS_INIT,
+  };
+};
+
+// Upload Documents Success
+const uploadDocument_success = (response, message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_TASKS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Upload Documents Fail
+const uploadDocument_fail = (message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_TASKS_FAIL,
+    message: message,
+  };
+};
+
+// Upload Documents API for Resolution
+const uploadDocumentsTaskApi = (navigate, t, data, folderID, newFolder) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return async (dispatch) => {
+    dispatch(uploadDocument_init());
+    let form = new FormData();
+    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            uploadDocumentsTaskApi(navigate, t, data, folderID, newFolder)
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                saveFilesTaskApi(
+                  navigate,
+                  t,
+                  response.data.responseResult,
+                  folderID,
+                  newFolder
+                )
+              );
+              await dispatch(
+                uploadDocument_success(response.data.responseResult, "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(uploadDocument_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(uploadDocument_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(uploadDocument_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Save Files Init
+const saveFiles_init = () => {
+  return {
+    type: actions.SAVEFILES_TASKS_INIT,
+  };
+};
+
+// Save Files Success
+const saveFiles_success = (response, message) => {
+  return {
+    type: actions.SAVEFILES_TASKS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Save Files Fail
+const saveFiles_fail = (message) => {
+  return {
+    type: actions.SAVEFILES_TASKS_FAIL,
+    message: message,
+  };
+};
+
+// Save Files API for Resolution
+const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+  let Data = {
+    FolderID: folderID !== null && folderID !== undefined ? folderID : 0,
+    Files: [
+      {
+        DisplayFileName: data.displayFileName,
+        DiskusFileName: JSON.parse(data.diskusFileName),
+        ShareAbleLink: data.shareAbleLink,
+        FK_UserID: JSON.parse(creatorID),
+        FK_OrganizationID: JSON.parse(organizationID),
+      },
+    ],
+    UserID: JSON.parse(creatorID),
+    Type: 0,
+  };
+  return async (dispatch) => {
+    dispatch(saveFiles_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(saveFilesTaskApi(navigate, t, data, folderID, newFolder));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                )
+            ) {
+              let newData = {
+                pK_FileID: response.data.responseResult.fileID,
+                DisplayAttachmentName: data.displayFileName,
+              };
+              newFolder.push(newData);
+              await dispatch(saveFiles_success(newData, ""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(saveFiles_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(saveFiles_fail(t("Something-went-wrong")));
+        }
+        console.log(response);
+      })
+      .catch(() => {
+        dispatch(saveFiles_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//  Create Update Task Dataroom
+const createUpdateTaskDataRoom_init = () => {
+  return {
+    type: actions.CREATEUPDATETASKDATAROOMMAP_INIT,
+  };
+};
+
+const createUpdateTaskDataRoom_success = (response, message) => {
+  return {
+    type: actions.CREATEUPDATETASKDATAROOMMAP_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const createUpdateTaskDataRoom_fail = (message) => {
+  return {
+    type: actions.CREATEUPDATETASKDATAROOMMAP_FAIL,
+    message: message,
+  };
+};
+
+const createUpdateTaskDataRoomApi = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+
+  return async (dispatch) => {
+    dispatch(createUpdateTaskDataRoom_init());
+    let form = new FormData();
+    form.append("RequestMethod", createupdateTaskDataroom.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(createUpdateTaskDataRoomApi(navigate, Data, t));
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult.isExecuted === true
+        ) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomServiceManager_CreateUpdateToDoDataRoomMap_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              createUpdateTaskDataRoom_success(
+                response.data.responseResult.folderID,
+                ""
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomServiceManager_CreateUpdateToDoDataRoomMap_02".toLowerCase()
+              )
+          ) {
+            dispatch(
+              createUpdateTaskDataRoom_fail(t("Failed-to-save-or-map-folder"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomServiceManager_CreateUpdateToDoDataRoomMap_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              createUpdateTaskDataRoom_success(
+                response.data.responseResult.folderID,
+                ""
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomServiceManager_CreateUpdateToDoDataRoomMap_04".toLowerCase()
+              )
+          ) {
+            dispatch(
+              createUpdateTaskDataRoom_fail(t("Unable-to-update-folder"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomServiceManager_CreateUpdateToDoDataRoomMap_05".toLowerCase()
+              )
+          ) {
+            dispatch(
+              createUpdateTaskDataRoom_success(
+                response.data.responseResult.folderID,
+                ""
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomServiceManager_CreateUpdateToDoDataRoomMap_06".toLowerCase()
+              )
+          ) {
+            createUpdateTaskDataRoom_fail(t("Failed-to-create-new-mapping"));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomServiceManager_CreateUpdateToDoDataRoomMap_07".toLowerCase()
+              )
+          ) {
+            dispatch(createUpdateTaskDataRoom_fail(t("Something-went-wrong")));
+          } else {
+            dispatch(createUpdateTaskDataRoom_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(createUpdateTaskDataRoom_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch(() => {
+        dispatch(createUpdateTaskDataRoom_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Save Document and Assignees
+const saveTaskDocumentsAndAssignees_init = () => {
+  return {
+    type: actions.SAVETASKDOCUMENTSANDASSIGNEES_INIT,
+  };
+};
+const saveTaskDocumentsAndAssignees_success = (response, message) => {
+  return {
+    type: actions.SAVETASKDOCUMENTSANDASSIGNEES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const saveTaskDocumentsAndAssignees_fail = (message) => {
+  return {
+    type: actions.SAVETASKDOCUMENTSANDASSIGNEES_FAIL,
+    message: message,
+  };
+};
+const saveTaskDocumentsAndAssigneesApi = (
+  navigate,
+  Data,
+  t,
+  value,
+  setShow
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(saveTaskDocumentsAndAssignees_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveTaskandAssgineesRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            saveTaskDocumentsAndAssigneesApi(navigate, Data, t, value, setShow)
+          );
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult.isExecuted === true
+        ) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              saveTaskDocumentsAndAssignees_success(
+                response.data.responseResult,
+                ""
+              )
+            );
+            let NewData = {
+              ToDoID: Number(Data.TaskID),
+              UpdateFileList: Data.TasksAttachments.map((data, index) => {
+                return { PK_FileID: data.FK_TID };
+              }),
+            };
+            dispatch(
+              saveTaskDocumentsApi(navigate, NewData, t, value, setShow)
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_02".toLowerCase()
+              )
+          ) {
+            dispatch(saveTaskDocumentsAndAssignees_fail(t("No-record-save")));
+            dispatch(createUpdateTaskDataRoom_fail(""));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong"))
+            );
+            dispatch(createUpdateTaskDataRoom_fail(""));
+          } else {
+            dispatch(
+              saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong"))
+            );
+            dispatch(createUpdateTaskDataRoom_fail(""));
+          }
+        } else {
+          dispatch(
+            saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong"))
+          );
+          dispatch(createUpdateTaskDataRoom_fail(""));
+        }
+      })
+      .catch((error) => {
+        dispatch(saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong")));
+        dispatch(createUpdateTaskDataRoom_fail(""));
+      });
+  };
+};
+
+// Save documents Api
+const saveTaskDocuments_init = () => {
+  return {
+    type: actions.SAVE_TASK_DOCUMENTS_INIT,
+  };
+};
+
+const saveTaskDocuments_success = (response, message) => {
+  return {
+    type: actions.SAVE_TASK_DOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const saveTaskDocuments_fail = (message) => {
+  return {
+    type: actions.SAVE_TASK_DOCUMENTS_FAIL,
+    message: message,
+  };
+};
+
+const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+
+  return async (dispatch) => {
+    dispatch(saveTaskDocuments_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveTaskDocuments.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(saveTaskDocumentsApi(navigate, Data, t, value, setShow));
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult.isExecuted === true
+        ) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_SaveToDoDocuments_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              saveTaskDocuments_success(
+                response.data.responseResult,
+                t("Update-successful")
+              )
+            );
+
+            // Create Task from main TOdo list
+            if (value === 1) {
+              let TodoListPage =
+                localStorage.getItem("todoListPage") !== null
+                  ? localStorage.getItem("todoListPage")
+                  : 1;
+
+              let todoLength =
+                localStorage.getItem("todoListRow") !== null
+                  ? localStorage.getItem("todoListRow")
+                  : 50;
+
+              let dataForList = {
+                Date: "",
+                Title: "",
+                AssignedToName: "",
+              };
+              await dispatch(
+                SearchTodoListApi(
+                  navigate,
+                  dataForList,
+                  Number(TodoListPage),
+                  Number(todoLength),
+                  t
+                )
+              );
+              dispatch(createUpdateTaskDataRoom_fail(""));
+              setShow(false);
+            }
+            // Delete Task from main Task
+            if (value === 2) {
+              await dispatch(
+                updateTodoStatusFunc(navigate, 6, Data.ToDoID, t, false)
+              );
+            }
+            // Create Task from Group
+            if (value === 3) {
+              let ViewGroupID = localStorage.getItem("ViewGroupID");
+              let data = {
+                FK_TID: Number(Data.ToDoID),
+                GroupID: Number(ViewGroupID),
+              };
+              dispatch(setTasksByGroupApi(navigate, t, data));
+              dispatch(createUpdateTaskDataRoom_fail(""));
+              setShow(false);
+            }
+            // Delete Task from Group
+            if (value === 4) {
+              let ViewGroupID = localStorage.getItem("ViewGroupID");
+
+              let data = {
+                FK_TID: Number(Data.ToDoID),
+                GroupID: Number(ViewGroupID),
+              };
+              dispatch(deleteGroupTaskApi(navigate, t, data));
+            }
+            // Create Task from Committee
+            if (value === 5) {
+              let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              let data = {
+                FK_TID: Number(Data.ToDoID),
+                CommitteeID: Number(ViewCommitteeID),
+              };
+              dispatch(setTasksByCommitteeApi(navigate, t, data));
+              dispatch(createUpdateTaskDataRoom_fail(""));
+              setShow(false);
+            }
+            // Delete Task from Committee
+            if (value === 6) {
+              let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              let data = {
+                FK_TID: Number(Data.ToDoID),
+                CommitteeID: Number(ViewCommitteeID),
+              };
+              dispatch(deleteCommitteeTaskApi(navigate, t, data));
+            }
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_SaveToDoDocuments_02".toLowerCase()
+              )
+          ) {
+            dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
+            dispatch(createUpdateTaskDataRoom_fail(""));
+          } else {
+            dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
+            dispatch(createUpdateTaskDataRoom_fail(""));
+          }
+        } else {
+          dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
+          dispatch(createUpdateTaskDataRoom_fail(""));
+        }
+      })
+      .catch(() => {
+        dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
+        dispatch(createUpdateTaskDataRoom_fail(""));
+      });
+  };
+};
+
 export {
+  saveTaskDocumentsApi,
+  saveTaskDocumentsAndAssigneesApi,
   deleteCommitteeTaskApi,
   deleteGroupTaskApi,
   CreateToDoList,
@@ -1140,4 +1784,5 @@ export {
   SetSpinnersTrue,
   deleteCommentApi,
   toDoListLoaderStart,
+  uploadDocumentsTaskApi,
 };

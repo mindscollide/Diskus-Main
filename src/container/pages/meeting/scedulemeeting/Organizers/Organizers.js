@@ -560,12 +560,13 @@ const Organizers = ({
           rowsData,
           currentMeeting,
           editFlag,
-          notificationMessage
+          notificationMessage,
+          1
         )
       );
     } else {
       setOpen({
-        message: t("At-least-one-primary-organize-is-required"),
+        message: t("At-least-one-primary-organizer-is-required"),
         open: true,
       });
     }
@@ -580,14 +581,11 @@ const Organizers = ({
       (data, index) => data.isPrimaryOrganizer === true
     );
 
-    //Edit Function
     let Data = {
       MeetingID: currentMeeting,
       MeetingAttendeRoleID: 1,
       UpdatedUsers: newarry,
     };
-
-    console.log(Data, "findisOrganizerisExistfindisOrganizerisExist");
 
     if (findisOrganizerisExist) {
       dispatch(
@@ -600,7 +598,8 @@ const Organizers = ({
           rowsData,
           currentMeeting,
           editFlag,
-          notificationMessage
+          notificationMessage,
+          2
         )
       );
     } else {
@@ -609,6 +608,27 @@ const Organizers = ({
         open: true,
       });
     }
+    // let Data = {
+    //   MeetingOrganizers: rowsData.map((item) => ({
+    //     IsPrimaryOrganizer: item.isPrimaryOrganizer,
+    //     IsOrganizerNotified: item.isOrganizerNotified,
+    //     Title: item.organizerTitle,
+    //     UserID: item.userID,
+    //   })),
+    //   MeetingID: currentMeeting,
+    //   IsOrganizerAddFlow: false,
+    //   NotificationMessage: rowsData[0].NotificationMessage,
+    // };
+    // if (findisOrganizerisExist) {
+    //   dispatch(SaveMeetingOrganizers(navigate, Data, t, currentMeeting));
+    //   dispatch(saveMeetingFlag(false));
+    //   dispatch(editMeetingFlag(false));
+    // } else {
+    //   setOpen({
+    //     message: t("At-least-one-primary-organizer-is-required"),
+    //     open: true,
+    //   });
+    // }
   };
 
   useEffect(() => {

@@ -418,7 +418,8 @@ const SaveMeetingDetialsNewApiFunction = (
   viewValue,
   setCurrentMeetingID,
   currentMeeting,
-  meetingDetails
+  meetingDetails,
+  setDataroomMapFolderId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -448,7 +449,8 @@ const SaveMeetingDetialsNewApiFunction = (
               viewValue,
               setCurrentMeetingID,
               currentMeeting,
-              meetingDetails
+              meetingDetails,
+              setDataroomMapFolderId
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -486,7 +488,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
-                    t
+                    t,
+                    setDataroomMapFolderId
                   )
                 );
                 setSceduleMeeting(false);
@@ -501,7 +504,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
-                    t
+                    t,
+                    setDataroomMapFolderId
                   )
                 );
               } else if (viewValue === 3) {
@@ -518,7 +522,8 @@ const SaveMeetingDetialsNewApiFunction = (
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
                     MappedData,
-                    t
+                    t,
+                    setDataroomMapFolderId
                   )
                 );
               }
@@ -561,10 +566,28 @@ const SaveMeetingDetialsNewApiFunction = (
                 )
             ) {
               dispatch(
+                handleSaveMeetingFailed(t("Add-meeting-agenda-to-publish"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(t("Add-meeting-organizers-to-publish"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_07".toLowerCase()
+                )
+            ) {
+              dispatch(
                 handleSaveMeetingFailed(
-                  t(
-                    "Please-add-agenda-organizers-and-participants-to-publish-the-meeting"
-                  )
+                  t("Add-meeting-participants-to-publish")
                 )
               );
             } else {
@@ -5009,7 +5032,12 @@ const showCreateUpdateMeetingDataRoomFailed = (response, message) => {
   };
 };
 
-const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
+const CreateUpdateMeetingDataRoomMapeedApiFunc = (
+  navigate,
+  Data,
+  t,
+  setDataroomMapFolderId
+) => {
   console.log(
     { Data },
     "CreateUpdateDataRoadMapApiFuncCreateUpdateDataRoadMapApiFunc"
@@ -5053,6 +5081,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (navigate, Data, t) => {
                   ""
                 )
               );
+              setDataroomMapFolderId(response.data.responseResult.folderID);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5896,7 +5925,7 @@ const UpdateMeetingUserForAgendaContributor = (
                     Title: data.Title,
                     AgendaListRightsAll: data.AgendaListRightsAll,
                     MeetingID:
-                      currentMeeting !== null ? Number(currentMeeting) : 1686,
+                      currentMeeting !== null ? Number(currentMeeting) : 0,
                     IsContributorNotified: data.isContributedNotified,
                   });
                 });
@@ -5979,7 +6008,8 @@ const UpdateMeetingUserForOrganizers = (
   rowsData,
   currentMeeting,
   editFlag,
-  notificationMessage
+  notificationMessage,
+  isEdit
 ) => {
   console.log(notificationMessage, "notificationMessagenotificationMessage");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -6011,7 +6041,8 @@ const UpdateMeetingUserForOrganizers = (
               rowsData,
               currentMeeting,
               editFlag,
-              notificationMessage
+              notificationMessage,
+              isEdit
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -6078,6 +6109,22 @@ const UpdateMeetingUserForOrganizers = (
                 dispatch(saveMeetingFlag(false));
                 dispatch(editMeetingFlag(false));
               }
+              let Data = {
+                MeetingOrganizers: rowsData.map((item) => ({
+                  IsPrimaryOrganizer: item.isPrimaryOrganizer,
+                  IsOrganizerNotified: item.isOrganizerNotified,
+                  Title: item.organizerTitle,
+                  UserID: item.userID,
+                })),
+                MeetingID: currentMeeting,
+                IsOrganizerAddFlow: isEdit === 1 ? true : false,
+                NotificationMessage: rowsData[0].NotificationMessage,
+              };
+              dispatch(
+                SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
+              );
+              dispatch(saveMeetingFlag(false));
+              dispatch(editMeetingFlag(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

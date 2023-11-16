@@ -27,3 +27,26 @@ export const deepEqual = (obj1, obj2) => {
 
   return true;
 };
+
+export const areAllValuesNotEmpty = (arrayOfObjects) => {
+  for (let i = 0; i < arrayOfObjects.length; i++) {
+    const currentObject = arrayOfObjects[i];
+
+    // Iterate through the values in the current object
+    for (const key in currentObject) {
+      if (currentObject.hasOwnProperty(key)) {
+        // Check if the value is empty (undefined, null, or an empty string)
+        if (
+          currentObject[key] === undefined ||
+          currentObject[key] === null ||
+          currentObject[key] === ""
+        ) {
+          return false; // If any value is empty, return false
+        }
+      }
+    }
+  }
+
+  // If all values are not empty in all objects, return true
+  return true;
+};
