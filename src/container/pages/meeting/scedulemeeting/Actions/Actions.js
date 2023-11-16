@@ -8,7 +8,7 @@ import { Button, Table } from "../../../../../components/elements";
 import addmore from "../../../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EmptyStates from "../../../../../assets/images/EmptystateAction.svg";
 import CreateTask from "./CreateTask/CreateTask";
 import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
@@ -16,6 +16,7 @@ import {
   showCancelActions,
   showRemovedTableModal,
 } from "../../../../../store/actions/NewMeetingActions";
+import { getMeetingTaskMainApi } from "../../../../../store/actions/Action_Meeting";
 import AfterSaveViewTable from "./AfterSaveViewTable/AfterSaveViewTable";
 import CancelActions from "./CancelActions/CancelActions";
 
@@ -31,9 +32,25 @@ const Actions = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, actionMeetingReducer } = useSelector(
+    (state) => state
+  );
+  console.log(currentMeeting, "actionMeetingReduceractionMeetingReducer");
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+
+  console.log(userID, "userIDuserID");
+
   const [createaTask, setCreateaTask] = useState(false);
   const [afterViewActions, setAfterViewActions] = useState(false);
+
+  const [actionState, setActionState] = useState({
+    Title: "",
+    Date: "",
+    AssignedToName: "",
+    TaskID: 0,
+  });
 
   const handleCrossIconModal = () => {
     dispatch(showRemovedTableModal(true));
@@ -77,51 +94,82 @@ const Actions = ({
     },
   ];
 
-  const [actionsRows, setActionsRows] = useState(notificationData);
+  // Rows for table rendering in Action
+  const [actionsRows, setActionsRows] = useState([]);
+
   const ActionsColoumn = [
     {
       title: t("Due-date"),
-      dataIndex: "Name",
-      key: "Name",
+      dataIndex: "deadlineDate",
+      key: "deadlineDate",
       width: "200px",
     },
-
     {
       title: t("Action"),
-      dataIndex: "Action",
-      key: "Action",
+      dataIndex: "title",
+      key: "title",
       width: "250px",
     },
     {
       title: t("Assigned-to"),
-      dataIndex: "AssignedTo",
-      key: "AssignedTo",
+      dataIndex: "taskAssignedTo",
+      key: "taskAssignedTo",
       width: "200px",
+      render: (text, record) => (
+        <>
+          <span>{record.name}</span>
+        </>
+      ),
     },
 
     {
       title: t("Status"),
-      dataIndex: "Status",
+      dataIndex: "status",
+      key: "status",
       width: "150px",
+      render: (text, record) => (
+        <>
+          <span>{record.status}</span>
+        </>
+      ),
     },
-
-    {
-      title: t("Meeting-title"),
-      dataIndex: "MeetingTitle",
-      width: "250px",
-    },
-    {
-      title: t("Meeting-date"),
-      dataIndex: "MeetingDate",
-      width: "150px",
-    },
-
     {
       dataIndex: "RedCrossIcon",
       key: "RedCrossIcon",
       width: "50px",
     },
   ];
+
+  useEffect(() => {
+    if (
+      actionMeetingReducer.todoListMeetingTask !== null &&
+      actionMeetingReducer.todoListMeetingTask !== undefined &&
+      actionMeetingReducer.todoListMeetingTask.length > 0
+    ) {
+      setActionsRows(actionMeetingReducer.todoListMeetingTask);
+    } else {
+      setActionsRows([]);
+    }
+  }, [actionMeetingReducer.todoListMeetingTask]);
+
+  console.log(
+    actionMeetingReducer.todoListMeetingTask,
+    "attendanceMeetingReducerattendanceMeetings"
+  );
+
+  // dispatch Api in useEffect
+  useEffect(() => {
+    let meetingTaskData = {
+      MeetingID: Number(currentMeeting),
+      Date: actionState.Date,
+      Title: actionState.Title,
+      AssignedToName: actionState.AssignedToName,
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+    };
+    dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
+  }, []);
 
   const handleCreateTaskButton = () => {
     setCreateaTask(true);
@@ -139,35 +187,40 @@ const Actions = ({
   return (
     <section>
       {createaTask ? (
-        <CreateTask setCreateaTask={setCreateaTask} />
+        <CreateTask
+          setCreateaTask={setCreateaTask}
+          currentMeeting={currentMeeting}
+          setActionState={setActionState}
+          actionState={actionState}
+        />
       ) : (
         <>
           {afterViewActions ? (
             <AfterSaveViewTable />
           ) : (
             <>
-              {(Number(ediorRole.status) === 1 ||
+              {/* {(Number(ediorRole.status) === 1 ||
                 Number(ediorRole.status) === 10 ||
                 Number(ediorRole.status) === 11 ||
                 Number(ediorRole.status) === 12) &&
               ediorRole.role === "Organizer" &&
-              isEditMeeting === true ? (
-                <Row className="mt-3">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Button
-                      text={t("Create-task")}
-                      className={styles["Create_Task_Button"]}
-                      icon={<img draggable={false} src={addmore} />}
-                      onClick={handleCreateTaskButton}
-                    />
-                  </Col>
-                </Row>
-              ) : null}
+              isEditMeeting === true ? ( */}
+              <Row className="mt-3">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-end"
+                >
+                  <Button
+                    text={t("Create-task")}
+                    className={styles["Create_Task_Button"]}
+                    icon={<img draggable={false} src={addmore} />}
+                    onClick={handleCreateTaskButton}
+                  />
+                </Col>
+              </Row>
+              {/* ) : null} */}
 
               <Row>
                 <Col lg={12} md={12} sm={12}>

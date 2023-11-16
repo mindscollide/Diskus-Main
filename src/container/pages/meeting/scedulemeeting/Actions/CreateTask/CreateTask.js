@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./CreateTask.module.css";
+import gregorian_en from "react-date-object/locales/gregorian_en";
+import gregorian from "react-date-object/calendars/gregorian";
+
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -16,26 +19,91 @@ import RedCrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import { style } from "@mui/system";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import UnsavedActions from "../UnsavedActionModal/UnsavedActions";
-import { showUnsavedActionsModal } from "../../../../../../store/actions/NewMeetingActions";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import moment from "moment";
+import InputIcon from "react-multi-date-picker/components/input_icon";
+
+import {
+  showUnsavedActionsModal,
+  GetAllMeetingUserApiFunc,
+} from "../../../../../../store/actions/NewMeetingActions";
+import { CreateToDoList } from "../../../../../../store/actions/ToDoList_action";
+import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
+import makeAnimated from "react-select/animated";
+import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import ViewActions from "../ViewActions/ViewActions";
 
-const CreateTask = ({ setCreateaTask }) => {
+const CreateTask = ({
+  setCreateaTask,
+  currentMeeting,
+  setActionState,
+  actionState,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { Dragger } = Upload;
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const animatedComponents = makeAnimated();
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
+  console.log(MeetingAgendaReducer, "getMeetingDatagetMeetingData");
+
+  // state for date handler
+  const [agendaDueDate, setAgendaDueDate] = useState("");
+  //For Custom language datepicker
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+  const calendRef = useRef();
+
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectThird, setselectThird] = useState(null);
   const [taskAttachments, setTaskAttachments] = useState([]);
   const [onSaveView, setonSaveView] = useState(false);
   const [error, seterror] = useState(false);
 
+  const [selectedTask, setSelectedTask] = useState([]);
+  const [taskMemberSelect, setTaskMemberSelect] = useState([]);
+  console.log(taskMemberSelect, "memberSelectmemberSelectmemberSelect");
+
+  // Select for select Agenda
+  const [selectAgenda, setSelectAgenda] = useState([]);
+  const [agendaValue, setAgendaValue] = useState([]);
+  console.log(agendaValue, "agendavalueeeeee");
+
+  const [createTaskAction, setCreateTaskAction] = useState({});
+
   const [createTaskDetails, setcreateTaskDetails] = useState({
+    PK_TID: 0,
     ActionsToTake: "",
     SelectMember: 0,
     SelectAgenda: 0,
+    date: "",
+    Description: "",
   });
+
+  const changeDateActionCreate = (date) => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let DateDate = new Date(date);
+    setAgendaDueDate(meetingDateValueFormat);
+    setcreateTaskDetails({
+      ...createTaskDetails,
+      date: DateDate,
+    });
+  };
+
+  const actionSaveHandler = () => {
+    let Task = {
+      PK_TID: 0,
+      Title: "",
+      Description: createTaskDetails.Description,
+      IsMainTask: true,
+      DeadLineDate: createTaskDetails.date,
+      DeadLineTime: "",
+      CreationDateTime: "",
+    };
+    dispatch(CreateToDoList(navigate, t, Task));
+  };
 
   const props = {
     name: "file",
@@ -227,16 +295,182 @@ const CreateTask = ({ setCreateaTask }) => {
     }
   };
 
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(currentMeeting),
+    };
+    let getMeetingData = {
+      MeetingID: 2169,
+    };
+    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+    dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    let createMeetingTaskData = NewMeetingreducer.getMeetingusers;
+    if (createMeetingTaskData !== undefined && createMeetingTaskData !== null) {
+      let newmembersArray = [];
+      if (Object.keys(createMeetingTaskData).length > 0) {
+        if (createMeetingTaskData.meetingOrganizers.length > 0) {
+          createMeetingTaskData.meetingOrganizers.map(
+            (MorganizerData, MorganizerIndex) => {
+              let MeetingOrganizerData = {
+                value: MorganizerData.userID,
+                label: (
+                  <>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
+                            height="16.45px"
+                            width="18.32px"
+                            alt=""
+                            draggable="false"
+                            className={styles["Image_class_Agenda"]}
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {MorganizerData.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  </>
+                ),
+                type: 1,
+              };
+              newmembersArray.push(MeetingOrganizerData);
+            }
+          );
+        }
+        if (createMeetingTaskData.meetingAgendaContributors.length > 0) {
+          createMeetingTaskData.meetingAgendaContributors.map(
+            (meetAgendaContributor, meetAgendaContributorIndex) => {
+              let MeetingAgendaContributorData = {
+                value: meetAgendaContributor.userID,
+                label: (
+                  <>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={GroupIcon}
+                            height="16.45px"
+                            alt=""
+                            width="18.32px"
+                            draggable="false"
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {meetAgendaContributor.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  </>
+                ),
+                type: 2,
+              };
+              newmembersArray.push(MeetingAgendaContributorData);
+            }
+          );
+        }
+        if (createMeetingTaskData.meetingParticipants.length > 0) {
+          createMeetingTaskData.meetingParticipants.map(
+            (meetParticipants, meetParticipantsIndex) => {
+              let MeetingParticipantsData = {
+                value: meetParticipants.userID,
+                label: (
+                  <>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
+                            height="16.45px"
+                            width="18.32px"
+                            alt=""
+                            draggable="false"
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {meetParticipants.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  </>
+                ),
+                type: 3,
+              };
+              newmembersArray.push(MeetingParticipantsData);
+            }
+          );
+        }
+      }
+      console.log(newmembersArray, "pollMeetingDatapollMeetingData");
+
+      setTaskMemberSelect(newmembersArray);
+    } else {
+      setTaskMemberSelect([]);
+    }
+  }, [NewMeetingreducer.getMeetingusers]);
+
+  // useEffect for agenda Dropdown
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData &&
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList
+    ) {
+      let tempAgenda = [];
+      MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.forEach(
+        (agenda) => {
+          // Adding main agenda from agendaList
+          tempAgenda.push({
+            label: agenda.title,
+            value: agenda.id,
+          });
+
+          // Adding subAgenda titles
+          if (agenda.subAgenda && agenda.subAgenda.length > 0) {
+            agenda.subAgenda.forEach((subAgenda) => {
+              tempAgenda.push({
+                label: subAgenda.subTitle,
+                value: subAgenda.subAgendaID,
+              });
+            });
+          }
+        }
+      );
+      setAgendaValue(tempAgenda);
+    }
+  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
+
+  const onChangeSelectAgenda = (value) => {
+    setSelectAgenda(value);
+  };
+
   const saveButtonFunc = () => {
     seterror(true);
     setonSaveView(true);
   };
 
-  const handleSelectMember = (e) => {
-    setcreateTaskDetails({
-      ...createTaskDetails,
-      SelectMember: e.value,
-    });
+  // for selecting Data
+  const handleSelectMemberValue = (value) => {
+    setSelectedTask(value);
   };
 
   const handleUnsavedModal = () => {
@@ -316,8 +550,13 @@ const CreateTask = ({ setCreateaTask }) => {
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <Select
-                          options={optionsParticipants}
-                          onChange={handleSelectMember}
+                          classNamePrefix={"Polls_Meeting"}
+                          value={selectedTask}
+                          options={taskMemberSelect}
+                          // closeMenuOnSelect={false}
+                          // components={animatedComponents}
+                          // isMulti
+                          onChange={handleSelectMemberValue}
                         />
                       </Col>
                     </Row>
@@ -334,13 +573,10 @@ const CreateTask = ({ setCreateaTask }) => {
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <Select
-                          options={options}
-                          value={selectedOption}
-                          onChange={handleOptionSelect}
+                          value={selectAgenda}
+                          options={agendaValue}
+                          onChange={onChangeSelectAgenda}
                           isSearchable={false}
-                          components={{
-                            Option: CustomOption,
-                          }}
                         />
                       </Col>
                     </Row>
@@ -356,14 +592,25 @@ const CreateTask = ({ setCreateaTask }) => {
                     </Row>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
-                        <Select
-                          options={TwoOptions}
-                          value={selectThird}
-                          onChange={handleSelectThird}
-                          isSearchable={false}
-                          components={{
-                            Option: CustomOptionThird,
-                          }}
+                        <DatePicker
+                          value={agendaDueDate}
+                          format={"DD/MM/YYYY"}
+                          minDate={moment().toDate()}
+                          placeholder="DD/MM/YYYY"
+                          render={
+                            <InputIcon
+                              placeholder="DD/MM/YYYY"
+                              className="datepicker_input"
+                            />
+                          }
+                          editable={false}
+                          className="datePickerTodoCreate2"
+                          onOpenPickNewDate={true}
+                          inputMode=""
+                          calendar={calendarValue}
+                          locale={localValue}
+                          ref={calendRef}
+                          onChange={(value) => changeDateActionCreate(value)}
                         />
                       </Col>
                     </Row>
@@ -595,7 +842,8 @@ const CreateTask = ({ setCreateaTask }) => {
                 <Button
                   text={t("Save")}
                   className={styles["Save_Button_Polls_meeting"]}
-                  onClick={saveButtonFunc}
+                  // onClick={saveButtonFunc}
+                  onClick={actionSaveHandler}
                 />
               </Col>
             </Row>

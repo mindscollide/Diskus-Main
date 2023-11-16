@@ -320,21 +320,21 @@ const SceduleMeeting = ({
                   onClick={showActions}
                 />
                 <Button
-                  disableBtn={
-                    (Number(ediorRole.status) === 1 ||
-                      Number(ediorRole.status) === 11 ||
-                      Number(ediorRole.status) === 12) &&
-                    (ediorRole.role === "Organizer" ||
-                      ediorRole.role === "Participant" ||
-                      ediorRole.role === "Agenda Contributor") &&
-                    isEditMeeting === true
-                      ? true
-                      : Number(currentMeeting) === 0
-                      ? true
-                      : isEditMeeting === false
-                      ? true
-                      : false
-                  }
+                  // disableBtn={
+                  //   (Number(ediorRole.status) === 1 ||
+                  //     Number(ediorRole.status) === 11 ||
+                  //     Number(ediorRole.status) === 12) &&
+                  //   (ediorRole.role === "Organizer" ||
+                  //     ediorRole.role === "Participant" ||
+                  //     ediorRole.role === "Agenda Contributor") &&
+                  //   isEditMeeting === true
+                  //     ? true
+                  //     : Number(currentMeeting) === 0
+                  //     ? true
+                  //     : isEditMeeting === false
+                  //     ? true
+                  //     : false
+                  // }
                   text={t("Polls")}
                   className={
                     polls === true

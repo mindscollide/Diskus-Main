@@ -203,7 +203,7 @@ const setTodoStatusDataFormSocket = (response) => {
 };
 //Creating A ToDoList
 
-const CreateToDoList = (navigate, object, t, value, setCreateTaskID) => {
+const CreateToDoList = (navigate, object, t, value, setCreateTaskID, Task) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let meetingPage = JSON.parse(localStorage.getItem("todoListPage"));
   let meetingRow = JSON.parse(localStorage.getItem("todoListRow"));
@@ -219,7 +219,7 @@ const CreateToDoList = (navigate, object, t, value, setCreateTaskID) => {
     dispatch(toDoListLoaderStart());
     let form = new FormData();
     form.append("RequestMethod", createToDoList.RequestMethod);
-    form.append("RequestData", JSON.stringify(object));
+    form.append("RequestData", JSON.stringify(object, Task));
     axios({
       method: "post",
       url: toDoListApi,
@@ -231,7 +231,9 @@ const CreateToDoList = (navigate, object, t, value, setCreateTaskID) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(CreateToDoList(navigate, object, t, value, setCreateTaskID));
+          dispatch(
+            CreateToDoList(navigate, object, t, value, setCreateTaskID, Task)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
