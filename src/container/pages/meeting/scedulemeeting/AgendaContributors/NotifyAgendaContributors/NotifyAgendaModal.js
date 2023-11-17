@@ -33,6 +33,10 @@ const NotifyAgendaModal = ({
     { notifiedMembersData },
     "NotifyAgendaModalNotifyAgendaModalNotifyAgendaModal"
   );
+  console.log(
+    notifyMessageField,
+    "notifyMessageFieldnotifyMessageFieldnotifyMessageField"
+  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -106,8 +110,12 @@ const NotifyAgendaModal = ({
         setNotifyMessaegError(true);
       }
     } else {
-      setNotifyMessaegError(true);
-      dispatch(showAgendaContributorsModals(false));
+      if (notifyMessageField === "") {
+        setNotifyMessaegError(true);
+      } else {
+        setNotifyMessaegError(false);
+        dispatch(showAgendaContributorsModals(false));
+      }
     }
   };
 
@@ -124,6 +132,7 @@ const NotifyAgendaModal = ({
         modalFooterClassName={"d-block"}
         onHide={() => {
           dispatch(showAgendaContributorsModals(false));
+          setNotifyMessageField("");
         }}
         ModalBody={
           <>
