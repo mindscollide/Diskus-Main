@@ -620,7 +620,7 @@ const AgendaContributers = ({
                   className={styles["Save_button"]}
                 />
               </>
-            ) : (
+            ) : Number(ediorRole.status) === 1 ? null : (
               <>
                 <Button
                   text={t("Edit")}
