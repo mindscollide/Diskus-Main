@@ -27,17 +27,27 @@ import {
   showUnsavedActionsModal,
   GetAllMeetingUserApiFunc,
 } from "../../../../../../store/actions/NewMeetingActions";
-import { CreateToDoList } from "../../../../../../store/actions/ToDoList_action";
+import { uploadActionMeetingApi } from "../../../../../../store/actions/Action_Meeting";
+import {
+  CreateToDoList,
+  saveTaskDocumentsAndAssigneesApi,
+} from "../../../../../../store/actions/ToDoList_action";
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
 import makeAnimated from "react-select/animated";
 import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import ViewActions from "../ViewActions/ViewActions";
+import {
+  convertGMTDateintoUTC,
+  createConvert,
+  formatDateToUTC,
+} from "../../../../../../commen/functions/date_formater";
 
 const CreateTask = ({
   setCreateaTask,
   currentMeeting,
   setActionState,
   actionState,
+  dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -47,6 +57,7 @@ const CreateTask = ({
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
+  console.log(dataroomMapFolderId, "dataroomMapFolderIddataroomMapFolderId");
   console.log(MeetingAgendaReducer, "getMeetingDatagetMeetingData");
 
   // state for date handler
@@ -69,40 +80,51 @@ const CreateTask = ({
   // Select for select Agenda
   const [selectAgenda, setSelectAgenda] = useState([]);
   const [agendaValue, setAgendaValue] = useState([]);
-  console.log(agendaValue, "agendavalueeeeee");
+  const [createTaskID, setCreateTaskID] = useState(0);
+
+  console.log(createTaskID, "createTaskIDcreateTaskIDcreateTaskID");
+
+  // set file state
+  const [actionFileSend, setActionFileSend] = useState([]);
+  console.log(actionFileSend, "fileForSendfileForSendfileForSendfileForSend");
+  let creatorID = localStorage.getItem("userID");
 
   const [createTaskAction, setCreateTaskAction] = useState({});
 
   const [createTaskDetails, setcreateTaskDetails] = useState({
     PK_TID: 0,
     ActionsToTake: "",
-    SelectMember: 0,
-    SelectAgenda: 0,
+    AssignedTo: [],
+    AgendaID: 0,
     date: "",
     Description: "",
+    DeadLineTime: "",
   });
 
   const changeDateActionCreate = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new Date(date);
+
     setAgendaDueDate(meetingDateValueFormat);
     setcreateTaskDetails({
       ...createTaskDetails,
-      date: DateDate,
+      date: convertGMTDateintoUTC(date).slice(0, 8),
+      DeadLineTime: convertGMTDateintoUTC(date).slice(8, 14),
     });
   };
-
+  console.log(createTaskDetails, "createTaskDetailscreateTaskDetails");
   const actionSaveHandler = () => {
     let Task = {
-      PK_TID: 0,
-      Title: "",
-      Description: createTaskDetails.Description,
-      IsMainTask: true,
-      DeadLineDate: createTaskDetails.date,
-      DeadLineTime: "",
-      CreationDateTime: "",
+      Task: {
+        PK_TID: createTaskDetails.PK_TID,
+        Title: createTaskDetails.ActionsToTake,
+        Description: createTaskDetails.Description,
+        IsMainTask: true,
+        DeadLineDate: createTaskDetails.date,
+        DeadLineTime: createTaskDetails.DeadLineTime,
+        CreationDateTime: "",
+      },
     };
-    dispatch(CreateToDoList(navigate, t, Task));
+    dispatch(CreateToDoList(navigate, Task, t, setCreateTaskID, 1));
   };
 
   const props = {
@@ -292,8 +314,74 @@ const CreateTask = ({
           ActionsToTake: "",
         });
       }
+    } else if (name === "Description") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setcreateTaskDetails({
+          ...createTaskDetails,
+          Description: valueCheck,
+        });
+      } else {
+        setcreateTaskDetails({
+          ...createTaskDetails,
+          Description: "",
+        });
+      }
     }
   };
+
+  // for upload Action
+  const documentsUploadCall = async (dataroomMapFolderId) => {
+    let newFolder = [];
+    const uploadPromises = taskAttachments.map(async (newData) => {
+      await dispatch(
+        uploadActionMeetingApi(
+          navigate,
+          t,
+          newData,
+          dataroomMapFolderId,
+          newFolder
+        )
+      );
+    });
+    // Wait for all promises to resolve
+    await Promise.all(uploadPromises);
+    let newAttachmentData = newFolder.map((data, index) => {
+      return {
+        DisplayAttachmentName: data.DisplayAttachmentName,
+        OriginalAttachmentName: data.pK_FileID.toString(),
+        FK_TID: Number(createTaskID),
+      };
+    });
+
+    let Data = {
+      TaskCreatorID: Number(creatorID),
+      TaskAssignedTo: createTaskDetails.AssignedTo,
+      TaskID: Number(createTaskID),
+      TasksAttachments: newAttachmentData,
+    };
+    let newData = {
+      TaskID: Number(createTaskID),
+      MeetingID: currentMeeting,
+      AgendaID: createTaskDetails.AgendaID,
+    };
+    await dispatch(
+      saveTaskDocumentsAndAssigneesApi(
+        navigate,
+        Data,
+        t,
+        7,
+        setCreateaTask,
+        newData
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (createTaskID !== 0) {
+      documentsUploadCall(dataroomMapFolderId);
+    }
+  }, [createTaskID]);
 
   useEffect(() => {
     let Data = {
@@ -459,8 +547,12 @@ const CreateTask = ({
     }
   }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
 
-  const onChangeSelectAgenda = (value) => {
-    setSelectAgenda(value);
+  const onChangeSelectAgenda = (e) => {
+    setcreateTaskDetails({
+      ...createTaskDetails,
+      AgendaID: e.value,
+    });
+    setSelectAgenda(e);
   };
 
   const saveButtonFunc = () => {
@@ -469,8 +561,13 @@ const CreateTask = ({
   };
 
   // for selecting Data
-  const handleSelectMemberValue = (value) => {
-    setSelectedTask(value);
+  const handleSelectMemberValue = (e) => {
+    console.log(e, "valuevaluevaluevaluevalue");
+    setcreateTaskDetails({
+      ...createTaskDetails,
+      AssignedTo: [...createTaskDetails.AssignedTo, e.value],
+    });
+    setSelectedTask(e);
   };
 
   const handleUnsavedModal = () => {
@@ -610,7 +707,7 @@ const CreateTask = ({
                           calendar={calendarValue}
                           locale={localValue}
                           ref={calendRef}
-                          onChange={(value) => changeDateActionCreate(value)}
+                          onChange={changeDateActionCreate}
                         />
                       </Col>
                     </Row>
@@ -642,15 +739,16 @@ const CreateTask = ({
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <TextField
+                      labelClass={"d-none"}
+                      change={HandleChange}
+                      name={"Description"}
+                      value={createTaskDetails.Description}
                       applyClass="Polls_meeting"
-                      type="text"
                       as={"textarea"}
                       maxLength={500}
                       rows="4"
                       placeholder={t("Description")}
-                      labelClass={"d-none"}
                       required={true}
-                      name="committeedescription"
                     />
                   </Col>
                 </Row>
@@ -818,7 +916,7 @@ const CreateTask = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                <Button
+                {/* <Button
                   text={t("Clone-meeting")}
                   className={styles["Cancel_Button_Polls_meeting"]}
                 />
@@ -831,7 +929,7 @@ const CreateTask = ({
                 <Button
                   text={t("Publish-the-meeting")}
                   className={styles["Cancel_Button_Polls_meeting"]}
-                />
+                /> */}
 
                 <Button
                   text={t("Cancel")}

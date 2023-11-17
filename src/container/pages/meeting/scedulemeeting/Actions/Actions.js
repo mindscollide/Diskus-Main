@@ -28,6 +28,7 @@ const Actions = ({
   ediorRole,
   setEditMeeting,
   isEditMeeting,
+  dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -192,6 +193,7 @@ const Actions = ({
           currentMeeting={currentMeeting}
           setActionState={setActionState}
           actionState={actionState}
+          dataroomMapFolderId={dataroomMapFolderId}
         />
       ) : (
         <>

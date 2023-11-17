@@ -523,7 +523,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           // TasksAttachments,
         };
       }
-      dispatch(CreateToDoList(navigate, Data, t, 4, setCreateTaskID));
+      dispatch(CreateToDoList(navigate, Data, t, setCreateTaskID));
     }
   };
   const uploadTaskDocuments = async (folderID) => {

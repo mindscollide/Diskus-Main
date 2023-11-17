@@ -1279,6 +1279,10 @@ const saveTaskDocuments = {
   RequestMethod: "ServiceManager.SaveToDoDocuments",
 };
 
+const mapTaskWithMeetingAgenda = {
+  RequestMethod: "ServiceManager.MapTaskWithMeetingAndAgenda",
+};
+
 export {
   saveTaskandAssgineesRM,
   saveTaskDocuments,
@@ -1620,4 +1624,5 @@ export {
   getMeetingTasksAction,
   dataRoomFileDownloadService,
   dataRoomFolderDownloadService,
+  mapTaskWithMeetingAgenda,
 };
