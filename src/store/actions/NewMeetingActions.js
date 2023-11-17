@@ -5133,7 +5133,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               await dispatch(
                 showCreateUpdateMeetingDataRoomSuccess(
                   response.data.responseResult,
-                  t("Updated-successfully")
+                  ""
                 )
               );
               setDataroomMapFolderId(response.data.responseResult.folderID);

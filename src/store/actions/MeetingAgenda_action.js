@@ -757,7 +757,7 @@ const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
             dispatch(
               createUpdateMeetingDataRoomMap_success(
                 response.data.responseResult.folderID,
-                t("Folder-mapped-with-data-room")
+                ""
               )
             );
             localStorage.setItem("MeetingID", data.MeetingID);
@@ -777,7 +777,7 @@ const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
             dispatch(
               createUpdateMeetingDataRoomMap_success(
                 response.data.responseResult.folderID,
-                t("Update-successfullly")
+                ""
               )
             );
           } else if (
