@@ -59,6 +59,7 @@ const Participants = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [isEditClicked, setIsEditClicked] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(true);
   const [isEditable, setIsEditable] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
@@ -178,6 +179,9 @@ const Participants = ({
       (data, index) => data.userID !== record.userID
     );
     setrspvRows(removingfromrow);
+    if (rspvRows.length === 1) {
+      setIsEditClicked(true);
+    }
   };
 
   // Table coloumn
@@ -433,6 +437,7 @@ const Participants = ({
         open: true,
       });
     }
+    setIsEditClicked(false);
   };
 
   useEffect(() => {
@@ -480,7 +485,8 @@ const Participants = ({
                   ediorRole.role === "Organizer" &&
                   isEditMeeting === true) ||
                 (ediorRole.role === "Agenda Contributor" &&
-                  isEditMeeting === true) ? null : isEditable ? (
+                  isEditMeeting === true) ? null : isEditable ||
+                  isEditClicked ? (
                   <>
                     <Row>
                       <Col lg={12} md={12} sm={12} className="d-flex gap-2">
