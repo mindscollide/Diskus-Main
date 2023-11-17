@@ -80,10 +80,12 @@ const saveFilesApi = (
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: JSON.parse(data.diskusFileName),
+        DiskusFileNameString: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
+        fileSizeOnDisk: Number(data.fileSizeOnDisk),
+        FileSize: Number(data.fileSize),
       },
     ],
     UserID: JSON.parse(createrID),
@@ -1409,6 +1411,8 @@ const deleteFileDataroom = (navigate, id, t, setSorted) => {
                 )
             ) {
               dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
             }
           } else {
             dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
@@ -1545,6 +1549,8 @@ const FileisExist = (
                   "DataRoom_DataRoomServiceManager_FileExist_04".toLowerCase()
                 )
             ) {
+              dispatch(FileisExist_fail(t("Something-went-wrong")));
+            } else {
               dispatch(FileisExist_fail(t("Something-went-wrong")));
             }
           } else {

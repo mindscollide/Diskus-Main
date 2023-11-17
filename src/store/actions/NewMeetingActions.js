@@ -3184,10 +3184,12 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: JSON.parse(data.diskusFileName),
+        DiskusFileNameString: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(creatorID),
         FK_OrganizationID: JSON.parse(organizationID),
+        fileSizeOnDisk: Number(data.fileSizeOnDisk),
+        FileSize: Number(data.fileSize),
       },
     ],
     UserID: JSON.parse(creatorID),
@@ -4567,7 +4569,7 @@ const saveFilesMeetingagendaWiseMinutesApi = (
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: JSON.parse(data.diskusFileName),
+        DiskusFileName: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(creatorID),
         FK_OrganizationID: JSON.parse(organizationID),
@@ -6202,14 +6204,14 @@ const showAttendanceConfirmationModal = (response) => {
   };
 };
 
-const clearResponseMessage = () => {
+const clearResponseNewMeetingReducerMessage = () => {
   return {
     type: actions.NEWMEETING_RESPONSEMESSAGE,
   };
 };
 
 export {
-  clearResponseMessage,
+  clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
   saveAgendaContributors,
   showAddUserModal,

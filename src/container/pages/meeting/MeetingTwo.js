@@ -51,6 +51,7 @@ import NewEndMeetingModal from "./NewEndMeetingModal/NewEndMeetingModal";
 import { useSelector } from "react-redux";
 import {
   clearMeetingState,
+  clearResponseNewMeetingReducerMessage,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
 } from "../../../store/actions/NewMeetingActions";
@@ -86,8 +87,12 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const { talkStateData, downloadReducer, MeetingOrganizersReducer } =
-    useSelector((state) => state);
+  const {
+    talkStateData,
+    downloadReducer,
+    MeetingOrganizersReducer,
+    NewMeetingreducer,
+  } = useSelector((state) => state);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -1100,7 +1105,35 @@ const NewMeeting = () => {
       }, 4000);
     }
   }, [MeetingOrganizersReducer.ResponseMessage]);
-  
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== undefined &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-records-found")
+    ) {
+      setOpen({
+        message: NewMeetingreducer.ResponseMessage,
+        open: true,
+      });
+      setTimeout(() => {
+        setOpen({
+          message: "",
+          open: false,
+        });
+        dispatch(clearResponseNewMeetingReducerMessage(""));
+      }, 4000);
+    } else {
+      setTimeout(() => {
+        setOpen({
+          message: "",
+          open: false,
+        });
+        dispatch(clearResponseNewMeetingReducerMessage(""));
+      }, 4000);
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
