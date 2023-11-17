@@ -490,7 +490,7 @@ const AgendaContributers = ({
 
     let Data = {
       MeetingID: currentMeeting,
-      MeetingAttendeRoleID: 1,
+      MeetingAttendeRoleID: 4,
       UpdatedUsers: newData,
     };
     dispatch(
