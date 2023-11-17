@@ -556,8 +556,6 @@ const MeetingDetails = ({
   };
 
   const handleReminderFrequency = (e) => {
-    let ReminderFrequency = getAllReminderFrequency.meetingReminders;
-
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequency: {
@@ -568,15 +566,6 @@ const MeetingDetails = ({
   };
 
   const handleReminderFrequencyTwo = (e) => {
-    const modifiedOptions = [...reminderFrequencyOne];
-    let findIndex = modifiedOptions.findIndex(
-      (record, index) => record.value === e.value
-    );
-    // Disable the option if it exists
-    if (findIndex !== -1) {
-      modifiedOptions[findIndex].isDisabled = true;
-    } else {
-    }
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyTwo: {
@@ -587,8 +576,6 @@ const MeetingDetails = ({
   };
 
   const handleReminderFrequencyThree = (e) => {
-    let ReminderFrequency = getAllReminderFrequency.meetingReminders;
-
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyThree: {
@@ -829,23 +816,23 @@ const MeetingDetails = ({
           ...option,
           isDisabled: option.value === meetingDetails.ReminderFrequency.value, // Replace 'option2' with the value you want to disable
         };
-      } else if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
+      }
+      if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
         // Disable or modify options for Agenda Contributor condition
         return {
           ...option,
           isDisabled:
             option.value === meetingDetails.ReminderFrequencyTwo.value, // Replace 'option3' with the value you want to disable
         };
-      } else if (meetingDetails.ReminderFrequencyThree.value !== 0) {
+      }
+      if (meetingDetails.ReminderFrequencyThree.value !== 0) {
         return {
           ...option,
           isDisabled:
             option.value === meetingDetails.ReminderFrequencyThree.value, // Replace 'option3' with the value you want to disable
         };
-      } else {
-        // Return the original option
-        return option;
       }
+      return option;
     });
 
   // //For reminder frequency uniqueness
@@ -1742,7 +1729,7 @@ const MeetingDetails = ({
                   <Select
                     placeholder={t("Reminder*")}
                     onChange={handleReminderFrequency}
-                    options={modifiedOptions}
+                    options={reminderFrequencyOne}
                     value={{
                       value: meetingDetails.ReminderFrequency.value,
                       label: meetingDetails.ReminderFrequency.label,
@@ -1765,7 +1752,13 @@ const MeetingDetails = ({
                   <Select
                     placeholder={t("Reminder")}
                     onChange={handleReminderFrequencyTwo}
-                    options={modifiedOptions}
+                    options={reminderFrequencyOne.map((data, index) => {
+                      return {
+                        ...data,
+                        isDisabled:
+                          data.value === meetingDetails.ReminderFrequency.value,
+                      };
+                    })}
                     value={{
                       value: meetingDetails.ReminderFrequencyTwo.value,
                       label: meetingDetails.ReminderFrequencyTwo.label,
@@ -1790,7 +1783,14 @@ const MeetingDetails = ({
                   <Select
                     placeholder={t("Reminder")}
                     onChange={handleReminderFrequencyThree}
-                    options={modifiedOptions}
+                    options={reminderFrequencyOne.map((data, index) => {
+                      return {
+                        ...data,
+                        isDisabled:
+                          data.value ===
+                          meetingDetails.ReminderFrequencyTwo.value,
+                      };
+                    })}
                     value={{
                       value: meetingDetails.ReminderFrequencyThree.value,
                       label: meetingDetails.ReminderFrequencyThree.label,
