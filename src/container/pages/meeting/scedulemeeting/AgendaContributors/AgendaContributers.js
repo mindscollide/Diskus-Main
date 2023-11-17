@@ -766,7 +766,10 @@ const AgendaContributers = ({
       )}
 
       {NewMeetingreducer.cancelAgendaContributor && (
-        <CancelAgendaContributor setSceduleMeeting={setSceduleMeeting} />
+        <CancelAgendaContributor
+          setSceduleMeeting={setSceduleMeeting}
+          setRowsData={setRowsData}
+        />
       )}
     </>
   );
