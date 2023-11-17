@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Participants.module.css";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
 import addmore from "../../../../../assets/images/addmore.png";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { Col, Row } from "react-bootstrap";
@@ -63,6 +64,7 @@ const Participants = ({
   const [menuIsOpen, setMenuIsOpen] = useState(true);
   const [isEditable, setIsEditable] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
+  const [errorFileds, setErrorFileds] = useState(false);
   const [inputValues, setInputValues] = useState({});
   const [editableSave, setEditableSave] = useState(0);
   const [flag, setFlag] = useState(4);
@@ -537,6 +539,52 @@ const Participants = ({
                   column={ParticipantsColoumn}
                   scroll={{ y: "42vh" }}
                   pagination={false}
+                  locale={{
+                    emptyText: (
+                      <>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <img
+                              draggable={false}
+                              src={emptyContributorState}
+                              width="274.05px"
+                              alt=""
+                              height="230.96px"
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["Empty_state_heading"]}>
+                              {t("No-Participant")}
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["Empty_state_Subheading"]}>
+                              {t("There-are-no-agenda-contributors")}
+                            </span>
+                          </Col>
+                        </Row>
+                      </>
+                    ),
+                  }}
                   className="Polling_table"
                   rows={rspvRows}
                 />
