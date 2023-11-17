@@ -2412,7 +2412,6 @@ const meetingMaterialInit = () => {
 
 //Aun work on meeting Material Success
 const meetingMaterialSuccess = (response, message) => {
-  console.log(response, "responseresponseresponse");
   return {
     type: actions.GET_ALL_MEETING_MATERIAL_SUCCESS,
     response: response,
@@ -2447,7 +2446,9 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
-          dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, id));
+          dispatch(
+            getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2459,10 +2460,6 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
                   response.data.responseResult.meetingMaterial,
                   t("Record-found")
                 )
-              );
-              console.log(
-                response.data.responseResult,
-                "meetingMaterialSuccess"
               );
             } else if (
               response.data.responseResult.responseMessage ===

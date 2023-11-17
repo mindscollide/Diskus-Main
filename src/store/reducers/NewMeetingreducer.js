@@ -874,7 +874,10 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_MATERIAL_SUCCESS: {
-      console.log(action.response, "actionsactions");
+      console.log(
+        "meetingMaterial",
+        action
+      );
       return {
         ...state,
         Loading: false,
@@ -1627,6 +1630,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         unsavedViewPollsModal: false,
       };
     }
+    
     case actions.NEWMEETING_RESPONSEMESSAGE: {
       return {
         ...state,
