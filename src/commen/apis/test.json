@@ -1,0 +1,24 @@
+{
+  "MeetingDetails": {
+    "MeetingID": 2160,
+    "MeetingTitle": "Schedule New Meeting 16 Nov",
+    "MeetingType": { "PK_MTID": 14, "Type": "Committee Meeting" },
+    "Location": "Gulshan",
+    "Description": "NextModal\n          setmeetingDetailssetmeetingDetails",
+    "IsVideoChat": true,
+    "IsTalkGroup": true,
+    "OrganizationId": 440,
+    "MeetingDates": [
+      { "MeetingDate": "20231123", "StartTime": "091436", "EndTime": "105936" },
+      { "MeetingDate": "20231124", "StartTime": "085938", "EndTime": "105936" },
+      { "MeetingDate": "20231125", "StartTime": "065950", "EndTime": "075949" }
+    ],
+    "MeetingReminders": [1, 2, 3],
+    "Notes": "NextModal ",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
+    "MeetingStatusID": 11
+  }
+}

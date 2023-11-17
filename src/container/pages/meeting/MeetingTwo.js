@@ -98,13 +98,11 @@ const NewMeeting = () => {
     (state) => state.NewMeetingreducer.endMeetingModal
   );
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
-  console.log(
-    dataroomMapFolderId,
-    "dataroomMapFolderIddataroomMapFolderIddataroomMapFolderId"
-  );
   let currentLanguage = localStorage.getItem("i18nextLng");
+
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
+
   //Current Organization
   let currentOrganizationId = localStorage.getItem("organizationID");
   let currentView = localStorage.getItem("MeetingCurrentView");
@@ -112,16 +110,15 @@ const NewMeeting = () => {
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
   const [quickMeeting, setQuickMeeting] = useState(false);
-  // const [unPublishedMeeting, setUnPublishedMeeting] = useState(false);
-  // const [allPublishedMeetings, setAllPublishedMeetings] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
+
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
   const [entereventIcon, setentereventIcon] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const [viewFlag, setViewFlag] = useState(false);
-  const [currentMeeting, setCurrentMeetingID] = useState(0);
+  const [currentMeetingID, setCurrentMeetingID] = useState(0);
   const [isEditMeeting, setEditMeeting] = useState(false);
   const [open, setOpen] = useState({
     open: false,
@@ -145,10 +142,6 @@ const NewMeeting = () => {
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
-  console.log(
-    viewAdvanceMeetingModal,
-    "viewAdvanceMeetingModalviewAdvanceMeetingModal"
-  );
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
   const [ediorRole, setEdiorRole] = useState({ status: null, role: null });
   const [
@@ -188,8 +181,6 @@ const NewMeeting = () => {
       localStorage.setItem("MeetingCurrentView", 1);
     }
     return () => {
-      // localStorage.removeItem("MeetingPageRows");
-      // localStorage.removeItem("MeetingPageCurrent");
       dispatch(clearMeetingState());
     };
   }, []);
@@ -242,6 +233,7 @@ const NewMeeting = () => {
     });
     setSearchMeeting(false);
   };
+
   const HandleCloseSearchModalMeeting = () => {
     setSearchFeilds({
       ...searchFields,
@@ -366,7 +358,7 @@ const NewMeeting = () => {
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
   };
-  // setCurrentMeetingID;
+
   const handleViewMeeting = async (id, isQuickMeeting) => {
     if (isQuickMeeting) {
       let Data = { MeetingID: id };
@@ -445,7 +437,6 @@ const NewMeeting = () => {
       MeetingID: Number(meetingID),
     };
     dispatch(downloadAttendanceReportApi(navigate, t, downloadData));
-    console.log(downloadData, "downloadDatadownloadData");
   };
 
   const MeetingColoumns = [
@@ -1054,6 +1045,7 @@ const NewMeeting = () => {
       }
     } catch {}
   }, [searchMeetings]);
+
   // Empty text data
   const emptyText = () => {
     return (
@@ -1087,6 +1079,7 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingPageCurrent", current);
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
+
   useEffect(() => {
     if (
       MeetingOrganizersReducer.ResponseMessage !== "" &&
@@ -1107,13 +1100,14 @@ const NewMeeting = () => {
       }, 4000);
     }
   }, [MeetingOrganizersReducer.ResponseMessage]);
+  
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
         <SceduleMeeting
           setSceduleMeeting={setSceduleMeeting}
           setCurrentMeetingID={setCurrentMeetingID}
-          currentMeeting={currentMeeting}
+          currentMeeting={currentMeetingID}
           ediorRole={ediorRole}
           setEdiorRole={setEdiorRole}
           setEditMeeting={setEditMeeting}
@@ -1146,7 +1140,7 @@ const NewMeeting = () => {
       ) : viewProposeOrganizerPoll ? (
         <OrganizerViewModal
           setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
-          currentMeeting={currentMeeting}
+          currentMeeting={currentMeetingID}
         />
       ) : (
         <>
@@ -1379,6 +1373,7 @@ const NewMeeting = () => {
                     setEdiorRole={setEdiorRole}
                     setEditMeeting={setEditMeeting}
                     setCurrentMeetingID={setCurrentMeetingID}
+                    currentMeeting={currentMeetingID}
                     ediorRole={ediorRole}
                     setDataroomMapFolderId={setDataroomMapFolderId}
                   />
