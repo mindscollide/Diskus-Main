@@ -547,7 +547,7 @@ const AgendaContributers = ({
       let getifTrue = rowsData.some((data, index) => data.isEdit === false);
       setIsEdit(getifTrue);
     } else {
-      setIsEdit(false);
+      setIsEdit(true);
     }
   }, [rowsData]);
 
