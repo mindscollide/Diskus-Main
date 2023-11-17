@@ -38,7 +38,7 @@ import {
   GetAllMeetingTypesNewFunction,
   SaveMeetingDetialsNewApiFunction,
   ShowNextConfirmationModal,
-  clearResponseMessage,
+  clearResponseNewMeetingReducerMessage,
   showCancelModalmeetingDeitals,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
@@ -93,6 +93,11 @@ const MeetingDetails = ({
   const recurring = useSelector((state) => state.NewMeetingreducer.recurring);
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
+  );
+
+  console.log(
+    ResponseMessage,
+    "ResponseMessageRResponseMessageResponseMessage"
   );
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
@@ -640,19 +645,19 @@ const MeetingDetails = ({
         });
       }
     }
-    if (name === "Link" && value !== "") {
-      if (urlPatternValidation(value)) {
-        setMeetingDetails({
-          ...meetingDetails,
-          Link: value,
-        });
-      } else {
-        setMeetingDetails({
-          ...meetingDetails,
-          Link: "",
-        });
-      }
-    }
+    // if (name === "Link" && value !== "") {
+    //   if (urlPatternValidation(value)) {
+    //     setMeetingDetails({
+    //       ...meetingDetails,
+    //       Link: value,
+    //     });
+    //   } else {
+    //     setMeetingDetails({
+    //       ...meetingDetails,
+    //       Link: "",
+    //     });
+    //   }
+    // }
   };
 
   const handleGroupChat = () => {
@@ -683,10 +688,10 @@ const MeetingDetails = ({
       IsVideoCall: !meetingDetails.IsVideoCall,
     });
 
-    let Data = {
-      MeetingID: currentMeeting,
-    };
-    dispatch(FetchMeetingURLApi(Data, navigate, t));
+    // let Data = {
+    //   MeetingID: currentMeeting,
+    // };
+    // dispatch(FetchMeetingURLApi(Data, navigate, t));
   };
 
   useEffect(() => {
@@ -780,7 +785,8 @@ const MeetingDetails = ({
     if (
       ResponseMessage !== "" &&
       ResponseMessage !== t("Record-found") &&
-      ResponseMessage !== t("No-record-found")
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -794,32 +800,61 @@ const MeetingDetails = ({
           message: "",
         });
       }, 3000);
-      dispatch(clearResponseMessage());
+      dispatch(clearResponseNewMeetingReducerMessage());
     } else {
-      dispatch(clearResponseMessage());
+      dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [ResponseMessage]);
 
-  //For reminder frequency uniqueness
-  useEffect(() => {
-    const selectedValues = new Set([
-      meetingDetails.ReminderFrequency.value,
-      meetingDetails.ReminderFrequencyTwo.value,
-      meetingDetails.ReminderFrequencyThree.value,
-    ]);
+  // Modify options based on conditions
+  const modifiedOptions =
+    reminderFrequencyOne.length > 0 &&
+    reminderFrequencyOne.map((option) => {
+      if (meetingDetails.ReminderFrequency.value !== 0) {
+        // Disable the option conditionally
+        return {
+          ...option,
+          isDisabled: option.value === meetingDetails.ReminderFrequency.value, // Replace 'option2' with the value you want to disable
+        };
+      }
+      if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
+        // Disable or modify options for Agenda Contributor condition
+        return {
+          ...option,
+          isDisabled:
+            option.value === meetingDetails.ReminderFrequencyTwo.value, // Replace 'option3' with the value you want to disable
+        };
+      }
+      if (meetingDetails.ReminderFrequencyThree.value !== 0) {
+        return {
+          ...option,
+          isDisabled:
+            option.value === meetingDetails.ReminderFrequencyThree.value, // Replace 'option3' with the value you want to disable
+        };
+      }
+      return option;
+    });
 
-    // Filter out the selected options from the initial options
-    const updatedOptions = reminderFrequencyOne.filter(
-      (option) => !selectedValues.has(option.value)
-    );
+  // //For reminder frequency uniqueness
+  // useEffect(() => {
+  //   const selectedValues = new Set([
+  //     meetingDetails.ReminderFrequency.value,
+  //     meetingDetails.ReminderFrequencyTwo.value,
+  //     meetingDetails.ReminderFrequencyThree.value,
+  //   ]);
 
-    // Update the available options
-    setReminderFrequencyOne(updatedOptions);
-  }, [
-    meetingDetails.ReminderFrequency,
-    meetingDetails.ReminderFrequencyTwo,
-    meetingDetails.ReminderFrequencyThree,
-  ]);
+  //   // Filter out the selected options from the initial options
+  //   const updatedOptions = reminderFrequencyOne.filter(
+  //     (option) => !selectedValues.has(option.value)
+  //   );
+
+  //   // Update the available options
+  //   setReminderFrequencyOne(updatedOptions);
+  // }, [
+  //   meetingDetails.ReminderFrequency,
+  //   meetingDetails.ReminderFrequencyTwo,
+  //   meetingDetails.ReminderFrequencyThree,
+  // ]);
 
   //Fetching All Saved Data
   useEffect(() => {
@@ -1393,7 +1428,9 @@ const MeetingDetails = ({
                         name={"Link"}
                         // change={HandleChange}
                         value={
-                          meetingDetails.IsVideoCall ? meetingDetails.Link : ""
+                          meetingDetails.IsVideoCall
+                            ? t("Video-session-enabled")
+                            : ""
                         }
                       />
                     </Col>
@@ -1715,7 +1752,13 @@ const MeetingDetails = ({
                   <Select
                     placeholder={t("Reminder")}
                     onChange={handleReminderFrequencyTwo}
-                    options={reminderFrequencyOne}
+                    options={reminderFrequencyOne.map((data, index) => {
+                      return {
+                        ...data,
+                        isDisabled:
+                          data.value === meetingDetails.ReminderFrequency.value,
+                      };
+                    })}
                     value={{
                       value: meetingDetails.ReminderFrequencyTwo.value,
                       label: meetingDetails.ReminderFrequencyTwo.label,
@@ -1740,7 +1783,14 @@ const MeetingDetails = ({
                   <Select
                     placeholder={t("Reminder")}
                     onChange={handleReminderFrequencyThree}
-                    options={reminderFrequencyOne}
+                    options={reminderFrequencyOne.map((data, index) => {
+                      return {
+                        ...data,
+                        isDisabled:
+                          data.value ===
+                          meetingDetails.ReminderFrequencyTwo.value,
+                      };
+                    })}
                     value={{
                       value: meetingDetails.ReminderFrequencyThree.value,
                       label: meetingDetails.ReminderFrequencyThree.label,

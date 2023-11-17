@@ -4,13 +4,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import backDownArrow from "../../../../../assets/images/downDirect.png";
-import upArrow from "../../../../../assets/images/UpperArrow.svg";
-import PDFIcon from "../../../../../assets/images/pdf_icon.svg";
 import {
   Button,
   Table,
-  Loader,
   ResultMessage,
 } from "../../../../../components/elements";
 import NoMeetingsIcon from "../../../../../assets/images/No-Meetings.png";
@@ -40,8 +36,19 @@ const MeetingMaterial = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
-  console.log(NewMeetingreducer, "parentAgendasparentAgendas");
+  const meetingMaterialData = useSelector(
+    (state) => state.NewMeetingreducer.meetingMaterialData
+  );
+  const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
+  const cancelMeetingMaterial = useSelector(
+    (state) => state.NewMeetingreducer.cancelMeetingMaterial
+  );
+  const nextConfirmModal = useSelector(
+    (state) => state.NewMeetingreducer.nextConfirmModal
+  );
+  const ShowPreviousModal = useSelector(
+    (state) => state.NewMeetingreducer.ShowPreviousModal
+  );
 
   const [clicks, setClicks] = useState(0);
   const [flag, setFlag] = useState(5);
@@ -50,6 +57,14 @@ const MeetingMaterial = ({
 
   // row state for meeting Material
   const [rows, setRows] = useState([]);
+
+  // Api request on useEffect
+  useEffect(() => {
+    let meetingMaterialData = {
+      MeetingID: Number(currentMeeting),
+    };
+    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
+  }, []);
 
   //onClick of handlerFor View PDF
   const viewHandlerOnclick = (e, data) => {
@@ -110,7 +125,7 @@ const MeetingMaterial = ({
               }
             >
               <img
-                src={getIconSource(ext)}
+                src={getIconSource(getFileExtension(record.displayFileName))}
                 alt=""
                 width={"25px"}
                 height={"25px"}
@@ -137,23 +152,15 @@ const MeetingMaterial = ({
   // To render data in table
   useEffect(() => {
     if (
-      NewMeetingreducer.meetingMaterial !== null &&
-      NewMeetingreducer.meetingMaterial !== undefined &&
-      NewMeetingreducer.meetingMaterial.length > 0
+      meetingMaterialData !== null &&
+      meetingMaterialData !== undefined &&
+      meetingMaterialData.length > 0
     ) {
-      setRows(NewMeetingreducer.meetingMaterial);
+      setRows(meetingMaterialData);
     } else {
       setRows([]);
     }
-  }, [NewMeetingreducer.meetingMaterial]);
-
-  // Api request on useEffect
-  useEffect(() => {
-    let meetingMaterialData = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
-  }, []);
+  }, [meetingMaterialData]);
 
   const handleCancelButton = () => {
     dispatch(showCancelMeetingMaterial(true));
@@ -175,7 +182,7 @@ const MeetingMaterial = ({
     <section>
       <Row className="mt-5">
         <Col lg={12} md={12} sm={12}>
-          {rows.length === 0 && !NewMeetingreducer.Loading ? (
+          {rows.length === 0 && !Loading ? (
             <>
               <ResultMessage
                 icon={
@@ -242,11 +249,11 @@ const MeetingMaterial = ({
           />
         </Col>
       </Row>
-      {NewMeetingreducer.cancelMeetingMaterial && (
+      {cancelMeetingMaterial && (
         <CancelMeetingMaterial setSceduleMeeting={setSceduleMeeting} />
       )}
 
-      {NewMeetingreducer.nextConfirmModal && (
+      {nextConfirmModal && (
         <NextModal
           setMinutes={setMinutes}
           setMeetingMaterial={setMeetingMaterial}
@@ -254,14 +261,13 @@ const MeetingMaterial = ({
         />
       )}
 
-      {NewMeetingreducer.ShowPreviousModal && (
+      {ShowPreviousModal && (
         <PreviousModal
           setAgenda={setAgenda}
           setMeetingMaterial={setMeetingMaterial}
           prevFlag={prevFlag}
         />
       )}
-      {/* {NewMeetingreducer.Loading ? <Loader /> : null} */}
     </section>
   );
 };

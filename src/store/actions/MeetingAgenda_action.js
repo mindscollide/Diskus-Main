@@ -757,7 +757,7 @@ const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
             dispatch(
               createUpdateMeetingDataRoomMap_success(
                 response.data.responseResult.folderID,
-                t("Folder-mapped-with-data-room")
+                ""
               )
             );
             localStorage.setItem("MeetingID", data.MeetingID);
@@ -777,7 +777,7 @@ const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
             dispatch(
               createUpdateMeetingDataRoomMap_success(
                 response.data.responseResult.folderID,
-                t("Update-successfullly")
+                ""
               )
             );
           } else if (
@@ -970,10 +970,12 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: JSON.parse(data.diskusFileName),
+        DiskusFileNameString: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
+        FileSizeOnDisk: Number(data.FileSizeOnDisk),
+        FileSize: Number(data.fileSize),
       },
     ],
     UserID: JSON.parse(createrID),

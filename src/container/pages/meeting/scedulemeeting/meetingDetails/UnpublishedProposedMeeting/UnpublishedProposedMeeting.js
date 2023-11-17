@@ -4,7 +4,6 @@ import { Col, Row, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import NoMeetingsIcon from "../../../../../../assets/images/No-Meetings.png";
-import deleteIcon from "../../../../../../assets/images/delete_dataroom.svg";
 import OrganizerViewModal from "../../../scedulemeeting/Organizers/OrganizerViewModal/OrganizerViewModal";
 
 import { ChevronDown } from "react-bootstrap-icons";
@@ -44,6 +43,7 @@ const UnpublishedProposedMeeting = ({
   setEdiorRole,
   setEditMeeting,
   setCurrentMeetingID,
+  currentMeeting,
   ediorRole,
   setDataroomMapFolderId,
 }) => {
