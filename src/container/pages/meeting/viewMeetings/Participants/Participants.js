@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./Participants.module.css";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
-
 import { Col, Row } from "react-bootstrap";
 import {
   Button,

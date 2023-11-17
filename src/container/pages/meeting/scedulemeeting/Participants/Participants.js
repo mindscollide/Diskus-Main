@@ -418,7 +418,7 @@ const Participants = ({
     //Upadte Meeting Organizer
     let Data = {
       MeetingID: currentMeeting,
-      MeetingAttendeRoleID: 1,
+      MeetingAttendeRoleID: 2,
       UpdatedUsers: newarry,
     };
 
