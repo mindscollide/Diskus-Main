@@ -87,12 +87,7 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const {
-    talkStateData,
-    downloadReducer,
-    MeetingOrganizersReducer,
-    NewMeetingreducer,
-  } = useSelector((state) => state);
+  const { talkStateData } = useSelector((state) => state);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -102,6 +97,13 @@ const NewMeeting = () => {
   const endMeetingModal = useSelector(
     (state) => state.NewMeetingreducer.endMeetingModal
   );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const ResponseMessages = useSelector(
+    (state) => state.MeetingOrganizersReducer.ResponseMessage
+  );
+  const Loading = useSelector((state) => state.downloadReducer.Loading);
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -1087,13 +1089,13 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (
-      MeetingOrganizersReducer.ResponseMessage !== "" &&
-      MeetingOrganizersReducer.ResponseMessage !== undefined &&
-      MeetingOrganizersReducer.ResponseMessage !== t("Record-found") &&
-      MeetingOrganizersReducer.ResponseMessage !== t("No-records-found")
+      ResponseMessages !== "" &&
+      ResponseMessages !== undefined &&
+      ResponseMessages !== t("Record-found") &&
+      ResponseMessages !== t("No-records-found")
     ) {
       setOpen({
-        message: MeetingOrganizersReducer.ResponseMessage,
+        message: ResponseMessages,
         open: true,
       });
       setTimeout(() => {
@@ -1104,17 +1106,17 @@ const NewMeeting = () => {
         dispatch(clearResponseMessage(""));
       }, 4000);
     }
-  }, [MeetingOrganizersReducer.ResponseMessage]);
+  }, [ResponseMessages]);
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== undefined &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-records-found")
+      ResponseMessage !== "" &&
+      ResponseMessage !== undefined &&
+      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
-        message: NewMeetingreducer.ResponseMessage,
+        message: ResponseMessage,
         open: true,
       });
       setTimeout(() => {
@@ -1133,7 +1135,7 @@ const NewMeeting = () => {
         dispatch(clearResponseNewMeetingReducerMessage(""));
       }, 4000);
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
@@ -1497,7 +1499,7 @@ const NewMeeting = () => {
         <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
 
-      {downloadReducer.Loading ? <Loader /> : null}
+      {Loading ? <Loader /> : null}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </section>
   );

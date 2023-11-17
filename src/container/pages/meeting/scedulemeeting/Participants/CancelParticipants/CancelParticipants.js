@@ -11,7 +11,7 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 
-export const CancelParticipants = ({ setSceduleMeeting }) => {
+export const CancelParticipants = ({ setSceduleMeeting, setrspvRows }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,6 +25,7 @@ export const CancelParticipants = ({ setSceduleMeeting }) => {
   };
 
   const handleYesFunctionality = () => {
+    setrspvRows([]);
     dispatch(showCancelModalPartipants(false));
     setSceduleMeeting(false);
     let searchData = {
