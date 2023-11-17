@@ -970,10 +970,12 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: JSON.parse(data.diskusFileName),
+        DiskusFileNameString: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
+        FileSizeOnDisk: Number(data.FileSizeOnDisk),
+        FileSize: Number(data.fileSize),
       },
     ],
     UserID: JSON.parse(createrID),

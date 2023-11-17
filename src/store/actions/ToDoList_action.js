@@ -1277,10 +1277,12 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: JSON.parse(data.diskusFileName),
+        DiskusFileNameString: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(creatorID),
         FK_OrganizationID: JSON.parse(organizationID),
+        fileSizeOnDisk: Number(data.fileSizeOnDisk),
+        FileSize: Number(data.fileSize),
       },
     ],
     UserID: JSON.parse(creatorID),

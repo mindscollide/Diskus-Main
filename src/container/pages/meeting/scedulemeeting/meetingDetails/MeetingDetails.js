@@ -38,7 +38,7 @@ import {
   GetAllMeetingTypesNewFunction,
   SaveMeetingDetialsNewApiFunction,
   ShowNextConfirmationModal,
-  clearResponseMessage,
+  clearResponseNewMeetingReducerMessage,
   showCancelModalmeetingDeitals,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
@@ -93,6 +93,11 @@ const MeetingDetails = ({
   const recurring = useSelector((state) => state.NewMeetingreducer.recurring);
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
+  );
+
+  console.log(
+    ResponseMessage,
+    "ResponseMessageRResponseMessageResponseMessage"
   );
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
@@ -551,6 +556,8 @@ const MeetingDetails = ({
   };
 
   const handleReminderFrequency = (e) => {
+    let ReminderFrequency = getAllReminderFrequency.meetingReminders;
+
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequency: {
@@ -561,6 +568,8 @@ const MeetingDetails = ({
   };
 
   const handleReminderFrequencyTwo = (e) => {
+    let ReminderFrequency = getAllReminderFrequency.meetingReminders;
+
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyTwo: {
@@ -571,6 +580,8 @@ const MeetingDetails = ({
   };
 
   const handleReminderFrequencyThree = (e) => {
+    let ReminderFrequency = getAllReminderFrequency.meetingReminders;
+
     setMeetingDetails({
       ...meetingDetails,
       ReminderFrequencyThree: {
@@ -640,19 +651,19 @@ const MeetingDetails = ({
         });
       }
     }
-    if (name === "Link" && value !== "") {
-      if (urlPatternValidation(value)) {
-        setMeetingDetails({
-          ...meetingDetails,
-          Link: value,
-        });
-      } else {
-        setMeetingDetails({
-          ...meetingDetails,
-          Link: "",
-        });
-      }
-    }
+    // if (name === "Link" && value !== "") {
+    //   if (urlPatternValidation(value)) {
+    //     setMeetingDetails({
+    //       ...meetingDetails,
+    //       Link: value,
+    //     });
+    //   } else {
+    //     setMeetingDetails({
+    //       ...meetingDetails,
+    //       Link: "",
+    //     });
+    //   }
+    // }
   };
 
   const handleGroupChat = () => {
@@ -683,10 +694,10 @@ const MeetingDetails = ({
       IsVideoCall: !meetingDetails.IsVideoCall,
     });
 
-    let Data = {
-      MeetingID: currentMeeting,
-    };
-    dispatch(FetchMeetingURLApi(Data, navigate, t));
+    // let Data = {
+    //   MeetingID: currentMeeting,
+    // };
+    // dispatch(FetchMeetingURLApi(Data, navigate, t));
   };
 
   useEffect(() => {
@@ -780,7 +791,8 @@ const MeetingDetails = ({
     if (
       ResponseMessage !== "" &&
       ResponseMessage !== t("Record-found") &&
-      ResponseMessage !== t("No-record-found")
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -794,32 +806,32 @@ const MeetingDetails = ({
           message: "",
         });
       }, 3000);
-      dispatch(clearResponseMessage());
+      dispatch(clearResponseNewMeetingReducerMessage());
     } else {
-      dispatch(clearResponseMessage());
+      dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [ResponseMessage]);
 
-  //For reminder frequency uniqueness
-  useEffect(() => {
-    const selectedValues = new Set([
-      meetingDetails.ReminderFrequency.value,
-      meetingDetails.ReminderFrequencyTwo.value,
-      meetingDetails.ReminderFrequencyThree.value,
-    ]);
+  // //For reminder frequency uniqueness
+  // useEffect(() => {
+  //   const selectedValues = new Set([
+  //     meetingDetails.ReminderFrequency.value,
+  //     meetingDetails.ReminderFrequencyTwo.value,
+  //     meetingDetails.ReminderFrequencyThree.value,
+  //   ]);
 
-    // Filter out the selected options from the initial options
-    const updatedOptions = reminderFrequencyOne.filter(
-      (option) => !selectedValues.has(option.value)
-    );
+  //   // Filter out the selected options from the initial options
+  //   const updatedOptions = reminderFrequencyOne.filter(
+  //     (option) => !selectedValues.has(option.value)
+  //   );
 
-    // Update the available options
-    setReminderFrequencyOne(updatedOptions);
-  }, [
-    meetingDetails.ReminderFrequency,
-    meetingDetails.ReminderFrequencyTwo,
-    meetingDetails.ReminderFrequencyThree,
-  ]);
+  //   // Update the available options
+  //   setReminderFrequencyOne(updatedOptions);
+  // }, [
+  //   meetingDetails.ReminderFrequency,
+  //   meetingDetails.ReminderFrequencyTwo,
+  //   meetingDetails.ReminderFrequencyThree,
+  // ]);
 
   //Fetching All Saved Data
   useEffect(() => {
@@ -1393,7 +1405,9 @@ const MeetingDetails = ({
                         name={"Link"}
                         // change={HandleChange}
                         value={
-                          meetingDetails.IsVideoCall ? meetingDetails.Link : ""
+                          meetingDetails.IsVideoCall
+                            ? t("Video-session-enabled")
+                            : ""
                         }
                       />
                     </Col>
