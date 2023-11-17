@@ -58,6 +58,7 @@ const AgendaContributers = ({
     (state) => state
   );
   const [isEdit, setIsEdit] = useState(false);
+  const [isEditClicked, setIsEditClicked] = useState(false);
   const [disbaleIcon, setDisbaleIcon] = useState(false);
   const [isEditFlag, setIsEditFlag] = useState(0);
   const [notifyMessageField, setNotifyMessageField] = useState("");
@@ -127,6 +128,9 @@ const AgendaContributers = ({
       (data, index) => data.userID !== record.userID
     );
     setRowsData(removeData);
+    if (rowsData.length === 1) {
+      setIsEditClicked(true);
+    }
   };
   const AgendaColoumns = [
     {
@@ -480,7 +484,7 @@ const AgendaContributers = ({
     // Create a copy of data with was coming
   };
 
-  const handleSaveBtn = () => {
+  const handleSaveBtn = async () => {
     let newData = [];
     let copyData = [...rowsData];
     console.log(copyData, "copyDatacopyDatacopyData");
@@ -493,7 +497,7 @@ const AgendaContributers = ({
       MeetingAttendeRoleID: 4,
       UpdatedUsers: newData,
     };
-    dispatch(
+    await dispatch(
       UpdateMeetingUserForAgendaContributor(
         navigate,
         Data,
@@ -504,6 +508,7 @@ const AgendaContributers = ({
         notifyMessageField
       )
     );
+    setIsEditClicked(false);
   };
 
   useEffect(() => {
@@ -547,20 +552,20 @@ const AgendaContributers = ({
       let getifTrue = rowsData.some((data, index) => data.isEdit === false);
       setIsEdit(getifTrue);
     } else {
-      setIsEdit(true);
+      setIsEdit(false);
     }
   }, [rowsData]);
 
-  useEffect(() => {
-    dispatch(getAgendaAndVotingInfo_success([], ""));
-    dispatch(GetCurrentAgendaDetails([]));
-    dispatch(getAgendaVotingDetails_success([], ""));
-    dispatch(saveFiles_success(null, ""));
-    dispatch(saveAgendaVoting_success([], ""));
-    dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
-    dispatch(uploadDocument_success(null, ""));
-    dispatch(getAllVotingResultDisplay_success([], ""));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAgendaAndVotingInfo_success([], ""));
+  //   dispatch(GetCurrentAgendaDetails([]));
+  //   dispatch(getAgendaVotingDetails_success([], ""));
+  //   dispatch(saveFiles_success(null, ""));
+  //   dispatch(saveAgendaVoting_success([], ""));
+  //   dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
+  //   dispatch(uploadDocument_success(null, ""));
+  //   dispatch(getAllVotingResultDisplay_success([], ""));
+  // }, []);
 
   return (
     <>
@@ -602,7 +607,7 @@ const AgendaContributers = ({
             (ediorRole.role === "Agenda Contributor" &&
               isEditMeeting === true) ? (
               <></>
-            ) : isEdit ? (
+            ) : isEdit || isEditClicked ? (
               <>
                 <Button
                   text={t("Cancel")}
