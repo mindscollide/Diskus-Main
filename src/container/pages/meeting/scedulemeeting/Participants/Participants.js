@@ -506,7 +506,7 @@ const Participants = ({
                       </Col>
                     </Row>
                   </>
-                ) : (
+                ) : Number(ediorRole.status) === 1 ? null : (
                   <>
                     <Button
                       text={t("Edit")}
@@ -610,7 +610,9 @@ const Participants = ({
                     ediorRole.role === "Organizer" &&
                     isEditMeeting === true) ||
                   (ediorRole.role === "Agenda Contributor" &&
-                    isEditMeeting === true) ? null : (
+                    isEditMeeting === true) ? null : Number(
+                      ediorRole.status
+                    ) === 1 ? null : (
                     <Button
                       text={t("Propose-meeting-dates")}
                       className={styles["Next_Organization"]}
@@ -662,7 +664,10 @@ const Participants = ({
             />
           )}
           {NewMeetingreducer.cancelPartipants && (
-            <CancelParticipants setSceduleMeeting={setSceduleMeeting} />
+            <CancelParticipants
+              setSceduleMeeting={setSceduleMeeting}
+              setrspvRows={setrspvRows}
+            />
           )}
           {NewMeetingreducer.nextConfirmModal && (
             <NextModal
