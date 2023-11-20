@@ -30,9 +30,11 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let UserID = localStorage.getItem("userID");
+
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
+
   const getAllProposedDates = useSelector(
     (state) => state.NewMeetingreducer.getAllProposedDates
   );
@@ -40,6 +42,7 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   const userWiseMeetingProposed = useSelector(
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
+
   const [deadline, setDeadline] = useState("");
   const [prposedData, setPrposedData] = useState([]);
   const [sendProposedData, setSendProposedData] = useState([]);
@@ -259,23 +262,53 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   }, [getAllProposedDates]);
 
   // onChange function for CheckBoxes
-  const handleCheckboxChange = (data) => {
-    setSelectAll(false);
-    if (checkedObjects.includes(data)) {
-      setCheckedObjects(checkedObjects.filter((obj) => obj !== data));
-      setSelectAll(false);
-    } else {
-      setCheckedObjects([...checkedObjects, data]);
-    }
-  };
+  const handleCheckboxChange = (clickedData) => {
+    // Clone the prposedData array to avoid mutating the state directly
+    const updatedData = [...prposedData];
 
-  const handleSelectAllChange = () => {
-    if (selectAll) {
-      setCheckedObjects([]);
+    // Find the index of the clicked data object in the array
+    const dataIndex = updatedData.findIndex(
+      (data) => data.proposedDateID === clickedData.proposedDateID
+    );
+
+    // If the dataIndex is valid
+    if (dataIndex !== -1) {
+      // Toggle the isSelected property of the clicked data
+      updatedData[dataIndex].isSelected = !updatedData[dataIndex].isSelected;
+
+      // Update the state with the modified array
+      setPrposedData(updatedData);
     } else {
-      setCheckedObjects([...sendProposedData]);
+      updatedData.splice(dataIndex, 1);
+      setPrposedData(updatedData);
     }
-    setSelectAll(!selectAll);
+    setSelectAll(false);
+  };
+  console.log(prposedData, "prposedDataprposedData");
+
+  const handleSelectAllChange = (event) => {
+    if (event.target.checked) {
+      // setCheckedObjects([]);
+      setPrposedData((prev) => {
+        return prev.map((data, index) => {
+          return {
+            ...data,
+            isSelected: false,
+          };
+        });
+      });
+    } else {
+      setPrposedData((prev) => {
+        return prev.map((data, index) => {
+          return {
+            ...data,
+            isSelected: true,
+          };
+        });
+      });
+      // setCheckedObjects([...sendProposedData]);
+    }
+    setSelectAll(event.target.checked);
   };
 
   const handleSave = () => {
@@ -293,17 +326,20 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
         MeetingID: currentMeetingID,
         ProposedDates: defaultarr,
       };
+      console.log(Data, "DataDataDataData");
 
       dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
     } else {
       let newarr = [];
-      checkedObjects.forEach((data, index) => {
-        newarr.push({
-          ProposedDateID: data.proposedDateID,
-          ProposedDate: data.ProposedDateSend,
-          StartTime: data.StartTimeSend,
-          EndTime: data.EndtimeSend,
-        });
+      prposedData.forEach((data, index) => {
+        if (data.isSelected) {
+          newarr.push({
+            ProposedDateID: data.proposedDateID,
+            ProposedDate: data.ProposedDateSend,
+            StartTime: data.StartTimeSend,
+            EndTime: data.EndtimeSend,
+          });
+        }
       });
       let Data = {
         MeetingID: currentMeetingID,
@@ -372,16 +408,15 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
-                          console.log(
-                            data,
-                            "prposedDataprposedDataprposedData"
+                          // Extract the userID from localStorage
+                          const loggedInUserID = Number(
+                            localStorage.getItem("userID")
                           );
+
+                          // Check if the current data isSelected and matches the logged-in userID
                           const isChecked =
                             data.isSelected &&
-                            Number(localStorage.getItem("userID")) ===
-                              Number(apiUserID);
-
-                          console.log(isChecked, "isCheckedisChecked");
+                            loggedInUserID === Number(apiUserID);
 
                           return (
                             <Row className="m-0 p-0 mt-2" key={index}>
@@ -406,11 +441,7 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
                                     <Checkbox
                                       prefixCls={"ProposedMeeting_Checkbox"}
                                       classNameCheckBoxP="d-none"
-                                      checked={
-                                        isChecked
-                                          ? checkedObjects
-                                          : checkedObjects.includes(data)
-                                      }
+                                      checked={isChecked} // Set the checked state here
                                       onChange={() =>
                                         handleCheckboxChange(data)
                                       }
