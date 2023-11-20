@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Participants.module.css";
 import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
+import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
 import { Col, Row } from "react-bootstrap";
 import {
   Button,
@@ -208,6 +209,52 @@ const Participants = ({
                   column={ParticipantsViewColoumn}
                   scroll={{ y: "62vh" }}
                   pagination={false}
+                  locale={{
+                    emptyText: (
+                      <>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <img
+                              draggable={false}
+                              src={emptyContributorState}
+                              width="274.05px"
+                              alt=""
+                              height="230.96px"
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["Empty_state_heading"]}>
+                              {t("No-Participant")}
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["Empty_state_Subheading"]}>
+                              {t("There-are-no-agenda-contributors")}
+                            </span>
+                          </Col>
+                        </Row>
+                      </>
+                    ),
+                  }}
                   className="Polling_table"
                   rows={rowsData}
                 />

@@ -12,7 +12,7 @@ import {
   showCancelModalAgendaContributor,
 } from "../../../../../../store/actions/NewMeetingActions";
 
-const CancelAgendaContributor = ({ setSceduleMeeting }) => {
+const CancelAgendaContributor = ({ setSceduleMeeting, setRowsData }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ const CancelAgendaContributor = ({ setSceduleMeeting }) => {
 
   const handleYesFunctionality = () => {
     dispatch(showCancelModalAgendaContributor(false));
+    setRowsData([]);
     setSceduleMeeting(false);
     let searchData = {
       Date: "",

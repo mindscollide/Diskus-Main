@@ -19,6 +19,7 @@ import {
 import { meetingApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import {
   GetAllAgendaWiseMinutesApiFunc,
+  GetAllUserAgendaRightsApiFunc,
   showVoteAgendaModal,
 } from "./NewMeetingActions";
 
@@ -584,7 +585,14 @@ const getAdvanceMeetingAgendabyMeetingID_fail = (message) => {
     message: message,
   };
 };
-const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t) => {
+const GetAdvanceMeetingAgendabyMeetingID = (
+  Data,
+  navigate,
+  t,
+  rows,
+  id,
+  flag
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAdvanceMeetingAgendabyMeetingID_init());
@@ -605,7 +613,16 @@ const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+          dispatch(
+            GetAdvanceMeetingAgendabyMeetingID(
+              Data,
+              navigate,
+              t,
+              rows,
+              id,
+              flag
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -621,20 +638,23 @@ const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t) => {
                   t("Record-found")
                 )
               );
-              console.log(
-                response.data.responseResult,
-                "getAdvanceMeetingAgendabyMeetingID_success"
-              );
-              let ID;
-              response.data.responseResult.agendaList.map((data, index) => {
-                console.log(data.id, "responseresponseresponse");
-                ID = data.id;
-              });
+              if (flag === 1) {
+                let NewData = {
+                  AgendaID: id,
+                };
+                dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+              } else {
+                let ID;
+                response.data.responseResult.agendaList.map((data, index) => {
+                  console.log(data.id, "responseresponseresponse");
+                  ID = data.id;
+                });
 
-              let newData = {
-                AgendaID: ID,
-              };
-              dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, newData, t));
+                let newData = {
+                  AgendaID: ID,
+                };
+                dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, newData, t));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -737,7 +757,7 @@ const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
             dispatch(
               createUpdateMeetingDataRoomMap_success(
                 response.data.responseResult.folderID,
-                t("Folder-mapped-with-data-room")
+                ""
               )
             );
             localStorage.setItem("MeetingID", data.MeetingID);
@@ -757,7 +777,7 @@ const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
             dispatch(
               createUpdateMeetingDataRoomMap_success(
                 response.data.responseResult.folderID,
-                t("Update-successfullly")
+                ""
               )
             );
           } else if (
@@ -950,10 +970,12 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: JSON.parse(data.diskusFileName),
+        DiskusFileNameString: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
+        FileSizeOnDisk: Number(data.FileSizeOnDisk),
+        FileSize: Number(data.fileSize),
       },
     ],
     UserID: JSON.parse(createrID),

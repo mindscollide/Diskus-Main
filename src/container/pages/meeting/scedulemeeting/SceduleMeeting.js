@@ -44,7 +44,6 @@ const SceduleMeeting = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
-  // const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -305,14 +304,14 @@ const SceduleMeeting = ({
                   onClick={showMinutes}
                 />
                 <Button
-                  // disableBtn={
-                  //   isEditMeeting === false
-                  //     ? true
-                  //     : Number(currentMeeting) === 0
-                  //     ? true
-                  //     : // : false
-                  //       true
-                  // }
+                  disableBtn={
+                    isEditMeeting === false
+                      ? true
+                      : Number(currentMeeting) === 0
+                      ? true
+                      : // : false
+                        true
+                  }
                   text={t("Actions")}
                   className={
                     actionsPage === true

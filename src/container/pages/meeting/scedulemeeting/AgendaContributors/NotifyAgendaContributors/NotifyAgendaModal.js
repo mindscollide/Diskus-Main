@@ -33,6 +33,10 @@ const NotifyAgendaModal = ({
     { notifiedMembersData },
     "NotifyAgendaModalNotifyAgendaModalNotifyAgendaModal"
   );
+  console.log(
+    notifyMessageField,
+    "notifyMessageFieldnotifyMessageFieldnotifyMessageField"
+  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,6 +59,7 @@ const NotifyAgendaModal = ({
       }
     }
   };
+  console.log(notifyMessageField, "notifyMessageFieldnotifyMessageField");
 
   const handleExpandNames = () => {
     setHidemembes(!hidemembes);
@@ -91,12 +96,13 @@ const NotifyAgendaModal = ({
   const handleSendIcon = () => {
     if (specificUser !== 0) {
       if (notifyMessageField !== "") {
+        // Corrected variable name
         let Data = {
           UserID: Number(userID),
           Message: notifyMessageField,
           IsAgendaContributor: false,
         };
-        console.log(Data, "notificationData");
+        console.log(Data, "notifyMessageFieldnotifyMessageField");
         dispatch(SendNotificationApiFunc(Data, navigate, t));
         dispatch(showAgendaContributorsModals(false));
         setSpecifiUser(0);
@@ -104,7 +110,12 @@ const NotifyAgendaModal = ({
         setNotifyMessaegError(true);
       }
     } else {
-      dispatch(showAgendaContributorsModals(false));
+      if (notifyMessageField === "") {
+        setNotifyMessaegError(true);
+      } else {
+        setNotifyMessaegError(false);
+        dispatch(showAgendaContributorsModals(false));
+      }
     }
   };
 
@@ -121,6 +132,7 @@ const NotifyAgendaModal = ({
         modalFooterClassName={"d-block"}
         onHide={() => {
           dispatch(showAgendaContributorsModals(false));
+          setNotifyMessageField("");
         }}
         ModalBody={
           <>

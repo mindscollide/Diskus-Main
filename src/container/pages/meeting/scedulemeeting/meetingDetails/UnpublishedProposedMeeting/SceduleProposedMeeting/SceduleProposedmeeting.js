@@ -18,30 +18,26 @@ import { scheduleMeetingMainApi } from "../../../../../../../store/actions/NewMe
 const SceduleProposedmeeting = ({
   organizerRows,
   proposedDates,
-  currentMeeting,
 }) => {
-  console.log(
-    proposedDates,
-    "proposedDatesproposedDatesproposedDatesproposedDatesproposedDates"
-  );
 
-  let meetingID = Number(localStorage.getItem("MeetingId"));
+
+  let viewProposeDatePollMeetingID = Number(
+    localStorage.getItem("viewProposeDatePollMeetingID")
+  );
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
+  const sceduleproposedMeeting = useSelector(
+    (state) => state.NewMeetingreducer.sceduleproposedMeeting
+  );
+  const Loading = useSelector(
+    (state) => state.NewMeetingreducer.Loading
+  );
   const [isActive, setIsActive] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectProposedDate, setSelectPropsed] = useState(null);
-  console.log(
-    selectProposedDate,
-    "activeIndexactiveIndexactiveIndexactiveIndex"
-  );
-
   const toggleActive = (index, record, formattedDate) => {
-    console.log({ record, formattedDate }, "proposedDateindexindex");
     setIsActive(!isActive);
     setActiveIndex(index);
     let newdata2 = [];
@@ -57,16 +53,8 @@ const SceduleProposedmeeting = ({
       }
     });
     const uniqueData = new Set(newdata2.map(JSON.stringify));
-    console.log(uniqueData, "uniqueDatauniqueDatauniqueDatauniqueData");
     setSelectPropsed(Array.from(uniqueData).map(JSON.parse));
   };
-
-  console.log(organizerRows, "organizerRowsorganizerRows");
-
-  const proposedDateIDs = organizerRows.map((row) =>
-    row.selectedProposedDates.map((date) => date.proposedDateID)
-  );
-  console.log(proposedDateIDs, "proposedDateIDsproposedDateIDs");
 
   const yourNewObject = {
     userID: 0,
@@ -89,10 +77,6 @@ const SceduleProposedmeeting = ({
   // Function to count the selected proposed dates for a row
   const countSelectedProposedDatesForColumn = (columnIndex) => {
     if (organizerRows && Array.isArray(organizerRows)) {
-      console.log(
-        organizerRows,
-        "columnIndexcolumnIndexcolumnIndexcolumnIndexorganizerRows"
-      );
       const count = organizerRows.reduce((total, row) => {
         if (
           row &&
@@ -101,7 +85,6 @@ const SceduleProposedmeeting = ({
         ) {
           return total + 1;
         }
-        console.log(total, "columnIndexcolumnIndex");
         return total;
       }, 0);
 
@@ -118,12 +101,11 @@ const SceduleProposedmeeting = ({
     );
     return formattedDate;
   });
-  console.log(formattedDates, "formattedDateformattedDate");
 
   // Api hit for schedule Meeting
   const scheduleHitButton = () => {
     let scheduleMeeting = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(viewProposeDatePollMeetingID),
       ProposedDateID: selectProposedDate[0].proposedDateID,
     };
     dispatch(scheduleMeetingMainApi(navigate, t, scheduleMeeting));
@@ -170,7 +152,6 @@ const SceduleProposedmeeting = ({
         dataIndex: "selectedProposedDates",
         key: `selectedProposedDates-${index}`,
         render: (text, record, columnIndex) => {
-          console.log(columnIndex, record, text, "columnIndexcolumnIndex122");
           try {
             if (record.userName === "Total") {
               const totalDate = record.selectedProposedDates.find(
@@ -212,7 +193,7 @@ const SceduleProposedmeeting = ({
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.sceduleproposedMeeting}
+        show={sceduleproposedMeeting}
         setShow={dispatch(showSceduleProposedMeeting)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
@@ -266,7 +247,7 @@ const SceduleProposedmeeting = ({
           </>
         }
       />
-      {NewMeetingreducer.Loading ? <Loader /> : null}
+      {Loading ? <Loader /> : null}
     </section>
   );
 };

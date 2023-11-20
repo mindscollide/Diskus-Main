@@ -83,6 +83,7 @@ const Agenda = ({
 
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
+  const [selectedID, setSelectedID] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
   const [rows, setRows] = useState([
     {
@@ -753,6 +754,7 @@ const Agenda = ({
                                     }
                                     setSubajendaRemoval={setSubajendaRemoval}
                                     ediorRole={ediorRole}
+                                    setSelectedID={setSelectedID}
                                   />
                                   {/* Line Seperator */}
                                   <Row className="mt-3">
@@ -868,7 +870,12 @@ const Agenda = ({
           setRows={setRows}
         />
       )}
-      {NewMeetingreducer.advancePermissionModal && <AdvancePersmissionModal />}
+      {NewMeetingreducer.advancePermissionModal && (
+        <AdvancePersmissionModal
+          setSelectedID={setSelectedID}
+          selectedID={selectedID}
+        />
+      )}
       {NewMeetingreducer.advancePermissionConfirmation && (
         <PermissionConfirmation />
       )}

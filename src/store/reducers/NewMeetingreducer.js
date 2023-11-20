@@ -61,7 +61,7 @@ const initialState = {
   setMeetingProposeDate: [],
   getAllProposedDates: [],
   meetingResponse: [],
-  meetingMaterial: [],
+  meetingMaterialData: [],
   agendaRights: null,
   attachmentsPermission: [],
   cancelViewModalMeetingDetails: false,
@@ -874,10 +874,14 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_MATERIAL_SUCCESS: {
+      console.log(
+        "meetingMaterial",
+        action
+      );
       return {
         ...state,
         Loading: false,
-        meetingMaterial: action.response,
+        meetingMaterialData: action.response,
         ResponseMessage: action.message,
       };
     }
@@ -886,7 +890,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        meetingMaterial: [],
+        meetingMaterialData: [],
         ResponseMessage: action.message,
       };
     }
@@ -1600,7 +1604,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         setMeetingProposeDate: [],
         getAllProposedDates: [],
         meetingResponse: [],
-        meetingMaterial: [],
+        meetingMaterialData: [],
         agendaRights: null,
         attachmentsPermission: [],
         cancelViewModalMeetingDetails: false,
@@ -1626,6 +1630,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         unsavedViewPollsModal: false,
       };
     }
+    
     case actions.NEWMEETING_RESPONSEMESSAGE: {
       return {
         ...state,

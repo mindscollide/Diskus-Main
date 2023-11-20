@@ -2464,7 +2464,9 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
-          dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, id));
+          dispatch(
+            getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows, id)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2477,10 +2479,6 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
                   t("Record-found")
                 )
               );
-              let NewData = {
-                AgendaID: id,
-              };
-              dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_02"
@@ -3204,10 +3202,12 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: JSON.parse(data.diskusFileName),
+        DiskusFileNameString: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(creatorID),
         FK_OrganizationID: JSON.parse(organizationID),
+        fileSizeOnDisk: Number(data.fileSizeOnDisk),
+        FileSize: Number(data.fileSize),
       },
     ],
     UserID: JSON.parse(creatorID),
@@ -4587,7 +4587,7 @@ const saveFilesMeetingagendaWiseMinutesApi = (
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: JSON.parse(data.diskusFileName),
+        DiskusFileName: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(creatorID),
         FK_OrganizationID: JSON.parse(organizationID),
@@ -5151,7 +5151,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               await dispatch(
                 showCreateUpdateMeetingDataRoomSuccess(
                   response.data.responseResult,
-                  t("Updated-successfully")
+                  ""
                 )
               );
               setDataroomMapFolderId(response.data.responseResult.folderID);
@@ -6057,8 +6057,7 @@ const UpdateMeetingUserForOrganizers = (
   rowsData,
   currentMeeting,
   editFlag,
-  notificationMessage,
-  isEdit
+  notificationMessage
 ) => {
   console.log(notificationMessage, "notificationMessagenotificationMessage");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -6090,8 +6089,7 @@ const UpdateMeetingUserForOrganizers = (
               rowsData,
               currentMeeting,
               editFlag,
-              notificationMessage,
-              isEdit
+              notificationMessage
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -6124,17 +6122,17 @@ const UpdateMeetingUserForOrganizers = (
                   }),
                   MeetingID: currentMeeting,
                   IsOrganizerAddFlow: false,
-                  NotificationMessage: notificationMessage,
+                  NotificationMessage: "",
                 };
-                console.log(Data, "itemitemitemitem");
-                console.log(notificationMessage, "itemitemitemitem");
+                // console.log(Data, "itemitemitemitem");
+                // console.log(notificationMessage, "itemitemitemitem");
 
                 dispatch(
                   SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
                 );
                 dispatch(saveMeetingFlag(false));
                 dispatch(editMeetingFlag(false));
-              } else {
+              } else if (editFlag === 1) {
                 let Data = {
                   MeetingOrganizers: rowsData.map((item) => {
                     console.log(item, "itemitemitemitem");
@@ -6158,22 +6156,6 @@ const UpdateMeetingUserForOrganizers = (
                 dispatch(saveMeetingFlag(false));
                 dispatch(editMeetingFlag(false));
               }
-              let Data = {
-                MeetingOrganizers: rowsData.map((item) => ({
-                  IsPrimaryOrganizer: item.isPrimaryOrganizer,
-                  IsOrganizerNotified: item.isOrganizerNotified,
-                  Title: item.organizerTitle,
-                  UserID: item.userID,
-                })),
-                MeetingID: currentMeeting,
-                IsOrganizerAddFlow: isEdit === 1 ? true : false,
-                NotificationMessage: rowsData[0].NotificationMessage,
-              };
-              dispatch(
-                SaveMeetingOrganizers(navigate, Data, t, currentMeeting)
-              );
-              dispatch(saveMeetingFlag(false));
-              dispatch(editMeetingFlag(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -6240,14 +6222,14 @@ const showAttendanceConfirmationModal = (response) => {
   };
 };
 
-const clearResponseMessage = () => {
+const clearResponseNewMeetingReducerMessage = () => {
   return {
     type: actions.NEWMEETING_RESPONSEMESSAGE,
   };
 };
 
 export {
-  clearResponseMessage,
+  clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
   saveAgendaContributors,
   showAddUserModal,

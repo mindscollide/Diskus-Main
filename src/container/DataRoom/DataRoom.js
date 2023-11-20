@@ -423,12 +423,12 @@ const DataRoom = () => {
       let data = {
         FolderID: Number(record.id),
       };
-      dispatch(DataRoomDownloadFolderApiFunc(navigate, data, t, data.name));
+      dispatch(DataRoomDownloadFolderApiFunc(navigate, data, t, record.name));
     } else {
       let data = {
         FileID: Number(record.id),
       };
-      dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, data.name));
+      dispatch(DataRoomDownloadFileApiFunc(navigate, data, t, record.name));
     }
   };
 
