@@ -3,6 +3,8 @@ import styles from "./Participants.module.css";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
 import addmore from "../../../../../assets/images/addmore.png";
+import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
+import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { Col, Row } from "react-bootstrap";
 import {
@@ -228,13 +230,13 @@ const Participants = ({
       title: t("Email"),
       dataIndex: "email",
       key: "email",
-      width: "80px",
+      width: "120px",
     },
     {
       title: t("Participant-title"),
       dataIndex: "Title",
       key: "Title",
-      width: "80px",
+      width: "120px",
 
       render: (text, record) => {
         if (
@@ -277,7 +279,7 @@ const Participants = ({
       title: t("Role"),
       dataIndex: "Role",
       key: "Role",
-      width: "80px",
+      width: "120px",
 
       render: (text, record) => {
         let participantRole = record.participantRole.participantRole;
@@ -316,6 +318,36 @@ const Participants = ({
                 </>
               </Col>
             </Row>
+          );
+        }
+      },
+    },
+
+    {
+      title: t("RSVP"),
+      dataIndex: "rsvp",
+      key: "rsvp",
+      width: "120px",
+      render: (text, record) => {
+        if (record.isRSVP === true) {
+          return (
+            <img
+              draggable={false}
+              src={rspvGreenIcon}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
+        } else {
+          return (
+            <img
+              draggable={false}
+              src={NORSVP}
+              height="30px"
+              width="30px"
+              alt=""
+            />
           );
         }
       },
@@ -367,6 +399,12 @@ const Participants = ({
       },
     },
   ];
+
+  // Filter columns based on the RSVP Condition
+  const finalColumns =
+    Number(ediorRole.status) === 1
+      ? ParticipantsColoumn.filter((column) => column.key !== "rsvp")
+      : ParticipantsColoumn;
 
   //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
@@ -557,7 +595,7 @@ const Participants = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table
-                  column={ParticipantsColoumn}
+                  column={finalColumns}
                   scroll={{ y: "42vh" }}
                   pagination={false}
                   locale={{

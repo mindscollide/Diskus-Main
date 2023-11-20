@@ -420,6 +420,12 @@ const Organizers = ({
     },
   ];
 
+  // Filter columns based on the RSVP Condition
+  const finalColumns =
+    Number(ediorRole.status) === 1
+      ? MeetingColoumns.filter((column) => column.key !== "rsvp")
+      : MeetingColoumns;
+
   const sendRecentNotification = (record) => {
     if (
       (Number(ediorRole.status) === 9 ||
@@ -946,7 +952,7 @@ const Organizers = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table
-                  column={MeetingColoumns}
+                  column={finalColumns}
                   scroll={{ y: "62vh" }}
                   pagination={false}
                   className="Polling_table"

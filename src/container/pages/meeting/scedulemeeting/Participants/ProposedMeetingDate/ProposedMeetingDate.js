@@ -242,7 +242,6 @@ const ProposedMeetingDate = ({
         SendResponsebyDate: sendResponseBy.date,
         ProposedDates: newArr,
       };
-      console.log(Data, "updatedRows");
       dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
     } else {
       // Rows are not in ascending order
