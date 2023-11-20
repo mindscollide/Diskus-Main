@@ -27,11 +27,12 @@ import {
   showUnsavedActionsModal,
   GetAllMeetingUserApiFunc,
 } from "../../../../../../store/actions/NewMeetingActions";
-import { uploadActionMeetingApi } from "../../../../../../store/actions/Action_Meeting";
 import {
-  CreateToDoList,
+  saveMeetingActionsDocumentsAndAssigneesApi,
+  uploadActionMeetingApi,
   saveTaskDocumentsAndAssigneesApi,
-} from "../../../../../../store/actions/ToDoList_action";
+} from "../../../../../../store/actions/Action_Meeting";
+
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
 import makeAnimated from "react-select/animated";
 import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
@@ -41,6 +42,7 @@ import {
   createConvert,
   formatDateToUTC,
 } from "../../../../../../commen/functions/date_formater";
+import { CreateToDoList } from "../../../../../../store/actions/ToDoList_action";
 
 const CreateTask = ({
   setCreateaTask,
@@ -113,18 +115,27 @@ const CreateTask = ({
   };
   console.log(createTaskDetails, "createTaskDetailscreateTaskDetails");
   const actionSaveHandler = () => {
-    let Task = {
-      Task: {
-        PK_TID: createTaskDetails.PK_TID,
-        Title: createTaskDetails.ActionsToTake,
-        Description: createTaskDetails.Description,
-        IsMainTask: true,
-        DeadLineDate: createTaskDetails.date,
-        DeadLineTime: createTaskDetails.DeadLineTime,
-        CreationDateTime: "",
-      },
-    };
-    dispatch(CreateToDoList(navigate, Task, t, setCreateTaskID, 1));
+    if (
+      createTaskDetails.ActionsToTake !== "" &&
+      createTaskDetails.Description !== "" &&
+      createTaskDetails.AssignedTo > 0 &&
+      createTaskDetails.date !== ""
+    ) {
+      let Task = {
+        Task: {
+          PK_TID: createTaskDetails.PK_TID,
+          Title: createTaskDetails.ActionsToTake,
+          Description: createTaskDetails.Description,
+          IsMainTask: true,
+          DeadLineDate: createTaskDetails.date,
+          DeadLineTime: createTaskDetails.DeadLineTime,
+          CreationDateTime: "",
+        },
+      };
+      dispatch(CreateToDoList(navigate, Task, t, setCreateTaskID, 1));
+    } else {
+      seterror(true);
+    }
   };
 
   const props = {
@@ -363,7 +374,7 @@ const CreateTask = ({
     let newData = {
       TaskID: Number(createTaskID),
       MeetingID: currentMeeting,
-      AgendaID: createTaskDetails.AgendaID,
+      AgendaID: Number(createTaskDetails.AgendaID),
     };
     await dispatch(
       saveTaskDocumentsAndAssigneesApi(
@@ -372,7 +383,8 @@ const CreateTask = ({
         t,
         7,
         setCreateaTask,
-        newData
+        newData,
+        setCreateTaskID
       )
     );
   };
@@ -565,7 +577,7 @@ const CreateTask = ({
     console.log(e, "valuevaluevaluevaluevalue");
     setcreateTaskDetails({
       ...createTaskDetails,
-      AssignedTo: [...createTaskDetails.AssignedTo, e.value],
+      AssignedTo: [e.value],
     });
     setSelectedTask(e);
   };
@@ -588,7 +600,7 @@ const CreateTask = ({
                 sm={12}
                 className={styles["Create_Task_main_Scroller"]}
               >
-                <Row className="mt-4">
+                {/* <Row className="mt-4">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["MainHeading_Create_Action"]}>
                       ext ever since the 1500s, when an unknown printer took a
@@ -602,7 +614,7 @@ const CreateTask = ({
                       Ipsum.
                     </span>
                   </Col>
-                </Row>
+                </Row> */}
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
@@ -655,6 +667,20 @@ const CreateTask = ({
                           // isMulti
                           onChange={handleSelectMemberValue}
                         />
+                        <Row>
+                          <Col>
+                            <p
+                              className={
+                                error &&
+                                createTaskDetails.AssignedTo.length === 0
+                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                              }
+                            >
+                              {t("Please-select-assignees")}
+                            </p>
+                          </Col>
+                        </Row>
                       </Col>
                     </Row>
                   </Col>
@@ -709,24 +735,22 @@ const CreateTask = ({
                           ref={calendRef}
                           onChange={changeDateActionCreate}
                         />
+                        <Row>
+                          <Col>
+                            <p
+                              className={
+                                error && createTaskDetails.date === ""
+                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                              }
+                            >
+                              {t("Please-select-assignees")}
+                            </p>
+                          </Col>
+                        </Row>
                       </Col>
                     </Row>
                   </Col>
-                  <Row>
-                    <Col>
-                      <p
-                        className={
-                          error &&
-                          createTaskDetails.SelectMember === 0 &&
-                          selectedOption === null
-                            ? ` ${styles["errorMessage-inLogin"]} `
-                            : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
-                        {t("Please-select-assignees")}
-                      </p>
-                    </Col>
-                  </Row>
                 </Row>
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
@@ -750,6 +774,19 @@ const CreateTask = ({
                       placeholder={t("Description")}
                       required={true}
                     />
+                    <Row>
+                      <Col>
+                        <p
+                          className={
+                            error && createTaskDetails.Description === ""
+                              ? ` ${styles["errorMessage-inLogin"]} `
+                              : `${styles["errorMessage-inLogin_hidden"]}`
+                          }
+                        >
+                          {t("Please-select-assignees")}
+                        </p>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
                 <Row className="mt-2">

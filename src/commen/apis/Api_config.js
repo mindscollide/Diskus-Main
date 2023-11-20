@@ -1283,6 +1283,10 @@ const mapTaskWithMeetingAgenda = {
   RequestMethod: "ServiceManager.MapTaskWithMeetingAndAgenda",
 };
 
+const removeTaskMeetingMapping = {
+  RequestMethod: "ServiceManager.RemoveTaskMeetingMapping",
+};
+
 export {
   saveTaskandAssgineesRM,
   saveTaskDocuments,
@@ -1625,4 +1629,5 @@ export {
   dataRoomFileDownloadService,
   dataRoomFolderDownloadService,
   mapTaskWithMeetingAgenda,
+  removeTaskMeetingMapping,
 };

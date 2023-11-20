@@ -27,7 +27,6 @@ import {
   setTasksByGroupApi,
 } from "./Polls_actions";
 import { updateTodoStatusFunc } from "./GetTodos";
-import { mapTaskAgendaMainApi } from "./Action_Meeting";
 
 const ShowNotification = (message) => {
   console.log("message", message);
@@ -205,6 +204,7 @@ const setTodoStatusDataFormSocket = (response) => {
 //Creating A ToDoList
 
 const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
+  console.log(value, "valuevaluevaluevalue");
   let token = JSON.parse(localStorage.getItem("token"));
   let meetingPage = JSON.parse(localStorage.getItem("todoListPage"));
   let meetingRow = JSON.parse(localStorage.getItem("todoListRow"));
@@ -247,7 +247,8 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
               );
               await dispatch(SetLoaderFalse());
               setCreateTaskID(Number(response.data.responseResult.tid));
-              if (value !== 1) {
+              if (value === 1) {
+              } else {
                 let Data = {
                   ToDoID: Number(response.data.responseResult.tid),
                   ToDoTitle: object.Task.Title,
@@ -1515,8 +1516,7 @@ const saveTaskDocumentsAndAssigneesApi = (
   Data,
   t,
   value,
-  setShow,
-  newData
+  setShow
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -1537,14 +1537,7 @@ const saveTaskDocumentsAndAssigneesApi = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            saveTaskDocumentsAndAssigneesApi(
-              navigate,
-              Data,
-              t,
-              value,
-              setShow,
-              newData
-            )
+            saveTaskDocumentsAndAssigneesApi(navigate, Data, t, value, setShow)
           );
         } else if (
           response.data.responseCode === 200 &&
@@ -1570,14 +1563,7 @@ const saveTaskDocumentsAndAssigneesApi = (
               }),
             };
             dispatch(
-              saveTaskDocumentsApi(
-                navigate,
-                NewData,
-                t,
-                value,
-                setShow,
-                newData
-              )
+              saveTaskDocumentsApi(navigate, NewData, t, value, setShow)
             );
           } else if (
             response.data.responseResult.responseMessage
@@ -1641,7 +1627,7 @@ const saveTaskDocuments_fail = (message) => {
   };
 };
 
-const saveTaskDocumentsApi = (navigate, Data, t, value, setShow, newData) => {
+const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
@@ -1759,7 +1745,6 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow, newData) => {
             }
             // Create Task from Meeting Actions
             if (value === 7) {
-              dispatch(mapTaskAgendaMainApi(navigate, t, newData));
             }
             // Delete Task from Meetin Actions
             if (value === 8) {

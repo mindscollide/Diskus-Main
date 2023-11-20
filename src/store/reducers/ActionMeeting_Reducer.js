@@ -6,6 +6,7 @@ const initialState = {
   todoListMeetingTask: [],
   uploadActionDocument: null,
   mapTaskMeetingAgenda: null,
+  removeTaskMapping: null,
 };
 
 const actionMeetingReducer = (state = initialState, action) => {
@@ -81,6 +82,31 @@ const actionMeetingReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         mapTaskMeetingAgenda: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.REMOVE_TASK_MEETING_MAP_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.REMOVE_TASK_MEETING_MAP_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        removeTaskMapping: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.REMOVE_TASK_MEETING_MAP_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        removeTaskMapping: null,
         ResponseMessage: action.message,
       };
     }

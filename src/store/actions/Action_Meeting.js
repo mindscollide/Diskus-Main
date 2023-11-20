@@ -5,6 +5,9 @@ import {
   getMeetingTasksAction,
   uploadDocumentsRequestMethod,
   mapTaskWithMeetingAgenda,
+  saveTaskandAssgineesRM,
+  saveTaskDocuments,
+  removeTaskMeetingMapping,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { saveFilesTaskApi } from "./ToDoList_action";
@@ -237,8 +240,16 @@ const mapTaskAgendaFail = (message) => {
   };
 };
 
-const mapTaskAgendaMainApi = (navigate, t, mapTaskData) => {
+const mapTaskAgendaMainApi = (
+  navigate,
+  t,
+  mapTaskData,
+  setCreateaTask,
+  setCreateTaskID
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+
   return (dispatch) => {
     dispatch(mapTaskAgendaInit());
     let form = new FormData();
@@ -256,7 +267,15 @@ const mapTaskAgendaMainApi = (navigate, t, mapTaskData) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(mapTaskAgendaMainApi(navigate, t, mapTaskData));
+          dispatch(
+            mapTaskAgendaMainApi(
+              navigate,
+              t,
+              mapTaskData,
+              setCreateaTask,
+              setCreateTaskID
+            )
+          );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -274,6 +293,19 @@ const mapTaskAgendaMainApi = (navigate, t, mapTaskData) => {
                   t("Data-inserted-successfully")
                 )
               );
+              let Data = {
+                MeetingID: Number(mapTaskData.MeetingID),
+                Date: "",
+                Title: "",
+                AssignedToName: "",
+                UserID: Number(creatorID),
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(getMeetingTaskMainApi(navigate, t, Data));
+              setCreateaTask(false);
+              setCreateTaskID(0);
+              // setShow(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -309,4 +341,355 @@ const mapTaskAgendaMainApi = (navigate, t, mapTaskData) => {
   };
 };
 
-export { getMeetingTaskMainApi, uploadActionMeetingApi, mapTaskAgendaMainApi };
+// Save Document and Assignees
+const saveTaskDocumentsAndAssignees_init = () => {
+  return {
+    type: actions.SAVETASKDOCUMENTSANDASSIGNEES_INIT,
+  };
+};
+const saveTaskDocumentsAndAssignees_success = (response, message) => {
+  return {
+    type: actions.SAVETASKDOCUMENTSANDASSIGNEES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const saveTaskDocumentsAndAssignees_fail = (message) => {
+  return {
+    type: actions.SAVETASKDOCUMENTSANDASSIGNEES_FAIL,
+    message: message,
+  };
+};
+const saveTaskDocumentsAndAssigneesApi = (
+  navigate,
+  Data,
+  t,
+  value,
+  setShow,
+  newData,
+  setCreateTaskID
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(saveTaskDocumentsAndAssignees_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveTaskandAssgineesRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            saveTaskDocumentsAndAssigneesApi(
+              navigate,
+              Data,
+              t,
+              value,
+              setShow,
+              newData,
+              setCreateTaskID
+            )
+          );
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult.isExecuted === true
+        ) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              saveTaskDocumentsAndAssignees_success(
+                response.data.responseResult,
+                ""
+              )
+            );
+            let NewData = {
+              ToDoID: Number(Data.TaskID),
+              UpdateFileList: Data.TasksAttachments.map((data, index) => {
+                return { PK_FileID: data.FK_TID };
+              }),
+            };
+            dispatch(
+              saveMeetingActionsDocuments(
+                navigate,
+                NewData,
+                t,
+                value,
+                setShow,
+                newData
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_02".toLowerCase()
+              )
+          ) {
+            dispatch(saveTaskDocumentsAndAssignees_fail(t("No-record-save")));
+            setCreateTaskID(0);
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ToDoList_ToDoListServiceManager_SaveTaskDocumentsAndAssignees_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong"))
+            );
+            setCreateTaskID(0);
+          } else {
+            dispatch(
+              saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong"))
+            );
+            setCreateTaskID(0);
+          }
+        } else {
+          dispatch(
+            saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong"))
+          );
+          setCreateTaskID(0);
+        }
+      })
+      .catch((error) => {
+        dispatch(saveTaskDocumentsAndAssignees_fail(t("Something-went-wrong")));
+        setCreateTaskID(0);
+      });
+  };
+};
+
+// Save documents Api
+const saveTaskDocuments_init = () => {
+  return {
+    type: actions.SAVE_TASK_DOCUMENTS_INIT,
+  };
+};
+
+const saveTaskDocuments_success = (response, message) => {
+  return {
+    type: actions.SAVE_TASK_DOCUMENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const saveTaskDocuments_fail = (message) => {
+  return {
+    type: actions.SAVE_TASK_DOCUMENTS_FAIL,
+    message: message,
+  };
+};
+
+const saveMeetingActionsDocuments = (
+  navigate,
+  Data,
+  t,
+  value,
+  setCreateaTask,
+  newData,
+  setCreateTaskID
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return async (dispatch) => {
+    dispatch(saveTaskDocuments_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveTaskDocuments.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            saveMeetingActionsDocuments(
+              navigate,
+              Data,
+              t,
+              value,
+              setCreateaTask,
+              newData,
+              setCreateTaskID
+            )
+          );
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult.isExecuted === true
+        ) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_SaveToDoDocuments_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              saveTaskDocuments_success(
+                response.data.responseResult,
+                t("Update-successful")
+              )
+            );
+
+            // Create Task from Meeting Actions
+            if (value === 7) {
+              dispatch(
+                mapTaskAgendaMainApi(
+                  navigate,
+                  t,
+                  newData,
+                  setCreateaTask,
+                  setCreateTaskID
+                )
+              );
+            }
+            // Delete Task from Meetin Actions
+            if (value === 8) {
+            }
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_SaveToDoDocuments_02".toLowerCase()
+              )
+          ) {
+            dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
+            setCreateTaskID(0);
+          } else {
+            dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
+            setCreateTaskID(0);
+          }
+        } else {
+          dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
+          setCreateTaskID(0);
+        }
+      })
+      .catch(() => {
+        dispatch(saveTaskDocuments_fail(t("Something-went-wrong")));
+        setCreateTaskID(0);
+      });
+  };
+};
+
+// map task with meeting agenda Init
+const removeMapTaskInit = () => {
+  return {
+    type: actions.REMOVE_TASK_MEETING_MAP_INIT,
+  };
+};
+
+// map task with meeting agenda Success
+const removeMapTaskSuccess = (response, message) => {
+  return {
+    type: actions.REMOVE_TASK_MEETING_MAP_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// map task with meeting agenda Fail
+const removeMapTaskFail = (message) => {
+  return {
+    type: actions.REMOVE_TASK_MEETING_MAP_FAIL,
+    message: message,
+  };
+};
+
+const removeMapMainApi = (navigate, t, dataDelete) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(removeMapTaskInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(dataDelete));
+    form.append("RequestMethod", removeTaskMeetingMapping.RequestMethod);
+    axios({
+      method: "post",
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(removeMapMainApi(navigate, t, dataDelete));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                removeMapTaskSuccess(
+                  response.data.responseResult.responseMessage,
+                  t("Data-inserted-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_02".toLowerCase()
+                )
+            ) {
+              dispatch(removeMapTaskFail(t("Failed-to-insert-record")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_03".toLowerCase()
+                )
+            ) {
+              dispatch(removeMapTaskFail(t("Something-went-wrong")));
+            } else {
+              dispatch(removeMapTaskFail(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(removeMapTaskFail(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(removeMapTaskFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(removeMapTaskFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+export {
+  getMeetingTaskMainApi,
+  uploadActionMeetingApi,
+  mapTaskAgendaMainApi,
+  saveTaskDocumentsAndAssigneesApi,
+  removeMapMainApi,
+};

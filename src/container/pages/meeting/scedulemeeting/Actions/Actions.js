@@ -16,7 +16,10 @@ import {
   showCancelActions,
   showRemovedTableModal,
 } from "../../../../../store/actions/NewMeetingActions";
-import { getMeetingTaskMainApi } from "../../../../../store/actions/Action_Meeting";
+import {
+  getMeetingTaskMainApi,
+  removeMapMainApi,
+} from "../../../../../store/actions/Action_Meeting";
 import AfterSaveViewTable from "./AfterSaveViewTable/AfterSaveViewTable";
 import CancelActions from "./CancelActions/CancelActions";
 
@@ -52,6 +55,8 @@ const Actions = ({
     AssignedToName: "",
     TaskID: 0,
   });
+
+  console.log(actionState, "actionStateactionState");
 
   const handleCrossIconModal = () => {
     dispatch(showRemovedTableModal(true));
@@ -116,13 +121,15 @@ const Actions = ({
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       width: "200px",
-      render: (text, record) => (
-        <>
-          <span>{record.name}</span>
-        </>
-      ),
+      render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        return (
+          <>
+            <span>{record.taskAssignedTo[0].name}</span>
+          </>
+        );
+      },
     },
-
     {
       title: t("Status"),
       dataIndex: "status",
@@ -130,7 +137,7 @@ const Actions = ({
       width: "150px",
       render: (text, record) => (
         <>
-          <span>{record.status}</span>
+          <span>{record.status.status}</span>
         </>
       ),
     },
@@ -138,8 +145,23 @@ const Actions = ({
       dataIndex: "RedCrossIcon",
       key: "RedCrossIcon",
       width: "50px",
+      render: (text, record) => {
+        return (
+          <i>
+            <img alt={"Cross"} src={CrossIcon} onClick={deleteActionHandler} />
+          </i>
+        );
+      },
     },
   ];
+
+  const deleteActionHandler = () => {
+    let dataDelete = {
+      TaskID: setActionState.TaskID,
+      MeetingID: Number(currentMeeting),
+    };
+    dispatch(removeMapMainApi(navigate, t, dataDelete));
+  };
 
   useEffect(() => {
     if (
@@ -277,7 +299,7 @@ const Actions = ({
                           <Col lg={12} md={12} sm={12}>
                             <Table
                               column={ActionsColoumn}
-                              scroll={{ y: "62vh" }}
+                              scroll={{ y: "42vh" }}
                               pagination={false}
                               className="Polling_table"
                               rows={actionsRows}
