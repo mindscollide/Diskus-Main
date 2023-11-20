@@ -292,31 +292,26 @@ const Organizers = ({
       key: "rsvp",
       width: "120px",
       render: (text, record) => {
-        console.log(record, "dataIndexdataIndexdataIndex");
-        if (Number(ediorRole.status) === 1) {
-          if (record.isRSVP === true) {
-            return (
-              <img
-                draggable={false}
-                src={rspvGreenIcon}
-                height="30px"
-                width="30px"
-                alt=""
-              />
-            );
-          } else {
-            return (
-              <img
-                draggable={false}
-                src={NORSVP}
-                height="30px"
-                width="30px"
-                alt=""
-              />
-            );
-          }
+        if (record.isRSVP === true) {
+          return (
+            <img
+              draggable={false}
+              src={rspvGreenIcon}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
         } else {
-          return null;
+          return (
+            <img
+              draggable={false}
+              src={NORSVP}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
         }
       },
     },

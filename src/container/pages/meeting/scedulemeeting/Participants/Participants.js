@@ -379,6 +379,12 @@ const Participants = ({
     },
   ];
 
+  // Filter columns based on the RSVP Condition
+  const finalColumns =
+    Number(ediorRole.status) === 1
+      ? ParticipantsColoumn.filter((column) => column.key !== "rsvp")
+      : ParticipantsColoumn;
+
   //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
     setProposedMeetingDates(true);
@@ -568,7 +574,7 @@ const Participants = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table
-                  column={ParticipantsColoumn}
+                  column={finalColumns}
                   scroll={{ y: "42vh" }}
                   pagination={false}
                   locale={{

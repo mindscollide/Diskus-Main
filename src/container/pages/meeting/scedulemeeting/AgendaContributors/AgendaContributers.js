@@ -350,6 +350,12 @@ const AgendaContributers = ({
     },
   ];
 
+  // Filter columns based on the RSVP Condition
+  const finalColumns =
+    Number(ediorRole.status) === 1
+      ? AgendaColoumns.filter((column) => column.key !== "rsvp")
+      : AgendaColoumns;
+
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
@@ -640,7 +646,7 @@ const AgendaContributers = ({
         <Row>
           <Col lg={12} md={12} sm={12}>
             <Table
-              column={AgendaColoumns}
+              column={finalColumns}
               scroll={{ y: "62vh" }}
               pagination={false}
               locale={{
