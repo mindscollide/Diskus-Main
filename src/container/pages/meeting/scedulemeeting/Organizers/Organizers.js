@@ -993,11 +993,27 @@ const Organizers = ({
                   {Number(ediorRole.status) === 11 ||
                   Number(ediorRole.status) === 12 ? (
                     <Button
+                      disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Publish")}
                       className={styles["Next_Organization"]}
                       onClick={handlePublishButton}
                     />
-                  ) : null}
+                  ) : isEditMeeting === true ? null : (
+                    <Button
+                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handlePublishButton}
+                    />
+                  )}
+                  {/* {Number(ediorRole.status) === 11 ||
+                  Number(ediorRole.status) === 12 ? (
+                    <Button
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handlePublishButton}
+                    />
+                  ) : null} */}
                 </section>
               </Col>
             </Row>

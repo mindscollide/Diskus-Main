@@ -414,7 +414,7 @@ const AgendaContributers = ({
   const handleNextButton = () => {
     // setAgendaContributors(false);
     // setParticipants(true);
-    let Data = { meetingID: currentMeeting, StatusID: 1 };
+    let Data = { MeetingID: currentMeeting, StatusID: 1 };
     dispatch(
       UpdateOrganizersMeeting(
         navigate,
@@ -753,11 +753,27 @@ const AgendaContributers = ({
               {Number(ediorRole.status) === 11 ||
               Number(ediorRole.status) === 12 ? (
                 <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
                   text={t("Publish")}
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
-              ) : null}
+              ) : isEditMeeting === true ? null : (
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Publish")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              )}
+              {/* {Number(ediorRole.status) === 11 ||
+              Number(ediorRole.status) === 12 ? (
+                <Button
+                  text={t("Publish")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              ) : null} */}
             </section>
           ) : (
             <section className={styles["Footer_Class2"]}></section>

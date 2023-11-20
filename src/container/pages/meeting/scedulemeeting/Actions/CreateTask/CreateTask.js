@@ -374,7 +374,7 @@ const CreateTask = ({
     let newData = {
       TaskID: Number(createTaskID),
       MeetingID: currentMeeting,
-      AgendaID: Number(createTaskDetails.AgendaID),
+      AgendaID: createTaskDetails.AgendaID.toString(),
     };
     await dispatch(
       saveTaskDocumentsAndAssigneesApi(

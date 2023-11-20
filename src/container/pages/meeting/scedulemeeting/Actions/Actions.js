@@ -148,16 +148,21 @@ const Actions = ({
       render: (text, record) => {
         return (
           <i>
-            <img alt={"Cross"} src={CrossIcon} onClick={deleteActionHandler} />
+            <img
+              alt={"Cross"}
+              src={CrossIcon}
+              onClick={() => deleteActionHandler(record)}
+            />
           </i>
         );
       },
     },
   ];
 
-  const deleteActionHandler = () => {
+  const deleteActionHandler = (record) => {
+    console.log(record, "recordrecordrecordrecord");
     let dataDelete = {
-      TaskID: setActionState.TaskID,
+      TaskID: record.pK_TID,
       MeetingID: Number(currentMeeting),
     };
     dispatch(removeMapMainApi(navigate, t, dataDelete));

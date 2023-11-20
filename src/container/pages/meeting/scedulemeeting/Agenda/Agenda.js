@@ -216,7 +216,7 @@ const Agenda = ({
     dispatch(showCancelModalAgenda(true));
   };
   const handlePublishClick = () => {
-    let Data = { meetingID: currentMeeting, StatusID: 1 };
+    let Data = { MeetingID: currentMeeting, StatusID: 1 };
     dispatch(
       UpdateOrganizersMeeting(
         navigate,
@@ -904,11 +904,20 @@ const Agenda = ({
                 {Number(ediorRole.status) === 11 ||
                 Number(ediorRole.status) === 12 ? (
                   <Button
+                    disableBtn={Number(currentMeeting) === 0 ? true : false}
                     text={t("Publish")}
                     className={styles["Save_Agenda_btn"]}
                     onClick={handlePublishClick}
                   />
-                ) : null}
+                ) : isEditMeeting === true ? null : (
+                  <Button
+                    disableBtn={Number(currentMeeting) === 0 ? true : false}
+                    text={t("Publish")}
+                    className={styles["Save_Agenda_btn"]}
+                    onClick={handlePublishClick}
+                  />
+                )}
+
                 {/* <Button
                   text={t("Publish")}
                   className={styles["Save_Agenda_btn"]}

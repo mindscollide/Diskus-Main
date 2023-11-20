@@ -40,6 +40,7 @@ const MeetingMaterial = ({
   setEditFlag,
   setCalendarViewModal,
   ediorRole,
+  isEditMeeting,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -296,11 +297,27 @@ const MeetingMaterial = ({
           {Number(ediorRole.status) === 11 ||
           Number(ediorRole.status) === 12 ? (
             <Button
+              disableBtn={Number(currentMeeting) === 0 ? true : false}
               text={t("Publish")}
               className={styles["Save_Classname"]}
               onClick={handlePublish}
             />
-          ) : null}
+          ) : isEditMeeting === true ? null : (
+            <Button
+              disableBtn={Number(currentMeeting) === 0 ? true : false}
+              text={t("Publish")}
+              className={styles["Save_Classname"]}
+              onClick={handlePublish}
+            />
+          )}
+          {/* {Number(ediorRole.status) === 11 ||
+          Number(ediorRole.status) === 12 ? (
+            <Button
+              text={t("Publish")}
+              className={styles["Save_Classname"]}
+              onClick={handlePublish}
+            />
+          ) : null} */}
         </Col>
       </Row>
       {cancelMeetingMaterial && (

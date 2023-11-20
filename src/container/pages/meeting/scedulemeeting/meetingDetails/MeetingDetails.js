@@ -1992,7 +1992,14 @@ const MeetingDetails = ({
               className={styles["Update_Next"]}
               onClick={handlePublish}
             />
-          ) : null}
+          ) : isEditMeeting === true ? null : (
+            <Button
+              disableBtn={Number(currentMeeting) === 0 ? true : false}
+              text={t("Publish")}
+              className={styles["Update_Next"]}
+              onClick={handlePublish}
+            />
+          )}
         </Col>
       </Row>
 
