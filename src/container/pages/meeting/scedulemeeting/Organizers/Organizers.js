@@ -292,26 +292,31 @@ const Organizers = ({
       key: "rsvp",
       width: "120px",
       render: (text, record) => {
-        if (record.isRSVP === true) {
-          return (
-            <img
-              draggable={false}
-              src={rspvGreenIcon}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
+        console.log(record, "dataIndexdataIndexdataIndex");
+        if (Number(ediorRole.status) === 1) {
+          if (record.isRSVP === true) {
+            return (
+              <img
+                draggable={false}
+                src={rspvGreenIcon}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          } else {
+            return (
+              <img
+                draggable={false}
+                src={NORSVP}
+                height="30px"
+                width="30px"
+                alt=""
+              />
+            );
+          }
         } else {
-          return (
-            <img
-              draggable={false}
-              src={NORSVP}
-              height="30px"
-              width="30px"
-              alt=""
-            />
-          );
+          return null;
         }
       },
     },
@@ -413,6 +418,12 @@ const Organizers = ({
       },
     },
   ];
+
+  // Filter columns based on the RSVP Condition
+  const finalColumns =
+    Number(ediorRole.status) === 1
+      ? MeetingColoumns.filter((column) => column.key !== "rsvp")
+      : MeetingColoumns;
 
   const sendRecentNotification = (record) => {
     if (
@@ -885,7 +896,7 @@ const Organizers = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table
-                  column={MeetingColoumns}
+                  column={finalColumns}
                   scroll={{ y: "62vh" }}
                   pagination={false}
                   className="Polling_table"
