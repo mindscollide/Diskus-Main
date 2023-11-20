@@ -400,7 +400,7 @@ const CreateTask = ({
       MeetingID: Number(currentMeeting),
     };
     let getMeetingData = {
-      MeetingID: 2169,
+      MeetingID: Number(currentMeeting),
     };
     dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
     dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
