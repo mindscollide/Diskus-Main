@@ -18,6 +18,27 @@
   font-family: "MontserratSemiBold" !important;
 }
 
+.JoinMeetingButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: 1px solid#6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  margin-right: 10px;
+}
+
+.JoinMeetingButton:is(:active, :hover, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: 1px solid#6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
 .ScrollerMeeting_Active {
   height: 48vh !important;
   overflow-x: hidden !important;
@@ -126,6 +147,7 @@
   color: #6172d6 !important;
   font-family: "MontserratSemiBold" !important;
 }
+
 .SceduledDateTime {
   color: #505050 !important;
   font-size: 16px !important;
