@@ -49,6 +49,14 @@ import {
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
+  groupCallRecipients,
+  callRequestReceivedMQTT,
+} from "./VideoMain_actions";
+import {
+  normalizeVideoPanelFlag,
+  videoChatPanel,
+} from "./VideoFeature_actions";
+import {
   dataRoomApi,
   meetingApi,
   pollApi,
@@ -1162,7 +1170,7 @@ const MeetingUrlSpinner = (response) => {
 };
 
 //Fetch Meeting URL
-const FetchMeetingURLApi = (Data, navigate, t) => {
+const FetchMeetingURLApi = (Data, navigate, t, currentUserID) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     // dispatch(showMeetingURLInit());
@@ -1181,7 +1189,7 @@ const FetchMeetingURLApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(FetchMeetingURLApi(Data, navigate, t));
+          dispatch(FetchMeetingURLApi(Data, navigate, t, currentUserID));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1198,6 +1206,16 @@ const FetchMeetingURLApi = (Data, navigate, t) => {
                 )
               );
               dispatch(MeetingUrlSpinner(false));
+              let meetingURL = response.data.responseResult.videoURL;
+              var match = meetingURL.match(/RoomID=([^&]*)/);
+              localStorage.setItem("CallType", 2);
+              localStorage.setItem("activeCall", true);
+              localStorage.setItem("callerID", currentUserID);
+              localStorage.setItem("acceptedRoomID", match[1]);
+              dispatch(callRequestReceivedMQTT({}, ""));
+              dispatch(normalizeVideoPanelFlag(true));
+              dispatch(videoChatPanel(false));
+              // dispatch(groupCallRecipients(groupCallActiveUsers))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

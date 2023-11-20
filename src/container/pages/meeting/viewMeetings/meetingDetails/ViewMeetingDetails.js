@@ -14,13 +14,13 @@ import {
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
-
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resolutionResultTable } from "../../../../../commen/functions/date_formater";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import moment from "moment";
+import { FetchMeetingURLApi } from "../../../../../store/actions/NewMeetingActions";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -45,6 +45,8 @@ const ViewMeetingDetails = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
+  let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
+  let currentUserID = Number(localStorage.getItem("userID"));
 
   const [rows, setRows] = useState([
     {
@@ -261,6 +263,19 @@ const ViewMeetingDetails = ({
     }
   }, [NewMeetingreducer.getAllMeetingDetails]);
 
+  const joinMeetingCall = () => {
+    let Data = {
+      MeetingID: currentMeeting,
+    };
+    dispatch(FetchMeetingURLApi(Data, navigate, t, currentUserID));
+    // localStorage.setItem("CallType", 2);
+    // localStorage.setItem("activeCall", true);
+    // localStorage.setItem("callerID", currentUserID);
+    // dispatch(callRequestReceivedMQTT({}, ""));
+    // dispatch(normalizeVideoPanelFlag(true));
+    // dispatch(videoChatPanel(false));
+  };
+
   useEffect(() => {
     if (
       NewMeetingreducer.ResponseMessage !== "" &&
@@ -287,29 +302,56 @@ const ViewMeetingDetails = ({
     }
   }, [NewMeetingreducer.ResponseMessage]);
 
+  console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
+  console.log("meetingDetailsmeetingDetails", meetingDetails);
+
   return (
     <section>
       {meetingStatus === 10 && (
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
             {Number(ediorRole.status) === 10 &&
-            ediorRole.role === "Organizer" ? (
-              <Button
-                text={t("End-meeting")}
-                className={styles["LeaveMeetinButton"]}
-                onClick={() =>
-                  dispatch(
-                    UpdateOrganizersMeeting(
-                      navigate,
-                      endMeetingRequest,
-                      t,
-                      4,
-                      setViewAdvanceMeetingModal,
-                      setAdvanceMeetingModalID
+            ediorRole.role === "Organizer" &&
+            meetingDetails.IsVideoCall === true ? (
+              <>
+                <Button
+                  text={t("Join-Video-Call")}
+                  className={styles["JoinMeetingButton"]}
+                  onClick={joinMeetingCall}
+                />
+                <Button
+                  text={t("End-meeting")}
+                  className={styles["LeaveMeetinButton"]}
+                  onClick={() =>
+                    dispatch(
+                      UpdateOrganizersMeeting(
+                        navigate,
+                        endMeetingRequest,
+                        t,
+                        4,
+                        setViewAdvanceMeetingModal,
+                        setAdvanceMeetingModalID
+                      )
                     )
-                  )
-                }
-              />
+                  }
+                />
+              </>
+            ) : meetingDetails.IsVideoCall === true ? (
+              <>
+                <Button
+                  text={t("Join-Video-Call")}
+                  className={styles["JoinMeetingButton"]}
+                  onClick={joinMeetingCall}
+                />
+                <Button
+                  text={t("Leave-meeting")}
+                  className={styles["LeaveMeetinButton"]}
+                  onClick={() => {
+                    setViewAdvanceMeetingModal(false);
+                    setAdvanceMeetingModalID(null);
+                  }}
+                />
+              </>
             ) : (
               <Button
                 text={t("Leave-meeting")}
