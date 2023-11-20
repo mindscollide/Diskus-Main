@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import styles from "./ViewMeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
-import { Button, Notification } from "../../../../../components/elements";
+import {
+  Button,
+  Notification,
+  Loader,
+} from "../../../../../components/elements";
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../assets/images/blue Camera.svg";
 import { useDispatch } from "react-redux";
@@ -566,7 +570,7 @@ const ViewMeetingDetails = ({
           />
         </Col>
       </Row>
-
+      {meetingDetails.MeetingTitle === "" ? <Loader /> : null}
       {cancelModalView && (
         <CancelButtonModal
           setCancelModalView={setCancelModalView}

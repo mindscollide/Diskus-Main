@@ -1499,7 +1499,7 @@ const NewMeeting = () => {
         <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
 
-      {Loading ? <Loader /> : null}
+      {/* {Loading ? <Loader /> : null} */}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </section>
   );
