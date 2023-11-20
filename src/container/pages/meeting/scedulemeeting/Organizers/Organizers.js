@@ -76,6 +76,11 @@ const Organizers = ({
   ediorRole,
   setEditMeeting,
   isEditMeeting,
+  setPublishState,
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setCalendarViewModal,
+  setEditFlag,
 }) => {
   const { t } = useTranslation();
 
@@ -91,7 +96,7 @@ const Organizers = ({
   const [flag, setFlag] = useState(2);
   const [prevFlag, setprevFlag] = useState(2);
   const [editState, setEditState] = useState(false);
-  const [editFlag, setEditFlag] = useState(0);
+  // const [editFlag, setEditFlag] = useState(0);
   const [notificationMessage, setNotificationMessage] = useState("");
   console.log(notificationMessage, "notificationMessagenotificationMessage");
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
@@ -480,8 +485,21 @@ const Organizers = ({
     // dispatch(SaveMeetingOrganizers(navigate, transformedData, t))
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
-    let Data = { meetingID: currentMeeting, StatusID: 1 };
-    dispatch(UpdateOrganizersMeeting(navigate, Data, t, currentMeeting));
+    let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    dispatch(
+      UpdateOrganizersMeeting(
+        navigate,
+        Data,
+        t,
+        5,
+        setPublishState,
+        setAdvanceMeetingModalID,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        setSceduleMeeting
+      )
+    );
     // setorganizers(false)
     // setAgendaContributors(true)
     setRowsData([]);
@@ -527,10 +545,10 @@ const Organizers = ({
     //   dispatch(ShowNextConfirmationModal(true));
     // }
     setviewOrganizers(!viewOrganizers);
-    let Data = { meetingID: currentMeeting, StatusID: 1 };
-    dispatch(UpdateOrganizersMeeting(navigate, Data, t));
+    // let Data = { meetingID: currentMeeting, StatusID: 1 };
+    // dispatch(UpdateOrganizersMeeting(navigate, Data, t));
     setRowsData([]);
-    dispatch(ShowNextConfirmationModal(true));
+    // dispatch(ShowNextConfirmationModal(true));
     setAgendaContributors(true);
     setmeetingDetails(false);
     setorganizers(false);
@@ -960,7 +978,7 @@ const Organizers = ({
                     className={styles["publish_button_Organization"]}
                     onClick={nextTabOrganizer}
                   />
-                  {(Number(ediorRole.status) === 9 ||
+                  {/* {(Number(ediorRole.status) === 9 ||
                     Number(ediorRole.status) === 8 ||
                     Number(ediorRole.status) === 10) &&
                   ediorRole.role === "Organizer" &&
@@ -971,7 +989,15 @@ const Organizers = ({
                       className={styles["Next_Organization"]}
                       onClick={handlePublishButton}
                     />
-                  )}
+                  )} */}
+                  {Number(ediorRole.status) === 11 ||
+                  Number(ediorRole.status) === 12 ? (
+                    <Button
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handlePublishButton}
+                    />
+                  ) : null}
                 </section>
               </Col>
             </Row>

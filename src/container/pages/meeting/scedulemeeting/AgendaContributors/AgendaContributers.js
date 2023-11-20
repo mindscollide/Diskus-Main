@@ -39,6 +39,7 @@ import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgend
 import { saveAgendaContributors } from "../../../../../store/actions/NewMeetingActions";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
@@ -49,6 +50,11 @@ const AgendaContributers = ({
   setEditMeeting,
   isEditMeeting,
   setorganizers,
+  setPublishState,
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
+  setCalendarViewModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -406,8 +412,23 @@ const AgendaContributers = ({
   ];
 
   const handleNextButton = () => {
-    setAgendaContributors(false);
-    setParticipants(true);
+    // setAgendaContributors(false);
+    // setParticipants(true);
+    let Data = { meetingID: currentMeeting, StatusID: 1 };
+    dispatch(
+      UpdateOrganizersMeeting(
+        navigate,
+        Data,
+        t,
+        5,
+        setPublishState,
+        setAdvanceMeetingModalID,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        setSceduleMeeting
+      )
+    );
   };
 
   const openAddAgendaModal = () => {
@@ -716,7 +737,7 @@ const AgendaContributers = ({
                 className={styles["Cancel_Organization"]}
                 onClick={nextTabOrganizer}
               />
-              {((Number(ediorRole.status) === 9 ||
+              {/* {((Number(ediorRole.status) === 9 ||
                 Number(ediorRole.status) === 8 ||
                 Number(ediorRole.status) === 10) &&
                 ediorRole.role === "Organizer" &&
@@ -728,7 +749,15 @@ const AgendaContributers = ({
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
-              )}
+              )} */}
+              {Number(ediorRole.status) === 11 ||
+              Number(ediorRole.status) === 12 ? (
+                <Button
+                  text={t("Publish")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              ) : null}
             </section>
           ) : (
             <section className={styles["Footer_Class2"]}></section>

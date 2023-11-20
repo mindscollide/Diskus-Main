@@ -901,11 +901,19 @@ const Agenda = ({
                   text={t("Save")}
                   className={styles["Agenda_Buttons"]}
                 />
-                <Button
+                {Number(ediorRole.status) === 11 ||
+                Number(ediorRole.status) === 12 ? (
+                  <Button
+                    text={t("Publish")}
+                    className={styles["Save_Agenda_btn"]}
+                    onClick={handlePublishClick}
+                  />
+                ) : null}
+                {/* <Button
                   text={t("Publish")}
                   className={styles["Save_Agenda_btn"]}
                   onClick={handlePublishClick}
-                />
+                /> */}
               </Col>
             </Row>
           </section>

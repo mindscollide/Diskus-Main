@@ -2466,7 +2466,7 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_02"
             ) {
-              dispatch(meetingMaterialFail(t("No-records-found")));
+              dispatch(meetingMaterialFail(""));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_03"
@@ -2981,14 +2981,7 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
             ) {
               dispatch(
-                ShowAllGeneralMinutesSuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
-              console.log(
-                response.data.responseResult,
-                "FK_MeetingGeneralMinutesID"
+                ShowAllGeneralMinutesSuccess(response.data.responseResult, "")
               );
 
               let MeetingDocs = {
@@ -3004,7 +2997,7 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               dispatch(
                 ShowAllGeneralMinutesFailed(
                   response.data.responseResult.responseMessage,
-                  t("No-record-saved")
+                  ""
                 )
               );
             } else if (

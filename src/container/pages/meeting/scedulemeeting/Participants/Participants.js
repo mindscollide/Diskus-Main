@@ -43,6 +43,7 @@ import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
 import { useEffect } from "react";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 
 const Participants = ({
   setParticipants,
@@ -55,6 +56,11 @@ const Participants = ({
   ediorRole,
   setEditMeeting,
   isEditMeeting,
+  setPublishState,
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
+  setCalendarViewModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -86,8 +92,23 @@ const Participants = ({
 
   // handling save and next button
   const handleNextButton = () => {
-    setParticipants(false);
-    setAgenda(true);
+    let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    dispatch(
+      UpdateOrganizersMeeting(
+        navigate,
+        Data,
+        t,
+        5,
+        setPublishState,
+        setAdvanceMeetingModalID,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        setSceduleMeeting
+      )
+    );
+    // setParticipants(false);
+    // setAgenda(true);
   };
 
   //For menu Portal of the React select
@@ -637,7 +658,7 @@ const Participants = ({
                     className={styles["Cancel_Organization"]}
                     onClick={nextTabOrganizer}
                   />
-                  {((Number(ediorRole.status) === 9 ||
+                  {/* {((Number(ediorRole.status) === 9 ||
                     Number(ediorRole.status) === 8 ||
                     Number(ediorRole.status) === 10) &&
                     ediorRole.role === "Organizer" &&
@@ -649,7 +670,15 @@ const Participants = ({
                       className={styles["Next_Organization"]}
                       onClick={handleNextButton}
                     />
-                  )}
+                  )} */}
+                  {Number(ediorRole.status) === 11 ||
+                  Number(ediorRole.status) === 12 ? (
+                    <Button
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleNextButton}
+                    />
+                  ) : null}
                 </>
               )}
             </Col>

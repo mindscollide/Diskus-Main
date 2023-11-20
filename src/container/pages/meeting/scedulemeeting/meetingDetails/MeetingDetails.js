@@ -1983,19 +1983,16 @@ const MeetingDetails = ({
             className={styles["Published"]}
             onClick={handleUpdateNext}
           />
-          {(Number(ediorRole.status) === 9 ||
-            Number(ediorRole.status) === 8 ||
-            Number(ediorRole.status) === 10) &&
-          ediorRole.role === "Organizer" &&
-          isEditMeeting === true ? null : ediorRole.role ===
-              "Agenda Contributor" && isEditMeeting === true ? null : (
+
+          {Number(ediorRole.status) === 11 ||
+          Number(ediorRole.status) === 12 ? (
             <Button
               disableBtn={Number(currentMeeting) === 0 ? true : false}
               text={t("Publish")}
               className={styles["Update_Next"]}
               onClick={handlePublish}
             />
-          )}
+          ) : null}
         </Col>
       </Row>
 

@@ -196,7 +196,7 @@ const MeetingMaterial = ({
     setMinutes(true);
   };
   const handlePublish = () => {
-    let Data = { meetingID: currentMeeting, StatusID: 1 };
+    let Data = { MeetingID: currentMeeting, StatusID: 1 };
     dispatch(
       UpdateOrganizersMeeting(
         navigate,
