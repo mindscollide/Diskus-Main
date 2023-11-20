@@ -1,96 +1,100 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { Row, Col } from 'react-bootstrap'
-import { Button } from './../../../../elements'
-import videoEndIcon from '../../../../../assets/images/newElements/VideoEndIcon.png'
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Row, Col } from "react-bootstrap";
+import { Button } from "./../../../../elements";
+import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
 
-import './videoCallHeader.css'
+import "./videoCallHeader.css";
 import {
   normalizeVideoPanelFlag,
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   leaveCallModal,
   minimizeParticipantPopup,
-} from '../../../../../store/actions/VideoFeature_actions'
-import MinimizeScreenShare from '../../../../../assets/images/newElements/MinimizeScreenShare.png'
-import MinimizeParticipant from '../../../../../assets/images/newElements/MinimizeParticipants.png'
-import MinimizeMicIcon from '../../../../../assets/images/newElements/MinimizeMicIcon.png'
-import MinimizeExpandIcon from '../../../../../assets/images/newElements/MinimizeExpandIcon.png'
-import MinimizeVideoIcon from '../../../../../assets/images/newElements/MinimizeVideoIcon.png'
-import CallEndRedIcon from '../../../../../assets/images/newElements/CallRedIcon.svg'
-import MinToNormalIcon from '../../../../../assets/images/newElements/Min-to-normal-Icon.svg'
-import ActiveParticipantIcon from '../../../../../assets/images/Active-Participant-Icon.png'
+} from "../../../../../store/actions/VideoFeature_actions";
+import MinimizeScreenShare from "../../../../../assets/images/newElements/MinimizeScreenShare.png";
+import MinimizeParticipant from "../../../../../assets/images/newElements/MinimizeParticipants.png";
+import MinimizeMicIcon from "../../../../../assets/images/newElements/MinimizeMicIcon.png";
+import MinimizeExpandIcon from "../../../../../assets/images/newElements/MinimizeExpandIcon.png";
+import MinimizeVideoIcon from "../../../../../assets/images/newElements/MinimizeVideoIcon.png";
+import CallEndRedIcon from "../../../../../assets/images/newElements/CallRedIcon.svg";
+import MinToNormalIcon from "../../../../../assets/images/newElements/Min-to-normal-Icon.svg";
+import ActiveParticipantIcon from "../../../../../assets/images/Active-Participant-Icon.png";
 
-import { LeaveCall } from '../../../../../store/actions/VideoMain_actions'
+import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 
 const VideoCallMinimizeHeader = ({ screenShareButton }) => {
-  const navigate = useNavigate()
-  const { t } = useTranslation()
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  const participantPopupDisable = useRef(null)
+  const participantPopupDisable = useRef(null);
 
   // state for participants
-  const [currentParticipants, setCurrentParticipants] = useState([])
+  const [currentParticipants, setCurrentParticipants] = useState([]);
 
-  const [participantStatus, setParticipantStatus] = useState([])
+  const [participantStatus, setParticipantStatus] = useState([]);
 
-  let callerNameInitiate = localStorage.getItem('callerNameInitiate')
-  let currentUserName = localStorage.getItem('name')
-  let callerName = localStorage.getItem('callerName')
+  let callerNameInitiate = localStorage.getItem("callerNameInitiate");
+  let organizationName = localStorage.getItem("OrganizatioName");
+  let currentUserName = localStorage.getItem("name");
+  let callerName = localStorage.getItem("callerName");
   let initiateVideoCallFlag = JSON.parse(
-    localStorage.getItem('initiateVideoCall'),
-  )
-
-  let currentOrganization = Number(localStorage.getItem('organizationID'))
-  let roomID = localStorage.getItem('acceptedRoomID')
-  let callTypeID = Number(localStorage.getItem('callTypeID'))
-  let initiateRoomID = localStorage.getItem('initiateCallRoomID')
-  let currentCallType = Number(localStorage.getItem('CallType'))
-  let callerID = Number(localStorage.getItem('callerID'))
-  let currentUserID = Number(localStorage.getItem('userID'))
-  let callerObject = localStorage.getItem('callerStatusObject')
+    localStorage.getItem("initiateVideoCall")
+  );
+  let recipentCalledID = Number(localStorage.getItem("recipentCalledID"));
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let callerID = Number(localStorage.getItem("callerID"));
+  let recipentID = Number(localStorage.getItem("recipentID"));
+  let currentUserID = Number(localStorage.getItem("userID"));
+  let currentOrganization = Number(localStorage.getItem("organizationID"));
+  let roomID = localStorage.getItem("acceptedRoomID");
+  let callTypeID = Number(localStorage.getItem("callTypeID"));
+  let initiateRoomID = localStorage.getItem("initiateCallRoomID");
+  let callerObject = localStorage.getItem("callerStatusObject");
+  let currentCallType = Number(localStorage.getItem("CallType"));
+  let meetingTitle = localStorage.getItem("meetingTitle");
 
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state,
-  )
+    (state) => state
+  );
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const closeVideoPanel = () => {
-    dispatch(leaveCallModal(false))
-    localStorage.setItem('activeCall', false)
-  }
+    dispatch(leaveCallModal(false));
+    localStorage.setItem("activeCall", false);
+  };
 
   const normalizePanel = () => {
-    dispatch(normalizeVideoPanelFlag(true))
-    dispatch(maximizeVideoPanelFlag(false))
-    dispatch(minimizeVideoPanelFlag(false))
-  }
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+  };
 
   const maximizePanel = () => {
-    dispatch(normalizeVideoPanelFlag(false))
-    dispatch(maximizeVideoPanelFlag(true))
-    dispatch(minimizeVideoPanelFlag(false))
-  }
+    dispatch(normalizeVideoPanelFlag(false));
+    dispatch(maximizeVideoPanelFlag(true));
+    dispatch(minimizeVideoPanelFlag(false));
+  };
 
   const openVideoPanel = () => {
-    dispatch(leaveCallModal(true))
+    dispatch(leaveCallModal(true));
     // localStorage.setItem('activeCall', false)
-  }
+  };
 
   // this handler is for close participant
 
   const closeParticipantHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       if (videoFeatureReducer.MinimizeParticipantPopupFlag === false) {
-        dispatch(minimizeParticipantPopup(true))
+        dispatch(minimizeParticipantPopup(true));
       } else {
-        dispatch(minimizeParticipantPopup(false))
+        dispatch(minimizeParticipantPopup(false));
       }
     }
-  }
+  };
 
   //when user click outside then icon will be closed
   const handleOutsideClick = (event) => {
@@ -99,10 +103,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       !participantPopupDisable.current.contains(event.target) &&
       videoFeatureReducer.MinimizeParticipantPopupFlag
     ) {
-      dispatch(minimizeParticipantPopup(false))
-      console.log('ParticipantPopUP')
+      dispatch(minimizeParticipantPopup(false));
+      console.log("ParticipantPopUP");
     }
-  }
+  };
 
   useEffect(() => {
     if (
@@ -110,31 +114,40 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       VideoMainReducer.GroupCallRecipientsData !== null &&
       VideoMainReducer.GroupCallRecipientsData.length !== 0
     ) {
-      setCurrentParticipants(VideoMainReducer.GroupCallRecipientsData)
+      setCurrentParticipants(VideoMainReducer.GroupCallRecipientsData);
     } else {
-      setCurrentParticipants([])
+      setCurrentParticipants([]);
     }
-  }, [VideoMainReducer.GroupCallRecipientsData])
+  }, [VideoMainReducer.GroupCallRecipientsData]);
 
   // this is for leave call group API
 
   const minimizeEndCallParticipant = () => {
-    let Data = {
-      OrganizationID: currentOrganization,
-      RoomID: roomID,
-      IsCaller: false,
-      CallTypeID: callTypeID,
+    if (isMeeting === false) {
+      let Data = {
+        OrganizationID: currentOrganization,
+        RoomID: roomID,
+        IsCaller: false,
+        CallTypeID: callTypeID,
+      };
+      dispatch(LeaveCall(Data, navigate, t));
+      dispatch(normalizeVideoPanelFlag(false));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
+      localStorage.setItem("activeCall", false);
+    } else if (isMeeting === true) {
+      dispatch(normalizeVideoPanelFlag(false));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
+      localStorage.setItem("activeCall", false);
+      localStorage.setItem("isMeeting", false);
+      localStorage.setItem("meetingTitle", "");
     }
-    dispatch(LeaveCall(Data, navigate, t))
-    dispatch(normalizeVideoPanelFlag(false))
-    dispatch(maximizeVideoPanelFlag(false))
-    dispatch(minimizeVideoPanelFlag(false))
-    localStorage.setItem('activeCall', false)
-  }
+  };
 
   const cancelLeaveCallOption = () => {
-    dispatch(leaveCallModal(false))
-  }
+    dispatch(leaveCallModal(false));
+  };
 
   const minimizeLeaveCall = () => {
     let Data = {
@@ -142,40 +155,72 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       RoomID: initiateRoomID,
       IsCaller: true,
       CallTypeID: currentCallType,
-    }
-    dispatch(LeaveCall(Data, navigate, t))
-    const emptyArray = []
-    localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
-    setParticipantStatus([])
-    localStorage.setItem('activeCall', false)
-    dispatch(normalizeVideoPanelFlag(false))
-    dispatch(maximizeVideoPanelFlag(false))
-    dispatch(minimizeVideoPanelFlag(false))
-    dispatch(leaveCallModal(false))
-    dispatch(minimizeParticipantPopup(false))
-  }
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    setParticipantStatus([]);
+    localStorage.setItem("activeCall", false);
+    dispatch(normalizeVideoPanelFlag(false));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    dispatch(minimizeParticipantPopup(false));
+  };
 
   useEffect(() => {
     if (callerObject !== undefined && callerObject !== null) {
-      let callerObjectObj = JSON.parse(callerObject)
-      setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus])
+      let callerObjectObj = JSON.parse(callerObject);
+      setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus]);
     }
-  }, [callerObject])
+  }, [callerObject]);
 
   useEffect(() => {
-    document.addEventListener('click', handleOutsideClick)
+    document.addEventListener("click", handleOutsideClick);
     return () => {
-      document.removeEventListener('click', handleOutsideClick)
-    }
-  }, [videoFeatureReducer.MinimizeParticipantPopupFlag])
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [videoFeatureReducer.MinimizeParticipantPopupFlag]);
 
-  console.log('participantStatus', participantStatus[0])
+  console.log("participantStatus", participantStatus[0]);
 
   return (
     <>
       <div className="videoCallGroupScreen-minmizeVideoCall">
         <Row className="mt-2 mb-4">
-          <Col lg={3} md={3} sm={12} className="mt-1">
+          {(currentCallType === 2 || callTypeID === 2) &&
+          meetingTitle === "" ? (
+            <Col lg={3} md={3} sm={12} className="mt-1">
+              <p className="title-heading">{t("Group-call")}</p>
+            </Col>
+          ) : (currentCallType === 2 || callTypeID === 2) &&
+            meetingTitle !== "" ? (
+            <Col lg={3} md={3} sm={12} className="mt-1">
+              <p className="title-heading">{meetingTitle}</p>
+            </Col>
+          ) : (
+            <Col lg={3} md={3} sm={12} className="mt-1">
+              <p className="title-heading">
+                {currentUserName !==
+                  VideoMainReducer.VideoRecipentData.userName &&
+                Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
+                initiateVideoCallFlag === true
+                  ? VideoMainReducer.VideoRecipentData.userName ||
+                    VideoMainReducer.VideoRecipentData.recipients[0].userName
+                  : currentUserName !==
+                      VideoMainReducer.VideoRecipentData.userName &&
+                    Object.keys(VideoMainReducer.VideoRecipentData).length >
+                      0 &&
+                    initiateVideoCallFlag === false
+                  ? VideoMainReducer.VideoRecipentData.userName ||
+                    VideoMainReducer.VideoRecipentData.recipients[0].userName
+                  : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
+                  ? callerName
+                  : null}
+              </p>
+            </Col>
+          )}
+          {/* <Col lg={3} md={3} sm={12} className="mt-1">
             <p className="title-heading">
               {currentUserName !==
                 VideoMainReducer.VideoRecipentData.userName &&
@@ -191,7 +236,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                 ? callerName
                 : null}
             </p>
-          </Col>
+          </Col> */}
           <Col lg={9} md={9} sm={12}>
             <div className="minimize-screen-on-bottom">
               {callerID === currentUserID ? (
@@ -204,8 +249,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                       <img
                         className={
                           videoFeatureReducer.LeaveCallModalFlag === true
-                            ? 'grayScaleImage'
-                            : 'cursor-pointer'
+                            ? "grayScaleImage"
+                            : "cursor-pointer"
                         }
                         src={ActiveParticipantIcon}
                         alt="Normal Screen Participant"
@@ -233,15 +278,16 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                           ? currentParticipants.map(
                               (participantData, index) => {
                                 console.log(
-                                  'participantStatus',
-                                  participantStatus[0],
-                                )
-                                const matchingStatus = participantStatus[0].find(
-                                  (status) =>
-                                    status.RecipientID ===
-                                      participantData.userID &&
-                                    status.RoomID === initiateRoomID,
-                                )
+                                  "participantStatus",
+                                  participantStatus[0]
+                                );
+                                const matchingStatus =
+                                  participantStatus[0].find(
+                                    (status) =>
+                                      status.RecipientID ===
+                                        participantData.userID &&
+                                      status.RoomID === initiateRoomID
+                                  );
                                 return (
                                   <Row className="m-0" key={index}>
                                     <Col className="p-0" lg={8} md={8} sm={12}>
@@ -253,12 +299,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                                       <p className="participant-state">
                                         {matchingStatus
                                           ? matchingStatus.CallStatus
-                                          : 'Calling...'}
+                                          : "Calling..."}
                                       </p>
                                     </Col>
                                   </Row>
-                                )
-                              },
+                                );
+                              }
                             )
                           : null}
                         {/* <Button
@@ -275,13 +321,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                     <img
                       className={
                         videoFeatureReducer.LeaveCallModalFlag === true
-                          ? 'grayScaleImage'
-                          : 'cursor-pointer'
+                          ? "grayScaleImage"
+                          : "cursor-pointer"
                       }
                       src={MinimizeParticipant}
                       onClick={closeParticipantHandler}
                       height={20}
-                      alt={'Minimize Participant'}
+                      alt={"Minimize Participant"}
                       width={25}
                     />
                   )}
@@ -305,7 +351,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
               {/* <img src={MinimizeScreenShare} alt="Mininmize Screen Icon" /> */}
               <img
                 src={MinimizeVideoIcon}
-                className={'minimize-video-icon cursor-pointer'}
+                className={"minimize-video-icon cursor-pointer"}
                 alt="Minimize Video Icon"
               />
               <img
@@ -402,7 +448,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
         ) : null}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default VideoCallMinimizeHeader
+export default VideoCallMinimizeHeader;

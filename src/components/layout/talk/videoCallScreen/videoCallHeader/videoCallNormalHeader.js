@@ -1,31 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Row, Col } from 'react-bootstrap'
-import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import './videoCallHeader.css'
-import { Button, NotificationBar } from './../../../../elements'
-import MicVideo from '../../../../../assets/images/newElements/micVideo.png'
-import VideoCallIcon from '../../../../../assets/images/newElements/VideoIconExpand.png'
-import ExpandIcon from '../../../../../assets/images/ExpandColorfullIcon.png'
-import MinimizeIcon from '../../../../../assets/images/MinimizeIcon.png'
-import ActiveScreenShare from '../../../../../assets/images/newElements/ActiveScreenShareIcon.svg'
-import NonActiveScreenShare from '../../../../../assets/images/NonActiveScreenShare.png'
-import ScreenShare from '../../../../../assets/images/newElements/ScreenShareIcon.png'
-import HandRaise from '../../../../../assets/images/newElements/HandRaiseIcon.svg'
-import Board from '../../../../../assets/images/newElements/WhiteBoard.svg'
-import ThreeDots from '../../../../../assets/images/newElements/ThreeDotsIcon.svg'
-import videoEndIcon from '../../../../../assets/images/newElements/VideoEndIcon.png'
-import ChatNonActive from '../../../../../assets/images/newElements/ChatIconNonActive.svg'
-import ActiveChat from '../../../../../assets/images/newElements/ActiveChatIcon.svg'
-import ChatIcon from '../../../../../assets/images/Chat-Icon.png'
-import CallEndRedIcon from '../../../../../assets/images/newElements/CallRedIcon.svg'
-import NormalizeIcon from '../../../../../assets/images/Normalize-Icon.png'
-import CancelIcon from '../../../../../assets/images/Artboard9.png'
-import CloseNotification from '../../../../../assets/images/Close-Notification.png'
-import ActiveParticipantIcon from '../../../../../assets/images/Active-Participant-Icon.png'
-import AddParticipantIcon from '../../../../../assets/images/Add-Participant-Icon.png'
-import ParticipantsIcon from '../../../../../assets/images/Participants-Icon.png'
-import { activeChat } from '../../../../../store/actions/Talk_action'
+import React, { useState, useEffect, useRef } from "react";
+import { Row, Col } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import "./videoCallHeader.css";
+import { Button, NotificationBar } from "./../../../../elements";
+import MicVideo from "../../../../../assets/images/newElements/micVideo.png";
+import VideoCallIcon from "../../../../../assets/images/newElements/VideoIconExpand.png";
+import ExpandIcon from "../../../../../assets/images/ExpandColorfullIcon.png";
+import MinimizeIcon from "../../../../../assets/images/MinimizeIcon.png";
+import ActiveScreenShare from "../../../../../assets/images/newElements/ActiveScreenShareIcon.svg";
+import NonActiveScreenShare from "../../../../../assets/images/NonActiveScreenShare.png";
+import ScreenShare from "../../../../../assets/images/newElements/ScreenShareIcon.png";
+import HandRaise from "../../../../../assets/images/newElements/HandRaiseIcon.svg";
+import Board from "../../../../../assets/images/newElements/WhiteBoard.svg";
+import ThreeDots from "../../../../../assets/images/newElements/ThreeDotsIcon.svg";
+import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
+import ChatNonActive from "../../../../../assets/images/newElements/ChatIconNonActive.svg";
+import ActiveChat from "../../../../../assets/images/newElements/ActiveChatIcon.svg";
+import ChatIcon from "../../../../../assets/images/Chat-Icon.png";
+import CallEndRedIcon from "../../../../../assets/images/newElements/CallRedIcon.svg";
+import NormalizeIcon from "../../../../../assets/images/Normalize-Icon.png";
+import CancelIcon from "../../../../../assets/images/Artboard9.png";
+import CloseNotification from "../../../../../assets/images/Close-Notification.png";
+import ActiveParticipantIcon from "../../../../../assets/images/Active-Participant-Icon.png";
+import AddParticipantIcon from "../../../../../assets/images/Add-Participant-Icon.png";
+import ParticipantsIcon from "../../../../../assets/images/Participants-Icon.png";
+import { activeChat } from "../../../../../store/actions/Talk_action";
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -36,100 +36,110 @@ import {
   leaveCallModal,
   participantPopup,
   videoChatMessagesFlag,
-} from '../../../../../store/actions/VideoFeature_actions'
-import { GetOTOUserMessages } from '../../../../../store/actions/Talk_action'
-import { LeaveCall } from '../../../../../store/actions/VideoMain_actions'
-import { useTranslation } from 'react-i18next'
+} from "../../../../../store/actions/VideoFeature_actions";
+import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
+import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
+import { useTranslation } from "react-i18next";
 
 const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   const { videoFeatureReducer, VideoMainReducer, talkStateData } = useSelector(
-    (state) => state,
-  )
+    (state) => state
+  );
 
-  let callerNameInitiate = localStorage.getItem('callerNameInitiate')
-  let organizationName = localStorage.getItem('OrganizatioName')
-  let currentUserName = localStorage.getItem('name')
-  let callerName = localStorage.getItem('callerName')
+  let callerNameInitiate = localStorage.getItem("callerNameInitiate");
+  let organizationName = localStorage.getItem("OrganizatioName");
+  let currentUserName = localStorage.getItem("name");
+  let callerName = localStorage.getItem("callerName");
   let initiateVideoCallFlag = JSON.parse(
-    localStorage.getItem('initiateVideoCall'),
-  )
-  let recipentCalledID = Number(localStorage.getItem('recipentCalledID'))
+    localStorage.getItem("initiateVideoCall")
+  );
+  let recipentCalledID = Number(localStorage.getItem("recipentCalledID"));
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let callerID = Number(localStorage.getItem("callerID"));
+  let recipentID = Number(localStorage.getItem("recipentID"));
+  let currentUserID = Number(localStorage.getItem("userID"));
+  let currentOrganization = Number(localStorage.getItem("organizationID"));
+  let roomID = localStorage.getItem("acceptedRoomID");
+  let callTypeID = Number(localStorage.getItem("callTypeID"));
+  let initiateRoomID = localStorage.getItem("initiateCallRoomID");
+  let callerObject = localStorage.getItem("callerStatusObject");
+  let currentCallType = Number(localStorage.getItem("CallType"));
+  let meetingTitle = localStorage.getItem("meetingTitle");
 
-  let callerID = Number(localStorage.getItem('callerID'))
-  let recipentID = Number(localStorage.getItem('recipentID'))
-  let currentUserID = Number(localStorage.getItem('userID'))
-  let currentOrganization = Number(localStorage.getItem('organizationID'))
-  let roomID = localStorage.getItem('acceptedRoomID')
-  let callTypeID = Number(localStorage.getItem('callTypeID'))
-  let initiateRoomID = localStorage.getItem('initiateCallRoomID')
-  let callerObject = localStorage.getItem('callerStatusObject')
-  let currentCallType = Number(localStorage.getItem('CallType'))
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
+  const { t } = useTranslation();
 
-  const { t } = useTranslation()
+  const [showNotification, setShowNotification] = useState(true);
 
-  const [showNotification, setShowNotification] = useState(true)
-
-  const [isActiveIcon, setIsActiveIcon] = useState(false)
+  const [isActiveIcon, setIsActiveIcon] = useState(false);
 
   // const [isParticipantActive, setIsParticipantActive] = useState(false)
 
-  const [currentParticipants, setCurrentParticipants] = useState([])
+  const [currentParticipants, setCurrentParticipants] = useState([]);
 
-  const [participantStatus, setParticipantStatus] = useState([])
+  const [participantStatus, setParticipantStatus] = useState([]);
 
-  const participantPopupDisable = useRef(null)
-  const leaveModalPopupRef = useRef(null)
+  const participantPopupDisable = useRef(null);
+  const leaveModalPopupRef = useRef(null);
 
   const otoMaximizeVideoPanel = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
-      dispatch(maximizeVideoPanelFlag(true))
-      dispatch(minimizeVideoPanelFlag(false))
-      dispatch(normalizeVideoPanelFlag(false))
+      dispatch(maximizeVideoPanelFlag(true));
+      dispatch(minimizeVideoPanelFlag(false));
+      dispatch(normalizeVideoPanelFlag(false));
     }
-    setShowNotification(true)
-  }
+    setShowNotification(true);
+  };
 
   const minimizeVideoPanel = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
-      dispatch(maximizeVideoPanelFlag(false))
-      dispatch(minimizeVideoPanelFlag(true))
-      dispatch(normalizeVideoPanelFlag(false))
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
     }
-  }
+  };
 
   const closeVideoPanel = () => {
     // dispatch(normalizeVideoPanelFlag(false))
     // dispatch(maximizeVideoPanelFlag(false))
     // dispatch(minimizeVideoPanelFlag(false))
-    dispatch(leaveCallModal(false))
-    localStorage.setItem('activeCall', false)
-  }
+    dispatch(leaveCallModal(false));
+    localStorage.setItem("activeCall", false);
+  };
 
   const openVideoPanel = () => {
     // dispatch(normalizeVideoPanelFlag(false))
     // dispatch(maximizeVideoPanelFlag(false))
     // dispatch(minimizeVideoPanelFlag(false))
-    dispatch(leaveCallModal(true))
+    dispatch(leaveCallModal(true));
     // localStorage.setItem('activeCall', false)
-  }
+  };
 
   const endCallParticipant = () => {
-    let Data = {
-      OrganizationID: currentOrganization,
-      RoomID: roomID,
-      IsCaller: false,
-      CallTypeID: callTypeID,
+    if (isMeeting === false) {
+      let Data = {
+        OrganizationID: currentOrganization,
+        RoomID: roomID,
+        IsCaller: false,
+        CallTypeID: callTypeID,
+      };
+      dispatch(LeaveCall(Data, navigate, t));
+      dispatch(normalizeVideoPanelFlag(false));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
+      localStorage.setItem("activeCall", false);
+    } else if (isMeeting === true) {
+      dispatch(normalizeVideoPanelFlag(false));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
+      localStorage.setItem("activeCall", false);
+      localStorage.setItem("isMeeting", false);
+      localStorage.setItem("meetingTitle", "");
     }
-    dispatch(LeaveCall(Data, navigate, t))
-    dispatch(normalizeVideoPanelFlag(false))
-    dispatch(maximizeVideoPanelFlag(false))
-    dispatch(minimizeVideoPanelFlag(false))
-    localStorage.setItem('activeCall', false)
-  }
+  };
 
   const onClickCloseChatHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
@@ -138,46 +148,46 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
           let activeChatData = {
             id: VideoMainReducer.VideoRecipentData.userID,
             fullName: VideoMainReducer.VideoRecipentData.userName,
-            imgURL: '',
-            messageBody: '',
-            messageDate: '',
+            imgURL: "",
+            messageBody: "",
+            messageDate: "",
             notiCount: 0,
-            messageType: 'O',
+            messageType: "O",
             isOnline: false,
             companyName: organizationName,
-            sentDate: '',
-            receivedDate: '',
-            seenDate: '',
-            attachmentLocation: '',
+            sentDate: "",
+            receivedDate: "",
+            seenDate: "",
+            attachmentLocation: "",
             senderID: currentUserID,
             admin: 0,
             isBlock: 0,
-          }
-          dispatch(activeChat(activeChatData))
+          };
+          dispatch(activeChat(activeChatData));
         } else if (callerID !== currentUserID) {
           let activeChatData = {
             id: callerID,
             fullName: callerNameInitiate,
-            imgURL: '',
-            messageBody: '',
-            messageDate: '',
+            imgURL: "",
+            messageBody: "",
+            messageDate: "",
             notiCount: 0,
-            messageType: 'O',
+            messageType: "O",
             isOnline: false,
             companyName: organizationName,
-            sentDate: '',
-            receivedDate: '',
-            seenDate: '',
-            attachmentLocation: '',
+            sentDate: "",
+            receivedDate: "",
+            seenDate: "",
+            attachmentLocation: "",
             senderID: currentUserID,
             admin: 0,
             isBlock: 0,
-          }
-          dispatch(activeChat(activeChatData))
+          };
+          dispatch(activeChat(activeChatData));
         }
-        localStorage.setItem('ActiveChatType', 'O')
-        dispatch(chatEnableNormalFlag(true))
-        setIsActiveIcon(true)
+        localStorage.setItem("ActiveChatType", "O");
+        dispatch(chatEnableNormalFlag(true));
+        setIsActiveIcon(true);
         let chatOTOData = {
           UserID: currentUserID,
           ChannelID: currentOrganization,
@@ -185,45 +195,45 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
             callerID !== currentUserID ? callerID : recipentCalledID,
           NumberOfMessages: 50,
           OffsetMessage: 0,
-        }
-        dispatch(videoChatMessagesFlag(true))
-        dispatch(GetOTOUserMessages(navigate, chatOTOData, t))
-        localStorage.setItem('ActiveChatType', 'O')
+        };
+        dispatch(videoChatMessagesFlag(true));
+        dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
+        localStorage.setItem("ActiveChatType", "O");
         localStorage.setItem(
-          'activeOtoChatID',
-          callerID !== currentUserID ? callerID : recipentCalledID,
-        )
+          "activeOtoChatID",
+          callerID !== currentUserID ? callerID : recipentCalledID
+        );
       } else {
         // dispatch(chatEnableNormalFlag(false))
         // setIsActiveIcon(false)
-        dispatch(videoChatMessagesFlag(false))
+        dispatch(videoChatMessagesFlag(false));
       }
     }
-  }
+  };
 
-  console.log('talkStateData', talkStateData)
+  console.log("talkStateData", talkStateData);
 
   const closeParticipantHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       if (videoFeatureReducer.ParticipantPopupFlag === false) {
-        dispatch(participantPopup(true))
+        dispatch(participantPopup(true));
       } else {
-        dispatch(participantPopup(false))
+        dispatch(participantPopup(false));
       }
     }
-  }
+  };
 
   const normalizeScreen = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
-      dispatch(normalizeVideoPanelFlag(true))
-      dispatch(maximizeVideoPanelFlag(false))
-      dispatch(minimizeVideoPanelFlag(false))
+      dispatch(normalizeVideoPanelFlag(true));
+      dispatch(maximizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
     }
-  }
+  };
 
   const cancelLeaveCallOption = () => {
-    dispatch(leaveCallModal(false))
-  }
+    dispatch(leaveCallModal(false));
+  };
 
   const leaveCall = () => {
     let Data = {
@@ -231,22 +241,22 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       RoomID: initiateRoomID,
       IsCaller: true,
       CallTypeID: currentCallType,
-    }
-    dispatch(LeaveCall(Data, navigate, t))
-    const emptyArray = []
-    localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
-    setParticipantStatus([])
-    localStorage.setItem('activeCall', false)
-    dispatch(normalizeVideoPanelFlag(false))
-    dispatch(maximizeVideoPanelFlag(false))
-    dispatch(minimizeVideoPanelFlag(false))
-    dispatch(leaveCallModal(false))
-    dispatch(participantPopup(false))
-  }
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    setParticipantStatus([]);
+    localStorage.setItem("activeCall", false);
+    dispatch(normalizeVideoPanelFlag(false));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    dispatch(participantPopup(false));
+  };
 
   const closeNotification = () => {
-    setShowNotification(false)
-  }
+    setShowNotification(false);
+  };
 
   const handleOutsideClick = (event) => {
     if (
@@ -254,7 +264,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       !participantPopupDisable.current.contains(event.target) &&
       videoFeatureReducer.ParticipantPopupFlag
     ) {
-      dispatch(participantPopup(false))
+      dispatch(participantPopup(false));
     }
     // if (
     //   leaveModalPopupRef.current &&
@@ -263,24 +273,24 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     // ) {
     //   dispatch(leaveCallModal(false))
     // }
-  }
+  };
 
   useEffect(() => {}, [
     VideoMainReducer.VideoRecipentData.userName,
     callerNameInitiate,
     callerName,
-  ])
+  ]);
 
   useEffect(() => {
     // Use setTimeout to hide the notification after 4 seconds
     if (showNotification === true) {
       const timeoutId = setTimeout(() => {
-        setShowNotification(false)
-      }, 4000)
+        setShowNotification(false);
+      }, 4000);
       // Clear the timeout when the component unmounts to avoid memory leaks
-      return () => clearTimeout(timeoutId)
+      return () => clearTimeout(timeoutId);
     }
-  }, [showNotification])
+  }, [showNotification]);
 
   useEffect(() => {
     if (
@@ -288,37 +298,42 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       VideoMainReducer.GroupCallRecipientsData !== null &&
       VideoMainReducer.GroupCallRecipientsData.length !== 0
     ) {
-      setCurrentParticipants(VideoMainReducer.GroupCallRecipientsData)
+      setCurrentParticipants(VideoMainReducer.GroupCallRecipientsData);
     } else {
-      setCurrentParticipants([])
+      setCurrentParticipants([]);
     }
-  }, [VideoMainReducer.GroupCallRecipientsData])
+  }, [VideoMainReducer.GroupCallRecipientsData]);
 
   useEffect(() => {
     if (callerObject !== undefined && callerObject !== null) {
-      let callerObjectObj = JSON.parse(callerObject)
-      setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus])
+      let callerObjectObj = JSON.parse(callerObject);
+      setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus]);
     }
-  }, [callerObject])
+  }, [callerObject]);
 
   useEffect(() => {
-    document.addEventListener('click', handleOutsideClick)
+    document.addEventListener("click", handleOutsideClick);
     return () => {
-      document.removeEventListener('click', handleOutsideClick)
-    }
+      document.removeEventListener("click", handleOutsideClick);
+    };
   }, [
     videoFeatureReducer.ParticipantPopupFlag,
     // videoFeatureReducer.LeaveCallModalFlag,
-  ])
+  ]);
 
-  console.log('participantStatus', participantStatus[0])
+  console.log("participantStatus", participantStatus[0]);
 
   return (
     <>
       <Row className="mb-4">
-        {currentCallType === 2 || callTypeID === 2 ? (
+        {(currentCallType === 2 || callTypeID === 2) && meetingTitle === "" ? (
           <Col lg={3} md={3} sm={12} className="mt-1">
-            <p className="title-heading">{t('Group-call')}</p>
+            <p className="title-heading">{t("Group-call")}</p>
+          </Col>
+        ) : (currentCallType === 2 || callTypeID === 2) &&
+          meetingTitle !== "" ? (
+          <Col lg={3} md={3} sm={12} className="mt-1">
+            <p className="title-heading">{meetingTitle}</p>
           </Col>
         ) : (
           <Col lg={3} md={3} sm={12} className="mt-1">
@@ -375,8 +390,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                     <img
                       className={
                         videoFeatureReducer.LeaveCallModalFlag === true
-                          ? 'grayScaleImage'
-                          : 'cursor-pointer'
+                          ? "grayScaleImage"
+                          : "cursor-pointer"
                       }
                       src={ActiveParticipantIcon}
                       onClick={closeParticipantHandler}
@@ -389,14 +404,14 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                       currentParticipants.length > 0
                         ? currentParticipants.map((participantData, index) => {
                             console.log(
-                              'participantStatus',
-                              participantStatus[0],
-                            )
+                              "participantStatus",
+                              participantStatus[0]
+                            );
                             const matchingStatus = participantStatus[0].find(
                               (status) =>
                                 status.RecipientID === participantData.userID &&
-                                status.RoomID === initiateRoomID,
-                            )
+                                status.RoomID === initiateRoomID
+                            );
                             return (
                               <Row className="m-0" key={index}>
                                 <Col className="p-0" lg={7} md={7} sm={12}>
@@ -408,11 +423,11 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                                   <p className="participant-state">
                                     {matchingStatus
                                       ? matchingStatus.CallStatus
-                                      : 'Calling...'}
+                                      : "Calling..."}
                                   </p>
                                 </Col>
                               </Row>
-                            )
+                            );
                           })
                         : null}
                       <Row className="hostBorder m-0">
@@ -437,8 +452,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                   <img
                     className={
                       videoFeatureReducer.LeaveCallModalFlag === true
-                        ? 'grayScaleImage'
-                        : 'cursor-pointer'
+                        ? "grayScaleImage"
+                        : "cursor-pointer"
                     }
                     src={ParticipantsIcon}
                     onClick={closeParticipantHandler}
@@ -452,8 +467,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
               <img
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
-                    ? 'grayScaleImage'
-                    : 'cursor-pointer'
+                    ? "grayScaleImage"
+                    : "cursor-pointer"
                 }
                 onClick={screenShareButton}
                 src={NonActiveScreenShare}
@@ -463,8 +478,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
               <img
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
-                    ? 'grayScaleImage'
-                    : 'cursor-pointer'
+                    ? "grayScaleImage"
+                    : "cursor-pointer"
                 }
                 onClick={onClickCloseChatHandler}
                 src={ChatIcon}
@@ -500,8 +515,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
               <img
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
-                    ? 'grayScaleImage'
-                    : 'cursor-pointer'
+                    ? "grayScaleImage"
+                    : "cursor-pointer"
                 }
                 src={MinimizeIcon}
               />
@@ -515,8 +530,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                   onClick={otoMaximizeVideoPanel}
                   className={
                     videoFeatureReducer.LeaveCallModalFlag === true
-                      ? 'grayScaleImage'
-                      : 'cursor-pointer'
+                      ? "grayScaleImage"
+                      : "cursor-pointer"
                   }
                 />
               </div>
@@ -530,8 +545,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                   alt="Maximize Icon"
                   className={
                     videoFeatureReducer.LeaveCallModalFlag === true
-                      ? 'normalize-Icon-Large grayScaleImage'
-                      : 'normalize-Icon-Large cursor-pointer'
+                      ? "normalize-Icon-Large grayScaleImage"
+                      : "normalize-Icon-Large cursor-pointer"
                   }
                   onClick={normalizeScreen}
                 />
@@ -564,7 +579,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
         ) : null}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default VideoCallNormalHeader
+export default VideoCallNormalHeader;

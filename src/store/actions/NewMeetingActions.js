@@ -51,6 +51,7 @@ import { RefreshToken } from "./Auth_action";
 import {
   groupCallRecipients,
   callRequestReceivedMQTT,
+  LeaveCall,
 } from "./VideoMain_actions";
 import {
   normalizeVideoPanelFlag,
@@ -1170,7 +1171,13 @@ const MeetingUrlSpinner = (response) => {
 };
 
 //Fetch Meeting URL
-const FetchMeetingURLApi = (Data, navigate, t, currentUserID) => {
+const FetchMeetingURLApi = (
+  Data,
+  navigate,
+  t,
+  currentUserID,
+  currentOrganization
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     // dispatch(showMeetingURLInit());
@@ -1189,7 +1196,15 @@ const FetchMeetingURLApi = (Data, navigate, t, currentUserID) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(FetchMeetingURLApi(Data, navigate, t, currentUserID));
+          dispatch(
+            FetchMeetingURLApi(
+              Data,
+              navigate,
+              t,
+              currentUserID,
+              currentOrganization
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1208,10 +1223,35 @@ const FetchMeetingURLApi = (Data, navigate, t, currentUserID) => {
               dispatch(MeetingUrlSpinner(false));
               let meetingURL = response.data.responseResult.videoURL;
               var match = meetingURL.match(/RoomID=([^&]*)/);
+              let initiateRoomID = localStorage.getItem("initiateCallRoomID");
+              let acceptedRoomID = localStorage.getItem("activeRoomID");
+              let initiateVideoCallFlag = JSON.parse(
+                localStorage.getItem("initiateVideoCall")
+              );
+              let currentCallType = JSON.parse(
+                localStorage.getItem("CallType")
+              );
+              let activeCallStatus = JSON.parse(
+                localStorage.getItem("activeCall")
+              );
+              let meetingStatus = JSON.parse(localStorage.getItem("isMeeting"));
+              let Data = {
+                OrganizationID: currentOrganization,
+                RoomID: acceptedRoomID,
+                IsCaller: initiateVideoCallFlag === true ? true : false,
+                CallTypeID: currentCallType,
+              };
+              if (activeCallStatus === true && meetingStatus === false) {
+                dispatch(LeaveCall(Data, navigate, t));
+              }
               localStorage.setItem("CallType", 2);
+              localStorage.setItem("callTypeID", 2);
               localStorage.setItem("activeCall", true);
-              localStorage.setItem("callerID", currentUserID);
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem("callerID", 9999);
               localStorage.setItem("acceptedRoomID", match[1]);
+              localStorage.setItem("activeRoomID", match[1]);
+
               dispatch(callRequestReceivedMQTT({}, ""));
               dispatch(normalizeVideoPanelFlag(true));
               dispatch(videoChatPanel(false));

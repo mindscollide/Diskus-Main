@@ -47,6 +47,7 @@ const ViewMeetingDetails = ({
   let currentView = localStorage.getItem("MeetingCurrentView");
   let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
   let currentUserID = Number(localStorage.getItem("userID"));
+  let currentOrganization = Number(localStorage.getItem("organizationID"));
 
   const [rows, setRows] = useState([
     {
@@ -267,7 +268,10 @@ const ViewMeetingDetails = ({
     let Data = {
       MeetingID: currentMeeting,
     };
-    dispatch(FetchMeetingURLApi(Data, navigate, t, currentUserID));
+    dispatch(
+      FetchMeetingURLApi(Data, navigate, t, currentUserID, currentOrganization)
+    );
+    localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
     // localStorage.setItem("CallType", 2);
     // localStorage.setItem("activeCall", true);
     // localStorage.setItem("callerID", currentUserID);
