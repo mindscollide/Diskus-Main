@@ -203,7 +203,8 @@ const setTodoStatusDataFormSocket = (response) => {
 };
 //Creating A ToDoList
 
-const CreateToDoList = (navigate, object, t, value, setCreateTaskID) => {
+const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
+  console.log(value, "valuevaluevaluevalue");
   let token = JSON.parse(localStorage.getItem("token"));
   let meetingPage = JSON.parse(localStorage.getItem("todoListPage"));
   let meetingRow = JSON.parse(localStorage.getItem("todoListRow"));
@@ -231,7 +232,7 @@ const CreateToDoList = (navigate, object, t, value, setCreateTaskID) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(CreateToDoList(navigate, object, t, value, setCreateTaskID));
+          dispatch(CreateToDoList(navigate, object, t, setCreateTaskID, value));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -246,15 +247,19 @@ const CreateToDoList = (navigate, object, t, value, setCreateTaskID) => {
               );
               await dispatch(SetLoaderFalse());
               setCreateTaskID(Number(response.data.responseResult.tid));
-              let Data = {
-                ToDoID: Number(response.data.responseResult.tid),
-                ToDoTitle: object.Task.Title,
-                IsUpdateFlow: false,
-                AssigneeList: object.TaskAssignedTo.map(
-                  (newData, index) => newData
-                ),
-              };
-              await dispatch(createUpdateTaskDataRoomApi(navigate, Data, t));
+              if (value === 1) {
+              } else {
+                let Data = {
+                  ToDoID: Number(response.data.responseResult.tid),
+                  ToDoTitle: object.Task.Title,
+                  IsUpdateFlow: false,
+                  AssigneeList: object.TaskAssignedTo.map(
+                    (newData, index) => newData
+                  ),
+                };
+                await dispatch(createUpdateTaskDataRoomApi(navigate, Data, t));
+              }
+
               // if (value === 1) {
               //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
@@ -1738,6 +1743,12 @@ const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
               };
               dispatch(deleteCommitteeTaskApi(navigate, t, data));
             }
+            // Create Task from Meeting Actions
+            if (value === 7) {
+            }
+            // Delete Task from Meetin Actions
+            if (value === 8) {
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -1787,4 +1798,5 @@ export {
   deleteCommentApi,
   toDoListLoaderStart,
   uploadDocumentsTaskApi,
+  saveFilesTaskApi,
 };

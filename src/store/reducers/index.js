@@ -47,3 +47,4 @@ export { default as webViewerReducer } from "./webVieverApi_reducer";
 
 //Attendance Meeting reducer
 export { default as attendanceMeetingReducer } from "./Attendance_Reducer";
+export { default as actionMeetingReducer } from "./ActionMeeting_Reducer";
