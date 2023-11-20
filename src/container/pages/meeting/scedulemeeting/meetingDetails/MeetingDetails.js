@@ -2008,8 +2008,10 @@ const MeetingDetails = ({
             Number(ediorRole.status) === 8 ||
             Number(ediorRole.status) === 10) &&
           ediorRole.role === "Organizer" &&
-          isEditMeeting === true ? null : ediorRole.role ===
-              "Agenda Contributor" && isEditMeeting === true ? null : (
+          isEditMeeting === true ? null : (ediorRole.role ===
+              "Agenda Contributor" &&
+              isEditMeeting === true) ||
+            Number(ediorRole.status) === 1 ? null : (
             <Button
               disableBtn={Number(currentMeeting) === 0 ? true : false}
               text={t("Publish")}

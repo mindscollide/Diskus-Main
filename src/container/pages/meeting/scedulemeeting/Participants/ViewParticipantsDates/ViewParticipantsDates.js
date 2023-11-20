@@ -15,6 +15,7 @@ import {
   GetAllMeetingDetailsApiFunc,
   GetAllProposedMeetingDateApiFunc,
   SetMeetingResponseApiFunc,
+  getUserProposedWiseApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -28,17 +29,23 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let UserID = localStorage.getItem("userID");
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
   const getAllProposedDates = useSelector(
     (state) => state.NewMeetingreducer.getAllProposedDates
   );
+
+  const userWiseMeetingProposed = useSelector(
+    (state) => state.NewMeetingreducer.userWiseMeetingProposed
+  );
   const [deadline, setDeadline] = useState("");
   const [prposedData, setPrposedData] = useState([]);
   const [sendProposedData, setSendProposedData] = useState([]);
   const [checkedObjects, setCheckedObjects] = useState([]);
   const [noneOfAbove, setNoneOfAbove] = useState([]);
+  const [apiUserID, setApiUserID] = useState("");
   const [meetingDeatils, setMeetingDeatils] = useState({
     MeetingTitle: "",
     MeetingType: "",
@@ -59,7 +66,8 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
     let Data = {
       MeetingID: Number(currentMeetingID),
     };
-    await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+    // await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+    await dispatch(getUserProposedWiseApi(navigate, t, Data));
     await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
     return () => {
       localStorage.removeItem("viewProposeDatePollMeetingID");
@@ -69,24 +77,113 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
     callApis();
   }, []);
 
+  //Previous API for Dates that have to be Inserted new
+  useEffect(() => {
+    try {
+      if (
+        userWiseMeetingProposed !== null &&
+        userWiseMeetingProposed !== undefined &&
+        userWiseMeetingProposed.length > 0
+      ) {
+        let datesarry = [];
+        console.log(
+          userWiseMeetingProposed,
+          "datesDatadatesDatadatesDatadatesData"
+        );
+        userWiseMeetingProposed.forEach((datesData, index) => {
+          console.log(datesData, "datesDatadatesDatadatesDatadatesData");
+          setApiUserID(datesData.userID);
+          datesData.selectedProposedDates.map((data, index) => {
+            console.log(data, "consoleconsoleconsoleconsole");
+            if (
+              data.proposedDate === "10000101" &&
+              data.endTime === "000000" &&
+              data.startTime === "000000"
+            ) {
+            } else {
+              datesarry.push({
+                endTime: resolutionResultTable(
+                  data.proposedDate + data.endTime
+                ),
+                proposedDate: resolutionResultTable(
+                  data.proposedDate + data.startTime
+                ),
+                proposedDateID: data.proposedDateID,
+                startTime: resolutionResultTable(
+                  data.proposedDate + data.startTime
+                ),
+                EndtimeSend: data.endTime,
+                ProposedDateSend: data.proposedDate,
+                proposedDateIDSend: data.proposedDateID,
+                StartTimeSend: data.startTime,
+                isSelected: data.isSelected,
+              });
+            }
+          });
+
+          //now For Sending Data
+          let SenddataObject = [];
+          datesData.selectedProposedDates.map((data, index) => {
+            SenddataObject.push({
+              EndtimeSend: data.endTime,
+              ProposedDateSend: data.proposedDate,
+              proposedDateIDSend: data.proposedDateID,
+              StartTimeSend: data.startTime,
+              isSelected: data.isSelected,
+            });
+          });
+
+          // now for the default Data
+          let DefaultDate = [];
+          datesData.selectedProposedDates.map((data, index) => {
+            console.log(data, "datadatadata");
+            if (
+              data.proposedDate === "10000101" &&
+              data.endTime === "000000" &&
+              data.startTime === "000000"
+            ) {
+              DefaultDate.push({
+                EndtimeSend: data.endTime,
+                ProposedDateSend: data.proposedDate,
+                proposedDateIDSend: data.proposedDateID,
+                StartTimeSend: data.startTime,
+                isSelected: data.isSelected,
+              });
+            } else {
+            }
+          });
+          setNoneOfAbove(DefaultDate);
+          setPrposedData(datesarry);
+          setSendProposedData(SenddataObject);
+        });
+      } else {
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [userWiseMeetingProposed]);
+
   //Fetching All Saved Data
   useEffect(() => {
     try {
-    } catch {}
-    if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
-      console.log(getAllMeetingDetails, "getAllMeetingDetails");
+      if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
+        console.log(getAllMeetingDetails, "getAllMeetingDetails");
 
-      setMeetingDeatils({
-        MeetingTitle: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
-        MeetingType:
-          getAllMeetingDetails.advanceMeetingDetails.meetingType.type,
-        MeetingLocation: getAllMeetingDetails.advanceMeetingDetails.location,
-        MeetingDiscription:
-          getAllMeetingDetails.advanceMeetingDetails.description,
-      });
+        setMeetingDeatils({
+          MeetingTitle: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
+          MeetingType:
+            getAllMeetingDetails.advanceMeetingDetails.meetingType.type,
+          MeetingLocation: getAllMeetingDetails.advanceMeetingDetails.location,
+          MeetingDiscription:
+            getAllMeetingDetails.advanceMeetingDetails.description,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [getAllMeetingDetails]);
 
+  //Previous API for Dates that have to be Removed
   useEffect(() => {
     try {
       if (getAllProposedDates !== null && getAllProposedDates !== undefined) {
@@ -96,76 +193,77 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
         );
         let deadline = getAllProposedDates.deadLineDate;
         setDeadline(deadline);
-        let datesarry = [];
-        getAllProposedDates.meetingProposedDates.map((data, index) => {
-          console.log(data, "getAllProposedDatesgetAllProposedDates");
-          if (
-            data.proposedDate === "10000101" &&
-            data.endTime === "000000" &&
-            data.startTime === "000000"
-          ) {
-          } else {
-            datesarry.push({
-              endTime: resolutionResultTable(data.proposedDate + data.endTime),
-              proposedDate: resolutionResultTable(
-                data.proposedDate + data.startTime
-              ),
-              proposedDateID: data.proposedDateID,
-              startTime: resolutionResultTable(
-                data.proposedDate + data.startTime
-              ),
-              EndtimeSend: data.endTime,
-              ProposedDateSend: data.proposedDate,
-              proposedDateIDSend: data.proposedDateID,
-              StartTimeSend: data.startTime,
-            });
-          }
-        });
-        //For Sending  Date
+        // let datesarry = [];
+        // getAllProposedDates.meetingProposedDates.map((data, index) => {
+        //   console.log(data, "getAllProposedDatesgetAllProposedDates");
+        //   if (
+        //     data.proposedDate === "10000101" &&
+        //     data.endTime === "000000" &&
+        //     data.startTime === "000000"
+        //   ) {
+        //   } else {
+        //     datesarry.push({
+        //       endTime: resolutionResultTable(data.proposedDate + data.endTime),
+        //       proposedDate: resolutionResultTable(
+        //         data.proposedDate + data.startTime
+        //       ),
+        //       proposedDateID: data.proposedDateID,
+        //       startTime: resolutionResultTable(
+        //         data.proposedDate + data.startTime
+        //       ),
+        //       EndtimeSend: data.endTime,
+        //       ProposedDateSend: data.proposedDate,
+        //       proposedDateIDSend: data.proposedDateID,
+        //       StartTimeSend: data.startTime,
+        //     });
+        //   }
+        // });
+        // //For Sending  Date
 
-        let SenddataObject = [];
+        // let SenddataObject = [];
 
-        getAllProposedDates.meetingProposedDates.map((data, index) => {
-          SenddataObject.push({
-            EndtimeSend: data.endTime,
-            ProposedDateSend: data.proposedDate,
-            proposedDateIDSend: data.proposedDateID,
-            StartTimeSend: data.startTime,
-          });
-        });
+        // getAllProposedDates.meetingProposedDates.map((data, index) => {
+        //   SenddataObject.push({
+        //     EndtimeSend: data.endTime,
+        //     ProposedDateSend: data.proposedDate,
+        //     proposedDateIDSend: data.proposedDateID,
+        //     StartTimeSend: data.startTime,
+        //   });
+        // });
 
-        let DefaultDate = [];
-        //For Sending Default Date
-        getAllProposedDates.meetingProposedDates.map((data, index) => {
-          console.log(data, "datadatadata");
-          if (
-            data.proposedDate === "10000101" &&
-            data.endTime === "000000" &&
-            data.startTime === "000000"
-          ) {
-            DefaultDate.push({
-              EndtimeSend: data.endTime,
-              ProposedDateSend: data.proposedDate,
-              proposedDateIDSend: data.proposedDateID,
-              StartTimeSend: data.startTime,
-            });
-          } else {
-          }
-        });
-        setNoneOfAbove(DefaultDate);
-        setPrposedData(datesarry);
-        setSendProposedData(SenddataObject);
+        // let DefaultDate = [];
+        // //For Sending Default Date
+        // getAllProposedDates.meetingProposedDates.map((data, index) => {
+        //   console.log(data, "datadatadata");
+        //   if (
+        //     data.proposedDate === "10000101" &&
+        //     data.endTime === "000000" &&
+        //     data.startTime === "000000"
+        //   ) {
+        //     DefaultDate.push({
+        //       EndtimeSend: data.endTime,
+        //       ProposedDateSend: data.proposedDate,
+        //       proposedDateIDSend: data.proposedDateID,
+        //       StartTimeSend: data.startTime,
+        //     });
+        //   } else {
+        //   }
+        // });
+        // setNoneOfAbove(DefaultDate);
+        // setPrposedData(datesarry);
+        // setSendProposedData(SenddataObject);
       }
     } catch (error) {
       console.error(error);
     }
   }, [getAllProposedDates]);
 
+  // onChange function for CheckBoxes
   const handleCheckboxChange = (data) => {
     setSelectAll(false);
     if (checkedObjects.includes(data)) {
       setCheckedObjects(checkedObjects.filter((obj) => obj !== data));
-      setSelectAll(false); // Uncheck select all if a checkbox is unchecked
+      setSelectAll(false);
     } else {
       setCheckedObjects([...checkedObjects, data]);
     }
@@ -274,45 +372,53 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
-                          console.log(data, "lengthlength");
+                          console.log(
+                            data,
+                            "prposedDataprposedDataprposedData"
+                          );
+                          const isChecked =
+                            data.isSelected &&
+                            Number(localStorage.getItem("userID")) ===
+                              Number(apiUserID);
+
+                          console.log(isChecked, "isCheckedisChecked");
+
                           return (
-                            <>
-                              <Row className="m-0 p-0 mt-2">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className={styles["Box_To_Show_Time"]}
-                                  key={index}
-                                >
-                                  <Row className={styles["Inner_Send_class"]}>
-                                    <Col lg={10} md={10} sm={12}>
-                                      <span className={styles["Time_Class"]}>
-                                        {moment(data.startTime).format(
-                                          "HH:MM a"
-                                        )}
-                                        -{" "}
-                                        {moment(data.endTime).format("HH:MM a")}
-                                        ,
-                                        {changeDateStartHandler2(
-                                          data.proposedDate
-                                        )}
-                                      </span>
-                                    </Col>
-                                    <Col lg={2} md={2} sm={2}>
-                                      <Checkbox
-                                        prefixCls={"ProposedMeeting_Checkbox"}
-                                        classNameCheckBoxP="d-none"
-                                        checked={checkedObjects.includes(data)}
-                                        onChange={() =>
-                                          handleCheckboxChange(data)
-                                        }
-                                      />
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </Row>
-                            </>
+                            <Row className="m-0 p-0 mt-2" key={index}>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className={styles["Box_To_Show_Time"]}
+                              >
+                                <Row className={styles["Inner_Send_class"]}>
+                                  <Col lg={10} md={10} sm={12}>
+                                    <span className={styles["Time_Class"]}>
+                                      {moment(data.startTime).format("HH:MM a")}{" "}
+                                      - {moment(data.endTime).format("HH:MM a")}
+                                      ,{" "}
+                                      {changeDateStartHandler2(
+                                        data.proposedDate
+                                      )}
+                                    </span>
+                                  </Col>
+                                  <Col lg={2} md={2} sm={2}>
+                                    <Checkbox
+                                      prefixCls={"ProposedMeeting_Checkbox"}
+                                      classNameCheckBoxP="d-none"
+                                      checked={
+                                        isChecked
+                                          ? checkedObjects
+                                          : checkedObjects.includes(data)
+                                      }
+                                      onChange={() =>
+                                        handleCheckboxChange(data)
+                                      }
+                                    />
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
                           );
                         })
                       : null}
