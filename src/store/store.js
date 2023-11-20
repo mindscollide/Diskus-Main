@@ -45,6 +45,7 @@ import { webViewerReducer } from "./reducers";
 import downloadReducer from "./reducers/Download_reducer";
 //Aun Attendance Meeting Reducer
 import attendanceMeetingReducer from "./reducers/Attendance_Reducer";
+import actionMeetingReducer from "./reducers/ActionMeeting_Reducer";
 
 const AppReducer = combineReducers({
   auth: authReducer,
@@ -89,6 +90,7 @@ const AppReducer = combineReducers({
   MeetingAgendaReducer: MeetingAgendaReducer,
   //Attendance Meeting Reducer aun
   attendanceMeetingReducer: attendanceMeetingReducer,
+  actionMeetingReducer: actionMeetingReducer,
 });
 
 const rootReducer = (state, action) => {

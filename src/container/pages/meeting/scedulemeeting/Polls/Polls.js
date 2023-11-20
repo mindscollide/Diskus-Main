@@ -452,27 +452,27 @@ const Polls = ({
               />
             ) : (
               <>
-                {Number(ediorRole.status) === 10 &&
+                {/* {Number(ediorRole.status) === 10 &&
                 (ediorRole.role === "Organizer" ||
                   ediorRole.role === "Agenda Contributor" ||
                   ediorRole?.role === "Participant") &&
-                isEditMeeting === true ? (
-                  <Row className="mt-4">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-end "
-                    >
-                      <Button
-                        text={t("Create-polls")}
-                        icon={<img draggable={false} src={addmore} alt="" />}
-                        className={styles["Create_polls_Button"]}
-                        onClick={handleCreatepolls}
-                      />
-                    </Col>
-                  </Row>
-                ) : null}
+                isEditMeeting === true ? ( */}
+                <Row className="mt-4">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end "
+                  >
+                    <Button
+                      text={t("Create-polls")}
+                      icon={<img draggable={false} src={addmore} alt="" />}
+                      className={styles["Create_polls_Button"]}
+                      onClick={handleCreatepolls}
+                    />
+                  </Col>
+                </Row>
+                {/* ) : null} */}
 
                 <Row>
                   <Col lg={12} md={12} sm={12}>
