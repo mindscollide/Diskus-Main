@@ -57,6 +57,7 @@ import {
 import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
 
 const Organizers = ({
   setAgendaContributors,
@@ -487,24 +488,66 @@ const Organizers = ({
   };
 
   const nextTabOrganizer = () => {
+    const allMeetingOrganizers =
+      MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers;
+    let newrowsData = rowsData.map((newData, index) => {
+      return {
+        userID: newData.userID,
+        userName: newData.userName,
+        email: newData.email,
+        organizerTitle: newData.organizerTitle,
+        isPrimaryOrganizer: newData.isPrimaryOrganizer,
+        rsvp: newData.rsvp,
+        meetingID: Number(currentMeeting),
+        isOrganizerNotified: newData.isOrganizerNotified,
+        userProfilePicture: newData.userProfilePicture,
+      };
+    });
+
+    let checkValidation =
+      allMeetingOrganizers.length === newrowsData.length &&
+      allMeetingOrganizers.every((item, index) =>
+        deepEqual(item, newrowsData[index])
+      );
+    console.log(
+      { checkValidation },
+      "nextTabOrganizernextTabOrganizernextTabOrganizer"
+    );
+    if (checkValidation) {
+      setAgendaContributors(true);
+      setmeetingDetails(false);
+      setorganizers(false);
+      setParticipants(false);
+      setAgenda(false);
+      setMinutes(false);
+      setactionsPage(false);
+      setAttendance(false);
+      setPolls(false);
+      setMeetingMaterial(false);
+      setRowsData([]);
+      dispatch(saveMeetingFlag(false));
+      dispatch(editMeetingFlag(false));
+    } else {
+      dispatch(ShowNextConfirmationModal(true));
+    }
     // setviewOrganizers(!viewOrganizers)
     // let Data = { meetingID: currentMeeting, StatusID: 1 };
     // dispatch(UpdateOrganizersMeeting(navigate, Data, t));
     // setRowsData([]);
     // dispatch(ShowNextConfirmationModal(true));
-    setAgendaContributors(true);
-    setmeetingDetails(false);
-    setorganizers(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
-    setRowsData([]);
-    dispatch(saveMeetingFlag(false));
-    dispatch(editMeetingFlag(false));
+    //   setAgendaContributors(true);
+    //   setmeetingDetails(false);
+    //   setorganizers(false);
+    //   setParticipants(false);
+    //   setAgenda(false);
+    //   setMinutes(false);
+    //   setactionsPage(false);
+    //   setAttendance(false);
+    //   setPolls(false);
+    //   setMeetingMaterial(false);
+    //   setRowsData([]);
+    //   dispatch(saveMeetingFlag(false));
+    //   dispatch(editMeetingFlag(false));
   };
 
   const enableEditButton = () => {
@@ -795,6 +838,10 @@ const Organizers = ({
     dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
     dispatch(uploadDocument_success(null, ""));
     dispatch(getAllVotingResultDisplay_success([], ""));
+    return () => {
+      dispatch(saveMeetingFlag(false));
+      dispatch(editMeetingFlag(false));
+    };
   }, []);
 
   return (
@@ -817,7 +864,7 @@ const Organizers = ({
                     <Row className="d-flex align-items-center gap-2">
                       <Col lg={12} md={12} sm={12}>
                         <Button
-                          text={"Cancel"}
+                          text={t("Cancel")}
                           className={styles["publish_button_Organization"]}
                           style={{ marginRight: "10px" }}
                           onClick={handleCancelEdit}
@@ -837,7 +884,7 @@ const Organizers = ({
                     <Row className="d-flex align-items-center gap-2">
                       <Col lg={12} md={12} sm={12}>
                         <Button
-                          text={"Cancel"}
+                          text={t("Cancel")}
                           className={styles["publish_button_Organization"]}
                           style={{ marginRight: "10px" }}
                           onClick={handleCancelEdit}

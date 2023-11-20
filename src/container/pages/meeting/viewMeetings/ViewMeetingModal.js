@@ -3,7 +3,7 @@ import styles from "./ViewMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
-import { Button } from "../../../../components/elements";
+import { Button, Loader } from "../../../../components/elements";
 import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";
 import Participants from "./Participants/Participants";
@@ -16,6 +16,7 @@ import Attendence from "./Attendence/Attendence";
 import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
 import { cleareAllState } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -32,6 +33,7 @@ const ViewMeetingModal = ({
   console.log("advanceMeetingModalIDadvanceMeetingModal", ediorRole);
 
   const { t } = useTranslation();
+  const { Loading } = useSelector((state) => state.NewMeetingreducer);
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
@@ -183,7 +185,7 @@ const ViewMeetingModal = ({
     setmeetingDetails(false);
     setPolls(false);
   };
-
+  console.log(Loading, "LoadingLoadingLoadingLoadingLoadingLoading");
   return (
     <>
       <section className="position-relative">
@@ -449,6 +451,7 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
       </section>
+      {/* {NewMeetingreducer.Loading && <Loader />} */}
     </>
   );
 };

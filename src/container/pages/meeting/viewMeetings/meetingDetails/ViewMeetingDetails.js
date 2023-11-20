@@ -12,6 +12,7 @@ import {
   ClearMessegeMeetingdetails,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
+  showGetAllMeetingDetialsInit,
 } from "../../../../../store/actions/NewMeetingActions";
 import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
 
@@ -144,6 +145,8 @@ const ViewMeetingDetails = ({
     MeetingID: Number(advanceMeetingModalID),
     StatusID: 9,
   };
+
+  console.log(NewMeetingreducer.Loading, "NewMeetingreducerNewMeetingreducer");
   // Showing The reposnse messege
   useEffect(() => {
     if (

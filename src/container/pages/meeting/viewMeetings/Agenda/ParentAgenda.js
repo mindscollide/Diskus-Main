@@ -48,6 +48,7 @@ const ParentAgenda = ({
   ediorRole,
   advanceMeetingModalID,
 }) => {
+  console.log(data, "datadatadatadata");
   const { t } = useTranslation();
   const navigate = useNavigate();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -304,21 +305,21 @@ const ParentAgenda = ({
                             <Col lg={12} md={12} sm={12}>
                               <div className={styles["agendaCreationDetail"]}>
                                 <img
-                                  src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                                  src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                                   className={styles["Image"]}
                                   alt=""
                                   draggable={false}
                                 />
                                 <p className={styles["agendaCreater"]}>
                                   {
-                                    data.userProfilePicture
-                                      .orignalProfilePictureName
+                                    data?.userProfilePicture
+                                      ?.orignalProfilePictureName
                                   }
                                 </p>
                                 <span className={styles["agendaCreationTime"]}>
                                   {
-                                    data.userProfilePicture
-                                      .orignalProfilePictureName
+                                    data?.userProfilePicture
+                                      ?.orignalProfilePictureName
                                   }
                                 </span>
                               </div>
@@ -406,13 +407,13 @@ const ParentAgenda = ({
                                                   draggable={false}
                                                   src={getIconSource(
                                                     getFileExtension(
-                                                      filesData.displayAttachmentName
+                                                      filesData?.displayAttachmentName
                                                     )
                                                   )}
                                                   alt=""
                                                 />{" "}
                                                 {
-                                                  filesData.displayAttachmentName
+                                                  filesData?.displayAttachmentName
                                                 }
                                               </span>
                                             </div>

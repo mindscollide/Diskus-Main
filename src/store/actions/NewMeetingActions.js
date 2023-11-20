@@ -1398,7 +1398,7 @@ const getAllAgendaContributorApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_GetAllMeetingAgendaContributors_02".toLowerCase()
                 )
             ) {
-              dispatch(getAllAgendaContributor_fail(t("No-record-inserted")));
+              dispatch(getAllAgendaContributor_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1579,7 +1579,7 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_GetAllMeetingParticipants_02".toLowerCase()
                 )
             ) {
-              dispatch(showAllMeetingParticipantsFailed(t("No-record-found")));
+              dispatch(showAllMeetingParticipantsFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1732,7 +1732,10 @@ const GetAllMeetingDetailsApiFunc = (
   t,
   setCurrentMeetingID,
   setSceduleMeeting,
-  setDataroomMapFolderId
+  setDataroomMapFolderId,
+  setViewAdvanceMeetingModalUnpublish,
+  value,
+  setAdvanceMeetingModalID
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -1758,7 +1761,10 @@ const GetAllMeetingDetailsApiFunc = (
               t,
               setCurrentMeetingID,
               setSceduleMeeting,
-              setDataroomMapFolderId
+              setDataroomMapFolderId,
+              setViewAdvanceMeetingModalUnpublish,
+              value,
+              setAdvanceMeetingModalID
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1786,25 +1792,30 @@ const GetAllMeetingDetailsApiFunc = (
               );
 
               try {
-                setSceduleMeeting(true);
-                setCurrentMeetingID(Data.MeetingID);
-                let MappedData = {
-                  MeetingID:
-                    response.data.responseResult.advanceMeetingDetails
-                      .meetingID,
-                  MeetingTitle:
-                    response.data.responseResult.advanceMeetingDetails
-                      .meetingTitle,
-                  IsUpdateFlow: true,
-                };
-                dispatch(
-                  CreateUpdateMeetingDataRoomMapeedApiFunc(
-                    navigate,
-                    MappedData,
-                    t,
-                    setDataroomMapFolderId
-                  )
-                );
+                if (value === 2) {
+                  setAdvanceMeetingModalID(Data.MeetingID);
+                  setViewAdvanceMeetingModalUnpublish(true);
+                } else {
+                  setSceduleMeeting(true);
+                  setCurrentMeetingID(Data.MeetingID);
+                  let MappedData = {
+                    MeetingID:
+                      response.data.responseResult.advanceMeetingDetails
+                        .meetingID,
+                    MeetingTitle:
+                      response.data.responseResult.advanceMeetingDetails
+                        .meetingTitle,
+                    IsUpdateFlow: true,
+                  };
+                  dispatch(
+                    CreateUpdateMeetingDataRoomMapeedApiFunc(
+                      navigate,
+                      MappedData,
+                      t,
+                      setDataroomMapFolderId
+                    )
+                  );
+                }
               } catch {}
             } else if (
               response.data.responseResult.responseMessage
@@ -1835,6 +1846,7 @@ const GetAllMeetingDetailsApiFunc = (
         }
       })
       .catch((response) => {
+        console.log(response, "responseresponseresponse");
         dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
       });
   };
@@ -2465,22 +2477,12 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_02"
             ) {
-              dispatch(
-                meetingMaterialFail(
-                  response.data.responseResult.responseMessage,
-                  t("No-records-found")
-                )
-              );
+              dispatch(meetingMaterialFail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_03"
             ) {
-              dispatch(
-                meetingMaterialFail(
-                  response.data.responseResult.responseMessage,
-                  t("Something-went-wrong")
-                )
-              );
+              dispatch(meetingMaterialFail(t("Something-went-wrong")));
             }
           } else {
             dispatch(meetingMaterialFail(t("Something-went-wrong")));
@@ -6319,4 +6321,5 @@ export {
   CleareMessegeNewMeeting,
   showAttendanceConfirmationModal,
   showAllMeetingParticipantsSuccess,
+  showGetAllMeetingDetialsInit,
 };

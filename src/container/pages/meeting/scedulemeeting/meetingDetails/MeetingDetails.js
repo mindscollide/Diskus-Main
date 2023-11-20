@@ -95,10 +95,6 @@ const MeetingDetails = ({
     (state) => state.NewMeetingreducer.ResponseMessage
   );
 
-  console.log(
-    ResponseMessage,
-    "ResponseMessageRResponseMessageResponseMessage"
-  );
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
@@ -327,7 +323,6 @@ const MeetingDetails = ({
     setRows(optionscross);
   };
 
-  console.log(meetingDetails, "meetingDetailsmeetingDetailsmeetingDetails");
   const handlePublish = () => {
     //Enable the Error Handling From here
     // setSaveMeeting(!saveMeeting);
@@ -805,36 +800,6 @@ const MeetingDetails = ({
       dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [ResponseMessage]);
-
-  // Modify options based on conditions
-  const modifiedOptions =
-    reminderFrequencyOne.length > 0 &&
-    reminderFrequencyOne.map((option) => {
-      if (meetingDetails.ReminderFrequency.value !== 0) {
-        // Disable the option conditionally
-        return {
-          ...option,
-          isDisabled: option.value === meetingDetails.ReminderFrequency.value, // Replace 'option2' with the value you want to disable
-        };
-      }
-      if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
-        // Disable or modify options for Agenda Contributor condition
-        return {
-          ...option,
-          isDisabled:
-            option.value === meetingDetails.ReminderFrequencyTwo.value, // Replace 'option3' with the value you want to disable
-        };
-      }
-      if (meetingDetails.ReminderFrequencyThree.value !== 0) {
-        return {
-          ...option,
-          isDisabled:
-            option.value === meetingDetails.ReminderFrequencyThree.value, // Replace 'option3' with the value you want to disable
-        };
-      }
-      return option;
-    });
-
   // //For reminder frequency uniqueness
   // useEffect(() => {
   //   const selectedValues = new Set([
@@ -988,144 +953,145 @@ const MeetingDetails = ({
   }
   const handleUpdateNext = () => {
     //Function For Next Checks ValidationS
-    // try {
-    //   let MeetingData =
-    //     NewMeetingreducer.getAllMeetingDetails?.advanceMeetingDetails;
-    //   console.log(MeetingData, "MeetingDataMeetingDataMeetingData");
+    try {
+      let MeetingData = getAllMeetingDetails?.advanceMeetingDetails;
+      console.log(MeetingData, "MeetingDataMeetingDataMeetingData");
 
-    //   let getmeetingType = MeetingData.meetingType;
+      let getmeetingType = MeetingData.meetingType;
 
-    //   let newArr = [];
-    //   rows.forEach((data, index) => {
-    //     newArr.push({
-    //       MeetingDate: data.selectedOption,
-    //       StartTime: data.startDate,
-    //       EndTime: data.endDate,
-    //     });
-    //   });
+      let newArr = [];
+      rows.forEach((data, index) => {
+        newArr.push({
+          MeetingDate: data.selectedOption,
+          StartTime: data.startDate,
+          EndTime: data.endDate,
+        });
+      });
 
-    //   let newReminderData = [];
-    //   if (meetingDetails.ReminderFrequency.value !== 0) {
-    //     newReminderData.push(meetingDetails.ReminderFrequency.value);
-    //   }
-    //   if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
-    //     newReminderData.push(meetingDetails.ReminderFrequencyTwo.value);
-    //   }
-    //   if (meetingDetails.ReminderFrequencyThree.value !== 0) {
-    //     newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
-    //   }
+      let newReminderData = [];
+      if (meetingDetails.ReminderFrequency.value !== 0) {
+        newReminderData.push(meetingDetails.ReminderFrequency.value);
+      }
+      if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
+        newReminderData.push(meetingDetails.ReminderFrequencyTwo.value);
+      }
+      if (meetingDetails.ReminderFrequencyThree.value !== 0) {
+        newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
+      }
 
-    //   if (MeetingData.meetingTitle !== meetingDetails.MeetingTitle) {
-    //     console.log("Title does not match");
-    //   }
+      if (MeetingData.meetingTitle !== meetingDetails.MeetingTitle) {
+        console.log("Title does not match");
+      }
 
-    //   if (getmeetingType.PK_MTID !== getmeetingType.PK_MTID) {
-    //     console.log("PK_MTID does not match");
-    //   }
+      if (getmeetingType.Type !== meetingDetails.MeetingType.Type) {
+        console.log("MeetingType Type does not match");
+      }
 
-    //   if (getmeetingType.Type !== meetingDetails.MeetingType.Type) {
-    //     console.log("MeetingType Type does not match");
-    //   }
+      if (MeetingData.location !== meetingDetails.Location) {
+        console.log("Location does not match");
+      }
 
-    //   if (MeetingData.location !== meetingDetails.Location) {
-    //     console.log("Location does not match");
-    //   }
+      if (MeetingData.description !== meetingDetails.Description) {
+        console.log("Description does not match");
+      }
 
-    //   if (MeetingData.description !== meetingDetails.Description) {
-    //     console.log("Description does not match");
-    //   }
+      if (MeetingData.isTalkGroup !== meetingDetails.groupChat) {
+        console.log("IsTalkGroup does not match");
+      }
 
-    //   if (MeetingData.isTalkGroup !== meetingDetails.groupChat) {
-    //     console.log("IsTalkGroup does not match");
-    //   }
+      if (MeetingData.videoCallURl !== meetingDetails.Link) {
+        console.log("VideoCallURL does not match");
+      }
 
-    //   if (MeetingData.videoCallURl !== meetingDetails.Link) {
-    //     console.log("VideoCallURL does not match");
-    //   }
+      if (JSON.stringify(MeetingData.meetingDates) !== JSON.stringify(newArr)) {
+        console.log("MeetingDates do not match");
+      }
 
-    //   if (JSON.stringify(MeetingData.meetingDates) !== JSON.stringify(newArr)) {
-    //     console.log("MeetingDates do not match");
-    //   }
+      if (
+        JSON.stringify(MeetingData.meetingReminders) !==
+        JSON.stringify(newReminderData)
+      ) {
+        console.log("MeetingReminders do not match");
+      }
 
-    //   if (
-    //     JSON.stringify(MeetingData.meetingReminders) !==
-    //     JSON.stringify(newReminderData)
-    //   ) {
-    //     console.log("MeetingReminders do not match");
-    //   }
+      if (MeetingData.notes !== meetingDetails.Notes) {
+        console.log("Notes do not match");
+      }
 
-    //   if (MeetingData.notes !== meetingDetails.Notes) {
-    //     console.log("Notes do not match");
-    //   }
+      if (MeetingData.allowRSVP !== meetingDetails.AllowRSPV) {
+        console.log("AllowRSVP does not match");
+      }
 
-    //   if (MeetingData.allowRSVP !== meetingDetails.AllowRSPV) {
-    //     console.log("AllowRSVP does not match");
-    //   }
+      if (
+        MeetingData.notifyAdminOnRSVP !== meetingDetails.NotifyMeetingOrganizer
+      ) {
+        console.log("NotifyAdminOnRSVP does not match");
+      }
 
-    //   if (
-    //     MeetingData.notifyAdminOnRSVP !== meetingDetails.NotifyMeetingOrganizer
-    //   ) {
-    //     console.log("NotifyAdminOnRSVP does not match");
-    //   }
+      if (
+        MeetingData.meetingRecurrance !== meetingDetails.RecurringOptions.value
+      ) {
+        console.log("MeetingRecurrance does not match");
+      }
 
-    //   if (
-    //     MeetingData.meetingRecurrance !== meetingDetails.RecurringOptions.value
-    //   ) {
-    //     console.log("MeetingRecurrance does not match");
-    //   }
-
-    //   if (MeetingData.isVideo !== meetingDetails.IsVideoCall) {
-    //     console.log("IsVideo does not match");
-    //   }
-    //   console.log(
-    //     MeetingData.meetingTitle === meetingDetails.MeetingTitle,
-    //     MeetingData.meetingType.pK_MTID === meetingDetails.MeetingType.PK_MTID,
-    //     MeetingData.location === meetingDetails.Location,
-    //     MeetingData.description === meetingDetails.Description,
-    //     MeetingData.isTalkGroup === meetingDetails.groupChat,
-    //     MeetingData.videoCallURl === meetingDetails.Link,
-    //     compareMeetings(MeetingData.meetingDates, newArr),
-    //     comparePKMRID(MeetingData.meetingReminders, newReminderData),
-    //     MeetingData.notes === meetingDetails.Notes,
-    //     MeetingData.allowRSVP === meetingDetails.AllowRSPV,
-    //     MeetingData.notifyAdminOnRSVP === meetingDetails.NotifyMeetingOrganizer,
-    //     MeetingData.meetingRecurrance.recurranceID ===
-    //       meetingDetails.RecurringOptions.value,
-    //     MeetingData.meetingRecurrance.recurranceID,
-    //     meetingDetails.RecurringOptions.value,
-    //     MeetingData.isVideo === meetingDetails.IsVideoCall,
-    //     MeetingData,
-    //     meetingDetails,
-    //     "RecurringOptionsRecurringOptionsRecurringOptions"
-    //   );
-    //   if (
-    //     MeetingData.meetingTitle === meetingDetails.MeetingTitle &&
-    //     getmeetingType.recurranceID === meetingDetails.MeetingType.PK_MTID &&
-    //     MeetingData.location === meetingDetails.Location &&
-    //     MeetingData.description === meetingDetails.Description &&
-    //     MeetingData.isTalkGroup === meetingDetails.groupChat &&
-    //     MeetingData.videoCallURl === meetingDetails.Link &&
-    //     compareMeetings(MeetingData.meetingDates, newArr) &&
-    //     comparePKMRID(MeetingData.meetingReminders, newReminderData) &&
-    //     MeetingData.notes === meetingDetails.Notes &&
-    //     MeetingData.allowRSVP === meetingDetails.AllowRSPV &&
-    //     MeetingData.notifyAdminOnRSVP ===
-    //       meetingDetails.NotifyMeetingOrganizer &&
-    //     MeetingData.recurranceID === meetingDetails.RecurringOptions.value &&
-    //     MeetingData.isVideo === meetingDetails.IsVideoCall
-    //   ) {
-    //     console.log("hello");
-    //     setmeetingDetails(false);
-    //     setorganizers(true);
-    //   } else {
-    //   }
-    // } catch (error) {
-    //   console.error("Error in handleUpdateNext:", error);
-    // }
+      if (MeetingData.isVideo !== meetingDetails.IsVideoCall) {
+        console.log("IsVideo does not match");
+      }
+      console.log(
+        MeetingData.meetingTitle === meetingDetails.MeetingTitle,
+        MeetingData.meetingType.pK_MTID === meetingDetails.MeetingType.PK_MTID,
+        MeetingData.location === meetingDetails.Location,
+        MeetingData.description === meetingDetails.Description,
+        MeetingData.isTalkGroup === meetingDetails.groupChat,
+        MeetingData.videoCallURl === meetingDetails.Link,
+        compareMeetings(MeetingData.meetingDates, newArr),
+        comparePKMRID(MeetingData.meetingReminders, newReminderData),
+        MeetingData.notes === meetingDetails.Notes,
+        MeetingData.allowRSVP === meetingDetails.AllowRSPV,
+        MeetingData.notifyAdminOnRSVP === meetingDetails.NotifyMeetingOrganizer,
+        MeetingData.meetingRecurrance.recurranceID ===
+          meetingDetails.RecurringOptions.value,
+        MeetingData.meetingRecurrance.recurranceID,
+        meetingDetails.RecurringOptions.value,
+        MeetingData.isVideo === meetingDetails.IsVideoCall,
+        MeetingData,
+        meetingDetails,
+        "RecurringOptionsRecurringOptionsRecurringOptions"
+      );
+      if (
+        MeetingData.meetingTitle === meetingDetails.MeetingTitle &&
+        MeetingData.meetingType.pK_MTID ===
+          meetingDetails.MeetingType.PK_MTID &&
+        MeetingData.location === meetingDetails.Location &&
+        MeetingData.description === meetingDetails.Description &&
+        MeetingData.isTalkGroup === meetingDetails.groupChat &&
+        MeetingData.videoCallURl === meetingDetails.Link &&
+        compareMeetings(MeetingData.meetingDates, newArr) &&
+        comparePKMRID(MeetingData.meetingReminders, newReminderData) &&
+        MeetingData.notes === meetingDetails.Notes &&
+        MeetingData.allowRSVP === meetingDetails.AllowRSPV &&
+        MeetingData.notifyAdminOnRSVP ===
+          meetingDetails.NotifyMeetingOrganizer &&
+        MeetingData.meetingRecurrance.recurranceID ===
+          meetingDetails.RecurringOptions.value &&
+        MeetingData.meetingRecurrance.recurranceID ===
+          meetingDetails.RecurringOptions.value &&
+        MeetingData.isVideo === meetingDetails.IsVideoCall
+      ) {
+        console.log("hello");
+        setmeetingDetails(false);
+        setorganizers(true);
+      } else {
+        console.log("hello");
+        dispatch(ShowNextConfirmationModal(true));
+      }
+    } catch (error) {
+      console.error("Error in handleUpdateNext:", error);
+    }
 
     // dispatch(ShowNextConfirmationModal(true));
-    setmeetingDetails(false);
-    setorganizers(true);
+    // setmeetingDetails(false);
+    // setorganizers(true);
   };
 
   // custom react select styles recurring
@@ -1729,19 +1695,28 @@ const MeetingDetails = ({
                   <Select
                     placeholder={t("Reminder*")}
                     onChange={handleReminderFrequency}
-                    options={reminderFrequencyOne}
+                    options={reminderFrequencyOne.map((data, index) => {
+                      return {
+                        ...data,
+                        isDisabled:
+                          data?.value ===
+                            meetingDetails.ReminderFrequencyTwo?.value ||
+                          data?.value ===
+                            meetingDetails.ReminderFrequencyThree?.value,
+                      };
+                    })}
                     value={{
                       value: meetingDetails.ReminderFrequency.value,
                       label: meetingDetails.ReminderFrequency.label,
                     }}
                     isDisabled={
-                      (Number(ediorRole.status) === 9 ||
-                        Number(ediorRole.status) === 8 ||
-                        Number(ediorRole.status) === 10) &&
-                      ediorRole.role === "Organizer" &&
+                      (Number(ediorRole?.status) === 9 ||
+                        Number(ediorRole?.status) === 8 ||
+                        Number(ediorRole?.status) === 10) &&
+                      ediorRole?.role === "Organizer" &&
                       isEditMeeting === true
                         ? true
-                        : ediorRole.role === "Agenda Contributor" &&
+                        : ediorRole?.role === "Agenda Contributor" &&
                           isEditMeeting === true
                         ? true
                         : false
@@ -1756,7 +1731,10 @@ const MeetingDetails = ({
                       return {
                         ...data,
                         isDisabled:
-                          data.value === meetingDetails.ReminderFrequency.value,
+                          data.value ===
+                            meetingDetails.ReminderFrequency.value ||
+                          data.value ===
+                            meetingDetails.ReminderFrequencyThree.value,
                       };
                     })}
                     value={{
@@ -1788,7 +1766,8 @@ const MeetingDetails = ({
                         ...data,
                         isDisabled:
                           data.value ===
-                          meetingDetails.ReminderFrequencyTwo.value,
+                            meetingDetails.ReminderFrequencyTwo.value ||
+                          data.value === meetingDetails.ReminderFrequency.value,
                       };
                     })}
                     value={{
