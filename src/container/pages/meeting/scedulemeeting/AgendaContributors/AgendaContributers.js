@@ -99,6 +99,8 @@ const AgendaContributers = ({
   // };
 
   useEffect(() => {
+    dispatch(showCancelModalAgendaContributor(false));
+
     let getAllData = {
       MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
     };

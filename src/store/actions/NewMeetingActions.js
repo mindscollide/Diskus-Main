@@ -1732,10 +1732,7 @@ const GetAllMeetingDetailsApiFunc = (
   t,
   setCurrentMeetingID,
   setSceduleMeeting,
-  setDataroomMapFolderId,
-  setViewAdvanceMeetingModalUnpublish,
-  value,
-  setAdvanceMeetingModalID
+  setDataroomMapFolderId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -1761,10 +1758,7 @@ const GetAllMeetingDetailsApiFunc = (
               t,
               setCurrentMeetingID,
               setSceduleMeeting,
-              setDataroomMapFolderId,
-              setViewAdvanceMeetingModalUnpublish,
-              value,
-              setAdvanceMeetingModalID
+              setDataroomMapFolderId
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1792,30 +1786,25 @@ const GetAllMeetingDetailsApiFunc = (
               );
 
               try {
-                if (value === 2) {
-                  setAdvanceMeetingModalID(Data.MeetingID);
-                  setViewAdvanceMeetingModalUnpublish(true);
-                } else {
-                  setSceduleMeeting(true);
-                  setCurrentMeetingID(Data.MeetingID);
-                  let MappedData = {
-                    MeetingID:
-                      response.data.responseResult.advanceMeetingDetails
-                        .meetingID,
-                    MeetingTitle:
-                      response.data.responseResult.advanceMeetingDetails
-                        .meetingTitle,
-                    IsUpdateFlow: true,
-                  };
-                  dispatch(
-                    CreateUpdateMeetingDataRoomMapeedApiFunc(
-                      navigate,
-                      MappedData,
-                      t,
-                      setDataroomMapFolderId
-                    )
-                  );
-                }
+                setSceduleMeeting(true);
+                setCurrentMeetingID(Data.MeetingID);
+                let MappedData = {
+                  MeetingID:
+                    response.data.responseResult.advanceMeetingDetails
+                      .meetingID,
+                  MeetingTitle:
+                    response.data.responseResult.advanceMeetingDetails
+                      .meetingTitle,
+                  IsUpdateFlow: true,
+                };
+                dispatch(
+                  CreateUpdateMeetingDataRoomMapeedApiFunc(
+                    navigate,
+                    MappedData,
+                    t,
+                    setDataroomMapFolderId
+                  )
+                );
               } catch {}
             } else if (
               response.data.responseResult.responseMessage
@@ -5785,10 +5774,7 @@ const UpdateMeetingUserApiFunc = (
                 )
             ) {
               await dispatch(
-                UpdateMeetingUserSuccess(
-                  response.data.responseResult,
-                  t("Update-successful")
-                )
+                UpdateMeetingUserSuccess(response.data.responseResult, "")
               );
               let newData = [];
               let copyData = [...rspvRows];
@@ -5924,7 +5910,7 @@ const UpdateMeetingUserForAgendaContributor = (
               await dispatch(
                 UpdateMeetingUserAgendaContributorSuccess(
                   response.data.responseResult,
-                  t("Update-successful")
+                  ""
                 )
               );
               if (isEditFlag === 1) {
@@ -6090,7 +6076,7 @@ const UpdateMeetingUserForOrganizers = (
               await dispatch(
                 UpdateMeetingUserOrganizersSuccess(
                   response.data.responseResult,
-                  t("Update-successful")
+                  ""
                 )
               );
               if (editFlag === 2) {

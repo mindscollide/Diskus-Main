@@ -64,7 +64,7 @@ import {
   ViewMeeting,
   allAssignessList,
 } from "../../../store/actions/Get_List_Of_Assignees";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   newTimeFormaterAsPerUTCFullDate,
   utcConvertintoGMT,
@@ -1498,7 +1498,6 @@ const NewMeeting = () => {
       {editFlag ? (
         <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
-      <Outlet />
       {Loading ? <Loader /> : null}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </section>

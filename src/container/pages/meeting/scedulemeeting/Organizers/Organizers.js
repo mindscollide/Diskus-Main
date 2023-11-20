@@ -488,53 +488,28 @@ const Organizers = ({
   };
 
   const nextTabOrganizer = () => {
-    const allMeetingOrganizers =
-      MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers;
-    let newrowsData = rowsData.map((newData, index) => {
-      return {
-        userID: newData.userID,
-        userName: newData.userName,
-        email: newData.email,
-        organizerTitle: newData.organizerTitle,
-        isPrimaryOrganizer: newData.isPrimaryOrganizer,
-        rsvp: newData.rsvp,
-        meetingID: Number(currentMeeting),
-        isOrganizerNotified: newData.isOrganizerNotified,
-        userProfilePicture: newData.userProfilePicture,
-      };
-    });
+    // const allMeetingOrganizers =
+    //   MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers;
+    // let newrowsData = rowsData.map((newData, index) => {
+    //   return {
+    //     userID: newData.userID,
+    //     userName: newData.userName,
+    //     email: newData.email,
+    //     organizerTitle: newData.organizerTitle,
+    //     isPrimaryOrganizer: newData.isPrimaryOrganizer,
+    //     rsvp: newData.rsvp,
+    //     meetingID: Number(currentMeeting),
+    //     isOrganizerNotified: newData.isOrganizerNotified,
+    //     userProfilePicture: newData.userProfilePicture,
+    //   };
+    // });
 
-    let checkValidation =
-      allMeetingOrganizers.length === newrowsData.length &&
-      allMeetingOrganizers.every((item, index) =>
-        deepEqual(item, newrowsData[index])
-      );
-    console.log(
-      { checkValidation },
-      "nextTabOrganizernextTabOrganizernextTabOrganizer"
-    );
-    if (checkValidation) {
-      setAgendaContributors(true);
-      setmeetingDetails(false);
-      setorganizers(false);
-      setParticipants(false);
-      setAgenda(false);
-      setMinutes(false);
-      setactionsPage(false);
-      setAttendance(false);
-      setPolls(false);
-      setMeetingMaterial(false);
-      setRowsData([]);
-      dispatch(saveMeetingFlag(false));
-      dispatch(editMeetingFlag(false));
-    } else {
-      dispatch(ShowNextConfirmationModal(true));
-    }
-    // setviewOrganizers(!viewOrganizers)
-    // let Data = { meetingID: currentMeeting, StatusID: 1 };
-    // dispatch(UpdateOrganizersMeeting(navigate, Data, t));
-    // setRowsData([]);
-    // dispatch(ShowNextConfirmationModal(true));
+    // let checkValidation =
+    //   allMeetingOrganizers.length === newrowsData.length &&
+    //   allMeetingOrganizers.every((item, index) =>
+    //     deepEqual(item, newrowsData[index])
+    //   );
+    // if (checkValidation) {
     //   setAgendaContributors(true);
     //   setmeetingDetails(false);
     //   setorganizers(false);
@@ -548,6 +523,27 @@ const Organizers = ({
     //   setRowsData([]);
     //   dispatch(saveMeetingFlag(false));
     //   dispatch(editMeetingFlag(false));
+    // } else {
+    //   dispatch(ShowNextConfirmationModal(true));
+    // }
+    setviewOrganizers(!viewOrganizers);
+    let Data = { meetingID: currentMeeting, StatusID: 1 };
+    dispatch(UpdateOrganizersMeeting(navigate, Data, t));
+    setRowsData([]);
+    dispatch(ShowNextConfirmationModal(true));
+    setAgendaContributors(true);
+    setmeetingDetails(false);
+    setorganizers(false);
+    setParticipants(false);
+    setAgenda(false);
+    setMinutes(false);
+    setactionsPage(false);
+    setAttendance(false);
+    setPolls(false);
+    setMeetingMaterial(false);
+    setRowsData([]);
+    dispatch(saveMeetingFlag(false));
+    dispatch(editMeetingFlag(false));
   };
 
   const enableEditButton = () => {

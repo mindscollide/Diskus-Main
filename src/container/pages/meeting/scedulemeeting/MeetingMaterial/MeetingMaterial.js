@@ -15,6 +15,7 @@ import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial
 import { useSelector } from "react-redux";
 import {
   ShowNextConfirmationModal,
+  searchNewUserMeeting,
   showCancelMeetingMaterial,
   showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -25,6 +26,7 @@ import {
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import NextModal from "../meetingDetails/NextModal/NextModal";
+import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 
 const MeetingMaterial = ({
   setSceduleMeeting,
@@ -32,6 +34,12 @@ const MeetingMaterial = ({
   setMinutes,
   setAgenda,
   currentMeeting,
+  setPublishState,
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
+  setCalendarViewModal,
+  ediorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -50,6 +58,10 @@ const MeetingMaterial = ({
     (state) => state.NewMeetingreducer.ShowPreviousModal
   );
 
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let userID = localStorage.getItem("userID");
   const [clicks, setClicks] = useState(0);
   const [flag, setFlag] = useState(5);
   const [prevFlag, setprevFlag] = useState(5);
@@ -162,8 +174,20 @@ const MeetingMaterial = ({
     }
   }, [meetingMaterialData]);
 
-  const handleCancelButton = () => {
-    dispatch(showCancelMeetingMaterial(true));
+  const handleCancelButton = async () => {
+    // dispatch(showCancelMeetingMaterial(true));
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setSceduleMeeting(false);
   };
 
   const handleSaveAndNext = () => {
@@ -171,7 +195,23 @@ const MeetingMaterial = ({
     setMeetingMaterial(false);
     setMinutes(true);
   };
-
+  const handlePublish = () => {
+    let Data = { meetingID: currentMeeting, StatusID: 1 };
+    dispatch(
+      UpdateOrganizersMeeting(
+        navigate,
+        Data,
+        t,
+        5,
+        setPublishState,
+        setAdvanceMeetingModalID,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        setSceduleMeeting
+      )
+    );
+  };
   const handlePreviousButtonMeetingMaterial = () => {
     // dispatch(showPreviousConfirmationModal(true));
     setAgenda(true);
@@ -231,11 +271,11 @@ const MeetingMaterial = ({
             text={t("Clone-meeting")}
             className={styles["Cancel_Classname"]}
           /> */}
-          {/* <Button
+          <Button
             text={t("Cancel")}
             className={styles["Cancel_Classname"]}
             onClick={handleCancelButton}
-          /> */}
+          />
           {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} /> */}
           <Button
             text={t("Previous")}
@@ -246,7 +286,21 @@ const MeetingMaterial = ({
             text={t("Next")}
             className={styles["Cancel_Classname"]}
             onClick={handleSaveAndNext}
+            disableBtn={Number(ediorRole.status) === 10 ? false : true}
           />
+          <Button
+            text={t("Save")}
+            className={styles["Cancel_Classname"]}
+            onClick={handleSaveAndNext}
+          />
+          {Number(ediorRole.status) === 11 ||
+          Number(ediorRole.status) === 12 ? (
+            <Button
+              text={t("Publish")}
+              className={styles["Save_Classname"]}
+              onClick={handlePublish}
+            />
+          ) : null}
         </Col>
       </Row>
       {cancelMeetingMaterial && (

@@ -9,7 +9,10 @@ import {
   sendNotification,
 } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
-import { GetAllMeetingDetailsApiFunc } from "./NewMeetingActions";
+import {
+  GetAllMeetingDetailsApiFunc,
+  searchNewUserMeeting,
+} from "./NewMeetingActions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
 
 const getAllCommitteesUsersandGroups_init = () => {
@@ -257,7 +260,8 @@ const UpdateOrganizersMeeting = (
   setAdvanceMeetingModalID,
   setViewFlag,
   setEditFlag,
-  setCalendarViewModal
+  setCalendarViewModal,
+  setSceduleMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -276,7 +280,20 @@ const UpdateOrganizersMeeting = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(UpdateOrganizersMeeting(navigate, Data, t));
+          dispatch(
+            UpdateOrganizersMeeting(
+              navigate,
+              Data,
+              t,
+              route,
+              setPublishState,
+              setAdvanceMeetingModalID,
+              setViewFlag,
+              setEditFlag,
+              setCalendarViewModal,
+              setSceduleMeeting
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -336,6 +353,29 @@ const UpdateOrganizersMeeting = (
                   );
                   setAdvanceMeetingModalID(Data.MeetingID);
                   setPublishState(false);
+                } else if (route === 5) {
+                  setSceduleMeeting(false);
+                  let currentView = localStorage.getItem("MeetingCurrentView");
+                  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                  let meetingPageCurrent = parseInt(
+                    localStorage.getItem("MeetingPageCurrent")
+                  );
+                  let userID = localStorage.getItem("userID");
+                  let searchData = {
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(userID),
+                    PageNumber:
+                      meetingPageCurrent !== null
+                        ? Number(meetingPageCurrent)
+                        : 1,
+                    Length:
+                      meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                    PublishedMeetings:
+                      currentView && Number(currentView) === 1 ? true : false,
+                  };
+                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else {
                   setPublishState(Data.MeetingID);
                 }

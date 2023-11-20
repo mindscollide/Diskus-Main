@@ -89,15 +89,16 @@ const ViewMeetingDetails = ({
       value: 0,
       label: "",
     },
-    Location: "",
     IsVideoCall: false,
   });
+
   useEffect(() => {
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
   }, []);
+
   const handleUpdateNext = () => {
     setmeetingDetails(false);
     setorganizers(true);

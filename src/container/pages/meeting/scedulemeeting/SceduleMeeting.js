@@ -82,6 +82,7 @@ const SceduleMeeting = ({
     setMeetingMaterial(false);
   };
 
+  const handleClickOrganizers = () => {};
   const showOrganizers = () => {
     setorganizers(true);
     setmeetingDetails(false);
@@ -237,6 +238,7 @@ const SceduleMeeting = ({
                       ? styles["Schedule_meetings_options_active"]
                       : styles["Schedule_meetings_options"]
                   }
+                  // onClick={handleClickOrganizers}
                   onClick={showOrganizers}
                 />
                 <Button
