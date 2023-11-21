@@ -24,6 +24,7 @@ import {
 import AfterSaveViewTable from "./AfterSaveViewTable/AfterSaveViewTable";
 import CancelActions from "./CancelActions/CancelActions";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
+import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 
 const Actions = ({
   setSceduleMeeting,
@@ -50,6 +51,7 @@ const Actions = ({
 
   const [createaTask, setCreateaTask] = useState(false);
   const [afterViewActions, setAfterViewActions] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   const [actionState, setActionState] = useState({
     Title: "",
@@ -233,6 +235,20 @@ const Actions = ({
     dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
   }, []);
 
+  // for pagination in Create Task
+  const handleForPagination = () => {
+    let data = {
+      MeetingID: Number(currentMeeting),
+      Date: actionState.Date,
+      Title: actionState.Title,
+      AssignedToName: actionState.AssignedToName,
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+    };
+    dispatch(getMeetingTaskMainApi(navigate, t, data));
+  };
+
   const handleCreateTaskButton = () => {
     setCreateaTask(true);
   };
@@ -338,13 +354,61 @@ const Actions = ({
                           <Col lg={12} md={12} sm={12}>
                             <Table
                               column={ActionsColoumn}
-                              scroll={{ y: "42vh" }}
-                              pagination={false}
+                              scroll={{ y: "40vh" }}
+                              pagination={true}
                               className="Polling_table"
                               rows={actionsRows}
                             />
                           </Col>
                         </Row>
+
+                        {actionsRows.length > 0 && (
+                          <Row className="">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center"
+                            >
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className={
+                                    "pagination-groups-table d-flex justify-content-center"
+                                  }
+                                >
+                                  <span className="PaginationStyle-TodoList">
+                                    <CustomPagination
+                                      onChange={handleForPagination}
+                                      current={
+                                        meetingPageCurrent !== null &&
+                                        meetingPageCurrent !== undefined
+                                          ? meetingPageCurrent
+                                          : 1
+                                      }
+                                      showSizer={true}
+                                      total={totalRecords}
+                                      pageSizeOptionsValues={[
+                                        "30",
+                                        "50",
+                                        "100",
+                                        "200",
+                                      ]}
+                                      pageSize={
+                                        meetingpageRow !== null &&
+                                        meetingpageRow !== undefined
+                                          ? meetingpageRow
+                                          : 50
+                                      }
+                                    />
+                                  </span>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        )}
                       </section>
                       <Row className="mt-5">
                         <Col
