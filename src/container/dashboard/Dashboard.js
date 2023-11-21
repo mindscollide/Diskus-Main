@@ -1611,6 +1611,7 @@ const Dashboard = () => {
             {activateBlur ? null : <Talk />}
             {/* {MeetingOrganizersReducer.LoadingMeetingOrganizer ? <Loader /> : null} */}
             {NewMeetingreducer.Loading ||
+            NewMeetingreducer.LoadingMinutes ||
             assignees.Loading ||
             MeetingOrganizersReducer.LoadingMeetingOrganizer ||
             MeetingOrganizersReducer.Loading ||

@@ -27,7 +27,7 @@ import {
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
-  getAllGeneralMinutesApiFunc,
+  GetAllGeneralMinutesApiFunc,
   showPreviousConfirmationModal,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
@@ -230,11 +230,16 @@ const Minutes = ({
     let Data = {
       MeetingID: currentMeeting,
     };
-    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     return () => {
       setFileAttachments([]);
     };
   }, []);
+
+  console.log(
+    NewMeetingreducer,
+    "NewMeetingreducerNewMeetingreducerNewMeetingreducer"
+  );
 
   useEffect(() => {
     try {
@@ -481,6 +486,13 @@ const Minutes = ({
   };
 
   const handleGeneralButtonClick = () => {
+    let Data = {
+      MeetingID: currentMeeting,
+    };
+    dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    return () => {
+      setFileAttachments([]);
+    };
     setAgenda(false);
     setGeneral(true);
   };

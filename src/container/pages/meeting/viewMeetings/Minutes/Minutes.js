@@ -24,7 +24,7 @@ import {
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
-  getAllGeneralMinutesApiFunc,
+  GetAllGeneralMinutesApiFunc,
   searchNewUserMeeting,
   showPreviousConfirmationModal,
   showUnsaveMinutesFileUpload,
@@ -120,7 +120,7 @@ const Minutes = ({
       MeetingID: advanceMeetingModalID,
     };
     dispatch(
-      getAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
+      GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
     );
     return () => {
       setFileAttachments([]);
