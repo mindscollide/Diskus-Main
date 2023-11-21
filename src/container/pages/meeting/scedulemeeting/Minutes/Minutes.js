@@ -502,7 +502,7 @@ const Minutes = ({
   const documentUploadingFunc = async (minuteID) => {
     let newfile = [...previousFileIDs];
     const uploadPromises = fileForSend.map(async (newData) => {
-      await dispatch(
+      dispatch(
         uploadDocumentsMeetingMinutesApi(
           navigate,
           t,
@@ -693,12 +693,20 @@ const Minutes = ({
         <Col lg={12} md={12} sm={12} className="d-flex gap-2">
           <Button
             text={t("General")}
-            className={styles["Button_General"]}
+            className={
+              general
+                ? styles["Button_General"]
+                : styles["Button_General_nonActive"]
+            }
             onClick={handleGeneralButtonClick}
           />
           <Button
             text={t("Agenda-wise")}
-            className={styles["Button_General"]}
+            className={
+              agenda
+                ? styles["Button_General"]
+                : styles["Button_General_nonActive"]
+            }
             onClick={handleAgendaWiseClick}
           />
         </Col>
