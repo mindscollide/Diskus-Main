@@ -39,6 +39,7 @@ import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgend
 import { saveAgendaContributors } from "../../../../../store/actions/NewMeetingActions";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 const AgendaContributers = ({
   setParticipants,
   setAgendaContributors,
@@ -49,6 +50,11 @@ const AgendaContributers = ({
   setEditMeeting,
   isEditMeeting,
   setorganizers,
+  setPublishState,
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
+  setCalendarViewModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -99,6 +105,8 @@ const AgendaContributers = ({
   // };
 
   useEffect(() => {
+    dispatch(showCancelModalAgendaContributor(false));
+
     let getAllData = {
       MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
     };
@@ -350,6 +358,12 @@ const AgendaContributers = ({
     },
   ];
 
+  // Filter columns based on the RSVP Condition
+  const finalColumns =
+    Number(ediorRole.status) === 1
+      ? AgendaColoumns.filter((column) => column.key !== "rsvp")
+      : AgendaColoumns;
+
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
@@ -404,8 +418,23 @@ const AgendaContributers = ({
   ];
 
   const handleNextButton = () => {
-    setAgendaContributors(false);
-    setParticipants(true);
+    // setAgendaContributors(false);
+    // setParticipants(true);
+    let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    dispatch(
+      UpdateOrganizersMeeting(
+        navigate,
+        Data,
+        t,
+        5,
+        setPublishState,
+        setAdvanceMeetingModalID,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        setSceduleMeeting
+      )
+    );
   };
 
   const openAddAgendaModal = () => {
@@ -640,7 +669,7 @@ const AgendaContributers = ({
         <Row>
           <Col lg={12} md={12} sm={12}>
             <Table
-              column={AgendaColoumns}
+              column={finalColumns}
               scroll={{ y: "62vh" }}
               pagination={false}
               locale={{
@@ -714,7 +743,7 @@ const AgendaContributers = ({
                 className={styles["Cancel_Organization"]}
                 onClick={nextTabOrganizer}
               />
-              {((Number(ediorRole.status) === 9 ||
+              {/* {((Number(ediorRole.status) === 9 ||
                 Number(ediorRole.status) === 8 ||
                 Number(ediorRole.status) === 10) &&
                 ediorRole.role === "Organizer" &&
@@ -726,7 +755,31 @@ const AgendaContributers = ({
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
+              )} */}
+              {Number(ediorRole.status) === 11 ||
+              Number(ediorRole.status) === 12 ? (
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Publish")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              ) : isEditMeeting === true ? null : (
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Publish")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
               )}
+              {/* {Number(ediorRole.status) === 11 ||
+              Number(ediorRole.status) === 12 ? (
+                <Button
+                  text={t("Publish")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              ) : null} */}
             </section>
           ) : (
             <section className={styles["Footer_Class2"]}></section>

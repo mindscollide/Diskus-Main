@@ -1456,7 +1456,7 @@ const getAllAgendaContributorApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_GetAllMeetingAgendaContributors_02".toLowerCase()
                 )
             ) {
-              dispatch(getAllAgendaContributor_fail(t("No-record-inserted")));
+              dispatch(getAllAgendaContributor_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1637,7 +1637,7 @@ const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_GetAllMeetingParticipants_02".toLowerCase()
                 )
             ) {
-              dispatch(showAllMeetingParticipantsFailed(t("No-record-found")));
+              dispatch(showAllMeetingParticipantsFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1893,6 +1893,7 @@ const GetAllMeetingDetailsApiFunc = (
         }
       })
       .catch((response) => {
+        console.log(response, "responseresponseresponse");
         dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
       });
   };
@@ -2523,22 +2524,12 @@ const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_02"
             ) {
-              dispatch(
-                meetingMaterialFail(
-                  response.data.responseResult.responseMessage,
-                  t("No-records-found")
-                )
-              );
+              dispatch(meetingMaterialFail(""));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetAllMeetingMaterial_03"
             ) {
-              dispatch(
-                meetingMaterialFail(
-                  response.data.responseResult.responseMessage,
-                  t("Something-went-wrong")
-                )
-              );
+              dispatch(meetingMaterialFail(t("Something-went-wrong")));
             }
           } else {
             dispatch(meetingMaterialFail(t("Something-went-wrong")));
@@ -3048,14 +3039,7 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
             ) {
               dispatch(
-                ShowAllGeneralMinutesSuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
-              console.log(
-                response.data.responseResult,
-                "FK_MeetingGeneralMinutesID"
+                ShowAllGeneralMinutesSuccess(response.data.responseResult, "")
               );
 
               let MeetingDocs = {
@@ -3071,7 +3055,7 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               dispatch(
                 ShowAllGeneralMinutesFailed(
                   response.data.responseResult.responseMessage,
-                  t("No-record-saved")
+                  ""
                 )
               );
             } else if (
@@ -5841,10 +5825,7 @@ const UpdateMeetingUserApiFunc = (
                 )
             ) {
               await dispatch(
-                UpdateMeetingUserSuccess(
-                  response.data.responseResult,
-                  t("Update-successful")
-                )
+                UpdateMeetingUserSuccess(response.data.responseResult, "")
               );
               let newData = [];
               let copyData = [...rspvRows];
@@ -5980,7 +5961,7 @@ const UpdateMeetingUserForAgendaContributor = (
               await dispatch(
                 UpdateMeetingUserAgendaContributorSuccess(
                   response.data.responseResult,
-                  t("Update-successful")
+                  ""
                 )
               );
               if (isEditFlag === 1) {
@@ -6146,7 +6127,7 @@ const UpdateMeetingUserForOrganizers = (
               await dispatch(
                 UpdateMeetingUserOrganizersSuccess(
                   response.data.responseResult,
-                  t("Update-successful")
+                  ""
                 )
               );
               if (editFlag === 2) {
@@ -6377,4 +6358,5 @@ export {
   CleareMessegeNewMeeting,
   showAttendanceConfirmationModal,
   showAllMeetingParticipantsSuccess,
+  showGetAllMeetingDetialsInit,
 };

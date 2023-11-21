@@ -698,6 +698,10 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_INIT: {
+      console.log(
+        action,
+        "GET_ALL_MEETING_DETAILS_BY_MEETINGID_INITGET_ALL_MEETING_DETAILS_BY_MEETINGID_INIT"
+      );
       return {
         ...state,
         Loading: true,
@@ -874,10 +878,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_MATERIAL_SUCCESS: {
-      console.log(
-        "meetingMaterial",
-        action
-      );
+      console.log("meetingMaterial", action);
       return {
         ...state,
         Loading: false,
@@ -1630,7 +1631,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         unsavedViewPollsModal: false,
       };
     }
-    
+
     case actions.NEWMEETING_RESPONSEMESSAGE: {
       return {
         ...state,

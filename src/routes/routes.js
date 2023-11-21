@@ -116,6 +116,10 @@ export const router = createHashRouter(
           <Route path="forgotpassword" element={<ForgotPassword />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="Meeting" element={<NewMeeting />} />
+          <Route
+            path="Meeting/Useravailabilityformeeting"
+            element={<h1>User AvabilityConfirmation</h1>}
+          />
           <Route path="videochat" element={<VideoChat />} />
           <Route path="setting" element={<UserSettings />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />

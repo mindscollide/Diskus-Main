@@ -113,6 +113,19 @@ const UnpublishedProposedMeeting = ({
   };
 
   const handleOpenViewModal = async (data) => {
+    // let Data = {
+    //   MeetingID: Number(data.pK_MDID),
+    // };
+    // dispatch(
+    //   GetAllMeetingDetailsApiFunc(
+    //     Data,
+    //     navigate,
+    //     t,
+    //     setCurrentMeetingID,
+    //     setSceduleMeeting,
+    //     setDataroomMapFolderId,
+    //   )
+    // );
     setAdvanceMeetingModalID(data.pK_MDID);
     setViewAdvanceMeetingModalUnpublish(true);
   };

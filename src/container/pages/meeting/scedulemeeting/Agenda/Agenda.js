@@ -24,6 +24,7 @@ import {
   showImportPreviousAgendaModal,
   getAllAgendaContributorApi,
   GetAllMeetingUserApiFunc,
+  searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   CreateUpdateMeetingDataRoomMap,
@@ -45,6 +46,7 @@ import ParentAgenda from "./ParentAgenda";
 import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
+import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 
 const Agenda = ({
   setSceduleMeeting,
@@ -52,10 +54,22 @@ const Agenda = ({
   isEditMeeting,
   ediorRole,
   dataroomMapFolderId,
+  setMeetingMaterial,
+  setAgenda,
+  setParticipants,
+  setPublishState,
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
+  setCalendarViewModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let userID = localStorage.getItem("userID");
   const navigate = useNavigate();
 
   const [allSavedPresenters, setAllSavedPresenters] = useState([]);
@@ -110,7 +124,6 @@ const Agenda = ({
           agendaVotingID: 0,
           subTitle: "",
           description: "",
-          agendaVotingID: 0,
           presenterID: 0,
           presenterName: "",
           startDate: "",
@@ -164,7 +177,6 @@ const Agenda = ({
           startDate: "",
           endDate: "",
           subSelectRadio: 1,
-          agendaVotingID: 0,
           subAgendaUrlFieldRadio: "",
           subAgendarequestContributorUrlName: "",
           subAgendarequestContributorEnterNotes: "",
@@ -188,7 +200,14 @@ const Agenda = ({
   };
 
   const handleNextAgenda = () => {
+    setMeetingMaterial(true);
+    setAgenda(false);
     // setsavedViewAgenda(true);
+  };
+
+  const handlePerviousAgenda = () => {
+    setAgenda(false);
+    setParticipants(true);
   };
 
   const EnableAgendaView = () => {
@@ -196,7 +215,38 @@ const Agenda = ({
     // setagendaViewPage(true);
     dispatch(showCancelModalAgenda(true));
   };
-
+  const handlePublishClick = () => {
+    let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    dispatch(
+      UpdateOrganizersMeeting(
+        navigate,
+        Data,
+        t,
+        5,
+        setPublishState,
+        setAdvanceMeetingModalID,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        setSceduleMeeting
+      )
+    );
+    // setSceduleMeeting(false);
+  };
+  const handleCancelClick = async () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setSceduleMeeting(false);
+  };
   useEffect(() => {
     let getAllData = {
       MeetingID: currentMeetingIDLS !== null ? currentMeetingIDLS : 0,
@@ -828,24 +878,51 @@ const Agenda = ({
                 <Button
                   text={t("Cancel")}
                   className={styles["Agenda_Buttons"]}
-                  onClick={EnableAgendaView}
-                />
-                <Button
-                  onClick={saveAgendaData}
-                  text={t("Save")}
-                  className={styles["Agenda_Buttons"]}
+                  onClick={handleCancelClick}
                 />
                 {/* 
                 <Button
                   text={t("Save-and-publish")}
                   className={styles["Agenda_Buttons"]}
                 /> */}
-
+                <Button
+                  text={t("Previous")}
+                  className={styles["Agenda_Buttons"]}
+                  onClick={handlePerviousAgenda}
+                />
                 <Button
                   text={t("Next")}
-                  className={styles["Save_Agenda_btn"]}
+                  className={styles["Agenda_Buttons"]}
                   onClick={handleNextAgenda}
                 />
+
+                <Button
+                  onClick={saveAgendaData}
+                  text={t("Save")}
+                  className={styles["Agenda_Buttons"]}
+                />
+                {Number(ediorRole.status) === 11 ||
+                Number(ediorRole.status) === 12 ? (
+                  <Button
+                    disableBtn={Number(currentMeeting) === 0 ? true : false}
+                    text={t("Publish")}
+                    className={styles["Save_Agenda_btn"]}
+                    onClick={handlePublishClick}
+                  />
+                ) : isEditMeeting === true ? null : (
+                  <Button
+                    disableBtn={Number(currentMeeting) === 0 ? true : false}
+                    text={t("Publish")}
+                    className={styles["Save_Agenda_btn"]}
+                    onClick={handlePublishClick}
+                  />
+                )}
+
+                {/* <Button
+                  text={t("Publish")}
+                  className={styles["Save_Agenda_btn"]}
+                  onClick={handlePublishClick}
+                /> */}
               </Col>
             </Row>
           </section>
