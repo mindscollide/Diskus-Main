@@ -226,8 +226,6 @@ const Minutes = ({
     },
   };
 
-  console.log(currentMeeting, "currentMeetingIDcurrentMeetingID");
-
   useEffect(() => {
     let Data = {
       MeetingID: currentMeeting,
