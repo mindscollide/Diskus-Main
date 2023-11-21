@@ -15,6 +15,7 @@ import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import {
   showCancelActions,
   showRemovedTableModal,
+  showUnsavedActionsModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getMeetingTaskMainApi,
@@ -254,6 +255,7 @@ const Actions = ({
 
   const handleCreateTaskButton = () => {
     setCreateaTask(true);
+    dispatch(showUnsavedActionsModal(false));
   };
 
   const handleCancelActions = () => {
