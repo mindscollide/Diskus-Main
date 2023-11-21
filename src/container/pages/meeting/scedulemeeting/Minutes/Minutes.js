@@ -486,13 +486,6 @@ const Minutes = ({
   };
 
   const handleGeneralButtonClick = () => {
-    let Data = {
-      MeetingID: currentMeeting,
-    };
-    dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
-    return () => {
-      setFileAttachments([]);
-    };
     setAgenda(false);
     setGeneral(true);
   };
