@@ -111,3 +111,19 @@
 .HeightDefined {
   height: 49vh !important;
 }
+
+.Action-Date-title {
+  font-family: "MontserratSemiBold-600" !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  margin-top: 5px;
+}
+
+.action-delete-cursor {
+  cursor: pointer !important;
+}

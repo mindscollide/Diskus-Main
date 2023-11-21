@@ -418,7 +418,7 @@ const saveTaskDocumentsAndAssigneesApi = (
             let NewData = {
               ToDoID: Number(Data.TaskID),
               UpdateFileList: Data.TasksAttachments.map((data, index) => {
-                return { PK_FileID: data.FK_TID };
+                return { PK_FileID: Number(data.OriginalAttachmentName) };
               }),
             };
             dispatch(
@@ -501,7 +501,8 @@ const saveMeetingActionsDocuments = (
   value,
   setCreateaTask,
   newData,
-  setCreateTaskID
+  setCreateTaskID,
+  currentMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -565,6 +566,11 @@ const saveMeetingActionsDocuments = (
             }
             // Delete Task from Meetin Actions
             if (value === 8) {
+              let dataDelete = {
+                TaskID: Data.ToDoID,
+                MeetingID: Number(currentMeeting),
+              };
+              dispatch(removeMapMainApi(navigate, t, dataDelete));
             }
           } else if (
             response.data.responseResult.responseMessage
@@ -647,6 +653,7 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
                 )
             ) {
               dispatch(removeMapTaskSuccess(t("Delete-successfully")));
+
               let userID = localStorage.getItem("userID");
               let meetingpageRow = localStorage.getItem("MeetingPageRows");
               let meetingPageCurrent = parseInt(
@@ -704,4 +711,5 @@ export {
   mapTaskAgendaMainApi,
   saveTaskDocumentsAndAssigneesApi,
   removeMapMainApi,
+  saveMeetingActionsDocuments,
 };

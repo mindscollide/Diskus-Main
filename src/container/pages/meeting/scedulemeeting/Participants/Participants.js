@@ -234,10 +234,10 @@ const Participants = ({
     },
     {
       title: t("Participant-title"),
-      dataIndex: "Title",
-      key: "Title",
+      dataIndex: "participantTitle",
+      key: "participantTitle",
       width: "120px",
-
+      align: "center",
       render: (text, record) => {
         if (
           ((Number(ediorRole.status) === 9 ||
@@ -247,7 +247,8 @@ const Participants = ({
             isEditMeeting === true) ||
           (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
-          return { text };
+          console.log("recordrecord", record);
+          return <p>{record.Title}</p>;
         } else {
           return (
             <Row>
@@ -277,12 +278,11 @@ const Participants = ({
 
     {
       title: t("Role"),
-      dataIndex: "Role",
-      key: "Role",
+      dataIndex: "participantRole",
+      key: "participantRole",
       width: "120px",
 
       render: (text, record) => {
-        let participantRole = record.participantRole.participantRole;
         if (
           ((Number(ediorRole.status) === 9 ||
             Number(ediorRole.status) === 8 ||
@@ -291,7 +291,7 @@ const Participants = ({
             isEditMeeting === true) ||
           (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
-          return { participantRole };
+          return <p>{record?.participantRole?.participantRole}</p>;
         } else {
           return (
             <Row>
@@ -306,8 +306,8 @@ const Participants = ({
                     value={
                       record.isComingApi === true
                         ? {
-                            value: record.participantRole.participantRoleID,
-                            label: record.participantRole.participantRole,
+                            value: record?.participantRole?.participantRoleID,
+                            label: record?.participantRole?.participantRole,
                           }
                         : record.selectedOption
                     }
