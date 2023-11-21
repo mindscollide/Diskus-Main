@@ -3751,7 +3751,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
               await dispatch(
                 showGetAllAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -3761,7 +3761,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
                   "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_02".toLowerCase()
                 )
             ) {
-              dispatch(showGetAllAgendaWiseMinutesFailed(t("No-record-found")));
+              dispatch(showGetAllAgendaWiseMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
