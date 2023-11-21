@@ -744,7 +744,7 @@ const CreateTask = ({
                                   : `${styles["errorMessage-inLogin_hidden"]}`
                               }
                             >
-                              {t("Please-select-assignees")}
+                              {t("Description-is-required")}
                             </p>
                           </Col>
                         </Row>
