@@ -493,7 +493,7 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
                     <Row className={styles["Inner_Send_class"]}>
                       <Col lg={10} md={10} sm={10}>
                         <span className={styles["Time_Class"]}>
-                          None of the above
+                          {t("None-of-the-above")}
                         </span>
                       </Col>
                       <Col lg={2} md={2} sm={2}>

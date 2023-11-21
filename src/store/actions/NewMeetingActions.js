@@ -3046,6 +3046,7 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               let MeetingDocs = {
                 MDID: currentMeeting,
               };
+              console.log(MeetingDocs, "MeetingDocsMeetingDocs");
               dispatch(
                 DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
               );
@@ -3148,13 +3149,13 @@ const uploadDocumentsMeetingMinutesApi = (
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
-              dispatch(
+              await dispatch(
                 uploadDocument_success(
                   response.data.responseResult,
                   t("Document-uploaded-successfully")
                 )
               );
-              dispatch(
+              await dispatch(
                 saveFilesMeetingMinutesApi(
                   navigate,
                   t,
@@ -3270,7 +3271,10 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
                 pK_FileID: response.data.responseResult.fileID,
                 DisplayAttachmentName: data.displayFileName,
               };
-              newFolder.push(newData);
+              newFolder.push({
+                pK_FileID: response.data.responseResult.fileID,
+                DisplayAttachmentName: data.displayFileName,
+              });
               await dispatch(
                 saveFiles_success(newData, t("Files-saved-successfully"))
               );
@@ -3377,7 +3381,9 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
               let Meet = {
                 MeetingID: Number(Data.FK_MDID),
               };
-              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
+              dispatch(
+                getAllGeneralMinutesApiFunc(navigate, t, Meet, currentMeeting)
+              );
               dispatch(ShowADDGeneralMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
@@ -3754,7 +3760,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
               await dispatch(
                 showGetAllAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  ""
+                  t("Record-found")
                 )
               );
             } else if (
@@ -3764,7 +3770,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
                   "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_02".toLowerCase()
                 )
             ) {
-              dispatch(showGetAllAgendaWiseMinutesFailed(""));
+              dispatch(showGetAllAgendaWiseMinutesFailed(t("No-record-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4101,7 +4107,14 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
                 MeetingID: currentMeeting,
               };
 
-              dispatch(getAllGeneralMinutesApiFunc(navigate, t, DelMeet));
+              dispatch(
+                getAllGeneralMinutesApiFunc(
+                  navigate,
+                  t,
+                  DelMeet,
+                  currentMeeting
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
