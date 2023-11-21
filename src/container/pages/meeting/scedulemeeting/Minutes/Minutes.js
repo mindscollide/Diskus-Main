@@ -502,7 +502,7 @@ const Minutes = ({
   const documentUploadingFunc = async (minuteID) => {
     let newfile = [...previousFileIDs];
     const uploadPromises = fileForSend.map(async (newData) => {
-      await dispatch(
+      dispatch(
         uploadDocumentsMeetingMinutesApi(
           navigate,
           t,
