@@ -520,6 +520,7 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId
                   )
                 );
+                setSceduleMeeting(false);
               } else if (viewValue === 3) {
                 setorganizers(true);
                 setmeetingDetails(false);
@@ -2954,10 +2955,10 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
                   t("Record-saved")
                 )
               );
-              let Meet = {
-                MeetingID: Number(currentMeeting),
-              };
-              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
+              // let Meet = {
+              //   MeetingID: Number(currentMeeting),
+              // };
+              // dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_AddGeneralMinute_02"
@@ -3147,19 +3148,19 @@ const uploadDocumentsMeetingMinutesApi = (
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
-              await dispatch(
+              dispatch(
+                uploadDocument_success(
+                  response.data.responseResult,
+                  t("Document-uploaded-successfully")
+                )
+              );
+              dispatch(
                 saveFilesMeetingMinutesApi(
                   navigate,
                   t,
                   response.data.responseResult,
                   folderID,
                   newFolder
-                )
-              );
-              await dispatch(
-                uploadDocument_success(
-                  response.data.responseResult,
-                  t("Document-uploaded-successfully")
                 )
               );
             } else if (
@@ -3751,7 +3752,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
               await dispatch(
                 showGetAllAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -3761,7 +3762,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
                   "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_02".toLowerCase()
                 )
             ) {
-              dispatch(showGetAllAgendaWiseMinutesFailed(t("No-record-found")));
+              dispatch(showGetAllAgendaWiseMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
