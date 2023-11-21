@@ -29,7 +29,6 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
   const [pollParticipants, setPollParticipants] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
 
