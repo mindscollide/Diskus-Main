@@ -19,9 +19,11 @@ import {
 import {
   getMeetingTaskMainApi,
   removeMapMainApi,
+  saveMeetingActionsDocuments,
 } from "../../../../../store/actions/Action_Meeting";
 import AfterSaveViewTable from "./AfterSaveViewTable/AfterSaveViewTable";
 import CancelActions from "./CancelActions/CancelActions";
+import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 
 const Actions = ({
   setSceduleMeeting,
@@ -109,12 +111,22 @@ const Actions = ({
       dataIndex: "deadlineDate",
       key: "deadlineDate",
       width: "200px",
+      render: (text, record) => {
+        return (
+          <span className={styles["Action-Date-title"]}>
+            {_justShowDateformatBilling(record.deadlineDate + "000000")}
+          </span>
+        );
+      },
     },
     {
       title: t("Action"),
       dataIndex: "title",
       key: "title",
       width: "250px",
+      render: (text, record) => {
+        return <span className={styles["Action-Date-title"]}>{text}</span>;
+      },
     },
     {
       title: t("Assigned-to"),
@@ -125,7 +137,9 @@ const Actions = ({
         console.log(record, "recordrecordrecord");
         return (
           <>
-            <span>{record.taskAssignedTo[0].name}</span>
+            <span className={styles["Action-Date-title"]}>
+              {record.taskAssignedTo[0].name}
+            </span>
           </>
         );
       },
@@ -137,7 +151,9 @@ const Actions = ({
       width: "150px",
       render: (text, record) => (
         <>
-          <span>{record.status.status}</span>
+          <span className={styles["Action-Date-title"]}>
+            {record.status.status}
+          </span>
         </>
       ),
     },
@@ -151,6 +167,7 @@ const Actions = ({
             <img
               alt={"Cross"}
               src={CrossIcon}
+              className={styles["action-delete-cursor"]}
               onClick={() => deleteActionHandler(record)}
             />
           </i>
@@ -161,11 +178,28 @@ const Actions = ({
 
   const deleteActionHandler = (record) => {
     console.log(record, "recordrecordrecordrecord");
-    let dataDelete = {
-      TaskID: record.pK_TID,
-      MeetingID: Number(currentMeeting),
+    let NewData = {
+      ToDoID: Number(record.pK_TID),
+      UpdateFileList: [],
     };
-    dispatch(removeMapMainApi(navigate, t, dataDelete));
+    let newData = {};
+    dispatch(
+      saveMeetingActionsDocuments(
+        navigate,
+        NewData,
+        t,
+        8,
+        setCreateaTask,
+        newData,
+        0,
+        currentMeeting
+      )
+    );
+    // let dataDelete = {
+    //   TaskID: record.pK_TID,
+    //   MeetingID: Number(currentMeeting),
+    // };
+    // dispatch(removeMapMainApi(navigate, t, dataDelete));
   };
 
   useEffect(() => {
@@ -319,7 +353,7 @@ const Actions = ({
                           sm={12}
                           className="d-flex justify-content-end gap-2"
                         >
-                          {(Number(ediorRole.status) === 1 ||
+                          {/* {(Number(ediorRole.status) === 1 ||
                             Number(ediorRole.status) === 10 ||
                             Number(ediorRole.status) === 8) &&
                           ediorRole.role === "Organizer" &&
@@ -329,7 +363,7 @@ const Actions = ({
                               className={styles["CloneMeetingButton"]}
                               onClick={handleAfterViewActions}
                             />
-                          ) : null}
+                          ) : null} */}
 
                           <Button
                             text={t("Cancel")}
