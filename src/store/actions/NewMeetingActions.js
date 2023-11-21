@@ -3046,6 +3046,7 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               let MeetingDocs = {
                 MDID: currentMeeting,
               };
+              console.log(MeetingDocs, "MeetingDocsMeetingDocs");
               dispatch(
                 DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
               );
@@ -3378,7 +3379,9 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
               let Meet = {
                 MeetingID: Number(Data.FK_MDID),
               };
-              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
+              dispatch(
+                getAllGeneralMinutesApiFunc(navigate, t, Meet, currentMeeting)
+              );
               dispatch(ShowADDGeneralMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
@@ -4102,7 +4105,14 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
                 MeetingID: currentMeeting,
               };
 
-              dispatch(getAllGeneralMinutesApiFunc(navigate, t, DelMeet));
+              dispatch(
+                getAllGeneralMinutesApiFunc(
+                  navigate,
+                  t,
+                  DelMeet,
+                  currentMeeting
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
