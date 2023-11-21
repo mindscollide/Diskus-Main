@@ -520,6 +520,7 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId
                   )
                 );
+                setSceduleMeeting(false);
               } else if (viewValue === 3) {
                 setorganizers(true);
                 setmeetingDetails(false);
