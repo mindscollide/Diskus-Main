@@ -847,6 +847,7 @@ const CreateTask = ({
                                               className="d-flex align-items-center justify-content-start mt-1"
                                             >
                                               <img
+                                                alt="dragger"
                                                 draggable={false}
                                                 src={RedCrossIcon}
                                                 height="20.76px"
@@ -854,7 +855,8 @@ const CreateTask = ({
                                                 className={
                                                   styles["CrossIconClass"]
                                                 }
-                                                onClick={() => {
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
                                                   removeFileFunction(index);
                                                 }}
                                               />
