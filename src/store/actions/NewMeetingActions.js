@@ -3078,121 +3078,6 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   };
 };
 
-// Documents Upload And Save
-
-// Upload Documents Init
-const uploadDocument_init = () => {
-  return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
-  };
-};
-
-// Upload Documents Success
-const uploadDocument_success = (response, message) => {
-  return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-// Upload Documents Fail
-const uploadDocument_fail = (message) => {
-  return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
-    message: message,
-  };
-};
-
-// Upload Documents API for general Minutes
-const uploadDocumentsMeetingMinutesApi = (
-  navigate,
-  t,
-  data,
-  folderID,
-  newFolder
-) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
-  return async (dispatch) => {
-    dispatch(uploadDocument_init());
-    let form = new FormData();
-    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
-    form.append("File", data);
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            uploadDocumentsMeetingMinutesApi(
-              navigate,
-              t,
-              data,
-              folderID,
-              newFolder
-            )
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                uploadDocument_success(
-                  response.data.responseResult,
-                  t("Document-uploaded-successfully")
-                )
-              );
-              dispatch(
-                saveFilesMeetingMinutesApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  folderID,
-                  newFolder
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
-                )
-            ) {
-              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
-                )
-            ) {
-              dispatch(uploadDocument_fail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(uploadDocument_fail(t("Something-went-wrong")));
-          }
-        } else {
-          dispatch(uploadDocument_fail(t("Something-went-wrong")));
-        }
-      })
-      .catch((error) => {
-        dispatch(uploadDocument_fail(t("Something-went-wrong")));
-      });
-  };
-};
-
 // Save Files Init
 const saveFiles_init = () => {
   return {
@@ -3306,6 +3191,121 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
       .catch(() => {
         dispatch(saveFiles_fail(t("Something-went-wrong")));
         dispatch(ShowADDGeneralMinutesFailed(""));
+      });
+  };
+};
+
+// Documents Upload And Save
+
+// Upload Documents Init
+const uploadDocument_init = () => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+  };
+};
+
+// Upload Documents Success
+const uploadDocument_success = (response, message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Upload Documents Fail
+const uploadDocument_fail = (message) => {
+  return {
+    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Upload Documents API for general Minutes
+const uploadDocumentsMeetingMinutesApi = (
+  navigate,
+  t,
+  data,
+  folderID,
+  newFolder
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return async (dispatch) => {
+    dispatch(uploadDocument_init());
+    let form = new FormData();
+    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+    form.append("File", data);
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            uploadDocumentsMeetingMinutesApi(
+              navigate,
+              t,
+              data,
+              folderID,
+              newFolder
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                uploadDocument_success(
+                  response.data.responseResult,
+                  t("Document-uploaded-successfully")
+                )
+              );
+              dispatch(
+                saveFilesMeetingMinutesApi(
+                  navigate,
+                  t,
+                  response.data.responseResult,
+                  folderID,
+                  newFolder
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(uploadDocument_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(uploadDocument_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(uploadDocument_fail(t("Something-went-wrong")));
       });
   };
 };
