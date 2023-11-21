@@ -500,9 +500,9 @@ const SaveMeetingDetialsNewApiFunction = (
                 );
                 // setSceduleMeeting(false);
               } else if (viewValue === 2) {
-                if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
-                  setSceduleMeeting(false);
-                }
+                // if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
+                //   setSceduleMeeting(false);
+                // }
 
                 let MappedData = {
                   MeetingID: response.data.responseResult.meetingID,
