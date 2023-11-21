@@ -1251,7 +1251,7 @@ const FetchMeetingURLApi = (
               localStorage.setItem("callerID", 9999);
               localStorage.setItem("acceptedRoomID", match[1]);
               localStorage.setItem("activeRoomID", match[1]);
-
+              localStorage.setItem("acceptedRecipientID", currentUserID);
               dispatch(callRequestReceivedMQTT({}, ""));
               dispatch(normalizeVideoPanelFlag(true));
               dispatch(videoChatPanel(false));
