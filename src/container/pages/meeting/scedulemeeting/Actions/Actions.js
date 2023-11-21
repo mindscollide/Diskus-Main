@@ -232,20 +232,23 @@ const Actions = ({
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
     };
+
     dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
   }, []);
 
   // for pagination in Create Task
-  const handleForPagination = () => {
+  const handleForPagination = (current, pageSize) => {
     let data = {
       MeetingID: Number(currentMeeting),
       Date: actionState.Date,
       Title: actionState.Title,
       AssignedToName: actionState.AssignedToName,
       UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PageNumber: Number(current),
+      Length: Number(pageSize),
     };
+    localStorage.setItem("MeetingPageRows", pageSize);
+    localStorage.setItem("MeetingPageCurrent", current);
     dispatch(getMeetingTaskMainApi(navigate, t, data));
   };
 
@@ -355,7 +358,7 @@ const Actions = ({
                             <Table
                               column={ActionsColoumn}
                               scroll={{ y: "40vh" }}
-                              pagination={true}
+                              pagination={false}
                               className="Polling_table"
                               rows={actionsRows}
                             />
@@ -385,7 +388,7 @@ const Actions = ({
                                       current={
                                         meetingPageCurrent !== null &&
                                         meetingPageCurrent !== undefined
-                                          ? meetingPageCurrent
+                                          ? Number(meetingPageCurrent)
                                           : 1
                                       }
                                       showSizer={true}

@@ -482,12 +482,6 @@ const SaveMeetingDetialsNewApiFunction = (
                 response.data.responseResult.meetingID
               );
               setCurrentMeetingID(response.data.responseResult.meetingID);
-              // let meetingData = {
-              //   MeetingID: response.data.responseResult.meetingID,
-              // };
-              // dispatch(
-              //   GetAdvanceMeetingAgendabyMeetingID(meetingData, navigate, t)
-              // );
 
               if (viewValue === 1) {
                 let MappedData = {
@@ -504,8 +498,12 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId
                   )
                 );
-                setSceduleMeeting(false);
+                // setSceduleMeeting(false);
               } else if (viewValue === 2) {
+                if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
+                  setSceduleMeeting(false);
+                }
+
                 let MappedData = {
                   MeetingID: response.data.responseResult.meetingID,
                   MeetingTitle: meetingDetails.MeetingTitle,
@@ -520,7 +518,7 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId
                   )
                 );
-                setSceduleMeeting(false);
+                // setSceduleMeeting(false);
               } else if (viewValue === 3) {
                 setorganizers(true);
                 setmeetingDetails(false);

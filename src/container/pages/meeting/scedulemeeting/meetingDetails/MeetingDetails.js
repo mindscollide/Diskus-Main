@@ -785,11 +785,16 @@ const MeetingDetails = ({
 
   // Showing The reposnse messege
   useEffect(() => {
+    console.log(
+      ResponseMessage,
+      "ResponseMessageResponseMessageResponseMessage"
+    );
     if (
       ResponseMessage !== "" &&
       ResponseMessage !== t("Record-found") &&
       ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found")
+      ResponseMessage !== t("No-records-found") &&
+      ResponseMessage !== undefined
     ) {
       setOpen({
         ...open,
