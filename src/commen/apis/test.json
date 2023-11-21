@@ -1,24 +1,48 @@
-{
-  "MeetingDetails": {
-    "MeetingID": 2160,
-    "MeetingTitle": "Schedule New Meeting 16 Nov",
-    "MeetingType": { "PK_MTID": 14, "Type": "Committee Meeting" },
-    "Location": "Gulshan",
-    "Description": "NextModal\n          setmeetingDetailssetmeetingDetails",
-    "IsVideoChat": true,
-    "IsTalkGroup": true,
-    "OrganizationId": 440,
-    "MeetingDates": [
-      { "MeetingDate": "20231123", "StartTime": "091436", "EndTime": "105936" },
-      { "MeetingDate": "20231124", "StartTime": "085938", "EndTime": "105936" },
-      { "MeetingDate": "20231125", "StartTime": "065950", "EndTime": "075949" }
-    ],
-    "MeetingReminders": [1, 2, 3],
-    "Notes": "NextModal ",
-    "AllowRSVP": true,
-    "NotifyOrganizerOnRSVP": true,
-    "ReucurringMeetingID": 1,
-    "VideoURL": "https://portal.letsdiskus.com/Video?RoomID=5682AD",
-    "MeetingStatusID": 11
+[
+  {
+    "userID": 987,
+    "userName": "ErenFive",
+    "designation": "Data Engineer",
+    "userEmail": "erenfive@yopmail.com",
+    "title": "Laptop meeting ",
+    "selectedProposedDates": [
+      {
+        "proposedDateID": 478,
+        "proposedDate": "20231124",
+        "startTime": "123019",
+        "endTime": "163021",
+        "isSelected": true
+      },
+      {
+        "proposedDateID": 479,
+        "proposedDate": "20231127",
+        "startTime": "153030",
+        "endTime": "173033",
+        "isSelected": false
+      }
+    ]
+  },
+  {
+    "userID": 981,
+    "userName": "ErenFive",
+    "designation": "Data Engineer",
+    "userEmail": "erenfive@yopmail.com",
+    "title": "Laptop meeting ",
+    "selectedProposedDates": [
+      {
+        "proposedDateID": 478,
+        "proposedDate": "20231124",
+        "startTime": "123019",
+        "endTime": "163021",
+        "isSelected": true
+      },
+      {
+        "proposedDateID": 479,
+        "proposedDate": "20231127",
+        "startTime": "153030",
+        "endTime": "173033",
+        "isSelected": false
+      }
+    ]
   }
-}
+]

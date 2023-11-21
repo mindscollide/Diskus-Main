@@ -57,6 +57,7 @@ import {
 import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
 
 const Organizers = ({
   setAgendaContributors,
@@ -75,6 +76,11 @@ const Organizers = ({
   ediorRole,
   setEditMeeting,
   isEditMeeting,
+  setPublishState,
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setCalendarViewModal,
+  setEditFlag,
 }) => {
   const { t } = useTranslation();
 
@@ -90,7 +96,7 @@ const Organizers = ({
   const [flag, setFlag] = useState(2);
   const [prevFlag, setprevFlag] = useState(2);
   const [editState, setEditState] = useState(false);
-  const [editFlag, setEditFlag] = useState(0);
+  // const [editFlag, setEditFlag] = useState(0);
   const [notificationMessage, setNotificationMessage] = useState("");
   console.log(notificationMessage, "notificationMessagenotificationMessage");
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
@@ -414,6 +420,12 @@ const Organizers = ({
     },
   ];
 
+  // Filter columns based on the RSVP Condition
+  const finalColumns =
+    Number(ediorRole.status) === 1
+      ? MeetingColoumns.filter((column) => column.key !== "rsvp")
+      : MeetingColoumns;
+
   const sendRecentNotification = (record) => {
     if (
       (Number(ediorRole.status) === 9 ||
@@ -479,18 +491,69 @@ const Organizers = ({
     // dispatch(SaveMeetingOrganizers(navigate, transformedData, t))
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
-    let Data = { meetingID: currentMeeting, StatusID: 1 };
-    dispatch(UpdateOrganizersMeeting(navigate, Data, t, currentMeeting));
+    let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    dispatch(
+      UpdateOrganizersMeeting(
+        navigate,
+        Data,
+        t,
+        5,
+        setPublishState,
+        setAdvanceMeetingModalID,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        setSceduleMeeting
+      )
+    );
     // setorganizers(false)
     // setAgendaContributors(true)
     setRowsData([]);
   };
 
   const nextTabOrganizer = () => {
-    // setviewOrganizers(!viewOrganizers)
+    // const allMeetingOrganizers =
+    //   MeetingOrganizersReducer.AllMeetingOrganizersData.meetingOrganizers;
+    // let newrowsData = rowsData.map((newData, index) => {
+    //   return {
+    //     userID: newData.userID,
+    //     userName: newData.userName,
+    //     email: newData.email,
+    //     organizerTitle: newData.organizerTitle,
+    //     isPrimaryOrganizer: newData.isPrimaryOrganizer,
+    //     rsvp: newData.rsvp,
+    //     meetingID: Number(currentMeeting),
+    //     isOrganizerNotified: newData.isOrganizerNotified,
+    //     userProfilePicture: newData.userProfilePicture,
+    //   };
+    // });
+
+    // let checkValidation =
+    //   allMeetingOrganizers.length === newrowsData.length &&
+    //   allMeetingOrganizers.every((item, index) =>
+    //     deepEqual(item, newrowsData[index])
+    //   );
+    // if (checkValidation) {
+    //   setAgendaContributors(true);
+    //   setmeetingDetails(false);
+    //   setorganizers(false);
+    //   setParticipants(false);
+    //   setAgenda(false);
+    //   setMinutes(false);
+    //   setactionsPage(false);
+    //   setAttendance(false);
+    //   setPolls(false);
+    //   setMeetingMaterial(false);
+    //   setRowsData([]);
+    //   dispatch(saveMeetingFlag(false));
+    //   dispatch(editMeetingFlag(false));
+    // } else {
+    //   dispatch(ShowNextConfirmationModal(true));
+    // }
+    setviewOrganizers(!viewOrganizers);
     // let Data = { meetingID: currentMeeting, StatusID: 1 };
     // dispatch(UpdateOrganizersMeeting(navigate, Data, t));
-    // setRowsData([]);
+    setRowsData([]);
     // dispatch(ShowNextConfirmationModal(true));
     setAgendaContributors(true);
     setmeetingDetails(false);
@@ -795,6 +858,10 @@ const Organizers = ({
     dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
     dispatch(uploadDocument_success(null, ""));
     dispatch(getAllVotingResultDisplay_success([], ""));
+    return () => {
+      dispatch(saveMeetingFlag(false));
+      dispatch(editMeetingFlag(false));
+    };
   }, []);
 
   return (
@@ -817,7 +884,7 @@ const Organizers = ({
                     <Row className="d-flex align-items-center gap-2">
                       <Col lg={12} md={12} sm={12}>
                         <Button
-                          text={"Cancel"}
+                          text={t("Cancel")}
                           className={styles["publish_button_Organization"]}
                           style={{ marginRight: "10px" }}
                           onClick={handleCancelEdit}
@@ -837,7 +904,7 @@ const Organizers = ({
                     <Row className="d-flex align-items-center gap-2">
                       <Col lg={12} md={12} sm={12}>
                         <Button
-                          text={"Cancel"}
+                          text={t("Cancel")}
                           className={styles["publish_button_Organization"]}
                           style={{ marginRight: "10px" }}
                           onClick={handleCancelEdit}
@@ -885,7 +952,7 @@ const Organizers = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table
-                  column={MeetingColoumns}
+                  column={finalColumns}
                   scroll={{ y: "62vh" }}
                   pagination={false}
                   className="Polling_table"
@@ -917,7 +984,7 @@ const Organizers = ({
                     className={styles["publish_button_Organization"]}
                     onClick={nextTabOrganizer}
                   />
-                  {(Number(ediorRole.status) === 9 ||
+                  {/* {(Number(ediorRole.status) === 9 ||
                     Number(ediorRole.status) === 8 ||
                     Number(ediorRole.status) === 10) &&
                   ediorRole.role === "Organizer" &&
@@ -928,7 +995,31 @@ const Organizers = ({
                       className={styles["Next_Organization"]}
                       onClick={handlePublishButton}
                     />
+                  )} */}
+                  {Number(ediorRole.status) === 11 ||
+                  Number(ediorRole.status) === 12 ? (
+                    <Button
+                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handlePublishButton}
+                    />
+                  ) : isEditMeeting === true ? null : (
+                    <Button
+                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handlePublishButton}
+                    />
                   )}
+                  {/* {Number(ediorRole.status) === 11 ||
+                  Number(ediorRole.status) === 12 ? (
+                    <Button
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handlePublishButton}
+                    />
+                  ) : null} */}
                 </section>
               </Col>
             </Row>

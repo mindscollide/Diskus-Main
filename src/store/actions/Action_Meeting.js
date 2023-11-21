@@ -428,7 +428,8 @@ const saveTaskDocumentsAndAssigneesApi = (
                 t,
                 value,
                 setShow,
-                newData
+                newData,
+                setCreateTaskID
               )
             );
           } else if (
@@ -560,6 +561,7 @@ const saveMeetingActionsDocuments = (
                   setCreateTaskID
                 )
               );
+              setCreateTaskID(0);
             }
             // Delete Task from Meetin Actions
             if (value === 8) {
@@ -597,10 +599,9 @@ const removeMapTaskInit = () => {
 };
 
 // map task with meeting agenda Success
-const removeMapTaskSuccess = (response, message) => {
+const removeMapTaskSuccess = (message) => {
   return {
     type: actions.REMOVE_TASK_MEETING_MAP_SUCCESS,
-    response: response,
     message: message,
   };
 };
@@ -645,12 +646,23 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
                   "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                removeMapTaskSuccess(
-                  response.data.responseResult.responseMessage,
-                  t("Data-inserted-successfully")
-                )
+              dispatch(removeMapTaskSuccess(t("Delete-successfully")));
+              let userID = localStorage.getItem("userID");
+              let meetingpageRow = localStorage.getItem("MeetingPageRows");
+              let meetingPageCurrent = parseInt(
+                localStorage.getItem("MeetingPageCurrent")
               );
+              let meetingTaskData = {
+                MeetingID: Number(dataDelete.MeetingID),
+                Date: "",
+                Title: "",
+                AssignedToName: "",
+                UserID: Number(userID),
+                PageNumber:
+                  meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+                Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+              };
+              dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -658,7 +670,7 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
                   "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_02".toLowerCase()
                 )
             ) {
-              dispatch(removeMapTaskFail(t("Failed-to-insert-record")));
+              dispatch(removeMapTaskFail(t("Failed-to-delete-record")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -1623,5 +1623,8 @@
   "Notification-sent-successfully": "Notification Sent Successfully",
   "No-Participant": "No Participant",
   "Video-session-enabled": "Video session enabled",
+  "Delete-successfully": "Delete Successfully",
+  "Failed-to-delete-record": "Failed to delete record",
+  "Update-successful": "Update Successful",
   "Join-Video-Call": "Join Video Call"
 }

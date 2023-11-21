@@ -16,6 +16,7 @@ import {
   ClearMessegeMeetingdetails,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
+  showGetAllMeetingDetialsInit,
 } from "../../../../../store/actions/NewMeetingActions";
 import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
 import { useSelector } from "react-redux";
@@ -95,15 +96,16 @@ const ViewMeetingDetails = ({
       value: 0,
       label: "",
     },
-    Location: "",
     IsVideoCall: false,
   });
+
   useEffect(() => {
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
   }, []);
+
   const handleUpdateNext = () => {
     setmeetingDetails(false);
     setorganizers(true);
@@ -151,6 +153,8 @@ const ViewMeetingDetails = ({
     MeetingID: Number(advanceMeetingModalID),
     StatusID: 9,
   };
+
+  console.log(NewMeetingreducer.Loading, "NewMeetingreducerNewMeetingreducer");
   // Showing The reposnse messege
   useEffect(() => {
     if (

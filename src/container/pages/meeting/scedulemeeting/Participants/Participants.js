@@ -3,6 +3,8 @@ import styles from "./Participants.module.css";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
 import addmore from "../../../../../assets/images/addmore.png";
+import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
+import NORSVP from "../../../../../assets/images/No-RSVP.png";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { Col, Row } from "react-bootstrap";
 import {
@@ -43,6 +45,7 @@ import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
 import { useEffect } from "react";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 
 const Participants = ({
   setParticipants,
@@ -55,6 +58,11 @@ const Participants = ({
   ediorRole,
   setEditMeeting,
   isEditMeeting,
+  setPublishState,
+  setAdvanceMeetingModalID,
+  setViewFlag,
+  setEditFlag,
+  setCalendarViewModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -86,8 +94,23 @@ const Participants = ({
 
   // handling save and next button
   const handleNextButton = () => {
-    setParticipants(false);
-    setAgenda(true);
+    let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    dispatch(
+      UpdateOrganizersMeeting(
+        navigate,
+        Data,
+        t,
+        5,
+        setPublishState,
+        setAdvanceMeetingModalID,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        setSceduleMeeting
+      )
+    );
+    // setParticipants(false);
+    // setAgenda(true);
   };
 
   //For menu Portal of the React select
@@ -207,13 +230,13 @@ const Participants = ({
       title: t("Email"),
       dataIndex: "email",
       key: "email",
-      width: "80px",
+      width: "120px",
     },
     {
       title: t("Participant-title"),
       dataIndex: "Title",
       key: "Title",
-      width: "80px",
+      width: "120px",
 
       render: (text, record) => {
         if (
@@ -256,7 +279,7 @@ const Participants = ({
       title: t("Role"),
       dataIndex: "Role",
       key: "Role",
-      width: "80px",
+      width: "120px",
 
       render: (text, record) => {
         let participantRole = record.participantRole.participantRole;
@@ -295,6 +318,36 @@ const Participants = ({
                 </>
               </Col>
             </Row>
+          );
+        }
+      },
+    },
+
+    {
+      title: t("RSVP"),
+      dataIndex: "rsvp",
+      key: "rsvp",
+      width: "120px",
+      render: (text, record) => {
+        if (record.isRSVP === true) {
+          return (
+            <img
+              draggable={false}
+              src={rspvGreenIcon}
+              height="30px"
+              width="30px"
+              alt=""
+            />
+          );
+        } else {
+          return (
+            <img
+              draggable={false}
+              src={NORSVP}
+              height="30px"
+              width="30px"
+              alt=""
+            />
           );
         }
       },
@@ -346,6 +399,12 @@ const Participants = ({
       },
     },
   ];
+
+  // Filter columns based on the RSVP Condition
+  const finalColumns =
+    Number(ediorRole.status) === 1
+      ? ParticipantsColoumn.filter((column) => column.key !== "rsvp")
+      : ParticipantsColoumn;
 
   //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
@@ -536,7 +595,7 @@ const Participants = ({
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Table
-                  column={ParticipantsColoumn}
+                  column={finalColumns}
                   scroll={{ y: "42vh" }}
                   pagination={false}
                   locale={{
@@ -637,7 +696,7 @@ const Participants = ({
                     className={styles["Cancel_Organization"]}
                     onClick={nextTabOrganizer}
                   />
-                  {((Number(ediorRole.status) === 9 ||
+                  {/* {((Number(ediorRole.status) === 9 ||
                     Number(ediorRole.status) === 8 ||
                     Number(ediorRole.status) === 10) &&
                     ediorRole.role === "Organizer" &&
@@ -645,6 +704,22 @@ const Participants = ({
                   (ediorRole.role === "Agenda Contributor" &&
                     isEditMeeting === true) ? null : (
                     <Button
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleNextButton}
+                    />
+                  )} */}
+                  {Number(ediorRole.status) === 11 ||
+                  Number(ediorRole.status) === 12 ? (
+                    <Button
+                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      text={t("Publish")}
+                      className={styles["Next_Organization"]}
+                      onClick={handleNextButton}
+                    />
+                  ) : isEditMeeting === true ? null : (
+                    <Button
+                      disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Publish")}
                       className={styles["Next_Organization"]}
                       onClick={handleNextButton}
