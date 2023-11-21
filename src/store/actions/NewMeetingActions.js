@@ -3078,123 +3078,6 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   };
 };
 
-// Save Files Init
-const saveFiles_init = () => {
-  return {
-    type: actions.SAVEFILES_DATAROOM_INIT,
-  };
-};
-
-// Save Files Success
-const saveFiles_success = (response, message) => {
-  return {
-    type: actions.SAVEFILES_DATAROOM_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-// Save Files Fail
-const saveFiles_fail = (message) => {
-  return {
-    type: actions.SAVEFILES_DATAROOM_FAIL,
-    message: message,
-  };
-};
-
-// Save Files API for genral Minutes
-const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let creatorID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
-  let Data = {
-    FolderID: folderID !== null ? folderID : 0,
-    Files: [
-      {
-        DisplayFileName: data.displayFileName,
-        DiskusFileNameString: data.diskusFileName,
-        ShareAbleLink: data.shareAbleLink,
-        FK_UserID: JSON.parse(creatorID),
-        FK_OrganizationID: JSON.parse(organizationID),
-        fileSizeOnDisk: Number(data.fileSizeOnDisk),
-        FileSize: Number(data.fileSize),
-      },
-    ],
-    UserID: JSON.parse(creatorID),
-    Type: 0,
-  };
-  return async (dispatch) => {
-    dispatch(saveFiles_init());
-    let form = new FormData();
-    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t));
-          dispatch(saveFilesMeetingMinutesApi(navigate, t, data, newFolder));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
-                )
-            ) {
-              let newData = {
-                pK_FileID: response.data.responseResult.fileID,
-                DisplayAttachmentName: data.displayFileName,
-              };
-              newFolder.push(newData);
-              await dispatch(
-                saveFiles_success(newData, t("Files-saved-successfully"))
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
-                )
-            ) {
-              dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
-              dispatch(ShowADDGeneralMinutesFailed(""));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
-                )
-            ) {
-              dispatch(ShowADDGeneralMinutesFailed(""));
-
-              dispatch(saveFiles_fail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(ShowADDGeneralMinutesFailed(""));
-
-            dispatch(saveFiles_fail(t("Something-went-wrong")));
-          }
-        } else {
-          dispatch(ShowADDGeneralMinutesFailed(""));
-
-          dispatch(saveFiles_fail(t("Something-went-wrong")));
-        }
-      })
-      .catch(() => {
-        dispatch(saveFiles_fail(t("Something-went-wrong")));
-        dispatch(ShowADDGeneralMinutesFailed(""));
-      });
-  };
-};
-
 // Documents Upload And Save
 
 // Upload Documents Init
@@ -3271,7 +3154,7 @@ const uploadDocumentsMeetingMinutesApi = (
                   t("Document-uploaded-successfully")
                 )
               );
-              dispatch(
+              await dispatch(
                 saveFilesMeetingMinutesApi(
                   navigate,
                   t,
@@ -3306,6 +3189,126 @@ const uploadDocumentsMeetingMinutesApi = (
       })
       .catch((error) => {
         dispatch(uploadDocument_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Save Files Init
+const saveFiles_init = () => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_INIT,
+  };
+};
+
+// Save Files Success
+const saveFiles_success = (response, message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Save Files Fail
+const saveFiles_fail = (message) => {
+  return {
+    type: actions.SAVEFILES_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Save Files API for genral Minutes
+const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let creatorID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+  let Data = {
+    FolderID: folderID !== null ? folderID : 0,
+    Files: [
+      {
+        DisplayFileName: data.displayFileName,
+        DiskusFileNameString: data.diskusFileName,
+        ShareAbleLink: data.shareAbleLink,
+        FK_UserID: JSON.parse(creatorID),
+        FK_OrganizationID: JSON.parse(organizationID),
+        fileSizeOnDisk: Number(data.fileSizeOnDisk),
+        FileSize: Number(data.fileSize),
+      },
+    ],
+    UserID: JSON.parse(creatorID),
+    Type: 0,
+  };
+  return async (dispatch) => {
+    dispatch(saveFiles_init());
+    let form = new FormData();
+    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t));
+          dispatch(saveFilesMeetingMinutesApi(navigate, t, data, newFolder));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                )
+            ) {
+              let newData = {
+                pK_FileID: response.data.responseResult.fileID,
+                DisplayAttachmentName: data.displayFileName,
+              };
+              newFolder.push({
+                pK_FileID: response.data.responseResult.fileID,
+                DisplayAttachmentName: data.displayFileName,
+              });
+              await dispatch(
+                saveFiles_success(newData, t("Files-saved-successfully"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                )
+            ) {
+              dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
+              dispatch(ShowADDGeneralMinutesFailed(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                )
+            ) {
+              dispatch(ShowADDGeneralMinutesFailed(""));
+
+              dispatch(saveFiles_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(ShowADDGeneralMinutesFailed(""));
+
+            dispatch(saveFiles_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(ShowADDGeneralMinutesFailed(""));
+
+          dispatch(saveFiles_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch(() => {
+        dispatch(saveFiles_fail(t("Something-went-wrong")));
+        dispatch(ShowADDGeneralMinutesFailed(""));
       });
   };
 };
@@ -3752,7 +3755,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
               await dispatch(
                 showGetAllAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  ""
+                  t("Record-found")
                 )
               );
             } else if (
@@ -3762,7 +3765,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
                   "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_02".toLowerCase()
                 )
             ) {
-              dispatch(showGetAllAgendaWiseMinutesFailed(""));
+              dispatch(showGetAllAgendaWiseMinutesFailed(t("No-record-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

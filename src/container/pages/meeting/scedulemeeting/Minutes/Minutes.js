@@ -501,6 +501,7 @@ const Minutes = ({
 
   const documentUploadingFunc = async (minuteID) => {
     let newfile = [...previousFileIDs];
+    console.log(newfile, "newfilenewfilenewfilenewfile");
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
         uploadDocumentsMeetingMinutesApi(
@@ -527,6 +528,7 @@ const Minutes = ({
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
+    console.log(docsData, "messagesmessages");
     dispatch(
       SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
     );
