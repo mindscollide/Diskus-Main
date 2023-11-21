@@ -409,6 +409,13 @@ const MeetingDetails = ({
       newReminderData.push(meetingDetails.ReminderFrequency.value);
     }
 
+    if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyTwo.value);
+    }
+    if (meetingDetails.ReminderFrequencyThree.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
+    }
+
     rows.map((data, index) => {
       newArr.push({
         MeetingDate: data.selectedOption,
@@ -452,22 +459,23 @@ const MeetingDetails = ({
           MeetingStatusID: 11,
         },
       };
+      console.log(data, "SaveMeetingDetialsNewApiFunction");
 
-      dispatch(
-        SaveMeetingDetialsNewApiFunction(
-          navigate,
-          t,
-          data,
-          setSceduleMeeting,
-          setorganizers,
-          setmeetingDetails,
-          2,
-          setCurrentMeetingID,
-          currentMeeting,
-          meetingDetails,
-          setDataroomMapFolderId
-        )
-      );
+      // dispatch(
+      //   SaveMeetingDetialsNewApiFunction(
+      //     navigate,
+      //     t,
+      //     data,
+      //     setSceduleMeeting,
+      //     setorganizers,
+      //     setmeetingDetails,
+      //     2,
+      //     setCurrentMeetingID,
+      //     currentMeeting,
+      //     meetingDetails,
+      //     setDataroomMapFolderId
+      //   )
+      // );
       localStorage.setItem("MeetingTitle", meetingDetails.MeetingTitle);
     } else {
       seterror(true);

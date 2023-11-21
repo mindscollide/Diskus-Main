@@ -21,28 +21,5 @@
         "isSelected": false
       }
     ]
-  },
-  {
-    "userID": 981,
-    "userName": "ErenFive",
-    "designation": "Data Engineer",
-    "userEmail": "erenfive@yopmail.com",
-    "title": "Laptop meeting ",
-    "selectedProposedDates": [
-      {
-        "proposedDateID": 478,
-        "proposedDate": "20231124",
-        "startTime": "123019",
-        "endTime": "163021",
-        "isSelected": true
-      },
-      {
-        "proposedDateID": 479,
-        "proposedDate": "20231127",
-        "startTime": "153030",
-        "endTime": "173033",
-        "isSelected": false
-      }
-    ]
   }
 ]
