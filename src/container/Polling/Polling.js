@@ -884,7 +884,7 @@ const Polling = () => {
             {rows.length > 0 ? (
               <Table
                 column={PollTableColumns}
-                scroll={{ y: "65vh" }}
+                scroll={{ y: "60vh" }}
                 pagination={false}
                 className="Polling_table"
                 rows={rows}

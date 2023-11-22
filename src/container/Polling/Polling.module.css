@@ -8,6 +8,7 @@
   width: 90% !important;
   height: 91vh !important;
   margin: 0 auto !important;
+  overflow: hidden !important;
 }
 
 .Poll_Container__heading {
