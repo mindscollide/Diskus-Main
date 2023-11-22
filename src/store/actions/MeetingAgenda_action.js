@@ -585,14 +585,7 @@ const getAdvanceMeetingAgendabyMeetingID_fail = (message) => {
     message: message,
   };
 };
-const GetAdvanceMeetingAgendabyMeetingID = (
-  Data,
-  navigate,
-  t,
-  rows,
-  id,
-  flag
-) => {
+const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t, id, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAdvanceMeetingAgendabyMeetingID_init());
@@ -614,14 +607,7 @@ const GetAdvanceMeetingAgendabyMeetingID = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetAdvanceMeetingAgendabyMeetingID(
-              Data,
-              navigate,
-              t,
-              rows,
-              id,
-              flag
-            )
+            GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t, id, flag)
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -632,28 +618,39 @@ const GetAdvanceMeetingAgendabyMeetingID = (
                   "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                getAdvanceMeetingAgendabyMeetingID_success(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
-              if (flag === 1) {
-                let NewData = {
-                  AgendaID: id,
-                };
-                dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
-              } else {
-                let ID;
-                response.data.responseResult.agendaList.map((data, index) => {
-                  console.log(data.id, "responseresponseresponse");
-                  ID = data.id;
-                });
+              if (flag) {
+                if (flag === 1) {
+                  let NewData = {
+                    AgendaID: id,
+                  };
+                  dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+                } else if (flag === 2) {
+                  let ID;
+                  response.data.responseResult.agendaList.map((data, index) => {
+                    console.log(data.id, "responseresponseresponse");
+                    ID = data.id;
+                  });
 
-                let newData = {
-                  AgendaID: ID,
-                };
-                dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, newData, t));
+                  let newData = {
+                    AgendaID: ID,
+                  };
+                  dispatch(
+                    GetAllAgendaWiseMinutesApiFunc(navigate, newData, t)
+                  );
+                }
+                dispatch(
+                  getAdvanceMeetingAgendabyMeetingID_success(
+                    response.data.responseResult,
+                    t("Record-found")
+                  )
+                );
+              } else {
+                dispatch(
+                  getAdvanceMeetingAgendabyMeetingID_success(
+                    response.data.responseResult,
+                    t("Record-found")
+                  )
+                );
               }
             } else if (
               response.data.responseResult.responseMessage
