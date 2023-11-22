@@ -521,7 +521,7 @@
   "Name-is-required": "مطلوب اسم.",
   "Are-you-sure-you-want-to-delete-this-account-this-will-permanently-erase-your-account-and-your-organization-subscription-will-also-be-cancelled": "هل أنت متأكد أنك تريد حذف هذا الحساب؟ سيؤدي هذا إلى مسح حسابك نهائيًا وسيتم أيضًا إلغاء اشتراك مؤسستك!",
   "Back-to-button": "ارجع الى",
-  "Create-a-task": "قم بإنشاء مهمة",
+  "Create-a-Task": "قم بإنشاء مهمة",
   "General-settings": "الاعدادات العامة",
   "Time-zone": "وحدة زمنية",
   "Automatically-end-meeting-after": "تلقائيا إنهاء الاجتماع بعد",
@@ -1596,5 +1596,7 @@
   "Failed-to-delete-record": "Failed to delete record",
   "Update-successful": "Update Successful",
   "None-of-the-above": "None of the above",
-  "Record-Inserted": "Record Inserted"
+  "Record-Inserted": "Record Inserted",
+  "No-Agenda-found": "No Agenda Found",
+  "There-are-no-agenda": "There are No Agenda"
 }

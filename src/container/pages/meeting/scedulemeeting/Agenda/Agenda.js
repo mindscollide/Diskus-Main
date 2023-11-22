@@ -70,6 +70,9 @@ const Agenda = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
+  let folderDataRoomMeeting = Number(
+    localStorage.getItem("folderDataRoomMeeting")
+  );
   const navigate = useNavigate();
 
   const [allSavedPresenters, setAllSavedPresenters] = useState([]);
@@ -142,6 +145,50 @@ const Agenda = ({
     },
   ]);
   console.log("result Dropped files", rows);
+
+  useEffect(() => {
+    setRows({
+      ...rows,
+      iD: getRandomUniqueNumber().toString() + "A",
+      title: "",
+      agendaVotingID: 0,
+      presenterID: 0,
+      description: "",
+      presenterName: "",
+      startDate: "",
+      endDate: "",
+      selectedRadio: 1,
+      urlFieldMain: "",
+      mainNote: "",
+      requestContributorURlName: "",
+      files: [],
+      isLocked: false,
+      voteOwner: null,
+      isAttachment: false,
+      userID: 0,
+      subAgenda: [
+        {
+          subAgendaID: getRandomUniqueNumber().toString() + "A",
+          agendaVotingID: 0,
+          subTitle: "",
+          description: "",
+          presenterID: 0,
+          presenterName: "",
+          startDate: "",
+          endDate: "",
+          subSelectRadio: 1,
+          subAgendaUrlFieldRadio: "",
+          subAgendarequestContributorUrlName: "",
+          subAgendarequestContributorEnterNotes: "",
+          subfiles: [],
+          isLocked: false,
+          voteOwner: null,
+          isAttachment: false,
+          userID: 0,
+        },
+      ],
+    });
+  }, []);
 
   //Function For Adding Main Agendas
   const addRow = () => {
@@ -246,24 +293,25 @@ const Agenda = ({
     };
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSceduleMeeting(false);
+    localStorage.setItem("folderDataRoomMeeting", 0);
   };
   useEffect(() => {
     let getAllData = {
       MeetingID: currentMeetingIDLS !== null ? currentMeetingIDLS : 0,
     };
-    let getFolderIDData = {
-      MeetingID: currentMeetingIDLS,
-      MeetingTitle:
-        NewMeetingreducer.getAllMeetingDetails !== null
-          ? NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails
-              .meetingTitle
-          : meetingTitle !== null &&
-            meetingTitle !== undefined &&
-            meetingTitle !== ""
-          ? meetingTitle
-          : "",
-      IsUpdateFlow: false,
-    };
+    // let getFolderIDData = {
+    //   MeetingID: currentMeetingIDLS,
+    //   MeetingTitle:
+    //     NewMeetingreducer.getAllMeetingDetails !== null
+    //       ? NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails
+    //           .meetingTitle
+    //       : meetingTitle !== null &&
+    //         meetingTitle !== undefined &&
+    //         meetingTitle !== ""
+    //       ? meetingTitle
+    //       : "",
+    //   IsUpdateFlow: false,
+    // };
     // if (isEditMeeting === true) {
     let getMeetingData = {
       MeetingID: currentMeetingIDLS,
@@ -275,7 +323,7 @@ const Agenda = ({
     dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
     // }
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
-    dispatch(CreateUpdateMeetingDataRoomMap(navigate, t, getFolderIDData));
+    // dispatch(CreateUpdateMeetingDataRoomMap(navigate, t, getFolderIDData));
   }, []);
 
   // // Function to capitalize the first letter of a string
@@ -548,7 +596,7 @@ const Agenda = ({
             navigate,
             t,
             newData,
-            dataroomMapFolderId,
+            folderDataRoomMeeting,
             newFolder
           )
         );
@@ -745,6 +793,8 @@ const Agenda = ({
     MeetingAgendaReducer,
     DataRoomReducer
   );
+
+  console.log("dataroomMapFolderIddataroomMapFolderId", folderDataRoomMeeting);
 
   return (
     <>

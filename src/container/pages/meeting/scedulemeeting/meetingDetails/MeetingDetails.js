@@ -45,6 +45,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   convertGMTDateintoUTC,
+  createConvert,
   resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
@@ -243,14 +244,13 @@ const MeetingDetails = ({
   const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+        .padStart(2, "0")}${"00"}`;
       const updatedRows = [...rows];
       updatedRows[index].startDate = formattedTime;
       updatedRows[index].startTime = newDate;
@@ -264,14 +264,13 @@ const MeetingDetails = ({
   const handleEndDateChange = (index, date) => {
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+        .padStart(2, "0")}${"00"}`;
 
       const updatedRows = [...rows];
       updatedRows[index].endDate = formattedTime;
@@ -286,10 +285,10 @@ const MeetingDetails = ({
   const changeDateStartHandler = (date, index) => {
     let newDate = new Date(date);
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = convertGMTDateintoUTC(date);
+    let DateDate = new DateObject(date).format("YYYYMMDD");
     setMeetingDate(meetingDateValueFormat);
     const updatedRows = [...rows];
-    updatedRows[index].selectedOption = DateDate.slice(0, 8);
+    updatedRows[index].selectedOption = DateDate;
     updatedRows[index].dateForView = newDate;
     setRows(updatedRows);
   };
@@ -340,9 +339,16 @@ const MeetingDetails = ({
 
     rows.forEach((data, index) => {
       newArr.push({
-        MeetingDate: data.selectedOption,
-        StartTime: data.startDate,
-        EndTime: data.endDate,
+        MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
+          0,
+          8
+        ),
+        StartTime: createConvert(data.selectedOption + data.startDate).slice(
+          8,
+          14
+        ),
+        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
+        // EndTime: data.endDate,
       });
     });
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -416,11 +422,18 @@ const MeetingDetails = ({
       newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
     }
 
-    rows.map((data, index) => {
+    rows.forEach((data, index) => {
       newArr.push({
-        MeetingDate: data.selectedOption,
-        StartTime: data.startDate,
-        EndTime: data.endDate,
+        MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
+          0,
+          8
+        ),
+        StartTime: createConvert(data.selectedOption + data.startDate).slice(
+          8,
+          14
+        ),
+        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
+        // EndTime: data.endDate,
       });
     });
     if (
@@ -496,11 +509,18 @@ const MeetingDetails = ({
     if (meetingDetails.ReminderFrequencyThree.value !== 0) {
       newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
     }
-    rows.map((data, index) => {
+    rows.forEach((data, index) => {
       newArr.push({
-        MeetingDate: data.selectedOption,
-        StartTime: data.startDate,
-        EndTime: data.endDate,
+        MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
+          0,
+          8
+        ),
+        StartTime: createConvert(data.selectedOption + data.startDate).slice(
+          8,
+          14
+        ),
+        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
+        // EndTime: data.endDate,
       });
     });
     let recurringMeetingID =
@@ -1563,7 +1583,7 @@ const MeetingDetails = ({
                                     lg={1}
                                     md={1}
                                     sm={12}
-                                    className="d-flex justify-content-end align-items-center"
+                                    className="d-flex justify-content-center align-items-center"
                                   >
                                     <img
                                       draggable={false}

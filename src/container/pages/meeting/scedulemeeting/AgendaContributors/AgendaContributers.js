@@ -12,6 +12,8 @@ import { Button, Table, TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributorsModal";
 import { useDispatch, useSelector } from "react-redux";
+import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+
 import { useNavigate } from "react-router-dom";
 import {
   getAgendaAndVotingInfo_success,
@@ -658,6 +660,15 @@ const AgendaContributers = ({
                 <Button
                   text={t("Edit")}
                   className={styles["Edit_button"]}
+                  icon={
+                    <img
+                      draggable={false}
+                      src={EditIcon}
+                      width="11.75px"
+                      height="11.75px"
+                      alt=""
+                    />
+                  }
                   onClick={handleEditBtn}
                 />
                 <Button

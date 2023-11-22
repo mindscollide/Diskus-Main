@@ -5168,6 +5168,10 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                   ""
                 )
               );
+              localStorage.setItem(
+                "folderDataRoomMeeting",
+                response.data.responseResult.folderID
+              );
               setDataroomMapFolderId(response.data.responseResult.folderID);
             } else if (
               response.data.responseResult.responseMessage
@@ -5194,6 +5198,10 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                   ""
                 )
               );
+              localStorage.setItem(
+                "folderDataRoomMeeting",
+                response.data.responseResult.folderID
+              );
               setDataroomMapFolderId(response.data.responseResult.folderID);
             } else if (
               response.data.responseResult.responseMessage
@@ -5219,6 +5227,10 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                   response.data.responseResult,
                   t("New-mapping-created")
                 )
+              );
+              localStorage.setItem(
+                "folderDataRoomMeeting",
+                response.data.responseResult.folderID
               );
               setDataroomMapFolderId(response.data.responseResult.folderID);
             } else if (

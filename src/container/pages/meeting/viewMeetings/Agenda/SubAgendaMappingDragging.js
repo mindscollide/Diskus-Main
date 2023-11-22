@@ -518,7 +518,7 @@ const SubAgendaMappingDragging = ({
                                                     }
                                                   >
                                                     <img
-                                                      src={`data:image/jpeg;base64,${subAgendaData.userProfilePicture.displayProfilePictureName}`}
+                                                      src={`data:image/jpeg;base64,${subAgendaData?.userProfilePicture?.displayProfilePictureName}`}
                                                       className={
                                                         styles["Image"]
                                                       }

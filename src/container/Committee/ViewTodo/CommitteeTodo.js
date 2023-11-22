@@ -680,7 +680,7 @@ const CreateTodoCommittee = () => {
         <Row className="my-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end ">
             <Button
-              text={t("Create-a-task")}
+              text={t("Create-a-Task")}
               onClick={modalHandler}
               icon={<Plus width={20} height={20} fontWeight={800} />}
               className={"Create_TodoBtn_Button"}
@@ -718,7 +718,7 @@ const CreateTodoCommittee = () => {
                           md={12}
                           sm={12}
                           className={
-                            "pagination-groups-table d-flex justify-content-center"
+                            "  d-flex justify-content-center"
                           }
                         >
                           <span className="PaginationStyle-TodoList">

@@ -143,4 +143,6 @@
   background: #fff !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold" !important;
+  display: flex !important;
+  gap: 5px !important;
 }

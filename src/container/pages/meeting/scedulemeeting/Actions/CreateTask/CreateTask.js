@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./CreateTask.module.css";
-import gregorian_en from "react-date-object/locales/gregorian_en";
-import gregorian from "react-date-object/calendars/gregorian";
-
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,13 +7,9 @@ import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { Button, TextField } from "../../../../../../components/elements";
 import Select from "react-select";
-import { message, Upload } from "antd";
+import { Upload } from "antd";
 import DrapDropIcon from "../../../../../../assets/images/DrapDropIcon.svg";
-import profile from "../../../../../../assets/images/newprofile.png";
-import tick from "../../../../../../assets/images/PNG tick.png";
-import PDFIcon from "../../../../../../assets/images/pdf_icon.svg";
 import RedCrossIcon from "../../../../../../assets/images/CrossIcon.svg";
-import { style } from "@mui/system";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import UnsavedActions from "../UnsavedActionModal/UnsavedActions";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -28,26 +21,23 @@ import {
   GetAllMeetingUserApiFunc,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
-  saveMeetingActionsDocumentsAndAssigneesApi,
   uploadActionMeetingApi,
   saveTaskDocumentsAndAssigneesApi,
 } from "../../../../../../store/actions/Action_Meeting";
 
 import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
-import makeAnimated from "react-select/animated";
 import GroupIcon from "../../../../../../assets/images/groupdropdown.svg";
 import ViewActions from "../ViewActions/ViewActions";
-import {
-  convertGMTDateintoUTC,
-  createConvert,
-  formatDateToUTC,
-} from "../../../../../../commen/functions/date_formater";
+import { convertGMTDateintoUTC } from "../../../../../../commen/functions/date_formater";
 import { CreateToDoList } from "../../../../../../store/actions/ToDoList_action";
 import {
   getFileExtension,
   getIconSource,
 } from "../../../../../DataRoom/SearchFunctionality/option";
-
+import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 const CreateTask = ({
   setCreateaTask,
   currentMeeting,
@@ -59,12 +49,10 @@ const CreateTask = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { Dragger } = Upload;
-  const animatedComponents = makeAnimated();
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
-  console.log(dataroomMapFolderId, "dataroomMapFolderIddataroomMapFolderId");
-  console.log(MeetingAgendaReducer, "getMeetingDatagetMeetingData");
+  let currentLanguage = localStorage.getItem("i18nextLng");
 
   // state for date handler
   const [agendaDueDate, setAgendaDueDate] = useState("");
@@ -72,30 +60,19 @@ const CreateTask = ({
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
-
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [selectThird, setselectThird] = useState(null);
   const [taskAttachments, setTaskAttachments] = useState([]);
   const [onSaveView, setonSaveView] = useState(false);
   const [error, seterror] = useState(false);
 
   const [selectedTask, setSelectedTask] = useState([]);
   const [taskMemberSelect, setTaskMemberSelect] = useState([]);
-  console.log(taskMemberSelect, "memberSelectmemberSelectmemberSelect");
 
   // Select for select Agenda
   const [selectAgenda, setSelectAgenda] = useState([]);
   const [agendaValue, setAgendaValue] = useState([]);
   const [createTaskID, setCreateTaskID] = useState(0);
-
-  console.log(createTaskID, "createTaskIDcreateTaskIDcreateTaskID");
-
   // set file state
-  const [actionFileSend, setActionFileSend] = useState([]);
-  console.log(actionFileSend, "fileForSendfileForSendfileForSendfileForSend");
   let creatorID = localStorage.getItem("userID");
-
-  const [createTaskAction, setCreateTaskAction] = useState({});
 
   const [createTaskDetails, setcreateTaskDetails] = useState({
     PK_TID: 0,
@@ -107,17 +84,40 @@ const CreateTask = ({
     DeadLineTime: "",
   });
 
+  useEffect(() => {
+    let Data = {
+      MeetingID: Number(currentMeeting),
+    };
+    let getMeetingData = {
+      MeetingID: Number(currentMeeting),
+    };
+    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
+    dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (currentLanguage !== undefined && currentLanguage !== null) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
+
   const changeDateActionCreate = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-
+    let meetingDateValueFormat2 = new Date(date);
     setAgendaDueDate(meetingDateValueFormat);
     setcreateTaskDetails({
       ...createTaskDetails,
-      date: convertGMTDateintoUTC(date).slice(0, 8),
-      DeadLineTime: convertGMTDateintoUTC(date).slice(8, 14),
+      date: convertGMTDateintoUTC(meetingDateValueFormat2).slice(0, 8),
+      DeadLineTime: convertGMTDateintoUTC(meetingDateValueFormat2).slice(8, 14),
     });
   };
-  console.log(createTaskDetails, "createTaskDetailscreateTaskDetails");
+
   const actionSaveHandler = () => {
     if (
       createTaskDetails.ActionsToTake !== "" &&
@@ -141,6 +141,7 @@ const CreateTask = ({
       seterror(true);
     }
   };
+  console.log(createTaskDetails.date, "creatercreatercreater");
 
   const props = {
     name: "file",
@@ -156,156 +157,6 @@ const CreateTask = ({
     },
     customRequest() {},
   };
-
-  const optionsParticipants = [
-    {
-      value: "Particiapnts",
-      label: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-              <img
-                draggable={false}
-                src={profile}
-                height="17px"
-                width="17px"
-                className={styles["ProfileImages"]}
-              />
-              <span className={styles["Namepartipants"]}>Ethan Anderson</span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
-
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-  };
-
-  const handleSelectThird = (option) => {
-    setselectThird(option);
-  };
-
-  // React select tick option handled
-  const CustomOption = ({ innerProps, label, isSelected }) => (
-    <div {...innerProps} className={styles["option"]}>
-      {console.log(label, "labellabellabel")}
-      <Row>
-        <Col lg={12} md={12} sm={12} className={styles["OverAll_padding"]}>
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-              <span className={styles["label_Styles"]}>{label}</span>
-              {isSelected && <img draggable={false} src={tick} width={20} />}
-            </Col>
-
-            <span className={styles["BottomLine"]}></span>
-          </Row>
-        </Col>
-      </Row>
-    </div>
-  );
-
-  // For Third Select Options
-  const CustomOptionThird = ({ innerProps, label, isSelected }) => (
-    <div {...innerProps} className={styles["option"]}>
-      {console.log(innerProps, "innerPropsinnerProps")}
-      <Row>
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          className={styles["OverAll_padding_Third"]}
-        >
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-              <span className={styles["label_Styles"]}>{label}</span>
-              {isSelected && <img draggable={false} src={tick} width={20} />}
-            </Col>
-            <span className={styles["BottomLine"]}></span>
-          </Row>
-        </Col>
-      </Row>
-    </div>
-  );
-
-  const options = [
-    {
-      value: "Intrdocution",
-      label: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Options_classs_contributors"]}>
-                {t("Intrdocution")}
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "CeoReport",
-      label: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Options_classs_contributors"]}>
-                {t("Ceo-report")}
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "Financesummary",
-      label: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Options_classs_contributors"]}>
-                {t("Finance-summary")}
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "Functionalreview",
-      label: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Options_classs_contributors"]}>
-                {t("Functional-review")}
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      value: "Closingreport",
-      label: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Options_classs_contributors"]}>
-                {t("Closing-report")}
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
-
-  const TwoOptions = [
-    { value: "Outstanding", label: "Outstanding" },
-    { value: "Completed", label: "Completed" },
-  ];
 
   const removeFileFunction = (index) => {
     const updateFile = [...taskAttachments];
@@ -398,17 +249,6 @@ const CreateTask = ({
       documentsUploadCall(dataroomMapFolderId);
     }
   }, [createTaskID]);
-
-  useEffect(() => {
-    let Data = {
-      MeetingID: Number(currentMeeting),
-    };
-    let getMeetingData = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(GetAllMeetingUserApiFunc(Data, navigate, t));
-    dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
-  }, []);
 
   useEffect(() => {
     let createMeetingTaskData = NewMeetingreducer.getMeetingusers;
@@ -656,7 +496,7 @@ const CreateTask = ({
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["SubHeading"]}>
                           {t("Assigned-to")}
-                          <span className={styles["Steric"]}>*</span>
+                          <span className={styles["Steric"]}> *</span>
                         </span>
                       </Col>
                     </Row>
@@ -693,7 +533,6 @@ const CreateTask = ({
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["SubHeading"]}>
                           {t("Select-agenda")}
-                          <span className={styles["Steric"]}>*</span>
                         </span>
                       </Col>
                     </Row>
@@ -713,12 +552,18 @@ const CreateTask = ({
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["SubHeading"]}>
                           {t("Due-date")}
-                          <span className={styles["Steric"]}>*</span>
+                          {""}
+                          <span className={styles["Steric"]}> *</span>
                         </span>
                       </Col>
                     </Row>
                     <Row>
-                      <Col lg={12} md={12} sm={12}>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Create-task"]}
+                      >
                         <DatePicker
                           value={agendaDueDate}
                           format={"DD/MM/YYYY"}
@@ -756,7 +601,7 @@ const CreateTask = ({
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-1">
+                <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
                       {t("Description")}{" "}
@@ -764,7 +609,7 @@ const CreateTask = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-1">
+                <Row>
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       labelClass={"d-none"}
@@ -894,6 +739,7 @@ const CreateTask = ({
                                 src={DrapDropIcon}
                                 width={100}
                                 className={styles["ClassImage"]}
+                                alt=""
                               />
                             </Col>
                             <Col lg={7} md={7} sm={12}>

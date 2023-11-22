@@ -167,7 +167,7 @@
 }
 
 .Scroller_Agenda {
-  height: 46vh !important;
+  min-height: 52vh !important;
   overflow-x: hidden !important;
 }
 
@@ -319,6 +319,9 @@ body[dir="rtl"] .SectionInnerClass {
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
   position: absolute !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 body[dir="rtl"] .BackGroundNewImplemented {
@@ -333,7 +336,7 @@ body[dir="rtl"] .BackGroundNewImplemented {
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  margin-top: 38px !important;
+  justify-content: center;
 }
 
 .SubAgendaArrow {
@@ -352,7 +355,9 @@ body[dir="rtl"] .SubAgendaArrow {
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  margin-top: 150px !important;
+  justify-content: center;
+  /* margin-top: 150px !important;
+/* } */
 }
 
 .subAgendaArrowExpand {
@@ -698,4 +703,15 @@ p.agendaCreater {
   color: #5a5a5a !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
+}
+.Empty_state_heading {
+  color: #505050 !important;
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Empty_state_Subheading {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "Montserrat";
 }

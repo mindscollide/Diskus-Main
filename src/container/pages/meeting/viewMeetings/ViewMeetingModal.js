@@ -24,14 +24,8 @@ const ViewMeetingModal = ({
   unPublish,
   ediorRole,
   setEdiorRole,
+  dataroomMapFolderId,
 }) => {
-  console.log(
-    "advanceMeetingModalIDadvanceMeetingModal",
-    advanceMeetingModalID
-  );
-  console.log("advanceMeetingModalIDadvanceMeetingModal", unPublish);
-  console.log("advanceMeetingModalIDadvanceMeetingModal", ediorRole);
-
   const { t } = useTranslation();
   const { Loading } = useSelector((state) => state.NewMeetingreducer);
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -282,7 +276,16 @@ const ViewMeetingModal = ({
                           : styles["Schedule_meetings_options"]
                       }
                       onClick={showActions}
-                      disableBtn={true}
+                      disableBtn={
+                        unPublish
+                          ? true
+                          : Number(ediorRole.status) === 1 ||
+                            Number(ediorRole.status) === 11 ||
+                            Number(ediorRole.status) === 12 ||
+                            Number(ediorRole.status) === 9
+                          ? true
+                          : false
+                      }
                     />
                     <Button
                       text={t("Polls")}
@@ -415,9 +418,10 @@ const ViewMeetingModal = ({
                       setMinutes={setMinutes}
                       setactionsPage={setactionsPage}
                       ediorRole={ediorRole}
-                      advanceMeetingModalID={advanceMeetingModalID}
+                      currentMeeting={advanceMeetingModalID}
                       setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                      dataroomMapFolderId={dataroomMapFolderId}
                     />
                   )}
                   {polls && (
