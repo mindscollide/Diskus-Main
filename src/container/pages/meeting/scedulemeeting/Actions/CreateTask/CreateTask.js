@@ -43,6 +43,10 @@ import {
   formatDateToUTC,
 } from "../../../../../../commen/functions/date_formater";
 import { CreateToDoList } from "../../../../../../store/actions/ToDoList_action";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../../DataRoom/SearchFunctionality/option";
 
 const CreateTask = ({
   setCreateaTask,
@@ -744,7 +748,7 @@ const CreateTask = ({
                                   : `${styles["errorMessage-inLogin_hidden"]}`
                               }
                             >
-                              {t("Description-is-required")}
+                              {t("Please-select-date")}
                             </p>
                           </Col>
                         </Row>
@@ -783,7 +787,7 @@ const CreateTask = ({
                               : `${styles["errorMessage-inLogin_hidden"]}`
                           }
                         >
-                          {t("Please-select-assignees")}
+                          {t("Description-is-required")}
                         </p>
                       </Col>
                     </Row>
@@ -825,8 +829,13 @@ const CreateTask = ({
                                                   className="d-flex gap-2 align-items-center"
                                                 >
                                                   <img
+                                                    alt="File Format"
                                                     draggable={false}
-                                                    src={PDFIcon}
+                                                    src={getIconSource(
+                                                      getFileExtension(
+                                                        data.name
+                                                      )
+                                                    )}
                                                     height="31.57px"
                                                     width="31.57px"
                                                   />
@@ -847,6 +856,7 @@ const CreateTask = ({
                                               className="d-flex align-items-center justify-content-start mt-1"
                                             >
                                               <img
+                                                alt="dragger"
                                                 draggable={false}
                                                 src={RedCrossIcon}
                                                 height="20.76px"
@@ -854,7 +864,8 @@ const CreateTask = ({
                                                 className={
                                                   styles["CrossIconClass"]
                                                 }
-                                                onClick={() => {
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
                                                   removeFileFunction(index);
                                                 }}
                                               />

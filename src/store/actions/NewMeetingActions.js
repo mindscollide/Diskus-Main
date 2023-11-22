@@ -482,12 +482,6 @@ const SaveMeetingDetialsNewApiFunction = (
                 response.data.responseResult.meetingID
               );
               setCurrentMeetingID(response.data.responseResult.meetingID);
-              // let meetingData = {
-              //   MeetingID: response.data.responseResult.meetingID,
-              // };
-              // dispatch(
-              //   GetAdvanceMeetingAgendabyMeetingID(meetingData, navigate, t)
-              // );
 
               if (viewValue === 1) {
                 let MappedData = {
@@ -504,8 +498,12 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId
                   )
                 );
-                setSceduleMeeting(false);
+                // setSceduleMeeting(false);
               } else if (viewValue === 2) {
+                // if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
+                //   setSceduleMeeting(false);
+                // }
+
                 let MappedData = {
                   MeetingID: response.data.responseResult.meetingID,
                   MeetingTitle: meetingDetails.MeetingTitle,
@@ -520,7 +518,7 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId
                   )
                 );
-                setSceduleMeeting(false);
+                // setSceduleMeeting(false);
               } else if (viewValue === 3) {
                 setorganizers(true);
                 setmeetingDetails(false);
@@ -1252,7 +1250,7 @@ const FetchMeetingURLApi = (
               localStorage.setItem("callerID", 9999);
               localStorage.setItem("acceptedRoomID", match[1]);
               localStorage.setItem("activeRoomID", match[1]);
-
+              localStorage.setItem("acceptedRecipientID", currentUserID);
               dispatch(callRequestReceivedMQTT({}, ""));
               dispatch(normalizeVideoPanelFlag(true));
               dispatch(videoChatPanel(false));
@@ -3772,7 +3770,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
                   "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_02".toLowerCase()
                 )
             ) {
-              dispatch(showGetAllAgendaWiseMinutesFailed(t("No-record-found")));
+              dispatch(showGetAllAgendaWiseMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
