@@ -434,6 +434,7 @@ const Participants = ({
       MeetingID: Number(currentMeeting),
     };
     dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+    setIsEditClicked(false);
   };
 
   //state management For textfield
@@ -672,30 +673,32 @@ const Participants = ({
                     isEditMeeting === true) ? null : Number(
                       ediorRole.status
                     ) === 1 || isEditClicked ? null : (
-                    <Button
-                      text={t("Propose-meeting-dates")}
-                      className={styles["Next_Organization"]}
-                      onClick={handleProposedmeetingDates}
-                    />
+                    <>
+                      <Button
+                        text={t("Propose-meeting-dates")}
+                        className={styles["Next_Organization"]}
+                        onClick={handleProposedmeetingDates}
+                      />
+                      <Button
+                        text={t("Cancel")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={handleCancelParticipants}
+                      />
+
+                      <Button
+                        text={t("Previous")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={previousTabOrganizer}
+                      />
+
+                      <Button
+                        text={t("Next")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={nextTabOrganizer}
+                      />
+                    </>
                   )}
 
-                  <Button
-                    text={t("Cancel")}
-                    className={styles["Cancel_Organization"]}
-                    onClick={handleCancelParticipants}
-                  />
-
-                  <Button
-                    text={t("Previous")}
-                    className={styles["Cancel_Organization"]}
-                    onClick={previousTabOrganizer}
-                  />
-
-                  <Button
-                    text={t("Next")}
-                    className={styles["Cancel_Organization"]}
-                    onClick={nextTabOrganizer}
-                  />
                   {/* {((Number(ediorRole.status) === 9 ||
                     Number(ediorRole.status) === 8 ||
                     Number(ediorRole.status) === 10) &&

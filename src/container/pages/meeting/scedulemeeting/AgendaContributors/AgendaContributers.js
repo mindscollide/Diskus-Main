@@ -511,6 +511,7 @@ const AgendaContributers = ({
       MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    setIsEditClicked(false);
     // Create a copy of data with was coming
   };
 
