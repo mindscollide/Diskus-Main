@@ -3159,12 +3159,7 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
             ) {
-              dispatch(
-                showAllGeneralMinutesFailed(
-                  response.data.responseResult.responseMessage,
-                  ""
-                )
-              );
+              dispatch(showAllGeneralMinutesFailed("", ""));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
