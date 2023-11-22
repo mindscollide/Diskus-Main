@@ -1136,5 +1136,6 @@
   "Delete-successfully": "Delete Successfully",
   "Failed-to-delete-record": "Failed to delete record",
   "Update-successful": "Update Successful",
-  "None-of-the-above": "None of the above"
+  "None-of-the-above": "None of the above",
+  "Record-Inserted": "Record Inserted"
 }

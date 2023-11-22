@@ -390,7 +390,7 @@ body[dir="rtl"] .Calendar_Meeting .dropdown-menu.show .dropdown-item {
 }
 
 .DefineTableFixedheight {
-  height: 54vh !important;
+  height: 60vh !important;
 }
 
 .meeting-expanded-row {

@@ -537,6 +537,7 @@ const AgendaContributers = ({
         notifyMessageField
       )
     );
+    setNotifyMessageField("");
     setIsEditClicked(false);
   };
 
