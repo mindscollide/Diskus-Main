@@ -88,12 +88,10 @@ const SubAgendaMappingDragging = ({
   const handleSubAgendaTitleChange = (index, subIndex, e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log(value, "valuevaluevalue");
     const updatedRows = [...rows];
     if (name === "subTitle") {
       updatedRows[index].subAgenda[subIndex].subTitle = value;
     }
-    console.log(updatedRows, "SubAgendaTitleSubAgendaTitle");
     setRows(updatedRows);
   };
 
@@ -110,7 +108,6 @@ const SubAgendaMappingDragging = ({
   // };
 
   const handleSelectChange = (index, subIndex, value) => {
-    console.log(value, "valuevaluevalue");
     const updatedAgendaItems = [...rows];
     let SelectValue = {
       value: value.value,
@@ -130,7 +127,6 @@ const SubAgendaMappingDragging = ({
       const formattedDateTimeString =
         newDate.toDateString() + " " + newDate.toTimeString();
       const dateObject = new Date(formattedDateTimeString);
-      console.log(dateObject, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
       updatedRows[index].subAgenda[subIndex].startDate = dateObject;
       setRows(updatedRows);
@@ -151,7 +147,6 @@ const SubAgendaMappingDragging = ({
       const formattedDateTimeString =
         newDate.toDateString() + " " + newDate.toTimeString();
       const dateObject = new Date(formattedDateTimeString);
-      console.log(dateObject, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
       updatedRows[index].subAgenda[subIndex].endDate = dateObject;
       setRows(updatedRows);
@@ -234,10 +229,6 @@ const SubAgendaMappingDragging = ({
       updatedRows[index].subAgenda[subIndex].subfiles = [];
       updatedRows[index].subAgenda[subIndex].subAgendaUrlFieldRadio = "";
     }
-    // console.log(
-    //   updatedRows,
-    //   "handleSubAgendaRadioChangehandleSubAgendaRadioChange"
-    // );
     setRows(updatedRows);
   };
 
@@ -353,7 +344,7 @@ const SubAgendaMappingDragging = ({
 
   return (
     <>
-      {data.subAgenda.length > 0 &&
+      {data.subAgenda.length > 0 ? (
         data.subAgenda.map((subAgendaData, subIndex) => {
           return (
             <>
@@ -1050,7 +1041,21 @@ const SubAgendaMappingDragging = ({
               </Droppable>
             </>
           );
-        })}
+        })
+      ) : (
+        <Droppable
+          key={`sub-agenda-${index}-${0}`}
+          droppableId={`sub-agenda-${index}-${0}`}
+          type="SUB_AGENDA"
+        >
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              <Row style={{ height: "12px" }}></Row>
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      )}
     </>
   );
 };

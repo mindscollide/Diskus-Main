@@ -256,12 +256,10 @@ const ParentAgenda = ({
     if (name === "title") {
       updatedAgendaItems[index][name] = value;
     }
-    console.log(updatedAgendaItems, "updatedAgendaItemsupdatedAgendaItems");
     setRows(updatedAgendaItems);
   };
 
   const handleSelectChange = (index, value) => {
-    console.log(value, "valuevaluevalue");
     const updatedAgendaItems = [...rows];
     let SelectValue = {
       value: value.value,
@@ -274,7 +272,6 @@ const ParentAgenda = ({
 
   // Function to update the startDate for a specific row
   const handleStartDateChange = (index, date) => {
-    console.log("handleStartDateChangehandleStartDateChange", date);
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
       const formattedDateTimeString =
@@ -295,7 +292,6 @@ const ParentAgenda = ({
       const formattedDateTimeString =
         newDate.toDateString() + " " + newDate.toTimeString();
       const dateObject = new Date(formattedDateTimeString);
-      // console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
       const updatedRows = [...rows];
       updatedRows[index].endDate = dateObject;
       setRows(updatedRows);
@@ -307,11 +303,8 @@ const ParentAgenda = ({
 
   // Function to update the selected radio option for a specific row
   const handleRadioChange = (index, value) => {
-    console.log("handleRadioChange", index, value);
     const updatedRows = [...rows];
-    console.log("handleRadioChange", updatedRows[index]);
     updatedRows[index].selectedRadio = value;
-    console.log("handleRadioChange", updatedRows[index].selectedRadio);
     if (updatedRows[index].selectedRadio === 1) {
       updatedRows[index].urlFieldMain = "";
       updatedRows[index].mainNote = "";
@@ -336,7 +329,6 @@ const ParentAgenda = ({
     if (name === "Description") {
       updatedAgendaItems[index].description = value;
     }
-    console.log(updatedAgendaItems, "Description");
     setRows(updatedAgendaItems);
   };
 
@@ -371,10 +363,6 @@ const ParentAgenda = ({
 
   useEffect(() => {
     if (allPresenters.lenth > 0 || Object.keys(allPresenters).length > 0) {
-      console.log(
-        "Condition allPresenters",
-        ...allPresenters.meetingOrganizers
-      );
       const allPresentersReducer = [
         ...allPresenters.meetingOrganizers,
         ...allPresenters.meetingAgendaContributors,
@@ -430,13 +418,7 @@ const ParentAgenda = ({
       }
     >
       {(provided, snapshot) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          //   {...provided.dragHandleProps}
-        >
-          {console.log("datadatadatadatadatadatadatadata", data)}
-
+        <div ref={provided.innerRef} {...provided.draggableProps}>
           {/* Main Agenda Items Mapping */}
           <span className="position-relative">
             <Row key={data.iD} className="mt-4 m-0 p-0">
@@ -573,7 +555,7 @@ const ParentAgenda = ({
                                 inputClass="inputTImeMeeting"
                                 calendar={calendarValue}
                                 locale={localValue}
-                                format="HH:mm A"
+                                format="hh:mm A"
                                 selected={data.startDate}
                                 value={data.startDate}
                                 plugins={[<TimePicker hideSeconds />]}
@@ -619,7 +601,7 @@ const ParentAgenda = ({
                                 className="timePicker"
                                 disableDayPicker
                                 inputClass="inputTImeMeeting"
-                                format="HH:mm A"
+                                format="hh:mm A"
                                 calendar={calendarValue}
                                 locale={localValue}
                                 value={data.endDate}

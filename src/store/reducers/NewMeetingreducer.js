@@ -2,6 +2,7 @@ import * as actions from "../action_types";
 
 const initialState = {
   Loading: false,
+  LoadingMinutes: false,
   meetingurlspinner: false,
   ResponseMessage: "",
   adduserModal: false,
@@ -969,16 +970,20 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_GENERAL_MINTES_INIT: {
+      console.log("ShowAllGeneralMinutesInitShowAllGeneralMinutesInit");
       return {
         ...state,
         Loading: true,
+        LoadingMinutes: true,
       };
     }
 
     case actions.GET_GENERAL_MINTES_SUCCESS: {
+      console.log("ShowAllGeneralMinutesInitShowAllGeneralMinutesInit");
       return {
         ...state,
         Loading: false,
+        LoadingMinutes: false,
         generalMinutes: action.response,
         ResponseMessage: action.message,
       };
@@ -988,6 +993,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        LoadingMinutes: false,
         generalMinutes: [],
         ResponseMessage: action.message,
       };

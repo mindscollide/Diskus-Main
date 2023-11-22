@@ -211,6 +211,7 @@ const Actions = ({
       actionMeetingReducer.todoListMeetingTask !== undefined &&
       actionMeetingReducer.todoListMeetingTask.length > 0
     ) {
+      setTotalRecords(actionMeetingReducer.todoListMeetingTask.totalRecords);
       setActionsRows(actionMeetingReducer.todoListMeetingTask);
     } else {
       setActionsRows([]);
@@ -381,10 +382,14 @@ const Actions = ({
                                   md={12}
                                   sm={12}
                                   className={
-                                    "pagination-groups-table d-flex justify-content-center"
+                                    "ant-pagination-active-on-Action d-flex justify-content-center"
                                   }
                                 >
-                                  <span className="PaginationStyle-TodoList">
+                                  <span
+                                    className={
+                                      styles["PaginationStyle-Action-Page"]
+                                    }
+                                  >
                                     <CustomPagination
                                       onChange={handleForPagination}
                                       current={
@@ -414,15 +419,14 @@ const Actions = ({
                             </Col>
                           </Row>
                         )}
-                      </section>
-                      <Row className="mt-5">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-end gap-2"
-                        >
-                          {/* {(Number(ediorRole.status) === 1 ||
+                        <Row className="mt-5">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-end gap-2"
+                          >
+                            {/* {(Number(ediorRole.status) === 1 ||
                             Number(ediorRole.status) === 10 ||
                             Number(ediorRole.status) === 8) &&
                           ediorRole.role === "Organizer" &&
@@ -434,42 +438,43 @@ const Actions = ({
                             />
                           ) : null} */}
 
-                          <Button
-                            text={t("Cancel")}
-                            className={styles["CloneMeetingButton"]}
-                            onClick={handleCancelActions}
-                          />
+                            <Button
+                              text={t("Cancel")}
+                              className={styles["CloneMeetingButton"]}
+                              onClick={handleCancelActions}
+                            />
 
-                          {((Number(ediorRole.status) === 1 ||
-                            Number(ediorRole.status) === 10 ||
-                            Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                            ediorRole.role === "Organizer" &&
-                            isEditMeeting === true) ||
-                          ((Number(ediorRole.status) === 9 ||
-                            Number(ediorRole.status) === 10) &&
-                            (ediorRole.role === "Participant" ||
-                              ediorRole.role === "Agenda Contributor") &&
-                            isEditMeeting === true) ? (
-                            <>
-                              {/* <Button
+                            {((Number(ediorRole.status) === 1 ||
+                              Number(ediorRole.status) === 10 ||
+                              Number(ediorRole.status) === 11 ||
+                              Number(ediorRole.status) === 12) &&
+                              ediorRole.role === "Organizer" &&
+                              isEditMeeting === true) ||
+                            ((Number(ediorRole.status) === 9 ||
+                              Number(ediorRole.status) === 10) &&
+                              (ediorRole.role === "Participant" ||
+                                ediorRole.role === "Agenda Contributor") &&
+                              isEditMeeting === true) ? (
+                              <>
+                                {/* <Button
                                 text={t("Save")}
                                 className={styles["CloneMeetingButton"]}
                               /> */}
-                              {/* <Button
+                                {/* <Button
                                 text={t("Save-and-publish")}
                                 className={styles["CloneMeetingButton"]}
                               /> */}
-                              {/* 
+                                {/* 
                               <Button
                                 text={t("Save-and-next")}
                                 className={styles["SaveButtonActions"]}
                                 onClick={handleSaveAndnext}
                               /> */}
-                            </>
-                          ) : null}
-                        </Col>
-                      </Row>
+                              </>
+                            ) : null}
+                          </Col>
+                        </Row>
+                      </section>
                     </>
                   )}
                 </Col>
