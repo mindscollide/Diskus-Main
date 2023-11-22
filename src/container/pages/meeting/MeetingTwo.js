@@ -1419,7 +1419,7 @@ const NewMeeting = () => {
                         <>
                           <Table
                             column={MeetingColoumns}
-                            scroll={{ y: "65vh", x: true }}
+                            scroll={{ y: "54vh", x: true }}
                             pagination={false}
                             className="newMeetingTable"
                             rows={rows}
