@@ -90,6 +90,7 @@ const AgendaContributers = ({
   });
 
   const [rowsData, setRowsData] = useState([]);
+  console.log(rowsData, "rowsDatarowsDatarowsData");
 
   const [notifiedMembersData, setNotificedMembersData] = useState(null);
 
@@ -512,6 +513,7 @@ const AgendaContributers = ({
       MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    setIsEditClicked(false);
     // Create a copy of data with was coming
   };
 
@@ -539,6 +541,7 @@ const AgendaContributers = ({
         notifyMessageField
       )
     );
+    setNotifyMessageField("");
     setIsEditClicked(false);
   };
 
@@ -572,6 +575,7 @@ const AgendaContributers = ({
           isRSVP: AgConData.rsvp,
           isEdit: true,
           isContributedNotified: true,
+          agendaListRightsAll: AgConData.agendaListRightsAll,
         });
       });
       setRowsData(newArr);
@@ -737,7 +741,7 @@ const AgendaContributers = ({
       </section>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          {!isEdit ? (
+          {!isEdit && !isEditClicked ? (
             <section className={styles["Footer_Class"]}>
               <Button
                 text={t("Cancel")}

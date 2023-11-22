@@ -1412,42 +1412,43 @@ const NewMeeting = () => {
                     setDataroomMapFolderId={setDataroomMapFolderId}
                   />
                 ) : Number(currentView) === 1 ? (
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12}>
-                      <>
-                        <Table
-                          column={MeetingColoumns}
-                          scroll={{ y: "62vh", x: true }}
-                          pagination={false}
-                          className="newMeetingTable"
-                          rows={rows}
-                          locale={{
-                            emptyText: emptyText(), // Set your custom empty text here
-                          }}
-                          expandable={{
-                            expandedRowRender: (record) => {
-                              return record.meetingAgenda.map((data) => (
-                                <p className="meeting-expanded-row">
-                                  {data.objMeetingAgenda.title}
-                                </p>
-                              ));
-                            },
-                            rowExpandable: (record) =>
-                              record.meetingAgenda.length > 0 ? true : false,
-                          }}
-                        />
-                      </>
-                    </Col>
-                  </Row>
+                  <section className={styles["DefineTableFixedheight"]}>
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <>
+                          <Table
+                            column={MeetingColoumns}
+                            scroll={{ y: "54vh", x: true }}
+                            pagination={false}
+                            className="newMeetingTable"
+                            rows={rows}
+                            locale={{
+                              emptyText: emptyText(), // Set your custom empty text here
+                            }}
+                            expandable={{
+                              expandedRowRender: (record) => {
+                                return record.meetingAgenda.map((data) => (
+                                  <p className={styles["meeting-expanded-row"]}>
+                                    {data.objMeetingAgenda.title}
+                                  </p>
+                                ));
+                              },
+                              rowExpandable: (record) =>
+                                record.meetingAgenda.length > 0 ? true : false,
+                            }}
+                          />
+                        </>
+                      </Col>
+                    </Row>
+                  </section>
                 ) : null}
                 {rows.length > 0 ? (
                   <>
                     <Row className="mt-5">
-                      <Col lg={4} md={4} sm={4}></Col>
                       <Col
-                        lg={4}
-                        md={4}
-                        sm={4}
+                        lg={12}
+                        md={12}
+                        sm={12}
                         className="d-flex justify-content-center "
                       >
                         <Row className={styles["PaginationStyle-Committee"]}>
