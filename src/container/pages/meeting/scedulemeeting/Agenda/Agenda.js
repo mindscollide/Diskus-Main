@@ -251,19 +251,19 @@ const Agenda = ({
     let getAllData = {
       MeetingID: currentMeetingIDLS !== null ? currentMeetingIDLS : 0,
     };
-    let getFolderIDData = {
-      MeetingID: currentMeetingIDLS,
-      MeetingTitle:
-        NewMeetingreducer.getAllMeetingDetails !== null
-          ? NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails
-              .meetingTitle
-          : meetingTitle !== null &&
-            meetingTitle !== undefined &&
-            meetingTitle !== ""
-          ? meetingTitle
-          : "",
-      IsUpdateFlow: false,
-    };
+    // let getFolderIDData = {
+    //   MeetingID: currentMeetingIDLS,
+    //   MeetingTitle:
+    //     NewMeetingreducer.getAllMeetingDetails !== null
+    //       ? NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails
+    //           .meetingTitle
+    //       : meetingTitle !== null &&
+    //         meetingTitle !== undefined &&
+    //         meetingTitle !== ""
+    //       ? meetingTitle
+    //       : "",
+    //   IsUpdateFlow: false,
+    // };
     // if (isEditMeeting === true) {
     let getMeetingData = {
       MeetingID: currentMeetingIDLS,
@@ -275,7 +275,7 @@ const Agenda = ({
     dispatch(GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t));
     // }
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
-    dispatch(CreateUpdateMeetingDataRoomMap(navigate, t, getFolderIDData));
+    // dispatch(CreateUpdateMeetingDataRoomMap(navigate, t, getFolderIDData));
   }, []);
 
   // // Function to capitalize the first letter of a string
