@@ -154,3 +154,8 @@
   font-size: 16px !important;
   font-family: "MontserratRegular";
 }
+
+img.clipboard-icon {
+  margin-left: 10px;
+  cursor: pointer;
+}
