@@ -33,6 +33,7 @@ const Actions = ({
   setPolls,
   currentMeeting,
   ediorRole,
+  setMinutes,
   setEditMeeting,
   isEditMeeting,
   dataroomMapFolderId,
@@ -263,6 +264,18 @@ const Actions = ({
     dispatch(showCancelActions(true));
   };
 
+  // to move in next to polls handler
+  const nextTabToPolls = () => {
+    setactionsPage(false);
+    setPolls(true);
+  };
+
+  // To go on Previous tab
+  const prevTabToMinutes = () => {
+    setactionsPage(false);
+    setMinutes(true);
+  };
+
   const handleSaveAndnext = () => {
     setactionsPage(false);
     setPolls(true);
@@ -442,6 +455,16 @@ const Actions = ({
                               text={t("Cancel")}
                               className={styles["CloneMeetingButton"]}
                               onClick={handleCancelActions}
+                            />
+                            <Button
+                              text={t("Previous")}
+                              className={styles["CloneMeetingButton"]}
+                              onClick={prevTabToMinutes}
+                            />
+                            <Button
+                              text={t("Next")}
+                              className={styles["CloneMeetingButton"]}
+                              onClick={nextTabToPolls}
                             />
 
                             {((Number(ediorRole.status) === 1 ||

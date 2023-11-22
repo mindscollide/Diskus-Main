@@ -839,7 +839,7 @@ const TodoList = () => {
               className={"btn btn-primary"}
               icon={<Plus width={20} height={20} fontWeight={800} />}
               variant={"Primary"}
-              text={t("Create-a-task")}
+              text={t("Create-a-Task")}
               onClick={modalHandler}
             />
           </Col>
@@ -991,7 +991,7 @@ const TodoList = () => {
                           alt=""
                         />
                       }
-                      title="No-Task"
+                      title={t("No-Task")}
                       className="NoTaskTodo"
                     />
                   </Paper>

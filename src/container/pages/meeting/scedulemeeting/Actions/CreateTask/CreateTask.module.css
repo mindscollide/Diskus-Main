@@ -192,3 +192,20 @@ body[dir="rtl"] .errorMessage-inLogin {
   background: #ccc;
   margin-left: -15px;
 }
+
+.Create-task {
+  height: 13vh !important;
+  overflow-x: hidden !important;
+}
+
+.Create-task::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Create-task::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
