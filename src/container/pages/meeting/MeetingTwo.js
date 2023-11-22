@@ -721,14 +721,12 @@ const NewMeeting = () => {
                             setAdvanceMeetingModalID,
                             setViewFlag,
                             setEditFlag,
-                            setCalendarViewModal
+                            setCalendarViewModal,
+                            setEdiorRole
                           )
                         );
                         // setIsOrganisers(isOrganiser);
-                        setEdiorRole({
-                          status: record.status,
-                          role: "Organizer",
-                        });
+                        
                       }}
                     />
                   </Col>
@@ -749,14 +747,12 @@ const NewMeeting = () => {
                             t,
                             3,
                             setViewAdvanceMeetingModal,
-                            setAdvanceMeetingModalID
+                            setAdvanceMeetingModalID,
+                            setEdiorRole
                           )
                         );
                         // setIsOrganisers(isOrganiser);
-                        setEdiorRole({
-                          status: record.status,
-                          role: "Organizer",
-                        });
+                        
                       }}
                     />
                   </Col>
@@ -1136,6 +1132,7 @@ const NewMeeting = () => {
       }, 4000);
     }
   }, [ResponseMessage]);
+
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
@@ -1162,6 +1159,7 @@ const NewMeeting = () => {
           unPublish={false}
           ediorRole={ediorRole}
           setEdiorRole={setEdiorRole}
+          dataroomMapFolderId={dataroomMapFolderId}
         />
       ) : viewAdvanceMeetingModalUnpublish ? (
         <ViewMeetingModal
@@ -1171,6 +1169,7 @@ const NewMeeting = () => {
           unPublish={true}
           ediorRole={ediorRole}
           setEdiorRole={setEdiorRole}
+          dataroomMapFolderId={dataroomMapFolderId}
         />
       ) : viewProposeOrganizerPoll ? (
         <OrganizerViewModal
