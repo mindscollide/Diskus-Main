@@ -556,7 +556,7 @@ export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime) => {
 export const convertGMTDateintoUTC = (GMTdate) => {
   console.log(GMTdate, "convertGMTDateintoUTC");
   const currentDate = new Date(GMTdate);
-  console.log(GMTdate, "convertGMTDateintoUTC");
+  console.log(currentDate, "convertGMTDateintoUTC");
   // Extract the individual components of the date
   const year = currentDate.getUTCFullYear();
   const month = ("0" + (currentDate.getUTCMonth() + 1)).slice(-2);

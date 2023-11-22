@@ -481,6 +481,7 @@ const SceduleMeeting = ({
             )}
             {actionsPage && (
               <Actions
+                setMinutes={setMinutes}
                 setSceduleMeeting={setSceduleMeeting}
                 setPolls={setPolls}
                 setactionsPage={setactionsPage}
