@@ -697,7 +697,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         inputClass="inputTImeMeeting"
                         calendar={calendarValue}
                         locale={localValue}
-                        format="HH:mm A"
+                        format="hh:mm A"
                         selected={task.timeforView}
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}

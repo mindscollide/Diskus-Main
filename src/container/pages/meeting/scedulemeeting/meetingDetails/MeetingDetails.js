@@ -1518,7 +1518,7 @@ const MeetingDetails = ({
                                       inputClass="inputTImeMeeting"
                                       calendar={calendarValue}
                                       locale={localValue}
-                                      format="HH:mm A"
+                                      format="hh:mm A"
                                       selected={
                                         currentMeeting === 0
                                           ? data.startDate
@@ -1587,7 +1587,7 @@ const MeetingDetails = ({
                                       calendar={calendarValue}
                                       locale={localValue}
                                       value={data.endTime}
-                                      format="HH:mm A"
+                                      format="hh:mm A"
                                       selected={data.endDate}
                                       plugins={[<TimePicker hideSeconds />]}
                                       onChange={(date) =>

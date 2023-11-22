@@ -2033,7 +2033,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                         inputClass="inputTImeMeeting"
                         calendar={calendarValue}
                         locale={localValue}
-                        format="HH:mm A"
+                        format="hh:mm A"
                         selected={selectedTime}
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
