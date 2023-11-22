@@ -12,6 +12,8 @@ import { Button, Table, TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributorsModal";
 import { useDispatch, useSelector } from "react-redux";
+import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+
 import { useNavigate } from "react-router-dom";
 import {
   getAgendaAndVotingInfo_success,
@@ -88,6 +90,7 @@ const AgendaContributers = ({
   });
 
   const [rowsData, setRowsData] = useState([]);
+  console.log(rowsData, "rowsDatarowsDatarowsData");
 
   const [notifiedMembersData, setNotificedMembersData] = useState(null);
 
@@ -510,6 +513,7 @@ const AgendaContributers = ({
       MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    setIsEditClicked(false);
     // Create a copy of data with was coming
   };
 
@@ -537,6 +541,7 @@ const AgendaContributers = ({
         notifyMessageField
       )
     );
+    setNotifyMessageField("");
     setIsEditClicked(false);
   };
 
@@ -570,6 +575,7 @@ const AgendaContributers = ({
           isRSVP: AgConData.rsvp,
           isEdit: true,
           isContributedNotified: true,
+          agendaListRightsAll: AgConData.agendaListRightsAll,
         });
       });
       setRowsData(newArr);
@@ -654,6 +660,15 @@ const AgendaContributers = ({
                 <Button
                   text={t("Edit")}
                   className={styles["Edit_button"]}
+                  icon={
+                    <img
+                      draggable={false}
+                      src={EditIcon}
+                      width="11.75px"
+                      height="11.75px"
+                      alt=""
+                    />
+                  }
                   onClick={handleEditBtn}
                 />
                 <Button
@@ -726,7 +741,7 @@ const AgendaContributers = ({
       </section>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          {!isEdit ? (
+          {!isEdit && !isEditClicked ? (
             <section className={styles["Footer_Class"]}>
               <Button
                 text={t("Cancel")}

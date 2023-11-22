@@ -91,7 +91,8 @@ const Organizers = ({
   let currentUserEmail = localStorage.getItem("userEmail");
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentUserName = localStorage.getItem("name");
-
+  const [isEdit, setIsEdit] = useState(false);
+  const [isEditValue, setEditValue] = useState(1);
   const [viewOrganizers, setviewOrganizers] = useState(false);
   const [flag, setFlag] = useState(2);
   const [prevFlag, setprevFlag] = useState(2);
@@ -467,6 +468,8 @@ const Organizers = ({
   };
 
   const openAddUserModal = () => {
+    setEditValue(1);
+
     dispatch(showAddUserModal(true));
     dispatch(saveMeetingFlag(true));
   };
@@ -579,8 +582,10 @@ const Organizers = ({
       disabledSwitch: false,
       disabledTitle: false,
       isDeletable: true,
+      isEdit: false,
     }));
-    dispatch(editMeetingFlag(true));
+    // dispatch(editMeetingFlag(true));
+    setEditValue(2);
     setRowsData(updatedRowsData);
   };
 
@@ -633,7 +638,7 @@ const Organizers = ({
           editMeetingFlag,
           rowsData,
           currentMeeting,
-          1,
+          isEditValue,
           notificationMessage
         )
       );
@@ -721,6 +726,7 @@ const Organizers = ({
           disabledRSVP: false,
           isDeletable: false,
           NotificationMessage: "",
+          isEdit: true,
         })
       );
 
@@ -759,6 +765,7 @@ const Organizers = ({
             rsvp: matchingOrganizer.rsvp,
             userName: matchingOrganizer.userName,
             NotificationMessage: matchingOrganizer.NotificationMessage,
+            isEdit: false,
           };
         }
 
@@ -783,6 +790,7 @@ const Organizers = ({
             rsvp: organizer.rsvp,
             userName: organizer.userName,
             NotificationMessage: organizer.NotificationMessage,
+            isEdit: true,
           });
         }
       });
@@ -811,6 +819,15 @@ const Organizers = ({
     // Update the rowsData state with the modified data
     setRowsData(updatedRowsData);
   }, [MeetingOrganizersReducer.NotificationUpdateData]);
+
+  useEffect(() => {
+    if (rowsData.length > 0) {
+      let getifTrue = rowsData.some((data, index) => data.isEdit === false);
+      setIsEdit(getifTrue);
+    } else {
+      setIsEdit(false);
+    }
+  }, [rowsData]);
 
   useEffect(() => {
     if (
@@ -879,8 +896,7 @@ const Organizers = ({
                 sm={12}
                 className="d-flex justify-content-end gap-4"
               >
-                {MeetingOrganizersReducer.SaveMeetingFlag === true &&
-                MeetingOrganizersReducer.EditMeetingFlag === false ? (
+                {isEdit ? (
                   <>
                     <Row className="d-flex align-items-center gap-2">
                       <Col lg={12} md={12} sm={12}>
@@ -895,26 +911,6 @@ const Organizers = ({
                           text={t("Save")}
                           className={styles["Next_Organization"]}
                           onClick={() => saveMeetingOrganizers(1)}
-                        />
-                      </Col>
-                    </Row>
-                  </>
-                ) : MeetingOrganizersReducer.SaveMeetingFlag === false &&
-                  MeetingOrganizersReducer.EditMeetingFlag === true ? (
-                  <>
-                    <Row className="d-flex align-items-center gap-2">
-                      <Col lg={12} md={12} sm={12}>
-                        <Button
-                          text={t("Cancel")}
-                          className={styles["publish_button_Organization"]}
-                          style={{ marginRight: "10px" }}
-                          onClick={handleCancelEdit}
-                        />
-
-                        <Button
-                          text={t("Save")}
-                          className={styles["Next_Organization"]}
-                          onClick={() => editMeetingOrganizers(2)}
                         />
                       </Col>
                     </Row>
@@ -962,9 +958,7 @@ const Organizers = ({
               </Col>
             </Row>
           </section>
-          {NewMeetingreducer.notifyOrganizors === false &&
-          MeetingOrganizersReducer.SaveMeetingFlag === false &&
-          MeetingOrganizersReducer.EditMeetingFlag === false ? (
+          {!isEdit ? (
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <section className={styles["Footer_button"]}>

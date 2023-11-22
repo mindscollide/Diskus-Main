@@ -100,22 +100,22 @@ const ModalArchivedCommittee = ({
   };
 
   const viewCommitteeModal = (committeeID, CommitteeStatusID) => {
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      CommitteeID: JSON.parse(committeeID),
-      OrganizationId: OrganizationID,
-    };
-    dispatch(
-      getCommitteesbyCommitteeId(
-        navigate,
-        Data,
-        t,
-        setViewGroupPage,
-        setUpdateComponentpage,
-        CommitteeStatusID,
-        setArchivedCommittee
-      )
-    );
+    // let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    // let Data = {
+    //   CommitteeID: JSON.parse(committeeID),
+    //   OrganizationId: OrganizationID,
+    // };
+    // dispatch(
+    //   getCommitteesbyCommitteeId(
+    //     navigate,
+    //     Data,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     CommitteeStatusID,
+    //     setArchivedCommittee
+    //   )
+    // );
   };
 
   return (
