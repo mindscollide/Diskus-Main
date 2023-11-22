@@ -66,6 +66,7 @@ const Minutes = ({
   currentMeeting,
   setSceduleMeeting,
   setMeetingMaterial,
+  setactionsPage,
 }) => {
   // const { t } = useTranslation();
   // const dispatch = useDispatch();
@@ -669,7 +670,14 @@ const Minutes = ({
   };
 
   const handlePreviousButton = () => {
-    dispatch(showPreviousConfirmationModal(true));
+    setMinutes(false);
+    setMeetingMaterial(true);
+    // dispatch(showPreviousConfirmationModal(true));
+  };
+  const handleNextButton = () => {
+    setactionsPage(true);
+    setMinutes(false);
+    // dispatch(showPreviousConfirmationModal(true));
   };
 
   useEffect(() => {
@@ -792,6 +800,7 @@ const Minutes = ({
                                 width="20px"
                                 height="15px"
                                 draggable="false"
+                                alt=""
                               />
                             }
                             onClick={SlideLeft}
@@ -831,6 +840,7 @@ const Minutes = ({
                                           height="12.68px"
                                           width="12.68px"
                                           onClick={() => handleRemoveFile(data)}
+                                          alt=""
                                         />
                                       </span>
                                       <section className={styles["Outer_Box"]}>
@@ -864,6 +874,7 @@ const Minutes = ({
                                                 height="10px"
                                                 width="10px"
                                                 className={styles["IconPDF"]}
+                                                alt=""
                                               />
                                               <span
                                                 className={styles["FileName"]}
@@ -892,6 +903,7 @@ const Minutes = ({
                                 width="20px"
                                 height="15px"
                                 draggable="false"
+                                alt=""
                               />
                             }
                             onClick={Slideright}
@@ -917,6 +929,7 @@ const Minutes = ({
                           width="18.87px"
                           height="18.87px"
                           draggable="false"
+                          alt=""
                         />
                       </span>
                     </p>
@@ -1010,6 +1023,7 @@ const Minutes = ({
                                         height="39px"
                                         width="39px"
                                         className={styles["Profile_minutes"]}
+                                        alt=""
                                       />
                                     </Col>
                                     <Col
@@ -1186,12 +1200,16 @@ const Minutes = ({
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
-              <Button
+              {/* <Button
                 text={t("Previous")}
                 className={styles["Previous_Button"]}
                 onClick={handlePreviousButton}
               />
-              <Button text={t("Next")} className={styles["Button_General"]} />
+              <Button
+                text={t("Next")}
+                onClick={handleNextButton}
+                className={styles["Button_General"]}
+              /> */}
             </Col>
           </Row>
         </>
