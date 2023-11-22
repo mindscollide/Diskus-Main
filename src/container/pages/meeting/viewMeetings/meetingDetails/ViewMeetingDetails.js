@@ -327,11 +327,6 @@ const ViewMeetingDetails = ({
             meetingDetails.IsVideoCall === true ? (
               <>
                 <Button
-                  text={t("Join-Video-Call")}
-                  className={styles["JoinMeetingButton"]}
-                  onClick={joinMeetingCall}
-                />
-                <Button
                   text={t("End-meeting")}
                   className={styles["LeaveMeetinButton"]}
                   onClick={() =>
@@ -350,11 +345,11 @@ const ViewMeetingDetails = ({
               </>
             ) : meetingDetails.IsVideoCall === true ? (
               <>
-                <Button
+                {/* <Button
                   text={t("Join-Video-Call")}
                   className={styles["JoinMeetingButton"]}
                   onClick={joinMeetingCall}
-                />
+                /> */}
                 <Button
                   text={t("Leave-meeting")}
                   className={styles["LeaveMeetinButton"]}
@@ -479,9 +474,14 @@ const ViewMeetingDetails = ({
                         width="27.19px"
                         alt=""
                       />
-                      <span className={styles["LinkClass"]}>
+                      <Button
+                        text={t("Join-Video-Call")}
+                        className={styles["JoinMeetingButton"]}
+                        onClick={joinMeetingCall}
+                      />
+                      {/* <span className={styles["LinkClass"]}>
                         {meetingDetails.Link}
-                      </span>
+                      </span> */}
                     </>
                   )}
                 </Col>
