@@ -261,6 +261,7 @@ const UnpublishedProposedMeeting = ({
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
         let value = +record.meetingPoll?.totalNoOfDirectorsVoted;
         if (record.meetingPoll) {
+          console.log(record.meetingPoll, "meetingPollmeetingPoll");
           return (
             <>
               <Row>
@@ -270,19 +271,20 @@ const UnpublishedProposedMeeting = ({
                   sm={12}
                   className="d-flex justify-content-center"
                 >
-                  {value === maxValue ? (
-                    <img
-                      src={rspvGreenIcon}
-                      height="17.06px"
-                      width="17.06px"
-                      alt=""
-                      draggable="false"
-                    />
-                  ) : (
-                    <span className={styles["RatioClass"]}>
-                      {record.meetingPoll?.totalNoOfDirectorsVoted}/
-                      {record.meetingPoll?.totalNoOfDirectors}
-                    </span>
+                  {value === maxValue ? null : (
+                    <>
+                      <img
+                        src={rspvGreenIcon}
+                        height="17.06px"
+                        width="17.06px"
+                        alt=""
+                        draggable="false"
+                      />
+                      <span className={styles["RatioClass"]}>
+                        {record.meetingPoll?.totalNoOfDirectorsVoted}/
+                        {record.meetingPoll?.totalNoOfDirectors}
+                      </span>
+                    </>
                   )}
                 </Col>
               </Row>
