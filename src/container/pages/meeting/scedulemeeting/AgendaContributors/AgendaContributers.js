@@ -364,8 +364,8 @@ const AgendaContributers = ({
   // Filter columns based on the RSVP Condition
   const finalColumns =
     Number(ediorRole.status) === 1
-      ? AgendaColoumns.filter((column) => column.key !== "rsvp")
-      : AgendaColoumns;
+      ? AgendaColoumns
+      : AgendaColoumns.filter((column) => column.key !== "rsvp");
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);

@@ -425,8 +425,8 @@ const Organizers = ({
   // Filter columns based on the RSVP Condition
   const finalColumns =
     Number(ediorRole.status) === 1
-      ? MeetingColoumns.filter((column) => column.key !== "rsvp")
-      : MeetingColoumns;
+      ? MeetingColoumns
+      : MeetingColoumns.filter((column) => column.key !== "rsvp");
 
   const sendRecentNotification = (record) => {
     if (

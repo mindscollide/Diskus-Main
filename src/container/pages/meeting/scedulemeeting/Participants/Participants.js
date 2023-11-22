@@ -403,8 +403,8 @@ const Participants = ({
   // Filter columns based on the RSVP Condition
   const finalColumns =
     Number(ediorRole.status) === 1
-      ? ParticipantsColoumn.filter((column) => column.key !== "rsvp")
-      : ParticipantsColoumn;
+      ? ParticipantsColoumn
+      : ParticipantsColoumn.filter((column) => column.key !== "rsvp");
 
   //Proposed meeting Page Opens
   const handleProposedmeetingDates = () => {
