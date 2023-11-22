@@ -451,6 +451,7 @@ const SceduleMeeting = ({
                 setMeetingMaterial={setMeetingMaterial}
                 setAgenda={setAgenda}
                 setParticipants={setParticipants}
+                dataroomMapFolderId={dataroomMapFolderId}
               />
             )}
             {meetingMaterial && (
@@ -480,6 +481,7 @@ const SceduleMeeting = ({
             )}
             {actionsPage && (
               <Actions
+                setMinutes={setMinutes}
                 setSceduleMeeting={setSceduleMeeting}
                 setPolls={setPolls}
                 setactionsPage={setactionsPage}

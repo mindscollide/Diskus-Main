@@ -1068,7 +1068,7 @@ const Home = () => {
                             </strong>
                           </div>
                           <div className="home-todocount-text Saved_money_Tagline">
-                            {t("Todo")} <br />
+                            {t("Task")} <br />
                             {t("This-month")}
                           </div>
                         </>

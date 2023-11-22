@@ -261,7 +261,8 @@ const UpdateOrganizersMeeting = (
   setViewFlag,
   setEditFlag,
   setCalendarViewModal,
-  setSceduleMeeting
+  setSceduleMeeting,
+  setEdiorRole
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -291,7 +292,8 @@ const UpdateOrganizersMeeting = (
               setViewFlag,
               setEditFlag,
               setCalendarViewModal,
-              setSceduleMeeting
+              setSceduleMeeting,
+              setEdiorRole
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -323,6 +325,10 @@ const UpdateOrganizersMeeting = (
                   );
                   setAdvanceMeetingModalID(Data.MeetingID);
                   setPublishState(true);
+                  setEdiorRole({
+                    status: "10",
+                    role: "Organizer",
+                  });
                 } else if (route === 3) {
                   let requestDataForMeetingDetails = {
                     MeetingID: Number(Data.MeetingID),
@@ -336,6 +342,10 @@ const UpdateOrganizersMeeting = (
                   );
                   setAdvanceMeetingModalID(null);
                   setPublishState(false);
+                  setEdiorRole({
+                    status: "10",
+                    role: "Organizer",
+                  });
                 } else if (route === 4) {
                   let requestDataForMeetingDetails = {
                     MeetingID: Number(Data.MeetingID),
@@ -353,6 +363,10 @@ const UpdateOrganizersMeeting = (
                   );
                   setAdvanceMeetingModalID(Data.MeetingID);
                   setPublishState(false);
+                  setEdiorRole({
+                    status: "10",
+                    role: "Organizer",
+                  });
                 } else if (route === 5) {
                   setSceduleMeeting(false);
                   let currentView = localStorage.getItem("MeetingCurrentView");
