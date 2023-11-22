@@ -746,6 +746,8 @@ const Agenda = ({
     DataRoomReducer
   );
 
+  console.log("dataroomMapFolderIddataroomMapFolderId", dataroomMapFolderId);
+
   return (
     <>
       {savedViewAgenda ? (
