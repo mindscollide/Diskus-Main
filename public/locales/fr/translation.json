@@ -1136,5 +1136,7 @@
   "Delete-successfully": "Delete Successfully",
   "Failed-to-delete-record": "Failed to delete record",
   "Update-successful": "Update Successful",
-  "None-of-the-above": "None of the above"
+  "None-of-the-above": "None of the above",
+  "No-Agenda-found": "No Agenda Found",
+  "There-are-no-agenda": "There are No Agenda"
 }

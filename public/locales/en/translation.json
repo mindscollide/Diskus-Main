@@ -1630,6 +1630,8 @@
   "Update-successful": "Update Successful",
   "Join-Video-Call": "Join Video Call",
   "None-of-the-above": "None of the above",
+  "No-Agenda-found": "No Agenda Found",
+  "There-are-no-agenda": "There are No Agenda",
   "Group-Description": "Description *",
   "Group-Type-Group": "Group Type *"
 }
