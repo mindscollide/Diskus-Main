@@ -1159,6 +1159,7 @@ const NewMeeting = () => {
           unPublish={false}
           ediorRole={ediorRole}
           setEdiorRole={setEdiorRole}
+          dataroomMapFolderId={dataroomMapFolderId}
         />
       ) : viewAdvanceMeetingModalUnpublish ? (
         <ViewMeetingModal
@@ -1168,6 +1169,7 @@ const NewMeeting = () => {
           unPublish={true}
           ediorRole={ediorRole}
           setEdiorRole={setEdiorRole}
+          dataroomMapFolderId={dataroomMapFolderId}
         />
       ) : viewProposeOrganizerPoll ? (
         <OrganizerViewModal
