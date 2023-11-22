@@ -72,9 +72,23 @@ const AgendaContributers = ({
   const [rspvTable, setrspvTable] = useState(false);
   const [flag, setFlag] = useState(3);
   const [prevFlag, setprevFlag] = useState(3);
-  const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedOption, setSelectedOption] = useState({
+    value: 1,
+    label: (
+      <>
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <span className={styles["Options_classs_contributors"]}>
+              {t("Grant-access-to-all-agenda-items-and-files")}
+            </span>
+          </Col>
+        </Row>
+      </>
+    ),
+  });
 
   const [rowsData, setRowsData] = useState([]);
+  console.log(rowsData, "rowsDatarowsDatarowsData");
 
   const [notifiedMembersData, setNotificedMembersData] = useState(null);
 
@@ -558,6 +572,7 @@ const AgendaContributers = ({
           isRSVP: AgConData.rsvp,
           isEdit: true,
           isContributedNotified: true,
+          agendaListRightsAll: AgConData.agendaListRightsAll,
         });
       });
       setRowsData(newArr);

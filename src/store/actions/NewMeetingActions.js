@@ -5987,7 +5987,7 @@ const UpdateMeetingUserForAgendaContributor = (
                   newData.push({
                     UserID: data.userID,
                     Title: data.Title,
-                    AgendaListRightsAll: data.AgendaListRightsAll,
+                    AgendaListRightsAll: data.agendaListRightsAll,
                     MeetingID:
                       currentMeeting !== null ? Number(currentMeeting) : 0,
                     IsContributorNotified: data.isContributedNotified,
@@ -6009,7 +6009,7 @@ const UpdateMeetingUserForAgendaContributor = (
                   newData.push({
                     UserID: data.userID,
                     Title: data.Title,
-                    AgendaListRightsAll: data.AgendaListRightsAll,
+                    AgendaListRightsAll: data.agendaListRightsAll,
                     MeetingID:
                       currentMeeting !== null ? Number(currentMeeting) : 0,
                     IsContributorNotified: data.isContributedNotified,
