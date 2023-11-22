@@ -765,7 +765,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             rows="8"
                             value={createGroupDetails.Description}
                             maxLength={500}
-                            placeholder={t("Description")}
+                            placeholder={t("Group-Description")}
                             required={true}
                             change={onChangeFunc}
                             name="groupdescription"
@@ -820,7 +820,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                         >
                           <SelectBox
                             name="grouptype"
-                            placeholder={t("Group-type")}
+                            placeholder={t("Group-Type-Group")}
                             option={groupTypeOptions}
                             change={groupTypeChangeHandler}
                             value={groupTypeValue}
