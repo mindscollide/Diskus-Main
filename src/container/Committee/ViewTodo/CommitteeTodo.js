@@ -718,7 +718,7 @@ const CreateTodoCommittee = () => {
                           md={12}
                           sm={12}
                           className={
-                            "pagination-groups-table d-flex justify-content-center"
+                            "  d-flex justify-content-center"
                           }
                         >
                           <span className="PaginationStyle-TodoList">

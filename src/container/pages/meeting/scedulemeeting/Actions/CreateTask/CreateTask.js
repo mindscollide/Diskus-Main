@@ -718,7 +718,12 @@ const CreateTask = ({
                       </Col>
                     </Row>
                     <Row>
-                      <Col lg={12} md={12} sm={12}>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Create-task"]}
+                      >
                         <DatePicker
                           value={agendaDueDate}
                           format={"DD/MM/YYYY"}
