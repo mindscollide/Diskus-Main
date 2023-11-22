@@ -22,7 +22,8 @@
   font-size: 12px !important;
   cursor: pointer !important;
   overflow: hidden !important;
-  width: 180px !important;
+  display: inline-block !important;
+  width: 200px !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
 }

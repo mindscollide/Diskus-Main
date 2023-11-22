@@ -884,7 +884,7 @@ const Polling = () => {
             {rows.length > 0 ? (
               <Table
                 column={PollTableColumns}
-                scroll={{ y: "65vh" }}
+                scroll={{ y: "60vh" }}
                 pagination={false}
                 className="Polling_table"
                 rows={rows}
@@ -913,9 +913,13 @@ const Polling = () => {
             )}
           </Col>
         </Row>
-        <Row className="">
-          <Col lg={4} md={4} sm={4}></Col>
-          <Col lg={4} md={4} sm={4} className="d-flex justify-content-center">
+        <Row className="mt-4">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-center"
+          >
             {rows.length > 0 && (
               <Row className={styles["PaginationStyle-Committee"]}>
                 <Col
@@ -936,7 +940,6 @@ const Polling = () => {
               </Row>
             )}
           </Col>
-          <Col lg={4} md={4} sm={4}></Col>
         </Row>
       </section>
       {PollsReducer.createPollmodal && <CreatePolling />}

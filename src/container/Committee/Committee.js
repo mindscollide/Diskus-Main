@@ -634,11 +634,10 @@ const Committee = () => {
             </Row>
             {getcommitteedata.length > 0 && (
               <Row className="mt-2">
-                <Col lg={4} md={4} sm={4}></Col>
                 <Col
-                  lg={4}
-                  md={4}
-                  sm={4}
+                  lg={12}
+                  md={12}
+                  sm={12}
                   className="d-flex justify-content-center "
                 >
                   <Container className={styles["PaginationStyle-Committee"]}>
@@ -660,7 +659,6 @@ const Committee = () => {
                     </Row>
                   </Container>
                 </Col>
-                <Col lg={4} md={4} sm={4}></Col>
               </Row>
             )}
             {/* pagination */}

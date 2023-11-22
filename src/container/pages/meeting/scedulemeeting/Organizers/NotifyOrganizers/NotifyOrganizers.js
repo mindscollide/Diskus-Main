@@ -119,6 +119,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
   };
 
   const handleCheckboxChange = (index, isChecked, data) => {
+    setAllOrganizersAccept(false);
     const updatedCheckboxes = [...memberCheckboxes];
     updatedCheckboxes[index] = isChecked;
 
