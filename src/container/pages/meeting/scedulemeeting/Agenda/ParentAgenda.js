@@ -573,7 +573,7 @@ const ParentAgenda = ({
                                 inputClass="inputTImeMeeting"
                                 calendar={calendarValue}
                                 locale={localValue}
-                                format="HH:mm A"
+                                format="hh:mm A"
                                 selected={data.startDate}
                                 value={data.startDate}
                                 plugins={[<TimePicker hideSeconds />]}
@@ -619,7 +619,7 @@ const ParentAgenda = ({
                                 className="timePicker"
                                 disableDayPicker
                                 inputClass="inputTImeMeeting"
-                                format="HH:mm A"
+                                format="hh:mm A"
                                 calendar={calendarValue}
                                 locale={localValue}
                                 value={data.endDate}

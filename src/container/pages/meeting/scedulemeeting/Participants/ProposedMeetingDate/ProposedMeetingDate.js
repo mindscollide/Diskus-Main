@@ -471,7 +471,7 @@ const ProposedMeetingDate = ({
                                       inputClass="inputTImeMeeting"
                                       calendar={calendarValue}
                                       locale={localValue}
-                                      format="HH:mm A"
+                                      format="hh:mm A"
                                       value={data.startDateView}
                                       selected={data.startDate}
                                       plugins={[<TimePicker hideSeconds />]}
@@ -507,7 +507,7 @@ const ProposedMeetingDate = ({
                                       inputClass="inputTImeMeeting"
                                       calendar={calendarValue}
                                       locale={localValue}
-                                      format="HH:mm A"
+                                      format="hh:mm A"
                                       selected={data.startDate}
                                       plugins={[<TimePicker hideSeconds />]}
                                       onChange={(date) =>
