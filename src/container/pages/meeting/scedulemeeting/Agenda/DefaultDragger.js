@@ -5,7 +5,8 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Notification } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
-import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
+import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
+
 import { getRandomUniqueNumber } from "./drageFunction";
 
 const DefaultDragger = ({
@@ -17,7 +18,7 @@ const DefaultDragger = ({
   ediorRole,
 }) => {
   const { t } = useTranslation();
-console.log("ediorRoleediorRoleediorRole",ediorRole)
+  console.log("ediorRoleediorRoleediorRole", ediorRole);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
