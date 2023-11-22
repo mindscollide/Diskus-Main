@@ -27,7 +27,7 @@ import {
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
-  getAllGeneralMinutesApiFunc,
+  GetAllGeneralMinutesApiFunc,
   showPreviousConfirmationModal,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
@@ -226,17 +226,20 @@ const Minutes = ({
     },
   };
 
-  console.log(currentMeeting, "currentMeetingIDcurrentMeetingID");
-
   useEffect(() => {
     let Data = {
       MeetingID: currentMeeting,
     };
-    dispatch(getAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     return () => {
       setFileAttachments([]);
     };
   }, []);
+
+  console.log(
+    NewMeetingreducer,
+    "NewMeetingreducerNewMeetingreducerNewMeetingreducer"
+  );
 
   useEffect(() => {
     try {
@@ -501,6 +504,7 @@ const Minutes = ({
 
   const documentUploadingFunc = async (minuteID) => {
     let newfile = [...previousFileIDs];
+    console.log(newfile, "newfilenewfilenewfilenewfile");
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
         uploadDocumentsMeetingMinutesApi(
@@ -527,6 +531,7 @@ const Minutes = ({
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
+    console.log(docsData, "messagesmessages");
     dispatch(
       SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
     );
@@ -693,12 +698,20 @@ const Minutes = ({
         <Col lg={12} md={12} sm={12} className="d-flex gap-2">
           <Button
             text={t("General")}
-            className={styles["Button_General"]}
+            className={
+              general
+                ? styles["Button_General"]
+                : styles["Button_General_nonActive"]
+            }
             onClick={handleGeneralButtonClick}
           />
           <Button
             text={t("Agenda-wise")}
-            className={styles["Button_General"]}
+            className={
+              agenda
+                ? styles["Button_General"]
+                : styles["Button_General_nonActive"]
+            }
             onClick={handleAgendaWiseClick}
           />
         </Col>

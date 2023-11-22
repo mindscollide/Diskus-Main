@@ -1135,5 +1135,6 @@
   "Video-session-enabled": "Video session enabled",
   "Delete-successfully": "Delete Successfully",
   "Failed-to-delete-record": "Failed to delete record",
-  "Update-successful": "Update Successful"
+  "Update-successful": "Update Successful",
+  "None-of-the-above": "None of the above"
 }

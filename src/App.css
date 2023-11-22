@@ -6385,3 +6385,14 @@ textarea {
   box-shadow: none !important;
   resize: none !important;
 }
+
+.ant-pagination-active-on-Action .todolist-pagination-current {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 0px !important;
+  border: none !important;
+  max-width: 32px !important;
+  color: #fff;
+  /* width: 32px !important; */
+  font-size: 1.2rem;
+  padding: 5px 10px;
+}

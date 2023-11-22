@@ -409,6 +409,13 @@ const MeetingDetails = ({
       newReminderData.push(meetingDetails.ReminderFrequency.value);
     }
 
+    if (meetingDetails.ReminderFrequencyTwo.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyTwo.value);
+    }
+    if (meetingDetails.ReminderFrequencyThree.value !== 0) {
+      newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
+    }
+
     rows.map((data, index) => {
       newArr.push({
         MeetingDate: data.selectedOption,
@@ -452,6 +459,7 @@ const MeetingDetails = ({
           MeetingStatusID: 11,
         },
       };
+      console.log(data, "SaveMeetingDetialsNewApiFunction");
 
       dispatch(
         SaveMeetingDetialsNewApiFunction(
@@ -777,11 +785,16 @@ const MeetingDetails = ({
 
   // Showing The reposnse messege
   useEffect(() => {
+    console.log(
+      ResponseMessage,
+      "ResponseMessageResponseMessageResponseMessage"
+    );
     if (
       ResponseMessage !== "" &&
       ResponseMessage !== t("Record-found") &&
       ResponseMessage !== t("No-record-found") &&
-      ResponseMessage !== t("No-records-found")
+      ResponseMessage !== t("No-records-found") &&
+      ResponseMessage !== undefined
     ) {
       setOpen({
         ...open,

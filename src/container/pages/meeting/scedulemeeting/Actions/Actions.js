@@ -15,13 +15,17 @@ import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import {
   showCancelActions,
   showRemovedTableModal,
+  showUnsavedActionsModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getMeetingTaskMainApi,
   removeMapMainApi,
+  saveMeetingActionsDocuments,
 } from "../../../../../store/actions/Action_Meeting";
 import AfterSaveViewTable from "./AfterSaveViewTable/AfterSaveViewTable";
 import CancelActions from "./CancelActions/CancelActions";
+import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
+import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 
 const Actions = ({
   setSceduleMeeting,
@@ -48,6 +52,7 @@ const Actions = ({
 
   const [createaTask, setCreateaTask] = useState(false);
   const [afterViewActions, setAfterViewActions] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   const [actionState, setActionState] = useState({
     Title: "",
@@ -109,12 +114,22 @@ const Actions = ({
       dataIndex: "deadlineDate",
       key: "deadlineDate",
       width: "200px",
+      render: (text, record) => {
+        return (
+          <span className={styles["Action-Date-title"]}>
+            {_justShowDateformatBilling(record.deadlineDate + "000000")}
+          </span>
+        );
+      },
     },
     {
       title: t("Action"),
       dataIndex: "title",
       key: "title",
       width: "250px",
+      render: (text, record) => {
+        return <span className={styles["Action-Date-title"]}>{text}</span>;
+      },
     },
     {
       title: t("Assigned-to"),
@@ -125,7 +140,9 @@ const Actions = ({
         console.log(record, "recordrecordrecord");
         return (
           <>
-            <span>{record.taskAssignedTo[0].name}</span>
+            <span className={styles["Action-Date-title"]}>
+              {record.taskAssignedTo[0].name}
+            </span>
           </>
         );
       },
@@ -137,7 +154,9 @@ const Actions = ({
       width: "150px",
       render: (text, record) => (
         <>
-          <span>{record.status.status}</span>
+          <span className={styles["Action-Date-title"]}>
+            {record.status.status}
+          </span>
         </>
       ),
     },
@@ -151,6 +170,7 @@ const Actions = ({
             <img
               alt={"Cross"}
               src={CrossIcon}
+              className={styles["action-delete-cursor"]}
               onClick={() => deleteActionHandler(record)}
             />
           </i>
@@ -161,11 +181,28 @@ const Actions = ({
 
   const deleteActionHandler = (record) => {
     console.log(record, "recordrecordrecordrecord");
-    let dataDelete = {
-      TaskID: record.pK_TID,
-      MeetingID: Number(currentMeeting),
+    let NewData = {
+      ToDoID: Number(record.pK_TID),
+      UpdateFileList: [],
     };
-    dispatch(removeMapMainApi(navigate, t, dataDelete));
+    let newData = {};
+    dispatch(
+      saveMeetingActionsDocuments(
+        navigate,
+        NewData,
+        t,
+        8,
+        setCreateaTask,
+        newData,
+        0,
+        currentMeeting
+      )
+    );
+    // let dataDelete = {
+    //   TaskID: record.pK_TID,
+    //   MeetingID: Number(currentMeeting),
+    // };
+    // dispatch(removeMapMainApi(navigate, t, dataDelete));
   };
 
   useEffect(() => {
@@ -174,6 +211,7 @@ const Actions = ({
       actionMeetingReducer.todoListMeetingTask !== undefined &&
       actionMeetingReducer.todoListMeetingTask.length > 0
     ) {
+      setTotalRecords(actionMeetingReducer.todoListMeetingTask.totalRecords);
       setActionsRows(actionMeetingReducer.todoListMeetingTask);
     } else {
       setActionsRows([]);
@@ -196,11 +234,29 @@ const Actions = ({
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
     };
+
     dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
   }, []);
 
+  // for pagination in Create Task
+  const handleForPagination = (current, pageSize) => {
+    let data = {
+      MeetingID: Number(currentMeeting),
+      Date: actionState.Date,
+      Title: actionState.Title,
+      AssignedToName: actionState.AssignedToName,
+      UserID: Number(userID),
+      PageNumber: Number(current),
+      Length: Number(pageSize),
+    };
+    localStorage.setItem("MeetingPageRows", pageSize);
+    localStorage.setItem("MeetingPageCurrent", current);
+    dispatch(getMeetingTaskMainApi(navigate, t, data));
+  };
+
   const handleCreateTaskButton = () => {
     setCreateaTask(true);
+    dispatch(showUnsavedActionsModal(false));
   };
 
   const handleCancelActions = () => {
@@ -304,22 +360,73 @@ const Actions = ({
                           <Col lg={12} md={12} sm={12}>
                             <Table
                               column={ActionsColoumn}
-                              scroll={{ y: "42vh" }}
+                              scroll={{ y: "40vh" }}
                               pagination={false}
                               className="Polling_table"
                               rows={actionsRows}
                             />
                           </Col>
                         </Row>
-                      </section>
-                      <Row className="mt-5">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-end gap-2"
-                        >
-                          {(Number(ediorRole.status) === 1 ||
+
+                        {actionsRows.length > 0 && (
+                          <Row className="">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center"
+                            >
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className={
+                                    "ant-pagination-active-on-Action d-flex justify-content-center"
+                                  }
+                                >
+                                  <span
+                                    className={
+                                      styles["PaginationStyle-Action-Page"]
+                                    }
+                                  >
+                                    <CustomPagination
+                                      onChange={handleForPagination}
+                                      current={
+                                        meetingPageCurrent !== null &&
+                                        meetingPageCurrent !== undefined
+                                          ? Number(meetingPageCurrent)
+                                          : 1
+                                      }
+                                      showSizer={true}
+                                      total={totalRecords}
+                                      pageSizeOptionsValues={[
+                                        "30",
+                                        "50",
+                                        "100",
+                                        "200",
+                                      ]}
+                                      pageSize={
+                                        meetingpageRow !== null &&
+                                        meetingpageRow !== undefined
+                                          ? meetingpageRow
+                                          : 50
+                                      }
+                                    />
+                                  </span>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        )}
+                        <Row className="mt-5">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-end gap-2"
+                          >
+                            {/* {(Number(ediorRole.status) === 1 ||
                             Number(ediorRole.status) === 10 ||
                             Number(ediorRole.status) === 8) &&
                           ediorRole.role === "Organizer" &&
@@ -329,44 +436,45 @@ const Actions = ({
                               className={styles["CloneMeetingButton"]}
                               onClick={handleAfterViewActions}
                             />
-                          ) : null}
+                          ) : null} */}
 
-                          <Button
-                            text={t("Cancel")}
-                            className={styles["CloneMeetingButton"]}
-                            onClick={handleCancelActions}
-                          />
+                            <Button
+                              text={t("Cancel")}
+                              className={styles["CloneMeetingButton"]}
+                              onClick={handleCancelActions}
+                            />
 
-                          {((Number(ediorRole.status) === 1 ||
-                            Number(ediorRole.status) === 10 ||
-                            Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                            ediorRole.role === "Organizer" &&
-                            isEditMeeting === true) ||
-                          ((Number(ediorRole.status) === 9 ||
-                            Number(ediorRole.status) === 10) &&
-                            (ediorRole.role === "Participant" ||
-                              ediorRole.role === "Agenda Contributor") &&
-                            isEditMeeting === true) ? (
-                            <>
-                              {/* <Button
+                            {((Number(ediorRole.status) === 1 ||
+                              Number(ediorRole.status) === 10 ||
+                              Number(ediorRole.status) === 11 ||
+                              Number(ediorRole.status) === 12) &&
+                              ediorRole.role === "Organizer" &&
+                              isEditMeeting === true) ||
+                            ((Number(ediorRole.status) === 9 ||
+                              Number(ediorRole.status) === 10) &&
+                              (ediorRole.role === "Participant" ||
+                                ediorRole.role === "Agenda Contributor") &&
+                              isEditMeeting === true) ? (
+                              <>
+                                {/* <Button
                                 text={t("Save")}
                                 className={styles["CloneMeetingButton"]}
                               /> */}
-                              {/* <Button
+                                {/* <Button
                                 text={t("Save-and-publish")}
                                 className={styles["CloneMeetingButton"]}
                               /> */}
-                              {/* 
+                                {/* 
                               <Button
                                 text={t("Save-and-next")}
                                 className={styles["SaveButtonActions"]}
                                 onClick={handleSaveAndnext}
                               /> */}
-                            </>
-                          ) : null}
-                        </Col>
-                      </Row>
+                              </>
+                            ) : null}
+                          </Col>
+                        </Row>
+                      </section>
                     </>
                   )}
                 </Col>

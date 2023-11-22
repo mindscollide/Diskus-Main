@@ -221,6 +221,7 @@ const Organizers = ({
       dataIndex: "organizerTitle",
       key: "organizerTitle",
       width: "250px",
+      align: "center",
       render: (text, record) => {
         console.log(text, record, "organizerTitleorganizerTitleorganizerTitle");
         if (

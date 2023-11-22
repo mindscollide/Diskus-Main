@@ -142,6 +142,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       localStorage.setItem("activeCall", false);
       localStorage.setItem("isMeeting", false);
       localStorage.setItem("meetingTitle", "");
+      localStorage.setItem("acceptedRecipientID", 0);
     }
   };
 

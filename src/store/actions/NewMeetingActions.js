@@ -1,3 +1,10 @@
+import * as actions from "../action_types";
+import axios from "axios";
+import {
+  dataRoomApi,
+  meetingApi,
+  pollApi,
+} from "../../commen/apis/Api_ends_points";
 import {
   FetchVideoUrl,
   GetAllRecurringNewMeeting,
@@ -46,6 +53,8 @@ import {
   CreateUpdateMeetingDataroomMapped,
   ScheduleMeetingOnSelectedDate,
   UpdateMeetingUserhit,
+  setMeetingbyGroupIDRM,
+  getMeetingbyGroupIDRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -57,17 +66,8 @@ import {
   normalizeVideoPanelFlag,
   videoChatPanel,
 } from "./VideoFeature_actions";
-import {
-  dataRoomApi,
-  meetingApi,
-  pollApi,
-} from "../../commen/apis/Api_ends_points";
-import * as actions from "../action_types";
-import axios from "axios";
-import { getMeetingbyGroupIDRM } from "../../commen/apis/Api_config";
-import { setMeetingbyGroupIDRM } from "../../commen/apis/Api_config";
+
 import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
-import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -482,12 +482,6 @@ const SaveMeetingDetialsNewApiFunction = (
                 response.data.responseResult.meetingID
               );
               setCurrentMeetingID(response.data.responseResult.meetingID);
-              // let meetingData = {
-              //   MeetingID: response.data.responseResult.meetingID,
-              // };
-              // dispatch(
-              //   GetAdvanceMeetingAgendabyMeetingID(meetingData, navigate, t)
-              // );
 
               if (viewValue === 1) {
                 let MappedData = {
@@ -504,8 +498,12 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId
                   )
                 );
-                setSceduleMeeting(false);
+                // setSceduleMeeting(false);
               } else if (viewValue === 2) {
+                // if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
+                //   setSceduleMeeting(false);
+                // }
+
                 let MappedData = {
                   MeetingID: response.data.responseResult.meetingID,
                   MeetingTitle: meetingDetails.MeetingTitle,
@@ -520,6 +518,7 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId
                   )
                 );
+                // setSceduleMeeting(false);
               } else if (viewValue === 3) {
                 setorganizers(true);
                 setmeetingDetails(false);
@@ -1251,7 +1250,7 @@ const FetchMeetingURLApi = (
               localStorage.setItem("callerID", 9999);
               localStorage.setItem("acceptedRoomID", match[1]);
               localStorage.setItem("activeRoomID", match[1]);
-
+              localStorage.setItem("acceptedRecipientID", currentUserID);
               dispatch(callRequestReceivedMQTT({}, ""));
               dispatch(normalizeVideoPanelFlag(true));
               dispatch(videoChatPanel(false));
@@ -2954,10 +2953,10 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
                   t("Record-saved")
                 )
               );
-              let Meet = {
-                MeetingID: Number(currentMeeting),
-              };
-              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
+              // let Meet = {
+              //   MeetingID: Number(currentMeeting),
+              // };
+              // dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_AddGeneralMinute_02"
@@ -2987,15 +2986,121 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   };
 };
 
+//Retrive Document For Meeting
+const showRetriveGeneralMinutesDocsMeetingInit = () => {
+  return {
+    type: actions.GENERAL_DOCUMENT_FOR_MEETING_INIT,
+  };
+};
+
+const showRetriveGeneralMinutesDocsMeetingSuccess = (response, message) => {
+  return {
+    type: actions.GENERAL_DOCUMENT_FOR_MEETING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showRetriveGeneralMinutesDocsMeetingFailed = (message) => {
+  return {
+    type: actions.GENERAL_DOCUMENT_FOR_MEETING_FAILED,
+    message: message,
+  };
+};
+
+const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showRetriveGeneralMinutesDocsMeetingInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getAllGeneralMiintuesDocument.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DocumentsOfMeetingGenralMinutesApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showRetriveGeneralMinutesDocsMeetingSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showRetriveGeneralMinutesDocsMeetingFailed(
+                  t("No-data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showRetriveGeneralMinutesDocsMeetingFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              showRetriveGeneralMinutesDocsMeetingFailed(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            showRetriveGeneralMinutesDocsMeetingFailed(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          showRetriveGeneralMinutesDocsMeetingFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 //Getting all the General Mintues
 
-const ShowAllGeneralMinutesInit = () => {
+const showAllGeneralMinutesInit = () => {
+  console.log("ShowAllGeneralMinutesInitShowAllGeneralMinutesInit");
   return {
     type: actions.GET_GENERAL_MINTES_INIT,
   };
 };
 
-const ShowAllGeneralMinutesSuccess = (response, message) => {
+const showAllGeneralMinutesSuccess = (response, message) => {
   return {
     type: actions.GET_GENERAL_MINTES_SUCCESS,
     response: response,
@@ -3003,7 +3108,7 @@ const ShowAllGeneralMinutesSuccess = (response, message) => {
   };
 };
 
-const ShowAllGeneralMinutesFailed = (response, message) => {
+const showAllGeneralMinutesFailed = (message) => {
   return {
     type: actions.GET_GENERAL_MINTES_FAILED,
     message: message,
@@ -3011,10 +3116,11 @@ const ShowAllGeneralMinutesFailed = (response, message) => {
 };
 
 // Api Function For General Minutes
-const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
+const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(ShowAllGeneralMinutesInit());
+    dispatch(showAllGeneralMinutesInit());
+    console.log("ShowAllGeneralMinutesInitShowAllGeneralMinutesInit");
     let form = new FormData();
     form.append("RequestMethod", getGeneralMinutes.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -3028,9 +3134,9 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t));
+          await dispatch(RefreshToken(navigate, t));
           dispatch(
-            getAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
+            GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -3039,12 +3145,13 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
             ) {
               dispatch(
-                ShowAllGeneralMinutesSuccess(response.data.responseResult, "")
+                showAllGeneralMinutesSuccess(response.data.responseResult, "")
               );
 
               let MeetingDocs = {
                 MDID: currentMeeting,
               };
+              console.log(MeetingDocs, "MeetingDocsMeetingDocs");
               dispatch(
                 DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
               );
@@ -3053,7 +3160,7 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
             ) {
               dispatch(
-                ShowAllGeneralMinutesFailed(
+                showAllGeneralMinutesFailed(
                   response.data.responseResult.responseMessage,
                   ""
                 )
@@ -3062,17 +3169,17 @@ const getAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
             ) {
-              dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
+              dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
             }
           } else {
-            dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
+            dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
           }
         } else {
-          dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
+          dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(ShowAllGeneralMinutesFailed(t("Something-went-wrong")));
+        dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
       });
   };
 };
@@ -3148,18 +3255,18 @@ const uploadDocumentsMeetingMinutesApi = (
                 )
             ) {
               await dispatch(
+                uploadDocument_success(
+                  response.data.responseResult,
+                  t("Document-uploaded-successfully")
+                )
+              );
+              await dispatch(
                 saveFilesMeetingMinutesApi(
                   navigate,
                   t,
                   response.data.responseResult,
                   folderID,
                   newFolder
-                )
-              );
-              await dispatch(
-                uploadDocument_success(
-                  response.data.responseResult,
-                  t("Document-uploaded-successfully")
                 )
               );
             } else if (
@@ -3253,7 +3360,9 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
-          dispatch(saveFilesMeetingMinutesApi(navigate, t, data, newFolder));
+          dispatch(
+            saveFilesMeetingMinutesApi(navigate, t, data, folderID, newFolder)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -3267,7 +3376,10 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
                 pK_FileID: response.data.responseResult.fileID,
                 DisplayAttachmentName: data.displayFileName,
               };
-              newFolder.push(newData);
+              newFolder.push({
+                pK_FileID: response.data.responseResult.fileID,
+                DisplayAttachmentName: data.displayFileName,
+              });
               await dispatch(
                 saveFiles_success(newData, t("Files-saved-successfully"))
               );
@@ -3374,7 +3486,9 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
               let Meet = {
                 MeetingID: Number(Data.FK_MDID),
               };
-              dispatch(getAllGeneralMinutesApiFunc(navigate, t, Meet));
+              dispatch(
+                GetAllGeneralMinutesApiFunc(navigate, t, Meet, currentMeeting)
+              );
               dispatch(ShowADDGeneralMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
@@ -3497,111 +3611,6 @@ const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
       .catch((response) => {
         dispatch(
           showRetriveGeneralMinutesDocsFailed(t("Something-went-wrong"))
-        );
-      });
-  };
-};
-
-//Retrive Document For Meeting
-const showRetriveGeneralMinutesDocsMeetingInit = () => {
-  return {
-    type: actions.GENERAL_DOCUMENT_FOR_MEETING_INIT,
-  };
-};
-
-const showRetriveGeneralMinutesDocsMeetingSuccess = (response, message) => {
-  return {
-    type: actions.GENERAL_DOCUMENT_FOR_MEETING_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
-
-const showRetriveGeneralMinutesDocsMeetingFailed = (message) => {
-  return {
-    type: actions.GENERAL_DOCUMENT_FOR_MEETING_FAILED,
-    message: message,
-  };
-};
-
-const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
-  return (dispatch) => {
-    dispatch(showRetriveGeneralMinutesDocsMeetingInit());
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", getAllGeneralMiintuesDocument.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(DocumentsOfMeetingGenralMinutesApiFunc(navigate, Data, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                showRetriveGeneralMinutesDocsMeetingSuccess(
-                  response.data.responseResult,
-                  t("Data-available")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                showRetriveGeneralMinutesDocsMeetingFailed(
-                  t("No-data-available")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                showRetriveGeneralMinutesDocsMeetingFailed(
-                  t("Something-went-wrong")
-                )
-              );
-            }
-          } else {
-            dispatch(
-              showRetriveGeneralMinutesDocsMeetingFailed(
-                t("Something-went-wrong")
-              )
-            );
-          }
-        } else {
-          dispatch(
-            showRetriveGeneralMinutesDocsMeetingFailed(
-              t("Something-went-wrong")
-            )
-          );
-        }
-      })
-      .catch((response) => {
-        dispatch(
-          showRetriveGeneralMinutesDocsMeetingFailed(t("Something-went-wrong"))
         );
       });
   };
@@ -3761,7 +3770,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
                   "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_02".toLowerCase()
                 )
             ) {
-              dispatch(showGetAllAgendaWiseMinutesFailed(t("No-record-found")));
+              dispatch(showGetAllAgendaWiseMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4098,7 +4107,14 @@ const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
                 MeetingID: currentMeeting,
               };
 
-              dispatch(getAllGeneralMinutesApiFunc(navigate, t, DelMeet));
+              dispatch(
+                GetAllGeneralMinutesApiFunc(
+                  navigate,
+                  t,
+                  DelMeet,
+                  currentMeeting
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -6319,7 +6335,7 @@ export {
   getMeetingMaterialAPI,
   GetAllUserAgendaRightsApiFunc,
   SaveUserAttachmentsPermissionApiFunc,
-  getAllGeneralMinutesApiFunc,
+  GetAllGeneralMinutesApiFunc,
   ADDGeneralMinutesApiFunc,
   uploadDocumentsMeetingMinutesApi,
   saveFilesMeetingMinutesApi,
