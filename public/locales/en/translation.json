@@ -768,11 +768,13 @@
   "Organization-role-is-required": "Organization role is required",
   "User-role-is-required": "User role is required",
   "No-archived-record-founds": "No Archive Record Found",
-  "Group-title": "Group Title",
+  "Group-title": "Group Title *",
   "Survey-polls": "Survey Polls",
   "Assign-remove-group": "Assign/Remove Group",
   "Active": "Active",
   "Committee-title": "Committee Title",
+  "Committee-title-Committee": "Committee Title *",
+  "Committee-type-committee": "Committee Type *",
   "No-member-selected": "No member selected!",
   "Committee-description-is-required": "Committee description is required",
   "Committee-title-is-required": "Committee title is required",
@@ -1627,5 +1629,7 @@
   "Failed-to-delete-record": "Failed to delete record",
   "Update-successful": "Update Successful",
   "Join-Video-Call": "Join Video Call",
-  "None-of-the-above": "None of the above"
+  "None-of-the-above": "None of the above",
+  "Group-Description": "Description *",
+  "Group-Type-Group": "Group Type *"
 }

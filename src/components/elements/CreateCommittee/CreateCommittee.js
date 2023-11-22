@@ -669,7 +669,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           <Form.Control
                             ref={CommitteeTitle}
                             type="text"
-                            placeholder={t("Committee-title")}
+                            placeholder={t("Committee-title-Committee")}
                             required={true}
                             name="committeetitle"
                             className={styles["create_committee_title"]}
@@ -707,7 +707,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             maxLength={500}
                             value={createCommitteeDetails.CommitteesDescription}
                             rows="4"
-                            placeholder={t("Description")}
+                            placeholder={t("Group-Description")}
                             required={true}
                             name="committeedescription"
                             change={onChangeFunc}
@@ -764,7 +764,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                         >
                           <SelectBox
                             name="Participant"
-                            placeholder={t("Committee-type")}
+                            placeholder={t("Committee-type-committee")}
                             option={committeeTypesValues}
                             value={committeeTypeValue}
                             change={CommitteeTypeChangeHandler}

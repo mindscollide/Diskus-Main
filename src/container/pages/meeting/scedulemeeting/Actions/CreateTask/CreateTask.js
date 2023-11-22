@@ -109,12 +109,17 @@ const CreateTask = ({
 
   const changeDateActionCreate = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let meetingDateValueFormat2 = new Date(date);
 
+    console.log(
+      meetingDateValueFormat2,
+      "meetingDateValueFormatmeetingDateValueFormat"
+    );
     setAgendaDueDate(meetingDateValueFormat);
     setcreateTaskDetails({
       ...createTaskDetails,
-      date: convertGMTDateintoUTC(date).slice(0, 8),
-      DeadLineTime: convertGMTDateintoUTC(date).slice(8, 14),
+      date: convertGMTDateintoUTC(meetingDateValueFormat2).slice(0, 8),
+      DeadLineTime: convertGMTDateintoUTC(meetingDateValueFormat2).slice(8, 14),
     });
   };
   console.log(createTaskDetails, "createTaskDetailscreateTaskDetails");
@@ -141,6 +146,7 @@ const CreateTask = ({
       seterror(true);
     }
   };
+  console.log(createTaskDetails.date, "creatercreatercreater");
 
   const props = {
     name: "file",
@@ -693,7 +699,6 @@ const CreateTask = ({
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["SubHeading"]}>
                           {t("Select-agenda")}
-                          <span className={styles["Steric"]}>*</span>
                         </span>
                       </Col>
                     </Row>
@@ -761,7 +766,7 @@ const CreateTask = ({
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-1">
+                <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
                       {t("Description")}{" "}
@@ -769,7 +774,7 @@ const CreateTask = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-1">
+                <Row>
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       labelClass={"d-none"}
