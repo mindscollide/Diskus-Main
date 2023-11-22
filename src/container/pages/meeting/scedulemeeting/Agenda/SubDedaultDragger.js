@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Notification } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
-import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
+import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 import { useTranslation } from "react-i18next";
 import { getRandomUniqueNumber } from "./drageFunction";
 

@@ -974,7 +974,7 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
-        FileSizeOnDisk: Number(data.FileSizeOnDisk),
+        FileSizeOnDisk: Number(data.fileSizeOnDisk),
         FileSize: Number(data.fileSize),
       },
     ],
