@@ -5127,7 +5127,6 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showCreateUpdateMeetingDataRoomInit());
-
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append(
@@ -5995,7 +5994,7 @@ const UpdateMeetingUserForAgendaContributor = (
                   newData.push({
                     UserID: data.userID,
                     Title: data.Title,
-                    AgendaListRightsAll: data.AgendaListRightsAll,
+                    AgendaListRightsAll: data.agendaListRightsAll,
                     MeetingID:
                       currentMeeting !== null ? Number(currentMeeting) : 0,
                     IsContributorNotified: data.isContributedNotified,
@@ -6017,7 +6016,7 @@ const UpdateMeetingUserForAgendaContributor = (
                   newData.push({
                     UserID: data.userID,
                     Title: data.Title,
-                    AgendaListRightsAll: data.AgendaListRightsAll,
+                    AgendaListRightsAll: data.agendaListRightsAll,
                     MeetingID:
                       currentMeeting !== null ? Number(currentMeeting) : 0,
                     IsContributorNotified: data.isContributedNotified,
