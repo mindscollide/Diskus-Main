@@ -1429,7 +1429,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         inputClass="inputTImeMeeting"
                         calendar={calendarValue}
                         locale={localValue}
-                        format="HH:mm A"
+                        format="hh:mm A"
                         selected={createMeetingTime}
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
