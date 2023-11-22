@@ -671,7 +671,7 @@ const Participants = ({
                   (ediorRole.role === "Agenda Contributor" &&
                     isEditMeeting === true) ? null : Number(
                       ediorRole.status
-                    ) === 1 ? null : (
+                    ) === 1 || isEditClicked ? null : (
                     <Button
                       text={t("Propose-meeting-dates")}
                       className={styles["Next_Organization"]}
@@ -717,7 +717,7 @@ const Participants = ({
                       className={styles["Next_Organization"]}
                       onClick={handleNextButton}
                     />
-                  ) : isEditMeeting === true ? null : (
+                  ) : isEditMeeting === true || isEditClicked ? null : (
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Publish")}
