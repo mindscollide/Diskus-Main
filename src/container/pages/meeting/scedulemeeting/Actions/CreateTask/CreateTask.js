@@ -662,7 +662,7 @@ const CreateTask = ({
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["SubHeading"]}>
                           {t("Assigned-to")}
-                          <span className={styles["Steric"]}>*</span>
+                          <span className={styles["Steric"]}> *</span>
                         </span>
                       </Col>
                     </Row>
@@ -718,7 +718,8 @@ const CreateTask = ({
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["SubHeading"]}>
                           {t("Due-date")}
-                          <span className={styles["Steric"]}>*</span>
+                          {""}
+                          <span className={styles["Steric"]}> *</span>
                         </span>
                       </Col>
                     </Row>

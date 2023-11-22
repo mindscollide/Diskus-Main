@@ -457,14 +457,14 @@ const Actions = ({
                               onClick={handleCancelActions}
                             />
                             <Button
-                              text={t("Next")}
-                              className={styles["CloneMeetingButton"]}
-                              onClick={nextTabToPolls}
-                            />
-                            <Button
                               text={t("Previous")}
                               className={styles["CloneMeetingButton"]}
                               onClick={prevTabToMinutes}
+                            />
+                            <Button
+                              text={t("Next")}
+                              className={styles["CloneMeetingButton"]}
+                              onClick={nextTabToPolls}
                             />
 
                             {((Number(ediorRole.status) === 1 ||
