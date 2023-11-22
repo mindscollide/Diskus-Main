@@ -169,11 +169,12 @@ const AgendaContributers = ({
           ediorRole.role === "Organizer" &&
           isEditMeeting === true
         ) {
-          return text;
+          return <p>{record.Title}</p>;
         } else if (
           ediorRole.role === "Agenda Contributor" &&
           isEditMeeting === true
         ) {
+          return <p>{record.Title}</p>;
         } else {
           return (
             <Row>
