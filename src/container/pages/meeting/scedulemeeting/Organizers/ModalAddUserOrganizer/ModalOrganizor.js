@@ -114,6 +114,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                       disabledNotification: true,
                       disabledSwitch: true,
                       NotificationMessage: "",
+                      isEdit: false,
                     };
                     let newUserSave = {
                       isPrimaryOrganizer: false,
@@ -160,6 +161,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                       disabledNotification: true,
                       disabledSwitch: true,
                       NotificationMessage: "",
+                      isEdit: false,
                     };
                     let newUserSave = {
                       isPrimaryOrganizer: false,
@@ -199,6 +201,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                   disabledNotification: true,
                   disabledSwitch: true,
                   NotificationMessage: "",
+                  isEdit: false,
                 };
                 let newUserSave = {
                   isPrimaryOrganizer: false,

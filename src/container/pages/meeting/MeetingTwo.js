@@ -497,10 +497,10 @@ const NewMeeting = () => {
           text: t("Active"),
           value: "10",
         },
-        {
-          text: t("Start"),
-          value: "2",
-        },
+        // {
+        //   text: t("Start"),
+        //   value: "2",
+        // },
         {
           text: t("Upcoming"),
           value: "1",

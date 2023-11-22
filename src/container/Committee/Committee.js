@@ -540,7 +540,7 @@ const Committee = () => {
                                 }
                                 titleOnCLick={() => viewTitleModal(data)}
                                 associatedTags={data.listofGroups}
-                                flag={true}
+                                flag={false}
                                 assignGroupBtn={() =>
                                   showMarketingModal(data.committeeID)
                                 }
