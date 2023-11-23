@@ -348,15 +348,15 @@ const AgendaWise = ({ currentMeeting }) => {
 
   console.log(agendaID, "agendaIDagendaIDagendaID");
   //Maaping For taking out the Agenda ID
-  let id;
-  agendaID.map((data, index) => {
-    console.log(data, "handleAddClickAgendaWisehandleAddClickAgendaWise");
-    id = data.value;
-  });
+  // let id;
+  // agendaID.map((data, index) => {
+  //   console.log(data, "handleAddClickAgendaWisehandleAddClickAgendaWise");
+  //   id = data.value;
+  // });
 
   const handleAddClickAgendaWise = async () => {
     let Data = {
-      AgendaID: id,
+      AgendaID: agendaSelect.agendaSelectOptions.id,
       MinuteText: addNoteFields.Description.value,
     };
     console.log(Data, "addNoteFieldsaddNoteFields");
@@ -392,7 +392,14 @@ const AgendaWise = ({ currentMeeting }) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, id));
+    dispatch(
+      SaveAgendaWiseDocumentsApiFunc(
+        navigate,
+        docsData,
+        t,
+        agendaSelect.agendaSelectOptions.id
+      )
+    );
 
     setFileAttachments([]);
     setPreviousFileIDs([]);
@@ -546,7 +553,14 @@ const AgendaWise = ({ currentMeeting }) => {
       }),
     };
     console.log(docsData, "messagesmessages");
-    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, id));
+    dispatch(
+      SaveAgendaWiseDocumentsApiFunc(
+        navigate,
+        docsData,
+        t,
+        agendaSelect.agendaSelectOptions.id
+      )
+    );
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -576,7 +590,7 @@ const AgendaWise = ({ currentMeeting }) => {
         t,
         currentMeeting,
         AgendaWiseData,
-        id
+        agendaSelect.agendaSelectOptions.id
       )
     );
     setAddNoteFields({
