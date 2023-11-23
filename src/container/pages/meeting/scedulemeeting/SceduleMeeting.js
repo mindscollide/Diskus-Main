@@ -477,6 +477,7 @@ const SceduleMeeting = ({
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
                 ediorRole={ediorRole}
+                setactionsPage={setactionsPage}
               />
             )}
             {actionsPage && (

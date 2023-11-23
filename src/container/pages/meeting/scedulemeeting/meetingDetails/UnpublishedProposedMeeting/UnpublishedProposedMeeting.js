@@ -623,7 +623,7 @@ const UnpublishedProposedMeeting = ({
         <Col lg={12} md={12} sm={12} className="w-100">
           <Table
             column={MeetingColoumns}
-            scroll={{ y: "64vh", x: "auto" }}
+            scroll={{ y: "54vh", x: "auto" }}
             pagination={false}
             className="newMeetingTable"
             rows={rows}

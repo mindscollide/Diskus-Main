@@ -18,6 +18,8 @@ import {
   GetAdvanceMeetingAgendabyMeetingID,
   clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
+import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
+
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
@@ -102,51 +104,7 @@ const Agenda = ({
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
 
-  const [rows, setRows] = useState([
-    {
-      iD: getRandomUniqueNumber().toString() + "A",
-      title: "",
-      agendaVotingID: 0,
-      presenterID: null,
-      description: "",
-      presenterName: "",
-      startDate: null,
-      endDate: null,
-      selectedRadio: 1,
-      urlFieldMain: "",
-      // requestContributorURl: 0,
-      mainNote: "",
-      requestContributorURlName: "",
-      files: [],
-      isLocked: false,
-      voteOwner: null,
-      isAttachment: false,
-      userID: 0,
-      subAgenda: [
-        {
-          subAgendaID: getRandomUniqueNumber().toString() + "A",
-          agendaVotingID: 0,
-          subTitle: "",
-          description: "",
-          agendaVotingID: 0,
-          presenterID: null,
-          presenterName: "",
-          startDate: null,
-          endDate: null,
-          subSelectRadio: 1,
-          subAgendaUrlFieldRadio: "",
-          // subAgendarequestContributorUrl: 0,
-          subAgendarequestContributorUrlName: "",
-          subAgendarequestContributorEnterNotes: "",
-          subfiles: [],
-          isLocked: false,
-          voteOwner: null,
-          isAttachment: false,
-          userID: 0,
-        },
-      ],
-    },
-  ]);
+  const [rows, setRows] = useState([]);
   useEffect(() => {
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
@@ -246,34 +204,77 @@ const Agenda = ({
                   <Droppable droppableId="board" type="PARENT">
                     {(provided) => (
                       <div ref={provided.innerRef} {...provided.droppableProps}>
-                        {rows.length > 0
-                          ? rows.map((data, index) => {
-                              return (
-                                <>
-                                  <ParentAgenda
-                                    data={data}
-                                    index={index}
-                                    rows={rows}
-                                    setRows={setRows}
-                                    setMainAgendaRemovalIndex={
-                                      setMainAgendaRemovalIndex
-                                    }
-                                    agendaItemRemovedIndex={
-                                      agendaItemRemovedIndex
-                                    }
-                                    setAgendaItemRemovedIndex={
-                                      setAgendaItemRemovedIndex
-                                    }
-                                    setSubajendaRemoval={setSubajendaRemoval}
-                                    ediorRole={ediorRole}
-                                    advanceMeetingModalID={
-                                      advanceMeetingModalID
-                                    }
-                                  />
-                                </>
-                              );
-                            })
-                          : null}
+                        {rows.length > 0 ? (
+                          rows.map((data, index) => {
+                            return (
+                              <>
+                                <ParentAgenda
+                                  data={data}
+                                  index={index}
+                                  rows={rows}
+                                  setRows={setRows}
+                                  setMainAgendaRemovalIndex={
+                                    setMainAgendaRemovalIndex
+                                  }
+                                  agendaItemRemovedIndex={
+                                    agendaItemRemovedIndex
+                                  }
+                                  setAgendaItemRemovedIndex={
+                                    setAgendaItemRemovedIndex
+                                  }
+                                  setSubajendaRemoval={setSubajendaRemoval}
+                                  ediorRole={ediorRole}
+                                  advanceMeetingModalID={advanceMeetingModalID}
+                                />
+                              </>
+                            );
+                          })
+                        ) : (
+                          <>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center mt-3"
+                              >
+                                <img
+                                  draggable={false}
+                                  src={emptyContributorState}
+                                  width="274.05px"
+                                  alt=""
+                                  height="230.96px"
+                                />
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span className={styles["Empty_state_heading"]}>
+                                  {t("No-Agenda-found")}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span
+                                  className={styles["Empty_state_Subheading"]}
+                                >
+                                  {t("There-are-no-agenda")}
+                                </span>
+                              </Col>
+                            </Row>
+                          </>
+                        )}
 
                         {provided.placeholder}
                       </div>

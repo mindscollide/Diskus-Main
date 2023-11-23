@@ -93,18 +93,18 @@ const ModalArchivedCommittee = ({
   };
 
   const ViewGroupmodal = (groupID, statusID) => {
-    dispatch(
-      getbyGroupID(
-        navigate,
-        groupID,
-        t,
-        setViewGroupPage,
-        setUpdateComponentpage,
-        1,
-        setArchivedGroups
-      )
-    );
-    setArchivedCommittee(false);
+    // dispatch(
+    //   getbyGroupID(
+    //     navigate,
+    //     groupID,
+    //     t,
+    //     setViewGroupPage,
+    //     setUpdateComponentpage,
+    //     1,
+    //     setArchivedGroups
+    //   )
+    // );
+    // setArchivedCommittee(false);
   };
 
   const handlechange = (value) => {
