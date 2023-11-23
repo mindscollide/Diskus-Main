@@ -4344,7 +4344,9 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
               let getAll = {
                 AgendaID: id,
               };
+
               dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t));
+              dispatch(showAgendaWiseAddMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4355,27 +4357,32 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
               dispatch(
                 showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
               );
+              dispatch(showAgendaWiseAddMinutesFailed(""));
             } else {
               dispatch(
                 showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
               );
+              dispatch(showAgendaWiseAddMinutesFailed(""));
             }
           } else {
             console.log(response, "response");
             dispatch(
               showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
             );
+            dispatch(showAgendaWiseAddMinutesFailed(""));
           }
         } else {
           console.log(response, "response");
           dispatch(
             showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
           );
+          dispatch(showAgendaWiseAddMinutesFailed(""));
         }
       })
       .catch((response) => {
         console.log(response, "response");
         dispatch(showSavedAgendaWiseDocumentFailed(t("Something-went-wrong")));
+        dispatch(showAgendaWiseAddMinutesFailed(""));
       });
   };
 };
@@ -6400,4 +6407,5 @@ export {
   showAttendanceConfirmationModal,
   showAllMeetingParticipantsSuccess,
   showGetAllMeetingDetialsInit,
+  showRetriveGeneralMinutesDocsFailed,
 };

@@ -74,6 +74,10 @@ const AgendaWise = ({ currentMeeting }) => {
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
+  const [agendaOptionvalue, setAgendaOptionValue] = useState({
+    label: "",
+    value: 0,
+  });
   const [showMore, setShowMore] = useState(false);
   const [showMoreIndex, setShowMoreIndex] = useState(0);
   const [agendaID, setAgendaID] = useState([]);
@@ -336,6 +340,10 @@ const AgendaWise = ({ currentMeeting }) => {
         title: selectoptions.label,
       },
     });
+    setAgendaOptionValue({
+      label: selectoptions.label,
+      value: selectoptions.value,
+    });
   };
 
   console.log(agendaID, "agendaIDagendaIDagendaID");
@@ -353,7 +361,11 @@ const AgendaWise = ({ currentMeeting }) => {
     };
     console.log(Data, "addNoteFieldsaddNoteFields");
     dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
-    setAgendaOptions([]);
+    setAgendaOptionValue({
+      value: 0,
+      label: "",
+    });
+    // setAgendaOptions([]);
   };
 
   const documentUploadingFunc = async (minuteID) => {
@@ -384,7 +396,7 @@ const AgendaWise = ({ currentMeeting }) => {
 
     setFileAttachments([]);
     setPreviousFileIDs([]);
-    setAgendaOptions([]);
+    // setAgendaOptions([]);
     setFileForSend([]);
     setAddNoteFields({
       ...addNoteFields,
@@ -473,7 +485,8 @@ const AgendaWise = ({ currentMeeting }) => {
     try {
       if (
         NewMeetingreducer.RetriveAgendaWiseDocuments !== null &&
-        NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined
+        NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined &&
+        NewMeetingreducer.RetriveAgendaWiseDocuments.length > 0
       ) {
         console.log(
           NewMeetingreducer.RetriveAgendaWiseDocuments,
@@ -544,7 +557,7 @@ const AgendaWise = ({ currentMeeting }) => {
     });
 
     setFileAttachments([]);
-    setAgendaOptions([]);
+    // setAgendaOptions([]);
     setisEdit(false);
   };
 
@@ -576,7 +589,7 @@ const AgendaWise = ({ currentMeeting }) => {
     });
 
     setFileAttachments([]);
-    setAgendaOptions([]);
+    // setAgendaOptions([]);
   };
 
   const handleshowMore = (index) => {
@@ -608,7 +621,14 @@ const AgendaWise = ({ currentMeeting }) => {
     <section>
       <Row className="mt-4">
         <Col lg={6} md={6} sm={6}>
-          <Select options={agendaOptions} onChange={handleAgendaSelect} />
+          <Select
+            options={agendaOptions}
+            value={{
+              value: agendaOptionvalue.value,
+              label: agendaOptionvalue.label,
+            }}
+            onChange={handleAgendaSelect}
+          />
         </Col>
       </Row>
       <Row className="mt-4">

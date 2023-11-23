@@ -31,6 +31,7 @@ import {
   showPreviousConfirmationModal,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
+  showRetriveGeneralMinutesDocsFailed,
 } from "../../../../../store/actions/NewMeetingActions";
 import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
 import downArrow from "../../../../../assets/images/whitedown.png";
@@ -231,9 +232,11 @@ const Minutes = ({
     let Data = {
       MeetingID: currentMeeting,
     };
+    dispatch(showRetriveGeneralMinutesDocsFailed(""));
     dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     return () => {
       setFileAttachments([]);
+      dispatch(showRetriveGeneralMinutesDocsFailed(""));
     };
   }, []);
 
@@ -461,10 +464,15 @@ const Minutes = ({
     try {
       if (
         NewMeetingreducer.generalMinutesDocument !== undefined &&
-        NewMeetingreducer.generalMinutesDocument !== null
+        NewMeetingreducer.generalMinutesDocument !== null &&
+        NewMeetingreducer.generalMinutesDocument.length > 0
       ) {
         let files = [];
         let prevData = [];
+        console.log(
+          NewMeetingreducer.generalMinutesDocument,
+          "generalMinutesDocumentgeneralMinutesDocumentgeneralMinutesDocument"
+        );
         NewMeetingreducer.generalMinutesDocument.data.map((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
