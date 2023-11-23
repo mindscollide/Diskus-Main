@@ -158,7 +158,8 @@ const Minutes = ({
   // };
 
   // Newly Implemented
-
+  let folderID = localStorage.getItem("folderDataRoomMeeting");
+  console.log(folderID, "folderIDfolderIDfolderIDfolderID");
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { NewMeetingreducer } = useSelector((state) => state);
@@ -169,7 +170,6 @@ const Minutes = ({
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
-  const [folderID, setFolderID] = useState(0);
   const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
@@ -608,7 +608,6 @@ const Minutes = ({
     setFileAttachments([]);
     setPreviousFileIDs([]);
   };
-  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   //Updating the text of min
   const handleUpdateFunc = async () => {
     console.log("UpdateCLickd");
@@ -633,10 +632,6 @@ const Minutes = ({
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    console.log(messages, "messagesmessages");
-    console.log(currentMeeting, "messagesmessages");
-
-    console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
@@ -645,11 +640,9 @@ const Minutes = ({
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    console.log(docsData, "messagesmessages");
     dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
-    setisEdit(false);
     setFileAttachments([]);
-    console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
+    setisEdit(false);
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -994,7 +987,7 @@ const Minutes = ({
                                           {expanded &&
                                           data.minutesDetails.substring(0, 120)
                                             ? t("See-more")
-                                            : t("See-less")}
+                                            : ""}
                                         </span>
                                       </span>
                                     </Col>
@@ -1228,6 +1221,7 @@ const Minutes = ({
         <UnsavedMinutes
           setMinutes={setMinutes}
           setSceduleMeeting={setSceduleMeeting}
+          setFileAttachments={setFileAttachments}
         />
       )}
 

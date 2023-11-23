@@ -42,6 +42,8 @@ const AgendaWise = ({ currentMeeting }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  let folderID = localStorage.getItem("folderDataRoomMeeting");
+  console.log(folderID, "localStoragelocalStorage");
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
       value: "",
@@ -66,7 +68,6 @@ const AgendaWise = ({ currentMeeting }) => {
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
-  const [folderID, setFolderID] = useState(0);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [expandedFiles, setExpandedFiles] = useState([]);
@@ -110,6 +111,17 @@ const AgendaWise = ({ currentMeeting }) => {
               value: agenda.id,
               label: agenda.title,
             });
+
+            agenda.subAgenda.map((subajendaData, index) => {
+              console.log(
+                subajendaData,
+                "subajendaDatasubajendaDatasubajendaData"
+              );
+              NewData.push({
+                value: subajendaData.subAgendaID,
+                label: subajendaData.subTitle,
+              });
+            });
           }
         );
         setAgendaOptions(NewData);
@@ -118,7 +130,7 @@ const AgendaWise = ({ currentMeeting }) => {
     } catch {}
   }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList]);
 
-  console.log(agendaOptions, "agendaOptionsagendaOptions");
+  console.log(agendaID, "agenagendaIDdaID");
 
   useEffect(() => {
     try {
@@ -327,6 +339,7 @@ const AgendaWise = ({ currentMeeting }) => {
   };
 
   console.log(agendaID, "agendaIDagendaIDagendaID");
+  //Maaping For taking out the Agenda ID
   let id;
   agendaID.map((data, index) => {
     console.log(data, "handleAddClickAgendaWisehandleAddClickAgendaWise");
@@ -340,6 +353,7 @@ const AgendaWise = ({ currentMeeting }) => {
     };
     console.log(Data, "addNoteFieldsaddNoteFields");
     dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
+    setAgendaOptions([]);
   };
 
   const documentUploadingFunc = async (minuteID) => {
@@ -358,9 +372,6 @@ const AgendaWise = ({ currentMeeting }) => {
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    console.log(messages, "messagesmessages");
-
-    console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingAgendaMinutesID: minuteID,
@@ -550,7 +561,8 @@ const AgendaWise = ({ currentMeeting }) => {
         Data,
         t,
         currentMeeting,
-        AgendaWiseData
+        AgendaWiseData,
+        id
       )
     );
     setAddNoteFields({
@@ -846,7 +858,7 @@ const AgendaWise = ({ currentMeeting }) => {
                                       {expanded &&
                                       data.minutesDetails.substring(0, 120)
                                         ? t("See-more")
-                                        : t("See-less")}
+                                        : ""}
                                     </span>
                                   </span>
                                 </Col>

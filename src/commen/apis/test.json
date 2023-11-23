@@ -1,25 +1,16 @@
-[
-  {
-    "userID": 987,
-    "userName": "ErenFive",
-    "designation": "Data Engineer",
-    "userEmail": "erenfive@yopmail.com",
-    "title": "Laptop meeting ",
-    "selectedProposedDates": [
-      {
-        "proposedDateID": 478,
-        "proposedDate": "20231124",
-        "startTime": "123019",
-        "endTime": "163021",
-        "isSelected": true
-      },
-      {
-        "proposedDateID": 479,
-        "proposedDate": "20231127",
-        "startTime": "153030",
-        "endTime": "173033",
-        "isSelected": false
-      }
-    ]
-  }
-]
+{
+  "FolderID": "7163",
+  "Files": [
+    {
+      "DisplayFileName": "Number Systems.pdf",
+      "DiskusFileNameString": "20231123063356247",
+      "ShareAbleLink": "D:\\Diskus\\Services\\DiskusFileStorage\\DataRoom\\802_302\\20231123063356247",
+      "FK_UserID": 802,
+      "FK_OrganizationID": 302,
+      "fileSizeOnDisk": 0.52,
+      "FileSize": 0.51
+    }
+  ],
+  "UserID": 802,
+  "Type": 0
+}

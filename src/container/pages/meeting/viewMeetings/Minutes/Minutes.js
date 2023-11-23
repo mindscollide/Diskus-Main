@@ -46,6 +46,8 @@ const Minutes = ({
   setSceduleMeeting,
 }) => {
   const [fileSize, setFileSize] = useState(0);
+  let folderID = localStorage.getItem("folderDataRoomMeeting");
+  console.log(folderID, "folderIDfolderIDfolderIDfolderID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
@@ -58,7 +60,6 @@ const Minutes = ({
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
-  const [folderID, setFolderID] = useState(0);
   const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);

@@ -3324,7 +3324,7 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   let Data = {
-    FolderID: folderID !== null ? folderID : 0,
+    FolderID: folderID !== null ? Number(folderID) : 0,
     Files: [
       {
         DisplayFileName: data.displayFileName,
@@ -3934,7 +3934,13 @@ const showDeleteAgendaWiseMinutesFailed = (message) => {
   };
 };
 
-const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
+const DeleteAgendaWiseMinutesApiFunc = (
+  navigate,
+  Data,
+  t,
+  currentMeeting,
+  id
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -3955,7 +3961,13 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            DeleteAgendaWiseMinutesApiFunc(navigate, Data, t, currentMeeting)
+            DeleteAgendaWiseMinutesApiFunc(
+              navigate,
+              Data,
+              t,
+              currentMeeting,
+              id
+            )
           );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
@@ -3974,11 +3986,12 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
                   t("Record-deleted")
                 )
               );
-              let DelteGetAll = {
-                AgendaID: "1222",
+
+              let DeleteGetAll = {
+                AgendaID: id,
               };
               dispatch(
-                GetAllAgendaWiseMinutesApiFunc(navigate, DelteGetAll, t)
+                GetAllAgendaWiseMinutesApiFunc(navigate, DeleteGetAll, t)
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -4618,14 +4631,16 @@ const saveFilesMeetingagendaWiseMinutesApi = (
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   let Data = {
-    FolderID: folderID !== null ? folderID : 0,
+    FolderID: folderID !== null ? Number(folderID) : 0,
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: data.diskusFileName,
+        DiskusFileNameString: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(creatorID),
         FK_OrganizationID: JSON.parse(organizationID),
+        fileSizeOnDisk: Number(data.fileSizeOnDisk),
+        FileSize: Number(data.fileSize),
       },
     ],
     UserID: JSON.parse(creatorID),
@@ -4977,7 +4992,8 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
   Data,
   t,
   currentMeeting,
-  AgendaWiseData
+  AgendaWiseData,
+  id
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
@@ -5004,7 +5020,8 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               Data,
               t,
               currentMeeting,
-              AgendaWiseData
+              AgendaWiseData,
+              id
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -5032,7 +5049,8 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   navigate,
                   AgendaWiseDelData,
                   t,
-                  currentMeeting
+                  currentMeeting,
+                  id
                 )
               );
             } else if (
