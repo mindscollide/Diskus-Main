@@ -23,13 +23,14 @@ import {
   newTimeFormaterAsPerUTCFullDate,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
-import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
+
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
   CleareMessegeNewMeeting,
   DeleteAgendaWiseMinutesApiFunc,
   DeleteAgendaWiseMinutesDocumentsApiFunc,
+  GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes,
   GetAllAgendaWiseMinutesApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
@@ -92,7 +93,14 @@ const AgendaWise = ({ currentMeeting }) => {
     let Data = {
       MeetingID: currentMeeting,
     };
-    dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+    dispatch(
+      GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
+        Data,
+        navigate,
+        t,
+        currentMeeting
+      )
+    );
   }, []);
 
   useEffect(() => {
@@ -161,6 +169,21 @@ const AgendaWise = ({ currentMeeting }) => {
   }, [NewMeetingreducer.agendaWiseMinutesReducer]);
 
   console.log(agendaOptions, "NewMeetingreducerNewMeetingreducer");
+  // All Documents For Agenda Wise Minutes
+  useEffect(() => {
+    try {
+      if (
+        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
+        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined &&
+        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.length > 0
+      ) {
+        console.log(
+          NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
+          "getallDocumentsForAgendaWiseMinutes"
+        );
+      }
+    } catch {}
+  }, [NewMeetingreducer.getallDocumentsForAgendaWiseMinutes]);
 
   let userID = localStorage.getItem("userID");
   const date = new Date();

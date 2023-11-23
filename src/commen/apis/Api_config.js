@@ -1161,7 +1161,7 @@ const updateAgendaWiseMinutes = {
 };
 
 const getAllAgendaWiseMinutes = {
-  RequestMethod: "ServiceManager.GetAgendaWiseMinutes",
+  RequestMethod: "ServiceManager.GetAllMeetingAgendaWiseMinutes",
 };
 const deleteCommitteePollRM = {
   RequestMethod: "ServiceManager.DeleteCommitteePolls",
@@ -1285,6 +1285,10 @@ const mapTaskWithMeetingAgenda = {
 
 const removeTaskMeetingMapping = {
   RequestMethod: "ServiceManager.RemoveTaskMeetingMapping",
+};
+
+const getAllagendaWiseDocumentsApi = {
+  RequestMethod: "ServiceManager.GetAllAgendaWiseMinuteDocumentsForMeeting",
 };
 
 export {
@@ -1630,4 +1634,5 @@ export {
   dataRoomFolderDownloadService,
   mapTaskWithMeetingAgenda,
   removeTaskMeetingMapping,
+  getAllagendaWiseDocumentsApi,
 };

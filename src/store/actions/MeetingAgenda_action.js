@@ -585,7 +585,14 @@ const getAdvanceMeetingAgendabyMeetingID_fail = (message) => {
     message: message,
   };
 };
-const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t, id, flag) => {
+const GetAdvanceMeetingAgendabyMeetingID = (
+  Data,
+  navigate,
+  t,
+  id,
+  flag,
+  currentMeeting
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAdvanceMeetingAgendabyMeetingID_init());
@@ -607,7 +614,14 @@ const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t, id, flag) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t, id, flag)
+            GetAdvanceMeetingAgendabyMeetingID(
+              Data,
+              navigate,
+              t,
+              id,
+              flag,
+              currentMeeting
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -624,19 +638,7 @@ const GetAdvanceMeetingAgendabyMeetingID = (Data, navigate, t, id, flag) => {
                     AgendaID: id,
                   };
                   dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
-                } else if (flag === 2) {
-                  let ID;
-                  response.data.responseResult.agendaList.map((data, index) => {
-                    console.log(data.id, "responseresponseresponse");
-                    ID = data.id;
-                  });
-
-                  let newData = {
-                    AgendaID: ID,
-                  };
-                  dispatch(
-                    GetAllAgendaWiseMinutesApiFunc(navigate, newData, t)
-                  );
+                } else {
                 }
                 dispatch(
                   getAdvanceMeetingAgendabyMeetingID_success(

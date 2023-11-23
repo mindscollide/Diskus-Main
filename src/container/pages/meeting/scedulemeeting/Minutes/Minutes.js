@@ -232,11 +232,9 @@ const Minutes = ({
     let Data = {
       MeetingID: currentMeeting,
     };
-    dispatch(showRetriveGeneralMinutesDocsFailed(""));
     dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     return () => {
       setFileAttachments([]);
-      dispatch(showRetriveGeneralMinutesDocsFailed(""));
     };
   }, []);
 
@@ -249,24 +247,69 @@ const Minutes = ({
     try {
       if (
         NewMeetingreducer.generalMinutes !== null &&
-        NewMeetingreducer.generalMinutes
+        NewMeetingreducer.generalMinutes &&
+        NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
+        NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
       ) {
+        const minutesData = NewMeetingreducer.generalMinutes.meetingMinutes;
+        const documentsData =
+          NewMeetingreducer.generalminutesDocumentForMeeting.data;
+
         console.log(
-          NewMeetingreducer.generalMinutes,
-          "generalMinutesgeneralMinutes"
+          minutesData,
+          documentsData,
+          "minutesDataminutesDataminutesData"
         );
-        if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
-          let newarr = [];
-          NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
-            console.log(data, "newarrnewarrnewarr");
-            newarr.push(data);
-            setMinuteID(data.minuteID);
-          });
-          setMessages(newarr);
-        }
-      } else setMessages([]);
-    } catch {}
-  }, [NewMeetingreducer.generalMinutes]);
+
+        const combinedData = minutesData.map((item1) => {
+          const matchingItem = documentsData.find(
+            (item2) => item2.pK_MeetingGeneralMinutesID === item1.minuteID
+          );
+          if (matchingItem) {
+            return {
+              ...item1,
+              minutesAttachmets: matchingItem.files,
+            };
+          }
+          return item1;
+        });
+        console.log(combinedData, "minutesDataminutesDataminutesData");
+        setMessages(combinedData);
+      } else {
+        setMessages([]);
+      }
+    } catch (error) {
+      // Handle any errors here
+      console.error(error);
+    }
+  }, [
+    NewMeetingreducer.generalMinutes,
+    NewMeetingreducer.generalminutesDocumentForMeeting,
+  ]);
+  console.log(messages, "minutesDataminutesDataminutesData");
+
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       NewMeetingreducer.generalMinutes !== null &&
+  //       NewMeetingreducer.generalMinutes
+  //     ) {
+  //       console.log(
+  //         NewMeetingreducer.generalMinutes,
+  //         "generalMinutesgeneralMinutes"
+  //       );
+  //       if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
+  //         let newarr = [];
+  //         NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
+  //           console.log(data, "newarrnewarrnewarr");
+  //           newarr.push(data);
+  //           setMinuteID(data.minuteID);
+  //         });
+  //         setMessages(newarr);
+  //       }
+  //     } else setMessages([]);
+  //   } catch {}
+  // }, [NewMeetingreducer.generalMinutes]);
 
   // all Meeting Document
   // useEffect(() => {
@@ -282,15 +325,16 @@ const Minutes = ({
   //       if (
   //         NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
   //       ) {
-  //         let FileID;
+  //         let FileObject = [];
   //         NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
   //           (docs, index) => {
   //             docs.files.map((filedata, index) => {
   //               console.log(filedata, "filedatafiledata");
-  //               FileID = filedata.pK_FileID;
+  //               FileObject.push(filedata);
   //             });
   //           }
   //         );
+  //         // setMessages(FileObject);
   //       }
   //     }
   //   } catch {}
@@ -461,11 +505,15 @@ const Minutes = ({
 
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
+    console.log(
+      NewMeetingreducer.generalMinutesDocument,
+      "generalMinutesDocumentgeneralMinutesDocument"
+    );
     try {
       if (
         NewMeetingreducer.generalMinutesDocument !== undefined &&
         NewMeetingreducer.generalMinutesDocument !== null &&
-        NewMeetingreducer.generalMinutesDocument.length > 0
+        NewMeetingreducer.generalMinutesDocument.data.length > 0
       ) {
         let files = [];
         let prevData = [];
@@ -488,6 +536,8 @@ const Minutes = ({
       }
     } catch {}
   }, [NewMeetingreducer.generalMinutesDocument]);
+
+  console.log(fileAttachments, "fileAttachmentsfileAttachments");
 
   const handleAgendaWiseClick = () => {
     setGeneral(false);
@@ -1077,7 +1127,7 @@ const Minutes = ({
                                     className={styles["Show_more"]}
                                     onClick={() => handleshowMore(index)}
                                   >
-                                    Show more
+                                    {t("Show-more")}
                                   </span>
                                 </Col>
                               </Row>
@@ -1158,7 +1208,7 @@ const Minutes = ({
                                                             }
                                                           >
                                                             {
-                                                              data.DisplayAttachmentName
+                                                              filesname.displayFileName
                                                             }
                                                           </span>
                                                         </Col>
