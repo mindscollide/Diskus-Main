@@ -13,6 +13,7 @@ import EmptyStates from "../../../../../assets/images/EmptystateAction.svg";
 import CreateTask from "./CreateTask/CreateTask";
 import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import {
+  searchNewUserMeeting,
   showCancelActions,
   showUnsavedActionsModal,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -34,6 +35,7 @@ const Actions = ({
   setEditMeeting,
   isEditMeeting,
   dataroomMapFolderId,
+  setViewAdvanceMeetingModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -44,6 +46,7 @@ const Actions = ({
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   const [createaTask, setCreateaTask] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -191,6 +194,22 @@ const Actions = ({
     localStorage.setItem("MeetingPageRows", pageSize);
     localStorage.setItem("MeetingPageCurrent", current);
     dispatch(getMeetingTaskMainApi(navigate, t, data));
+  };
+
+  const handleCancelActionNoPopup = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setViewAdvanceMeetingModal(false);
+    setactionsPage(false);
   };
 
   const handleCreateTaskButton = () => {
@@ -359,7 +378,7 @@ const Actions = ({
                         <Button
                           text={t("Cancel")}
                           className={styles["CloneMeetingButton"]}
-                          onClick={handleCancelActions}
+                          onClick={handleCancelActionNoPopup}
                         />
                         <Button
                           text={t("Previous")}
