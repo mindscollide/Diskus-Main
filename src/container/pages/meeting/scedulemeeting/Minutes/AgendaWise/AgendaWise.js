@@ -544,6 +544,7 @@ const AgendaWise = ({ currentMeeting }) => {
     });
 
     setFileAttachments([]);
+    setAgendaOptions([]);
     setisEdit(false);
   };
 
@@ -575,6 +576,7 @@ const AgendaWise = ({ currentMeeting }) => {
     });
 
     setFileAttachments([]);
+    setAgendaOptions([]);
   };
 
   const handleshowMore = (index) => {
@@ -818,7 +820,14 @@ const AgendaWise = ({ currentMeeting }) => {
                 return (
                   <>
                     <section className={styles["Sizing_Saved_Minutes"]}>
-                      <Row className="mt-5">
+                      <Row className="mt-4">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["AgendaTitleClass"]}>
+                            {data.agendaTitle}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
                         <Col
                           lg={12}
                           md={12}

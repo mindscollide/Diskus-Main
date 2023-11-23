@@ -244,3 +244,13 @@ body[dir="rtl"] .Leftpolygon {
   font-family: "MontserratSemiBold" !important;
   cursor: pointer !important;
 }
+
+.AgendaTitleClass {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+}
+
+.Show_more_Styles {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 10px !important;
+}
