@@ -274,7 +274,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     case actions.SAVEFILES_AGENDA_FAIL: {
       return {
         ...state,
-        // Loading: false,
+        Loading: false,
         SaveFilesResponse: null,
         ResponseMessage: action.message,
       };
@@ -319,7 +319,7 @@ const MeetingAgendaReducer = (state = initialState, action) => {
     case actions.SAVE_DOCUMENTS_AGENDA_FAIL: {
       return {
         ...state,
-        // Loading: false,
+        Loading: false,
         SaveFilesResponse: null,
         ResponseMessage: action.message,
       };

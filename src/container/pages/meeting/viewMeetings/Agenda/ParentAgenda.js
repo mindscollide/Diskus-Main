@@ -49,7 +49,7 @@ const ParentAgenda = ({
   advanceMeetingModalID,
 }) => {
   console.log(data, "datadatadatadata");
-  console.log("EditorRoleEditorRole", ediorRole);
+  console.log("EditorRoleEditorRole", editorRole);
   const { t } = useTranslation();
   const navigate = useNavigate();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -253,11 +253,18 @@ const ParentAgenda = ({
                             Number(data.voteOwner.userid) ===
                               Number(currentUserID) &&
                             data.voteOwner?.currentVotingClosed ? (
-                            <Button
-                              text={t("End-voting")}
-                              className={styles["startVotingButton"]}
-                              onClick={() => endVoting(data)}
-                            />
+                            <>
+                              <Button
+                                text={t("End-voting")}
+                                className={styles["startVotingButton"]}
+                                onClick={() => endVoting(data)}
+                              />
+                              <Button
+                                text={t("View-votes")}
+                                className={styles["ViewVoteButton"]}
+                                onClick={() => EnableViewVoteModal(data)}
+                              />
+                            </>
                           ) : null}
 
                           {Number(data.agendaVotingID) === 0 ? null : Number(
@@ -274,18 +281,14 @@ const ParentAgenda = ({
                               onClick={() => EnableCastVoteModal(data)}
                             />
                           ) : null}
-                          {Number(data.agendaVotingID) === 0 ? null : Number(
+                          {/* {Number(data.agendaVotingID) === 0 ? null : Number(
                               editorRole.status
                             ) === 10 &&
                             Number(data.voteOwner.userid) !==
                               Number(currentUserID) &&
                             data.voteOwner?.currentVotingClosed ? (
-                            <Button
-                              text={t("View-votes")}
-                              className={styles["ViewVoteButton"]}
-                              onClick={() => EnableViewVoteModal(data)}
-                            />
-                          ) : null}
+
+                          ) : null} */}
                         </Col>
                       </Row>
                       <Row className="mt-2">
