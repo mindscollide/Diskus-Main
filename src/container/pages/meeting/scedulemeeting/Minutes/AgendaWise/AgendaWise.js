@@ -515,7 +515,7 @@ const AgendaWise = ({ currentMeeting }) => {
       if (
         NewMeetingreducer.RetriveAgendaWiseDocuments !== null &&
         NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined &&
-        NewMeetingreducer.RetriveAgendaWiseDocuments !== []
+        NewMeetingreducer.RetriveAgendaWiseDocuments.data.length > 0
       ) {
         console.log(
           NewMeetingreducer.RetriveAgendaWiseDocuments,
@@ -576,12 +576,7 @@ const AgendaWise = ({ currentMeeting }) => {
     };
     console.log(docsData, "messagesmessages");
     dispatch(
-      SaveAgendaWiseDocumentsApiFunc(
-        navigate,
-        docsData,
-        t,
-        agendaSelect.agendaSelectOptions.id
-      )
+      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
     );
     setAddNoteFields({
       ...addNoteFields,
