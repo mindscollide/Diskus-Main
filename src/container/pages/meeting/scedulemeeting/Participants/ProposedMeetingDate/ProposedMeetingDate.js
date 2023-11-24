@@ -242,23 +242,23 @@ const ProposedMeetingDate = ({
       });
     });
 
-    if (isAscendingOrder()) {
-      let Data = {
-        MeetingID: currentMeeting,
-        SendResponsebyDate: sendResponseBy.date,
-        ProposedDates: newArr,
-      };
-      console.log(Data, "DataDataDataData");
-      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
-    } else {
-      // Rows are not in ascending order
-      setOpen({
-        flag: true,
-        message: t(
-          "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time"
-        ),
-      });
-    }
+    // if (isAscendingOrder()) {
+    let Data = {
+      MeetingID: currentMeeting,
+      SendResponsebyDate: sendResponseBy.date,
+      ProposedDates: newArr,
+    };
+    console.log(Data, "DataDataDataData");
+    dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
+    // } else {
+    //   // Rows are not in ascending order
+    //   setOpen({
+    //     flag: true,
+    //     message: t(
+    //       "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time"
+    //     ),
+    //   });
+    // }
   };
 
   // Function to handle the save Proposed button click
