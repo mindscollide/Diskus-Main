@@ -162,8 +162,9 @@ const MeetingMaterial = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.removeItem("folderDataRoomMeeting");
     setViewAdvanceMeetingModal(false);
-    setMeetingMaterial(false);
+    setactionsPage(false);
   };
 
   // To render data in table

@@ -214,6 +214,7 @@ const Actions = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.removeItem("folderDataRoomMeeting");
     setViewAdvanceMeetingModal(false);
     setactionsPage(false);
   };
@@ -415,11 +416,17 @@ const Actions = ({
                     className={styles["SaveButtonActions"]}
                     onClick={prevTabToMinutes}
                   />
-                  <Button
-                    text={t("Next")}
-                    className={styles["SaveButtonActions"]}
-                    onClick={nextTabToPolls}
-                  />
+                  {Number(editorRole.status) === 9 &&
+                  (editorRole.role === "Participant" ||
+                    editorRole.role === "Agenda Contributor") ? null : (
+                    <>
+                      <Button
+                        text={t("Next")}
+                        className={styles["SaveButtonActions"]}
+                        onClick={nextTabToPolls}
+                      />
+                    </>
+                  )}
                 </Col>
               </Row>
             </Col>

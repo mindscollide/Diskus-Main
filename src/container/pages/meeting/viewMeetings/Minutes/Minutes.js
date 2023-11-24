@@ -509,6 +509,7 @@ const Minutes = ({
         setMinutes(false);
         setSceduleMeeting(false);
         setViewAdvanceMeetingModal(false);
+        localStorage.removeItem("folderDataRoomMeeting");
         dispatch(showUnsaveMinutesFileUpload(false));
 
         let searchData = {
