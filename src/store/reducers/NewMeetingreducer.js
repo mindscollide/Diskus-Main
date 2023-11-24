@@ -1169,7 +1169,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.AGENDA_WISE_MINUTES_FAILED: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         agendaWiseMinuteID: 0,
         ResponseMessage: action.message,
       };
@@ -1208,7 +1208,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.UPDATE_AGENDA_WISE_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         ResponseMessage: action.message,
       };
     }
