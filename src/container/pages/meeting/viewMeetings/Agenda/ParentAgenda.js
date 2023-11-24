@@ -45,7 +45,7 @@ const ParentAgenda = ({
   agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
-  ediorRole,
+  editorRole,
   advanceMeetingModalID,
 }) => {
   console.log(data, "datadatadatadata");
@@ -194,7 +194,7 @@ const ParentAgenda = ({
                     sm={1}
                     className={styles["BackGroundNewImplemented"]}
                   >
-                    <Row className="mt-4" isDragging={snapshot.isDragging}>
+                    <Row isDragging={snapshot.isDragging}>
                       <Col
                         lg={12}
                         md={12}
@@ -236,7 +236,7 @@ const ParentAgenda = ({
                         </Col>
                         <Col lg={6} md={6} sm={12} className="text-end">
                           {Number(data.agendaVotingID) !== 0 &&
-                          Number(ediorRole.status) === 10 &&
+                          Number(editorRole.status) === 10 &&
                           Number(data.voteOwner.userid) ===
                             Number(currentUserID) &&
                           !data.voteOwner?.currentVotingClosed ? (
@@ -246,7 +246,7 @@ const ParentAgenda = ({
                               onClick={() => startVoting(data)}
                             />
                           ) : Number(data.agendaVotingID) !== 0 &&
-                            Number(ediorRole.status) === 10 &&
+                            Number(editorRole.status) === 10 &&
                             Number(data.voteOwner.userid) ===
                               Number(currentUserID) &&
                             data.voteOwner?.currentVotingClosed ? (
@@ -258,12 +258,12 @@ const ParentAgenda = ({
                           ) : null}
 
                           {Number(data.agendaVotingID) === 0 ? null : Number(
-                              ediorRole.status
+                              editorRole.status
                             ) === 10 &&
                             Number(data.voteOwner.userid) !==
                               Number(currentUserID) &&
                             data.voteOwner?.currentVotingClosed &&
-                            ediorRole.role !== "Organizer" &&
+                            editorRole.role !== "Organizer" &&
                             checkUserAuthentication(data) ? (
                             <Button
                               text={t("Cast-your-vote")}
@@ -272,7 +272,7 @@ const ParentAgenda = ({
                             />
                           ) : null}
                           {Number(data.agendaVotingID) === 0 ? null : Number(
-                              ediorRole.status
+                              editorRole.status
                             ) === 10 &&
                             Number(data.voteOwner.userid) !==
                               Number(currentUserID) &&
@@ -473,7 +473,7 @@ const ParentAgenda = ({
               openAdvancePermissionModal={openAdvancePermissionModal}
               openVoteMOdal={openVoteMOdal}
               advanceMeetingModalID={advanceMeetingModalID}
-              ediorRole={ediorRole}
+              editorRole={editorRole}
             />
           }
           {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}

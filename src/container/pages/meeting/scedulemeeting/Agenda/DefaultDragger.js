@@ -15,10 +15,10 @@ const DefaultDragger = ({
   rows,
   fileForSend,
   setFileForSend,
-  ediorRole,
+  editorRole,
 }) => {
   const { t } = useTranslation();
-  console.log("ediorRoleediorRoleediorRole", ediorRole);
+  console.log("ediorRoleediorRoleediorRole", editorRole);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -152,7 +152,7 @@ const DefaultDragger = ({
           <Dragger
             {...props}
             className={styles["dragdrop_attachment_create_resolution"]}
-            disabled={ediorRole.role === "Participant" ? true : false}
+            disabled={editorRole.role === "Participant" ? true : false}
           >
             <Row>
               <Col

@@ -9,7 +9,7 @@ const SubUrls = ({
   setRows,
   index,
   subIndex,
-  ediorRole,
+  editorRole,
 }) => {
   const { t } = useTranslation();
   // Function to handle changes in sub-agenda additional Enter URl Radio text field
@@ -43,8 +43,8 @@ const SubUrls = ({
           value={subAgendaData.subAgendaUrlFieldRadio}
           change={(e) => handleSubAgendaUrlEnterUrlField(index, subIndex, e)}
           disable={
-            ediorRole.role === "Participant" ||
-            ediorRole.role === "Agenda Contributor"
+            editorRole.role === "Participant" ||
+            editorRole.role === "Agenda Contributor"
               ? true
               : false
           }

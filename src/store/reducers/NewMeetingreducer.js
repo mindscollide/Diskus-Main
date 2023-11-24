@@ -1,6 +1,8 @@
 import * as actions from "../action_types";
 
 const initialState = {
+  LoadingParticipants: false,
+  LoadingViewModal: false,
   Loading: false,
   LoadingMinutes: false,
   meetingurlspinner: false,
@@ -631,6 +633,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
+        LoadingParticipants: true,
       };
     }
 
@@ -638,6 +641,8 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        LoadingParticipants: false,
+
         getAllSavedparticipants: action.response,
         ResponseMessage: action.message,
       };
@@ -647,6 +652,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        LoadingParticipants: false,
         getAllSavedparticipants: [],
         ResponseMessage: action.message,
       };
@@ -655,12 +661,14 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
+        Loader2: true,
       };
     }
     case actions.GET_ALL_AGENDACONTRIBUTOR_SUCCESS: {
       return {
         ...state,
         Loading: false,
+        Loader2: false,
         getAllAgendaContributors: action.response,
         ResponseMessage: action.message,
       };
@@ -670,6 +678,8 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        Loader2: false,
+
         getAllAgendaContributors: [],
         ResponseMessage: action.message,
       };
@@ -706,6 +716,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
+        LoadingViewModal: true,
       };
     }
 
@@ -713,6 +724,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        LoadingViewModal: false,
         getAllMeetingDetails: action.response,
         ResponseMessage: action.message,
       };
@@ -722,6 +734,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        LoadingViewModal: false,
         getAllMeetingDetails: null,
         ResponseMessage: action.message,
       };

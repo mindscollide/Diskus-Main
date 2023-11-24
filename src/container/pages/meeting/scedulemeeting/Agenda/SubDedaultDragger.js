@@ -14,7 +14,7 @@ const SubDedaultDragger = ({
   subIndex,
   fileForSend,
   setFileForSend,
-  ediorRole,
+  editorRole,
 }) => {
   const { t } = useTranslation();
   //Uploader Props For SubAgendas
@@ -135,7 +135,7 @@ const SubDedaultDragger = ({
           <Dragger
             {...Subprops}
             className={styles["dragdrop_attachment_create_resolution"]}
-            disabled={ediorRole.role === "Participant" ? true : false}
+            disabled={editorRole.role === "Participant" ? true : false}
           >
             <Row>
               <Col

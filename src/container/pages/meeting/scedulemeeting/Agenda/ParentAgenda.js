@@ -64,7 +64,7 @@ const ParentAgenda = ({
   allSavedPresenters,
   allUsersRC,
   setAllUsersRC,
-  ediorRole,
+  editorRole,
   setSelectedID,
 }) => {
   const navigate = useNavigate();
@@ -411,8 +411,8 @@ const ParentAgenda = ({
       draggableId={data.iD}
       index={index}
       isDragDisabled={
-        ediorRole.role === "Participant" ||
-        ediorRole.role === "Agenda Contributor"
+        editorRole.role === "Participant" ||
+        editorRole.role === "Agenda Contributor"
           ? true
           : false
       }
@@ -495,8 +495,8 @@ const ParentAgenda = ({
                             disable={
                               data.isLocked
                                 ? data.isLocked
-                                : ediorRole.role === "Participant" ||
-                                  ediorRole.role === "Agenda Contributor"
+                                : editorRole.role === "Participant" ||
+                                  editorRole.role === "Agenda Contributor"
                                 ? true
                                 : false
                             }
@@ -522,8 +522,8 @@ const ParentAgenda = ({
                             isDisabled={
                               data.isLocked
                                 ? data.isLocked
-                                : ediorRole.role === "Participant" ||
-                                  ediorRole.role === "Agenda Contributor"
+                                : editorRole.role === "Participant" ||
+                                  editorRole.role === "Agenda Contributor"
                                 ? true
                                 : false
                             }
@@ -565,8 +565,8 @@ const ParentAgenda = ({
                                 disabled={
                                   data.isLocked
                                     ? data.isLocked
-                                    : ediorRole.role === "Participant" ||
-                                      ediorRole.role === "Agenda Contributor"
+                                    : editorRole.role === "Participant" ||
+                                      editorRole.role === "Agenda Contributor"
                                     ? true
                                     : false
                                 }
@@ -613,8 +613,8 @@ const ParentAgenda = ({
                                 disabled={
                                   data.isLocked
                                     ? data.isLocked
-                                    : ediorRole.role === "Participant" ||
-                                      ediorRole.role === "Agenda Contributor"
+                                    : editorRole.role === "Participant" ||
+                                      editorRole.role === "Agenda Contributor"
                                     ? true
                                     : false
                                 }
@@ -622,8 +622,8 @@ const ParentAgenda = ({
                             </Col>
                           </Row>
                           {index !== 0 &&
-                            (ediorRole.role === "Participant" ||
-                            ediorRole.role === "Agenda Contributor" ? null : (
+                            (editorRole.role === "Participant" ||
+                            editorRole.role === "Agenda Contributor" ? null : (
                               <img
                                 alt=""
                                 draggable={false}
@@ -674,8 +674,8 @@ const ParentAgenda = ({
                                 disable={
                                   data.isLocked
                                     ? data.isLocked
-                                    : ediorRole.role === "Participant" ||
-                                      ediorRole.role === "Agenda Contributor"
+                                    : editorRole.role === "Participant" ||
+                                      editorRole.role === "Agenda Contributor"
                                     ? true
                                     : false
                                 }
@@ -727,8 +727,9 @@ const ParentAgenda = ({
                               sm={6}
                               className="d-flex justify-content-end gap-4 align-items-center"
                             >
-                              {ediorRole.role === "Participant" ||
-                              ediorRole.role === "Agenda Contributor" ? null : (
+                              {editorRole.role === "Participant" ||
+                              editorRole.role ===
+                                "Agenda Contributor" ? null : (
                                 <>
                                   {data.iD.includes("A") ? null : (
                                     <>
@@ -813,9 +814,9 @@ const ParentAgenda = ({
                                           parentId={`parent-${data.iD}`}
                                           setFileForSend={setFileForSend}
                                           fileForSend={fileForSend}
-                                          ediorRole={ediorRole}
+                                          editorRole={editorRole}
                                         />
-                                        {ediorRole.role ===
+                                        {editorRole.role ===
                                         "Participant" ? null : (
                                           <DefaultDragger
                                             setRows={setRows}
@@ -823,11 +824,11 @@ const ParentAgenda = ({
                                             index={index}
                                             fileForSend={fileForSend}
                                             setFileForSend={setFileForSend}
-                                            ediorRole={ediorRole}
+                                            editorRole={editorRole}
                                           />
                                         )}
                                       </>
-                                    ) : ediorRole.role ===
+                                    ) : editorRole.role ===
                                       "Participant" ? null : (
                                       <DefaultDragger
                                         setRows={setRows}
@@ -835,7 +836,7 @@ const ParentAgenda = ({
                                         index={index}
                                         fileForSend={fileForSend}
                                         setFileForSend={setFileForSend}
-                                        ediorRole={ediorRole}
+                                        editorRole={editorRole}
                                       />
                                     )}
                                   </>
@@ -845,7 +846,7 @@ const ParentAgenda = ({
                                     index={index}
                                     setRows={setRows}
                                     rows={rows}
-                                    ediorRole={ediorRole}
+                                    editorRole={editorRole}
                                   />
                                 ) : data.selectedRadio === 3 ? (
                                   <RequestContributor
@@ -855,7 +856,7 @@ const ParentAgenda = ({
                                     rows={rows}
                                     allUsersRC={allUsersRC}
                                     setAllUsersRC={setAllUsersRC}
-                                    ediorRole={ediorRole}
+                                    editorRole={editorRole}
                                   />
                                 ) : (
                                   <></>
@@ -897,12 +898,12 @@ const ParentAgenda = ({
               openVoteMOdal={openVoteMOdal}
               allUsersRC={allUsersRC}
               setAllUsersRC={setAllUsersRC}
-              ediorRole={ediorRole}
+              editorRole={editorRole}
             />
           }
           {/* sub Ajenda Button */}
-          {ediorRole.role === "Participant" ||
-          ediorRole.role === "Agenda Contributor" ? null : (
+          {editorRole.role === "Participant" ||
+          editorRole.role === "Agenda Contributor" ? null : (
             <Row className="mt-3">
               <Col lg={12} md={12} sm={12}>
                 <Button

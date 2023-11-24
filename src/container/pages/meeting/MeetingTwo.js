@@ -150,7 +150,7 @@ const NewMeeting = () => {
     useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(null);
-  const [ediorRole, setEdiorRole] = useState({ status: null, role: null });
+  const [editorRole, setEdiorRole] = useState({ status: null, role: null });
   const [
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
@@ -726,7 +726,6 @@ const NewMeeting = () => {
                           )
                         );
                         // setIsOrganisers(isOrganiser);
-                        
                       }}
                     />
                   </Col>
@@ -752,7 +751,6 @@ const NewMeeting = () => {
                           )
                         );
                         // setIsOrganisers(isOrganiser);
-                        
                       }}
                     />
                   </Col>
@@ -1140,7 +1138,7 @@ const NewMeeting = () => {
           setSceduleMeeting={setSceduleMeeting}
           setCurrentMeetingID={setCurrentMeetingID}
           currentMeeting={currentMeetingID}
-          ediorRole={ediorRole}
+          editorRole={editorRole}
           setEdiorRole={setEdiorRole}
           setEditMeeting={setEditMeeting}
           isEditMeeting={isEditMeeting}
@@ -1157,7 +1155,7 @@ const NewMeeting = () => {
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           unPublish={false}
-          ediorRole={ediorRole}
+          editorRole={editorRole}
           setEdiorRole={setEdiorRole}
           dataroomMapFolderId={dataroomMapFolderId}
         />
@@ -1167,7 +1165,7 @@ const NewMeeting = () => {
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           unPublish={true}
-          ediorRole={ediorRole}
+          editorRole={editorRole}
           setEdiorRole={setEdiorRole}
           dataroomMapFolderId={dataroomMapFolderId}
         />
@@ -1408,7 +1406,7 @@ const NewMeeting = () => {
                     setEditMeeting={setEditMeeting}
                     setCurrentMeetingID={setCurrentMeetingID}
                     currentMeeting={currentMeetingID}
-                    ediorRole={ediorRole}
+                    editorRole={editorRole}
                     setDataroomMapFolderId={setDataroomMapFolderId}
                   />
                 ) : Number(currentView) === 1 ? (

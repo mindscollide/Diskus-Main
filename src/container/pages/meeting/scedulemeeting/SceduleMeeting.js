@@ -24,7 +24,7 @@ const SceduleMeeting = ({
   setEdiorRole,
   setEditMeeting,
   isEditMeeting,
-  ediorRole,
+  editorRole,
   setCurrentMeetingID,
   currentMeeting,
   setSceduleMeeting,
@@ -283,12 +283,12 @@ const SceduleMeeting = ({
                 />
                 <Button
                   disableBtn={
-                    (Number(ediorRole.status) === 1 ||
-                      Number(ediorRole.status) === 11 ||
-                      Number(ediorRole.status) === 12) &&
-                    (ediorRole.role === "Organizer" ||
-                      ediorRole.role === "Participant" ||
-                      ediorRole.role === "Agenda Contributor") &&
+                    (Number(editorRole.status) === 1 ||
+                      Number(editorRole.status) === 11 ||
+                      Number(editorRole.status) === 12) &&
+                    (editorRole.role === "Organizer" ||
+                      editorRole.role === "Participant" ||
+                      editorRole.role === "Agenda Contributor") &&
                     isEditMeeting === true
                       ? true
                       : Number(currentMeeting) === 0
@@ -307,12 +307,12 @@ const SceduleMeeting = ({
                 />
                 <Button
                   disableBtn={
-                    (Number(ediorRole.status) === 1 ||
-                      Number(ediorRole.status) === 11 ||
-                      Number(ediorRole.status) === 12) &&
-                    (ediorRole.role === "Organizer" ||
-                      ediorRole.role === "Participant" ||
-                      ediorRole.role === "Agenda Contributor") &&
+                    (Number(editorRole.status) === 1 ||
+                      Number(editorRole.status) === 11 ||
+                      Number(editorRole.status) === 12) &&
+                    (editorRole.role === "Organizer" ||
+                      editorRole.role === "Participant" ||
+                      editorRole.role === "Agenda Contributor") &&
                     isEditMeeting === true
                       ? true
                       : Number(currentMeeting) === 0
@@ -331,12 +331,12 @@ const SceduleMeeting = ({
                 />
                 <Button
                   disableBtn={
-                    (Number(ediorRole.status) === 1 ||
-                      Number(ediorRole.status) === 11 ||
-                      Number(ediorRole.status) === 12) &&
-                    (ediorRole.role === "Organizer" ||
-                      ediorRole.role === "Participant" ||
-                      ediorRole.role === "Agenda Contributor") &&
+                    (Number(editorRole.status) === 1 ||
+                      Number(editorRole.status) === 11 ||
+                      Number(editorRole.status) === 12) &&
+                    (editorRole.role === "Organizer" ||
+                      editorRole.role === "Participant" ||
+                      editorRole.role === "Agenda Contributor") &&
                     isEditMeeting === true
                       ? true
                       : Number(currentMeeting) === 0
@@ -353,9 +353,9 @@ const SceduleMeeting = ({
                   }
                   onClick={ShowPolls}
                 />
-                {(Number(ediorRole.status) === 10 ||
-                  Number(ediorRole.status) === 9) &&
-                ediorRole.role === "Organizer" &&
+                {(Number(editorRole.status) === 10 ||
+                  Number(editorRole.status) === 9) &&
+                editorRole.role === "Organizer" &&
                 isEditMeeting === true ? (
                   <Button
                     disableBtn={Number(currentMeeting) === 0 ? true : false}
@@ -388,7 +388,7 @@ const SceduleMeeting = ({
                 currentMeeting={currentMeeting}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
-                ediorRole={ediorRole}
+                editorRole={editorRole}
               />
             )}
             {organizers && (
@@ -408,7 +408,7 @@ const SceduleMeeting = ({
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
-                ediorRole={ediorRole}
+                editorRole={editorRole}
               />
             )}
             {agendaContributors && (
@@ -421,7 +421,7 @@ const SceduleMeeting = ({
                 setParticipants={setParticipants}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
-                ediorRole={ediorRole}
+                editorRole={editorRole}
               />
             )}
             {participants && (
@@ -436,7 +436,7 @@ const SceduleMeeting = ({
                 setAgendaContributors={setAgendaContributors}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
-                ediorRole={ediorRole}
+                editorRole={editorRole}
               />
             )}
 
@@ -447,7 +447,7 @@ const SceduleMeeting = ({
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
-                ediorRole={ediorRole}
+                editorRole={editorRole}
                 setMeetingMaterial={setMeetingMaterial}
                 setAgenda={setAgenda}
                 setParticipants={setParticipants}
@@ -463,7 +463,7 @@ const SceduleMeeting = ({
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
-                ediorRole={ediorRole}
+                editorRole={editorRole}
                 setAgenda={setAgenda}
               />
             )}
@@ -476,7 +476,7 @@ const SceduleMeeting = ({
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
-                ediorRole={ediorRole}
+                editorRole={editorRole}
                 setactionsPage={setactionsPage}
               />
             )}
@@ -490,7 +490,7 @@ const SceduleMeeting = ({
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
-                ediorRole={ediorRole}
+                editorRole={editorRole}
                 dataroomMapFolderId={dataroomMapFolderId}
               />
             )}
@@ -503,7 +503,7 @@ const SceduleMeeting = ({
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
-                ediorRole={ediorRole}
+                editorRole={editorRole}
               />
             )}
             {attendance && (
@@ -512,7 +512,7 @@ const SceduleMeeting = ({
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
-                ediorRole={ediorRole}
+                editorRole={editorRole}
                 setAttendance={setAttendance}
                 setSceduleMeeting={setSceduleMeeting}
               />

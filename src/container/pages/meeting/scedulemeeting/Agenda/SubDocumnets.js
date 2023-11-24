@@ -19,7 +19,7 @@ const SubDocumnets = ({
   fileForSend,
   setFileForSend,
   subIndex,
-  ediorRole,
+  editorRole,
 }) => {
   const handlesubAgendaCrossFiles = (subAgendaFilesIndex, subAgendaFiles) => {
     console.log(subAgendaFiles, "fileDataPropfileDataProp");
@@ -77,8 +77,8 @@ const SubDocumnets = ({
                           draggableId={`parent-attachments-${parentId}-subAgendaID-${subAgendaData.subAgendaID}-attachments-${subAgendaFiles.agendaAttachmentsID}`}
                           index={subAgendaFilesIndex}
                           isDragDisabled={
-                            ediorRole.role === "Participant" ||
-                            ediorRole.role === "Agenda Contributor"
+                            editorRole.role === "Participant" ||
+                            editorRole.role === "Agenda Contributor"
                               ? true
                               : false
                           }
@@ -125,7 +125,7 @@ const SubDocumnets = ({
                                       </span>
                                     </Col>
                                     <Col lg={2} md={2} sm={2}>
-                                      {ediorRole.role ===
+                                      {editorRole.role ===
                                       "Participant" ? null : (
                                         <img
                                           alt=""
