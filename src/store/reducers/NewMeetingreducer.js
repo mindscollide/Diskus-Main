@@ -1018,6 +1018,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ADD_GENERAL_MINUTES_SUCCESS: {
       return {
         ...state,
+        Loading: true,
         addMinuteID: action.response,
         ResponseMessage: action.message,
       };
@@ -1136,7 +1137,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.UPDATE_GENERAL_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         ResponseMessage: action.message,
       };
     }
