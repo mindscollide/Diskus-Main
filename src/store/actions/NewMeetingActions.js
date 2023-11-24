@@ -2930,9 +2930,8 @@ const ShowADDGeneralMinutesFailed = (message) => {
   };
 };
 
-const ADDGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
+const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(ShowADDGeneralMinutesInit());
     let form = new FormData();
@@ -2962,10 +2961,6 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
                   t("Record-saved")
                 )
               );
-              // let Meet = {
-              //   MeetingID: Number(currentMeeting),
-              // };
-              // dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_AddGeneralMinute_02"
@@ -3021,7 +3016,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
-    dispatch(showRetriveGeneralMinutesDocsMeetingInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getAllGeneralMiintuesDocument.RequestMethod);
@@ -3103,7 +3097,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
 //Getting all the General Mintues
 
 const showAllGeneralMinutesInit = () => {
-  console.log("ShowAllGeneralMinutesInitShowAllGeneralMinutesInit");
   return {
     type: actions.GET_GENERAL_MINTES_INIT,
   };
@@ -3127,64 +3120,69 @@ const showAllGeneralMinutesFailed = (message) => {
 // Api Function For General Minutes
 const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(showAllGeneralMinutesInit());
-    console.log("ShowAllGeneralMinutesInitShowAllGeneralMinutesInit");
     let form = new FormData();
     form.append("RequestMethod", getGeneralMinutes.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
-            ) {
-              dispatch(
-                showAllGeneralMinutesSuccess(response.data.responseResult, "")
-              );
+    try {
+      const response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
 
-              let MeetingDocs = {
-                MDID: currentMeeting,
-              };
-              console.log(MeetingDocs, "MeetingDocsMeetingDocs");
-              dispatch(
-                DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
-              );
-            } else if (
-              response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
-            ) {
-              dispatch(showAllGeneralMinutesFailed("", ""));
-            } else if (
-              response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
-            ) {
-              dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        await dispatch(
+          GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
+        );
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
+          ) {
+            let MeetingDocs = {
+              MDID: currentMeeting,
+            };
+            // Call DocumentsOfMeetingGenralMinutesApiFunc and wait for its response
+            await dispatch(
+              DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
+            );
+
+            // After DocumentsOfMeetingGenralMinutesApiFunc is done, call showAllGeneralMinutesSuccess
+            dispatch(
+              showAllGeneralMinutesSuccess(
+                response.data.responseResult,
+                t("Record-found")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
+          ) {
+            dispatch(showAllGeneralMinutesFailed([], t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
+          ) {
+            dispatch(
+              showAllGeneralMinutesFailed([], t("Something-went-wrong"))
+            );
           }
         } else {
-          dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
+          dispatch(showAllGeneralMinutesFailed([], t("Something-went-wrong")));
         }
-      })
-      .catch((response) => {
-        dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
-      });
+      } else {
+        dispatch(showAllGeneralMinutesFailed([], t("Something-went-wrong")));
+      }
+    } catch (error) {
+      dispatch(showAllGeneralMinutesFailed([], t("Something-went-wrong")));
+    }
   };
 };
 
@@ -3193,14 +3191,14 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
 // Upload Documents Init
 const uploadDocument_init = () => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+    type: actions.UPLOAD_DOCUMENT_INIT,
   };
 };
 
 // Upload Documents Success
 const uploadDocument_success = (response, message) => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    type: actions.UPLOAD_DOCUMENT_SUCCESS,
     response: response,
     message: message,
   };
@@ -3209,7 +3207,7 @@ const uploadDocument_success = (response, message) => {
 // Upload Documents Fail
 const uploadDocument_fail = (message) => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    type: actions.UPLOAD_DOCUMENT_FAILED,
     message: message,
   };
 };
@@ -3306,14 +3304,14 @@ const uploadDocumentsMeetingMinutesApi = (
 // Save Files Init
 const saveFiles_init = () => {
   return {
-    type: actions.SAVEFILES_DATAROOM_INIT,
+    type: actions.SAVED_FILES_INIT,
   };
 };
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
   return {
-    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    type: actions.SAVED_FILES_SUCCESS,
     response: response,
     message: message,
   };
@@ -3322,7 +3320,7 @@ const saveFiles_success = (response, message) => {
 // Save Files Fail
 const saveFiles_fail = (message) => {
   return {
-    type: actions.SAVEFILES_DATAROOM_FAIL,
+    type: actions.SAVED_FILES_FAILED,
     message: message,
   };
 };

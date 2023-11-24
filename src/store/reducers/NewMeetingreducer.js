@@ -4,7 +4,6 @@ const initialState = {
   LoadingParticipants: false,
   LoadingViewModal: false,
   Loading: false,
-  LoadingMinutes: false,
   meetingurlspinner: false,
   ResponseMessage: "",
   adduserModal: false,
@@ -92,6 +91,8 @@ const initialState = {
   ShowPreviousModal: false,
   attendanceConfirmationModal: false,
   getallDocumentsForAgendaWiseMinutes: [],
+  UploadDocumentsResponse: [],
+  SaveFolderResponse: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -984,20 +985,15 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_GENERAL_MINTES_INIT: {
-      console.log("ShowAllGeneralMinutesInitShowAllGeneralMinutesInit");
       return {
         ...state,
         Loading: true,
-        LoadingMinutes: true,
       };
     }
 
     case actions.GET_GENERAL_MINTES_SUCCESS: {
-      console.log("ShowAllGeneralMinutesInitShowAllGeneralMinutesInit");
       return {
         ...state,
-        Loading: false,
-        LoadingMinutes: false,
         generalMinutes: action.response,
         ResponseMessage: action.message,
       };
@@ -1007,7 +1003,6 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        LoadingMinutes: false,
         generalMinutes: [],
         ResponseMessage: action.message,
       };
@@ -1021,10 +1016,8 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ADD_GENERAL_MINUTES_SUCCESS: {
-      console.log(action.response, "LoadingLoadingLoading");
       return {
         ...state,
-        Loading: true,
         addMinuteID: action.response,
         ResponseMessage: action.message,
       };
@@ -1033,7 +1026,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ADD_GENERAL_MINUTES_FAILED: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         addMinuteID: 0,
         ResponseMessage: action.message,
       };
@@ -1588,6 +1581,53 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    //Upload docs
+
+    case actions.UPLOAD_DOCUMENT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.UPLOAD_DOCUMENT_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+        UploadDocumentsResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.UPLOAD_DOCUMENT_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        UploadDocumentsResponse: [],
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVED_FILES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SAVED_FILES_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+        SaveFolderResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SAVED_FILES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        SaveFolderResponse: null,
         ResponseMessage: action.message,
       };
     }
