@@ -1,127 +1,24 @@
-[
-  {
-    "pK_MeetingGeneralMinutesID": 199,
-    "files": [
-      {
-        "pK_FileID": 7167,
-        "displayFileName": "Profile.pdf",
-        "diskusFileName": 20231123095456030,
-        "diskusFileNameString": "",
-        "shareAbleLink": "D:\\Diskus\\Services\\DiskusFileStorage\\DataRoom\\984_417\\20231123095456032",
-        "fileSize": 0,
-        "fileSizeOnDisk": 0,
-        "fK_UserID": 984,
-        "fK_OrganizationID": 417,
-        "uriPath": null,
-        "fK_GAID": 0,
-        "createdDate": "",
-        "modifiedDate": "",
-        "modifiedByUser": "",
-        "openedDateTime": "",
-        "openedByUser": "",
-        "location": "",
-        "type": "",
-        "description": ""
-      }
-    ]
-  },
-  {
-    "pK_MeetingGeneralMinutesID": 200,
-    "files": [
-      {
-        "pK_FileID": 7167,
-        "displayFileName": "Profile.pdf",
-        "diskusFileName": 20231123095456030,
-        "diskusFileNameString": "",
-        "shareAbleLink": "D:\\Diskus\\Services\\DiskusFileStorage\\DataRoom\\984_417\\20231123095456032",
-        "fileSize": 0,
-        "fileSizeOnDisk": 0,
-        "fK_UserID": 984,
-        "fK_OrganizationID": 417,
-        "uriPath": null,
-        "fK_GAID": 0,
-        "createdDate": "",
-        "modifiedDate": "",
-        "modifiedByUser": "",
-        "openedDateTime": "",
-        "openedByUser": "",
-        "location": "",
-        "type": "",
-        "description": ""
-      },
-      {
-        "pK_FileID": 7176,
-        "displayFileName": "Minute Screen Frontend API Call flow.txt",
-        "diskusFileName": 20231123105921390,
-        "diskusFileNameString": "",
-        "shareAbleLink": "D:\\Diskus\\Services\\DiskusFileStorage\\DataRoom\\984_417\\20231123105921391",
-        "fileSize": 0,
-        "fileSizeOnDisk": 0,
-        "fK_UserID": 984,
-        "fK_OrganizationID": 417,
-        "uriPath": null,
-        "fK_GAID": 0,
-        "createdDate": "",
-        "modifiedDate": "",
-        "modifiedByUser": "",
-        "openedDateTime": "",
-        "openedByUser": "",
-        "location": "",
-        "type": "",
-        "description": ""
-      }
-    ]
-  },
-  {
-    "pK_MeetingGeneralMinutesID": 201,
-    "files": [
-      {
-        "pK_FileID": 7178,
-        "displayFileName": "Number Systems.pdf",
-        "diskusFileName": 20231123110725850,
-        "diskusFileNameString": "",
-        "shareAbleLink": "D:\\Diskus\\Services\\DiskusFileStorage\\DataRoom\\984_417\\20231123110725849",
-        "fileSize": 0,
-        "fileSizeOnDisk": 0,
-        "fK_UserID": 984,
-        "fK_OrganizationID": 417,
-        "uriPath": null,
-        "fK_GAID": 0,
-        "createdDate": "",
-        "modifiedDate": "",
-        "modifiedByUser": "",
-        "openedDateTime": "",
-        "openedByUser": "",
-        "location": "",
-        "type": "",
-        "description": ""
-      }
-    ]
-  },
-  {
-    "pK_MeetingGeneralMinutesID": 202,
-    "files": [
-      {
-        "pK_FileID": 7179,
-        "displayFileName": "ANA LECs 1-4.pdf",
-        "diskusFileName": 20231123111403776,
-        "diskusFileNameString": "",
-        "shareAbleLink": "D:\\Diskus\\Services\\DiskusFileStorage\\DataRoom\\984_417\\20231123111403775",
-        "fileSize": 0,
-        "fileSizeOnDisk": 0,
-        "fK_UserID": 984,
-        "fK_OrganizationID": 417,
-        "uriPath": null,
-        "fK_GAID": 0,
-        "createdDate": "",
-        "modifiedDate": "",
-        "modifiedByUser": "",
-        "openedDateTime": "",
-        "openedByUser": "",
-        "location": "",
-        "type": "",
-        "description": ""
-      }
-    ]
-  }
-]
+{
+  "MeetingID": 2312,
+  "SendResponsebyDate": "",
+  "ProposedDates": [
+    {
+      "ProposedDate": "20231126",
+      "StartTime": "153327",
+      "EndTime": "163327",
+      "proposedDateID": 620
+    },
+    {
+      "ProposedDate": "20231127",
+      "StartTime": "153336",
+      "EndTime": "163339",
+      "proposedDateID": 621
+    },
+    {
+      "ProposedDate": "20231128",
+      "StartTime": "153458",
+      "EndTime": "163459",
+      "proposedDateID": 0
+    }
+  ]
+}

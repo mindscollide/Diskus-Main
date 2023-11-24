@@ -83,7 +83,7 @@ const DataRoomReducer = (state = initialState, action) => {
     case actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS: {
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         UploadDocumentsResponse: action.response,
         ResponseMessage: action.message,
       };
