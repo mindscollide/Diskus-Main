@@ -3,7 +3,11 @@ import styles from "./AgendaWise.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Notification } from "../../../../../../components/elements";
+import {
+  Button,
+  Notification,
+  Loader,
+} from "../../../../../../components/elements";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { useRef } from "react";
@@ -23,25 +27,24 @@ import {
   newTimeFormaterAsPerUTCFullDate,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
-import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
+
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
   CleareMessegeNewMeeting,
-  DeleteAgendaWiseMinutesApiFunc,
   DeleteAgendaWiseMinutesDocumentsApiFunc,
-  GetAllAgendaWiseMinutesApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
-  saveFilesMeetingagendaWiseMinutesApi,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
-  uploadDocumentsMeetingMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
+import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
 
 const AgendaWise = ({ currentMeeting }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  let folderID = localStorage.getItem("folderDataRoomMeeting");
+  console.log(folderID, "localStoragelocalStorage");
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
       value: "",
@@ -56,9 +59,10 @@ const AgendaWise = ({ currentMeeting }) => {
   const [isEdit, setisEdit] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+  const { NewMeetingreducer, AgendaWiseAgendaListReducer } = useSelector(
     (state) => state
   );
+  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
@@ -66,13 +70,16 @@ const AgendaWise = ({ currentMeeting }) => {
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
-  const [folderID, setFolderID] = useState(0);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [expandedFiles, setExpandedFiles] = useState([]);
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
+  const [agendaOptionvalue, setAgendaOptionValue] = useState({
+    label: "",
+    value: 0,
+  });
   const [showMore, setShowMore] = useState(false);
   const [showMoreIndex, setShowMoreIndex] = useState(0);
   const [agendaID, setAgendaID] = useState([]);
@@ -87,28 +94,49 @@ const AgendaWise = ({ currentMeeting }) => {
     let Data = {
       MeetingID: currentMeeting,
     };
-    dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+    dispatch(
+      GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
+        Data,
+        navigate,
+        t,
+        currentMeeting
+      )
+    );
   }, []);
 
+  console.log(
+    AgendaWiseAgendaListReducer.AllAgendas,
+    "AgendaWiseAgendaListReducer"
+  );
+
   useEffect(() => {
-    console.log(MeetingAgendaReducer, "GetAdvanceMeetingAgendabyMeetingIDData");
     try {
       if (
-        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
-        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
-          undefined
+        AgendaWiseAgendaListReducer.AllAgendas !== null &&
+        AgendaWiseAgendaListReducer.AllAgendas !== undefined
       ) {
         let NewData = [];
         console.log(
-          MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
+          AgendaWiseAgendaListReducer.AllAgendas,
           "agendaListagendaList"
         );
-        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
+        AgendaWiseAgendaListReducer.AllAgendas.agendaList.map(
           (agenda, index) => {
-            console.log(agenda, "agendaagendaagenda");
+            console.log(agenda, "agendaListagendaList");
             NewData.push({
               value: agenda.id,
               label: agenda.title,
+            });
+
+            agenda.subAgenda.map((subajendaData, index) => {
+              console.log(
+                subajendaData,
+                "subajendaDatasubajendaDatasubajendaData"
+              );
+              NewData.push({
+                value: subajendaData.subAgendaID,
+                label: subajendaData.subTitle,
+              });
             });
           }
         );
@@ -116,35 +144,56 @@ const AgendaWise = ({ currentMeeting }) => {
         setAgendaID(NewData);
       }
     } catch {}
-  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList]);
+  }, [AgendaWiseAgendaListReducer.AllAgendas]);
 
   console.log(agendaOptions, "agendaOptionsagendaOptions");
 
+  // Combined Data for both Documents and Minutes Agenda Wise
   useEffect(() => {
     try {
       if (
         NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-        NewMeetingreducer.agendaWiseMinutesReducer !== undefined
+        NewMeetingreducer.agendaWiseMinutesReducer &&
+        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
+        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
       ) {
+        const minutesData =
+          NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
+        const documentsData =
+          NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
+
         console.log(
-          NewMeetingreducer.agendaWiseMinutesReducer,
-          "agendaWiseMinutesagendaWiseMinutes"
+          minutesData,
+          documentsData,
+          "minutesDataminutesDataminutesData"
         );
-        let agendaWiseArr = [];
-        NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes.map(
-          (agendawiseData, agendawiseIndex) => {
-            console.log(agendawiseData, "agendawiseDataagendawiseData");
-            agendaWiseArr.push(agendawiseData);
+
+        const combinedData = minutesData.map((item1) => {
+          const matchingItem = documentsData.find(
+            (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
+          );
+          if (matchingItem) {
+            return {
+              ...item1,
+              minutesAttachmets: matchingItem.files,
+            };
           }
-        );
-        setMessages(agendaWiseArr);
+          return item1;
+        });
+        console.log(combinedData, "minutesDataminutesDataminutesData");
+        setMessages(combinedData);
       } else {
         setMessages([]);
       }
-    } catch {}
-  }, [NewMeetingreducer.agendaWiseMinutesReducer]);
-
-  console.log(agendaOptions, "NewMeetingreducerNewMeetingreducer");
+    } catch (error) {
+      // Handle any errors here
+      console.error(error);
+    }
+  }, [
+    NewMeetingreducer.agendaWiseMinutesReducer,
+    NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
+  ]);
+  console.log(messages, "minutesDataminutesDataminutesData");
 
   let userID = localStorage.getItem("userID");
   const date = new Date();
@@ -324,22 +373,26 @@ const AgendaWise = ({ currentMeeting }) => {
         title: selectoptions.label,
       },
     });
+    setAgendaOptionValue({
+      label: selectoptions.label,
+      value: selectoptions.value,
+    });
   };
 
   console.log(agendaID, "agendaIDagendaIDagendaID");
-  let id;
-  agendaID.map((data, index) => {
-    console.log(data, "handleAddClickAgendaWisehandleAddClickAgendaWise");
-    id = data.value;
-  });
 
   const handleAddClickAgendaWise = async () => {
     let Data = {
-      AgendaID: id,
+      AgendaID: agendaSelect.agendaSelectOptions.id,
       MinuteText: addNoteFields.Description.value,
     };
     console.log(Data, "addNoteFieldsaddNoteFields");
     dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
+    setAgendaOptionValue({
+      value: 0,
+      label: "",
+    });
+    // setAgendaOptions([]);
   };
 
   const documentUploadingFunc = async (minuteID) => {
@@ -358,9 +411,6 @@ const AgendaWise = ({ currentMeeting }) => {
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    console.log(messages, "messagesmessages");
-
-    console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingAgendaMinutesID: minuteID,
@@ -369,11 +419,13 @@ const AgendaWise = ({ currentMeeting }) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, id));
+    dispatch(
+      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+    );
 
     setFileAttachments([]);
     setPreviousFileIDs([]);
-    setAgendaOptions([]);
+    // setAgendaOptions([]);
     setFileForSend([]);
     setAddNoteFields({
       ...addNoteFields,
@@ -462,7 +514,8 @@ const AgendaWise = ({ currentMeeting }) => {
     try {
       if (
         NewMeetingreducer.RetriveAgendaWiseDocuments !== null &&
-        NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined
+        NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined &&
+        NewMeetingreducer.RetriveAgendaWiseDocuments.data.length > 0
       ) {
         console.log(
           NewMeetingreducer.RetriveAgendaWiseDocuments,
@@ -522,7 +575,9 @@ const AgendaWise = ({ currentMeeting }) => {
       }),
     };
     console.log(docsData, "messagesmessages");
-    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, id));
+    dispatch(
+      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+    );
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -533,6 +588,7 @@ const AgendaWise = ({ currentMeeting }) => {
     });
 
     setFileAttachments([]);
+    // setAgendaOptions([]);
     setisEdit(false);
   };
 
@@ -550,7 +606,8 @@ const AgendaWise = ({ currentMeeting }) => {
         Data,
         t,
         currentMeeting,
-        AgendaWiseData
+        AgendaWiseData,
+        agendaSelect.agendaSelectOptions.id
       )
     );
     setAddNoteFields({
@@ -563,6 +620,7 @@ const AgendaWise = ({ currentMeeting }) => {
     });
 
     setFileAttachments([]);
+    // setAgendaOptions([]);
   };
 
   const handleshowMore = (index) => {
@@ -594,7 +652,14 @@ const AgendaWise = ({ currentMeeting }) => {
     <section>
       <Row className="mt-4">
         <Col lg={6} md={6} sm={6}>
-          <Select options={agendaOptions} onChange={handleAgendaSelect} />
+          <Select
+            options={agendaOptions}
+            value={{
+              value: agendaOptionvalue.value,
+              label: agendaOptionvalue.label,
+            }}
+            onChange={handleAgendaSelect}
+          />
         </Col>
       </Row>
       <Row className="mt-4">
@@ -806,7 +871,14 @@ const AgendaWise = ({ currentMeeting }) => {
                 return (
                   <>
                     <section className={styles["Sizing_Saved_Minutes"]}>
-                      <Row className="mt-5">
+                      <Row className="mt-4">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["AgendaTitleClass"]}>
+                            {data.agendaTitle}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
                         <Col
                           lg={12}
                           md={12}
@@ -846,7 +918,7 @@ const AgendaWise = ({ currentMeeting }) => {
                                       {expanded &&
                                       data.minutesDetails.substring(0, 120)
                                         ? t("See-more")
-                                        : t("See-less")}
+                                        : ""}
                                     </span>
                                   </span>
                                 </Col>
@@ -869,7 +941,7 @@ const AgendaWise = ({ currentMeeting }) => {
                                     className={styles["Show_more"]}
                                     onClick={() => handleshowMore(index)}
                                   >
-                                    Show more
+                                    {t("Show-more")}
                                   </span>
                                 </Col>
                               </Row>
@@ -892,8 +964,8 @@ const AgendaWise = ({ currentMeeting }) => {
                                             return (
                                               <>
                                                 <Col
-                                                  lg={2}
-                                                  md={2}
+                                                  lg={3}
+                                                  md={3}
                                                   sm={12}
                                                   className="position-relative gap-2"
                                                 >
@@ -949,7 +1021,7 @@ const AgendaWise = ({ currentMeeting }) => {
                                                             }
                                                           >
                                                             {
-                                                              data.DisplayAttachmentName
+                                                              filesname.displayFileName
                                                             }
                                                           </span>
                                                         </Col>

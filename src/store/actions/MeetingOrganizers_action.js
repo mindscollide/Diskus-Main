@@ -308,7 +308,7 @@ const UpdateOrganizersMeeting = (
               await dispatch(
                 updateOrganizerMeetingStatus_success(
                   response.data.responseResult,
-                  t("Record-updated")
+                  t("Meeting-started-successfully")
                 )
               );
               if (route) {
@@ -690,4 +690,5 @@ export {
   notificationSendData,
   sendNotificationOrganizer,
   notificationUpdateData,
+  getAllMeetingOrganizers_fail,
 };

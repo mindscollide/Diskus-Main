@@ -318,7 +318,7 @@ const SearchComponent = ({
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: 0,
-        isOwnedByMe: true,
+        isOwnedByMe: searchDataFields.isOwnedByMe,
         // isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: sRowsData,
@@ -850,7 +850,7 @@ const SearchComponent = ({
     if (event.value === 1) {
       setSearchDataFields({
         ...searchDataFields,
-        isOwnedByMe: false,
+        isOwnedByMe: 1,
         //     isNotOwnedByMe: false,
 
         isSpecificUser: false,
@@ -874,7 +874,7 @@ const SearchComponent = ({
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: 0,
-        isOwnedByMe: false,
+        isOwnedByMe: 1,
         //     isNotOwnedByMe: false,
 
         isSpecificUser: false,
@@ -887,7 +887,7 @@ const SearchComponent = ({
     } else if (event.value === 2) {
       setSearchDataFields({
         ...searchDataFields,
-        isOwnedByMe: true,
+        isOwnedByMe: 2,
         //     isNotOwnedByMe: false,
 
         isSpecificUser: false,
@@ -910,7 +910,7 @@ const SearchComponent = ({
         isSites: searchDataFields.isSites,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
-        isOwnedByMe: true,
+        isOwnedByMe: 2,
         //     isNotOwnedByMe: false,
 
         isSpecificUser: false,
@@ -924,7 +924,7 @@ const SearchComponent = ({
     } else if (event.value === 3) {
       setSearchDataFields({
         ...searchDataFields,
-        isOwnedByMe: false,
+        isOwnedByMe: 3,
         isNotOwnedByMe: true,
         isSpecificUser: false,
         UserIDToSearch: 0,
@@ -946,7 +946,7 @@ const SearchComponent = ({
         isSites: searchDataFields.isSites,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
-        isOwnedByMe: false,
+        isOwnedByMe: 3,
         isNotOwnedByMe: true,
         isSpecificUser: false,
         UserIDToSearch: 0,
@@ -959,10 +959,10 @@ const SearchComponent = ({
     } else {
       setSearchDataFields({
         ...searchDataFields,
-        isOwnedByMe: true,
+        isOwnedByMe: 3,
         //     isNotOwnedByMe: false,
 
-        isSpecificUser: true,
+        isSpecificUser: 3,
         UserIDToSearch: parseInt(event.value),
       });
       let data = {
@@ -982,7 +982,7 @@ const SearchComponent = ({
         isSites: searchDataFields.isSites,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
-        isOwnedByMe: true,
+        isOwnedByMe: 3,
         //     isNotOwnedByMe: false,
 
         isSpecificUser: true,
@@ -1292,7 +1292,7 @@ const SearchComponent = ({
       LastModifiedStartDate: "",
       LastModifiedEndDate: "",
       UserIDToSearch: 0,
-      isOwnedByMe: false,
+      isOwnedByMe: 2,
       //     isNotOwnedByMe: false,
 
       isSpecificUser: false,
@@ -1321,7 +1321,7 @@ const SearchComponent = ({
       LastModifiedStartDate: "",
       LastModifiedEndDate: "",
       UserIDToSearch: 0,
-      isOwnedByMe: false,
+      isOwnedByMe: 2,
       //     isNotOwnedByMe: false,
 
       isSpecificUser: false,
@@ -1524,7 +1524,7 @@ const SearchComponent = ({
       isSites: searchDataFields.isSites,
       LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
       LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
-      isOwnedByMe: true,
+      isOwnedByMe: 2,
       isSpecificUser: false,
       UserIDToSearch: 0,
       sRow: 0,
@@ -1535,7 +1535,7 @@ const SearchComponent = ({
     dispatch(searchDocumentsAndFoldersApi(navigate, t, newData));
     setSearchDataFields({
       ...searchDataFields,
-      isOwnedByMe: false,
+      isOwnedByMe: 2,
       isSpecificUser: false,
       UserIDToSearch: 0,
     });
@@ -1724,7 +1724,8 @@ const SearchComponent = ({
           sm={3}
           className={styles["select-dropdowns-height-DataRoom"]}
         >
-          {searchDataFields.isOwnedByMe || searchDataFields.isSpecificUser ? (
+          {searchDataFields.isOwnedByMe !== 2 ||
+          searchDataFields.isSpecificUser ? (
             <div className={styles["dropdown__Document_Value"]}>
               <img
                 draggable="false"

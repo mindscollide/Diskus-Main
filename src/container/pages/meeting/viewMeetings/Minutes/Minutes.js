@@ -40,12 +40,14 @@ const Minutes = ({
   // setAgenda,
   setactionsPage,
   setMeetingMaterial,
-  ediorRole,
+  editorRole,
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
   setSceduleMeeting,
 }) => {
   const [fileSize, setFileSize] = useState(0);
+  let folderID = localStorage.getItem("folderDataRoomMeeting");
+  console.log(folderID, "folderIDfolderIDfolderIDfolderID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
@@ -58,7 +60,6 @@ const Minutes = ({
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
-  const [folderID, setFolderID] = useState(0);
   const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
@@ -584,15 +585,15 @@ const Minutes = ({
       {agenda ? (
         <AgendaWise
           advanceMeetingModalID={advanceMeetingModalID}
-          ediorRole={ediorRole}
+          editorRole={editorRole}
         />
       ) : general ? (
         <>
           <Row className="mt-4">
             <Col lg={6} md={6} sm={6}>
-              {(ediorRole.role === "Organizer" &&
-                Number(ediorRole.status) === 10) ||
-              Number(ediorRole.status) === 9 ? (
+              {(editorRole.role === "Organizer" &&
+                Number(editorRole.status) === 10) ||
+              Number(editorRole.status) === 9 ? (
                 <>
                   <Row className={styles["Add-note-QuillRow"]}>
                     <Col
@@ -697,9 +698,9 @@ const Minutes = ({
                                       sm={12}
                                       className="position-relative gap-2"
                                     >
-                                      {(ediorRole.role === "Organizer" &&
-                                        Number(ediorRole.status) === 10) ||
-                                      Number(ediorRole.status) === 9 ? (
+                                      {(editorRole.role === "Organizer" &&
+                                        Number(editorRole.status) === 10) ||
+                                      Number(editorRole.status) === 9 ? (
                                         <span
                                           className={styles["Crossicon_Class"]}
                                         >
@@ -787,9 +788,9 @@ const Minutes = ({
                   </Row>
                 </>
               ) : null}
-              {(ediorRole.role === "Organizer" &&
-                Number(ediorRole.status) === 10) ||
-              Number(ediorRole.status) === 9 ? (
+              {(editorRole.role === "Organizer" &&
+                Number(editorRole.status) === 10) ||
+              Number(editorRole.status) === 9 ? (
                 <Row className="mt-2">
                   <Col lg={12} md={12} sm={12}>
                     <Dragger
@@ -932,9 +933,9 @@ const Minutes = ({
                                         </Col>
                                       </Row>
                                     </Col>
-                                    {(ediorRole.role === "Organizer" &&
-                                      Number(ediorRole.status) === 10) ||
-                                    Number(ediorRole.status) === 9 ? (
+                                    {(editorRole.role === "Organizer" &&
+                                      Number(editorRole.status) === 10) ||
+                                    Number(editorRole.status) === 9 ? (
                                       <Col
                                         lg={3}
                                         md={3}
@@ -1061,9 +1062,9 @@ const Minutes = ({
                                   </Row>
                                 </>
                               ) : null}
-                              {(ediorRole.role === "Organizer" &&
-                                Number(ediorRole.status) === 10) ||
-                              Number(ediorRole.status) === 9 ? (
+                              {(editorRole.role === "Organizer" &&
+                                Number(editorRole.status) === 10) ||
+                              Number(editorRole.status) === 9 ? (
                                 <img
                                   draggable={false}
                                   src={RedCroseeIcon}

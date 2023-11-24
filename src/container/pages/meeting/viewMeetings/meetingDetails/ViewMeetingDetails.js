@@ -17,6 +17,7 @@ import {
   ClearMessegeMeetingdetails,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
+  showGetAllMeetingDetialsFailed,
   showGetAllMeetingDetialsInit,
 } from "../../../../../store/actions/NewMeetingActions";
 import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
@@ -38,7 +39,7 @@ const ViewMeetingDetails = ({
   setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
   setMeetingDetails,
-  ediorRole,
+  editorRole,
   setAgenda,
   setEdiorRole,
 }) => {
@@ -48,7 +49,10 @@ const ViewMeetingDetails = ({
   const { NewMeetingreducer } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
-
+  console.log(
+    NewMeetingreducer,
+    "MeetingOrganizersReducerMeetingOrganizersReducer"
+  );
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -120,6 +124,37 @@ const ViewMeetingDetails = ({
         currentOrganization
       )
     );
+    return () => {
+      setMeetingDetailsData({
+        MeetingTitle: "",
+        MeetingType: 0,
+        Location: "",
+        Description: "",
+        Link: "",
+        ReminderFrequency: {
+          value: 0,
+          label: "",
+        },
+        ReminderFrequencyTwo: {
+          value: 0,
+          label: "",
+        },
+        ReminderFrequencyThree: {
+          value: 0,
+          label: "",
+        },
+        Notes: "",
+        groupChat: false,
+        AllowRSPV: false,
+        NotifyMeetingOrganizer: false,
+        RecurringOptions: {
+          value: 0,
+          label: "",
+        },
+        IsVideoCall: false,
+      });
+      dispatch(showGetAllMeetingDetialsFailed(""));
+    };
   }, []);
 
   const handleUpdateNext = () => {
@@ -388,8 +423,8 @@ const ViewMeetingDetails = ({
       {meetingStatus === 10 && (
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-            {Number(ediorRole.status) === 10 &&
-            ediorRole.role === "Organizer" &&
+            {Number(editorRole.status) === 10 &&
+            editorRole.role === "Organizer" &&
             meetingDetails.IsVideoCall === true ? (
               <>
                 <Button
@@ -649,7 +684,7 @@ const ViewMeetingDetails = ({
           />
         </Col>
       </Row>
-      {meetingDetails.MeetingTitle === "" ? <Loader /> : null}
+      {NewMeetingreducer.LoadingViewModal && <Loader />}
       {cancelModalView && (
         <CancelButtonModal
           setCancelModalView={setCancelModalView}

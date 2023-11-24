@@ -39,7 +39,7 @@ const MeetingMaterial = ({
   setViewFlag,
   setEditFlag,
   setCalendarViewModal,
-  ediorRole,
+  editorRole,
   isEditMeeting,
 }) => {
   const { t } = useTranslation();
@@ -287,15 +287,15 @@ const MeetingMaterial = ({
             text={t("Next")}
             className={styles["Cancel_Classname"]}
             onClick={handleSaveAndNext}
-            disableBtn={Number(ediorRole.status) === 10 ? false : true}
+            disableBtn={Number(editorRole.status) === 10 ? false : true}
           />
           <Button
             text={t("Save")}
             className={styles["Cancel_Classname"]}
             onClick={handleSaveAndNext}
           />
-          {Number(ediorRole.status) === 11 ||
-          Number(ediorRole.status) === 12 ? (
+          {Number(editorRole.status) === 11 ||
+          Number(editorRole.status) === 12 ? (
             <Button
               disableBtn={Number(currentMeeting) === 0 ? true : false}
               text={t("Publish")}
@@ -310,8 +310,8 @@ const MeetingMaterial = ({
               onClick={handlePublish}
             />
           )}
-          {/* {Number(ediorRole.status) === 11 ||
-          Number(ediorRole.status) === 12 ? (
+          {/* {Number(editorRole.status) === 11 ||
+          Number(editorRole.status) === 12 ? (
             <Button
               text={t("Publish")}
               className={styles["Save_Classname"]}

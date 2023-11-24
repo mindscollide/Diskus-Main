@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-const CancelActions = ({ setSceduleMeeting }) => {
+const CancelActions = ({ setSceduleMeeting, setViewAdvanceMeetingModal }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

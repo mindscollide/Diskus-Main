@@ -11,7 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 
-const UnsavedMinutes = ({ setMinutes, setSceduleMeeting }) => {
+const UnsavedMinutes = ({
+  setMinutes,
+  setSceduleMeeting,
+  setFileAttachments,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,6 +26,7 @@ const UnsavedMinutes = ({ setMinutes, setSceduleMeeting }) => {
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleYesFunctionality = () => {
+    setFileAttachments([]);
     setMinutes(false);
     setSceduleMeeting(false);
     dispatch(showUnsaveMinutesFileUpload(false));

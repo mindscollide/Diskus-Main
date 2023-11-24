@@ -54,7 +54,7 @@ const SubAgendaMappingDragging = ({
   setSubExpand,
   openAdvancePermissionModal,
   openVoteMOdal,
-  ediorRole,
+  editorRole,
   advanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
@@ -399,7 +399,7 @@ const SubAgendaMappingDragging = ({
                                             {Number(
                                               subAgendaData.agendaVotingID
                                             ) !== 0 &&
-                                            Number(ediorRole.status) === 10 &&
+                                            Number(editorRole.status) === 10 &&
                                             Number(
                                               subAgendaData.voteOwner.userid
                                             ) === Number(currentUserID) &&
@@ -417,7 +417,8 @@ const SubAgendaMappingDragging = ({
                                             ) : Number(
                                                 subAgendaData.agendaVotingID
                                               ) !== 0 &&
-                                              Number(ediorRole.status) === 10 &&
+                                              Number(editorRole.status) ===
+                                                10 &&
                                               Number(
                                                 subAgendaData.voteOwner.userid
                                               ) === Number(currentUserID) &&
@@ -437,14 +438,15 @@ const SubAgendaMappingDragging = ({
                                             {Number(
                                               subAgendaData.agendaVotingID
                                             ) === 0 ? null : Number(
-                                                ediorRole.status
+                                                editorRole.status
                                               ) === 10 &&
                                               Number(
                                                 subAgendaData.voteOwner.userid
                                               ) !== Number(currentUserID) &&
                                               subAgendaData.voteOwner
                                                 ?.currentVotingClosed &&
-                                              ediorRole.role !== "Organizer" ? (
+                                              editorRole.role !==
+                                                "Organizer" ? (
                                               <Button
                                                 text={t("Cast-your-vote")}
                                                 className={
@@ -460,7 +462,7 @@ const SubAgendaMappingDragging = ({
                                             {Number(
                                               subAgendaData.agendaVotingID
                                             ) === 0 ? null : Number(
-                                                ediorRole.status
+                                                editorRole.status
                                               ) === 10 &&
                                               Number(
                                                 subAgendaData.voteOwner.userid

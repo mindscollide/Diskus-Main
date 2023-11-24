@@ -16,7 +16,7 @@ const SubRequestContributor = ({
   subIndex,
   allUsersRC,
   setAllUsersRC,
-  ediorRole,
+  editorRole,
 }) => {
   const { t } = useTranslation();
 
@@ -166,8 +166,8 @@ const SubRequestContributor = ({
             onChange={(value) => handleSelectChange(index, subIndex, value)}
             classNamePrefix={"SelectOrganizersSelect_active"}
             isDisabled={
-              ediorRole.role === "Participant" ||
-              ediorRole.role === "Agenda Contributor"
+              editorRole.role === "Participant" ||
+              editorRole.role === "Agenda Contributor"
                 ? true
                 : false
             }
@@ -199,8 +199,8 @@ const SubRequestContributor = ({
               handleSubAgendaRequestContributorEnterNote(index, subIndex, e)
             }
             disable={
-              ediorRole.role === "Participant" ||
-              ediorRole.role === "Agenda Contributor"
+              editorRole.role === "Participant" ||
+              editorRole.role === "Agenda Contributor"
                 ? true
                 : false
             }

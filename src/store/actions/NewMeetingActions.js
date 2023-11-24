@@ -55,6 +55,8 @@ import {
   UpdateMeetingUserhit,
   setMeetingbyGroupIDRM,
   getMeetingbyGroupIDRM,
+  getAdvanceMeetingAgendabyMeetingID,
+  getAllagendaWiseDocumentsApi,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -471,18 +473,20 @@ const SaveMeetingDetialsNewApiFunction = (
                   "Meeting_MeetingServiceManager_SaveMeetingDetails_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                handleSaveMeetingSuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
+              // dispatch(
+              //   handleSaveMeetingSuccess(
+              //     response.data.responseResult,
+              //     ""
+              //   )
+              // );
               localStorage.setItem(
                 "currentMeetingLS",
                 response.data.responseResult.meetingID
               );
               setCurrentMeetingID(response.data.responseResult.meetingID);
-
+              dispatch(
+                handleSaveMeetingSuccess(response.data.responseResult, "")
+              );
               if (viewValue === 1) {
                 let MappedData = {
                   MeetingID: response.data.responseResult.meetingID,
@@ -500,9 +504,15 @@ const SaveMeetingDetialsNewApiFunction = (
                 );
                 // setSceduleMeeting(false);
               } else if (viewValue === 2) {
-                // if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
-                //   setSceduleMeeting(false);
-                // }
+                if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
+                  setSceduleMeeting(false);
+                  dispatch(
+                    handleSaveMeetingSuccess(
+                      response.data.responseResult,
+                      t("Meeting-details-updated-and-published-successfully")
+                    )
+                  );
+                }
 
                 let MappedData = {
                   MeetingID: response.data.responseResult.meetingID,
@@ -1437,7 +1447,7 @@ const SaveparticipantsApi = (Data, navigate, t, currentMeeting) => {
               dispatch(
                 showSaveParticipantsSuccess(
                   response.data.responseResult,
-                  t("Record-inserted")
+                  t("Participants-details-updated-successfully")
                 )
               );
               let Data = {
@@ -1477,12 +1487,15 @@ const SaveparticipantsApi = (Data, navigate, t, currentMeeting) => {
 };
 
 const getAllAgendaContributor_init = () => {
+  console.log("NewMeetingreducerNewMeetingreducer");
   return {
     type: actions.GET_ALL_AGENDACONTRIBUTOR_INIT,
   };
 };
 
 const getAllAgendaContributor_success = (response, message) => {
+  console.log("NewMeetingreducerNewMeetingreducer");
+
   return {
     type: actions.GET_ALL_AGENDACONTRIBUTOR_SUCCESS,
     response,
@@ -1919,10 +1932,6 @@ const GetAllMeetingDetailsApiFunc = (
               localStorage.setItem(
                 "currentMeetingLS",
                 response.data.responseResult.advanceMeetingDetails.meetingID
-              );
-              console.log(
-                response.data.responseResult,
-                "showGetAllMeetingDetialsSuccessshowGetAllMeetingDetialsSuccess"
               );
 
               try {
@@ -3407,7 +3416,7 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   let Data = {
-    FolderID: folderID !== null ? folderID : 0,
+    FolderID: folderID !== null ? Number(folderID) : 0,
     Files: [
       {
         DisplayFileName: data.displayFileName,
@@ -3803,7 +3812,7 @@ const showGetAllAgendaWiseMinutesFailed = (message) => {
   };
 };
 
-const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
+const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -3823,7 +3832,9 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, Data, t, ID));
+          dispatch(
+            GetAllAgendaWiseMinutesApiFunc(navigate, Data, t, currentMeeting)
+          );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -3832,7 +3843,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllMeetingAgendaWiseMinutes_01".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -3841,11 +3852,21 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
                   t("Record-found")
                 )
               );
+              let allAgendaWiseDocs = {
+                MDID: currentMeeting,
+              };
+              dispatch(
+                AllDocumentsForAgendaWiseMinutesApiFunc(
+                  navigate,
+                  allAgendaWiseDocs,
+                  t
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllMeetingAgendaWiseMinutes_02".toLowerCase()
                 )
             ) {
               dispatch(showGetAllAgendaWiseMinutesFailed(""));
@@ -3853,7 +3874,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, ID) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAgendaWiseMinutes_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllMeetingAgendaWiseMinutes_03".toLowerCase()
                 )
             ) {
               dispatch(
@@ -4017,7 +4038,13 @@ const showDeleteAgendaWiseMinutesFailed = (message) => {
   };
 };
 
-const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
+const DeleteAgendaWiseMinutesApiFunc = (
+  navigate,
+  Data,
+  t,
+  currentMeeting,
+  id
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
@@ -4038,7 +4065,13 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            DeleteAgendaWiseMinutesApiFunc(navigate, Data, t, currentMeeting)
+            DeleteAgendaWiseMinutesApiFunc(
+              navigate,
+              Data,
+              t,
+              currentMeeting,
+              id
+            )
           );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
@@ -4057,11 +4090,12 @@ const DeleteAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
                   t("Record-deleted")
                 )
               );
-              let DelteGetAll = {
-                AgendaID: "1222",
+
+              let DeleteGetAll = {
+                MeetingID: currentMeeting,
               };
               dispatch(
-                GetAllAgendaWiseMinutesApiFunc(navigate, DelteGetAll, t)
+                GetAllAgendaWiseMinutesApiFunc(navigate, DeleteGetAll, t)
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -4412,9 +4446,11 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
                 )
               );
               let getAll = {
-                AgendaID: id,
+                MeetingID: id,
               };
+
               dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t));
+              dispatch(showAgendaWiseAddMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4425,27 +4461,32 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
               dispatch(
                 showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
               );
+              dispatch(showAgendaWiseAddMinutesFailed(""));
             } else {
               dispatch(
                 showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
               );
+              dispatch(showAgendaWiseAddMinutesFailed(""));
             }
           } else {
             console.log(response, "response");
             dispatch(
               showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
             );
+            dispatch(showAgendaWiseAddMinutesFailed(""));
           }
         } else {
           console.log(response, "response");
           dispatch(
             showSavedAgendaWiseDocumentFailed(t("Something-went-wrong"))
           );
+          dispatch(showAgendaWiseAddMinutesFailed(""));
         }
       })
       .catch((response) => {
         console.log(response, "response");
         dispatch(showSavedAgendaWiseDocumentFailed(t("Something-went-wrong")));
+        dispatch(showAgendaWiseAddMinutesFailed(""));
       });
   };
 };
@@ -4701,14 +4742,16 @@ const saveFilesMeetingagendaWiseMinutesApi = (
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   let Data = {
-    FolderID: folderID !== null ? folderID : 0,
+    FolderID: folderID !== null ? Number(folderID) : 0,
     Files: [
       {
         DisplayFileName: data.displayFileName,
-        DiskusFileName: data.diskusFileName,
+        DiskusFileNameString: data.diskusFileName,
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(creatorID),
         FK_OrganizationID: JSON.parse(organizationID),
+        fileSizeOnDisk: Number(data.fileSizeOnDisk),
+        FileSize: Number(data.fileSize),
       },
     ],
     UserID: JSON.parse(creatorID),
@@ -5060,7 +5103,8 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
   Data,
   t,
   currentMeeting,
-  AgendaWiseData
+  AgendaWiseData,
+  id
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
@@ -5087,7 +5131,8 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               Data,
               t,
               currentMeeting,
-              AgendaWiseData
+              AgendaWiseData,
+              id
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -5115,7 +5160,8 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   navigate,
                   AgendaWiseDelData,
                   t,
-                  currentMeeting
+                  currentMeeting,
+                  id
                 )
               );
             } else if (
@@ -6355,6 +6401,112 @@ const clearResponseNewMeetingReducerMessage = () => {
   };
 };
 
+//aLL DOCUMENTS FOR AGENDA WISE MINUTES
+const showAllDocumentsAgendaWiseMinutesInit = () => {
+  return {
+    type: actions.GET_ALL_AGENDAWISE_DOCUMENT_INIT,
+  };
+};
+
+const showAllDocumentsAgendaWiseMinutesSuccess = (response, message) => {
+  console.log(response, "responseresponseresponseresponse");
+  return {
+    type: actions.GET_ALL_AGENDAWISE_DOCUMENT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showAllDocumentsAgendaWiseMinutesFailed = (message) => {
+  return {
+    type: actions.GET_ALL_AGENDAWISE_DOCUMENT_FAILED,
+    message: message,
+  };
+};
+
+const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  return (dispatch) => {
+    dispatch(showAllDocumentsAgendaWiseMinutesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getAllagendaWiseDocumentsApi.RequestMethod);
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(AllDocumentsForAgendaWiseMinutesApiFunc(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetAllAgendaWiseMinuteDocumentsForMeeting_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showAllDocumentsAgendaWiseMinutesSuccess(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetAllAgendaWiseMinuteDocumentsForMeeting_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showAllDocumentsAgendaWiseMinutesFailed(t("No-data-available"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetAllAgendaWiseMinuteDocumentsForMeeting_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showAllDocumentsAgendaWiseMinutesFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
+              dispatch(
+                showAllDocumentsAgendaWiseMinutesFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            dispatch(
+              showAllDocumentsAgendaWiseMinutesFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            showAllDocumentsAgendaWiseMinutesFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          showAllDocumentsAgendaWiseMinutesFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -6466,4 +6618,7 @@ export {
   showAttendanceConfirmationModal,
   showAllMeetingParticipantsSuccess,
   showGetAllMeetingDetialsInit,
+  getAllAgendaContributor_fail,
+  showAllMeetingParticipantsFailed,
+  meetingMaterialFail,
 };

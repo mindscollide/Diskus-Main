@@ -31,6 +31,7 @@ import {
   showPreviousConfirmationModal,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
+  showRetriveGeneralMinutesDocsFailed,
 } from "../../../../../store/actions/NewMeetingActions";
 import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
 import downArrow from "../../../../../assets/images/whitedown.png";
@@ -158,7 +159,8 @@ const Minutes = ({
   // };
 
   // Newly Implemented
-
+  let folderID = localStorage.getItem("folderDataRoomMeeting");
+  console.log(folderID, "folderIDfolderIDfolderIDfolderID");
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { NewMeetingreducer } = useSelector((state) => state);
@@ -169,7 +171,6 @@ const Minutes = ({
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
-  const [folderID, setFolderID] = useState(0);
   const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
@@ -246,24 +247,69 @@ const Minutes = ({
     try {
       if (
         NewMeetingreducer.generalMinutes !== null &&
-        NewMeetingreducer.generalMinutes
+        NewMeetingreducer.generalMinutes &&
+        NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
+        NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
       ) {
+        const minutesData = NewMeetingreducer.generalMinutes.meetingMinutes;
+        const documentsData =
+          NewMeetingreducer.generalminutesDocumentForMeeting.data;
+
         console.log(
-          NewMeetingreducer.generalMinutes,
-          "generalMinutesgeneralMinutes"
+          minutesData,
+          documentsData,
+          "minutesDataminutesDataminutesData"
         );
-        if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
-          let newarr = [];
-          NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
-            console.log(data, "newarrnewarrnewarr");
-            newarr.push(data);
-            setMinuteID(data.minuteID);
-          });
-          setMessages(newarr);
-        }
-      } else setMessages([]);
-    } catch {}
-  }, [NewMeetingreducer.generalMinutes]);
+
+        const combinedData = minutesData.map((item1) => {
+          const matchingItem = documentsData.find(
+            (item2) => item2.pK_MeetingGeneralMinutesID === item1.minuteID
+          );
+          if (matchingItem) {
+            return {
+              ...item1,
+              minutesAttachmets: matchingItem.files,
+            };
+          }
+          return item1;
+        });
+        console.log(combinedData, "minutesDataminutesDataminutesData");
+        setMessages(combinedData);
+      } else {
+        setMessages([]);
+      }
+    } catch (error) {
+      // Handle any errors here
+      console.error(error);
+    }
+  }, [
+    NewMeetingreducer.generalMinutes,
+    NewMeetingreducer.generalminutesDocumentForMeeting,
+  ]);
+  console.log(messages, "minutesDataminutesDataminutesData");
+
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       NewMeetingreducer.generalMinutes !== null &&
+  //       NewMeetingreducer.generalMinutes
+  //     ) {
+  //       console.log(
+  //         NewMeetingreducer.generalMinutes,
+  //         "generalMinutesgeneralMinutes"
+  //       );
+  //       if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
+  //         let newarr = [];
+  //         NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
+  //           console.log(data, "newarrnewarrnewarr");
+  //           newarr.push(data);
+  //           setMinuteID(data.minuteID);
+  //         });
+  //         setMessages(newarr);
+  //       }
+  //     } else setMessages([]);
+  //   } catch {}
+  // }, [NewMeetingreducer.generalMinutes]);
 
   // all Meeting Document
   // useEffect(() => {
@@ -279,15 +325,16 @@ const Minutes = ({
   //       if (
   //         NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
   //       ) {
-  //         let FileID;
+  //         let FileObject = [];
   //         NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
   //           (docs, index) => {
   //             docs.files.map((filedata, index) => {
   //               console.log(filedata, "filedatafiledata");
-  //               FileID = filedata.pK_FileID;
+  //               FileObject.push(filedata);
   //             });
   //           }
   //         );
+  //         // setMessages(FileObject);
   //       }
   //     }
   //   } catch {}
@@ -458,13 +505,22 @@ const Minutes = ({
 
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
+    console.log(
+      NewMeetingreducer.generalMinutesDocument,
+      "generalMinutesDocumentgeneralMinutesDocument"
+    );
     try {
       if (
         NewMeetingreducer.generalMinutesDocument !== undefined &&
-        NewMeetingreducer.generalMinutesDocument !== null
+        NewMeetingreducer.generalMinutesDocument !== null &&
+        NewMeetingreducer.generalMinutesDocument.data.length > 0
       ) {
         let files = [];
         let prevData = [];
+        console.log(
+          NewMeetingreducer.generalMinutesDocument,
+          "generalMinutesDocumentgeneralMinutesDocumentgeneralMinutesDocument"
+        );
         NewMeetingreducer.generalMinutesDocument.data.map((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
@@ -480,6 +536,8 @@ const Minutes = ({
       }
     } catch {}
   }, [NewMeetingreducer.generalMinutesDocument]);
+
+  console.log(fileAttachments, "fileAttachmentsfileAttachments");
 
   const handleAgendaWiseClick = () => {
     setGeneral(false);
@@ -608,7 +666,6 @@ const Minutes = ({
     setFileAttachments([]);
     setPreviousFileIDs([]);
   };
-  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   //Updating the text of min
   const handleUpdateFunc = async () => {
     console.log("UpdateCLickd");
@@ -633,10 +690,6 @@ const Minutes = ({
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    console.log(messages, "messagesmessages");
-    console.log(currentMeeting, "messagesmessages");
-
-    console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
@@ -645,11 +698,9 @@ const Minutes = ({
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    console.log(docsData, "messagesmessages");
     dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
-    setisEdit(false);
     setFileAttachments([]);
-    console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
+    setisEdit(false);
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -994,7 +1045,7 @@ const Minutes = ({
                                           {expanded &&
                                           data.minutesDetails.substring(0, 120)
                                             ? t("See-more")
-                                            : t("See-less")}
+                                            : ""}
                                         </span>
                                       </span>
                                     </Col>
@@ -1076,7 +1127,7 @@ const Minutes = ({
                                     className={styles["Show_more"]}
                                     onClick={() => handleshowMore(index)}
                                   >
-                                    Show more
+                                    {t("Show-more")}
                                   </span>
                                 </Col>
                               </Row>
@@ -1157,7 +1208,7 @@ const Minutes = ({
                                                             }
                                                           >
                                                             {
-                                                              data.DisplayAttachmentName
+                                                              filesname.displayFileName
                                                             }
                                                           </span>
                                                         </Col>
@@ -1228,6 +1279,7 @@ const Minutes = ({
         <UnsavedMinutes
           setMinutes={setMinutes}
           setSceduleMeeting={setSceduleMeeting}
+          setFileAttachments={setFileAttachments}
         />
       )}
 

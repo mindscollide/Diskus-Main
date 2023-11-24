@@ -31,6 +31,7 @@ import {
   NewMeetingReducer,
   VideoMainReducer,
   videoFeatureReducer,
+  AgendaWiseAgendaListReducer,
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -91,6 +92,7 @@ const AppReducer = combineReducers({
   //Attendance Meeting Reducer aun
   attendanceMeetingReducer: attendanceMeetingReducer,
   actionMeetingReducer: actionMeetingReducer,
+  AgendaWiseAgendaListReducer: AgendaWiseAgendaListReducer,
 });
 
 const rootReducer = (state, action) => {

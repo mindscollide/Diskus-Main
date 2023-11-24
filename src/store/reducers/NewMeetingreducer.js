@@ -6,6 +6,8 @@ import {
 } from "../../commen/functions/urlVideoCalls";
 
 const initialState = {
+  LoadingParticipants: false,
+  LoadingViewModal: false,
   Loading: false,
   LoadingMinutes: false,
   meetingurlspinner: false,
@@ -95,6 +97,7 @@ const initialState = {
   ShowPreviousModal: false,
   attendanceConfirmationModal: false,
   CurrentMeetingURL: "",
+  getallDocumentsForAgendaWiseMinutes: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -637,6 +640,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
+        LoadingParticipants: true,
       };
     }
 
@@ -644,6 +648,8 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        LoadingParticipants: false,
+
         getAllSavedparticipants: action.response,
         ResponseMessage: action.message,
       };
@@ -653,6 +659,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        LoadingParticipants: false,
         getAllSavedparticipants: [],
         ResponseMessage: action.message,
       };
@@ -661,12 +668,14 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
+        Loader2: true,
       };
     }
     case actions.GET_ALL_AGENDACONTRIBUTOR_SUCCESS: {
       return {
         ...state,
         Loading: false,
+        Loader2: false,
         getAllAgendaContributors: action.response,
         ResponseMessage: action.message,
       };
@@ -676,6 +685,8 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        Loader2: false,
+
         getAllAgendaContributors: [],
         ResponseMessage: action.message,
       };
@@ -712,6 +723,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
+        LoadingViewModal: true,
       };
     }
 
@@ -719,6 +731,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        LoadingViewModal: false,
         getAllMeetingDetails: action.response,
         ResponseMessage: action.message,
       };
@@ -728,6 +741,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        LoadingViewModal: false,
         getAllMeetingDetails: null,
         ResponseMessage: action.message,
       };
@@ -1015,7 +1029,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ADD_GENERAL_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         addMinuteID: action.response,
         ResponseMessage: action.message,
       };
@@ -1024,7 +1038,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ADD_GENERAL_MINUTES_FAILED: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         addMinuteID: 0,
         ResponseMessage: action.message,
       };
@@ -1157,7 +1171,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.AGENDA_WISE_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         agendaWiseMinuteID: action.response,
         ResponseMessage: action.message,
       };
@@ -1166,7 +1180,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.AGENDA_WISE_MINUTES_FAILED: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         agendaWiseMinuteID: 0,
         ResponseMessage: action.message,
       };
@@ -1228,7 +1242,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_AGENDA_WISE_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         agendaWiseMinutesReducer: action.response,
         ResponseMessage: action.message,
       };
@@ -1593,6 +1607,29 @@ const NewMeetingreducer = (state = initialState, action) => {
         };
       }
     }
+    case actions.GET_ALL_AGENDAWISE_DOCUMENT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_AGENDAWISE_DOCUMENT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getallDocumentsForAgendaWiseMinutes: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_AGENDAWISE_DOCUMENT_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
 
     case actions.CLEARE_ALL_MEETING_STATE: {
       return {
@@ -1677,6 +1714,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         unsaveViewMinutesModal: false,
         unsavedViewPollsModal: false,
         CurrentMeetingURL: "",
+        getallDocumentsForAgendaWiseMinutes: [],
       };
     }
 

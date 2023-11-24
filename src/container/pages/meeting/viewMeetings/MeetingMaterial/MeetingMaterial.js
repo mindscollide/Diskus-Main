@@ -14,6 +14,7 @@ import {
   showCancelMeetingMaterial,
   searchNewUserMeeting,
   getMeetingMaterialAPI,
+  meetingMaterialFail,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getFileExtension,
@@ -27,7 +28,7 @@ const MeetingMaterial = ({
   setMeetingMaterial,
   setAgenda,
   setMinutes,
-  ediorRole,
+  editorRole,
   setEdiorRole,
 }) => {
   const { t } = useTranslation();
@@ -50,6 +51,18 @@ const MeetingMaterial = ({
 
   // row state for meeting Material
   const [rows, setRows] = useState([]);
+
+  // Api request on useEffect
+  useEffect(() => {
+    let meetingMaterialData = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
+    return () => {
+      dispatch(meetingMaterialFail(""));
+      setRows([]);
+    };
+  }, []);
 
   //onClick of handlerFor View PDF
   const viewHandlerOnclick = (e, data) => {
@@ -163,14 +176,6 @@ const MeetingMaterial = ({
     }
   }, [meetingMaterialData]);
 
-  // Api request on useEffect
-  useEffect(() => {
-    let meetingMaterialData = {
-      MeetingID: Number(advanceMeetingModalID),
-    };
-    dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
-  }, []);
-
   const handleCancelButton = () => {
     dispatch(showCancelMeetingMaterial(true));
   };
@@ -225,9 +230,9 @@ const MeetingMaterial = ({
             onClick={handleClickSave}
             className={styles["Save_Classname"]}
             disableBtn={
-              Number(ediorRole.status) === 11 ||
-              Number(ediorRole.status) === 12 ||
-              Number(ediorRole.status) === 1
+              Number(editorRole.status) === 11 ||
+              Number(editorRole.status) === 12 ||
+              Number(editorRole.status) === 1
                 ? true
                 : false
             }

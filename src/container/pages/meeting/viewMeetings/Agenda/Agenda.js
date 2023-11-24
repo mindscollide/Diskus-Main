@@ -17,8 +17,9 @@ import {
 import {
   GetAdvanceMeetingAgendabyMeetingID,
   clearResponseMessage,
+  getAdvanceMeetingAgendabyMeetingID_fail,
 } from "../../../../../store/actions/MeetingAgenda_action";
-import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
+import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
@@ -46,7 +47,7 @@ const Agenda = ({
   setPolls,
   setMinutes,
   advanceMeetingModalID,
-  ediorRole,
+  editorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -110,6 +111,9 @@ const Agenda = ({
       MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+    return () => {
+      dispatch(getAdvanceMeetingAgendabyMeetingID_fail(""));
+    };
   }, []);
   //   updatedRows.push(newMainAgenda);
   //   setRows(updatedRows);
@@ -223,7 +227,7 @@ const Agenda = ({
                                     setAgendaItemRemovedIndex
                                   }
                                   setSubajendaRemoval={setSubajendaRemoval}
-                                  ediorRole={ediorRole}
+                                  editorRole={editorRole}
                                   advanceMeetingModalID={advanceMeetingModalID}
                                 />
                               </>
@@ -252,10 +256,10 @@ const Agenda = ({
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className="d-flex justify-content-center"
+                                className="d-flex justify-content-center mt-3"
                               >
                                 <span className={styles["Empty_state_heading"]}>
-                                  {t("No-Agenda-found")}
+                                  {t("Add-agenda").toUpperCase()}
                                 </span>
                               </Col>
                             </Row>
@@ -269,7 +273,9 @@ const Agenda = ({
                                 <span
                                   className={styles["Empty_state_Subheading"]}
                                 >
-                                  {t("There-are-no-agenda")}
+                                  {t(
+                                    "Add-some-purpose-start-by-creating-your-agenda"
+                                  )}
                                 </span>
                               </Col>
                             </Row>
