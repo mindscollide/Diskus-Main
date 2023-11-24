@@ -9,6 +9,7 @@ import {
 } from "../../../../../components/elements";
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../assets/images/blue Camera.svg";
+import ClipboardIcon from "../../../../../assets/images/Clipboard_Icon.png";
 import { useDispatch } from "react-redux";
 import {
   cleareAllState,
@@ -26,7 +27,10 @@ import { resolutionResultTable } from "../../../../../commen/functions/date_form
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import moment from "moment";
-import { FetchMeetingURLApi } from "../../../../../store/actions/NewMeetingActions";
+import {
+  FetchMeetingURLApi,
+  FetchMeetingURLClipboard,
+} from "../../../../../store/actions/NewMeetingActions";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -108,6 +112,18 @@ const ViewMeetingDetails = ({
       MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    let Data2 = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(
+      FetchMeetingURLClipboard(
+        Data2,
+        navigate,
+        t,
+        currentUserID,
+        currentOrganization
+      )
+    );
     return () => {
       setMeetingDetailsData({
         MeetingTitle: "",
@@ -326,12 +342,29 @@ const ViewMeetingDetails = ({
       FetchMeetingURLApi(Data, navigate, t, currentUserID, currentOrganization)
     );
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
-    // localStorage.setItem("CallType", 2);
-    // localStorage.setItem("activeCall", true);
-    // localStorage.setItem("callerID", currentUserID);
-    // dispatch(callRequestReceivedMQTT({}, ""));
-    // dispatch(normalizeVideoPanelFlag(true));
-    // dispatch(videoChatPanel(false));
+  };
+
+  const copyToClipboard = () => {
+    if (
+      NewMeetingreducer.CurrentMeetingURL !== undefined &&
+      NewMeetingreducer.CurrentMeetingURL !== null &&
+      NewMeetingreducer.CurrentMeetingURL !== ""
+    ) {
+      navigator.clipboard.writeText(NewMeetingreducer.CurrentMeetingURL);
+      setOpen({
+        ...open,
+        flag: true,
+        message: "URL copied to clipboard",
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    }
   };
 
   useEffect(() => {
@@ -359,6 +392,39 @@ const ViewMeetingDetails = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [NewMeetingreducer.ResponseMessage]);
+
+  // useEffect(() => {
+  //   if (
+  //     NewMeetingreducer.CurrentMeetingURL !== null &&
+  //     NewMeetingreducer.CurrentMeetingURL !== undefined &&
+  //     NewMeetingreducer.CurrentMeetingURL !== ""
+  //   ) {
+  //     const copyToClipboard = async () => {
+  //       try {
+  //         await navigator.clipboard.writeText(
+  //           NewMeetingreducer.CurrentMeetingURL
+  //         );
+  //         setOpen({
+  //           ...open,
+  //           flag: true,
+  //           message: "URL copied to clipboard",
+  //         });
+  //         setTimeout(() => {
+  //           setOpen({
+  //             ...open,
+  //             flag: false,
+  //             message: "",
+  //           });
+  //         }, 3000);
+  //         dispatch(CleareMessegeNewMeeting());
+  //       } catch (error) {
+  //         console.error("Unable to copy text to clipboard", error);
+  //       }
+  //     };
+
+  //     copyToClipboard();
+  //   }
+  // }, [NewMeetingreducer.CurrentMeetingURL]);
 
   console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
   console.log("meetingDetailsmeetingDetails", meetingDetails);
@@ -514,16 +580,25 @@ const ViewMeetingDetails = ({
                   )}
                   {meetingDetails.IsVideoCall && (
                     <>
+                      <Button
+                        text={t("Join-Video-Call")}
+                        className={styles["JoinMeetingButton"]}
+                        onClick={joinMeetingCall}
+                      />
                       <img
                         src={BlueCamera}
                         height="17.84px"
                         width="27.19px"
                         alt=""
+                        className={styles["blue-icon"]}
                       />
-                      <Button
-                        text={t("Join-Video-Call")}
-                        className={styles["JoinMeetingButton"]}
-                        onClick={joinMeetingCall}
+                      <img
+                        src={ClipboardIcon}
+                        height="40px"
+                        width="40px"
+                        alt=""
+                        onClick={() => copyToClipboard()}
+                        className={styles["clipboard-icon"]}
                       />
                       {/* <span className={styles["LinkClass"]}>
                         {meetingDetails.Link}

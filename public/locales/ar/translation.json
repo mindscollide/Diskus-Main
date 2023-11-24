@@ -1599,5 +1599,8 @@
   "Record-Inserted": "Record Inserted",
   "No-Agenda-found": "No Agenda Found",
   "There-are-no-agenda": "There are No Agenda",
-  "Add-some-purpose-start-by-creating-your-agenda": "Add some purpose - start by creating your agenda"
+  "Add-some-purpose-start-by-creating-your-agenda": "Add some purpose - start by creating your agenda",
+  "Thank-you-for-participanting-in-voting": "Thank you for participating in voting",
+  "Agenda-voting-details-saved-successfully": "Agenda Voting details saved successfully",
+  "Agenda-voting-details-updated-successfully": "Agenda Voting details updated successfully"
 }

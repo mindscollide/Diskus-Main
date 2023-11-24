@@ -25,7 +25,11 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { Radio } from "antd";
 import desh from "../../../../../assets/images/desh.svg";
-import { Button, TextField } from "../../../../../components/elements";
+import {
+  Button,
+  TextField,
+  Notification,
+} from "../../../../../components/elements";
 import Documents from "./Documents";
 import Urls from "./Urls";
 import RequestContributor from "./RequestContributor";
@@ -46,6 +50,7 @@ import {
   GetCurrentAgendaDetails,
   GetAgendaVotingDetails,
   GetAdvanceMeetingAgendabyMeetingID,
+  clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
 
 const ParentAgenda = ({
@@ -88,6 +93,11 @@ const ParentAgenda = ({
   //Timepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
 
   const options = [
     {
@@ -405,542 +415,576 @@ const ParentAgenda = ({
     }
   }, [presenters]);
 
-  return (
-    <Draggable
-      key={data.iD}
-      draggableId={data.iD}
-      index={index}
-      isDragDisabled={
-        editorRole.role === "Participant" ||
-        editorRole.role === "Agenda Contributor"
-          ? true
-          : false
-      }
-    >
-      {(provided, snapshot) => (
-        <div ref={provided.innerRef} {...provided.draggableProps}>
-          {/* Main Agenda Items Mapping */}
-          <span className="position-relative">
-            <Row key={data.iD} className="mt-4 m-0 p-0">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                key={index + 1}
-                className={
-                  // apllyLockOnParentAgenda(index)
-                  data.isLocked
-                    ? styles["BackGround_Agenda_InActive"]
-                    : styles["BackGround_Agenda"]
-                }
-              >
-                <Row>
-                  <Col
-                    lg={1}
-                    md={1}
-                    sm={1}
-                    className={styles["BackGroundNewImplemented"]}
-                  >
-                    <Row className="mt-4" isDragging={snapshot.isDragging}>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center align-items-center"
-                        isDragging={snapshot.isDragging}
-                        {...provided.dragHandleProps}
-                      >
-                        <img
-                          draggable={false}
-                          src={
-                            expandIndex === index && expand
-                              ? blackArrowUpper
-                              : dropmdownblack
-                          }
-                          width="18.71px"
-                          height="9.36px"
-                          className={
-                            expandIndex === index && expand
-                              ? styles["Arrow_Expanded"]
-                              : styles["Arrow"]
-                          }
-                          alt=""
-                          onClick={() => {
-                            handleExpandedBtn(index);
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
+  useEffect(() => {
+    if (MeetingAgendaReducer.ResponseMessage === "Voting-saved") {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Agenda-voting-details-saved-successfully"),
+        }),
+        3000
+      );
+      dispatch(clearResponseMessage(""));
+    } else if (MeetingAgendaReducer.ResponseMessage === "Voting-updated") {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Agenda-voting-details-updated-successfully"),
+        }),
+        3000
+      );
+      dispatch(clearResponseMessage(""));
+    }
+  }, [MeetingAgendaReducer.ResponseMessage]);
 
-                  <Col lg={11} md={11} sm={11}>
-                    <section className={styles["SectionInnerClass"]}>
-                      <Row key={index + 2} className="mt-4">
-                        <Col lg={5} md={5} sm={12}>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span className={styles["Meeting_title_heading"]}>
-                                <span>{index + 1}.</span> {t("Agenda-title")}{" "}
-                                <span>{index + 1}</span>
-                              </span>
-                            </Col>
-                          </Row>
-                          <TextField
-                            applyClass={"AgendaTextField"}
-                            name={"title"}
-                            labelClass={"d-none"}
-                            placeholder={t("Agenda-title")}
-                            value={data.title}
-                            change={(e) => handleAgendaItemChange(index, e)}
-                            disable={
-                              data.isLocked
-                                ? data.isLocked
-                                : editorRole.role === "Participant" ||
-                                  editorRole.role === "Agenda Contributor"
-                                ? true
-                                : false
-                            }
-                          />
-                        </Col>
-                        <Col lg={3} md={3} sm={12}>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span className={styles["Meeting_title_heading"]}>
-                                {t("Presenter")}
-                              </span>
-                            </Col>
-                          </Row>
-                          <Select
-                            options={allSavedPresenters}
-                            value={{
-                              value: data.presenterID,
-                              label: data.presenterName,
-                            }}
-                            onChange={(value) =>
-                              handleSelectChange(index, value)
-                            }
-                            isDisabled={
-                              data.isLocked
-                                ? data.isLocked
-                                : editorRole.role === "Participant" ||
-                                  editorRole.role === "Agenda Contributor"
-                                ? true
-                                : false
-                            }
-                            classNamePrefix={"SelectOrganizersSelect_active"}
-                          />
-                        </Col>
-                        <Col
-                          sm={12}
-                          md={4}
-                          lg={4}
-                          className="d-flex gap-4 justify-content-start align-items-center"
-                        >
-                          <Row>
-                            <Col lg={5} md={5} sm={5}>
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={styles["Meeting_title_heading"]}
-                                  >
-                                    {t("Start-date")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <DatePicker
-                                arrowClassName="arrowClass"
-                                containerClassName="containerClassTimePicker"
-                                className="timePicker"
-                                disableDayPicker
-                                inputClass="inputTImeMeeting"
-                                calendar={calendarValue}
-                                locale={localValue}
-                                format="hh:mm A"
-                                selected={data.startDate}
-                                value={data.startDate}
-                                plugins={[<TimePicker hideSeconds />]}
-                                onChange={(date) =>
-                                  handleStartDateChange(index, date)
-                                }
-                                disabled={
-                                  data.isLocked
-                                    ? data.isLocked
-                                    : editorRole.role === "Participant" ||
-                                      editorRole.role === "Agenda Contributor"
-                                    ? true
-                                    : false
-                                }
-                              />
-                            </Col>
-                            <Col
-                              lg={2}
-                              md={2}
-                              sm={2}
-                              className="d-flex justify-content-center align-items-center"
-                            >
-                              <img
-                                alt=""
-                                draggable={false}
-                                src={desh}
-                                width="19.02px"
-                              />
-                            </Col>
-                            <Col lg={5} md={5} sm={5}>
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={styles["Meeting_title_heading"]}
-                                  >
-                                    {t("End-date")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <DatePicker
-                                arrowClassName="arrowClass"
-                                containerClassName="containerClassTimePicker"
-                                className="timePicker"
-                                disableDayPicker
-                                inputClass="inputTImeMeeting"
-                                format="hh:mm A"
-                                calendar={calendarValue}
-                                locale={localValue}
-                                value={data.endDate}
-                                selected={data.endDate}
-                                plugins={[<TimePicker hideSeconds />]}
-                                onChange={(date) =>
-                                  handleEndDateChange(index, date)
-                                } // Update end date
-                                disabled={
-                                  data.isLocked
-                                    ? data.isLocked
-                                    : editorRole.role === "Participant" ||
-                                      editorRole.role === "Agenda Contributor"
-                                    ? true
-                                    : false
-                                }
-                              />
-                            </Col>
-                          </Row>
-                          {index !== 0 &&
-                            (editorRole.role === "Participant" ||
-                            editorRole.role === "Agenda Contributor" ? null : (
-                              <img
-                                alt=""
-                                draggable={false}
-                                src={redcrossIcon}
-                                height="25px"
-                                width="25px"
-                                className={
-                                  styles["RedCross_Icon_class_Main_agenda"]
-                                }
-                                onClick={() => {
-                                  handleCrossIcon(index);
-                                }}
-                              />
-                            ))}
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <Col lg={12} md={12} sm={12}>
-                          <span
-                            className={styles["Show_Details_Tag"]}
-                            onClick={() => {
-                              handleExpandedBtn(index);
-                            }}
-                          >
-                            {expandIndex === index && expand
-                              ? t("Hide-details")
-                              : t("Show-details")}
-                          </span>
-                        </Col>
-                      </Row>
-                      {expandIndex === index && expand ? (
-                        <>
-                          <Row className="mb-2">
-                            <Col lg={12} md={12} sm={12}>
-                              <TextField
-                                applyClass="text-area-create-resolution"
-                                type="text"
-                                as={"textarea"}
-                                name={"Description"}
-                                value={data.description}
-                                change={(e) =>
-                                  handleAgendaDescription(index, e)
-                                }
-                                rows="4"
-                                placeholder={t("Enter-description")}
-                                required={true}
-                                maxLength={500}
-                                disable={
-                                  data.isLocked
-                                    ? data.isLocked
-                                    : editorRole.role === "Participant" ||
-                                      editorRole.role === "Agenda Contributor"
-                                    ? true
-                                    : false
-                                }
-                              />
-                            </Col>
-                          </Row>
-                          <Row key={index + 3} className="mt-3">
-                            <Col lg={12} md={12} sm={12}>
-                              <span className={styles["Agenda_Heading"]}>
-                                {t("Attachments")}
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row key={index + 4} className="mt-3">
-                            <Col lg={6} md={6} sm={6}>
-                              <Radio.Group
-                                onChange={(e) =>
-                                  handleRadioChange(index, e.target.value)
-                                }
-                                value={data.selectedRadio}
-                                disabled={data.isLocked}
-                              >
-                                <Radio value={1}>
-                                  <span
-                                    className={styles["Radio_Button_options"]}
-                                  >
-                                    {t("Document")}
-                                  </span>
-                                </Radio>
-                                <Radio value={2}>
-                                  <span
-                                    className={styles["Radio_Button_options"]}
-                                  >
-                                    {t("URL")}
-                                  </span>
-                                </Radio>
-                                <Radio value={3}>
-                                  <span
-                                    className={styles["Radio_Button_options"]}
-                                  >
-                                    {t("Request from contributor")}
-                                  </span>
-                                </Radio>
-                              </Radio.Group>
-                            </Col>
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={6}
-                              className="d-flex justify-content-end gap-4 align-items-center"
-                            >
-                              {editorRole.role === "Participant" ||
-                              editorRole.role ===
-                                "Agenda Contributor" ? null : (
-                                <>
-                                  {data.iD.includes("A") ? null : (
-                                    <>
-                                      <img
-                                        draggable={false}
-                                        src={Key}
-                                        alt=""
-                                        width="24.07px"
-                                        height="24.09px"
-                                        className={`cursor-pointer ${
-                                          data.isLocked ? "locked-cursor" : ""
-                                        }`}
-                                        role="button"
-                                        onClick={() => {
-                                          if (!data.isLocked) {
-                                            openAdvancePermissionModal(
-                                              data.iD,
-                                              1
-                                            );
-                                          }
-                                        }}
-                                      />
-                                      <img
-                                        alt=""
-                                        draggable={false}
-                                        src={Cast}
-                                        width="25.85px"
-                                        height="25.89px"
-                                        className="cursor-pointer"
-                                        onClick={() =>
-                                          data.isLocked
-                                            ? ""
-                                            : openVoteMOdal(
-                                                data.iD,
-                                                data.agendaVotingID,
-                                                data
-                                              )
-                                        }
-                                      />
-                                      <img
-                                        alt=""
-                                        draggable={false}
-                                        src={data.isLocked ? DarkLock : Lock}
-                                        width="18.87px"
-                                        className={
-                                          data.isLocked
-                                            ? styles["lockBtn_inActive"]
-                                            : styles["lockBtn"]
-                                        }
-                                        height="26.72px"
-                                        onClick={() =>
-                                          lockFunctionActive(
-                                            data.iD,
-                                            data.isLocked
-                                          )
-                                        }
-                                      />
-                                    </>
-                                  )}
-                                </>
-                              )}
-                            </Col>
-                          </Row>
-                          <Droppable
-                            droppableId={`parent-${data.iD}-parent-attachments`}
-                            type="attachment"
-                          >
-                            {(provided) => (
-                              <div
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                              >
-                                {data.selectedRadio === 1 ? (
-                                  <>
-                                    {data.files.length > 0 ? (
-                                      <>
-                                        <Documents
-                                          data={data}
-                                          index={index}
-                                          setRows={setRows}
-                                          rows={rows}
-                                          parentId={`parent-${data.iD}`}
-                                          setFileForSend={setFileForSend}
-                                          fileForSend={fileForSend}
-                                          editorRole={editorRole}
-                                        />
-                                        {editorRole.role ===
-                                        "Participant" ? null : (
-                                          <DefaultDragger
-                                            setRows={setRows}
-                                            rows={rows}
-                                            index={index}
-                                            fileForSend={fileForSend}
-                                            setFileForSend={setFileForSend}
-                                            editorRole={editorRole}
-                                          />
-                                        )}
-                                      </>
-                                    ) : editorRole.role ===
-                                      "Participant" ? null : (
-                                      <DefaultDragger
-                                        setRows={setRows}
-                                        rows={rows}
-                                        index={index}
-                                        fileForSend={fileForSend}
-                                        setFileForSend={setFileForSend}
-                                        editorRole={editorRole}
-                                      />
-                                    )}
-                                  </>
-                                ) : data.selectedRadio === 2 ? (
-                                  <Urls
-                                    data={data}
-                                    index={index}
-                                    setRows={setRows}
-                                    rows={rows}
-                                    editorRole={editorRole}
-                                  />
-                                ) : data.selectedRadio === 3 ? (
-                                  <RequestContributor
-                                    data={data}
-                                    index={index}
-                                    setRows={setRows}
-                                    rows={rows}
-                                    allUsersRC={allUsersRC}
-                                    setAllUsersRC={setAllUsersRC}
-                                    editorRole={editorRole}
-                                  />
-                                ) : (
-                                  <></>
-                                  //
-                                )}
-                              </div>
-                            )}
-                          </Droppable>
-                        </>
-                      ) : null}
-                    </section>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </span>
-          {/* SubAgenda Mapping */}
-          {
-            <SubAgendaMappingDragging
-              data={data}
-              index={index}
-              setRows={setRows}
-              fileForSend={fileForSend}
-              setFileForSend={setFileForSend}
-              rows={rows}
-              subexpandIndex={subexpandIndex}
-              expandSubIndex={expandSubIndex}
-              subExpand={subExpand}
-              parentIslockedCheck={data.isLocked}
-              subLockArry={subLockArry}
-              setSubLockArray={setSubLockArray}
-              agendaItemRemovedIndex={agendaItemRemovedIndex}
-              setAgendaItemRemovedIndex={setAgendaItemRemovedIndex}
-              setSubajendaRemoval={setSubajendaRemoval}
-              setsubexpandIndex={setsubexpandIndex}
-              setExpandSubIndex={setExpandSubIndex}
-              setSubExpand={setSubExpand}
-              openAdvancePermissionModal={openAdvancePermissionModal}
-              openVoteMOdal={openVoteMOdal}
-              allUsersRC={allUsersRC}
-              setAllUsersRC={setAllUsersRC}
-              editorRole={editorRole}
-            />
-          }
-          {/* sub Ajenda Button */}
-          {editorRole.role === "Participant" ||
-          editorRole.role === "Agenda Contributor" ? null : (
-            <Row className="mt-3">
-              <Col lg={12} md={12} sm={12}>
-                <Button
-                  text={
-                    <>
-                      <Row>
+  return (
+    <>
+      <Draggable
+        key={data.iD}
+        draggableId={data.iD}
+        index={index}
+        isDragDisabled={
+          editorRole.role === "Participant" ||
+          editorRole.role === "Agenda Contributor"
+            ? true
+            : false
+        }
+      >
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} {...provided.draggableProps}>
+            {/* Main Agenda Items Mapping */}
+            <span className="position-relative">
+              <Row key={data.iD} className="mt-4 m-0 p-0">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  key={index + 1}
+                  className={
+                    // apllyLockOnParentAgenda(index)
+                    data.isLocked
+                      ? styles["BackGround_Agenda_InActive"]
+                      : styles["BackGround_Agenda"]
+                  }
+                >
+                  <Row>
+                    <Col
+                      lg={1}
+                      md={1}
+                      sm={1}
+                      className={styles["BackGroundNewImplemented"]}
+                    >
+                      <Row className="mt-4" isDragging={snapshot.isDragging}>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center gap-2 align-items-center"
+                          className="d-flex justify-content-center align-items-center"
+                          isDragging={snapshot.isDragging}
+                          {...provided.dragHandleProps}
                         >
                           <img
-                            alt=""
                             draggable={false}
-                            src={plusFaddes}
-                            height="10.77px"
-                            width="10.77px"
+                            src={
+                              expandIndex === index && expand
+                                ? blackArrowUpper
+                                : dropmdownblack
+                            }
+                            width="18.71px"
+                            height="9.36px"
+                            className={
+                              expandIndex === index && expand
+                                ? styles["Arrow_Expanded"]
+                                : styles["Arrow"]
+                            }
+                            alt=""
+                            onClick={() => {
+                              handleExpandedBtn(index);
+                            }}
                           />
-                          <span className={styles["Add_Agen_Heading"]}>
-                            {t("Add-sub-agenda")}
-                          </span>
                         </Col>
                       </Row>
-                    </>
-                  }
-                  className={styles["AddMoreBtnAgenda"]}
-                  onClick={() => {
-                    addSubAjendaRows(index);
-                  }}
-                />
-              </Col>
-            </Row>
-          )}
-        </div>
-      )}
-    </Draggable>
+                    </Col>
+
+                    <Col lg={11} md={11} sm={11}>
+                      <section className={styles["SectionInnerClass"]}>
+                        <Row key={index + 2} className="mt-4">
+                          <Col lg={5} md={5} sm={12}>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span
+                                  className={styles["Meeting_title_heading"]}
+                                >
+                                  <span>{index + 1}.</span> {t("Agenda-title")}{" "}
+                                  <span>{index + 1}</span>
+                                </span>
+                              </Col>
+                            </Row>
+                            <TextField
+                              applyClass={"AgendaTextField"}
+                              name={"title"}
+                              labelClass={"d-none"}
+                              placeholder={t("Agenda-title")}
+                              value={data.title}
+                              change={(e) => handleAgendaItemChange(index, e)}
+                              disable={
+                                data.isLocked
+                                  ? data.isLocked
+                                  : editorRole.role === "Participant" ||
+                                    editorRole.role === "Agenda Contributor"
+                                  ? true
+                                  : false
+                              }
+                            />
+                          </Col>
+                          <Col lg={3} md={3} sm={12}>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span
+                                  className={styles["Meeting_title_heading"]}
+                                >
+                                  {t("Presenter")}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Select
+                              options={allSavedPresenters}
+                              value={{
+                                value: data.presenterID,
+                                label: data.presenterName,
+                              }}
+                              onChange={(value) =>
+                                handleSelectChange(index, value)
+                              }
+                              isDisabled={
+                                data.isLocked
+                                  ? data.isLocked
+                                  : editorRole.role === "Participant" ||
+                                    editorRole.role === "Agenda Contributor"
+                                  ? true
+                                  : false
+                              }
+                              classNamePrefix={"SelectOrganizersSelect_active"}
+                            />
+                          </Col>
+                          <Col
+                            sm={12}
+                            md={4}
+                            lg={4}
+                            className="d-flex gap-4 justify-content-start align-items-center"
+                          >
+                            <Row>
+                              <Col lg={5} md={5} sm={5}>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["Meeting_title_heading"]
+                                      }
+                                    >
+                                      {t("Start-date")}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <DatePicker
+                                  arrowClassName="arrowClass"
+                                  containerClassName="containerClassTimePicker"
+                                  className="timePicker"
+                                  disableDayPicker
+                                  inputClass="inputTImeMeeting"
+                                  calendar={calendarValue}
+                                  locale={localValue}
+                                  format="hh:mm A"
+                                  selected={data.startDate}
+                                  value={data.startDate}
+                                  plugins={[<TimePicker hideSeconds />]}
+                                  onChange={(date) =>
+                                    handleStartDateChange(index, date)
+                                  }
+                                  disabled={
+                                    data.isLocked
+                                      ? data.isLocked
+                                      : editorRole.role === "Participant" ||
+                                        editorRole.role === "Agenda Contributor"
+                                      ? true
+                                      : false
+                                  }
+                                />
+                              </Col>
+                              <Col
+                                lg={2}
+                                md={2}
+                                sm={2}
+                                className="d-flex justify-content-center align-items-center"
+                              >
+                                <img
+                                  alt=""
+                                  draggable={false}
+                                  src={desh}
+                                  width="19.02px"
+                                />
+                              </Col>
+                              <Col lg={5} md={5} sm={5}>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["Meeting_title_heading"]
+                                      }
+                                    >
+                                      {t("End-date")}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <DatePicker
+                                  arrowClassName="arrowClass"
+                                  containerClassName="containerClassTimePicker"
+                                  className="timePicker"
+                                  disableDayPicker
+                                  inputClass="inputTImeMeeting"
+                                  format="hh:mm A"
+                                  calendar={calendarValue}
+                                  locale={localValue}
+                                  value={data.endDate}
+                                  selected={data.endDate}
+                                  plugins={[<TimePicker hideSeconds />]}
+                                  onChange={(date) =>
+                                    handleEndDateChange(index, date)
+                                  } // Update end date
+                                  disabled={
+                                    data.isLocked
+                                      ? data.isLocked
+                                      : editorRole.role === "Participant" ||
+                                        editorRole.role === "Agenda Contributor"
+                                      ? true
+                                      : false
+                                  }
+                                />
+                              </Col>
+                            </Row>
+                            {index !== 0 &&
+                              (editorRole.role === "Participant" ||
+                              editorRole.role ===
+                                "Agenda Contributor" ? null : (
+                                <img
+                                  alt=""
+                                  draggable={false}
+                                  src={redcrossIcon}
+                                  height="25px"
+                                  width="25px"
+                                  className={
+                                    styles["RedCross_Icon_class_Main_agenda"]
+                                  }
+                                  onClick={() => {
+                                    handleCrossIcon(index);
+                                  }}
+                                />
+                              ))}
+                          </Col>
+                        </Row>
+                        <Row className="mt-2">
+                          <Col lg={12} md={12} sm={12}>
+                            <span
+                              className={styles["Show_Details_Tag"]}
+                              onClick={() => {
+                                handleExpandedBtn(index);
+                              }}
+                            >
+                              {expandIndex === index && expand
+                                ? t("Hide-details")
+                                : t("Show-details")}
+                            </span>
+                          </Col>
+                        </Row>
+                        {expandIndex === index && expand ? (
+                          <>
+                            <Row className="mb-2">
+                              <Col lg={12} md={12} sm={12}>
+                                <TextField
+                                  applyClass="text-area-create-resolution"
+                                  type="text"
+                                  as={"textarea"}
+                                  name={"Description"}
+                                  value={data.description}
+                                  change={(e) =>
+                                    handleAgendaDescription(index, e)
+                                  }
+                                  rows="4"
+                                  placeholder={t("Enter-description")}
+                                  required={true}
+                                  maxLength={500}
+                                  disable={
+                                    data.isLocked
+                                      ? data.isLocked
+                                      : editorRole.role === "Participant" ||
+                                        editorRole.role === "Agenda Contributor"
+                                      ? true
+                                      : false
+                                  }
+                                />
+                              </Col>
+                            </Row>
+                            <Row key={index + 3} className="mt-3">
+                              <Col lg={12} md={12} sm={12}>
+                                <span className={styles["Agenda_Heading"]}>
+                                  {t("Attachments")}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row key={index + 4} className="mt-3">
+                              <Col lg={6} md={6} sm={6}>
+                                <Radio.Group
+                                  onChange={(e) =>
+                                    handleRadioChange(index, e.target.value)
+                                  }
+                                  value={data.selectedRadio}
+                                  disabled={data.isLocked}
+                                >
+                                  <Radio value={1}>
+                                    <span
+                                      className={styles["Radio_Button_options"]}
+                                    >
+                                      {t("Document")}
+                                    </span>
+                                  </Radio>
+                                  <Radio value={2}>
+                                    <span
+                                      className={styles["Radio_Button_options"]}
+                                    >
+                                      {t("URL")}
+                                    </span>
+                                  </Radio>
+                                  <Radio value={3}>
+                                    <span
+                                      className={styles["Radio_Button_options"]}
+                                    >
+                                      {t("Request from contributor")}
+                                    </span>
+                                  </Radio>
+                                </Radio.Group>
+                              </Col>
+                              <Col
+                                lg={6}
+                                md={6}
+                                sm={6}
+                                className="d-flex justify-content-end gap-4 align-items-center"
+                              >
+                                {editorRole.role === "Participant" ||
+                                editorRole.role ===
+                                  "Agenda Contributor" ? null : (
+                                  <>
+                                    {data.iD.includes("A") ? null : (
+                                      <>
+                                        <img
+                                          draggable={false}
+                                          src={Key}
+                                          alt=""
+                                          width="24.07px"
+                                          height="24.09px"
+                                          className={`cursor-pointer ${
+                                            data.isLocked ? "locked-cursor" : ""
+                                          }`}
+                                          role="button"
+                                          onClick={() => {
+                                            if (!data.isLocked) {
+                                              openAdvancePermissionModal(
+                                                data.iD,
+                                                1
+                                              );
+                                            }
+                                          }}
+                                        />
+                                        <img
+                                          alt=""
+                                          draggable={false}
+                                          src={Cast}
+                                          width="25.85px"
+                                          height="25.89px"
+                                          className="cursor-pointer"
+                                          onClick={() =>
+                                            data.isLocked
+                                              ? ""
+                                              : openVoteMOdal(
+                                                  data.iD,
+                                                  data.agendaVotingID,
+                                                  data
+                                                )
+                                          }
+                                        />
+                                        <img
+                                          alt=""
+                                          draggable={false}
+                                          src={data.isLocked ? DarkLock : Lock}
+                                          width="18.87px"
+                                          className={
+                                            data.isLocked
+                                              ? styles["lockBtn_inActive"]
+                                              : styles["lockBtn"]
+                                          }
+                                          height="26.72px"
+                                          onClick={() =>
+                                            lockFunctionActive(
+                                              data.iD,
+                                              data.isLocked
+                                            )
+                                          }
+                                        />
+                                      </>
+                                    )}
+                                  </>
+                                )}
+                              </Col>
+                            </Row>
+                            <Droppable
+                              droppableId={`parent-${data.iD}-parent-attachments`}
+                              type="attachment"
+                            >
+                              {(provided) => (
+                                <div
+                                  {...provided.droppableProps}
+                                  ref={provided.innerRef}
+                                >
+                                  {data.selectedRadio === 1 ? (
+                                    <>
+                                      {data.files.length > 0 ? (
+                                        <>
+                                          <Documents
+                                            data={data}
+                                            index={index}
+                                            setRows={setRows}
+                                            rows={rows}
+                                            parentId={`parent-${data.iD}`}
+                                            setFileForSend={setFileForSend}
+                                            fileForSend={fileForSend}
+                                            editorRole={editorRole}
+                                          />
+                                          {editorRole.role ===
+                                          "Participant" ? null : (
+                                            <DefaultDragger
+                                              setRows={setRows}
+                                              rows={rows}
+                                              index={index}
+                                              fileForSend={fileForSend}
+                                              setFileForSend={setFileForSend}
+                                              editorRole={editorRole}
+                                            />
+                                          )}
+                                        </>
+                                      ) : editorRole.role ===
+                                        "Participant" ? null : (
+                                        <DefaultDragger
+                                          setRows={setRows}
+                                          rows={rows}
+                                          index={index}
+                                          fileForSend={fileForSend}
+                                          setFileForSend={setFileForSend}
+                                          editorRole={editorRole}
+                                        />
+                                      )}
+                                    </>
+                                  ) : data.selectedRadio === 2 ? (
+                                    <Urls
+                                      data={data}
+                                      index={index}
+                                      setRows={setRows}
+                                      rows={rows}
+                                      editorRole={editorRole}
+                                    />
+                                  ) : data.selectedRadio === 3 ? (
+                                    <RequestContributor
+                                      data={data}
+                                      index={index}
+                                      setRows={setRows}
+                                      rows={rows}
+                                      allUsersRC={allUsersRC}
+                                      setAllUsersRC={setAllUsersRC}
+                                      editorRole={editorRole}
+                                    />
+                                  ) : (
+                                    <></>
+                                    //
+                                  )}
+                                </div>
+                              )}
+                            </Droppable>
+                          </>
+                        ) : null}
+                      </section>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </span>
+            {/* SubAgenda Mapping */}
+            {
+              <SubAgendaMappingDragging
+                data={data}
+                index={index}
+                setRows={setRows}
+                fileForSend={fileForSend}
+                setFileForSend={setFileForSend}
+                rows={rows}
+                subexpandIndex={subexpandIndex}
+                expandSubIndex={expandSubIndex}
+                subExpand={subExpand}
+                parentIslockedCheck={data.isLocked}
+                subLockArry={subLockArry}
+                setSubLockArray={setSubLockArray}
+                agendaItemRemovedIndex={agendaItemRemovedIndex}
+                setAgendaItemRemovedIndex={setAgendaItemRemovedIndex}
+                setSubajendaRemoval={setSubajendaRemoval}
+                setsubexpandIndex={setsubexpandIndex}
+                setExpandSubIndex={setExpandSubIndex}
+                setSubExpand={setSubExpand}
+                openAdvancePermissionModal={openAdvancePermissionModal}
+                openVoteMOdal={openVoteMOdal}
+                allUsersRC={allUsersRC}
+                setAllUsersRC={setAllUsersRC}
+                editorRole={editorRole}
+              />
+            }
+            {/* sub Ajenda Button */}
+            {editorRole.role === "Participant" ||
+            editorRole.role === "Agenda Contributor" ? null : (
+              <Row className="mt-3">
+                <Col lg={12} md={12} sm={12}>
+                  <Button
+                    text={
+                      <>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center gap-2 align-items-center"
+                          >
+                            <img
+                              alt=""
+                              draggable={false}
+                              src={plusFaddes}
+                              height="10.77px"
+                              width="10.77px"
+                            />
+                            <span className={styles["Add_Agen_Heading"]}>
+                              {t("Add-sub-agenda")}
+                            </span>
+                          </Col>
+                        </Row>
+                      </>
+                    }
+                    className={styles["AddMoreBtnAgenda"]}
+                    onClick={() => {
+                      addSubAjendaRows(index);
+                    }}
+                  />
+                </Col>
+              </Row>
+            )}
+          </div>
+        )}
+      </Draggable>
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+    </>
   );
 };
 

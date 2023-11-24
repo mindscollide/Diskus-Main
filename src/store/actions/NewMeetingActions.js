@@ -1309,6 +1309,89 @@ const FetchMeetingURLApi = (
   };
 };
 
+const clipboardURLMeetingData = (response) => {
+  return {
+    type: actions.GET_MEETING_URL_CLIPBOARD,
+    response: response,
+  };
+};
+
+const FetchMeetingURLClipboard = (
+  Data,
+  navigate,
+  t,
+  currentUserID,
+  currentOrganization
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", FetchVideoUrl.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            FetchMeetingURLClipboard(
+              Data,
+              navigate,
+              t,
+              currentUserID,
+              currentOrganization
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                clipboardURLMeetingData(response.data.responseResult.videoURL)
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_02".toLowerCase()
+                )
+            ) {
+              dispatch(clipboardURLMeetingData(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingVideoURL_03".toLowerCase()
+                )
+            ) {
+              dispatch(clipboardURLMeetingData(""));
+            } else {
+              dispatch(clipboardURLMeetingData(""));
+            }
+          } else {
+            dispatch(clipboardURLMeetingData(""));
+          }
+        } else {
+          dispatch(clipboardURLMeetingData(""));
+        }
+      })
+      .catch((response) => {
+        dispatch(clipboardURLMeetingData(""));
+      });
+  };
+};
+
 //Save Participants
 
 const showSavedParticipantsInit = () => {
@@ -6479,6 +6562,7 @@ export {
   GetAllCommitteesUsersandGroupsParticipants,
   GetAllParticipantsRoleNew,
   FetchMeetingURLApi,
+  FetchMeetingURLClipboard,
   SaveparticipantsApi,
   GetAllSavedparticipantsAPI,
   SendNotificationApiFunc,
