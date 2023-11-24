@@ -1021,6 +1021,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ADD_GENERAL_MINUTES_SUCCESS: {
+      console.log(action.response, "LoadingLoadingLoading");
       return {
         ...state,
         Loading: true,
