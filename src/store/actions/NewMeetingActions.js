@@ -484,7 +484,9 @@ const SaveMeetingDetialsNewApiFunction = (
                 response.data.responseResult.meetingID
               );
               setCurrentMeetingID(response.data.responseResult.meetingID);
-
+              dispatch(
+                handleSaveMeetingSuccess(response.data.responseResult, "")
+              );
               if (viewValue === 1) {
                 let MappedData = {
                   MeetingID: response.data.responseResult.meetingID,
@@ -1402,12 +1404,15 @@ const SaveparticipantsApi = (Data, navigate, t, currentMeeting) => {
 };
 
 const getAllAgendaContributor_init = () => {
+  console.log("NewMeetingreducerNewMeetingreducer");
   return {
     type: actions.GET_ALL_AGENDACONTRIBUTOR_INIT,
   };
 };
 
 const getAllAgendaContributor_success = (response, message) => {
+  console.log("NewMeetingreducerNewMeetingreducer");
+
   return {
     type: actions.GET_ALL_AGENDACONTRIBUTOR_SUCCESS,
     response,
@@ -1844,10 +1849,6 @@ const GetAllMeetingDetailsApiFunc = (
               localStorage.setItem(
                 "currentMeetingLS",
                 response.data.responseResult.advanceMeetingDetails.meetingID
-              );
-              console.log(
-                response.data.responseResult,
-                "showGetAllMeetingDetialsSuccessshowGetAllMeetingDetialsSuccess"
               );
 
               try {
@@ -6533,4 +6534,7 @@ export {
   showAttendanceConfirmationModal,
   showAllMeetingParticipantsSuccess,
   showGetAllMeetingDetialsInit,
+  getAllAgendaContributor_fail,
+  showAllMeetingParticipantsFailed,
+  meetingMaterialFail,
 };

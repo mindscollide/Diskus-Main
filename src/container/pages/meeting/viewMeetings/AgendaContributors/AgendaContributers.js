@@ -5,6 +5,7 @@ import {
   Button,
   Table,
   Notification,
+  Loader,
 } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import {
   CleareMessegeNewMeeting,
   getAllAgendaContributorApi,
+  getAllAgendaContributor_fail,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
@@ -34,7 +36,7 @@ const AgendaContributers = ({
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
-
+  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
   const [rowsData, setRowsData] = useState([]);
   const [open, setOpen] = useState({
     flag: false,
@@ -52,6 +54,9 @@ const AgendaContributers = ({
         advanceMeetingModalID !== null ? Number(advanceMeetingModalID) : 0,
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+    return () => {
+      dispatch(getAllAgendaContributor_fail(""));
+    };
   }, []);
 
   useEffect(() => {
@@ -339,6 +344,7 @@ const AgendaContributers = ({
       )}
 
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      {NewMeetingreducer.Loader2 && <Loader />}
     </>
   );
 };

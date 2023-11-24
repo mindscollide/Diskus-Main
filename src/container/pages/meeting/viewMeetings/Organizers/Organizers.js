@@ -17,11 +17,12 @@ import { searchNewUserMeeting } from "../../../../../store/actions/NewMeetingAct
 import {
   clearResponseMessage,
   GetAllMeetingOrganizers,
+  getAllMeetingOrganizers_fail,
 } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "../meetingDetails/CancelButtonModal/CancelButtonModal";
 
 const Organizers = ({
-  ediorRole,
+  editorRole,
   setmeetingDetails,
   setorganizers,
   advanceMeetingModalID,
@@ -51,7 +52,11 @@ const Organizers = ({
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
-
+  console.log(
+    MeetingOrganizersReducer,
+    NewMeetingreducer,
+    "MeetingOrganizersReducerMeetingOrganizersReducer"
+  );
   const currentOrganizerData = {
     displayPicture: "",
     email: currentUserEmail,
@@ -81,6 +86,9 @@ const Organizers = ({
       let Data = { MeetingID: advanceMeetingModalID };
       dispatch(GetAllMeetingOrganizers(Data, navigate, t));
     }
+    return () => {
+      dispatch(getAllMeetingOrganizers_fail(""));
+    };
   }, []);
 
   const MeetingColoumns = [

@@ -22,7 +22,7 @@ const ViewMeetingModal = ({
   setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
   unPublish,
-  ediorRole,
+  editorRole,
   setEdiorRole,
   dataroomMapFolderId,
 }) => {
@@ -261,11 +261,17 @@ const ViewMeetingModal = ({
                       disableBtn={
                         unPublish
                           ? true
-                          : Number(ediorRole.status) === 1 ||
-                            Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12
+                          : Number(editorRole.status) === 1 ||
+                            Number(editorRole.status) === 11 ||
+                            Number(editorRole.status) === 12
                           ? true
-                          : false
+                          : editorRole.role === "Organizer" &&
+                            Number(editorRole.status) === 9
+                          ? false
+                          : Number(editorRole.status) === 10 &&
+                            editorRole.role === "Organizer"
+                          ? false
+                          : true
                       }
                     />
                     <Button
@@ -279,12 +285,21 @@ const ViewMeetingModal = ({
                       disableBtn={
                         unPublish
                           ? true
-                          : Number(ediorRole.status) === 1 ||
-                            Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12 ||
-                            Number(ediorRole.status) === 9
+                          : Number(editorRole.status) === 1 ||
+                            Number(editorRole.status) === 11 ||
+                            Number(editorRole.status) === 12
                           ? true
-                          : false
+                          : (editorRole.role === "Organizer" ||
+                              editorRole.role === "Participant" ||
+                              editorRole.role === "Agenda Contributor") &&
+                            Number(editorRole.status) === 9
+                          ? false
+                          : Number(editorRole.status) === 10 &&
+                            (editorRole.role === "Participant" ||
+                              editorRole.role === "Agenda Contributor" ||
+                              editorRole.role === "Organizer")
+                          ? false
+                          : true
                       }
                     />
                     <Button
@@ -298,15 +313,20 @@ const ViewMeetingModal = ({
                       disableBtn={
                         unPublish
                           ? true
-                          : Number(ediorRole.status) === 1 ||
-                            Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12 ||
-                            Number(ediorRole.status) === 9
+                          : Number(editorRole.status) === 1 ||
+                            Number(editorRole.status) === 11 ||
+                            Number(editorRole.status) === 12 ||
+                            Number(editorRole.status) === 9
                           ? true
-                          : false
+                          : Number(editorRole.status) === 10 &&
+                            (editorRole.role === "Participant" ||
+                              editorRole.role === "Agenda Contributor" ||
+                              editorRole.role === "Organizer")
+                          ? false
+                          : true
                       }
                     />
-                    {Number(ediorRole.status) === 10 ? (
+                    {Number(editorRole.status) === 10 ? (
                       <Button
                         text={t("Attendence")}
                         className={
@@ -318,8 +338,8 @@ const ViewMeetingModal = ({
                         disableBtn={
                           unPublish
                             ? true
-                            : Number(ediorRole.status) === 10 &&
-                              ediorRole.role === "Organizer"
+                            : Number(editorRole.status) === 10 &&
+                              editorRole.role === "Organizer"
                             ? false
                             : true
                         }
@@ -336,7 +356,7 @@ const ViewMeetingModal = ({
                   advanceMeetingModalID={advanceMeetingModalID}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                  ediorRole={ediorRole}
+                  editorRole={editorRole}
                   setEdiorRole={setEdiorRole}
                 />
               )}
@@ -348,7 +368,7 @@ const ViewMeetingModal = ({
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   setAgendaContributors={setAgendaContributors}
-                  ediorRole={ediorRole}
+                  editorRole={editorRole}
                 />
               )}
               {agendaContributors && (
@@ -359,7 +379,7 @@ const ViewMeetingModal = ({
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   advanceMeetingModalID={advanceMeetingModalID}
-                  ediorRole={ediorRole}
+                  editorRole={editorRole}
                 />
               )}
               {participants && (
@@ -370,7 +390,7 @@ const ViewMeetingModal = ({
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   advanceMeetingModalID={advanceMeetingModalID}
-                  ediorRole={ediorRole}
+                  editorRole={editorRole}
                 />
               )}
               {agenda && (
@@ -381,7 +401,7 @@ const ViewMeetingModal = ({
                   setAgenda={setAgenda}
                   setPolls={setPolls}
                   advanceMeetingModalID={advanceMeetingModalID}
-                  ediorRole={ediorRole}
+                  editorRole={editorRole}
                 />
               )}
               {meetingMaterial && (
@@ -392,7 +412,7 @@ const ViewMeetingModal = ({
                   setMeetingMaterial={setMeetingMaterial}
                   setAgenda={setAgenda}
                   setMinutes={setMinutes}
-                  ediorRole={ediorRole}
+                  editorRole={editorRole}
                   setEdiorRole={setEdiorRole}
                 />
               )}
@@ -406,7 +426,7 @@ const ViewMeetingModal = ({
                       setAgenda={setAgenda}
                       setactionsPage={setactionsPage}
                       setMeetingMaterial={setMeetingMaterial}
-                      ediorRole={ediorRole}
+                      editorRole={editorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                       setSceduleMeeting={setSceduleMeeting}
@@ -418,7 +438,7 @@ const ViewMeetingModal = ({
                       setSceduleMeeting={setViewAdvanceMeetingModal}
                       setMinutes={setMinutes}
                       setactionsPage={setactionsPage}
-                      ediorRole={ediorRole}
+                      editorRole={editorRole}
                       currentMeeting={advanceMeetingModalID}
                       setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
@@ -431,7 +451,7 @@ const ViewMeetingModal = ({
                       setAgenda={setAgenda}
                       setactionsPage={setactionsPage}
                       setAttendance={setAttendance}
-                      ediorRole={ediorRole}
+                      editorRole={editorRole}
                       currentMeeting={advanceMeetingModalID}
                       setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                       setSceduleMeeting={setViewAdvanceMeetingModal}
@@ -439,7 +459,7 @@ const ViewMeetingModal = ({
                   )}
                   {attendance && (
                     <Attendence
-                      ediorRole={ediorRole}
+                      editorRole={editorRole}
                       setEdiorRole={setEdiorRole}
                       setMinutes={setMinutes}
                       setPolls={setPolls}

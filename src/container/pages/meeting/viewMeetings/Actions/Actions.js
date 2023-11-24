@@ -18,6 +18,7 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getMeetingTaskMainApi,
+  getMeetingTask_Fail,
   saveMeetingActionsDocuments,
 } from "../../../../../store/actions/Action_Meeting";
 import CancelActions from "./CancelActions/CancelActions";
@@ -29,7 +30,7 @@ const Actions = ({
   setactionsPage,
   setPolls,
   currentMeeting,
-  ediorRole,
+  editorRole,
   setMinutes,
   setEditMeeting,
   isEditMeeting,
@@ -59,6 +60,25 @@ const Actions = ({
 
   // Rows for table rendering in Action
   const [actionsRows, setActionsRows] = useState([]);
+
+  // dispatch Api in useEffect
+  useEffect(() => {
+    let meetingTaskData = {
+      MeetingID: Number(currentMeeting),
+      Date: actionState.Date,
+      Title: actionState.Title,
+      AssignedToName: actionState.AssignedToName,
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+    };
+
+    dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
+    return () => {
+      dispatch(getMeetingTask_Fail());
+      setActionsRows([]);
+    };
+  }, []);
 
   const ActionsColoumn = [
     {
@@ -129,21 +149,6 @@ const Actions = ({
       },
     },
   ];
-
-  // dispatch Api in useEffect
-  useEffect(() => {
-    let meetingTaskData = {
-      MeetingID: Number(currentMeeting),
-      Date: actionState.Date,
-      Title: actionState.Title,
-      AssignedToName: actionState.AssignedToName,
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-    };
-
-    dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
-  }, []);
 
   const deleteActionHandler = (record) => {
     let NewData = {

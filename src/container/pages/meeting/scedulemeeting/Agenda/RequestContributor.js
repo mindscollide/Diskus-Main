@@ -15,7 +15,7 @@ const RequestContributor = ({
   rows,
   allUsersRC,
   setAllUsersRC,
-  ediorRole,
+  editorRole,
 }) => {
   const { t } = useTranslation();
 
@@ -148,8 +148,8 @@ const RequestContributor = ({
             onChange={(value) => handleSelectChange(index, value)}
             classNamePrefix={"SelectOrganizersSelect_active"}
             isDisabled={
-              ediorRole.role === "Participant" ||
-              ediorRole.role === "Agenda Contributor"
+              editorRole.role === "Participant" ||
+              editorRole.role === "Agenda Contributor"
                 ? true
                 : false
             }
@@ -183,8 +183,8 @@ const RequestContributor = ({
             required={true}
             maxLength={500}
             disable={
-              ediorRole.role === "Participant" ||
-              ediorRole.role === "Agenda Contributor"
+              editorRole.role === "Participant" ||
+              editorRole.role === "Agenda Contributor"
                 ? true
                 : false
             }

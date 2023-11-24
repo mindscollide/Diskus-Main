@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { TextField } from "../../../../../components/elements";
 
-const Urls = ({ data, index, setRows, rows, ediorRole }) => {
+const Urls = ({ data, index, setRows, rows, editorRole }) => {
   const { t } = useTranslation();
   // Function to handle changes in main agenda additional text field
   const handleMainAgendaAdditionalFieldChange = (index, e) => {
@@ -28,8 +28,8 @@ const Urls = ({ data, index, setRows, rows, ediorRole }) => {
           value={data.urlFieldMain}
           change={(e) => handleMainAgendaAdditionalFieldChange(index, e)}
           disable={
-            ediorRole.role === "Participant" ||
-            ediorRole.role === "Agenda Contributor"
+            editorRole.role === "Participant" ||
+            editorRole.role === "Agenda Contributor"
               ? true
               : false
           }

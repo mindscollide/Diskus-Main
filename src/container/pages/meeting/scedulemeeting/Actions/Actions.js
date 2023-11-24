@@ -29,7 +29,7 @@ const Actions = ({
   setactionsPage,
   setPolls,
   currentMeeting,
-  ediorRole,
+  editorRole,
   setMinutes,
   setEditMeeting,
   isEditMeeting,
@@ -378,16 +378,16 @@ const Actions = ({
                             onClick={nextTabToPolls}
                           />
 
-                          {((Number(ediorRole.status) === 1 ||
-                            Number(ediorRole.status) === 10 ||
-                            Number(ediorRole.status) === 11 ||
-                            Number(ediorRole.status) === 12) &&
-                            ediorRole.role === "Organizer" &&
+                          {((Number(editorRole.status) === 1 ||
+                            Number(editorRole.status) === 10 ||
+                            Number(editorRole.status) === 11 ||
+                            Number(editorRole.status) === 12) &&
+                            editorRole.role === "Organizer" &&
                             isEditMeeting === true) ||
-                          ((Number(ediorRole.status) === 9 ||
-                            Number(ediorRole.status) === 10) &&
-                            (ediorRole.role === "Participant" ||
-                              ediorRole.role === "Agenda Contributor") &&
+                          ((Number(editorRole.status) === 9 ||
+                            Number(editorRole.status) === 10) &&
+                            (editorRole.role === "Participant" ||
+                              editorRole.role === "Agenda Contributor") &&
                             isEditMeeting === true) ? (
                             <></>
                           ) : null}

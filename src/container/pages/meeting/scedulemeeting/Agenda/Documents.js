@@ -17,7 +17,7 @@ const Documents = ({
   parentId,
   setFileForSend,
   fileForSend,
-  ediorRole,
+  editorRole,
 }) => {
   const [files, setfiles] = useState([]);
 
@@ -71,8 +71,8 @@ const Documents = ({
                       draggableId={`parent-attachments-${parentId}-${filesData.agendaAttachmentsID}`}
                       index={Fileindex}
                       isDragDisabled={
-                        ediorRole.role === "Participant" ||
-                        ediorRole.role === "Agenda Contributor"
+                        editorRole.role === "Participant" ||
+                        editorRole.role === "Agenda Contributor"
                           ? true
                           : false
                       }
@@ -112,7 +112,8 @@ const Documents = ({
                                     sm={12}
                                     className="d-flex justify-content-end align-items-center"
                                   >
-                                    {ediorRole.role === "Participant" ? null : (
+                                    {editorRole.role ===
+                                    "Participant" ? null : (
                                       <img
                                         draggable={false}
                                         src={redcrossIcon}
