@@ -88,6 +88,7 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   const { talkStateData } = useSelector((state) => state);
+  const { Loading } = useSelector((state) => state.NewMeetingreducer);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
@@ -103,10 +104,10 @@ const NewMeeting = () => {
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
-  const Loading = useSelector((state) => state.downloadReducer.Loading);
+  // const Loading = useSelector((state) => state.downloadReducer.Loading);
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-
+  console.log(Loading, "LoadingLoadingLoadingLoadingLoading");
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
 
@@ -1496,7 +1497,7 @@ const NewMeeting = () => {
       {editFlag ? (
         <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
-      {Loading ? <Loader /> : null}
+      {/* {Loading ? <Loader /> : null} */}
 
       {/* {Loading ? <Loader /> : null} */}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
