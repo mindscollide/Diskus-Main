@@ -223,8 +223,6 @@ const ProposedMeetingDate = ({
     for (let i = 1; i < rows.length; i++) {
       if (rows[i].selectedOption <= rows[i - 1].selectedOption) {
         return false;
-      } else if (rows[i].startDate <= rows[i - 1].startDate) {
-        return false;
       }
     }
     return true;
@@ -233,7 +231,6 @@ const ProposedMeetingDate = ({
   // Function to handle the save Proposed button click
   const handleSave = () => {
     let newArr = [];
-    let existingIds = new Set(); // To track existing proposedDateIDs
 
     rows.forEach((data) => {
       console.log(data, "datadatadatadatadatahandleSave");
@@ -245,24 +242,6 @@ const ProposedMeetingDate = ({
       });
     });
 
-    // if (rows.some((data) => data.proposedDateID !== 0)) {
-    //   // Check if there are existing proposed dates
-    //   rows.forEach((data) => {
-    //     if (
-    //       data.proposedDateID !== 0 &&
-    //       !existingIds.has(data.proposedDateID)
-    //     ) {
-    //       // If an existing proposed date is not in the current list, add it
-    //       newArr.push({
-    //         ProposedDate: data.selectedOptionView,
-    //         StartTime: data.startTimeforSend,
-    //         EndTime: data.endTimeforSend,
-    //         proposedDateID: data.proposedDateID,
-    //       });
-    //     }
-    //   });
-    // }
-
     if (isAscendingOrder()) {
       let Data = {
         MeetingID: currentMeeting,
@@ -270,7 +249,7 @@ const ProposedMeetingDate = ({
         ProposedDates: newArr,
       };
       console.log(Data, "DataDataDataData");
-      // dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
+      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
     } else {
       // Rows are not in ascending order
       setOpen({
