@@ -589,9 +589,9 @@ const GetAdvanceMeetingAgendabyMeetingID = (
   Data,
   navigate,
   t,
-  rows,
   id,
-  flag
+  flag,
+  currentMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -618,9 +618,9 @@ const GetAdvanceMeetingAgendabyMeetingID = (
               Data,
               navigate,
               t,
-              rows,
               id,
-              flag
+              flag,
+              currentMeeting
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -632,28 +632,27 @@ const GetAdvanceMeetingAgendabyMeetingID = (
                   "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                getAdvanceMeetingAgendabyMeetingID_success(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
-              if (flag === 1) {
-                let NewData = {
-                  AgendaID: id,
-                };
-                dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+              if (flag) {
+                if (flag === 1) {
+                  let NewData = {
+                    AgendaID: id,
+                  };
+                  dispatch(GetAllUserAgendaRightsApiFunc(navigate, t, NewData));
+                } else {
+                }
+                dispatch(
+                  getAdvanceMeetingAgendabyMeetingID_success(
+                    response.data.responseResult,
+                    t("Record-found")
+                  )
+                );
               } else {
-                let ID;
-                response.data.responseResult.agendaList.map((data, index) => {
-                  console.log(data.id, "responseresponseresponse");
-                  ID = data.id;
-                });
-
-                let newData = {
-                  AgendaID: ID,
-                };
-                dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, newData, t));
+                dispatch(
+                  getAdvanceMeetingAgendabyMeetingID_success(
+                    response.data.responseResult,
+                    t("Record-found")
+                  )
+                );
               }
             } else if (
               response.data.responseResult.responseMessage

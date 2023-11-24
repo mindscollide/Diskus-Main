@@ -91,6 +91,7 @@ const initialState = {
   nextConfirmModal: false,
   ShowPreviousModal: false,
   attendanceConfirmationModal: false,
+  getallDocumentsForAgendaWiseMinutes: [],
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1022,7 +1023,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ADD_GENERAL_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         addMinuteID: action.response,
         ResponseMessage: action.message,
       };
@@ -1031,7 +1032,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ADD_GENERAL_MINUTES_FAILED: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         addMinuteID: 0,
         ResponseMessage: action.message,
       };
@@ -1164,7 +1165,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.AGENDA_WISE_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         agendaWiseMinuteID: action.response,
         ResponseMessage: action.message,
       };
@@ -1173,7 +1174,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.AGENDA_WISE_MINUTES_FAILED: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         agendaWiseMinuteID: 0,
         ResponseMessage: action.message,
       };
@@ -1235,7 +1236,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_AGENDA_WISE_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         agendaWiseMinutesReducer: action.response,
         ResponseMessage: action.message,
       };
@@ -1566,6 +1567,30 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.GET_ALL_AGENDAWISE_DOCUMENT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_AGENDAWISE_DOCUMENT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getallDocumentsForAgendaWiseMinutes: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_AGENDAWISE_DOCUMENT_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     case actions.CLEARE_ALL_MEETING_STATE: {
       return {
         ...state,
@@ -1648,6 +1673,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         scheduleMeetingProposed: "",
         unsaveViewMinutesModal: false,
         unsavedViewPollsModal: false,
+        getallDocumentsForAgendaWiseMinutes: [],
       };
     }
 
