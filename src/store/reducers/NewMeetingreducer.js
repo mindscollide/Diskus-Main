@@ -1,4 +1,9 @@
 import * as actions from "../action_types";
+import {
+  endIndexUrl,
+  extractedUrl,
+  generateURLParticipant,
+} from "../../commen/functions/urlVideoCalls";
 
 const initialState = {
   LoadingParticipants: false,
@@ -91,6 +96,7 @@ const initialState = {
   nextConfirmModal: false,
   ShowPreviousModal: false,
   attendanceConfirmationModal: false,
+  CurrentMeetingURL: "",
   getallDocumentsForAgendaWiseMinutes: [],
 };
 
@@ -1568,6 +1574,40 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    case actions.GET_MEETING_URL_CLIPBOARD: {
+      if (
+        action.response !== "" &&
+        action.response !== undefined &&
+        action.response !== null
+      ) {
+        let currentUserName = localStorage.getItem("name");
+        let currentVideoURL = action.response;
+        let match = currentVideoURL.match(/RoomID=([^&]*)/);
+        let roomID = match[1];
+        let dynamicBaseURLCaller = localStorage.getItem(
+          "videoBaseURLParticipant"
+        );
+        const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
+        const extractedBaseURLCaller = extractedUrl(
+          dynamicBaseURLCaller,
+          endIndexBaseURLCaller
+        );
+        let resultedVideoURL = generateURLParticipant(
+          extractedBaseURLCaller,
+          currentUserName,
+          roomID
+        );
+        return {
+          ...state,
+          CurrentMeetingURL: resultedVideoURL,
+        };
+      } else {
+        return {
+          ...state,
+          CurrentMeetingURL: "",
+        };
+      }
+    }
     case actions.GET_ALL_AGENDAWISE_DOCUMENT_INIT: {
       return {
         ...state,
@@ -1674,6 +1714,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         scheduleMeetingProposed: "",
         unsaveViewMinutesModal: false,
         unsavedViewPollsModal: false,
+        CurrentMeetingURL: "",
         getallDocumentsForAgendaWiseMinutes: [],
       };
     }

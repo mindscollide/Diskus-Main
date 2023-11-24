@@ -3,7 +3,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { TextField } from "../../../../../components/elements";
+import { TextField, Notification } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
@@ -14,6 +14,7 @@ import {
   GetAllMeetingUserApiFunc,
   UpateMeetingStatusLockApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
+import { clearResponseMessage } from "../../../../../store/actions/MeetingAgenda_action";
 import { useDispatch } from "react-redux";
 import desh from "../../../../../assets/images/desh.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
@@ -65,7 +66,9 @@ const SubAgendaMappingDragging = ({
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+    (state) => state
+  );
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [allPresenters, setAllPresenters] = useState([]);
@@ -74,6 +77,11 @@ const SubAgendaMappingDragging = ({
   const { Dragger } = Upload;
 
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
 
   function getCurrentUTCDate() {
     const currentDate = new Date();
@@ -341,6 +349,28 @@ const SubAgendaMappingDragging = ({
       </>
     ),
   }));
+
+  useEffect(() => {
+    if (MeetingAgendaReducer.ResponseMessage === "Voting-saved") {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Agenda-voting-details-saved-successfully"),
+        }),
+        3000
+      );
+      dispatch(clearResponseMessage(""));
+    } else if (MeetingAgendaReducer.ResponseMessage === "Voting-updated") {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Agenda-voting-details-updated-successfully"),
+        }),
+        3000
+      );
+      dispatch(clearResponseMessage(""));
+    }
+  }, [MeetingAgendaReducer.ResponseMessage]);
 
   return (
     <>
@@ -1057,6 +1087,7 @@ const SubAgendaMappingDragging = ({
           )}
         </Droppable>
       )}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

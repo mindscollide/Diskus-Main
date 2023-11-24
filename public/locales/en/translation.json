@@ -1638,5 +1638,8 @@
   "Participants-details-updated-successfully": "Participants details updated successfully",
   "Agenda-Voting-details-updated-successfully": "Agenda voting details updated successfully",
   "Meeting-details-updated-and-published-successfully": "Meeting details updated and published successfully",
-  "Meeting-started-successfully": "Meeting started successfully"
+  "Meeting-started-successfully": "Meeting started successfully",
+  "Thank-you-for-participanting-in-voting": "Thank you for participating in voting",
+  "Agenda-voting-details-saved-successfully": "Agenda Voting details saved successfully",
+  "Agenda-voting-details-updated-successfully": "Agenda Voting details updated successfully"
 }
