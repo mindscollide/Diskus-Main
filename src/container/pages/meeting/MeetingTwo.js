@@ -88,19 +88,25 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   const { talkStateData } = useSelector((state) => state);
-  const { Loading } = useSelector((state) => state.NewMeetingreducer);
-  const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings
-  );
-  const endForAllMeeting = useSelector(
-    (state) => state.NewMeetingreducer.endForAllMeeting
-  );
-  const endMeetingModal = useSelector(
-    (state) => state.NewMeetingreducer.endMeetingModal
-  );
-  const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage
-  );
+  const {
+    Loading,
+    searchMeetings,
+    endForAllMeeting,
+    ResponseMessage,
+    endMeetingModal,
+  } = useSelector((state) => state.NewMeetingreducer);
+  // const searchMeetings = useSelector(
+  //   (state) => state.NewMeetingreducer.searchMeetings
+  // );
+  // const endForAllMeeting = useSelector(
+  //   (state) => state.NewMeetingreducer.endForAllMeeting
+  // );
+  // const endMeetingModal = useSelector(
+  //   (state) => state.NewMeetingreducer.endMeetingModal
+  // );
+  // const ResponseMessage = useSelector(
+  //   (state) => state.NewMeetingreducer.ResponseMessage
+  // );
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
@@ -189,7 +195,7 @@ const NewMeeting = () => {
       localStorage.setItem("MeetingCurrentView", 1);
     }
     return () => {
-      dispatch(clearMeetingState());
+      // dispatch(clearMeetingState());
     };
   }, []);
 

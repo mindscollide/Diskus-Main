@@ -46,7 +46,7 @@ const actionMeetingReducer = (state = initialState, action) => {
     case actions.UPLOAD_DOCUMENT_ACTION_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         uploadActionDocument: action.response,
         ResponseMessage: action.message,
       };

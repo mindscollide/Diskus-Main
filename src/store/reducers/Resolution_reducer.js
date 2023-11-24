@@ -40,7 +40,7 @@ const ResolutionReducer = (state = initialState, action) => {
     case actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         UploadDocuments: action.response,
         ResponseMessage: action.message,
       };
@@ -64,7 +64,7 @@ const ResolutionReducer = (state = initialState, action) => {
       // copyData.push(action.response);
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         SaveDocumentsIDs: [...state.SaveDocumentsIDs, action.response],
         ResponseMessage: action.message,
       };
