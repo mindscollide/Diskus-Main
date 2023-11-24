@@ -127,6 +127,7 @@ const ProposedMeetingDate = ({
       updatedRows[index].startDate = formattedTime;
       updatedRows[index].startDateView = newDate;
       updatedRows[index].isComing = false;
+      updatedRows[index].proposedDateID = 0;
       setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
@@ -150,6 +151,7 @@ const ProposedMeetingDate = ({
       updatedRows[index].endDate = formattedTime;
       updatedRows[index].endDateView = newDate;
       updatedRows[index].isComing = false;
+      updatedRows[index].proposedDateID = 0;
 
       setRows(updatedRows);
     } else {
@@ -191,6 +193,8 @@ const ProposedMeetingDate = ({
     updatedRows[index].selectedOption = DateDate.slice(0, 8);
     updatedRows[index].selectedOptionView = meetingDateValueFormat;
     updatedRows[index].isComing = false;
+    updatedRows[index].proposedDateID = 0;
+
     setRows(updatedRows);
   };
 
@@ -229,20 +233,44 @@ const ProposedMeetingDate = ({
   // Function to handle the save Proposed button click
   const handleSave = () => {
     let newArr = [];
-    rows.map((data, index) => {
+    let existingIds = new Set(); // To track existing proposedDateIDs
+
+    rows.forEach((data) => {
+      console.log(data, "datadatadatadatadatahandleSave");
       newArr.push({
         ProposedDate: data.selectedOption,
         StartTime: data.startDate,
         EndTime: data.endDate,
+        proposedDateID: data.proposedDateID,
       });
     });
+
+    // if (rows.some((data) => data.proposedDateID !== 0)) {
+    //   // Check if there are existing proposed dates
+    //   rows.forEach((data) => {
+    //     if (
+    //       data.proposedDateID !== 0 &&
+    //       !existingIds.has(data.proposedDateID)
+    //     ) {
+    //       // If an existing proposed date is not in the current list, add it
+    //       newArr.push({
+    //         ProposedDate: data.selectedOptionView,
+    //         StartTime: data.startTimeforSend,
+    //         EndTime: data.endTimeforSend,
+    //         proposedDateID: data.proposedDateID,
+    //       });
+    //     }
+    //   });
+    // }
+
     if (isAscendingOrder()) {
       let Data = {
         MeetingID: currentMeeting,
         SendResponsebyDate: sendResponseBy.date,
         ProposedDates: newArr,
       };
-      dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
+      console.log(Data, "DataDataDataData");
+      // dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
     } else {
       // Rows are not in ascending order
       setOpen({
@@ -312,9 +340,9 @@ const ProposedMeetingDate = ({
               };
             } else {
               return {
-                endTimeforSend: dates.endTime,
-                startTimeforSend: dates.startTime,
-                selectDateforSend: dates.proposedDate,
+                endDate: dates.endTime,
+                startDate: dates.startTime,
+                selectedOption: dates.proposedDate,
                 endDateView: resolutionResultTable(
                   dates.proposedDate + dates.endTime
                 ),
@@ -421,6 +449,7 @@ const ProposedMeetingDate = ({
                                 <Row className="mt-2">
                                   <Col lg={4} md={4} sm={12}>
                                     <DatePicker
+                                      disabled={data.isComing ? true : false}
                                       value={data.selectedOptionView}
                                       selected={data.selectedOption}
                                       format={"DD/MM/YYYY"}
@@ -467,6 +496,7 @@ const ProposedMeetingDate = ({
                                       arrowClassName="arrowClass"
                                       containerClassName="containerClassTimePicker"
                                       className="timePicker"
+                                      disabled={data.isComing ? true : false}
                                       disableDayPicker
                                       inputClass="inputTImeMeeting"
                                       calendar={calendarValue}
@@ -490,6 +520,7 @@ const ProposedMeetingDate = ({
                                       draggable={false}
                                       src={desh}
                                       width="19.02px"
+                                      alt=""
                                     />
                                   </Col>
                                   <Col
@@ -504,6 +535,7 @@ const ProposedMeetingDate = ({
                                       containerClassName="containerClassTimePicker"
                                       className="timePicker"
                                       disableDayPicker
+                                      disabled={data.isComing ? true : false}
                                       inputClass="inputTImeMeeting"
                                       calendar={calendarValue}
                                       locale={localValue}
@@ -521,16 +553,19 @@ const ProposedMeetingDate = ({
                                     sm={12}
                                     className="d-flex justify-content-end position-relative align-items-center"
                                   >
-                                    <img
-                                      draggable={false}
-                                      src={redcrossIcon}
-                                      width="23px"
-                                      height="23px"
-                                      className={styles["Cross_icon_class"]}
-                                      onClick={() => {
-                                        HandleCancelFunction(index);
-                                      }}
-                                    />
+                                    <>
+                                      <img
+                                        draggable={false}
+                                        src={redcrossIcon}
+                                        width="23px"
+                                        height="23px"
+                                        alt=""
+                                        className={styles["Cross_icon_class"]}
+                                        onClick={() => {
+                                          HandleCancelFunction(index);
+                                        }}
+                                      />
+                                    </>
                                   </Col>
                                 </Row>
                               </Col>
