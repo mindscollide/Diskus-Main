@@ -1611,8 +1611,21 @@ const Dashboard = () => {
             ) : null}
             {activateBlur ? null : <Talk />}
             {/* {MeetingOrganizersReducer.LoadingMeetingOrganizer ? <Loader /> : null} */}
+            {console.log(
+              "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer",
+              NewMeetingreducer.Loading,
+              assignees.Loading,
+              MeetingOrganizersReducer.LoadingMeetingOrganizer,
+              MeetingOrganizersReducer.Loading,
+              PollsReducer.Loading,
+              CommitteeReducer.Loading,
+              toDoListReducer.Loading,
+              getTodosStatus.Loading,
+              MeetingAgendaReducer.Loading,
+              actionMeetingReducer.Loading,
+              AgendaWiseAgendaListReducer.loading
+            )}
             {NewMeetingreducer.Loading ||
-            NewMeetingreducer.LoadingMinutes ||
             assignees.Loading ||
             MeetingOrganizersReducer.LoadingMeetingOrganizer ||
             MeetingOrganizersReducer.Loading ||

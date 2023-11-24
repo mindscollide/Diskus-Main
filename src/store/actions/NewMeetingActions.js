@@ -2998,10 +2998,16 @@ const showRetriveGeneralMinutesDocsMeetingInit = () => {
 };
 
 const showRetriveGeneralMinutesDocsMeetingSuccess = (response, message) => {
-  return {
-    type: actions.GENERAL_DOCUMENT_FOR_MEETING_SUCCESS,
-    response: response,
-    message: message,
+  return async (dispatch) => {
+    return new Promise((resolve) => {
+      console.log("LoadingLoadingLoading");
+      dispatch({
+        type: actions.GENERAL_DOCUMENT_FOR_MEETING_SUCCESS,
+        response: response,
+        message: message,
+      });
+      resolve("Success");
+    });
   };
 };
 
@@ -3014,89 +3020,110 @@ const showRetriveGeneralMinutesDocsMeetingFailed = (message) => {
 
 const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
-  return (dispatch) => {
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", getAllGeneralMiintuesDocument.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(DocumentsOfMeetingGenralMinutesApiFunc(navigate, Data, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                showRetriveGeneralMinutesDocsMeetingSuccess(
-                  response.data.responseResult,
-                  t("Data-available")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                showRetriveGeneralMinutesDocsMeetingFailed(
-                  t("No-data-available")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_03".toLowerCase()
-                )
-            ) {
+  console.log("LoadingLoadingLoading");
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      let form = new FormData();
+      form.append("RequestData", JSON.stringify(Data));
+      form.append("RequestMethod", getAllGeneralMiintuesDocument.RequestMethod);
+
+      axios({
+        method: "post",
+        url: dataRoomApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      })
+        .then(async (response) => {
+          if (response.data.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t));
+            dispatch(DocumentsOfMeetingGenralMinutesApiFunc(navigate, Data, t));
+            reject("Response code 417");
+          } else if (response.data.responseCode === 200) {
+            if (response.data.responseResult.isExecuted === true) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_01".toLowerCase()
+                  )
+              ) {
+                console.log("LoadingLoadingLoading");
+                await dispatch(
+                  showRetriveGeneralMinutesDocsMeetingSuccess(
+                    response.data.responseResult,
+                    t("Data-available")
+                  )
+                );
+                resolve("Success");
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_02".toLowerCase()
+                  )
+              ) {
+                console.log("LoadingLoadingLoading");
+                dispatch(
+                  showRetriveGeneralMinutesDocsMeetingFailed(
+                    t("No-data-available")
+                  )
+                );
+                reject("No data available");
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_03".toLowerCase()
+                  )
+              ) {
+                console.log("LoadingLoadingLoading");
+                dispatch(
+                  showRetriveGeneralMinutesDocsMeetingFailed(
+                    t("Something-went-wrong")
+                  )
+                );
+                reject("Something went wrong");
+              }
+            } else {
+              console.log("LoadingLoadingLoading");
               dispatch(
                 showRetriveGeneralMinutesDocsMeetingFailed(
                   t("Something-went-wrong")
                 )
               );
+              reject("Something went wrong");
             }
           } else {
+            console.log("LoadingLoadingLoading");
             dispatch(
               showRetriveGeneralMinutesDocsMeetingFailed(
                 t("Something-went-wrong")
               )
             );
+            reject("Something went wrong");
           }
-        } else {
+        })
+        .catch((error) => {
+          console.log("LoadingLoadingLoading");
           dispatch(
             showRetriveGeneralMinutesDocsMeetingFailed(
               t("Something-went-wrong")
             )
           );
-        }
-      })
-      .catch((response) => {
-        dispatch(
-          showRetriveGeneralMinutesDocsMeetingFailed(t("Something-went-wrong"))
-        );
-      });
+          reject("Something went wrong");
+        });
+    });
   };
 };
 
 //Getting all the General Mintues
 
 const showAllGeneralMinutesInit = () => {
+  console.log(
+    "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
+  );
   return {
     type: actions.GET_GENERAL_MINTES_INIT,
   };
@@ -3122,6 +3149,9 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(showAllGeneralMinutesInit());
+    console.log(
+      "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
+    );
     let form = new FormData();
     form.append("RequestMethod", getGeneralMinutes.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -3150,11 +3180,13 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               MDID: currentMeeting,
             };
             // Call DocumentsOfMeetingGenralMinutesApiFunc and wait for its response
+            console.log("LoadingLoadingLoading");
             await dispatch(
               DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
             );
 
             // After DocumentsOfMeetingGenralMinutesApiFunc is done, call showAllGeneralMinutesSuccess
+            console.log("LoadingLoadingLoading");
             dispatch(
               showAllGeneralMinutesSuccess(
                 response.data.responseResult,
@@ -3165,27 +3197,35 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
           ) {
+            console.log("LoadingLoadingLoading");
             dispatch(showAllGeneralMinutesFailed([], t("No-record-found")));
           } else if (
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
           ) {
+            console.log("LoadingLoadingLoading");
             dispatch(
               showAllGeneralMinutesFailed([], t("Something-went-wrong"))
             );
           }
         } else {
+          console.log("LoadingLoadingLoading");
           dispatch(showAllGeneralMinutesFailed([], t("Something-went-wrong")));
         }
       } else {
         dispatch(showAllGeneralMinutesFailed([], t("Something-went-wrong")));
       }
     } catch (error) {
+      console.log("LoadingLoadingLoading");
       dispatch(showAllGeneralMinutesFailed([], t("Something-went-wrong")));
     }
   };
 };
-
+const cleareMinutsData = () => {
+  return {
+    type: actions.CLEARE_MINUTS_DATA,
+  };
+};
 // Documents Upload And Save
 
 // Upload Documents Init
@@ -4503,11 +4543,6 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
 //Upload Documents for agendawise minutes
 
 // Upload Documents Init
-const uploadDocument_init_agenda_Wise = () => {
-  return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
-  };
-};
 
 // Upload Documents Success
 const uploadDocument_success_agenda_wise = (response, message) => {
@@ -4537,7 +4572,6 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
   let token = JSON.parse(localStorage.getItem("token"));
 
   return async (dispatch) => {
-    dispatch(uploadDocument_init_agenda_Wise());
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
@@ -4622,11 +4656,6 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
 };
 
 // Save Files Init
-const saveFiles_init_agenda_wise = () => {
-  return {
-    type: actions.SAVEFILES_DATAROOM_INIT,
-  };
-};
 
 // Save Files Success
 const saveFiles_success_agenda_wise = (response, message) => {
@@ -4673,7 +4702,6 @@ const saveFilesMeetingagendaWiseMinutesApi = (
     Type: 0,
   };
   return async (dispatch) => {
-    dispatch(saveFiles_init_agenda_wise());
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -6535,4 +6563,5 @@ export {
   getAllAgendaContributor_fail,
   showAllMeetingParticipantsFailed,
   meetingMaterialFail,
+  cleareMinutsData,
 };

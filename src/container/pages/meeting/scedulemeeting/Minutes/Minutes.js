@@ -27,6 +27,7 @@ import {
   GetAllGeneralMinutesApiFunc,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
+  cleareMinutsData,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -69,6 +70,7 @@ const Minutes = ({
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
+  const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [general, setGeneral] = useState(true);
@@ -126,14 +128,17 @@ const Minutes = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: Number(currentMeeting),
     };
     dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     return () => {
+      setMessages([]);
       setFileAttachments([]);
+      setPreviousFileIDs([]);
+      dispatch(cleareMinutsData());
     };
   }, []);
-
+  console.log("LoadingLoadingLoading", Loading);
   useEffect(() => {
     try {
       if (
