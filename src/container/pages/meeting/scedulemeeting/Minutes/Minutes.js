@@ -704,7 +704,9 @@ const Minutes = ({
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
+    dispatch(
+      SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+    );
     setFileAttachments([]);
     setisEdit(false);
     setAddNoteFields({
