@@ -2298,12 +2298,13 @@ const showPrposedMeetingDateFailed = (message) => {
 };
 
 const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showPrposedMeetingDateInit());
+    let token = JSON.parse(localStorage.getItem("token"));
     let form = new FormData();
     form.append("RequestMethod", SettingMeetingProposedDates.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
+
     axios({
       method: "post",
       url: meetingApi,
@@ -2322,20 +2323,24 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatess_01".toLowerCase()
                 )
             ) {
               dispatch(
                 showPrposedMeetingDateSuccess(
-                  response.data.responseResult.responseMessage,
+                  response.data.responseResult,
                   t("Record-saved")
                 )
               );
+              let NewData = {
+                MeetingID: Data.MeetingID,
+              };
+              dispatch(GetAllProposedMeetingDateApiFunc(NewData, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatess_02".toLowerCase()
                 )
             ) {
               dispatch(showPrposedMeetingDateFailed(t("No-record-saved")));
@@ -2343,7 +2348,7 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatess_03".toLowerCase()
                 )
             ) {
               dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
@@ -2351,7 +2356,7 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatess_04".toLowerCase()
                 )
             ) {
               dispatch(
@@ -2369,7 +2374,8 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
           dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
         }
       })
-      .catch((response) => {
+      .catch((error) => {
+        console.error("Error occurred in API call:", error);
         dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
       });
   };
