@@ -4002,7 +4002,7 @@ const DeleteAgendaWiseMinutesApiFunc = (
               );
 
               let DeleteGetAll = {
-                AgendaID: id,
+                MeetingID: currentMeeting,
               };
               dispatch(
                 GetAllAgendaWiseMinutesApiFunc(navigate, DeleteGetAll, t)
@@ -4356,7 +4356,7 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
                 )
               );
               let getAll = {
-                AgendaID: id,
+                MeetingID: id,
               };
 
               dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t));
@@ -6311,134 +6311,6 @@ const clearResponseNewMeetingReducerMessage = () => {
   };
 };
 
-const getAdvanceMeetingAgendabyMeetingID_init = () => {
-  return {
-    type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_INIT,
-  };
-};
-const getAdvanceMeetingAgendabyMeetingID_success = (data, message) => {
-  console.log(data, message, "getAdvanceMeetingAgendabyMeetingID_success");
-  return {
-    type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_SUCCESS,
-    response: data,
-    message: message,
-  };
-};
-const getAdvanceMeetingAgendabyMeetingID_fail = (message) => {
-  return {
-    type: actions.GET_ADVANCEMEETINGAGENDABYMEETINGID_FAIL,
-    message: message,
-  };
-};
-const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
-  Data,
-  navigate,
-  t,
-  currentMeeting
-) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(getAdvanceMeetingAgendabyMeetingID_init());
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(Data));
-    form.append(
-      "RequestMethod",
-      getAdvanceMeetingAgendabyMeetingID.RequestMethod
-    );
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
-              Data,
-              navigate,
-              t,
-              currentMeeting
-            )
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                getAdvanceMeetingAgendabyMeetingID_success(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
-
-              let newData = {
-                MeetingID: currentMeeting,
-              };
-              dispatch(
-                GetAllAgendaWiseMinutesApiFunc(
-                  navigate,
-                  newData,
-                  t,
-                  currentMeeting
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                getAdvanceMeetingAgendabyMeetingID_fail(t("No-records-found"))
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                getAdvanceMeetingAgendabyMeetingID_fail(
-                  t("Something-went-wrong")
-                )
-              );
-            } else {
-              dispatch(
-                getAdvanceMeetingAgendabyMeetingID_fail(
-                  t("Something-went-wrong")
-                )
-              );
-            }
-          } else {
-            dispatch(
-              getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong"))
-            );
-          }
-        } else {
-          dispatch(
-            getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong"))
-          );
-        }
-      })
-      .catch((response) => {
-        dispatch(
-          getAdvanceMeetingAgendabyMeetingID_fail(t("Something-went-wrong"))
-        );
-      });
-  };
-};
-
 //aLL DOCUMENTS FOR AGENDA WISE MINUTES
 const showAllDocumentsAgendaWiseMinutesInit = () => {
   return {
@@ -6447,6 +6319,7 @@ const showAllDocumentsAgendaWiseMinutesInit = () => {
 };
 
 const showAllDocumentsAgendaWiseMinutesSuccess = (response, message) => {
+  console.log(response, "responseresponseresponseresponse");
   return {
     type: actions.GET_ALL_AGENDAWISE_DOCUMENT_SUCCESS,
     response: response,
@@ -6487,7 +6360,7 @@ const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_01".toLowerCase()
+                  "DataRoom_DataRoomManager_GetAllAgendaWiseMinuteDocumentsForMeeting_01".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -6500,7 +6373,7 @@ const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_02".toLowerCase()
+                  "DataRoom_DataRoomManager_GetAllAgendaWiseMinuteDocumentsForMeeting_02".toLowerCase()
                 )
             ) {
               dispatch(
@@ -6510,9 +6383,15 @@ const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_03".toLowerCase()
+                  "DataRoom_DataRoomManager_GetAllAgendaWiseMinuteDocumentsForMeeting_03".toLowerCase()
                 )
             ) {
+              dispatch(
+                showAllDocumentsAgendaWiseMinutesFailed(
+                  t("Something-went-wrong")
+                )
+              );
+            } else {
               dispatch(
                 showAllDocumentsAgendaWiseMinutesFailed(
                   t("Something-went-wrong")
@@ -6648,5 +6527,4 @@ export {
   showAttendanceConfirmationModal,
   showAllMeetingParticipantsSuccess,
   showGetAllMeetingDetialsInit,
-  GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes,
 };
