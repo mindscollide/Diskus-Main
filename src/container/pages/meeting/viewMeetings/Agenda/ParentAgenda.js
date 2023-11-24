@@ -49,6 +49,7 @@ const ParentAgenda = ({
   advanceMeetingModalID,
 }) => {
   console.log(data, "datadatadatadata");
+  console.log("EditorRoleEditorRole", ediorRole);
   const { t } = useTranslation();
   const navigate = useNavigate();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -163,6 +164,8 @@ const ParentAgenda = ({
       AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
     );
   };
+
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <Draggable

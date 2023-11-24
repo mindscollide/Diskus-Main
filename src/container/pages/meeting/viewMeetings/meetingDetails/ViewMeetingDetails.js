@@ -534,11 +534,17 @@ const ViewMeetingDetails = ({
                   )}
                   {meetingDetails.IsVideoCall && (
                     <>
+                      <Button
+                        text={t("Join-Video-Call")}
+                        className={styles["JoinMeetingButton"]}
+                        onClick={joinMeetingCall}
+                      />
                       <img
                         src={BlueCamera}
                         height="17.84px"
                         width="27.19px"
                         alt=""
+                        className={styles["blue-icon"]}
                       />
                       <img
                         src={ClipboardIcon}
@@ -547,11 +553,6 @@ const ViewMeetingDetails = ({
                         alt=""
                         onClick={() => copyToClipboard()}
                         className={styles["clipboard-icon"]}
-                      />
-                      <Button
-                        text={t("Join-Video-Call")}
-                        className={styles["JoinMeetingButton"]}
-                        onClick={joinMeetingCall}
                       />
                       {/* <span className={styles["LinkClass"]}>
                         {meetingDetails.Link}
