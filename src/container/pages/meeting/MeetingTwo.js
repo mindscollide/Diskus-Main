@@ -757,6 +757,10 @@ const NewMeeting = () => {
                             3,
                             setViewAdvanceMeetingModal,
                             setAdvanceMeetingModalID,
+                            setViewFlag,
+                            setEditFlag,
+                            setCalendarViewModal,
+                            setSceduleMeeting,
                             setEdiorRole
                           )
                         );

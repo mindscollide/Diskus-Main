@@ -21,6 +21,7 @@ import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import {
   CleareMessegeNewMeeting,
   GetAllPollsByMeetingIdApiFunc,
+  clearResponseNewMeetingReducerMessage,
   cleareAllState,
   searchNewUserMeeting,
   showCancelPolls,
@@ -432,7 +433,7 @@ const Polls = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
-
+    localStorage.removeItem("folderDataRoomMeeting");
     setEdiorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
     // dispatch(showCancelPolls(true));
@@ -502,9 +503,9 @@ const Polls = ({
           message: "",
         });
       }, 3000);
-      dispatch(clearPollsMesseges());
+      dispatch(clearResponseNewMeetingReducerMessage());
     } else {
-      dispatch(clearPollsMesseges());
+      dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [NewMeetingreducer.ResponseMessage]);
 

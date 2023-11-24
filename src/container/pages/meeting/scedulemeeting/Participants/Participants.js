@@ -179,6 +179,8 @@ const Participants = ({
       }
 
       setrspvRows(getAllData);
+    } else {
+      setrspvRows([]);
     }
   }, [NewMeetingreducer.getAllSavedparticipants]);
 

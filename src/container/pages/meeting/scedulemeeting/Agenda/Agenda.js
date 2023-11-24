@@ -752,7 +752,48 @@ const Agenda = ({
         return updatedRows;
       });
     } else {
-      setRows(rows);
+      setRows([
+        {
+          iD: getRandomUniqueNumber().toString() + "A",
+          title: "",
+          agendaVotingID: 0,
+          presenterID: 0,
+          description: "",
+          presenterName: "",
+          startDate: "",
+          endDate: "",
+          selectedRadio: 1,
+          urlFieldMain: "",
+          mainNote: "",
+          requestContributorURlName: "",
+          files: [],
+          isLocked: false,
+          voteOwner: null,
+          isAttachment: false,
+          userID: 0,
+          subAgenda: [
+            {
+              subAgendaID: getRandomUniqueNumber().toString() + "A",
+              agendaVotingID: 0,
+              subTitle: "",
+              description: "",
+              presenterID: 0,
+              presenterName: "",
+              startDate: "",
+              endDate: "",
+              subSelectRadio: 1,
+              subAgendaUrlFieldRadio: "",
+              subAgendarequestContributorUrlName: "",
+              subAgendarequestContributorEnterNotes: "",
+              subfiles: [],
+              isLocked: false,
+              voteOwner: null,
+              isAttachment: false,
+              userID: 0,
+            },
+          ],
+        },
+      ]);
     }
   }, [
     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,

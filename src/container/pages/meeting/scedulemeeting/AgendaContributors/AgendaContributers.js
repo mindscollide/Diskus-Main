@@ -580,6 +580,8 @@ const AgendaContributers = ({
         });
       });
       setRowsData(newArr);
+    } else {
+      setRowsData([]);
     }
   }, [NewMeetingreducer.getAllAgendaContributors]);
 
