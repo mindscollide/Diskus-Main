@@ -2191,7 +2191,7 @@ const showGetAllProposedMeetingDatesSuccess = (response, message) => {
 
 const showGetAllProposedMeetingDatesFailed = (message) => {
   return {
-    type: actions.GET_ALL_PRPOSED_DATES_SUCCESS,
+    type: actions.GET_ALL_PRPOSED_DATES_FAILED,
     message: message,
   };
 };
