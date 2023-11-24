@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
-import { Button } from "../../../../../components/elements";
+import { Button, Notification } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
 import profile from "../../../../../assets/images/newprofile.png";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   showAdvancePermissionModal,
   showVoteAgendaModal,
@@ -17,6 +18,7 @@ import {
   AgendaVotingStatusUpdate,
   GetAgendaAndVotingInfo,
   GetCurrentAgendaDetails,
+  clearResponseMessage,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import { useDispatch } from "react-redux";
 import { Radio } from "antd";
@@ -60,12 +62,20 @@ const SubAgendaMappingDragging = ({
   const { t } = useTranslation();
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
+
+  const { MeetingAgendaReducer } = useSelector((state) => state);
+
   const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const dispatch = useDispatch();
   const { Dragger } = Upload;
   let currentUserID = localStorage.getItem("userID");
+
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
 
   //Function For Dragging the SubAgendaItems
   const onSubAgendaDragEnd = (result, index) => {
@@ -286,6 +296,19 @@ const SubAgendaMappingDragging = ({
       AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
     );
   };
+
+  useEffect(() => {
+    if (MeetingAgendaReducer.ResponseMessage === "Vote-casted-successfully") {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Thank-you-for-participanting-in-voting"),
+        }),
+        3000
+      );
+      dispatch(clearResponseMessage(""));
+    }
+  }, [MeetingAgendaReducer.ResponseMessage]);
 
   return (
     <>
@@ -741,6 +764,7 @@ const SubAgendaMappingDragging = ({
             </>
           );
         })}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

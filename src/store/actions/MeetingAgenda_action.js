@@ -253,7 +253,7 @@ const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
               dispatch(
                 saveAgendaVoting_success(
                   response.data.responseResult,
-                  t("Record-saved")
+                  t("Voting-saved")
                 )
               );
               dispatch(
@@ -266,7 +266,7 @@ const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
                   "Meeting_MeetingServiceManager_SaveAgendaVoting_02".toLowerCase()
                 )
             ) {
-              dispatch(saveAgendaVoting_fail(t("No-records-saved")));
+              dispatch(saveAgendaVoting_fail(t("No-voting-saved")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -277,7 +277,7 @@ const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
               dispatch(
                 saveAgendaVoting_success(
                   response.data.responseResult,
-                  t("Record-updated")
+                  t("Voting-updated")
                 )
               );
             } else if (
@@ -287,7 +287,7 @@ const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
                   "Meeting_MeetingServiceManager_SaveAgendaVoting_04".toLowerCase()
                 )
             ) {
-              dispatch(saveAgendaVoting_fail(t("Record-not-updated")));
+              dispatch(saveAgendaVoting_fail(t("Voting-not-updated")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -447,7 +447,7 @@ const CasteVoteForAgenda = (Data, navigate, t) => {
               dispatch(
                 casteVoteForAgenda_success(
                   response.data.responseResult,
-                  t("Agenda-Voting-details-updated-successfully")
+                  t("Vote-casted-successfully")
                 )
               );
             } else if (
@@ -457,7 +457,9 @@ const CasteVoteForAgenda = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_CasteVoteForAgenda_02".toLowerCase()
                 )
             ) {
-              dispatch(casteVoteForAgenda_fail(t("No-records-saved")));
+              dispatch(
+                casteVoteForAgenda_fail(t("Vote-not-casted-successfully"))
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
