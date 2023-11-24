@@ -13,7 +13,7 @@ import EmptyStates from "../../../../../assets/images/EmptystateAction.svg";
 import CreateTask from "./CreateTask/CreateTask";
 import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import {
-  showCancelActions,
+  searchNewUserMeeting,
   showUnsavedActionsModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
@@ -35,6 +35,7 @@ const Actions = ({
   setEditMeeting,
   isEditMeeting,
   dataroomMapFolderId,
+  setViewAdvanceMeetingModal,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ const Actions = ({
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
 
   const [createaTask, setCreateaTask] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -107,7 +109,6 @@ const Actions = ({
       key: "taskAssignedTo",
       width: "200px",
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
         return (
           <>
             <span className={styles["Action-Date-title"]}>
@@ -198,13 +199,25 @@ const Actions = ({
     dispatch(getMeetingTaskMainApi(navigate, t, data));
   };
 
+  const handleCancelActionNoPopup = () => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    setViewAdvanceMeetingModal(false);
+    setactionsPage(false);
+  };
+
   const handleCreateTaskButton = () => {
     setCreateaTask(true);
     dispatch(showUnsavedActionsModal(false));
-  };
-
-  const handleCancelActions = () => {
-    dispatch(showCancelActions(true));
   };
 
   // to move in next to polls handler
@@ -241,7 +254,6 @@ const Actions = ({
               />
             </Col>
           </Row>
-          {/* ) : null} */}
 
           <Row>
             <Col lg={12} md={12} sm={12}>
@@ -364,7 +376,7 @@ const Actions = ({
                         <Button
                           text={t("Cancel")}
                           className={styles["CloneMeetingButton"]}
-                          onClick={handleCancelActions}
+                          onClick={handleCancelActionNoPopup}
                         />
                         <Button
                           text={t("Previous")}
