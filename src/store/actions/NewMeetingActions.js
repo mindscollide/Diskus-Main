@@ -482,7 +482,9 @@ const SaveMeetingDetialsNewApiFunction = (
                 response.data.responseResult.meetingID
               );
               setCurrentMeetingID(response.data.responseResult.meetingID);
-
+              dispatch(
+                handleSaveMeetingSuccess(response.data.responseResult, "")
+              );
               if (viewValue === 1) {
                 let MappedData = {
                   MeetingID: response.data.responseResult.meetingID,
