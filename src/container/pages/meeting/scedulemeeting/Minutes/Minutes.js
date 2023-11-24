@@ -562,6 +562,7 @@ const Minutes = ({
   };
 
   const documentUploadingFunc = async (minuteID) => {
+    console.log(minuteID, "minuteIDminuteIDminuteID");
     let newfile = [...previousFileIDs];
     console.log(newfile, "newfilenewfilenewfilenewfile");
     const uploadPromises = fileForSend.map(async (newData) => {
@@ -607,8 +608,13 @@ const Minutes = ({
       },
     });
   };
+
   useEffect(() => {
     if (NewMeetingreducer.addMinuteID !== 0) {
+      console.log(
+        NewMeetingreducer.addMinuteID,
+        "NewMeetingaddMinuteIDreducer"
+      );
       documentUploadingFunc(NewMeetingreducer.addMinuteID);
     }
   }, [NewMeetingreducer.addMinuteID]);
@@ -692,7 +698,7 @@ const Minutes = ({
     await Promise.all(uploadPromises);
 
     let docsData = {
-      FK_MeetingGeneralMinutesID: minuteID,
+      FK_MeetingGeneralMinutesID: updateData.minuteID,
       FK_MDID: currentMeeting,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
