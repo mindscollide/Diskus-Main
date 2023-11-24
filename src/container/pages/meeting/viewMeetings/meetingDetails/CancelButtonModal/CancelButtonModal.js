@@ -47,6 +47,7 @@ const CancelButtonModal = ({
     };
     dispatch(cleareAllState());
     setEdiorRole({ status: null, role: null });
+    localStorage.removeItem("folderDataRoomMeeting");
     setAdvanceMeetingModalID(null);
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     // setMeetingDetails(false);

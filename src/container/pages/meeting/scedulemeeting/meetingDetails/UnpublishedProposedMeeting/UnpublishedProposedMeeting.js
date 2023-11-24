@@ -32,6 +32,7 @@ import {
   utcConvertintoGMT,
 } from "../../../../../../commen/functions/date_formater";
 import { UpdateOrganizersMeeting } from "../../../../../../store/actions/MeetingOrganizers_action";
+import moment from "moment";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -324,9 +325,12 @@ const UnpublishedProposedMeeting = ({
       key: "responseDeadLine",
       width: "120px",
       render: (text, record) => {
+        console.log();
         return (
           <span className="d-flex justify-content-center">
-            {convertDateinGMT(text)}
+            {moment(
+              utcConvertintoGMT(record.dateOfMeeting + record.meetingEndTime)
+            ).format("Do-MMM-YYYY")}
           </span>
         );
       },

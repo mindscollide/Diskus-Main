@@ -47,8 +47,10 @@ const ViewMeetingDetails = ({
   const [meetingStatus, setMeetingStatus] = useState(0);
   console.log(
     NewMeetingreducer,
+    editorRole,
     "MeetingOrganizersReducerMeetingOrganizersReducer"
   );
+  console.log(editorRole, "editorRoleeditorRoleeditorRole");
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -181,6 +183,7 @@ const ViewMeetingDetails = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.removeItem("folderDataRoomMeeting");
 
     setEdiorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
@@ -198,31 +201,11 @@ const ViewMeetingDetails = ({
     StatusID: 9,
   };
 
-  console.log(NewMeetingreducer.Loading, "NewMeetingreducerNewMeetingreducer");
-  // Showing The reposnse messege
-  useEffect(() => {
-    if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
-    ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: NewMeetingreducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          flag: false,
-          message: "",
-        });
-      }, 3000);
-      dispatch(ClearMessegeMeetingdetails());
-    } else {
-      dispatch(ClearMessegeMeetingdetails());
-    }
-  }, [NewMeetingreducer.ResponseMessage]);
+  console.log(
+    NewMeetingreducer.Loading,
+    NewMeetingreducer,
+    "NewMeetingreducerNewMeetingreducer"
+  );
 
   //Fetching All Saved Data
   useEffect(() => {
@@ -340,7 +323,8 @@ const ViewMeetingDetails = ({
       NewMeetingreducer.ResponseMessage !== t("Data-available") &&
       NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
       NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
+      NewMeetingreducer.ResponseMessage !== undefined
     ) {
       setOpen({
         ...open,
@@ -359,9 +343,6 @@ const ViewMeetingDetails = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [NewMeetingreducer.ResponseMessage]);
-
-  console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
-  console.log("meetingDetailsmeetingDetails", meetingDetails);
 
   return (
     <section>

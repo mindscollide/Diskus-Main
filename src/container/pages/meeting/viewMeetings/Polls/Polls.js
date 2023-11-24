@@ -21,6 +21,8 @@ import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 import {
   CleareMessegeNewMeeting,
   GetAllPollsByMeetingIdApiFunc,
+  cleareAllState,
+  searchNewUserMeeting,
   showCancelPolls,
   showUnsavedPollsMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -43,6 +45,9 @@ const Polls = ({
   editorRole,
   setEditMeeting,
   isEditMeeting,
+  setEdiorRole,
+  setAdvanceMeetingModalID,
+  setactionsPage,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -64,6 +69,10 @@ const Polls = ({
   const [totalRecords, setTotalRecords] = useState(0);
   let OrganizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let currentUserID = Number(localStorage.getItem("userID"));
 
   const enableAfterSavedViewPolls = () => {
     setafterViewPolls(true);
@@ -110,6 +119,10 @@ const Polls = ({
       Length: 50,
     };
     dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
+    return () => {
+      dispatch(cleareAllState());
+      setPollsRows([]);
+    };
   }, []);
 
   const handleChangePagination = (current, pageSize) => {
@@ -407,7 +420,39 @@ const Polls = ({
   };
 
   const handleCancelPolls = () => {
-    dispatch(showCancelPolls(true));
+    setSceduleMeeting(false);
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+
+    setEdiorRole({ status: null, role: null });
+    setAdvanceMeetingModalID(null);
+    // dispatch(showCancelPolls(true));
+  };
+
+  const navigatetoAttendance = () => {
+    setAttendance(true);
+    setPolls(false);
+  };
+  const handleClickPrev = () => {
+    if (
+      Number(editorRole.status) === 10 &&
+      (editorRole.role === "Agenda Contributor" ||
+        editorRole.role === "Participant" ||
+        editorRole.role === "Organizer")
+    ) {
+      setPolls(false);
+      setactionsPage(true);
+      // setac
+    }
   };
 
   useEffect(() => {
@@ -416,6 +461,7 @@ const Polls = ({
       PollsReducer.ResponseMessage !== t("Data-available") &&
       PollsReducer.ResponseMessage !== t("No-data-available") &&
       PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== t("No-records-found") &&
       PollsReducer.ResponseMessage !== t("No-record-found")
     ) {
       setOpen({
@@ -435,6 +481,41 @@ const Polls = ({
       dispatch(clearPollsMesseges());
     }
   }, [PollsReducer.ResponseMessage]);
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: NewMeetingreducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(clearPollsMesseges());
+    } else {
+      dispatch(clearPollsMesseges());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
+
+  console.log(
+    NewMeetingreducer.ResponseMessage,
+    "ResponseMessageResponseMessageResponseMessageResponseMessage NewMeetingreducer"
+  );
+  console.log(
+    PollsReducer.ResponseMessage,
+    "ResponseMessageResponseMessageResponseMessageResponseMessage PollsReducer"
+  );
 
   return (
     <>
@@ -584,6 +665,36 @@ const Polls = ({
                     </Col>
                   </Row>
                 )}
+                <Row className="mt-5">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end gap-2"
+                  >
+                    <Button
+                      text={t("Cancel")}
+                      className={styles["Cancel_Button_Polls_meeting"]}
+                      onClick={handleCancelPolls}
+                      // onClick={handleCancelActionNoPopup}
+                    />
+                    <Button
+                      text={t("Previous")}
+                      className={styles["Save_Button_Polls_meeting"]}
+                      onClick={handleClickPrev}
+                      // onClick={prevTabToMinutes}
+                    />
+                    {Number(editorRole.status) === 10 &&
+                    editorRole.role === "Organizer" ? (
+                      <Button
+                        text={t("Next")}
+                        className={styles["Save_Button_Polls_meeting"]}
+                        onClick={navigatetoAttendance}
+                        // onClick={nextTabToPolls}
+                      />
+                    ) : null}
+                  </Col>
+                </Row>
               </>
             )}
 

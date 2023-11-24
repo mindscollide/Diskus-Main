@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import {
   CleareMessegeNewMeeting,
   GetAllSavedparticipantsAPI,
+  cleareAllState,
   searchNewUserMeeting,
   showAllMeetingParticipantsFailed,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -29,6 +30,7 @@ const Participants = ({
   setViewAdvanceMeetingModal,
   advanceMeetingModalID,
   setAdvanceMeetingModalID,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -58,7 +60,7 @@ const Participants = ({
     };
     dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
     return () => {
-      dispatch(showAllMeetingParticipantsFailed(""));
+      dispatch(cleareAllState());
       setRowsData([]);
     };
   }, []);
@@ -117,8 +119,12 @@ const Participants = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setViewAdvanceMeetingModal(false);
     setParticipants(false);
+    localStorage.removeItem("folderDataRoomMeeting");
+
+    setEdiorRole({ status: null, role: null });
+    setAdvanceMeetingModalID(null);
+    setViewAdvanceMeetingModal(false);
   };
 
   const ParticipantsViewColoumn = [

@@ -1850,27 +1850,25 @@ const GetAllMeetingDetailsApiFunc = (
                 "currentMeetingLS",
                 response.data.responseResult.advanceMeetingDetails.meetingID
               );
-
+              let MappedData = {
+                MeetingID:
+                  response.data.responseResult.advanceMeetingDetails.meetingID,
+                MeetingTitle:
+                  response.data.responseResult.advanceMeetingDetails
+                    .meetingTitle,
+                IsUpdateFlow: true,
+              };
+              dispatch(
+                CreateUpdateMeetingDataRoomMapeedApiFunc(
+                  navigate,
+                  MappedData,
+                  t,
+                  setDataroomMapFolderId
+                )
+              );
               try {
                 setSceduleMeeting(true);
                 setCurrentMeetingID(Data.MeetingID);
-                let MappedData = {
-                  MeetingID:
-                    response.data.responseResult.advanceMeetingDetails
-                      .meetingID,
-                  MeetingTitle:
-                    response.data.responseResult.advanceMeetingDetails
-                      .meetingTitle,
-                  IsUpdateFlow: true,
-                };
-                dispatch(
-                  CreateUpdateMeetingDataRoomMapeedApiFunc(
-                    navigate,
-                    MappedData,
-                    t,
-                    setDataroomMapFolderId
-                  )
-                );
               } catch {}
             } else if (
               response.data.responseResult.responseMessage
@@ -1925,7 +1923,7 @@ const showPollsByMeetingIdSuccess = (response, message) => {
 
 const showPollsByMeetingIdFailed = (message) => {
   return {
-    type: actions.GET_POLLS_BY_MEETING_ID_SUCCESS,
+    type: actions.GET_POLLS_BY_MEETING_ID_FAILED,
     message: message,
   };
 };
@@ -5266,7 +5264,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               await dispatch(
                 showCreateUpdateMeetingDataRoomSuccess(
                   response.data.responseResult,
-                  t("New-mapping-created")
+                  ""
                 )
               );
               localStorage.setItem(
@@ -5298,20 +5296,17 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
         );

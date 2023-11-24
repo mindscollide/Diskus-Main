@@ -95,6 +95,8 @@ const NewMeeting = () => {
     ResponseMessage,
     endMeetingModal,
   } = useSelector((state) => state.NewMeetingreducer);
+  const [publishState, setPublishState] = useState(null);
+
   // const searchMeetings = useSelector(
   //   (state) => state.NewMeetingreducer.searchMeetings
   // );
@@ -724,11 +726,12 @@ const NewMeeting = () => {
                             startMeetingRequest,
                             t,
                             4,
-                            setViewFlag,
+                            setPublishState,
                             setAdvanceMeetingModalID,
                             setViewFlag,
                             setEditFlag,
                             setCalendarViewModal,
+                            setSceduleMeeting,
                             setEdiorRole
                           )
                         );

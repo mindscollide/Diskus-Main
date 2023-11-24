@@ -191,4 +191,14 @@ const saveMeetingAttendanceApi = (navigate, t, Data) => {
   };
 };
 
-export { getAllAttendanceMeetingApi, saveMeetingAttendanceApi };
+const clearAttendanceState = () => {
+  return {
+    type: actions.ATTENDANCE_REDUCER_STATE_CLEAR,
+  };
+};
+
+export {
+  getAllAttendanceMeetingApi,
+  saveMeetingAttendanceApi,
+  clearAttendanceState,
+};

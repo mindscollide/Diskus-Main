@@ -13,7 +13,10 @@ import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { searchNewUserMeeting } from "../../../../../store/actions/NewMeetingActions";
+import {
+  cleareAllState,
+  searchNewUserMeeting,
+} from "../../../../../store/actions/NewMeetingActions";
 import {
   clearResponseMessage,
   GetAllMeetingOrganizers,
@@ -29,6 +32,7 @@ const Organizers = ({
   setViewAdvanceMeetingModal,
   setAgendaContributors,
   setAdvanceMeetingModalID,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
 
@@ -87,7 +91,7 @@ const Organizers = ({
       dispatch(GetAllMeetingOrganizers(Data, navigate, t));
     }
     return () => {
-      dispatch(getAllMeetingOrganizers_fail(""));
+      dispatch(cleareAllState());
     };
   }, []);
 
@@ -247,6 +251,9 @@ const Organizers = ({
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
     setorganizers(false);
+    localStorage.removeItem("folderDataRoomMeeting");
+    setEdiorRole({ status: null, role: null });
+    setAdvanceMeetingModalID(null);
   };
 
   useEffect(() => {

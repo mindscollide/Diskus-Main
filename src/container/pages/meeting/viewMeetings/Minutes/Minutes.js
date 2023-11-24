@@ -30,6 +30,7 @@ import {
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
   showAllGeneralMinutesFailed,
+  cleareAllState,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -126,7 +127,7 @@ const Minutes = ({
     );
     return () => {
       setFileAttachments([]);
-      dispatch(showAllGeneralMinutesFailed(""));
+      dispatch(cleareAllState());
     };
   }, []);
 
@@ -504,11 +505,6 @@ const Minutes = ({
       const areFileAttachmentsEmpty = fileAttachments.length === 0;
 
       if (isDescriptionEmpty && areFileAttachmentsEmpty && isEdit === false) {
-        console.log(
-          addNoteFields.Description.value,
-          "setSceduleMeetingsetSceduleMeeting"
-        );
-
         // Your code when both description and file attachments are empty
         setMinutes(false);
         setSceduleMeeting(false);
@@ -532,7 +528,37 @@ const Minutes = ({
       }
     } catch (error) {}
   };
+  const handlePreviousBtn = () => {
+    try {
+      const isDescriptionEmpty = addNoteFields.Description.value === "";
+      const areFileAttachmentsEmpty = fileAttachments.length === 0;
 
+      if (isDescriptionEmpty && areFileAttachmentsEmpty && isEdit === false) {
+        // Your code when both description and file attachments are empty
+        // setMinutes(false);
+        // setSceduleMeeting(false);
+        // setViewAdvanceMeetingModal(false);
+        dispatch(showUnsaveMinutesFileUpload(false));
+        setMinutes(false);
+        setMeetingMaterial(true);
+
+        // let searchData = {
+        //   Date: "",
+        //   Title: "",
+        //   HostName: "",
+        //   UserID: Number(userID),
+        //   PageNumber:
+        //     meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        //   PublishedMeetings:
+        //     currentView && Number(currentView) === 1 ? true : false,
+        // };
+        // dispatch(searchNewUserMeeting(navigate, searchData, t));
+      } else {
+        dispatch(showUnsaveMinutesFileUpload(true));
+      }
+    } catch (error) {}
+  };
   const handleNext = () => {
     try {
       const isDescriptionEmpty = addNoteFields.Description.value === "";
@@ -1146,10 +1172,25 @@ const Minutes = ({
             onClick={handleUNsaveChangesModal}
           />
           <Button
+            text={t("Previous")}
+            className={styles["Save_button_Minutes"]}
+            onClick={handlePreviousBtn}
+          />
+          <Button
             text={t("Next")}
             className={styles["Save_button_Minutes"]}
             onClick={handleNext}
           />
+          {/* <Button
+            text={t("Cancel")}
+            className={styles["Cancel_button_Minutes"]}
+            onClick={handleUNsaveChangesModal}
+          />
+          <Button
+            text={t("Next")}
+            className={styles["Save_button_Minutes"]}
+            onClick={handleNext}
+          /> */}
         </Col>
       </Row>
 
