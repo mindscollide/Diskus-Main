@@ -31,7 +31,7 @@ import {
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 
-const AgendaWise = ({ currentMeeting, ediorRole }) => {
+const AgendaWise = ({ currentMeeting, editorRole }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -584,8 +584,8 @@ const AgendaWise = ({ currentMeeting, ediorRole }) => {
 
   return (
     <section>
-      {(ediorRole.role === "Organizer" && Number(ediorRole.status) === 10) ||
-      Number(ediorRole.status) === 9 ? (
+      {(editorRole.role === "Organizer" && Number(editorRole.status) === 10) ||
+      Number(editorRole.status) === 9 ? (
         <>
           <Row className="mt-4">
             <Col lg={6} md={6} sm={6}>
@@ -1012,9 +1012,9 @@ const AgendaWise = ({ currentMeeting, ediorRole }) => {
                                     </Col>
                                   </Row>
                                 </Col>
-                                {(ediorRole.role === "Organizer" &&
-                                  Number(ediorRole.status) === 10) ||
-                                Number(ediorRole.status) === 9 ? (
+                                {(editorRole.role === "Organizer" &&
+                                  Number(editorRole.status) === 10) ||
+                                Number(editorRole.status) === 9 ? (
                                   <Col
                                     lg={4}
                                     md={4}
@@ -1034,9 +1034,9 @@ const AgendaWise = ({ currentMeeting, ediorRole }) => {
                               </Row>
                             </Col>
                           </Row>
-                          {(ediorRole.role === "Organizer" &&
-                            Number(ediorRole.status) === 10) ||
-                          Number(ediorRole.status) === 9 ? (
+                          {(editorRole.role === "Organizer" &&
+                            Number(editorRole.status) === 10) ||
+                          Number(editorRole.status) === 9 ? (
                             <img
                               draggable={false}
                               src={RedCroseeIcon}

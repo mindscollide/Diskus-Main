@@ -690,4 +690,5 @@ export {
   notificationSendData,
   sendNotificationOrganizer,
   notificationUpdateData,
+  getAllMeetingOrganizers_fail,
 };

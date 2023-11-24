@@ -7,6 +7,7 @@ import {
   Button,
   Table,
   Notification,
+  Loader,
 } from "../../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +16,7 @@ import {
   CleareMessegeNewMeeting,
   GetAllSavedparticipantsAPI,
   searchNewUserMeeting,
+  showAllMeetingParticipantsFailed,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
@@ -32,6 +34,10 @@ const Participants = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  console.log(
+    NewMeetingreducer,
+    "NewMeetingreducerNewMeetingreducerNewMeetingreducer"
+  );
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [open, setOpen] = useState({
@@ -51,6 +57,10 @@ const Participants = ({
       MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+    return () => {
+      dispatch(showAllMeetingParticipantsFailed(""));
+      setRowsData([]);
+    };
   }, []);
 
   useEffect(() => {
@@ -306,6 +316,7 @@ const Participants = ({
           message={open.message}
         />
       </section>
+      {NewMeetingreducer.LoadingParticipants && <Loader />}
     </>
   );
 };

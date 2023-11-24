@@ -52,7 +52,7 @@ const Agenda = ({
   setSceduleMeeting,
   currentMeeting,
   isEditMeeting,
-  ediorRole,
+  editorRole,
   dataroomMapFolderId,
   setMeetingMaterial,
   setAgenda,
@@ -853,7 +853,7 @@ const Agenda = ({
                                       setAgendaItemRemovedIndex
                                     }
                                     setSubajendaRemoval={setSubajendaRemoval}
-                                    ediorRole={ediorRole}
+                                    editorRole={editorRole}
                                     setSelectedID={setSelectedID}
                                   />
                                   {/* Line Seperator */}
@@ -879,8 +879,8 @@ const Agenda = ({
               </Row>
             </DragDropContext>
             {/* Seperator For Footer */}
-            {ediorRole.role === "Participant" ||
-            ediorRole.role === "Agenda Contributor" ? null : (
+            {editorRole.role === "Participant" ||
+            editorRole.role === "Agenda Contributor" ? null : (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <Button
@@ -951,8 +951,8 @@ const Agenda = ({
                   text={t("Save")}
                   className={styles["Agenda_Buttons"]}
                 />
-                {Number(ediorRole.status) === 11 ||
-                Number(ediorRole.status) === 12 ? (
+                {Number(editorRole.status) === 11 ||
+                Number(editorRole.status) === 12 ? (
                   <Button
                     disableBtn={Number(currentMeeting) === 0 ? true : false}
                     text={t("Publish")}

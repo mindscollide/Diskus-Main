@@ -73,7 +73,7 @@ const Organizers = ({
   setSceduleMeeting,
   currentMeeting,
   setCurrentMeetingID,
-  ediorRole,
+  editorRole,
   setEditMeeting,
   isEditMeeting,
   setPublishState,
@@ -226,15 +226,15 @@ const Organizers = ({
       render: (text, record) => {
         console.log(text, record, "organizerTitleorganizerTitleorganizerTitle");
         if (
-          (Number(ediorRole.status) === 9 ||
-            Number(ediorRole.status) === 8 ||
-            Number(ediorRole.status) === 10) &&
-          ediorRole.role === "Organizer" &&
+          (Number(editorRole.status) === 9 ||
+            Number(editorRole.status) === 8 ||
+            Number(editorRole.status) === 10) &&
+          editorRole.role === "Organizer" &&
           isEditMeeting === true
         ) {
           return text;
         } else if (
-          ediorRole.role === "Agenda Contributor" &&
+          editorRole.role === "Agenda Contributor" &&
           isEditMeeting === true
         ) {
           return text;
@@ -251,13 +251,13 @@ const Organizers = ({
                     handleInputChange(record.userID, e.target.value)
                   } // Update the inputValues when the user types
                   disable={
-                    (Number(ediorRole.status) === 9 ||
-                      Number(ediorRole.status) === 8 ||
-                      Number(ediorRole.status) === 10) &&
-                    ediorRole.role === "Organizer" &&
+                    (Number(editorRole.status) === 9 ||
+                      Number(editorRole.status) === 8 ||
+                      Number(editorRole.status) === 10) &&
+                    editorRole.role === "Organizer" &&
                     isEditMeeting === true
                       ? true
-                      : ediorRole.role === "Agenda Contributor" &&
+                      : editorRole.role === "Agenda Contributor" &&
                         isEditMeeting === true
                       ? true
                       : record.disabledTitle === true
@@ -424,20 +424,20 @@ const Organizers = ({
 
   // Filter columns based on the RSVP Condition
   const finalColumns =
-    Number(ediorRole.status) === 1
+    Number(editorRole.status) === 1
       ? MeetingColoumns.filter((column) => column.key !== "rsvp")
       : MeetingColoumns;
 
   const sendRecentNotification = (record) => {
     if (
-      (Number(ediorRole.status) === 9 ||
-        Number(ediorRole.status) === 8 ||
-        Number(ediorRole.status) === 10) &&
-      ediorRole.role === "Organizer" &&
+      (Number(editorRole.status) === 9 ||
+        Number(editorRole.status) === 8 ||
+        Number(editorRole.status) === 10) &&
+      editorRole.role === "Organizer" &&
       isEditMeeting === true
     ) {
     } else if (
-      ediorRole.role === "Agenda Contributor" &&
+      editorRole.role === "Agenda Contributor" &&
       isEditMeeting === true
     ) {
     } else {
@@ -915,11 +915,11 @@ const Organizers = ({
                       </Col>
                     </Row>
                   </>
-                ) : (Number(ediorRole.status) === 9 ||
-                    Number(ediorRole.status) === 8 ||
-                    Number(ediorRole.status) === 10) &&
-                  ediorRole.role === "Organizer" &&
-                  isEditMeeting === true ? null : ediorRole.role ===
+                ) : (Number(editorRole.status) === 9 ||
+                    Number(editorRole.status) === 8 ||
+                    Number(editorRole.status) === 10) &&
+                  editorRole.role === "Organizer" &&
+                  isEditMeeting === true ? null : editorRole.role ===
                     "Agenda Contributor" && isEditMeeting === true ? null : (
                   <>
                     <Button
@@ -979,11 +979,11 @@ const Organizers = ({
                     className={styles["publish_button_Organization"]}
                     onClick={nextTabOrganizer}
                   />
-                  {/* {(Number(ediorRole.status) === 9 ||
-                    Number(ediorRole.status) === 8 ||
-                    Number(ediorRole.status) === 10) &&
-                  ediorRole.role === "Organizer" &&
-                  isEditMeeting === true ? null : ediorRole.role ===
+                  {/* {(Number(editorRole.status) === 9 ||
+                    Number(editorRole.status) === 8 ||
+                    Number(editorRole.status) === 10) &&
+                  editorRole.role === "Organizer" &&
+                  isEditMeeting === true ? null : editorRole.role ===
                       "Agenda Contributor" && isEditMeeting === true ? null : (
                     <Button
                       text={t("Publish")}
@@ -991,8 +991,8 @@ const Organizers = ({
                       onClick={handlePublishButton}
                     />
                   )} */}
-                  {Number(ediorRole.status) === 11 ||
-                  Number(ediorRole.status) === 12 ? (
+                  {Number(editorRole.status) === 11 ||
+                  Number(editorRole.status) === 12 ? (
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Publish")}
@@ -1007,8 +1007,8 @@ const Organizers = ({
                       onClick={handlePublishButton}
                     />
                   )}
-                  {/* {Number(ediorRole.status) === 11 ||
-                  Number(ediorRole.status) === 12 ? (
+                  {/* {Number(editorRole.status) === 11 ||
+                  Number(editorRole.status) === 12 ? (
                     <Button
                       text={t("Publish")}
                       className={styles["Next_Organization"]}

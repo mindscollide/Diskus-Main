@@ -55,7 +55,7 @@ const Participants = ({
   setSceduleMeeting,
   currentMeeting,
   setAgendaContributors,
-  ediorRole,
+  editorRole,
   setEditMeeting,
   isEditMeeting,
   setPublishState,
@@ -240,12 +240,12 @@ const Participants = ({
       align: "center",
       render: (text, record) => {
         if (
-          ((Number(ediorRole.status) === 9 ||
-            Number(ediorRole.status) === 8 ||
-            Number(ediorRole.status) === 10) &&
-            ediorRole.role === "Organizer" &&
+          ((Number(editorRole.status) === 9 ||
+            Number(editorRole.status) === 8 ||
+            Number(editorRole.status) === 10) &&
+            editorRole.role === "Organizer" &&
             isEditMeeting === true) ||
-          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
           console.log("recordrecord", record);
           return <p>{record.Title}</p>;
@@ -284,12 +284,12 @@ const Participants = ({
 
       render: (text, record) => {
         if (
-          ((Number(ediorRole.status) === 9 ||
-            Number(ediorRole.status) === 8 ||
-            Number(ediorRole.status) === 10) &&
-            ediorRole.role === "Organizer" &&
+          ((Number(editorRole.status) === 9 ||
+            Number(editorRole.status) === 8 ||
+            Number(editorRole.status) === 10) &&
+            editorRole.role === "Organizer" &&
             isEditMeeting === true) ||
-          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
           return <p>{record?.participantRole?.participantRole}</p>;
         } else {
@@ -360,12 +360,12 @@ const Participants = ({
 
       render: (text, record) => {
         if (
-          ((Number(ediorRole.status) === 9 ||
-            Number(ediorRole.status) === 8 ||
-            Number(ediorRole.status) === 10) &&
-            ediorRole.role === "Organizer" &&
+          ((Number(editorRole.status) === 9 ||
+            Number(editorRole.status) === 8 ||
+            Number(editorRole.status) === 10) &&
+            editorRole.role === "Organizer" &&
             isEditMeeting === true) ||
-          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
         } else {
           return (
@@ -402,7 +402,7 @@ const Participants = ({
 
   // Filter columns based on the RSVP Condition
   const finalColumns =
-    Number(ediorRole.status) === 1
+    Number(editorRole.status) === 1
       ? ParticipantsColoumn.filter((column) => column.key !== "rsvp")
       : ParticipantsColoumn;
 
@@ -541,12 +541,12 @@ const Participants = ({
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                {((Number(ediorRole.status) === 9 ||
-                  Number(ediorRole.status) === 8 ||
-                  Number(ediorRole.status) === 10) &&
-                  ediorRole.role === "Organizer" &&
+                {((Number(editorRole.status) === 9 ||
+                  Number(editorRole.status) === 8 ||
+                  Number(editorRole.status) === 10) &&
+                  editorRole.role === "Organizer" &&
                   isEditMeeting === true) ||
-                (ediorRole.role === "Agenda Contributor" &&
+                (editorRole.role === "Agenda Contributor" &&
                   isEditMeeting === true) ? null : isEditable ||
                   isEditClicked ? (
                   <>
@@ -566,7 +566,7 @@ const Participants = ({
                       </Col>
                     </Row>
                   </>
-                ) : Number(ediorRole.status) === 1 ? null : (
+                ) : Number(editorRole.status) === 1 ? null : (
                   <>
                     <Button
                       text={t("Edit")}
@@ -664,14 +664,14 @@ const Participants = ({
                 </>
               ) : (
                 <>
-                  {((Number(ediorRole.status) === 9 ||
-                    Number(ediorRole.status) === 8 ||
-                    Number(ediorRole.status) === 10) &&
-                    ediorRole.role === "Organizer" &&
+                  {((Number(editorRole.status) === 9 ||
+                    Number(editorRole.status) === 8 ||
+                    Number(editorRole.status) === 10) &&
+                    editorRole.role === "Organizer" &&
                     isEditMeeting === true) ||
-                  (ediorRole.role === "Agenda Contributor" &&
+                  (editorRole.role === "Agenda Contributor" &&
                     isEditMeeting === true) ? null : Number(
-                      ediorRole.status
+                      editorRole.status
                     ) === 1 || isEditClicked ? null : (
                     <>
                       <Button
@@ -699,12 +699,12 @@ const Participants = ({
                     </>
                   )}
 
-                  {/* {((Number(ediorRole.status) === 9 ||
-                    Number(ediorRole.status) === 8 ||
-                    Number(ediorRole.status) === 10) &&
-                    ediorRole.role === "Organizer" &&
+                  {/* {((Number(editorRole.status) === 9 ||
+                    Number(editorRole.status) === 8 ||
+                    Number(editorRole.status) === 10) &&
+                    editorRole.role === "Organizer" &&
                     isEditMeeting === true) ||
-                  (ediorRole.role === "Agenda Contributor" &&
+                  (editorRole.role === "Agenda Contributor" &&
                     isEditMeeting === true) ? null : (
                     <Button
                       text={t("Publish")}
@@ -712,8 +712,8 @@ const Participants = ({
                       onClick={handleNextButton}
                     />
                   )} */}
-                  {Number(ediorRole.status) === 11 ||
-                  Number(ediorRole.status) === 12 ? (
+                  {Number(editorRole.status) === 11 ||
+                  Number(editorRole.status) === 12 ? (
                     <Button
                       disableBtn={Number(currentMeeting) === 0 ? true : false}
                       text={t("Publish")}

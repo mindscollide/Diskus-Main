@@ -17,6 +17,7 @@ import {
 import {
   GetAdvanceMeetingAgendabyMeetingID,
   clearResponseMessage,
+  getAdvanceMeetingAgendabyMeetingID_fail,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 
@@ -46,7 +47,7 @@ const Agenda = ({
   setPolls,
   setMinutes,
   advanceMeetingModalID,
-  ediorRole,
+  editorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -110,6 +111,9 @@ const Agenda = ({
       MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
+    return () => {
+      dispatch(getAdvanceMeetingAgendabyMeetingID_fail(""));
+    };
   }, []);
   //   updatedRows.push(newMainAgenda);
   //   setRows(updatedRows);
@@ -223,7 +227,7 @@ const Agenda = ({
                                     setAgendaItemRemovedIndex
                                   }
                                   setSubajendaRemoval={setSubajendaRemoval}
-                                  ediorRole={ediorRole}
+                                  editorRole={editorRole}
                                   advanceMeetingModalID={advanceMeetingModalID}
                                 />
                               </>

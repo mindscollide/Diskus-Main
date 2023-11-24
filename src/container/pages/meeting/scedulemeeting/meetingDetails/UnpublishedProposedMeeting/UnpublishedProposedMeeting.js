@@ -44,7 +44,7 @@ const UnpublishedProposedMeeting = ({
   setEditMeeting,
   setCurrentMeetingID,
   currentMeeting,
-  ediorRole,
+  editorRole,
   setDataroomMapFolderId,
 }) => {
   const dispatch = useDispatch();

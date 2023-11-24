@@ -48,7 +48,7 @@ const AgendaContributers = ({
   setSceduleMeeting,
   currentMeeting,
   setCurrentMeetingID,
-  ediorRole,
+  editorRole,
   setEditMeeting,
   isEditMeeting,
   setorganizers,
@@ -163,15 +163,15 @@ const AgendaContributers = ({
       width: "80px",
       render: (text, record) => {
         if (
-          (Number(ediorRole.status) === 9 ||
-            Number(ediorRole.status) === 8 ||
-            Number(ediorRole.status) === 10) &&
-          ediorRole.role === "Organizer" &&
+          (Number(editorRole.status) === 9 ||
+            Number(editorRole.status) === 8 ||
+            Number(editorRole.status) === 10) &&
+          editorRole.role === "Organizer" &&
           isEditMeeting === true
         ) {
           return <p>{record.Title}</p>;
         } else if (
-          ediorRole.role === "Agenda Contributor" &&
+          editorRole.role === "Agenda Contributor" &&
           isEditMeeting === true
         ) {
           return <p>{record.Title}</p>;
@@ -206,12 +206,12 @@ const AgendaContributers = ({
       width: "80px",
       render: (text, record) => {
         if (
-          ((Number(ediorRole.status) === 9 ||
-            Number(ediorRole.status) === 8 ||
-            Number(ediorRole.status) === 10) &&
-            ediorRole.role === "Organizer" &&
+          ((Number(editorRole.status) === 9 ||
+            Number(editorRole.status) === 8 ||
+            Number(editorRole.status) === 10) &&
+            editorRole.role === "Organizer" &&
             isEditMeeting === true) ||
-          (ediorRole.role === "Agenda Contributor" && isEditMeeting === true)
+          (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
         ) {
           return (
             <Row>
@@ -292,12 +292,12 @@ const AgendaContributers = ({
           <>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                {((Number(ediorRole.status) === 9 ||
-                  Number(ediorRole.status) === 8 ||
-                  Number(ediorRole.status) === 10) &&
-                  ediorRole.role === "Organizer" &&
+                {((Number(editorRole.status) === 9 ||
+                  Number(editorRole.status) === 8 ||
+                  Number(editorRole.status) === 10) &&
+                  editorRole.role === "Organizer" &&
                   isEditMeeting === true) ||
-                (ediorRole.role === "Agenda Contributor" &&
+                (editorRole.role === "Agenda Contributor" &&
                   isEditMeeting === true) ? (
                   <img
                     draggable={false}
@@ -364,7 +364,7 @@ const AgendaContributers = ({
 
   // Filter columns based on the RSVP Condition
   const finalColumns =
-    Number(ediorRole.status) === 1
+    Number(editorRole.status) === 1
       ? AgendaColoumns.filter((column) => column.key !== "rsvp")
       : AgendaColoumns;
 
@@ -607,12 +607,12 @@ const AgendaContributers = ({
     <>
       <section className="position-relative">
         <Row className="mt-5">
-          {((Number(ediorRole.status) === 9 ||
-            Number(ediorRole.status) === 8 ||
-            Number(ediorRole.status) === 10) &&
-            ediorRole.role === "Organizer" &&
+          {((Number(editorRole.status) === 9 ||
+            Number(editorRole.status) === 8 ||
+            Number(editorRole.status) === 10) &&
+            editorRole.role === "Organizer" &&
             isEditMeeting === true) ||
-          (ediorRole.role === "Agenda Contributor" &&
+          (editorRole.role === "Agenda Contributor" &&
             isEditMeeting === true) ? (
             <></>
           ) : (
@@ -635,12 +635,12 @@ const AgendaContributers = ({
             sm={12}
             className="d-flex justify-content-end gap-3"
           >
-            {((Number(ediorRole.status) === 9 ||
-              Number(ediorRole.status) === 8 ||
-              Number(ediorRole.status) === 10) &&
-              ediorRole.role === "Organizer" &&
+            {((Number(editorRole.status) === 9 ||
+              Number(editorRole.status) === 8 ||
+              Number(editorRole.status) === 10) &&
+              editorRole.role === "Organizer" &&
               isEditMeeting === true) ||
-            (ediorRole.role === "Agenda Contributor" &&
+            (editorRole.role === "Agenda Contributor" &&
               isEditMeeting === true) ? (
               <></>
             ) : isEdit || isEditClicked ? (
@@ -656,7 +656,7 @@ const AgendaContributers = ({
                   className={styles["Save_button"]}
                 />
               </>
-            ) : Number(ediorRole.status) === 1 ? null : (
+            ) : Number(editorRole.status) === 1 ? null : (
               <>
                 <Button
                   text={t("Edit")}
@@ -759,12 +759,12 @@ const AgendaContributers = ({
                 className={styles["Cancel_Organization"]}
                 onClick={nextTabOrganizer}
               />
-              {/* {((Number(ediorRole.status) === 9 ||
-                Number(ediorRole.status) === 8 ||
-                Number(ediorRole.status) === 10) &&
-                ediorRole.role === "Organizer" &&
+              {/* {((Number(editorRole.status) === 9 ||
+                Number(editorRole.status) === 8 ||
+                Number(editorRole.status) === 10) &&
+                editorRole.role === "Organizer" &&
                 isEditMeeting === true) ||
-              (ediorRole.role === "Agenda Contributor" &&
+              (editorRole.role === "Agenda Contributor" &&
                 isEditMeeting === true) ? null : (
                 <Button
                   text={t("Publish")}
@@ -772,8 +772,8 @@ const AgendaContributers = ({
                   onClick={handleNextButton}
                 />
               )} */}
-              {Number(ediorRole.status) === 11 ||
-              Number(ediorRole.status) === 12 ? (
+              {Number(editorRole.status) === 11 ||
+              Number(editorRole.status) === 12 ? (
                 <Button
                   disableBtn={Number(currentMeeting) === 0 ? true : false}
                   text={t("Publish")}
@@ -788,8 +788,8 @@ const AgendaContributers = ({
                   onClick={handleNextButton}
                 />
               )}
-              {/* {Number(ediorRole.status) === 11 ||
-              Number(ediorRole.status) === 12 ? (
+              {/* {Number(editorRole.status) === 11 ||
+              Number(editorRole.status) === 12 ? (
                 <Button
                   text={t("Publish")}
                   className={styles["Next_Organization"]}

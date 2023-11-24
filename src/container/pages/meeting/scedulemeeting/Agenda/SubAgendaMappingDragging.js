@@ -59,7 +59,7 @@ const SubAgendaMappingDragging = ({
   setFileForSend,
   allUsersRC,
   setAllUsersRC,
-  ediorRole,
+  editorRole,
 }) => {
   const { t } = useTranslation();
   //Timepicker
@@ -360,8 +360,8 @@ const SubAgendaMappingDragging = ({
                       draggableId={`subAgenda-${subAgendaData.subAgendaID}`}
                       index={subIndex}
                       isDragDisabled={
-                        ediorRole.role === "Participant" ||
-                        ediorRole.role === "Agenda Contributor"
+                        editorRole.role === "Participant" ||
+                        editorRole.role === "Agenda Contributor"
                           ? true
                           : false
                       }
@@ -466,9 +466,9 @@ const SubAgendaMappingDragging = ({
                                                 parentIslockedCheck ||
                                                 subAgendaData.isLocked
                                                   ? true
-                                                  : ediorRole.role ===
+                                                  : editorRole.role ===
                                                       "Participant" ||
-                                                    ediorRole.role ===
+                                                    editorRole.role ===
                                                       "Agenda Contributor"
                                                   ? true
                                                   : false
@@ -517,9 +517,9 @@ const SubAgendaMappingDragging = ({
                                                 parentIslockedCheck ||
                                                 subAgendaData.isLocked
                                                   ? true
-                                                  : ediorRole.role ===
+                                                  : editorRole.role ===
                                                       "Participant" ||
-                                                    ediorRole.role ===
+                                                    editorRole.role ===
                                                       "Agenda Contributor"
                                                   ? true
                                                   : false
@@ -562,9 +562,9 @@ const SubAgendaMappingDragging = ({
                                                     parentIslockedCheck ||
                                                     subAgendaData.isLocked
                                                       ? true
-                                                      : ediorRole.role ===
+                                                      : editorRole.role ===
                                                           "Participant" ||
-                                                        ediorRole.role ===
+                                                        editorRole.role ===
                                                           "Agenda Contributor"
                                                       ? true
                                                       : false
@@ -627,9 +627,9 @@ const SubAgendaMappingDragging = ({
                                                     parentIslockedCheck ||
                                                     subAgendaData.isLocked
                                                       ? true
-                                                      : ediorRole.role ===
+                                                      : editorRole.role ===
                                                           "Participant" ||
-                                                        ediorRole.role ===
+                                                        editorRole.role ===
                                                           "Agenda Contributor"
                                                       ? true
                                                       : false
@@ -652,8 +652,9 @@ const SubAgendaMappingDragging = ({
                                                 />
                                               </Col>
                                             </Row>
-                                            {ediorRole.role === "Participant" ||
-                                            ediorRole.role ===
+                                            {editorRole.role ===
+                                              "Participant" ||
+                                            editorRole.role ===
                                               "Agenda Contributor" ? null : (
                                               <img
                                                 alt=""
@@ -718,9 +719,9 @@ const SubAgendaMappingDragging = ({
                                                       parentIslockedCheck ||
                                                       subAgendaData.isLocked
                                                         ? true
-                                                        : ediorRole.role ===
+                                                        : editorRole.role ===
                                                             "Participant" ||
-                                                          ediorRole.role ===
+                                                          editorRole.role ===
                                                             "Agenda Contributor"
                                                         ? true
                                                         : false
@@ -815,9 +816,9 @@ const SubAgendaMappingDragging = ({
                                                   sm={6}
                                                   className="d-flex justify-content-end gap-4 align-items-center"
                                                 >
-                                                  {ediorRole.role ===
+                                                  {editorRole.role ===
                                                     "Participant" ||
-                                                  ediorRole.role ===
+                                                  editorRole.role ===
                                                     "Agenda Contributor" ? null : (
                                                     <>
                                                       {subAgendaData.subAgendaID.includes(
@@ -943,11 +944,11 @@ const SubAgendaMappingDragging = ({
                                                               setFileForSend={
                                                                 setFileForSend
                                                               }
-                                                              ediorRole={
-                                                                ediorRole
+                                                              editorRole={
+                                                                editorRole
                                                               }
                                                             />
-                                                            {ediorRole.role ===
+                                                            {editorRole.role ===
                                                             "Participant" ? null : (
                                                               <SubDedaultDragger
                                                                 setRows={
@@ -964,13 +965,13 @@ const SubAgendaMappingDragging = ({
                                                                 setFileForSend={
                                                                   setFileForSend
                                                                 }
-                                                                ediorRole={
-                                                                  ediorRole
+                                                                editorRole={
+                                                                  editorRole
                                                                 }
                                                               />
                                                             )}
                                                           </>
-                                                        ) : ediorRole.role ===
+                                                        ) : editorRole.role ===
                                                           "Participant" ? null : (
                                                           <SubDedaultDragger
                                                             setRows={setRows}
@@ -983,8 +984,8 @@ const SubAgendaMappingDragging = ({
                                                             setFileForSend={
                                                               setFileForSend
                                                             }
-                                                            ediorRole={
-                                                              ediorRole
+                                                            editorRole={
+                                                              editorRole
                                                             }
                                                           />
                                                         )}
@@ -999,7 +1000,7 @@ const SubAgendaMappingDragging = ({
                                                         setRows={setRows}
                                                         index={index}
                                                         subIndex={subIndex}
-                                                        ediorRole={ediorRole}
+                                                        editorRole={editorRole}
                                                       />
                                                     ) : subAgendaData.subSelectRadio ===
                                                       3 ? (
@@ -1015,7 +1016,7 @@ const SubAgendaMappingDragging = ({
                                                         setAllUsersRC={
                                                           setAllUsersRC
                                                         }
-                                                        ediorRole={ediorRole}
+                                                        editorRole={editorRole}
                                                       />
                                                     ) : (
                                                       <></>

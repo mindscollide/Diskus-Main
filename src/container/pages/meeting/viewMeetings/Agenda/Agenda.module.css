@@ -343,8 +343,8 @@ body[dir="rtl"] .BackGroundNewImplemented {
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  margin-top: 58px !important;
-  margin-left: 6px !important;
+  /* margin-top: 58px !important;
+  margin-left: 6px !important; */
 }
 
 body[dir="rtl"] .SubAgendaArrow {
@@ -364,8 +364,9 @@ body[dir="rtl"] .SubAgendaArrow {
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  margin-top: 150px !important;
-  margin-left: 6px !important;
+  justify-content: center;
+  /* margin-top: 150px !important;
+  margin-left: 6px !important; */
 }
 
 body[dir="rtl"] .subAgendaArrowExpand {
@@ -408,6 +409,9 @@ body[dir="rtl"] .subAgendaArrowExpand {
   top: 0;
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 body[dir="rtl"] .backGorund {
