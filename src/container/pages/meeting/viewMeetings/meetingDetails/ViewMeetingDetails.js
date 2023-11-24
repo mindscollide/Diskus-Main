@@ -153,7 +153,8 @@ const ViewMeetingDetails = ({
         },
         IsVideoCall: false,
       });
-      dispatch(showGetAllMeetingDetialsFailed(""));
+      // dispatch(showGetAllMeetingDetialsFailed(""));
+      dispatch(cleareAllState());
     };
   }, []);
 
@@ -196,8 +197,16 @@ const ViewMeetingDetails = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
+
+    setEdiorRole({ status: null, role: null });
+    setAdvanceMeetingModalID(null);
+    // setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);
-    setmeetingDetails(false);
+    // setAgenda(false);
+    // setCancelModalView(false);
+    // setPolls(false);
+    // setMinutes(false);
+    // setAttendance(false);
   };
 
   let endMeetingRequest = {
@@ -234,93 +243,95 @@ const ViewMeetingDetails = ({
   //Fetching All Saved Data
   useEffect(() => {
     try {
-    } catch {}
-    console.log("meetingStatus", NewMeetingreducer);
-    if (
-      NewMeetingreducer.getAllMeetingDetails !== null &&
-      NewMeetingreducer.getAllMeetingDetails !== undefined
-    ) {
-      let MeetingData =
-        NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
-      let getmeetingDates = MeetingData.meetingDates;
-      let getmeetingRecurrance = MeetingData.meetingRecurrance;
-      let getmeetingReminders = MeetingData.meetingReminders;
-      let getmeetingStatus = MeetingData.meetingStatus.status;
       console.log("meetingStatus", NewMeetingreducer);
-      console.log("meetingStatus", getmeetingStatus);
-      setMeetingStatus(Number(getmeetingStatus));
-      let getmeetingType = MeetingData.meetingType;
-      let wasPublishedFlag = MeetingData.wasMeetingPublished;
-      setMeetingDetailsData({
-        MeetingTitle: MeetingData.meetingTitle,
-        MeetingType: {
-          PK_MTID: getmeetingType.pK_MTID,
-          Type: getmeetingType.type,
-        },
-        Location: MeetingData.location,
-        Description: MeetingData.description,
-        Link: MeetingData.videoCallURl,
-        ReminderFrequency: {
-          value:
-            getmeetingReminders[0] !== undefined
-              ? getmeetingReminders[0]?.pK_MRID
-              : 0,
-          label:
-            getmeetingReminders[0] !== undefined
-              ? getmeetingReminders[0]?.description
-              : "",
-        },
-        ReminderFrequencyTwo: {
-          value:
-            getmeetingReminders[1] !== undefined
-              ? getmeetingReminders[1]?.pK_MRID
-              : 0,
-          label:
-            getmeetingReminders[1] !== undefined
-              ? getmeetingReminders[1]?.description
-              : "",
-        },
-        ReminderFrequencyThree: {
-          value:
-            getmeetingReminders[2] !== undefined
-              ? getmeetingReminders[2]?.pK_MRID
-              : 0,
-          label:
-            getmeetingReminders[2] !== undefined
-              ? getmeetingReminders[2]?.description
-              : "",
-        },
-        Notes: MeetingData.notes,
-        groupChat: MeetingData.isTalkGroup,
-        AllowRSPV: MeetingData.allowRSVP,
-        NotifyMeetingOrganizer: MeetingData.notifyAdminOnRSVP,
-        RecurringOptions: {
-          value: getmeetingRecurrance.recurranceID,
-          label: getmeetingRecurrance.recurrance,
-        },
-        IsVideoCall: MeetingData.isVideo,
-      });
-      let newDateTimeData = [];
       if (
-        getmeetingDates !== null &&
-        getmeetingDates !== undefined &&
-        getmeetingDates.length > 0
+        NewMeetingreducer.getAllMeetingDetails !== null &&
+        NewMeetingreducer.getAllMeetingDetails !== undefined
       ) {
-        getmeetingDates.forEach((data, index) => {
-          newDateTimeData.push({
-            selectedOption: data.meetingDate,
-            startDate: data.startTime,
-            endDate: data.endTime,
-            endTime: resolutionResultTable(data.meetingDate + data.endTime),
-            startTime: resolutionResultTable(data.meetingDate + data.startTime),
-            dateForView: resolutionResultTable(
-              data.meetingDate + data.startTime
-            ),
-          });
+        let MeetingData =
+          NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+        let getmeetingDates = MeetingData.meetingDates;
+        let getmeetingRecurrance = MeetingData.meetingRecurrance;
+        let getmeetingReminders = MeetingData.meetingReminders;
+        let getmeetingStatus = MeetingData.meetingStatus.status;
+        console.log("meetingStatus", NewMeetingreducer);
+        console.log("meetingStatus", getmeetingStatus);
+        setMeetingStatus(Number(getmeetingStatus));
+        let getmeetingType = MeetingData.meetingType;
+        let wasPublishedFlag = MeetingData.wasMeetingPublished;
+        setMeetingDetailsData({
+          MeetingTitle: MeetingData.meetingTitle,
+          MeetingType: {
+            PK_MTID: getmeetingType.pK_MTID,
+            Type: getmeetingType.type,
+          },
+          Location: MeetingData.location,
+          Description: MeetingData.description,
+          Link: MeetingData.videoCallURl,
+          ReminderFrequency: {
+            value:
+              getmeetingReminders[0] !== undefined
+                ? getmeetingReminders[0]?.pK_MRID
+                : 0,
+            label:
+              getmeetingReminders[0] !== undefined
+                ? getmeetingReminders[0]?.description
+                : "",
+          },
+          ReminderFrequencyTwo: {
+            value:
+              getmeetingReminders[1] !== undefined
+                ? getmeetingReminders[1]?.pK_MRID
+                : 0,
+            label:
+              getmeetingReminders[1] !== undefined
+                ? getmeetingReminders[1]?.description
+                : "",
+          },
+          ReminderFrequencyThree: {
+            value:
+              getmeetingReminders[2] !== undefined
+                ? getmeetingReminders[2]?.pK_MRID
+                : 0,
+            label:
+              getmeetingReminders[2] !== undefined
+                ? getmeetingReminders[2]?.description
+                : "",
+          },
+          Notes: MeetingData.notes,
+          groupChat: MeetingData.isTalkGroup,
+          AllowRSPV: MeetingData.allowRSVP,
+          NotifyMeetingOrganizer: MeetingData.notifyAdminOnRSVP,
+          RecurringOptions: {
+            value: getmeetingRecurrance.recurranceID,
+            label: getmeetingRecurrance.recurrance,
+          },
+          IsVideoCall: MeetingData.isVideo,
         });
+        let newDateTimeData = [];
+        if (
+          getmeetingDates !== null &&
+          getmeetingDates !== undefined &&
+          getmeetingDates.length > 0
+        ) {
+          getmeetingDates.forEach((data, index) => {
+            newDateTimeData.push({
+              selectedOption: data.meetingDate,
+              startDate: data.startTime,
+              endDate: data.endTime,
+              endTime: resolutionResultTable(data.meetingDate + data.endTime),
+              startTime: resolutionResultTable(
+                data.meetingDate + data.startTime
+              ),
+              dateForView: resolutionResultTable(
+                data.meetingDate + data.startTime
+              ),
+            });
+          });
+        }
+        setRows(newDateTimeData);
       }
-      setRows(newDateTimeData);
-    }
+    } catch {}
   }, [NewMeetingreducer.getAllMeetingDetails]);
 
   const joinMeetingCall = () => {

@@ -6621,4 +6621,5 @@ export {
   getAllAgendaContributor_fail,
   showAllMeetingParticipantsFailed,
   meetingMaterialFail,
+  showAllGeneralMinutesFailed,
 };

@@ -170,79 +170,79 @@ const getMeetingUserId = (navigate, data, t) => {
 
 //get meetinguser ID API
 
-const searchMeetingUserId = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(getMeetingIdInit());
-    let form = new FormData();
-    form.append("RequestMethod", searchMeetingId.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(searchMeetingUserId(navigate, data, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                getMeetingIdSuccess(
-                  response.data.responseResult.meetings,
-                  t("Record-found")
-                )
-              );
-              dispatch(SetLoaderFalse());
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase()
-                )
-            ) {
-              await dispatch(getMeetingIdFail(t("No-records-found")));
-              dispatch(updateSearchResponse());
-              dispatch(SetLoaderFalse());
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_SearchMeetings_03".toLowerCase()
-                )
-            ) {
-              await dispatch(getMeetingIdFail(t("Something-went-wrong")));
-              dispatch(updateSearchResponse());
-              dispatch(SetLoaderFalse());
-            }
-          } else {
-            await dispatch(getMeetingIdFail(t("Something-went-wrong")));
-            dispatch(updateSearchResponse());
-            dispatch(SetLoaderFalse());
-          }
-        } else {
-          await dispatch(getMeetingIdFail(t("Something-went-wrong")));
-          dispatch(updateSearchResponse());
-          dispatch(SetLoaderFalse());
-        }
-      })
-      .catch((response) => {
-        dispatch(getMeetingIdFail(t("Something-went-wrong")));
-        dispatch(SetLoaderFalse());
-      });
-  };
-};
+// const searchMeetingUserId = (navigate, data, t) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+//   return (dispatch) => {
+//     dispatch(getMeetingIdInit());
+//     let form = new FormData();
+//     form.append("RequestMethod", searchMeetingId.RequestMethod);
+//     form.append("RequestData", JSON.stringify(data));
+//     axios({
+//       method: "post",
+//       url: meetingApi,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(searchMeetingUserId(navigate, data, t));
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
+//                 )
+//             ) {
+//               await dispatch(
+//                 getMeetingIdSuccess(
+//                   response.data.responseResult.meetings,
+//                   t("Record-found")
+//                 )
+//               );
+//               dispatch(SetLoaderFalse());
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase()
+//                 )
+//             ) {
+//               await dispatch(getMeetingIdFail(t("No-records-found")));
+//               dispatch(updateSearchResponse());
+//               dispatch(SetLoaderFalse());
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Meeting_MeetingServiceManager_SearchMeetings_03".toLowerCase()
+//                 )
+//             ) {
+//               await dispatch(getMeetingIdFail(t("Something-went-wrong")));
+//               dispatch(updateSearchResponse());
+//               dispatch(SetLoaderFalse());
+//             }
+//           } else {
+//             await dispatch(getMeetingIdFail(t("Something-went-wrong")));
+//             dispatch(updateSearchResponse());
+//             dispatch(SetLoaderFalse());
+//           }
+//         } else {
+//           await dispatch(getMeetingIdFail(t("Something-went-wrong")));
+//           dispatch(updateSearchResponse());
+//           dispatch(SetLoaderFalse());
+//         }
+//       })
+//       .catch((response) => {
+//         dispatch(getMeetingIdFail(t("Something-went-wrong")));
+//         dispatch(SetLoaderFalse());
+//       });
+//   };
+// };
 
 //Meeting Count
 const getWeeklyMeetingsCountSuccess = (response, message) => {
@@ -547,7 +547,7 @@ const HideNotificationMeetings = () => {
 
 export {
   getMeetingUserId,
-  searchMeetingUserId,
+  // searchMeetingUserId,
   GetWeeklyMeetingsCount,
   GetUpcomingEvents,
   HideNotificationMeetings,

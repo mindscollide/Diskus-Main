@@ -344,7 +344,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
     case actions.UPLOAD_COMMITTEESS_DOCUMENTS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         uploadCommitteeDocuments: action.respose,
         ResponseMessage: action.message,
       };
@@ -366,7 +366,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
     case actions.SAVE_COMMITTEE_FILES_DOCUMENTS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         saveUploadCommitteeDocuments: action.respose,
         ResponseMessage: action.message,
       };

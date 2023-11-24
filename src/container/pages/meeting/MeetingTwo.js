@@ -88,25 +88,32 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   const { talkStateData } = useSelector((state) => state);
-  const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings
-  );
-  const endForAllMeeting = useSelector(
-    (state) => state.NewMeetingreducer.endForAllMeeting
-  );
-  const endMeetingModal = useSelector(
-    (state) => state.NewMeetingreducer.endMeetingModal
-  );
-  const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage
-  );
+  const {
+    Loading,
+    searchMeetings,
+    endForAllMeeting,
+    ResponseMessage,
+    endMeetingModal,
+  } = useSelector((state) => state.NewMeetingreducer);
+  // const searchMeetings = useSelector(
+  //   (state) => state.NewMeetingreducer.searchMeetings
+  // );
+  // const endForAllMeeting = useSelector(
+  //   (state) => state.NewMeetingreducer.endForAllMeeting
+  // );
+  // const endMeetingModal = useSelector(
+  //   (state) => state.NewMeetingreducer.endMeetingModal
+  // );
+  // const ResponseMessage = useSelector(
+  //   (state) => state.NewMeetingreducer.ResponseMessage
+  // );
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
-  const Loading = useSelector((state) => state.downloadReducer.Loading);
+  // const Loading = useSelector((state) => state.downloadReducer.Loading);
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-
+  console.log(Loading, "LoadingLoadingLoadingLoadingLoading");
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
 
@@ -188,7 +195,7 @@ const NewMeeting = () => {
       localStorage.setItem("MeetingCurrentView", 1);
     }
     return () => {
-      dispatch(clearMeetingState());
+      // dispatch(clearMeetingState());
     };
   }, []);
 
@@ -1496,7 +1503,7 @@ const NewMeeting = () => {
       {editFlag ? (
         <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
-      {Loading ? <Loader /> : null}
+      {/* {Loading ? <Loader /> : null} */}
 
       {/* {Loading ? <Loader /> : null} */}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
