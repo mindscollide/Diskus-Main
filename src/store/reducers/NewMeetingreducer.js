@@ -1463,6 +1463,10 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_USER_WISE_PROPOSED_SUCCESS: {
+      console.log(
+        action.response,
+        "userWiseMeetingProposeduserWiseMeetingProposed"
+      );
       return {
         ...state,
         Loading: false,

@@ -1184,7 +1184,7 @@ const deleteGroupTaskRM = {
 };
 
 const getUserWiseProposeDate = {
-  RequestMethod: "ServiceManager.GetUserWiseProposedDates",
+  RequestMethod: "ServiceManager.GetParticipantWiseProposedDates",
 };
 
 const getAdvanceMeetingAgendabyMeetingID = {

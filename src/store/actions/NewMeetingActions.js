@@ -3666,6 +3666,7 @@ const getProposedWiseInit = () => {
 };
 
 const getProposedWiseSuccess = (response, message) => {
+  console.log(response, "getProposedWiseSuccess");
   return {
     type: actions.GET_USER_WISE_PROPOSED_SUCCESS,
     response,
@@ -3705,7 +3706,7 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -3714,11 +3715,15 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
                   t("Record-found")
                 )
               );
+              console.log(
+                response.data.responseResult.userWiseMeetingProposedDates,
+                "includesincludesincludesincludes"
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_02".toLowerCase()
                 )
             ) {
               dispatch(getProposedWiseFail(t("No-record-found")));
@@ -3726,7 +3731,7 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_03".toLowerCase()
                 )
             ) {
               dispatch(getProposedWiseFail(t("Something-went-wrong")));
