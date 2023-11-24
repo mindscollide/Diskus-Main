@@ -447,7 +447,7 @@ const CasteVoteForAgenda = (Data, navigate, t) => {
               dispatch(
                 casteVoteForAgenda_success(
                   response.data.responseResult,
-                  t("Record-saved")
+                  t("Agenda-Voting-details-updated-successfully")
                 )
               );
             } else if (

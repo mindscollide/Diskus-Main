@@ -94,7 +94,7 @@
 }
 
 .OverAll_padding {
-  padding: 0px 27px !important;
+  padding: 0px 30px !important;
 }
 
 .option:nth-child(1) {
@@ -145,4 +145,10 @@
   font-family: "MontserratSemiBold" !important;
   display: flex !important;
   gap: 5px !important;
+}
+
+.select-class-agendaContri {
+  display: flex;
+  overflow: hidden !important;
+  overflow-x: hidden !important;
 }

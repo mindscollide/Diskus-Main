@@ -14,7 +14,6 @@ import CreateTask from "./CreateTask/CreateTask";
 import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import {
   searchNewUserMeeting,
-  showCancelActions,
   showUnsavedActionsModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
@@ -90,7 +89,6 @@ const Actions = ({
       key: "taskAssignedTo",
       width: "200px",
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
         return (
           <>
             <span className={styles["Action-Date-title"]}>
@@ -217,10 +215,6 @@ const Actions = ({
     dispatch(showUnsavedActionsModal(false));
   };
 
-  const handleCancelActions = () => {
-    dispatch(showCancelActions(true));
-  };
-
   // to move in next to polls handler
   const nextTabToPolls = () => {
     setactionsPage(false);
@@ -255,7 +249,6 @@ const Actions = ({
               />
             </Col>
           </Row>
-          {/* ) : null} */}
 
           <Row>
             <Col lg={12} md={12} sm={12}>
