@@ -415,6 +415,7 @@ const ViewMeetingModal = ({
                   {actionsPage && (
                     <Actions
                       setPolls={setPolls}
+                      setSceduleMeeting={setViewAdvanceMeetingModal}
                       setMinutes={setMinutes}
                       setactionsPage={setactionsPage}
                       ediorRole={ediorRole}

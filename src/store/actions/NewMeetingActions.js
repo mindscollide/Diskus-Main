@@ -473,12 +473,12 @@ const SaveMeetingDetialsNewApiFunction = (
                   "Meeting_MeetingServiceManager_SaveMeetingDetails_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                handleSaveMeetingSuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
+              // dispatch(
+              //   handleSaveMeetingSuccess(
+              //     response.data.responseResult,
+              //     ""
+              //   )
+              // );
               localStorage.setItem(
                 "currentMeetingLS",
                 response.data.responseResult.meetingID
@@ -502,9 +502,15 @@ const SaveMeetingDetialsNewApiFunction = (
                 );
                 // setSceduleMeeting(false);
               } else if (viewValue === 2) {
-                // if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
-                //   setSceduleMeeting(false);
-                // }
+                if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
+                  setSceduleMeeting(false);
+                  dispatch(
+                    handleSaveMeetingSuccess(
+                      response.data.responseResult,
+                      t("Meeting-details-updated-and-published-successfully")
+                    )
+                  );
+                }
 
                 let MappedData = {
                   MeetingID: response.data.responseResult.meetingID,
@@ -1356,7 +1362,7 @@ const SaveparticipantsApi = (Data, navigate, t, currentMeeting) => {
               dispatch(
                 showSaveParticipantsSuccess(
                   response.data.responseResult,
-                  t("Record-inserted")
+                  t("Participants-details-updated-successfully")
                 )
               );
               let Data = {
