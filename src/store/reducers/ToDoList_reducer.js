@@ -63,7 +63,7 @@ const toDoListReducer = (state = initialState, action) => {
     case actions.UPLOAD_DOCUMENTS_TASKS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         todoDocumentsUpload: [...state.todoDocumentsUpload, action.response],
         ResponseMessage: action.message,
       };

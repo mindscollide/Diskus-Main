@@ -30,7 +30,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
 
   const [enablePieChart, setEnablePieChart] = useState(false);
 
-  const [votingResults, setVotingResults] = useState([]);
+  const [votingResults, setVotingResults] = useState(null);
 
   const [pieChartData, setPieChartData] = useState([]);
 
@@ -202,40 +202,54 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
       MeetingAgendaReducer.ViewAgendaVotingResultData !== undefined &&
       MeetingAgendaReducer.ViewAgendaVotingResultData.length !== 0
     ) {
+      setPieChartData(
+        MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults.map(
+          (result) => [result.answer, result.votes]
+        )
+      );
+      setLoading(false);
       setVotingResults(
         MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults
       );
     } else {
-      setVotingResults([]);
+      setVotingResults(null);
     }
   }, [MeetingAgendaReducer.ViewAgendaVotingResultData]);
 
   useEffect(() => {
-    if (
-      votingResults !== undefined &&
-      votingResults !== null &&
-      votingResults.length > 0
-    ) {
-      let votingResultChart =
-        MeetingAgendaReducer.ViewAgendaVotingResultData.votingResults;
-      setPieChartData(
-        votingResultChart.map((result) => [result.answer, result.votes])
-      );
+    const chartDataArray = [["Category", "Votes", { role: "style" }]];
 
-      const chartDataArray = [["Category", "Votes", { role: "style" }]];
+    pieChartData.forEach((dataPoint, index) => {
+      const color = colorCodes[index % colorCodes.length];
+      chartDataArray.push([dataPoint[0], dataPoint[1], color]);
+    });
 
-      pieChartData.forEach((dataPoint, index) => {
-        const color = colorCodes[index % colorCodes.length];
-        chartDataArray.push([dataPoint[0], dataPoint[1], color]);
-      });
-      setBarChartData(chartDataArray);
-      setLoading(false);
-    }
-  }, [votingResults]);
+    setBarChartData(chartDataArray);
+  }, [pieChartData]);
+
+  // useEffect(() => {
+  //   if (votingResults !== undefined && votingResults !== null) {
+  //     let votingResultChart = votingResults;
+  //     setPieChartData(
+  //       votingResultChart.map((result) => [result.answer, result.votes])
+  //     );
+
+  //     const chartDataArray = [["Category", "Votes", { role: "style" }]];
+
+  //     pieChartData.forEach((dataPoint, index) => {
+  //       const color = colorCodes[index % colorCodes.length];
+  //       chartDataArray.push([dataPoint[0], dataPoint[1], color]);
+  //     });
+  //     setBarChartData(chartDataArray);
+  //     setLoading(false);
+  //   }
+  // }, [votingResults]);
 
   console.log("VotingResults", votingResults, pieChartData, barChartData);
 
   console.log("ViewVotingDetail Reducer", MeetingAgendaReducer);
+
+  console.log("New Meeting Reducer", NewMeetingreducer);
 
   return (
     <section>
@@ -254,8 +268,8 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["HeadingViewVoteModal"]}>
                   {
-                    MeetingAgendaReducer.ViewAgendaVotingResultData
-                      .votingQuestion
+                    MeetingAgendaReducer?.ViewAgendaVotingResultData
+                      ?.votingQuestion
                   }
                 </span>
               </Col>
@@ -282,11 +296,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
                 />
               </Col>
             </Row>
-            {loading ? (
-              <div>
-                <Loader />
-              </div>
-            ) : enablePieChart === true ? (
+            {enablePieChart === true ? (
               <>
                 <Row className="mt-4">
                   <Col

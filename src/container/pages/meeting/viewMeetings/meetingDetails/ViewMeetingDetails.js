@@ -9,6 +9,7 @@ import {
 } from "../../../../../components/elements";
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../assets/images/blue Camera.svg";
+import ClipboardIcon from "../../../../../assets/images/Clipboard_Icon.png";
 import { useDispatch } from "react-redux";
 import {
   cleareAllState,
@@ -26,7 +27,10 @@ import { resolutionResultTable } from "../../../../../commen/functions/date_form
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import moment from "moment";
-import { FetchMeetingURLApi } from "../../../../../store/actions/NewMeetingActions";
+import {
+  FetchMeetingURLApi,
+  FetchMeetingURLClipboard,
+} from "../../../../../store/actions/NewMeetingActions";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -108,6 +112,18 @@ const ViewMeetingDetails = ({
       MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    let Data2 = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(
+      FetchMeetingURLClipboard(
+        Data2,
+        navigate,
+        t,
+        currentUserID,
+        currentOrganization
+      )
+    );
     return () => {
       setMeetingDetailsData({
         MeetingTitle: "",
@@ -137,7 +153,8 @@ const ViewMeetingDetails = ({
         },
         IsVideoCall: false,
       });
-      dispatch(showGetAllMeetingDetialsFailed(""));
+      // dispatch(showGetAllMeetingDetialsFailed(""));
+      dispatch(cleareAllState());
     };
   }, []);
 
@@ -180,8 +197,16 @@ const ViewMeetingDetails = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
+
+    setEdiorRole({ status: null, role: null });
+    setAdvanceMeetingModalID(null);
+    // setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);
-    setmeetingDetails(false);
+    // setAgenda(false);
+    // setCancelModalView(false);
+    // setPolls(false);
+    // setMinutes(false);
+    // setAttendance(false);
   };
 
   let endMeetingRequest = {
@@ -218,93 +243,95 @@ const ViewMeetingDetails = ({
   //Fetching All Saved Data
   useEffect(() => {
     try {
-    } catch {}
-    console.log("meetingStatus", NewMeetingreducer);
-    if (
-      NewMeetingreducer.getAllMeetingDetails !== null &&
-      NewMeetingreducer.getAllMeetingDetails !== undefined
-    ) {
-      let MeetingData =
-        NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
-      let getmeetingDates = MeetingData.meetingDates;
-      let getmeetingRecurrance = MeetingData.meetingRecurrance;
-      let getmeetingReminders = MeetingData.meetingReminders;
-      let getmeetingStatus = MeetingData.meetingStatus.status;
       console.log("meetingStatus", NewMeetingreducer);
-      console.log("meetingStatus", getmeetingStatus);
-      setMeetingStatus(Number(getmeetingStatus));
-      let getmeetingType = MeetingData.meetingType;
-      let wasPublishedFlag = MeetingData.wasMeetingPublished;
-      setMeetingDetailsData({
-        MeetingTitle: MeetingData.meetingTitle,
-        MeetingType: {
-          PK_MTID: getmeetingType.pK_MTID,
-          Type: getmeetingType.type,
-        },
-        Location: MeetingData.location,
-        Description: MeetingData.description,
-        Link: MeetingData.videoCallURl,
-        ReminderFrequency: {
-          value:
-            getmeetingReminders[0] !== undefined
-              ? getmeetingReminders[0]?.pK_MRID
-              : 0,
-          label:
-            getmeetingReminders[0] !== undefined
-              ? getmeetingReminders[0]?.description
-              : "",
-        },
-        ReminderFrequencyTwo: {
-          value:
-            getmeetingReminders[1] !== undefined
-              ? getmeetingReminders[1]?.pK_MRID
-              : 0,
-          label:
-            getmeetingReminders[1] !== undefined
-              ? getmeetingReminders[1]?.description
-              : "",
-        },
-        ReminderFrequencyThree: {
-          value:
-            getmeetingReminders[2] !== undefined
-              ? getmeetingReminders[2]?.pK_MRID
-              : 0,
-          label:
-            getmeetingReminders[2] !== undefined
-              ? getmeetingReminders[2]?.description
-              : "",
-        },
-        Notes: MeetingData.notes,
-        groupChat: MeetingData.isTalkGroup,
-        AllowRSPV: MeetingData.allowRSVP,
-        NotifyMeetingOrganizer: MeetingData.notifyAdminOnRSVP,
-        RecurringOptions: {
-          value: getmeetingRecurrance.recurranceID,
-          label: getmeetingRecurrance.recurrance,
-        },
-        IsVideoCall: MeetingData.isVideo,
-      });
-      let newDateTimeData = [];
       if (
-        getmeetingDates !== null &&
-        getmeetingDates !== undefined &&
-        getmeetingDates.length > 0
+        NewMeetingreducer.getAllMeetingDetails !== null &&
+        NewMeetingreducer.getAllMeetingDetails !== undefined
       ) {
-        getmeetingDates.forEach((data, index) => {
-          newDateTimeData.push({
-            selectedOption: data.meetingDate,
-            startDate: data.startTime,
-            endDate: data.endTime,
-            endTime: resolutionResultTable(data.meetingDate + data.endTime),
-            startTime: resolutionResultTable(data.meetingDate + data.startTime),
-            dateForView: resolutionResultTable(
-              data.meetingDate + data.startTime
-            ),
-          });
+        let MeetingData =
+          NewMeetingreducer.getAllMeetingDetails.advanceMeetingDetails;
+        let getmeetingDates = MeetingData.meetingDates;
+        let getmeetingRecurrance = MeetingData.meetingRecurrance;
+        let getmeetingReminders = MeetingData.meetingReminders;
+        let getmeetingStatus = MeetingData.meetingStatus.status;
+        console.log("meetingStatus", NewMeetingreducer);
+        console.log("meetingStatus", getmeetingStatus);
+        setMeetingStatus(Number(getmeetingStatus));
+        let getmeetingType = MeetingData.meetingType;
+        let wasPublishedFlag = MeetingData.wasMeetingPublished;
+        setMeetingDetailsData({
+          MeetingTitle: MeetingData.meetingTitle,
+          MeetingType: {
+            PK_MTID: getmeetingType.pK_MTID,
+            Type: getmeetingType.type,
+          },
+          Location: MeetingData.location,
+          Description: MeetingData.description,
+          Link: MeetingData.videoCallURl,
+          ReminderFrequency: {
+            value:
+              getmeetingReminders[0] !== undefined
+                ? getmeetingReminders[0]?.pK_MRID
+                : 0,
+            label:
+              getmeetingReminders[0] !== undefined
+                ? getmeetingReminders[0]?.description
+                : "",
+          },
+          ReminderFrequencyTwo: {
+            value:
+              getmeetingReminders[1] !== undefined
+                ? getmeetingReminders[1]?.pK_MRID
+                : 0,
+            label:
+              getmeetingReminders[1] !== undefined
+                ? getmeetingReminders[1]?.description
+                : "",
+          },
+          ReminderFrequencyThree: {
+            value:
+              getmeetingReminders[2] !== undefined
+                ? getmeetingReminders[2]?.pK_MRID
+                : 0,
+            label:
+              getmeetingReminders[2] !== undefined
+                ? getmeetingReminders[2]?.description
+                : "",
+          },
+          Notes: MeetingData.notes,
+          groupChat: MeetingData.isTalkGroup,
+          AllowRSPV: MeetingData.allowRSVP,
+          NotifyMeetingOrganizer: MeetingData.notifyAdminOnRSVP,
+          RecurringOptions: {
+            value: getmeetingRecurrance.recurranceID,
+            label: getmeetingRecurrance.recurrance,
+          },
+          IsVideoCall: MeetingData.isVideo,
         });
+        let newDateTimeData = [];
+        if (
+          getmeetingDates !== null &&
+          getmeetingDates !== undefined &&
+          getmeetingDates.length > 0
+        ) {
+          getmeetingDates.forEach((data, index) => {
+            newDateTimeData.push({
+              selectedOption: data.meetingDate,
+              startDate: data.startTime,
+              endDate: data.endTime,
+              endTime: resolutionResultTable(data.meetingDate + data.endTime),
+              startTime: resolutionResultTable(
+                data.meetingDate + data.startTime
+              ),
+              dateForView: resolutionResultTable(
+                data.meetingDate + data.startTime
+              ),
+            });
+          });
+        }
+        setRows(newDateTimeData);
       }
-      setRows(newDateTimeData);
-    }
+    } catch {}
   }, [NewMeetingreducer.getAllMeetingDetails]);
 
   const joinMeetingCall = () => {
@@ -315,12 +342,29 @@ const ViewMeetingDetails = ({
       FetchMeetingURLApi(Data, navigate, t, currentUserID, currentOrganization)
     );
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
-    // localStorage.setItem("CallType", 2);
-    // localStorage.setItem("activeCall", true);
-    // localStorage.setItem("callerID", currentUserID);
-    // dispatch(callRequestReceivedMQTT({}, ""));
-    // dispatch(normalizeVideoPanelFlag(true));
-    // dispatch(videoChatPanel(false));
+  };
+
+  const copyToClipboard = () => {
+    if (
+      NewMeetingreducer.CurrentMeetingURL !== undefined &&
+      NewMeetingreducer.CurrentMeetingURL !== null &&
+      NewMeetingreducer.CurrentMeetingURL !== ""
+    ) {
+      navigator.clipboard.writeText(NewMeetingreducer.CurrentMeetingURL);
+      setOpen({
+        ...open,
+        flag: true,
+        message: "URL copied to clipboard",
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(CleareMessegeNewMeeting());
+    }
   };
 
   useEffect(() => {
@@ -348,6 +392,39 @@ const ViewMeetingDetails = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [NewMeetingreducer.ResponseMessage]);
+
+  // useEffect(() => {
+  //   if (
+  //     NewMeetingreducer.CurrentMeetingURL !== null &&
+  //     NewMeetingreducer.CurrentMeetingURL !== undefined &&
+  //     NewMeetingreducer.CurrentMeetingURL !== ""
+  //   ) {
+  //     const copyToClipboard = async () => {
+  //       try {
+  //         await navigator.clipboard.writeText(
+  //           NewMeetingreducer.CurrentMeetingURL
+  //         );
+  //         setOpen({
+  //           ...open,
+  //           flag: true,
+  //           message: "URL copied to clipboard",
+  //         });
+  //         setTimeout(() => {
+  //           setOpen({
+  //             ...open,
+  //             flag: false,
+  //             message: "",
+  //           });
+  //         }, 3000);
+  //         dispatch(CleareMessegeNewMeeting());
+  //       } catch (error) {
+  //         console.error("Unable to copy text to clipboard", error);
+  //       }
+  //     };
+
+  //     copyToClipboard();
+  //   }
+  // }, [NewMeetingreducer.CurrentMeetingURL]);
 
   console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
   console.log("meetingDetailsmeetingDetails", meetingDetails);
@@ -503,16 +580,25 @@ const ViewMeetingDetails = ({
                   )}
                   {meetingDetails.IsVideoCall && (
                     <>
+                      <Button
+                        text={t("Join-Video-Call")}
+                        className={styles["JoinMeetingButton"]}
+                        onClick={joinMeetingCall}
+                      />
                       <img
                         src={BlueCamera}
                         height="17.84px"
                         width="27.19px"
                         alt=""
+                        className={styles["blue-icon"]}
                       />
-                      <Button
-                        text={t("Join-Video-Call")}
-                        className={styles["JoinMeetingButton"]}
-                        onClick={joinMeetingCall}
+                      <img
+                        src={ClipboardIcon}
+                        height="40px"
+                        width="40px"
+                        alt=""
+                        onClick={() => copyToClipboard()}
+                        className={styles["clipboard-icon"]}
                       />
                       {/* <span className={styles["LinkClass"]}>
                         {meetingDetails.Link}

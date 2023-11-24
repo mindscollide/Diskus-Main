@@ -340,7 +340,7 @@ const GroupsReducer = (state = initialState, action) => {
     case actions.UPLOAD_GROUPS_DOCUMENTS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         uploadGroupDocuments: action.respose,
         ResponseMessage: action.message,
       };
@@ -362,7 +362,7 @@ const GroupsReducer = (state = initialState, action) => {
     case actions.SAVE_GROUP_FILES_DOCUMENTS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         saveUploadGroupDocuments: action.respose,
         ResponseMessage: action.message,
       };
