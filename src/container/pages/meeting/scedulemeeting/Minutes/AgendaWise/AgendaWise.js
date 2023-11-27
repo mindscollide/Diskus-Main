@@ -1070,6 +1070,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                     src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                                     height="39px"
                                     width="39px"
+                                    alt=""
                                     className={styles["Profile_minutes"]}
                                   />
                                 </Col>
