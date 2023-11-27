@@ -76,7 +76,7 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
     };
     // await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
     await dispatch(getUserProposedWiseApi(navigate, t, Data));
-    await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t,));
     return () => {
       localStorage.removeItem("viewProposeDatePollMeetingID");
     };

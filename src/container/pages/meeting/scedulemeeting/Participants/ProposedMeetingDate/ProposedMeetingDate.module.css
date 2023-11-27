@@ -205,3 +205,7 @@ body[dir="rtl"] .errorMessage-inLogin {
 .Width_Date_SendResponseBy {
   width: 100% !important;
 }
+
+.Cross_icon_class {
+  cursor: pointer !important;
+}

@@ -34,6 +34,7 @@ const Actions = ({
   setEditMeeting,
   isEditMeeting,
   dataroomMapFolderId,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

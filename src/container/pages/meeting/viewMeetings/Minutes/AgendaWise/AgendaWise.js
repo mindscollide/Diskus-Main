@@ -18,23 +18,29 @@ import Rightploygon from "../../../../../../assets/images/Polygon right.svg";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
-import { newTimeFormaterAsPerUTCFullDate } from "../../../../../../commen/functions/date_formater";
-import { GetAdvanceMeetingAgendabyMeetingID } from "../../../../../../store/actions/MeetingAgenda_action";
+import {
+  convertintoGMTCalender,
+  newTimeFormaterAsPerUTCFullDate,
+  resolutionResultTable,
+} from "../../../../../../commen/functions/date_formater";
+
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
   CleareMessegeNewMeeting,
   DeleteAgendaWiseMinutesDocumentsApiFunc,
-  GetAllAgendaWiseMinutesApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
+import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
 
-const AgendaWise = ({ currentMeeting, editorRole }) => {
+const AgendaWise = ({ currentMeeting }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  let folderID = localStorage.getItem("folderDataRoomMeeting");
+  console.log(folderID, "localStoragelocalStorage");
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
       value: "",
@@ -49,21 +55,30 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
   const [isEdit, setisEdit] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
+  const { NewMeetingreducer, AgendaWiseAgendaListReducer } = useSelector(
     (state) => state
   );
+  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
+  const [general, setGeneral] = useState(false);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [folderID, setFolderID] = useState(0);
+  const [agenda, setAgenda] = useState(false);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
+  const [expandedFiles, setExpandedFiles] = useState([]);
+  const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
+  const [agendaOptionvalue, setAgendaOptionValue] = useState({
+    label: "",
+    value: 0,
+  });
   const [showMore, setShowMore] = useState(false);
   const [showMoreIndex, setShowMoreIndex] = useState(0);
+  const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
       id: 0,
@@ -73,69 +88,95 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: 1216,
+      MeetingID: currentMeeting,
     };
-    dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
-
-    let newData = {
-      AgendaID: "1222",
-    };
-    dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, newData, t));
+    dispatch(
+      GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
+        Data,
+        navigate,
+        t,
+        currentMeeting
+      )
+    );
   }, []);
 
+  console.log(
+    AgendaWiseAgendaListReducer.AllAgendas,
+    "AgendaWiseAgendaListReducer"
+  );
+
   useEffect(() => {
-    console.log(MeetingAgendaReducer, "GetAdvanceMeetingAgendabyMeetingIDData");
     try {
       if (
-        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !== null &&
-        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData !==
-          undefined
+        AgendaWiseAgendaListReducer.AllAgendas !== null &&
+        AgendaWiseAgendaListReducer.AllAgendas !== undefined
       ) {
         let NewData = [];
         console.log(
-          MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
+          AgendaWiseAgendaListReducer.AllAgendas,
           "agendaListagendaList"
         );
-        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
+        AgendaWiseAgendaListReducer.AllAgendas.agendaList.map(
           (agenda, index) => {
-            console.log(agenda, "agendaagendaagenda");
+            console.log(agenda, "agendaListagendaList");
             NewData.push({
               value: agenda.id,
               label: agenda.title,
             });
+
+            agenda.subAgenda.map((subajendaData, index) => {
+              NewData.push({
+                value: subajendaData.subAgendaID,
+                label: subajendaData.subTitle,
+              });
+            });
           }
         );
         setAgendaOptions(NewData);
+        setAgendaID(NewData);
       }
     } catch {}
-  }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList]);
+  }, [AgendaWiseAgendaListReducer.AllAgendas]);
 
+  // Combined Data for both Documents and Minutes Agenda Wise
   useEffect(() => {
     try {
       if (
         NewMeetingreducer.agendaWiseMinutesReducer !== null &&
-        NewMeetingreducer.agendaWiseMinutesReducer !== undefined
+        NewMeetingreducer.agendaWiseMinutesReducer &&
+        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
+        NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
       ) {
-        console.log(
-          NewMeetingreducer.agendaWiseMinutesReducer,
-          "agendaWiseMinutesagendaWiseMinutes"
-        );
-        let agendaWiseArr = [];
-        NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes.map(
-          (agendawiseData, agendawiseIndex) => {
-            console.log(agendawiseData, "agendawiseDataagendawiseData");
-            agendaWiseArr.push(agendawiseData);
+        const minutesData =
+          NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
+        const documentsData =
+          NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
+        const combinedData = minutesData.map((item1) => {
+          const matchingItem = documentsData.find(
+            (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
+          );
+          if (matchingItem) {
+            return {
+              ...item1,
+              minutesAttachmets: matchingItem.files,
+            };
           }
-        );
-        setMessages(agendaWiseArr);
+          return item1;
+        });
+        setMessages(combinedData);
+      } else {
+        setMessages([]);
       }
-    } catch {}
-  }, [NewMeetingreducer.agendaWiseMinutesReducer]);
-
-  console.log(agendaOptions, "NewMeetingreducerNewMeetingreducer");
+    } catch (error) {
+      // Handle any errors here
+      console.error(error);
+    }
+  }, [
+    NewMeetingreducer.agendaWiseMinutesReducer,
+    NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
+  ]);
 
   let userID = localStorage.getItem("userID");
-  const date = new Date();
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
@@ -291,7 +332,6 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText) {
-      console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -304,7 +344,6 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
   };
 
   const handleAgendaSelect = (selectoptions) => {
-    console.log(selectoptions, "selectoptionsselectoptions");
     setAgendaSelect({
       ...agendaSelect,
       agendaSelectOptions: {
@@ -312,15 +351,23 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
         title: selectoptions.label,
       },
     });
+    setAgendaOptionValue({
+      label: selectoptions.label,
+      value: selectoptions.value,
+    });
   };
 
   const handleAddClickAgendaWise = async () => {
     let Data = {
-      AgendaID: "1222",
+      AgendaID: agendaSelect.agendaSelectOptions.id,
       MinuteText: addNoteFields.Description.value,
     };
-    console.log(Data, "addNoteFieldsaddNoteFields");
     dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
+    setAgendaOptionValue({
+      value: 0,
+      label: "",
+    });
+    // setAgendaOptions([]);
   };
 
   const documentUploadingFunc = async (minuteID) => {
@@ -339,9 +386,6 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    console.log(messages, "messagesmessages");
-
-    console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingAgendaMinutesID: minuteID,
@@ -350,11 +394,13 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t));
+    dispatch(
+      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+    );
 
     setFileAttachments([]);
     setPreviousFileIDs([]);
-    setAgendaOptions([]);
+    // setAgendaOptions([]);
     setFileForSend([]);
     setAddNoteFields({
       ...addNoteFields,
@@ -443,7 +489,8 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
     try {
       if (
         NewMeetingreducer.RetriveAgendaWiseDocuments !== null &&
-        NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined
+        NewMeetingreducer.RetriveAgendaWiseDocuments !== undefined &&
+        NewMeetingreducer.RetriveAgendaWiseDocuments.data.length > 0
       ) {
         console.log(
           NewMeetingreducer.RetriveAgendaWiseDocuments,
@@ -503,7 +550,9 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
       }),
     };
     console.log(docsData, "messagesmessages");
-    dispatch(SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t));
+    dispatch(
+      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+    );
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -514,6 +563,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
     });
 
     setFileAttachments([]);
+    // setAgendaOptions([]);
     setisEdit(false);
   };
 
@@ -531,7 +581,8 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
         Data,
         t,
         currentMeeting,
-        AgendaWiseData
+        AgendaWiseData,
+        agendaSelect.agendaSelectOptions.id
       )
     );
     setAddNoteFields({
@@ -544,26 +595,16 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
     });
 
     setFileAttachments([]);
+    // setAgendaOptions([]);
   };
 
   const handleshowMore = (index) => {
     setShowMoreIndex(index);
     setShowMore(!showMore);
   };
-  console.log(
-    NewMeetingreducer.ResponseMessage,
-    NewMeetingreducer,
-    "ResponseMessage222"
-  );
+
   useEffect(() => {
-    console.log(NewMeetingreducer.ResponseMessage, "ResponseMessage2");
-    if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
-    ) {
+    if (NewMeetingreducer.ResponseMessage !== "") {
       setOpen({
         ...open,
         flag: true,
@@ -584,225 +625,218 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
 
   return (
     <section>
-      {(editorRole.role === "Organizer" && Number(editorRole.status) === 10) ||
-      Number(editorRole.status) === 9 ? (
-        <>
-          <Row className="mt-4">
-            <Col lg={6} md={6} sm={6}>
-              <Select options={agendaOptions} onChange={handleAgendaSelect} />
+      <Row className="mt-4">
+        <Col lg={6} md={6} sm={6}>
+          <Select
+            options={agendaOptions}
+            value={{
+              value: agendaOptionvalue.value,
+              label: agendaOptionvalue.label,
+            }}
+            onChange={handleAgendaSelect}
+          />
+        </Col>
+      </Row>
+      <Row className="mt-4">
+        <Col lg={6} md={6} sm={6}>
+          <Row className={styles["Add-note-QuillRow"]}>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              xs={12}
+              className={styles["Arabic_font_Applied"]}
+            >
+              <ReactQuill
+                ref={editorRef}
+                theme="snow"
+                value={addNoteFields.Description.value || ""}
+                placeholder={t("Note-details")}
+                onChange={onTextChange}
+                modules={modules}
+                className={styles["quill-height-addNote"]}
+                style={{
+                  direction: currentLanguage === "ar" ? "rtl" : "ltr",
+                }}
+              />
             </Col>
           </Row>
-          <Row className="mt-4">
-            <Col lg={6} md={6} sm={6}>
-              <Row className={styles["Add-note-QuillRow"]}>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={12}
-                  className={styles["Arabic_font_Applied"]}
-                >
-                  <ReactQuill
-                    ref={editorRef}
-                    theme="snow"
-                    value={addNoteFields.Description.value || ""}
-                    placeholder={t("Note-details")}
-                    onChange={onTextChange}
-                    modules={modules}
-                    className={styles["quill-height-addNote"]}
-                    style={{
-                      direction: currentLanguage === "ar" ? "rtl" : "ltr",
-                    }}
-                  />
-                </Col>
-              </Row>
-              {/* Button For Saving the The Minutes  */}
-              <Row className="mt-5">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex gap-2 justify-content-end"
-                >
-                  <Button
-                    text={t("Reset")}
-                    className={styles["Previous_Button"]}
-                    onClick={handleResetBtnFunc}
-                  />
-                  {isEdit === true ? (
-                    <>
-                      <Button
-                        text={t("Update")}
-                        className={styles["Button_General"]}
-                        onClick={handleUpdateFuncagendaWise}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        text={t("Save")}
-                        className={styles["Button_General"]}
-                        onClick={handleAddClickAgendaWise}
-                      />
-                    </>
-                  )}
-                </Col>
-              </Row>
-            </Col>
-            <Col lg={6} md={6} sm={6}>
-              {fileAttachments.length > 0 ? (
+          {/* Button For Saving the The Minutes  */}
+          <Row className="mt-5">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex gap-2 justify-content-end"
+            >
+              <Button
+                text={t("Reset")}
+                className={styles["Previous_Button"]}
+                onClick={handleResetBtnFunc}
+              />
+              {isEdit === true ? (
                 <>
-                  <Row className="mt-1">
-                    <Col lg={1} md={1} sm={1} className="mt-4">
-                      {fileAttachments.length > 2 ? (
-                        <>
-                          <Button
-                            icon={
-                              <img
-                                src={Leftploygon}
-                                width="20px"
-                                height="15px"
-                                draggable="false"
-                              />
-                            }
-                            onClick={SlideLeft}
-                            className={styles["Leftpolygon"]}
+                  <Button
+                    text={t("Update")}
+                    className={styles["Button_General"]}
+                    onClick={handleUpdateFuncagendaWise}
+                  />
+                </>
+              ) : (
+                <>
+                  <Button
+                    text={t("Save")}
+                    className={styles["Button_General"]}
+                    onClick={handleAddClickAgendaWise}
+                  />
+                </>
+              )}
+            </Col>
+          </Row>
+        </Col>
+        <Col lg={6} md={6} sm={6}>
+          {fileAttachments.length > 0 ? (
+            <>
+              <Row className="mt-1">
+                <Col lg={1} md={1} sm={1} className="mt-4">
+                  {fileAttachments.length > 2 ? (
+                    <>
+                      <Button
+                        icon={
+                          <img
+                            src={Leftploygon}
+                            width="20px"
+                            height="15px"
+                            draggable="false"
                           />
-                        </>
-                      ) : null}
-                    </Col>
-                    <Col lg={10} md={10} sm={10}>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="ScrolllerFiles_Committees"
-                          id="Slider"
-                        >
-                          {fileAttachments.length > 0
-                            ? fileAttachments.map((data, index) => {
-                                console.log(data, "datadatadata");
-                                return (
-                                  <>
-                                    <Col
-                                      lg={4}
-                                      md={4}
-                                      sm={12}
-                                      className="position-relative gap-2"
-                                    >
-                                      <span
-                                        className={styles["Crossicon_Class"]}
-                                      >
+                        }
+                        onClick={SlideLeft}
+                        className={styles["Leftpolygon"]}
+                      />
+                    </>
+                  ) : null}
+                </Col>
+                <Col lg={10} md={10} sm={10}>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="ScrolllerFiles_Committees"
+                      id="Slider"
+                    >
+                      {fileAttachments.length > 0
+                        ? fileAttachments.map((data, index) => {
+                            console.log(data, "datadatadata");
+                            return (
+                              <>
+                                <Col
+                                  lg={4}
+                                  md={4}
+                                  sm={12}
+                                  className="position-relative gap-2"
+                                >
+                                  <span className={styles["Crossicon_Class"]}>
+                                    <img
+                                      src={CrossIcon}
+                                      height="12.68px"
+                                      width="12.68px"
+                                      onClick={() => handleRemoveFile(data)}
+                                    />
+                                  </span>
+                                  <section className={styles["Outer_Box"]}>
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
                                         <img
-                                          src={CrossIcon}
-                                          height="12.68px"
-                                          width="12.68px"
-                                          onClick={() => handleRemoveFile(data)}
+                                          src={file_image}
+                                          width={"100%"}
+                                          alt=""
+                                          draggable="false"
                                         />
-                                      </span>
-                                      <section className={styles["Outer_Box"]}>
-                                        <Row>
-                                          <Col lg={12} md={12} sm={12}>
-                                            <img
-                                              src={file_image}
-                                              width={"100%"}
-                                              alt=""
-                                              draggable="false"
-                                            />
-                                          </Col>
-                                        </Row>
+                                      </Col>
+                                    </Row>
 
-                                        <section
-                                          className={
-                                            styles["backGround_name_Icon"]
-                                          }
+                                    <section
+                                      className={styles["backGround_name_Icon"]}
+                                    >
+                                      <Row className="mb-2">
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={styles["IconTextClass"]}
                                         >
-                                          <Row className="mb-2">
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className={
-                                                styles["IconTextClass"]
-                                              }
-                                            >
-                                              <img
-                                                src={pdfIcon}
-                                                height="10px"
-                                                width="10px"
-                                                className={styles["IconPDF"]}
-                                              />
-                                              <span
-                                                className={styles["FileName"]}
-                                              >
-                                                {data.DisplayAttachmentName}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                        </section>
-                                      </section>
-                                    </Col>
-                                  </>
-                                );
-                              })
-                            : null}
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col lg={1} md={1} sm={1} className="mt-4">
-                      {fileAttachments.length > 2 ? (
-                        <>
-                          <Button
-                            icon={
-                              <img
-                                src={Rightploygon}
-                                width="20px"
-                                height="15px"
-                                draggable="false"
-                              />
-                            }
-                            onClick={Slideright}
-                            className={styles["Leftpolygon"]}
-                          />
-                        </>
-                      ) : null}
+                                          <img
+                                            src={pdfIcon}
+                                            height="10px"
+                                            width="10px"
+                                            className={styles["IconPDF"]}
+                                          />
+                                          <span className={styles["FileName"]}>
+                                            {data.DisplayAttachmentName}
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </section>
+                                  </section>
+                                </Col>
+                              </>
+                            );
+                          })
+                        : null}
                     </Col>
                   </Row>
-                </>
-              ) : null}
-
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12}>
-                  <Dragger
-                    {...props}
-                    className={styles["dragdrop_attachment_create_resolution"]}
-                  >
-                    <p className="ant-upload-drag-icon">
-                      <span className={styles["create_resolution_dragger"]}>
-                        <img
-                          src={featherupload}
-                          width="18.87px"
-                          height="18.87px"
-                          draggable="false"
-                        />
-                      </span>
-                    </p>
-                    <p className={styles["ant-upload-text"]}>
-                      {t("Drag-&-drop-or")}
-                      <span className={styles["Choose_file_style"]}>
-                        {t("Choose-file")}
-                      </span>
-                      <span className={styles["here_text"]}>{t("Here")}</span>
-                    </p>
-                  </Dragger>
+                </Col>
+                <Col lg={1} md={1} sm={1} className="mt-4">
+                  {fileAttachments.length > 2 ? (
+                    <>
+                      <Button
+                        icon={
+                          <img
+                            src={Rightploygon}
+                            width="20px"
+                            height="15px"
+                            draggable="false"
+                          />
+                        }
+                        onClick={Slideright}
+                        className={styles["Leftpolygon"]}
+                      />
+                    </>
+                  ) : null}
                 </Col>
               </Row>
+            </>
+          ) : null}
+
+          <Row className="mt-2">
+            <Col lg={12} md={12} sm={12}>
+              <Dragger
+                {...props}
+                className={styles["dragdrop_attachment_create_resolution"]}
+              >
+                <p className="ant-upload-drag-icon">
+                  <span className={styles["create_resolution_dragger"]}>
+                    <img
+                      src={featherupload}
+                      width="18.87px"
+                      height="18.87px"
+                      draggable="false"
+                    />
+                  </span>
+                </p>
+                <p className={styles["ant-upload-text"]}>
+                  {t("Drag-&-drop-or")}
+                  <span className={styles["Choose_file_style"]}>
+                    {t("Choose-file")}
+                  </span>
+                  <span className={styles["here_text"]}>{t("Here")}</span>
+                </p>
+              </Dragger>
             </Col>
           </Row>
-        </>
-      ) : null}
-
+        </Col>
+      </Row>
       {/* Mapping of The Create Minutes */}
       <Row className="mt-2">
         <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
@@ -812,7 +846,14 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                 return (
                   <>
                     <section className={styles["Sizing_Saved_Minutes"]}>
-                      <Row className="mt-5">
+                      <Row className="mt-4">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["AgendaTitleClass"]}>
+                            {data.agendaTitle}
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
                         <Col
                           lg={12}
                           md={12}
@@ -849,13 +890,9 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                       className={styles["Show_more_Styles"]}
                                       onClick={toggleExpansion}
                                     >
-                                      {!expanded &&
-                                      data.minutesDetails.substring(0, 120)
-                                        ? t("See-more")
-                                        : ""}
                                       {expanded &&
                                       data.minutesDetails.substring(0, 120)
-                                        ? t("See-less")
+                                        ? t("See-more")
                                         : ""}
                                     </span>
                                   </span>
@@ -879,7 +916,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                     className={styles["Show_more"]}
                                     onClick={() => handleshowMore(index)}
                                   >
-                                    Show more
+                                    {t("Show-more")}
                                   </span>
                                 </Col>
                               </Row>
@@ -902,8 +939,8 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                             return (
                                               <>
                                                 <Col
-                                                  lg={2}
-                                                  md={2}
+                                                  lg={3}
+                                                  md={3}
                                                   sm={12}
                                                   className="position-relative gap-2"
                                                 >
@@ -959,7 +996,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                                             }
                                                           >
                                                             {
-                                                              data.DisplayAttachmentName
+                                                              filesname.displayFileName
                                                             }
                                                           </span>
                                                         </Col>
@@ -1012,42 +1049,34 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                     </Col>
                                   </Row>
                                 </Col>
-                                {(editorRole.role === "Organizer" &&
-                                  Number(editorRole.status) === 10) ||
-                                Number(editorRole.status) === 9 ? (
-                                  <Col
-                                    lg={4}
-                                    md={4}
-                                    sm={4}
-                                    className="d-flex justify-content-start align-items-center"
-                                  >
-                                    <img
-                                      draggable={false}
-                                      src={EditIcon}
-                                      height="21.55px"
-                                      width="21.55px"
-                                      className="cursor-pointer"
-                                      onClick={() => handleEditFunc(data)}
-                                    />
-                                  </Col>
-                                ) : null}
+                                <Col
+                                  lg={4}
+                                  md={4}
+                                  sm={4}
+                                  className="d-flex justify-content-start align-items-center"
+                                >
+                                  <img
+                                    draggable={false}
+                                    src={EditIcon}
+                                    height="21.55px"
+                                    width="21.55px"
+                                    className="cursor-pointer"
+                                    onClick={() => handleEditFunc(data)}
+                                  />
+                                </Col>
                               </Row>
                             </Col>
                           </Row>
-                          {(editorRole.role === "Organizer" &&
-                            Number(editorRole.status) === 10) ||
-                          Number(editorRole.status) === 9 ? (
-                            <img
-                              draggable={false}
-                              src={RedCroseeIcon}
-                              height="20.76px"
-                              width="20.76px"
-                              className={styles["RedCrossClass"]}
-                              onClick={() =>
-                                handleRemovingTheMinutesAgendaWise(data)
-                              }
-                            />
-                          ) : null}
+                          <img
+                            draggable={false}
+                            src={RedCroseeIcon}
+                            height="20.76px"
+                            width="20.76px"
+                            className={styles["RedCrossClass"]}
+                            onClick={() =>
+                              handleRemovingTheMinutesAgendaWise(data)
+                            }
+                          />
                         </Col>
                       </Row>
                     </section>
@@ -1064,8 +1093,8 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
           sm={12}
           className="d-flex justify-content-end gap-2"
         >
-          {/* <Button text={t("Previous")} className={styles["Previous_Button"]} />
-          <Button text={t("Next")} className={styles["Button_General"]} /> */}
+          <Button text={t("Previous")} className={styles["Previous_Button"]} />
+          <Button text={t("Next")} className={styles["Button_General"]} />
         </Col>
       </Row>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />

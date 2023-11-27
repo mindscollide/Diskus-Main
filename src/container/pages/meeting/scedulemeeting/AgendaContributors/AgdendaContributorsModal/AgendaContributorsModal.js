@@ -28,6 +28,7 @@ const AgendaContributorsModal = ({
   setNotificedMembersData,
   currentMeeting,
 }) => {
+  console.log(SelectedRSVP, "SelectedRSVPSelectedRSVPSelectedRSVP");
   const animatedComponents = makeAnimated();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -203,7 +204,7 @@ const AgendaContributorsModal = ({
                       email: gUser.emailAddress,
                       Title: "",
                       agendaListRightsAll:
-                        SelectedRSVP.value === 1 ? true : false,
+                        Number(SelectedRSVP.value) === 1 ? true : false,
                       isEdit: false,
                       isContributedNotified: true,
                     };
@@ -235,7 +236,7 @@ const AgendaContributorsModal = ({
                       isContributedNotified: true,
                       Title: "",
                       agendaListRightsAll:
-                        SelectedRSVP.value === 1 ? true : false,
+                        Number(SelectedRSVP.value) === 1 ? true : false,
                       isEdit: false,
                     };
                     tem.push(newUser);
@@ -261,7 +262,8 @@ const AgendaContributorsModal = ({
                   email: check2.emailAddress,
                   isContributedNotified: true,
                   Title: "",
-                  agendaListRightsAll: SelectedRSVP.value === 1 ? true : false,
+                  agendaListRightsAll:
+                    Number(SelectedRSVP.value) === 1 ? true : false,
                   isEdit: false,
                 };
                 tem.push(newUser);

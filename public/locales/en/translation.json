@@ -1642,8 +1642,8 @@
   "Thank-you-for-participanting-in-voting": "Thank you for participating in voting",
   "Agenda-voting-details-saved-successfully": "Agenda Voting details saved successfully",
   "Agenda-voting-details-updated-successfully": "Agenda Voting details updated successfully",
-  "Enter-date-must-Action": "Please select date *",
-  "Take-Task": "Take Task",
-  "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up, let's dive into some task!",
-  "Description-is-required-Action": "Description is required *"
+  "You-cant-enter-more-then-five-dates": "You Cant enter more then Five Dates",
+  "Selected-start-time-should-not-be-less-than-the-previous-endTime": "Selected start time should not be less than the previous endTime",
+  "Selected-date-should-not-be-less-than-the-previous-one": "Selected date should not be less than the previous one",
+  "Selected-end-time-should-not-be-less-than-the-previous-one": "Selected end time should not be less than the previous one"
 }
