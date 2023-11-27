@@ -68,6 +68,7 @@ const MeetingDetails = ({
   setEditMeeting,
   isEditMeeting,
   setDataroomMapFolderId,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -166,7 +167,7 @@ const MeetingDetails = ({
       }
     }
   }, [currentLanguage]);
-  
+
   const apiCallsForComponentMound = async () => {
     try {
       // Meeting Type Drop Down API
@@ -175,7 +176,7 @@ const MeetingDetails = ({
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       // Recurring Drop Down API
       await dispatch(GetAllMeetingRecurringApiNew(navigate, t));
-  
+
       // All API calls are successful, proceed with the next steps if needed.
       console.log("All API calls are completed successfully.");
     } catch (error) {
