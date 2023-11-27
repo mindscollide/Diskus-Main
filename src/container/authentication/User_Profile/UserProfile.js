@@ -275,7 +275,7 @@ const UserProfileModal = ({
       if (currentLanguage === "en") {
         // setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        // setLocalValue(arabic_ar);
+        // setLocalValue(gregorian_ar);
       }
     }
   }, [currentLanguage])

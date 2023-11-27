@@ -21,7 +21,7 @@ import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import { Radio } from "antd";
 import Key from "../../../../../assets/images/KEY.svg";
 import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import closedLocked from "../../../../../assets/images/CloseLocked.svg";
@@ -296,8 +296,8 @@ const SubAgendaMappingDragging = ({
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
     }
   }, [currentLanguage]);

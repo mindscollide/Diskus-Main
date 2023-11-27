@@ -5,8 +5,7 @@ import MeetingVideoChatIcon from "../../../../../assets/images/ColoredVideo.svg"
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -162,8 +161,8 @@ const MeetingDetails = ({
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
     }
   }, [currentLanguage]);
@@ -250,6 +249,7 @@ const MeetingDetails = ({
   };
 
   const handleStartDateChange = (index, date) => {
+    console.log("changeDateStartHandler",date)
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getHours()).slice(-2);
@@ -262,7 +262,8 @@ const MeetingDetails = ({
       const updatedRows = [...rows];
       updatedRows[index].startDate = formattedTime;
       updatedRows[index].startTime = newDate;
-      setRows(updatedRows);
+    console.log("changeDateStartHandler",updatedRows)
+    setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
       console.error("Invalid date and time object:", date);
