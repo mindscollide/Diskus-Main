@@ -621,7 +621,14 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
   };
 
   useEffect(() => {
-    if (NewMeetingreducer.ResponseMessage !== "") {
+    if (
+      NewMeetingreducer.ResponseMessage.trim() !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully")
+    ) {
       setOpen({
         ...open,
         flag: true,

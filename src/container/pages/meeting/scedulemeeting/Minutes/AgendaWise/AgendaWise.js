@@ -34,6 +34,10 @@ import {
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../../DataRoom/SearchFunctionality/option";
 
 const AgendaWise = ({ currentMeeting, editorRole }) => {
   const navigate = useNavigate();
@@ -605,10 +609,12 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage.trim() !== "" &&
       NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
       NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found")
+      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully")
     ) {
       setOpen({
         ...open,
@@ -722,6 +728,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                 width="20px"
                                 height="15px"
                                 draggable="false"
+                                alt=""
                               />
                             }
                             onClick={SlideLeft}
@@ -757,6 +764,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                           src={CrossIcon}
                                           height="12.68px"
                                           width="12.68px"
+                                          alt=""
                                           onClick={() => handleRemoveFile(data)}
                                         />
                                       </span>
@@ -791,6 +799,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                                 height="10px"
                                                 width="10px"
                                                 className={styles["IconPDF"]}
+                                                alt=""
                                               />
                                               <span
                                                 className={styles["FileName"]}
@@ -819,6 +828,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                 width="20px"
                                 height="15px"
                                 draggable="false"
+                                alt=""
                               />
                             }
                             onClick={Slideright}
@@ -844,6 +854,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                           width="18.87px"
                           height="18.87px"
                           draggable="false"
+                          alt=""
                         />
                       </span>
                     </p>
@@ -1010,8 +1021,13 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                                           }
                                                         >
                                                           <img
-                                                            src={pdfIcon}
+                                                            src={getIconSource(
+                                                              getFileExtension(
+                                                                filesname.displayFileName
+                                                              )
+                                                            )}
                                                             height="10px"
+                                                            alt=""
                                                             width="10px"
                                                             className={
                                                               styles["IconPDF"]
