@@ -668,11 +668,13 @@ const Participants = ({
                   (editorRole.role === "Agenda Contributor" &&
                     isEditMeeting === true) ? (
                     <>
-                      <Button
-                        text={t("Propose-meeting-dates")}
-                        className={styles["Next_Organization"]}
-                        onClick={handleProposedmeetingDates}
-                      />
+                      {Number(editorRole.status) === 12 && (
+                        <Button
+                          text={t("Propose-meeting-dates")}
+                          className={styles["Next_Organization"]}
+                          onClick={handleProposedmeetingDates}
+                        />
+                      )}
                       <Button
                         text={t("Cancel")}
                         className={styles["Cancel_Organization"]}
@@ -694,11 +696,14 @@ const Participants = ({
                   ) : Number(editorRole.status) === 1 ||
                     isEditClicked ? null : (
                     <>
-                      <Button
-                        text={t("Propose-meeting-dates")}
-                        className={styles["Next_Organization"]}
-                        onClick={handleProposedmeetingDates}
-                      />
+                      {Number(editorRole.status) === 12 && (
+                        <Button
+                          text={t("Propose-meeting-dates")}
+                          className={styles["Next_Organization"]}
+                          onClick={handleProposedmeetingDates}
+                        />
+                      )}
+
                       <Button
                         text={t("Cancel")}
                         className={styles["Cancel_Organization"]}

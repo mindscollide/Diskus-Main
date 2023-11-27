@@ -998,10 +998,7 @@ const MeetingDetails = ({
   const handleUpdateNext = () => {
     //Function For Next Checks ValidationS
     try {
-      let MeetingData = getAllMeetingDetails;
-      console.log(MeetingData, "MeetingDataMeetingDataMeetingData");
-
-      let getmeetingType = MeetingData.meetingType;
+      let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
 
       let newArr = [];
       rows.forEach((data, index) => {
@@ -1023,85 +1020,6 @@ const MeetingDetails = ({
         newReminderData.push(meetingDetails.ReminderFrequencyThree.value);
       }
 
-      if (MeetingData.meetingTitle !== meetingDetails.MeetingTitle) {
-        console.log("Title does not match");
-      }
-
-      if (getmeetingType.Type !== meetingDetails.MeetingType.Type) {
-        console.log("MeetingType Type does not match");
-      }
-
-      if (MeetingData.location !== meetingDetails.Location) {
-        console.log("Location does not match");
-      }
-
-      if (MeetingData.description !== meetingDetails.Description) {
-        console.log("Description does not match");
-      }
-
-      if (MeetingData.isTalkGroup !== meetingDetails.groupChat) {
-        console.log("IsTalkGroup does not match");
-      }
-
-      if (MeetingData.videoCallURl !== meetingDetails.Link) {
-        console.log("VideoCallURL does not match");
-      }
-
-      if (JSON.stringify(MeetingData.meetingDates) !== JSON.stringify(newArr)) {
-        console.log("MeetingDates do not match");
-      }
-
-      if (
-        JSON.stringify(MeetingData.meetingReminders) !==
-        JSON.stringify(newReminderData)
-      ) {
-        console.log("MeetingReminders do not match");
-      }
-
-      if (MeetingData.notes !== meetingDetails.Notes) {
-        console.log("Notes do not match");
-      }
-
-      if (MeetingData.allowRSVP !== meetingDetails.AllowRSPV) {
-        console.log("AllowRSVP does not match");
-      }
-
-      if (
-        MeetingData.notifyAdminOnRSVP !== meetingDetails.NotifyMeetingOrganizer
-      ) {
-        console.log("NotifyAdminOnRSVP does not match");
-      }
-
-      if (
-        MeetingData.meetingRecurrance !== meetingDetails.RecurringOptions.value
-      ) {
-        console.log("MeetingRecurrance does not match");
-      }
-
-      if (MeetingData.isVideo !== meetingDetails.IsVideoCall) {
-        console.log("IsVideo does not match");
-      }
-      console.log(
-        MeetingData.meetingTitle === meetingDetails.MeetingTitle,
-        MeetingData.meetingType.pK_MTID === meetingDetails.MeetingType.PK_MTID,
-        MeetingData.location === meetingDetails.Location,
-        MeetingData.description === meetingDetails.Description,
-        MeetingData.isTalkGroup === meetingDetails.groupChat,
-        MeetingData.videoCallURl === meetingDetails.Link,
-        compareMeetings(MeetingData.meetingDates, newArr),
-        comparePKMRID(MeetingData.meetingReminders, newReminderData),
-        MeetingData.notes === meetingDetails.Notes,
-        MeetingData.allowRSVP === meetingDetails.AllowRSPV,
-        MeetingData.notifyAdminOnRSVP === meetingDetails.NotifyMeetingOrganizer,
-        MeetingData.meetingRecurrance.recurranceID ===
-          meetingDetails.RecurringOptions.value,
-        MeetingData.meetingRecurrance.recurranceID,
-        meetingDetails.RecurringOptions.value,
-        MeetingData.isVideo === meetingDetails.IsVideoCall,
-        MeetingData,
-        meetingDetails,
-        "RecurringOptionsRecurringOptionsRecurringOptions"
-      );
       if (
         MeetingData.meetingTitle === meetingDetails.MeetingTitle &&
         MeetingData.meetingType.pK_MTID ===

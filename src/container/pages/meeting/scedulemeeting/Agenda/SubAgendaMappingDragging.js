@@ -599,7 +599,7 @@ const SubAgendaMappingDragging = ({
                                                       ? true
                                                       : false
                                                   }
-                                                  format="HH:mm A"
+                                                  format="hh:mm A"
                                                   selected={
                                                     subAgendaData.startDate
                                                   }
@@ -664,7 +664,7 @@ const SubAgendaMappingDragging = ({
                                                       ? true
                                                       : false
                                                   }
-                                                  format="HH:mm A"
+                                                  format="hh:mm A"
                                                   selected={
                                                     subAgendaData.endDate
                                                   }

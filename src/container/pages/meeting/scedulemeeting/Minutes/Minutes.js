@@ -542,7 +542,12 @@ const Minutes = ({
   };
 
   useEffect(() => {
-    if (ResponseMessage !== "") {
+    if (
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found") &&
+      ResponseMessage !== t("Record-found")
+    ) {
       setOpen({
         ...open,
         flag: true,

@@ -534,19 +534,35 @@ const SaveMeetingDetialsNewApiFunction = (
                   };
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else {
-                  let MappedData = {
-                    MeetingID: response.data.responseResult.meetingID,
-                    MeetingTitle: meetingDetails.MeetingTitle,
-                    IsUpdateFlow: false,
+                  let Data = {
+                    MeetingID: Number(response.data.responseResult.meetingID),
                   };
-                  dispatch(
-                    CreateUpdateMeetingDataRoomMapeedApiFunc(
+                  await dispatch(
+                    GetAllMeetingDetailsApiFunc(
                       navigate,
-                      MappedData,
                       t,
-                      setDataroomMapFolderId
+                      Data,
+                      true,
+                      setCurrentMeetingID,
+                      setSceduleMeeting,
+                      setDataroomMapFolderId,
+                      data.MeetingDetails.MeetingStatusID
                     )
                   );
+                  // let MappedData = {
+                  //   MeetingID: response.data.responseResult.meetingID,
+                  //   MeetingTitle: meetingDetails.MeetingTitle,
+                  //   IsUpdateFlow: false,
+                  // };
+                  // dispatch(
+                  //   CreateUpdateMeetingDataRoomMapeedApiFunc(
+                  //     navigate,
+                  //     MappedData,
+                  //     t,
+                  //     setDataroomMapFolderId,
+                  //     viewValue
+                  //   )
+                  // );
                 }
 
                 // setSceduleMeeting(false);
@@ -1907,8 +1923,10 @@ const GetAllMeetingDetailsApiFunc = (
   loader,
   setCurrentMeetingID,
   setSceduleMeeting,
-  setDataroomMapFolderId
+  setDataroomMapFolderId,
+  viewValue
 ) => {
+  console.log(viewValue, "viewValueviewValueviewValue");
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     await dispatch(showGetAllMeetingDetialsInit());
@@ -1934,7 +1952,8 @@ const GetAllMeetingDetailsApiFunc = (
               loader,
               setCurrentMeetingID,
               setSceduleMeeting,
-              setDataroomMapFolderId
+              setDataroomMapFolderId,
+              viewValue
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1956,7 +1975,12 @@ const GetAllMeetingDetailsApiFunc = (
                 MeetingTitle:
                   response.data.responseResult.advanceMeetingDetails
                     .meetingTitle,
-                IsUpdateFlow: true,
+                IsUpdateFlow:
+                  viewValue !== null &&
+                  viewValue !== undefined &&
+                  Number(viewValue) === 11
+                    ? false
+                    : true,
               };
               await dispatch(
                 showGetAllMeetingDetialsSuccess(
