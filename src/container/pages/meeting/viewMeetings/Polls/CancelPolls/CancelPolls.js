@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 
-const CancelPolls = ({ setSceduleMeeting }) => {
+const CancelPolls = ({ setViewAdvanceMeetingModal }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const CancelPolls = ({ setSceduleMeeting }) => {
 
   const handleYesFunctionality = () => {
     dispatch(showCancelPolls(false));
-    setSceduleMeeting(false);
+    setViewAdvanceMeetingModal(false);
     let searchData = {
       Date: "",
       Title: "",

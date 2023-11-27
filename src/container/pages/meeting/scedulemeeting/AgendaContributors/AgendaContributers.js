@@ -13,32 +13,18 @@ import { useTranslation } from "react-i18next";
 import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributorsModal";
 import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-
 import { useNavigate } from "react-router-dom";
 import {
-  getAgendaAndVotingInfo_success,
-  GetCurrentAgendaDetails,
-  getAgendaVotingDetails_success,
-  saveFiles_success,
-  saveAgendaVoting_success,
-  addUpdateAdvanceMeetingAgenda_success,
-  uploadDocument_success,
-  getAllVotingResultDisplay_success,
-} from "../../../../../store/actions/MeetingAgenda_action";
-import {
-  ShowNextConfirmationModal,
   UpdateMeetingUserForAgendaContributor,
   getAllAgendaContributorApi,
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showCancelModalAgendaContributor,
-  showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
 import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
 import CancelAgendaContributor from "./CancelButtonAgendaContributor/CancelAgendaContributor";
-import { saveAgendaContributors } from "../../../../../store/actions/NewMeetingActions";
 import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
@@ -49,6 +35,7 @@ const AgendaContributers = ({
   currentMeeting,
   setCurrentMeetingID,
   editorRole,
+  setEdiorRole,
   setEditMeeting,
   isEditMeeting,
   setorganizers,
@@ -429,15 +416,15 @@ const AgendaContributers = ({
     dispatch(
       UpdateOrganizersMeeting(
         navigate,
-        Data,
         t,
         5,
-        setPublishState,
+        Data,
+        setEdiorRole,
         setAdvanceMeetingModalID,
-        setViewFlag,
-        setEditFlag,
-        setCalendarViewModal,
-        setSceduleMeeting
+        setDataroomMapFolderId,
+        setSceduleMeeting,
+        setPublishState,
+        setCalendarViewModal
       )
     );
   };

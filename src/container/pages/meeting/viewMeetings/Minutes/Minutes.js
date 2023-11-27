@@ -36,7 +36,7 @@ import AgendaWise from "./AgendaWise/AgendaWise";
 const Minutes = ({
   setMinutes,
   currentMeeting,
-  setSceduleMeeting,
+  setViewAdvanceMeetingModal,
   setMeetingMaterial,
   setactionsPage,
 }) => {
@@ -1085,7 +1085,7 @@ const Minutes = ({
       {unsaveFileUploadMinutes && (
         <UnsavedMinutes
           setMinutes={setMinutes}
-          setSceduleMeeting={setSceduleMeeting}
+          setSceduleMeeting={setViewAdvanceMeetingModal}
           setFileAttachments={setFileAttachments}
         />
       )}

@@ -13,13 +13,11 @@ import EmptyStates from "../../../../../assets/images/EmptystateAction.svg";
 import CreateTask from "./CreateTask/CreateTask";
 import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import {
-  cleareAllState,
   searchNewUserMeeting,
   showUnsavedActionsModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getMeetingTaskMainApi,
-  getMeetingTask_Fail,
   saveMeetingActionsDocuments,
 } from "../../../../../store/actions/Action_Meeting";
 import CancelActions from "./CancelActions/CancelActions";
@@ -28,7 +26,7 @@ import CustomPagination from "../../../../../commen/functions/customPagination/P
 import { clearAttendanceState } from "../../../../../store/actions/Attendance_Meeting";
 
 const Actions = ({
-  setSceduleMeeting,
+  setViewAdvanceMeetingModal,
   setactionsPage,
   setPolls,
   currentMeeting,
@@ -37,7 +35,6 @@ const Actions = ({
   setEditMeeting,
   isEditMeeting,
   dataroomMapFolderId,
-  setViewAdvanceMeetingModal,
   setMeetingMaterial,
 }) => {
   const { t } = useTranslation();
@@ -435,7 +432,7 @@ const Actions = ({
       )}
       {NewMeetingreducer.removeTableModal && <RemoveTableModal />}
       {NewMeetingreducer.cancelActions && (
-        <CancelActions setSceduleMeeting={setSceduleMeeting} />
+        <CancelActions setSceduleMeeting={setViewAdvanceMeetingModal} />
       )}
     </section>
   );

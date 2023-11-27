@@ -42,6 +42,7 @@ const MeetingMaterial = ({
   editorRole,
   isEditMeeting,
   setDataroomMapFolderId,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -202,15 +203,15 @@ const MeetingMaterial = ({
     dispatch(
       UpdateOrganizersMeeting(
         navigate,
-        Data,
         t,
         5,
-        setPublishState,
+        Data,
+        setEdiorRole,
         setAdvanceMeetingModalID,
-        setViewFlag,
-        setEditFlag,
-        setCalendarViewModal,
-        setSceduleMeeting
+        setDataroomMapFolderId,
+        setSceduleMeeting,
+        setPublishState,
+        setCalendarViewModal
       )
     );
   };

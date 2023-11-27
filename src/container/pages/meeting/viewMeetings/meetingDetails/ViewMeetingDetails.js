@@ -9,16 +9,14 @@ import {
 } from "../../../../../components/elements";
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../assets/images/blue Camera.svg";
-import ClipboardIcon from "../../../../../assets/images/Clipboard_Icon.png";
+import ClipboardIcon from "../../../../../assets/images/clipboard-01.svg";
+import copyToClipboard from "../../../../../hooks/useClipBoard";
 import { useDispatch } from "react-redux";
 import {
   cleareAllState,
   CleareMessegeNewMeeting,
-  ClearMessegeMeetingdetails,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
-  showGetAllMeetingDetialsFailed,
-  showGetAllMeetingDetialsInit,
 } from "../../../../../store/actions/NewMeetingActions";
 import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
 import { useSelector } from "react-redux";
@@ -42,6 +40,8 @@ const ViewMeetingDetails = ({
   editorRole,
   setAgenda,
   setEdiorRole,
+  setCurrentMeetingID,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -49,12 +49,6 @@ const ViewMeetingDetails = ({
   const { NewMeetingreducer } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
-  console.log(
-    NewMeetingreducer,
-    editorRole,
-    "MeetingOrganizersReducerMeetingOrganizersReducer"
-  );
-  console.log(editorRole, "editorRoleeditorRoleeditorRole");
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -80,6 +74,7 @@ const ViewMeetingDetails = ({
     flag: false,
     message: "",
   });
+
   const [meetingDetails, setMeetingDetailsData] = useState({
     MeetingTitle: "",
     MeetingType: 0,
@@ -109,15 +104,25 @@ const ViewMeetingDetails = ({
     IsVideoCall: false,
   });
 
-  useEffect(() => {
+  const callApiOnComponentMount = async () => {
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    await dispatch(
+      GetAllMeetingDetailsApiFunc(
+        navigate,
+        t,
+        Data,
+        true,
+        setAdvanceMeetingModalID,
+        setViewAdvanceMeetingModal,
+        setDataroomMapFolderId
+      )
+    );
     let Data2 = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(
+    await dispatch(
       FetchMeetingURLClipboard(
         Data2,
         navigate,
@@ -126,6 +131,10 @@ const ViewMeetingDetails = ({
         currentOrganization
       )
     );
+  };
+
+  useEffect(() => {
+    callApiOnComponentMount();
     return () => {
       setMeetingDetailsData({
         MeetingTitle: "",
@@ -327,13 +336,13 @@ const ViewMeetingDetails = ({
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
   };
 
-  const copyToClipboard = () => {
+  const copyToClipboardd = () => {
     if (
       NewMeetingreducer.CurrentMeetingURL !== undefined &&
       NewMeetingreducer.CurrentMeetingURL !== null &&
       NewMeetingreducer.CurrentMeetingURL !== ""
     ) {
-      navigator.clipboard.writeText(NewMeetingreducer.CurrentMeetingURL);
+      copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
       setOpen({
         ...open,
         flag: true,
@@ -377,39 +386,6 @@ const ViewMeetingDetails = ({
     }
   }, [NewMeetingreducer.ResponseMessage]);
 
-  // useEffect(() => {
-  //   if (
-  //     NewMeetingreducer.CurrentMeetingURL !== null &&
-  //     NewMeetingreducer.CurrentMeetingURL !== undefined &&
-  //     NewMeetingreducer.CurrentMeetingURL !== ""
-  //   ) {
-  //     const copyToClipboard = async () => {
-  //       try {
-  //         await navigator.clipboard.writeText(
-  //           NewMeetingreducer.CurrentMeetingURL
-  //         );
-  //         setOpen({
-  //           ...open,
-  //           flag: true,
-  //           message: "URL copied to clipboard",
-  //         });
-  //         setTimeout(() => {
-  //           setOpen({
-  //             ...open,
-  //             flag: false,
-  //             message: "",
-  //           });
-  //         }, 3000);
-  //         dispatch(CleareMessegeNewMeeting());
-  //       } catch (error) {
-  //         console.error("Unable to copy text to clipboard", error);
-  //       }
-  //     };
-
-  //     copyToClipboard();
-  //   }
-  // }, [NewMeetingreducer.CurrentMeetingURL]);
-
   console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
   console.log("meetingDetailsmeetingDetails", meetingDetails);
 
@@ -429,11 +405,13 @@ const ViewMeetingDetails = ({
                     dispatch(
                       UpdateOrganizersMeeting(
                         navigate,
-                        endMeetingRequest,
                         t,
                         4,
-                        setViewAdvanceMeetingModal,
-                        setAdvanceMeetingModalID
+                        endMeetingRequest,
+                        setEdiorRole,
+                        setAdvanceMeetingModalID,
+                        setDataroomMapFolderId,
+                        setViewAdvanceMeetingModal
                       )
                     )
                   }
@@ -564,11 +542,6 @@ const ViewMeetingDetails = ({
                   )}
                   {meetingDetails.IsVideoCall && (
                     <>
-                      <Button
-                        text={t("Join-Video-Call")}
-                        className={styles["JoinMeetingButton"]}
-                        onClick={joinMeetingCall}
-                      />
                       <img
                         src={BlueCamera}
                         height="17.84px"
@@ -581,8 +554,13 @@ const ViewMeetingDetails = ({
                         height="40px"
                         width="40px"
                         alt=""
-                        onClick={() => copyToClipboard()}
+                        onClick={() => copyToClipboardd()}
                         className={styles["clipboard-icon"]}
+                      />
+                      <Button
+                        text={t("Join-Video-Call")}
+                        className={styles["JoinMeetingButton"]}
+                        onClick={joinMeetingCall}
                       />
                       {/* <span className={styles["LinkClass"]}>
                         {meetingDetails.Link}

@@ -25,8 +25,6 @@ import {
   sendRecentNotificationOrganizerModal,
   UpdateMeetingUserForOrganizers,
   showCancelModalOrganizers,
-  ShowNextConfirmationModal,
-  showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
@@ -34,7 +32,6 @@ import NotifyOrganizers from "./NotifyOrganizers/NotifyOrganizers";
 import SendNotificationOrganizer from "./NotifyOrganizers/SendRecentNotification";
 import OrganizersViewPage from "./OrganizerViewPage/OrganizersViewPage";
 import {
-  SaveMeetingOrganizers,
   clearResponseMessage,
   UpdateOrganizersMeeting,
   GetAllMeetingOrganizers,
@@ -82,6 +79,7 @@ const Organizers = ({
   setCalendarViewModal,
   setEditFlag,
   setDataroomMapFolderId,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
 
@@ -500,15 +498,15 @@ const Organizers = ({
     dispatch(
       UpdateOrganizersMeeting(
         navigate,
-        Data,
         t,
         5,
-        setPublishState,
+        Data,
+        setEdiorRole,
         setAdvanceMeetingModalID,
-        setViewFlag,
-        setEditFlag,
-        setCalendarViewModal,
-        setSceduleMeeting
+        setDataroomMapFolderId,
+        setSceduleMeeting,
+        setPublishState,
+        setCalendarViewModal
       )
     );
     // setorganizers(false)
