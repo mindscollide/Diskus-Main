@@ -1,23 +1,23 @@
 {
-  "MeetingID": 2312,
-  "SendResponsebyDate": "",
+  "MeetingID": 2315,
+  "SendResponsebyDate": "20231130",
   "ProposedDates": [
     {
-      "ProposedDate": "20231126",
-      "StartTime": "153327",
-      "EndTime": "163327",
-      "proposedDateID": 620
+      "ProposedDate": "20231125",
+      "StartTime": "160549",
+      "EndTime": "170550",
+      "proposedDateID": 633
     },
     {
-      "ProposedDate": "20231127",
-      "StartTime": "153336",
-      "EndTime": "163339",
-      "proposedDateID": 621
+      "ProposedDate": "20231126",
+      "StartTime": "160923",
+      "EndTime": "170926",
+      "proposedDateID": 634
     },
     {
       "ProposedDate": "20231128",
-      "StartTime": "153458",
-      "EndTime": "163459",
+      "StartTime": "201243",
+      "EndTime": "211245",
       "proposedDateID": 0
     }
   ]
