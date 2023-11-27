@@ -74,6 +74,7 @@ const Minutes = ({
     (state) => state.NewMeetingreducer.ResponseMessage
   );
   const [fileSize, setFileSize] = useState(0);
+  const [generalShowMore, setGeneralShowMore] = useState(null);
   const [fileForSend, setFileForSend] = useState([]);
   const [general, setGeneral] = useState(true);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
@@ -85,7 +86,6 @@ const Minutes = ({
   const [isEdit, setisEdit] = useState(false);
   const [updateData, setupdateData] = useState(null);
   const [showMore, setShowMore] = useState(false);
-  const [generalShowMore, setGeneralShowMore] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -524,12 +524,7 @@ const Minutes = ({
         }),
       };
       await dispatch(
-        SaveMinutesDocumentsApiFunc(
-          navigate,
-          docsData,
-          t,
-          currentMeeting
-        )
+        SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
       );
     } else {
       let Meet = {
@@ -553,10 +548,16 @@ const Minutes = ({
   };
 
   const handleshowMore = (index) => {
-    setGeneralShowMore(index);
-    setShowMore(!showMore);
+    if (generalShowMore === index) {
+      // If the clicked index is the same as the expanded one, collapse it
+      setGeneralShowMore(null);
+      setShowMore(false);
+    } else {
+      // If a different index is clicked, expand the clicked section and collapse the previous one
+      setGeneralShowMore(index);
+      setShowMore(true);
+    }
   };
-
   const handleUNsaveChangesModal = () => {
     dispatch(showUnsaveMinutesFileUpload(true));
   };
