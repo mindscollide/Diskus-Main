@@ -77,7 +77,7 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
     value: 0,
   });
   const [showMore, setShowMore] = useState(false);
-  const [showMoreIndex, setShowMoreIndex] = useState(0);
+  const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
@@ -609,8 +609,15 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
   };
 
   const handleshowMore = (index) => {
-    setShowMoreIndex(index);
-    setShowMore(!showMore);
+    if (showMoreIndex === index && showMore) {
+      // If the clicked index is the same as the expanded one, collapse it
+      setShowMoreIndex(null);
+      setShowMore(false);
+    } else {
+      // If a different index is clicked or it's not expanded, expand the clicked section
+      setShowMoreIndex(index);
+      setShowMore(true);
+    }
   };
 
   useEffect(() => {
@@ -945,7 +952,9 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
                                     className={styles["Show_more"]}
                                     onClick={() => handleshowMore(index)}
                                   >
-                                    {t("Show-more")}
+                                    {showMoreIndex === index && showMore
+                                      ? t("Hide-details")
+                                      : t("Show-more")}
                                   </span>
                                 </Col>
                               </Row>
