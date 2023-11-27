@@ -35,14 +35,12 @@ import AgendaWise from "./AgendaWise/AgendaWise";
 
 const Minutes = ({
   setMinutes,
-  currentMeeting,
+  advanceMeetingModalID,
   setViewAdvanceMeetingModal,
   setMeetingMaterial,
   setactionsPage,
-  setCurrentMeetingID,
 }) => {
   // Newly Implemented
-  console.log(setCurrentMeetingID, "setCurrentMeetingIDsetCurrentMeetingID");
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -56,9 +54,6 @@ const Minutes = ({
   );
   const generalminutesDocumentForMeeting = useSelector(
     (state) => state.NewMeetingreducer.generalminutesDocumentForMeeting
-  );
-  const ShowPreviousModal = useSelector(
-    (state) => state.NewMeetingreducer.ShowPreviousModal
   );
   const unsaveFileUploadMinutes = useSelector(
     (state) => state.NewMeetingreducer.unsaveFileUploadMinutes
@@ -130,10 +125,10 @@ const Minutes = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: Number(setCurrentMeetingID),
+      MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(
-      GetAllGeneralMinutesApiFunc(navigate, t, Data, setCurrentMeetingID)
+      GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
     );
     return () => {
       setMessages([]);
@@ -366,12 +361,12 @@ const Minutes = ({
     setAgenda(true);
   };
 
-  const handleGeneralButtonClick = () => {
+  const handleGeneralButtonClick = async () => {
     let Meet = {
-      MeetingID: Number(setCurrentMeetingID),
+      MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(
-      GetAllGeneralMinutesApiFunc(navigate, t, Meet, setCurrentMeetingID)
+    await dispatch(
+      GetAllGeneralMinutesApiFunc(navigate, t, Meet, advanceMeetingModalID)
     );
     setAgenda(false);
     setGeneral(true);
@@ -382,38 +377,54 @@ const Minutes = ({
   };
   const handleAddClick = async () => {
     let Data = {
-      MeetingID: setCurrentMeetingID,
+      MeetingID: advanceMeetingModalID,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, setCurrentMeetingID));
+    dispatch(
+      ADDGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
+    );
   };
 
   const documentUploadingFunc = async (minuteID) => {
     let newfile = [...previousFileIDs];
-    const uploadPromises = fileForSend.map(async (newData) => {
-      await dispatch(
-        uploadDocumentsMeetingMinutesApi(
+    if (Object.keys(fileForSend).length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsMeetingMinutesApi(
+            navigate,
+            t,
+            newData,
+            folderID,
+            newfile
+          )
+        );
+      });
+
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+      let docsData = {
+        FK_MeetingGeneralMinutesID: minuteID,
+        FK_MDID: advanceMeetingModalID,
+        UpdateFileList: newfile.map((data, index) => {
+          return { PK_FileID: Number(data.pK_FileID) };
+        }),
+      };
+      dispatch(
+        SaveMinutesDocumentsApiFunc(
           navigate,
+          docsData,
           t,
-          newData,
-          folderID,
-          newfile
+          advanceMeetingModalID
         )
       );
-    });
-
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-    let docsData = {
-      FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: setCurrentMeetingID,
-      UpdateFileList: newfile.map((data, index) => {
-        return { PK_FileID: Number(data.pK_FileID) };
-      }),
-    };
-    dispatch(
-      SaveMinutesDocumentsApiFunc(navigate, docsData, t, setCurrentMeetingID)
-    );
+    } else {
+      let Meet = {
+        MeetingID: Number(advanceMeetingModalID),
+      };
+      await dispatch(
+        GetAllGeneralMinutesApiFunc(navigate, t, Meet, advanceMeetingModalID)
+      );
+    }
     setFileAttachments([]);
     setPreviousFileIDs([]);
     setFileForSend([]);
@@ -435,7 +446,7 @@ const Minutes = ({
 
   const handleRemovingTheMinutes = (MinuteData) => {
     let Data = {
-      MDID: setCurrentMeetingID,
+      MDID: advanceMeetingModalID,
       MeetingGeneralMinutesID: MinuteData.minuteID,
     };
     dispatch(
@@ -443,7 +454,7 @@ const Minutes = ({
         navigate,
         Data,
         t,
-        setCurrentMeetingID,
+        advanceMeetingModalID,
         MinuteData
       )
     );
@@ -493,31 +504,46 @@ const Minutes = ({
     dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
 
     let newfile = [...previousFileIDs];
-    const uploadPromises = fileForSend.map(async (newData) => {
+    if (Object.keys(fileForSend).length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsMeetingMinutesApi(
+            navigate,
+            t,
+            newData,
+            folderID,
+            newfile
+          )
+        );
+      });
+
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
+      let docsData = {
+        FK_MeetingGeneralMinutesID: updateData.minuteID,
+        FK_MDID: advanceMeetingModalID,
+        UpdateFileList: newfile.map((data, index) => {
+          return { PK_FileID: Number(data.pK_FileID) };
+        }),
+      };
       await dispatch(
-        uploadDocumentsMeetingMinutesApi(
+        SaveMinutesDocumentsApiFunc(
           navigate,
+          docsData,
           t,
-          newData,
-          folderID,
-          newfile
+          advanceMeetingModalID
         )
       );
-    });
+    } else {
+      let Meet = {
+        MeetingID: Number(advanceMeetingModalID),
+      };
+      await dispatch(
+        GetAllGeneralMinutesApiFunc(navigate, t, Meet, advanceMeetingModalID)
+      );
+    }
 
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-
-    let docsData = {
-      FK_MeetingGeneralMinutesID: updateData.minuteID,
-      FK_MDID: setCurrentMeetingID,
-      UpdateFileList: newfile.map((data, index) => {
-        return { PK_FileID: Number(data.pK_FileID) };
-      }),
-    };
-    dispatch(
-      SaveMinutesDocumentsApiFunc(navigate, docsData, t, setCurrentMeetingID)
-    );
     setFileAttachments([]);
     setisEdit(false);
     setAddNoteFields({
@@ -596,7 +622,7 @@ const Minutes = ({
       </Row>
 
       {agenda ? (
-        <AgendaWise setCurrentMeetingID={setCurrentMeetingID} />
+        <AgendaWise advanceMeetingModalID={advanceMeetingModalID} />
       ) : general ? (
         <>
           <Row className="mt-4">

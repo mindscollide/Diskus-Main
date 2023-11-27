@@ -73,7 +73,6 @@ const Minutes = ({
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
-  const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [general, setGeneral] = useState(true);
@@ -364,7 +363,13 @@ const Minutes = ({
     setAgenda(true);
   };
 
-  const handleGeneralButtonClick = () => {
+  const handleGeneralButtonClick = async () => {
+    let Data = {
+      MeetingID: Number(currentMeeting),
+    };
+    await dispatch(
+      GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
+    );
     setAgenda(false);
     setGeneral(true);
   };
@@ -383,30 +388,39 @@ const Minutes = ({
 
   const documentUploadingFunc = async (minuteID) => {
     let newfile = [...previousFileIDs];
-    const uploadPromises = fileForSend.map(async (newData) => {
-      await dispatch(
-        uploadDocumentsMeetingMinutesApi(
-          navigate,
-          t,
-          newData,
-          folderID,
-          newfile
-        )
-      );
-    });
+    if (Object.keys(fileForSend).length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsMeetingMinutesApi(
+            navigate,
+            t,
+            newData,
+            folderID,
+            newfile
+          )
+        );
+      });
 
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-    let docsData = {
-      FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: currentMeeting,
-      UpdateFileList: newfile.map((data, index) => {
-        return { PK_FileID: Number(data.pK_FileID) };
-      }),
-    };
-    dispatch(
-      SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
-    );
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+      let docsData = {
+        FK_MeetingGeneralMinutesID: minuteID,
+        FK_MDID: currentMeeting,
+        UpdateFileList: newfile.map((data, index) => {
+          return { PK_FileID: Number(data.pK_FileID) };
+        }),
+      };
+      dispatch(
+        SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+      );
+    } else {
+      let Meet = {
+        MeetingID: Number(currentMeeting),
+      };
+      await dispatch(
+        GetAllGeneralMinutesApiFunc(navigate, t, Meet, currentMeeting)
+      );
+    }
     setFileAttachments([]);
     setPreviousFileIDs([]);
     setFileForSend([]);
@@ -486,31 +500,46 @@ const Minutes = ({
     dispatch(UpdateMinutesGeneralApiFunc(navigate, Data, t));
 
     let newfile = [...previousFileIDs];
-    const uploadPromises = fileForSend.map(async (newData) => {
+    if (Object.keys(fileForSend).length > 0) {
+      const uploadPromises = fileForSend.map(async (newData) => {
+        await dispatch(
+          uploadDocumentsMeetingMinutesApi(
+            navigate,
+            t,
+            newData,
+            folderID,
+            newfile
+          )
+        );
+      });
+
+      // Wait for all promises to resolve
+      await Promise.all(uploadPromises);
+
+      let docsData = {
+        FK_MeetingGeneralMinutesID: updateData.minuteID,
+        FK_MDID: currentMeeting,
+        UpdateFileList: newfile.map((data, index) => {
+          return { PK_FileID: Number(data.pK_FileID) };
+        }),
+      };
       await dispatch(
-        uploadDocumentsMeetingMinutesApi(
+        SaveMinutesDocumentsApiFunc(
           navigate,
+          docsData,
           t,
-          newData,
-          folderID,
-          newfile
+          currentMeeting
         )
       );
-    });
+    } else {
+      let Meet = {
+        MeetingID: Number(currentMeeting),
+      };
+      await dispatch(
+        GetAllGeneralMinutesApiFunc(navigate, t, Meet, currentMeeting)
+      );
+    }
 
-    // Wait for all promises to resolve
-    await Promise.all(uploadPromises);
-
-    let docsData = {
-      FK_MeetingGeneralMinutesID: updateData.minuteID,
-      FK_MDID: currentMeeting,
-      UpdateFileList: newfile.map((data, index) => {
-        return { PK_FileID: Number(data.pK_FileID) };
-      }),
-    };
-    dispatch(
-      SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
-    );
     setFileAttachments([]);
     setisEdit(false);
     setAddNoteFields({
