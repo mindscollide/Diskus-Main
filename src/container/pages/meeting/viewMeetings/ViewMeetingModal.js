@@ -257,20 +257,26 @@ const ViewMeetingModal = ({
                       }
                       onClick={showMinutes}
                       disableBtn={
-                        unPublish
-                          ? true
-                          : Number(editorRole.status) === 1 ||
-                            Number(editorRole.status) === 11 ||
-                            Number(editorRole.status) === 12
-                          ? true
-                          : editorRole.role === "Organizer" &&
-                            Number(editorRole.status) === 9
-                          ? false
-                          : Number(editorRole.status) === 10 &&
-                            editorRole.role === "Organizer"
+                        Number(editorRole.status) === 10 ||
+                        Number(editorRole.status) === 9
                           ? false
                           : true
                       }
+                      // disableBtn={
+                      //   unPublish
+                      //     ? true
+                      //     : Number(editorRole.status) === 1 ||
+                      //       Number(editorRole.status) === 11 ||
+                      //       Number(editorRole.status) === 12
+                      //     ? true
+                      //     : editorRole.role === "Organizer" &&
+                      //       Number(editorRole.status) === 9
+                      //     ? false
+                      //     : Number(editorRole.status) === 10 &&
+                      //       editorRole.role === "Organizer"
+                      //     ? false
+                      //     : true
+                      // }
                     />
                     <Button
                       text={t("Task")}
@@ -281,24 +287,30 @@ const ViewMeetingModal = ({
                       }
                       onClick={showActions}
                       disableBtn={
-                        unPublish
-                          ? true
-                          : Number(editorRole.status) === 1 ||
-                            Number(editorRole.status) === 11 ||
-                            Number(editorRole.status) === 12
-                          ? true
-                          : (editorRole.role === "Organizer" ||
-                              editorRole.role === "Participant" ||
-                              editorRole.role === "Agenda Contributor") &&
-                            Number(editorRole.status) === 9
-                          ? false
-                          : Number(editorRole.status) === 10 &&
-                            (editorRole.role === "Participant" ||
-                              editorRole.role === "Agenda Contributor" ||
-                              editorRole.role === "Organizer")
+                        Number(editorRole.status) === 10 ||
+                        Number(editorRole.status) === 9
                           ? false
                           : true
                       }
+                      // disableBtn={
+                      //   unPublish
+                      //     ? true
+                      //     : Number(editorRole.status) === 1 ||
+                      //       Number(editorRole.status) === 11 ||
+                      //       Number(editorRole.status) === 12
+                      //     ? true
+                      //     : (editorRole.role === "Organizer" ||
+                      //         editorRole.role === "Participant" ||
+                      //         editorRole.role === "Agenda Contributor") &&
+                      //       Number(editorRole.status) === 9
+                      //     ? false
+                      //     : Number(editorRole.status) === 10 &&
+                      //       (editorRole.role === "Participant" ||
+                      //         editorRole.role === "Agenda Contributor" ||
+                      //         editorRole.role === "Organizer")
+                      //     ? false
+                      //     : true
+                      // }
                     />
                     <Button
                       text={t("Polls")}
@@ -309,17 +321,8 @@ const ViewMeetingModal = ({
                       }
                       onClick={ShowPolls}
                       disableBtn={
-                        unPublish
-                          ? true
-                          : Number(editorRole.status) === 1 ||
-                            Number(editorRole.status) === 11 ||
-                            Number(editorRole.status) === 12 ||
-                            Number(editorRole.status) === 9
-                          ? true
-                          : Number(editorRole.status) === 10 &&
-                            (editorRole.role === "Participant" ||
-                              editorRole.role === "Agenda Contributor" ||
-                              editorRole.role === "Organizer")
+                        Number(editorRole.status) === 10 ||
+                        Number(editorRole.status) === 9
                           ? false
                           : true
                       }
