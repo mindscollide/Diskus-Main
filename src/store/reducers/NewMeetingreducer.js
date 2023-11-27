@@ -371,7 +371,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_MEETING_TYPES_NEW_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         getALlMeetingTypes: action.response,
       };
     }
@@ -418,7 +418,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_REMINDER_FREQUENCY_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         getAllReminderFrequency: action.response,
         ResponseMessage: action.message,
       };
@@ -726,7 +726,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         LoadingViewModal: false,
         getAllMeetingDetails: action.response,
         ResponseMessage: action.message,
@@ -848,7 +848,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_PRPOSED_DATES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         getAllProposedDates: action.response,
         ResponseMessage: action.message,
       };

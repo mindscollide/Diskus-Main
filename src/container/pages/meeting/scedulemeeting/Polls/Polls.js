@@ -43,6 +43,7 @@ const Polls = ({
   setEditMeeting,
   isEditMeeting,
   setactionsPage,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

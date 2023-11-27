@@ -54,6 +54,7 @@ const SceduleMeeting = ({
       setEditMeeting(false);
       setEdiorRole({ status: null, role: null });
       setCurrentMeetingID(0);
+      setProposedMeetingDates(false);
     };
   }, []);
 
@@ -63,11 +64,13 @@ const SceduleMeeting = ({
     };
     dispatch(
       GetAllMeetingDetailsApiFunc(
-        Data,
         navigate,
         t,
+        Data,
+        true,
         setCurrentMeetingID,
-        setSceduleMeeting
+        setSceduleMeeting,
+        setDataroomMapFolderId
       )
     );
     setmeetingDetails(true);
@@ -82,7 +85,6 @@ const SceduleMeeting = ({
     setMeetingMaterial(false);
   };
 
-  const handleClickOrganizers = () => {};
   const showOrganizers = () => {
     setorganizers(true);
     setmeetingDetails(false);
@@ -387,6 +389,7 @@ const SceduleMeeting = ({
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
+                setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
             {organizers && (
@@ -407,6 +410,7 @@ const SceduleMeeting = ({
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
+                setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
             {agendaContributors && (
@@ -420,6 +424,7 @@ const SceduleMeeting = ({
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
+                setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
             {participants && (
@@ -435,9 +440,9 @@ const SceduleMeeting = ({
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
+                setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
-
             {agenda && (
               <Agenda
                 setSceduleMeeting={setSceduleMeeting}
@@ -450,6 +455,7 @@ const SceduleMeeting = ({
                 setAgenda={setAgenda}
                 setParticipants={setParticipants}
                 dataroomMapFolderId={dataroomMapFolderId}
+                setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
             {meetingMaterial && (
@@ -464,6 +470,7 @@ const SceduleMeeting = ({
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
                 setAgenda={setAgenda}
+                setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
             {minutes && (
@@ -477,6 +484,7 @@ const SceduleMeeting = ({
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
                 setactionsPage={setactionsPage}
+                setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
             {actionsPage && (
@@ -492,6 +500,7 @@ const SceduleMeeting = ({
                 editorRole={editorRole}
                 dataroomMapFolderId={dataroomMapFolderId}
                 setMeetingMaterial={setMeetingMaterial}
+                setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
             {polls && (
@@ -505,6 +514,7 @@ const SceduleMeeting = ({
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
                 setactionsPage={setactionsPage}
+                setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
             {attendance && (
@@ -516,6 +526,7 @@ const SceduleMeeting = ({
                 editorRole={editorRole}
                 setAttendance={setAttendance}
                 setSceduleMeeting={setSceduleMeeting}
+                setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
           </Paper>

@@ -16,7 +16,11 @@ import whitepresentIcon from "../../../../../assets/images/whitepresent.png";
 import whiteAbsentICon from "../../../../../assets/images/whiteabsent.png";
 import whiteworkhome from "../../../../../assets/images/whitehomework.png";
 import { useSelector } from "react-redux";
-const Attendence = ({ currentMeeting, setSceduleMeeting }) => {
+const Attendence = ({
+  currentMeeting,
+  setSceduleMeeting,
+  setDataroomMapFolderId,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

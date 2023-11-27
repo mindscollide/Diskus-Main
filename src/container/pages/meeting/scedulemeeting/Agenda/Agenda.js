@@ -62,6 +62,7 @@ const Agenda = ({
   setViewFlag,
   setEditFlag,
   setCalendarViewModal,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
