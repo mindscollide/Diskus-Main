@@ -284,20 +284,13 @@ const SceduleMeeting = ({
                   onClick={showMeetingMaterial}
                 />
                 <Button
-                  disableBtn={Number(currentMeeting) === 0 ? true : false}
-                  // disableBtn={
-                  //   Number(editorRole.status) === 1 ||
-                  //   Number(editorRole.status) === 11 ||
-                  //   Number(editorRole.status) === 12
-                  //     ? true
-                  //     : editorRole.role === "Organizer" &&
-                  //       Number(editorRole.status) === 9
-                  //     ? false
-                  //     : Number(editorRole.status) === 10 &&
-                  //       editorRole.role === "Organizer"
-                  //     ? false
-                  //     : true
-                  // }
+                  // disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  disableBtn={
+                    Number(editorRole.status) === 10 ||
+                    Number(editorRole.status) === 9
+                      ? false
+                      : true
+                  }
                   text={t("Minutes")}
                   className={
                     minutes === true
@@ -307,23 +300,13 @@ const SceduleMeeting = ({
                   onClick={showMinutes}
                 />
                 <Button
-                  disableBtn={Number(currentMeeting) === 0 ? true : false}
-                  // disableBtn={
-                  //   (Number(editorRole.status) === 1 ||
-                  //     Number(editorRole.status) === 11 ||
-                  //     Number(editorRole.status) === 12) &&
-                  //   (editorRole.role === "Organizer" ||
-                  //     editorRole.role === "Participant" ||
-                  //     editorRole.role === "Agenda Contributor") &&
-                  //   isEditMeeting === true
-                  //     ? true
-                  //     : Number(currentMeeting) === 0
-                  //     ? true
-                  //     : isEditMeeting === false
-                  //     ? true
-                  //     : false
-                  // }
-                  text={t("Task")}
+                  disableBtn={
+                    Number(editorRole.status) === 10 ||
+                    Number(editorRole.status) === 9
+                      ? false
+                      : true
+                  }
+                  text={t("Actions")}
                   className={
                     actionsPage === true
                       ? styles["Schedule_meetings_options_active"]
@@ -332,7 +315,7 @@ const SceduleMeeting = ({
                   onClick={showActions}
                 />
                 <Button
-                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  disableBtn={Number(editorRole.status) === 10 ? false : true}
                   // disableBtn={
                   //   (Number(editorRole.status) === 1 ||
                   //     Number(editorRole.status) === 11 ||
@@ -356,8 +339,7 @@ const SceduleMeeting = ({
                   }
                   onClick={ShowPolls}
                 />
-                {(Number(editorRole.status) === 10 ||
-                  Number(editorRole.status) === 9) &&
+                {Number(editorRole.status) === 10 &&
                 editorRole.role === "Organizer" &&
                 isEditMeeting === true ? (
                   <Button

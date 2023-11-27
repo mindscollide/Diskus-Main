@@ -217,16 +217,18 @@ const Actions = ({
 
   // To go on Previous tab
   const prevTabToMinutes = () => {
-    if (
-      Number(editorRole.status) === 10 &&
-      editorRole.role === "Agenda Contributor"
-    ) {
-      setactionsPage(false);
-      setMeetingMaterial(true);
-    } else {
-      setactionsPage(false);
-      setMinutes(true);
-    }
+    // if (
+    //   Number(editorRole.status) === 10 &&
+    //   editorRole.role === "Agenda Contributor"
+    // ) {
+    //   setactionsPage(false);
+    //   setMeetingMaterial(true);
+    // } else {
+    //   setactionsPage(false);
+    //   setMinutes(true);
+    // }
+    setactionsPage(false);
+    setMinutes(true);
   };
 
   return (
