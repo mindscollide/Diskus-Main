@@ -23,7 +23,10 @@ import {
   newTimeFormaterAsPerUTCFullDate,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
-
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../../DataRoom/SearchFunctionality/option";
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
@@ -807,7 +810,11 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
                                               }
                                             >
                                               <img
-                                                src={pdfIcon}
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    data.DisplayAttachmentName
+                                                  )
+                                                )}
                                                 height="10px"
                                                 width="10px"
                                                 className={styles["IconPDF"]}

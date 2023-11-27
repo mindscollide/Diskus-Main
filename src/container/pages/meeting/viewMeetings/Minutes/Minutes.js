@@ -31,6 +31,10 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../DataRoom/SearchFunctionality/option";
 // import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 
 const Minutes = ({
@@ -798,7 +802,11 @@ const Minutes = ({
                                                   }
                                                 >
                                                   <img
-                                                    src={pdfIcon}
+                                                    src={getIconSource(
+                                                      getFileExtension(
+                                                        data.DisplayAttachmentName
+                                                      )
+                                                    )}
                                                     height="10px"
                                                     width="10px"
                                                     className={

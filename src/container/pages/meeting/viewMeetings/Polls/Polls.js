@@ -139,22 +139,31 @@ const Polls = ({
     };
     dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
   };
+  console.log(
+    NewMeetingreducer,
+    "NewMeetingreducerNewMeetingreducerNewMeetingreducer"
+  );
   useEffect(() => {
     try {
       if (
         NewMeetingreducer.getPollsMeetingID !== undefined &&
         NewMeetingreducer.getPollsMeetingID !== null
       ) {
-        let pollsData = NewMeetingreducer.getPollsMeetingID.polls;
-        setTotalRecords(NewMeetingreducer.getPollsMeetingID.totalRecords);
-
-        let newPollsArray = [];
-        pollsData.forEach((data, index) => {
-          console.log(data, "datadatadatadata");
-          newPollsArray.push(data);
-        });
-        console.log(newPollsArray, "newPollsArraynewPollsArray");
-        setPollsRows(newPollsArray);
+        if (NewMeetingreducer.getPollsMeetingID.polls.length > 0) {
+          let pollsData = NewMeetingreducer.getPollsMeetingID.polls;
+          setTotalRecords(NewMeetingreducer.getPollsMeetingID.totalRecords);
+          let newPollsArray = [];
+          pollsData.forEach((data, index) => {
+            console.log(data, "datadatadatadata");
+            newPollsArray.push(data);
+          });
+          console.log(newPollsArray, "newPollsArraynewPollsArray");
+          setPollsRows(newPollsArray);
+        } else {
+          setPollsRows([]);
+        }
+      } else {
+        setPollsRows([]);
       }
     } catch {}
   }, [NewMeetingreducer.getPollsMeetingID]);
@@ -510,7 +519,7 @@ const Polls = ({
   }, [NewMeetingreducer.ResponseMessage]);
 
   console.log(
-    NewMeetingreducer.ResponseMessage,
+    NewMeetingreducer,
     "ResponseMessageResponseMessageResponseMessageResponseMessage NewMeetingreducer"
   );
   console.log(

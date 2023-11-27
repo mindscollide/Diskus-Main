@@ -795,7 +795,11 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                               }
                                             >
                                               <img
-                                                src={pdfIcon}
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    data.DisplayAttachmentName
+                                                  )
+                                                )}
                                                 height="10px"
                                                 width="10px"
                                                 className={styles["IconPDF"]}
