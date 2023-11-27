@@ -249,7 +249,7 @@ const MeetingDetails = ({
   };
 
   const handleStartDateChange = (index, date) => {
-    console.log("changeDateStartHandler",date)
+    console.log("changeDateStartHandler", date);
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getHours()).slice(-2);
@@ -262,8 +262,8 @@ const MeetingDetails = ({
       const updatedRows = [...rows];
       updatedRows[index].startDate = formattedTime;
       updatedRows[index].startTime = newDate;
-    console.log("changeDateStartHandler",updatedRows)
-    setRows(updatedRows);
+      console.log("changeDateStartHandler", updatedRows);
+      setRows(updatedRows);
       // You can use 'formattedTime' as needed.
     } else {
       console.error("Invalid date and time object:", date);
@@ -650,11 +650,10 @@ const MeetingDetails = ({
       }
     }
     if (name === "Description") {
-      let valueCheck = regexOnlyCharacters(value);
-      if (valueCheck !== "") {
+      if (value.trimStart() !== "") {
         setMeetingDetails({
           ...meetingDetails,
-          Description: valueCheck,
+          Description: value,
         });
       } else {
         setMeetingDetails({
@@ -664,11 +663,10 @@ const MeetingDetails = ({
       }
     }
     if (name === "Notes") {
-      let valueCheck = regexOnlyCharacters(value);
-      if (valueCheck !== "") {
+      if (value.trimStart() !== "") {
         setMeetingDetails({
           ...meetingDetails,
-          Notes: valueCheck,
+          Notes: value,
         });
       } else {
         setMeetingDetails({

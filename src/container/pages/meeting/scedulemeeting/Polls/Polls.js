@@ -245,60 +245,34 @@ const Polls = ({
       render: (text, record) => {
         console.log("votevotevotevote", record);
         console.log("votevotevotevote", record.isVoter);
-        if (record.pollStatus.pollStatusId === 2) {
-          if (record.isVoter) {
-            if (record.voteStatus === "Not Voted") {
-              return (
-                <Button
-                  className={styles["Not_Vote_Button_Polls"]}
-                  text={t("Vote")}
-                  onClick={() =>
-                    navigate("/DisKus/polling", {
-                      state: { record, isVote: true },
-                    })
-                  }
-                />
-              );
-            } else if (record.voteStatus === "Voted") {
-              return (
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={styles["Background-nonvoted-Button"]}
-                >
-                  <span className={styles["Not-voted"]}>{t("Voted")}</span>
-                </Col>
-              );
-            }
-          } else {
-            return "";
-          }
-        } else if (record.pollStatus.pollStatusId === 1) {
-          return "";
-        } else if (record.pollStatus.pollStatusId === 3) {
-          if (record.isVoter) {
-            if (record.wasPollPublished) {
+        if (
+          Number(editorRole.status) === 10 &&
+          (editorRole.role === "Organizer" ||
+            editorRole.role === "Agenda Contributor" ||
+            editorRole?.role === "Participant") &&
+          isEditMeeting === true
+        ) {
+          if (record.pollStatus.pollStatusId === 2) {
+            if (record.isVoter) {
               if (record.voteStatus === "Not Voted") {
+                return (
+                  <Button
+                    className={styles["Not_Vote_Button_Polls"]}
+                    text={t("Vote")}
+                    onClick={() =>
+                      navigate("/DisKus/polling", {
+                        state: { record, isVote: true },
+                      })
+                    }
+                  />
+                );
+              } else if (record.voteStatus === "Voted") {
                 return (
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
                     className={styles["Background-nonvoted-Button"]}
-                  >
-                    <span className={styles["Not-voted"]}>
-                      {t("Not-voted")}
-                    </span>
-                  </Col>
-                );
-              } else {
-                return (
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Vote_Button_Polls"]}
                   >
                     <span className={styles["Not-voted"]}>{t("Voted")}</span>
                   </Col>
@@ -307,11 +281,47 @@ const Polls = ({
             } else {
               return "";
             }
+          } else if (record.pollStatus.pollStatusId === 1) {
+            return "";
+          } else if (record.pollStatus.pollStatusId === 3) {
+            if (record.isVoter) {
+              if (record.wasPollPublished) {
+                if (record.voteStatus === "Not Voted") {
+                  return (
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Background-nonvoted-Button"]}
+                    >
+                      <span className={styles["Not-voted"]}>
+                        {t("Not-voted")}
+                      </span>
+                    </Col>
+                  );
+                } else {
+                  return (
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Vote_Button_Polls"]}
+                    >
+                      <span className={styles["Not-voted"]}>{t("Voted")}</span>
+                    </Col>
+                  );
+                }
+              } else {
+                return "";
+              }
+            } else {
+              return "";
+            }
           } else {
             return "";
           }
         } else {
-          return "";
+          return null;
         }
       },
     },
@@ -319,84 +329,93 @@ const Polls = ({
       dataIndex: "Edit",
       width: "50px",
       render: (text, record) => {
-        return (
-          <>
-            {Number(record.pollCreatorID) === Number(userID) ? (
-              <>
-                <Row>
-                  {record.pollStatus.pollStatusId === 3 ? (
-                    <>
-                      {!record.wasPollPublished ? (
-                        <>
-                          <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement="topRight" title={t("Edit")}>
-                              <img
-                                src={EditIcon}
-                                className="cursor-pointer"
-                                width="21.59px"
-                                height="21.59px"
-                                alt=""
-                                draggable="false"
-                                onClick={() => handleEditMeetingPoll(record)}
-                              />
-                            </Tooltip>
-                          </Col>
-                          <Col sm={12} md={5} lg={5}></Col>
-                        </>
-                      ) : (
-                        <>
-                          <Col sm={12} md={5} lg={5}></Col>
-                          <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement="topLeft" title={t("Delete")}>
-                              <img
-                                src={BinIcon}
-                                alt=""
-                                className="cursor-pointer"
-                                width="21.59px"
-                                height="21.59px"
-                                draggable="false"
-                                onClick={() => handleDeletePoll(record)}
-                              />
-                            </Tooltip>
-                          </Col>
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement="topRight" title={t("Edit")}>
-                          <img
-                            src={EditIcon}
-                            className="cursor-pointer"
-                            width="21.59px"
-                            height="21.59px"
-                            alt=""
-                            draggable="false"
-                            onClick={() => handleEditMeetingPoll(record)}
-                          />
-                        </Tooltip>
-                      </Col>
-                      <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement="topLeft" title={t("Delete")}>
-                          <img
-                            src={BinIcon}
-                            alt=""
-                            className="cursor-pointer"
-                            width="21.59px"
-                            height="21.59px"
-                            draggable="false"
-                            onClick={() => handleDeletePoll(record)}
-                          />
-                        </Tooltip>
-                      </Col>
-                    </>
-                  )}
-                </Row>
-              </>
-            ) : null}
-          </>
-        );
+        if (
+          Number(editorRole.status) === 10 &&
+          (editorRole.role === "Organizer" ||
+            editorRole.role === "Agenda Contributor" ||
+            editorRole?.role === "Participant") &&
+          isEditMeeting === true
+        ) {
+          return (
+            <>
+              {Number(record.pollCreatorID) === Number(userID) ? (
+                <>
+                  <Row>
+                    {record.pollStatus.pollStatusId === 3 ? (
+                      <>
+                        {!record.wasPollPublished ? (
+                          <>
+                            <Col sm={12} md={5} lg={5}>
+                              <Tooltip placement="topRight" title={t("Edit")}>
+                                <img
+                                  src={EditIcon}
+                                  className="cursor-pointer"
+                                  width="21.59px"
+                                  height="21.59px"
+                                  alt=""
+                                  draggable="false"
+                                  onClick={() => handleEditMeetingPoll(record)}
+                                />
+                              </Tooltip>
+                            </Col>
+                            <Col sm={12} md={5} lg={5}></Col>
+                          </>
+                        ) : (
+                          <>
+                            <Col sm={12} md={5} lg={5}></Col>
+                            <Col sm={12} md={5} lg={5}>
+                              <Tooltip placement="topLeft" title={t("Delete")}>
+                                <img
+                                  src={BinIcon}
+                                  alt=""
+                                  className="cursor-pointer"
+                                  width="21.59px"
+                                  height="21.59px"
+                                  draggable="false"
+                                  onClick={() => handleDeletePoll(record)}
+                                />
+                              </Tooltip>
+                            </Col>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <Col sm={12} md={5} lg={5}>
+                          <Tooltip placement="topRight" title={t("Edit")}>
+                            <img
+                              src={EditIcon}
+                              className="cursor-pointer"
+                              width="21.59px"
+                              height="21.59px"
+                              alt=""
+                              draggable="false"
+                              onClick={() => handleEditMeetingPoll(record)}
+                            />
+                          </Tooltip>
+                        </Col>
+                        <Col sm={12} md={5} lg={5}>
+                          <Tooltip placement="topLeft" title={t("Delete")}>
+                            <img
+                              src={BinIcon}
+                              alt=""
+                              className="cursor-pointer"
+                              width="21.59px"
+                              height="21.59px"
+                              draggable="false"
+                              onClick={() => handleDeletePoll(record)}
+                            />
+                          </Tooltip>
+                        </Col>
+                      </>
+                    )}
+                  </Row>
+                </>
+              ) : null}
+            </>
+          );
+        } else {
+        }
       },
     },
   ];
@@ -461,28 +480,27 @@ const Polls = ({
               />
             ) : (
               <>
-                {/* {Number(editorRole.status) === 10 &&
+                {Number(editorRole.status) === 10 &&
                 (editorRole.role === "Organizer" ||
                   editorRole.role === "Agenda Contributor" ||
                   editorRole?.role === "Participant") &&
-                isEditMeeting === true ? ( */}
-                <Row className="mt-4">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end "
-                  >
-                    <Button
-                      text={t("Create-polls")}
-                      icon={<img draggable={false} src={addmore} alt="" />}
-                      className={styles["Create_polls_Button"]}
-                      onClick={handleCreatepolls}
-                    />
-                  </Col>
-                </Row>
-                {/* ) : null} */}
-
+                isEditMeeting === true ? (
+                  <Row className="mt-4">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-end "
+                    >
+                      <Button
+                        text={t("Create-polls")}
+                        icon={<img draggable={false} src={addmore} alt="" />}
+                        className={styles["Create_polls_Button"]}
+                        onClick={handleCreatepolls}
+                      />
+                    </Col>
+                  </Row>
+                ) : null}
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     {pollsRows.length > 0 ? (
