@@ -436,6 +436,7 @@ const ViewMeetingModal = ({
                       setEdiorRole={setEdiorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+                      setCurrentMeetingID={setCurrentMeetingID}
                     />
                   )}
                   {actionsPage && (
