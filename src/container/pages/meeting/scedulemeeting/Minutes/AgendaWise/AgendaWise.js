@@ -68,12 +68,12 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
   const [expanded, setExpanded] = useState(false);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
+  const [showMoreIndex, setShowMoreIndex] = useState(null);
+  const [showMore, setShowMore] = useState(false);
   const [agendaOptionvalue, setAgendaOptionValue] = useState({
     label: "",
     value: 0,
   });
-  const [showMore, setShowMore] = useState(false);
-  const [showMoreIndex, setShowMoreIndex] = useState(0);
   const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
@@ -589,9 +589,18 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
     // setAgendaOptions([]);
   };
 
+  //Expanding and collapsing function
+
   const handleshowMore = (index) => {
-    setShowMoreIndex(index);
-    setShowMore(!showMore);
+    if (showMoreIndex === index && showMore) {
+      // If the clicked index is the same as the expanded one, collapse it
+      setShowMoreIndex(null);
+      setShowMore(false);
+    } else {
+      // If a different index is clicked or it's not expanded, expand the clicked section
+      setShowMoreIndex(index);
+      setShowMore(true);
+    }
   };
 
   useEffect(() => {
@@ -932,7 +941,9 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                     className={styles["Show_more"]}
                                     onClick={() => handleshowMore(index)}
                                   >
-                                    {t("Show-more")}
+                                    {showMoreIndex === index && showMore
+                                      ? t("Hide-details")
+                                      : t("Show-more")}
                                   </span>
                                 </Col>
                               </Row>

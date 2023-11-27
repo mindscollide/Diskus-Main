@@ -3191,10 +3191,16 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                     "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_01".toLowerCase()
                   )
               ) {
+                // await dispatch(
+                //   showRetriveGeneralMinutesDocsMeetingSuccess(
+                //     response.data.responseResult,
+                //     t("Data-available")
+                //   )
+                // );
                 await dispatch(
                   showRetriveGeneralMinutesDocsMeetingSuccess(
                     response.data.responseResult,
-                    t("Data-available")
+                    ""
                   )
                 );
                 resolve("Success");
@@ -4671,7 +4677,6 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
     }
   };
 };
-
 
 //Upload Documents for agendawise minutes
 
@@ -6534,11 +6539,17 @@ const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                 "DataRoom_DataRoomManager_GetAllAgendaWiseMinuteDocumentsForMeeting_01".toLowerCase()
               )
           ) {
+            // await dispatch(
+            //   showAllDocumentsAgendaWiseMinutesSuccess(
+            //     response.data.responseResult,
+            //     t("Data-available")
+            //   )
+            // );
             console.log("loader check");
             await dispatch(
               showAllDocumentsAgendaWiseMinutesSuccess(
                 response.data.responseResult,
-                t("Data-available")
+                ""
               )
             );
           } else if (
