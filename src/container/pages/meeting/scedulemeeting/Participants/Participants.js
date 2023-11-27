@@ -308,6 +308,7 @@ const Participants = ({
                     onChange={(selectedOption) =>
                       handleSelectChange(record.userID, selectedOption)
                     }
+                    isSearchable={false}
                   />
                 </>
               </Col>

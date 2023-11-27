@@ -367,6 +367,7 @@ const AgendaContributorsModal = ({
                       options={dropdowndata}
                       onChange={handleSelectValue}
                       value={selectedsearch}
+                      isSearchable={false}
                     />
                   </Col>
                   <Col md={2} lg={2} sm={12}>
