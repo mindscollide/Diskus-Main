@@ -13,6 +13,7 @@ import {
   showCancelModalAgenda,
   showImportPreviousAgendaModal,
   searchNewUserMeeting,
+  cleareAllState,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   GetAdvanceMeetingAgendabyMeetingID,
@@ -48,6 +49,8 @@ const Agenda = ({
   setMinutes,
   advanceMeetingModalID,
   editorRole,
+  setEdiorRole,
+  setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -112,7 +115,7 @@ const Agenda = ({
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
     return () => {
-      dispatch(getAdvanceMeetingAgendabyMeetingID_fail(""));
+      dispatch(cleareAllState());
     };
   }, []);
   //   updatedRows.push(newMainAgenda);
@@ -134,6 +137,12 @@ const Agenda = ({
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
     setAgenda(false);
+    localStorage.removeItem("folderDataRoomMeeting");
+
+    setEdiorRole({ status: null, role: null });
+    setAdvanceMeetingModalID(null);
+    // setMeetingDetails(false);
+    setViewAdvanceMeetingModal(false);
   };
 
   const handlePreviousBtn = () => {

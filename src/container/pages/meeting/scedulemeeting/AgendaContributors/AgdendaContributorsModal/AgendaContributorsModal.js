@@ -202,7 +202,7 @@ const AgendaContributorsModal = ({
                         gUser.profilePicture.displayProfilePictureName,
                       email: gUser.emailAddress,
                       Title: "",
-                      AgendaListRightsAll:
+                      agendaListRightsAll:
                         SelectedRSVP.value === 1 ? true : false,
                       isEdit: false,
                       isContributedNotified: true,
@@ -234,7 +234,7 @@ const AgendaContributorsModal = ({
                       email: cUser.emailAddress,
                       isContributedNotified: true,
                       Title: "",
-                      AgendaListRightsAll:
+                      agendaListRightsAll:
                         SelectedRSVP.value === 1 ? true : false,
                       isEdit: false,
                     };
@@ -261,7 +261,7 @@ const AgendaContributorsModal = ({
                   email: check2.emailAddress,
                   isContributedNotified: true,
                   Title: "",
-                  AgendaListRightsAll: SelectedRSVP.value === 1 ? true : false,
+                  agendaListRightsAll: SelectedRSVP.value === 1 ? true : false,
                   isEdit: false,
                 };
                 tem.push(newUser);

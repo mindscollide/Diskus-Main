@@ -512,22 +512,44 @@ const SaveMeetingDetialsNewApiFunction = (
                       t("Meeting-details-updated-and-published-successfully")
                     )
                   );
+
+                  let currentView = localStorage.getItem("MeetingCurrentView");
+                  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                  let meetingPageCurrent = parseInt(
+                    localStorage.getItem("MeetingPageCurrent")
+                  );
+                  let userID = localStorage.getItem("userID");
+                  let searchData = {
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(userID),
+                    PageNumber:
+                      meetingPageCurrent !== null
+                        ? Number(meetingPageCurrent)
+                        : 1,
+                    Length:
+                      meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                    PublishedMeetings:
+                      currentView && Number(currentView) === 1 ? true : false,
+                  };
+                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                } else {
+                  let MappedData = {
+                    MeetingID: response.data.responseResult.meetingID,
+                    MeetingTitle: meetingDetails.MeetingTitle,
+                    IsUpdateFlow: false,
+                  };
+                  dispatch(
+                    CreateUpdateMeetingDataRoomMapeedApiFunc(
+                      navigate,
+                      MappedData,
+                      t,
+                      setDataroomMapFolderId
+                    )
+                  );
                 }
 
-                let MappedData = {
-                  MeetingID: response.data.responseResult.meetingID,
-                  MeetingTitle: meetingDetails.MeetingTitle,
-                  IsUpdateFlow: false,
-                };
-                console.log(MappedData, "MappedDataMappedData");
-                dispatch(
-                  CreateUpdateMeetingDataRoomMapeedApiFunc(
-                    navigate,
-                    MappedData,
-                    t,
-                    setDataroomMapFolderId
-                  )
-                );
                 // setSceduleMeeting(false);
               } else if (viewValue === 3) {
                 setorganizers(true);
@@ -1933,27 +1955,25 @@ const GetAllMeetingDetailsApiFunc = (
                 "currentMeetingLS",
                 response.data.responseResult.advanceMeetingDetails.meetingID
               );
-
+              let MappedData = {
+                MeetingID:
+                  response.data.responseResult.advanceMeetingDetails.meetingID,
+                MeetingTitle:
+                  response.data.responseResult.advanceMeetingDetails
+                    .meetingTitle,
+                IsUpdateFlow: true,
+              };
+              dispatch(
+                CreateUpdateMeetingDataRoomMapeedApiFunc(
+                  navigate,
+                  MappedData,
+                  t,
+                  setDataroomMapFolderId
+                )
+              );
               try {
                 setSceduleMeeting(true);
                 setCurrentMeetingID(Data.MeetingID);
-                let MappedData = {
-                  MeetingID:
-                    response.data.responseResult.advanceMeetingDetails
-                      .meetingID,
-                  MeetingTitle:
-                    response.data.responseResult.advanceMeetingDetails
-                      .meetingTitle,
-                  IsUpdateFlow: true,
-                };
-                dispatch(
-                  CreateUpdateMeetingDataRoomMapeedApiFunc(
-                    navigate,
-                    MappedData,
-                    t,
-                    setDataroomMapFolderId
-                  )
-                );
               } catch {}
             } else if (
               response.data.responseResult.responseMessage
@@ -2008,7 +2028,7 @@ const showPollsByMeetingIdSuccess = (response, message) => {
 
 const showPollsByMeetingIdFailed = (message) => {
   return {
-    type: actions.GET_POLLS_BY_MEETING_ID_SUCCESS,
+    type: actions.GET_POLLS_BY_MEETING_ID_FAILED,
     message: message,
   };
 };
@@ -5386,7 +5406,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               await dispatch(
                 showCreateUpdateMeetingDataRoomSuccess(
                   response.data.responseResult,
-                  t("New-mapping-created")
+                  ""
                 )
               );
               localStorage.setItem(
@@ -5418,20 +5438,17 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
         );
@@ -6157,6 +6174,7 @@ const UpdateMeetingUserForAgendaContributor = (
                 let newData = [];
                 let copyData = [...rowsData];
                 copyData.forEach((data, index) => {
+                  console.log(data, "rowsDatarowsDatarowsData");
                   newData.push({
                     UserID: data.userID,
                     Title: data.Title,
@@ -6179,6 +6197,8 @@ const UpdateMeetingUserForAgendaContributor = (
                 let newData = [];
                 let copyData = [...rowsData];
                 copyData.forEach((data, index) => {
+                  console.log(data, "rowsDatarowsDatarowsData");
+
                   newData.push({
                     UserID: data.userID,
                     Title: data.Title,

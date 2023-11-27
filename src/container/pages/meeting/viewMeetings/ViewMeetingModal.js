@@ -179,7 +179,6 @@ const ViewMeetingModal = ({
     setmeetingDetails(false);
     setPolls(false);
   };
-  console.log(Loading, "LoadingLoadingLoadingLoadingLoadingLoading");
   return (
     <>
       <section className="position-relative">
@@ -369,6 +368,7 @@ const ViewMeetingModal = ({
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   setAgendaContributors={setAgendaContributors}
                   editorRole={editorRole}
+                  setEdiorRole={setEdiorRole}
                 />
               )}
               {agendaContributors && (
@@ -380,6 +380,7 @@ const ViewMeetingModal = ({
                   setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                   advanceMeetingModalID={advanceMeetingModalID}
                   editorRole={editorRole}
+                  setEdiorRole={setEdiorRole}
                 />
               )}
               {participants && (
@@ -391,6 +392,7 @@ const ViewMeetingModal = ({
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   advanceMeetingModalID={advanceMeetingModalID}
                   editorRole={editorRole}
+                  setEdiorRole={setEdiorRole}
                 />
               )}
               {agenda && (
@@ -402,6 +404,7 @@ const ViewMeetingModal = ({
                   setPolls={setPolls}
                   advanceMeetingModalID={advanceMeetingModalID}
                   editorRole={editorRole}
+                  setEdiorRole={setEdiorRole}
                 />
               )}
               {meetingMaterial && (
@@ -414,6 +417,7 @@ const ViewMeetingModal = ({
                   setMinutes={setMinutes}
                   editorRole={editorRole}
                   setEdiorRole={setEdiorRole}
+                  setactionsPage={setactionsPage}
                 />
               )}
               {unPublish ? null : (
@@ -427,6 +431,7 @@ const ViewMeetingModal = ({
                       setactionsPage={setactionsPage}
                       setMeetingMaterial={setMeetingMaterial}
                       editorRole={editorRole}
+                      setEdiorRole={setEdiorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                       setSceduleMeeting={setSceduleMeeting}
@@ -439,10 +444,12 @@ const ViewMeetingModal = ({
                       setMinutes={setMinutes}
                       setactionsPage={setactionsPage}
                       editorRole={editorRole}
+                      setEdiorRole={setEdiorRole}
                       currentMeeting={advanceMeetingModalID}
                       setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                       dataroomMapFolderId={dataroomMapFolderId}
+                      setMeetingMaterial={setMeetingMaterial}
                     />
                   )}
                   {polls && (
@@ -452,6 +459,7 @@ const ViewMeetingModal = ({
                       setactionsPage={setactionsPage}
                       setAttendance={setAttendance}
                       editorRole={editorRole}
+                      setEdiorRole={setEdiorRole}
                       currentMeeting={advanceMeetingModalID}
                       setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                       setSceduleMeeting={setViewAdvanceMeetingModal}

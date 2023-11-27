@@ -310,6 +310,11 @@ const Attendence = ({
     }
   };
 
+  const navigatePrevHandler = () => {
+    setPolls(true);
+    setAttendance(false);
+  };
+
   const handleCancelBtn = () => {
     let ReducerAttendeceData = deepEqual(
       attendanceMeetingReducer.attendanceMeetings,
@@ -322,11 +327,6 @@ const Attendence = ({
     );
 
     if (ReducerAttendeceData) {
-      console.log(
-        ReducerAttendeceData,
-        "ReducerAttendeceDataReducerAttendeceData"
-      );
-
       setViewAdvanceMeetingModal(false);
       setAttendance(false);
       let searchData = {
@@ -341,6 +341,9 @@ const Attendence = ({
           currentView && Number(currentView) === 1 ? true : false,
       };
       dispatch(searchNewUserMeeting(navigate, searchData, t));
+      localStorage.removeItem("folderDataRoomMeeting");
+      setEdiorRole({ status: null, role: null });
+      setAdvanceMeetingModalID(null);
     } else {
       dispatch(showAttendanceConfirmationModal(true));
     }
@@ -375,13 +378,18 @@ const Attendence = ({
             onClick={handleCancelBtn}
           />
           <Button
-            text={t("Save")}
-            onClick={() => saveHandler()}
+            text={t("Previous")}
+            onClick={navigatePrevHandler}
             className={styles["CloneMeetingStyles"]}
           />
           <Button
             text={t("Revert")}
             onClick={() => revertHandler()}
+            className={styles["CloneMeetingStyles"]}
+          />
+          <Button
+            text={t("Save")}
+            onClick={() => saveHandler()}
             className={styles["CloneMeetingStyles"]}
           />
         </Col>

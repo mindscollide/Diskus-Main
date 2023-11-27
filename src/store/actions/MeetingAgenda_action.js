@@ -795,7 +795,7 @@ const CreateUpdateMeetingDataRoomMap = (navigate, t, data) => {
             dispatch(
               createUpdateMeetingDataRoomMap_success(
                 response.data.responseResult.folderID,
-                t("New-mapped-created")
+                ""
               )
             );
           } else if (
