@@ -542,13 +542,13 @@ const ViewMeetingDetails = ({
                   )}
                   {meetingDetails.IsVideoCall && (
                     <>
-                      <img
+                      {/* <img
                         src={BlueCamera}
                         height="17.84px"
                         width="27.19px"
                         alt=""
                         className={styles["blue-icon"]}
-                      />
+                      /> */}
                       <img
                         src={ClipboardIcon}
                         height="40px"
