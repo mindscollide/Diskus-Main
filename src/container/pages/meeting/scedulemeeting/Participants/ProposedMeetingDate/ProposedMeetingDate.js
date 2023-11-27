@@ -21,7 +21,6 @@ import UnsavedModal from "./UnsavedChangesModal/UnsavedModal";
 import {
   GetAllProposedMeetingDateApiFunc,
   setProposedMeetingDateApiFunc,
-  showPrposedMeetingUnsavedModal,
   GetAllMeetingDetailsApiFunc,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
@@ -108,7 +107,8 @@ const ProposedMeetingDate = ({
   useEffect(() => {
     callApis();
     return () => {
-      setRows([
+    setProposedMeetingDates(false);
+    setRows([
         {
           selectedOption: "",
           startDate: "",
@@ -150,18 +150,9 @@ const ProposedMeetingDate = ({
   }, [getAllMeetingDetails]);
 
   const changeDateStartHandler = (date, index) => {
-    console.log(date, "changeDateStartHandlerchangeDateStartHandler");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    console.log(
-      meetingDateValueFormat,
-      "changeDateStartHandlerchangeDateStartHandler"
-    );
-
     let DateDate = convertGMTDateintoUTC(date);
-    console.log(DateDate, "changeDateStartHandlerchangeDateStartHandler");
-
     const updatedRows = [...rows];
-
     if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
       return;
     } else {
@@ -381,53 +372,55 @@ const ProposedMeetingDate = ({
     try {
       if (getAllProposedDates !== null && getAllProposedDates !== undefined) {
         const proposedMeetingData = getAllProposedDates;
-        if (proposedMeetingData.deadLineDate === "10000101") {
-          setSendResponseVal("");
-        } else {
-          setSendResponseVal(
-            resolutionResultTable(proposedMeetingData.deadLineDate + "000000")
-          );
-        }
-
-        const newDataforView = proposedMeetingData.meetingProposedDates.map(
-          (dates) => {
-            if (
-              dates.proposedDate === "10000101" &&
-              dates.endTime === "000000" &&
-              dates.startTime === "000000"
-            ) {
-              return {
-                endTimeforSend: "",
-                startTimeforSend: "",
-                selectDateforSend: "",
-                endDateView: "",
-                selectedOptionView: "",
-                proposedDateID: 0,
-                startDateView: "",
-                isComing: true,
-              };
-            } else {
-              return {
-                endDate: dates.endTime,
-                startDate: dates.startTime,
-                selectedOption: dates.proposedDate,
-                endDateView: resolutionResultTable(
-                  dates.proposedDate + dates.endTime
-                ),
-                selectedOptionView: resolutionResultTable(
-                  dates.proposedDate + dates.startTime
-                ),
-                proposedDateID: dates.proposedDateID,
-                startDateView: resolutionResultTable(
-                  dates.proposedDate + dates.startTime
-                ),
-                isComing: true,
-              };
-            }
+        if (Object.keys(getAllProposedDates).length > 0) {
+          if (proposedMeetingData.deadLineDate === "10000101") {
+            setSendResponseVal("");
+          } else {
+            setSendResponseVal(
+              resolutionResultTable(proposedMeetingData.deadLineDate + "000000")
+            );
           }
-        );
 
-        setRows(newDataforView);
+          const newDataforView = proposedMeetingData.meetingProposedDates.map(
+            (dates) => {
+              if (
+                dates.proposedDate === "10000101" &&
+                dates.endTime === "000000" &&
+                dates.startTime === "000000"
+              ) {
+                return {
+                  endTimeforSend: "",
+                  startTimeforSend: "",
+                  selectDateforSend: "",
+                  endDateView: "",
+                  selectedOptionView: "",
+                  proposedDateID: 0,
+                  startDateView: "",
+                  isComing: true,
+                };
+              } else {
+                return {
+                  endDate: dates.endTime,
+                  startDate: dates.startTime,
+                  selectedOption: dates.proposedDate,
+                  endDateView: resolutionResultTable(
+                    dates.proposedDate + dates.endTime
+                  ),
+                  selectedOptionView: resolutionResultTable(
+                    dates.proposedDate + dates.startTime
+                  ),
+                  proposedDateID: dates.proposedDateID,
+                  startDateView: resolutionResultTable(
+                    dates.proposedDate + dates.startTime
+                  ),
+                  isComing: true,
+                };
+              }
+            }
+          );
+
+          setRows(newDataforView);
+        }
       }
     } catch (error) {
       console.error(error);

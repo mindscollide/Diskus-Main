@@ -21,24 +21,11 @@ import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import {
   GetAllParticipantsRoleNew,
   GetAllSavedparticipantsAPI,
-  SaveparticipantsApi,
-  ShowNextConfirmationModal,
   UpdateMeetingUserApiFunc,
   showAddParticipantsModal,
   showCancelModalPartipants,
   showCrossConfirmationModal,
-  showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
-import {
-  getAgendaAndVotingInfo_success,
-  GetCurrentAgendaDetails,
-  getAgendaVotingDetails_success,
-  saveFiles_success,
-  saveAgendaVoting_success,
-  addUpdateAdvanceMeetingAgenda_success,
-  uploadDocument_success,
-  getAllVotingResultDisplay_success,
-} from "../../../../../store/actions/MeetingAgenda_action";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
@@ -64,7 +51,7 @@ const Participants = ({
   setEditFlag,
   setCalendarViewModal,
   setDataroomMapFolderId,
-  setCurrentMeetingID
+  setCurrentMeetingID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -83,13 +70,17 @@ const Participants = ({
   });
   const [rspvRows, setrspvRows] = useState([]);
 
-  //For participants Role
-  useEffect(() => {
-    dispatch(GetAllParticipantsRoleNew(navigate, t));
+  const callApiOnComponentMount = async () => {
+    await dispatch(GetAllParticipantsRoleNew(navigate, t));
     let Data = {
       MeetingID: Number(currentMeeting),
     };
-    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+    await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+  };
+
+  //For participants Role
+  useEffect(() => {
+    callApiOnComponentMount();
   }, []);
 
   //open row icon cross modal
