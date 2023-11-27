@@ -225,8 +225,11 @@ const CreateTask = ({
     };
     let newData = {
       TaskID: Number(createTaskID),
-      MeetingID: currentMeeting,
-      AgendaID: createTaskDetails.AgendaID.toString(),
+      MeetingID: Number(currentMeeting),
+      AgendaID:
+        createTaskDetails.AgendaID !== 0
+          ? createTaskDetails.AgendaID.toString()
+          : "-1",
     };
     await dispatch(
       saveTaskDocumentsAndAssigneesApi(
@@ -451,7 +454,7 @@ const CreateTask = ({
               <Row className="mt-1">
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["SubHeading"]}>
-                    {t("Actions-to-take")}{" "}
+                    {t("Task-title")}{" "}
                     <span className={styles["Steric"]}>*</span>
                   </span>
                 </Col>
@@ -459,6 +462,7 @@ const CreateTask = ({
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
+                    placeholder={t("Task-title")}
                     labelClass={"d-none"}
                     change={HandleChange}
                     name={"ActionsToTake"}
@@ -495,9 +499,6 @@ const CreateTask = ({
                         classNamePrefix={"Polls_Meeting"}
                         value={selectedTask}
                         options={taskMemberSelect}
-                        // closeMenuOnSelect={false}
-                        // components={animatedComponents}
-                        // isMulti
                         onChange={handleSelectMemberValue}
                       />
                       <Row>
@@ -813,7 +814,10 @@ const CreateTask = ({
             </Col>
           </Row>
           {NewMeetingreducer.unsavedActions && (
-            <UnsavedActions setCreateaTask={setCreateaTask} />
+            <UnsavedActions
+              setCreateaTask={setCreateaTask}
+              currentMeeting={currentMeeting}
+            />
           )}
         </section>
       </>

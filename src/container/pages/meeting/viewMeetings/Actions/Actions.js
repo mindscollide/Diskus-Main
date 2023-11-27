@@ -98,7 +98,7 @@ const Actions = ({
       },
     },
     {
-      title: t("Action"),
+      title: t("Title"),
       dataIndex: "title",
       key: "title",
       width: "250px",

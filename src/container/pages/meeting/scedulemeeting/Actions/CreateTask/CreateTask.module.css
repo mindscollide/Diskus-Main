@@ -209,3 +209,7 @@ body[dir="rtl"] .errorMessage-inLogin {
   background: #ccc;
   margin-left: -15px;
 }
+
+.react-select__control {
+  cursor: pointer !important;
+}

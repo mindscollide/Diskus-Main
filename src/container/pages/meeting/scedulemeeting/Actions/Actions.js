@@ -105,7 +105,7 @@ const Actions = ({
       },
     },
     {
-      title: t("Action"),
+      title: t("Title"),
       dataIndex: "title",
       key: "title",
       width: "250px",
@@ -408,7 +408,10 @@ const Actions = ({
 
       {NewMeetingreducer.removeTableModal && <RemoveTableModal />}
       {NewMeetingreducer.cancelActions && (
-        <CancelActions setSceduleMeeting={setSceduleMeeting} />
+        <CancelActions
+          setSceduleMeeting={setSceduleMeeting}
+          currentMeeting={currentMeeting}
+        />
       )}
     </section>
   );
