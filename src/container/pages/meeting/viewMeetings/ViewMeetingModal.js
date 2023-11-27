@@ -25,6 +25,8 @@ const ViewMeetingModal = ({
   editorRole,
   setEdiorRole,
   dataroomMapFolderId,
+  setCurrentMeetingID,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const { Loading } = useSelector((state) => state.NewMeetingreducer);
@@ -357,6 +359,9 @@ const ViewMeetingModal = ({
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   editorRole={editorRole}
                   setEdiorRole={setEdiorRole}
+                  setCurrentMeetingID={setCurrentMeetingID}
+                  setSceduleMeeting={setSceduleMeeting}
+                  setDataroomMapFolderId={setDataroomMapFolderId}
                 />
               )}
               {organizers && (

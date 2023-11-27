@@ -42,6 +42,9 @@ const ViewMeetingDetails = ({
   editorRole,
   setAgenda,
   setEdiorRole,
+  setCurrentMeetingID,
+  setSceduleMeeting,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -113,7 +116,17 @@ const ViewMeetingDetails = ({
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    dispatch(
+      GetAllMeetingDetailsApiFunc(
+        navigate,
+        t,
+        Data,
+        loader,
+        setCurrentMeetingID,
+        setSceduleMeeting,
+        setDataroomMapFolderId
+      )
+    );
     let Data2 = {
       MeetingID: Number(advanceMeetingModalID),
     };
