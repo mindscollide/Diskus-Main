@@ -4,6 +4,7 @@ import {
   extractedUrl,
   generateURLParticipant,
 } from "../../commen/functions/urlVideoCalls";
+import { generateRandomGuest } from "../../commen/functions/urlVideoCalls";
 
 const initialState = {
   LoadingParticipants: false,
@@ -1566,6 +1567,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         let dynamicBaseURLCaller = localStorage.getItem(
           "videoBaseURLParticipant"
         );
+        let randomGuestName = generateRandomGuest();
         const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller);
         const extractedBaseURLCaller = extractedUrl(
           dynamicBaseURLCaller,
@@ -1573,7 +1575,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         );
         let resultedVideoURL = generateURLParticipant(
           extractedBaseURLCaller,
-          currentUserName,
+          randomGuestName,
           roomID
         );
         return {

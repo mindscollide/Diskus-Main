@@ -11,7 +11,7 @@ export const extractedUrl = (dynamicUrl, endIndex) => {
 };
 
 // this is for caller url generator
-export const generateURLCaller = (baseURL,callerFullName, roomID) => {
+export const generateURLCaller = (baseURL, callerFullName, roomID) => {
   const queryParams = new URLSearchParams({
     UserName: callerFullName,
     Type: "Call",
@@ -21,11 +21,26 @@ export const generateURLCaller = (baseURL,callerFullName, roomID) => {
 };
 
 // this is for Participant url generator
-export const generateURLParticipant = (baseURL,participantFullName, roomID) => {
+export const generateURLParticipant = (
+  baseURL,
+  participantFullName,
+  roomID
+) => {
   const queryParams = new URLSearchParams({
     UserName: participantFullName,
     Type: "Join",
     RoomID: roomID,
   });
   return `${baseURL}?${queryParams.toString()}`;
+};
+
+export const generateRandomGuest = () => {
+  // Generate a random 4-digit number
+  const randomNum = Math.floor(Math.random() * 9000) + 1000;
+
+  // Create the final string by appending the random number
+  const guestString = `Guest${randomNum}`;
+
+  // Return the result
+  return guestString;
 };
