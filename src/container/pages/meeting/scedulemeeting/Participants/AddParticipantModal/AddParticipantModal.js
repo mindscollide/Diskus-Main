@@ -383,6 +383,7 @@ const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
                       components={animatedComponents}
                       options={addParticipantDropdown}
                       isMulti
+                      isSearchable={false}
                     />
                     <Button
                       text={t("ADD")}

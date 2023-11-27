@@ -1645,5 +1645,7 @@
   "You-cant-enter-more-then-five-dates": "You Cant enter more then Five Dates",
   "Selected-start-time-should-not-be-less-than-the-previous-endTime": "Selected start time should not be less than the previous endTime",
   "Selected-date-should-not-be-less-than-the-previous-one": "Selected date should not be less than the previous one",
-  "Selected-end-time-should-not-be-less-than-the-previous-one": "Selected end time should not be less than the previous one"
+  "Selected-end-time-should-not-be-less-than-the-previous-one": "Selected end time should not be less than the previous one",
+  "Description-is-required-action": "Description is required action *",
+  "Enter-date-must-action": "Enter date must action *"
 }

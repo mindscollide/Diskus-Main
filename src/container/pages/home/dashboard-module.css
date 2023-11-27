@@ -615,7 +615,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   border-top-left-radius: 5px !important;
   border-bottom-left-radius: 5px !important;
   font-size: calc(17px - 25%) !important;
-  color: #949494;
+  color: #2197d7;
   font-family: "MontserratSemiBold-600";
   text-transform: capitalize;
 }

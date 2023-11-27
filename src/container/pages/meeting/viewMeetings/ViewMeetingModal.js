@@ -273,7 +273,7 @@ const ViewMeetingModal = ({
                       }
                     />
                     <Button
-                      text={t("Actions")}
+                      text={t("Task")}
                       className={
                         actionsPage === true
                           ? styles["Schedule_meetings_options_active"]

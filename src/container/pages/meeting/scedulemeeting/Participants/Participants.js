@@ -308,6 +308,7 @@ const Participants = ({
                     onChange={(selectedOption) =>
                       handleSelectChange(record.userID, selectedOption)
                     }
+                    isSearchable={false}
                   />
                 </>
               </Col>
@@ -667,15 +668,15 @@ const Participants = ({
                     editorRole.role === "Organizer" &&
                     isEditMeeting === true) ||
                   (editorRole.role === "Agenda Contributor" &&
-                    isEditMeeting === true) ? null : Number(
-                      editorRole.status
-                    ) === 1 || isEditClicked ? null : (
+                    isEditMeeting === true) ? (
                     <>
-                      <Button
-                        text={t("Propose-meeting-dates")}
-                        className={styles["Next_Organization"]}
-                        onClick={handleProposedmeetingDates}
-                      />
+                      {Number(editorRole.status) === 12 && (
+                        <Button
+                          text={t("Propose-meeting-dates")}
+                          className={styles["Next_Organization"]}
+                          onClick={handleProposedmeetingDates}
+                        />
+                      )}
                       <Button
                         text={t("Cancel")}
                         className={styles["Cancel_Organization"]}
@@ -684,13 +685,42 @@ const Participants = ({
 
                       <Button
                         text={t("Previous")}
-                        className={styles["Cancel_Organization"]}
+                        className={styles["publish_button_participant"]}
                         onClick={previousTabOrganizer}
                       />
 
                       <Button
                         text={t("Next")}
+                        className={styles["publish_button_participant"]}
+                        onClick={nextTabOrganizer}
+                      />
+                    </>
+                  ) : Number(editorRole.status) === 1 ||
+                    isEditClicked ? null : (
+                    <>
+                      {Number(editorRole.status) === 12 && (
+                        <Button
+                          text={t("Propose-meeting-dates")}
+                          className={styles["Next_Organization"]}
+                          onClick={handleProposedmeetingDates}
+                        />
+                      )}
+
+                      <Button
+                        text={t("Cancel")}
                         className={styles["Cancel_Organization"]}
+                        onClick={handleCancelParticipants}
+                      />
+
+                      <Button
+                        text={t("Previous")}
+                        className={styles["publish_button_participant"]}
+                        onClick={previousTabOrganizer}
+                      />
+
+                      <Button
+                        text={t("Next")}
+                        className={styles["publish_button_participant"]}
                         onClick={nextTabOrganizer}
                       />
                     </>
