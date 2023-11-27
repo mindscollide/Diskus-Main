@@ -34,7 +34,6 @@ import {
   Table,
   TextField,
   ResultMessage,
-  Loader,
   Notification,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
@@ -50,7 +49,6 @@ import UnpublishedProposedMeeting from "./scedulemeeting/meetingDetails/Unpublis
 import NewEndMeetingModal from "./NewEndMeetingModal/NewEndMeetingModal";
 import { useSelector } from "react-redux";
 import {
-  clearMeetingState,
   clearResponseNewMeetingReducerMessage,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
@@ -88,14 +86,8 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   const { talkStateData } = useSelector((state) => state);
-  const {
-    Loading,
-    searchMeetings,
-    endForAllMeeting,
-    ResponseMessage,
-    endMeetingModal,
-  } = useSelector((state) => state.NewMeetingreducer);
-  const [publishState, setPublishState] = useState(null);
+  const { searchMeetings, endForAllMeeting, ResponseMessage, endMeetingModal } =
+    useSelector((state) => state.NewMeetingreducer);
 
   // const searchMeetings = useSelector(
   //   (state) => state.NewMeetingreducer.searchMeetings
@@ -152,7 +144,6 @@ const NewMeeting = () => {
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
@@ -164,6 +155,17 @@ const NewMeeting = () => {
     setViewAdvanceMeetingModalUnpublish,
   ] = useState(false);
 
+  useEffect(() => {
+    if (currentLanguage !== undefined && currentLanguage !== null) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
   //  Call all search meetings api
   useEffect(() => {
     if (meetingpageRow !== null && meetingPageCurrent !== null) {
@@ -384,7 +386,6 @@ const NewMeeting = () => {
           t,
           setViewFlag,
           setEditFlag,
-          setCalendarViewModal,
           setSceduleMeeting,
           1
         )
@@ -406,15 +407,7 @@ const NewMeeting = () => {
 
     if (isQuick) {
       await dispatch(
-        ViewMeeting(
-          navigate,
-          Data,
-          t,
-          setViewFlag,
-          setEditFlag,
-          setCalendarViewModal,
-          2
-        )
+        ViewMeeting(navigate, Data, t, setViewFlag, setEditFlag, 2)
       );
     } else if (isQuick === false) {
       let Data = {
@@ -434,18 +427,6 @@ const NewMeeting = () => {
     } else {
     }
   };
-
-  useEffect(() => {
-    if (currentLanguage !== undefined && currentLanguage !== null) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
-      }
-    }
-  }, [currentLanguage]);
 
   // onClick to download Report Api on download Icon
   const onClickDownloadIcon = async (meetingID) => {
@@ -723,19 +704,17 @@ const NewMeeting = () => {
                         dispatch(
                           UpdateOrganizersMeeting(
                             navigate,
-                            startMeetingRequest,
                             t,
                             4,
-                            setPublishState,
+                            startMeetingRequest,
+                            setEdiorRole,
                             setAdvanceMeetingModalID,
-                            setViewFlag,
-                            setEditFlag,
-                            setCalendarViewModal,
+                            setDataroomMapFolderId,
                             setSceduleMeeting,
-                            setEdiorRole
+                            setViewFlag,
+                            setEditFlag
                           )
                         );
-                        // setIsOrganisers(isOrganiser);
                       }}
                     />
                   </Col>
@@ -752,19 +731,15 @@ const NewMeeting = () => {
                         dispatch(
                           UpdateOrganizersMeeting(
                             navigate,
-                            startMeetingRequest,
                             t,
                             3,
-                            setViewAdvanceMeetingModal,
+                            startMeetingRequest,
+                            setEdiorRole,
                             setAdvanceMeetingModalID,
-                            setViewFlag,
-                            setEditFlag,
-                            setCalendarViewModal,
-                            setSceduleMeeting,
-                            setEdiorRole
+                            setDataroomMapFolderId,
+                            setViewAdvanceMeetingModal
                           )
                         );
-                        // setIsOrganisers(isOrganiser);
                       }}
                     />
                   </Col>
@@ -1006,17 +981,6 @@ const NewMeeting = () => {
     }
   };
 
-  // Time Picker of the Search
-  // const changeDateStartHandler = (date) => {
-  //   let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-  //   let DateDate = new Date(date);
-  //   setMeetingDate(meetingDateValueFormat);
-  //   setPollsData({
-  //     ...pollsData,
-  //     date: DateDate,
-  //   });
-  // };
-
   useEffect(() => {
     try {
       if (searchMeetings !== null && searchMeetings !== undefined) {
@@ -1172,6 +1136,7 @@ const NewMeeting = () => {
           editorRole={editorRole}
           setEdiorRole={setEdiorRole}
           dataroomMapFolderId={dataroomMapFolderId}
+          setDataroomMapFolderId={setDataroomMapFolderId}
         />
       ) : viewAdvanceMeetingModalUnpublish ? (
         <ViewMeetingModal
@@ -1182,6 +1147,7 @@ const NewMeeting = () => {
           editorRole={editorRole}
           setEdiorRole={setEdiorRole}
           dataroomMapFolderId={dataroomMapFolderId}
+          setDataroomMapFolderId={setDataroomMapFolderId}
         />
       ) : viewProposeOrganizerPoll ? (
         <OrganizerViewModal

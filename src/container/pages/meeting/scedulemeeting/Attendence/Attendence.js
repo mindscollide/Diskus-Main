@@ -20,6 +20,7 @@ const Attendence = ({
   currentMeeting,
   setSceduleMeeting,
   setDataroomMapFolderId,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

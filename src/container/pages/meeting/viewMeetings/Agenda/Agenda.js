@@ -40,7 +40,6 @@ import CastVoteAgendaModal from "./VotingPage/CastVoteAgendaModal/CastVoteAgenda
 import ViewVoteModal from "./VotingPage/ViewVoteModal/ViewVoteModal";
 
 const Agenda = ({
-  setSceduleMeeting,
   setParticipants,
   setAgenda,
   setMeetingMaterial,
@@ -355,7 +354,9 @@ const Agenda = ({
         <ViewVoteModal advanceMeetingModalID={advanceMeetingModalID} />
       )}
       {importPreviousAgendaModal && <ImportPrevious />}
-      {cancelAgenda && <CancelAgenda setSceduleMeeting={setSceduleMeeting} />}
+      {cancelAgenda && (
+        <CancelAgenda setSceduleMeeting={setViewAdvanceMeetingModal} />
+      )}
       {cancelModalView && (
         <CancelButtonModal
           setCancelModalView={setCancelModalView}

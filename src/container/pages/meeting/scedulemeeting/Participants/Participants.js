@@ -52,6 +52,7 @@ const Participants = ({
   setCalendarViewModal,
   setDataroomMapFolderId,
   setCurrentMeetingID,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -99,15 +100,15 @@ const Participants = ({
     dispatch(
       UpdateOrganizersMeeting(
         navigate,
-        Data,
         t,
         5,
-        setPublishState,
+        Data,
+        setEdiorRole,
         setAdvanceMeetingModalID,
-        setViewFlag,
-        setEditFlag,
-        setCalendarViewModal,
-        setSceduleMeeting
+        setDataroomMapFolderId,
+        setSceduleMeeting,
+        setPublishState,
+        setCalendarViewModal
       )
     );
     // setParticipants(false);

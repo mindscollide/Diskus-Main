@@ -68,6 +68,7 @@ const MeetingDetails = ({
   setEditMeeting,
   isEditMeeting,
   setDataroomMapFolderId,
+  setEdiorRole,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
