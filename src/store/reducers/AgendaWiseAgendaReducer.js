@@ -18,7 +18,7 @@ const AgendaWiseAgendaListReducer = (state = initialState, action) => {
       console.log(action.response, "statestatestatestate");
       return {
         ...state,
-        loading: false,
+        loading: true,
         AllAgendas: action.response,
         responseMessage: action.message,
       };

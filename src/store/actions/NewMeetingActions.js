@@ -3919,7 +3919,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
                 )
               );
               let allAgendaWiseDocs = {
-                MDID: currentMeeting,
+                MDID: Number(currentMeeting),
               };
               dispatch(
                 AllDocumentsForAgendaWiseMinutesApiFunc(
@@ -4161,7 +4161,12 @@ const DeleteAgendaWiseMinutesApiFunc = (
                 MeetingID: currentMeeting,
               };
               dispatch(
-                GetAllAgendaWiseMinutesApiFunc(navigate, DeleteGetAll, t)
+                GetAllAgendaWiseMinutesApiFunc(
+                  navigate,
+                  DeleteGetAll,
+                  t,
+                  currentMeeting
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -4512,10 +4517,10 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
                 )
               );
               let getAll = {
-                MeetingID: id,
+                MeetingID: Number(id),
               };
 
-              dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t));
+              dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t, id));
               dispatch(showAgendaWiseAddMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage

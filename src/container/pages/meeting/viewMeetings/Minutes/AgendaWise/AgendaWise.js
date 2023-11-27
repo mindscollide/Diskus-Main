@@ -35,7 +35,7 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
 
-const AgendaWise = ({ currentMeeting }) => {
+const AgendaWise = ({ setCurrentMeetingID }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -88,14 +88,14 @@ const AgendaWise = ({ currentMeeting }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: Number(setCurrentMeetingID),
     };
     dispatch(
       GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
         Data,
         navigate,
         t,
-        currentMeeting
+        setCurrentMeetingID
       )
     );
   }, []);
@@ -389,13 +389,13 @@ const AgendaWise = ({ currentMeeting }) => {
 
     let docsData = {
       FK_MeetingAgendaMinutesID: minuteID,
-      FK_MDID: currentMeeting,
+      FK_MDID: setCurrentMeetingID,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
     dispatch(
-      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, setCurrentMeetingID)
     );
 
     setFileAttachments([]);
@@ -538,20 +538,20 @@ const AgendaWise = ({ currentMeeting }) => {
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
     console.log(messages, "messagesmessages");
-    console.log(currentMeeting, "messagesmessages");
+    console.log(setCurrentMeetingID, "messagesmessages");
 
     console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingAgendaMinutesID: updateData.minuteID,
-      FK_MDID: currentMeeting,
+      FK_MDID: setCurrentMeetingID,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
     console.log(docsData, "messagesmessages");
     dispatch(
-      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, setCurrentMeetingID)
     );
     setAddNoteFields({
       ...addNoteFields,
@@ -571,7 +571,7 @@ const AgendaWise = ({ currentMeeting }) => {
     console.log(AgendaWiseData, "AgendaWiseDataAgendaWiseData");
 
     let Data = {
-      MDID: currentMeeting,
+      MDID: setCurrentMeetingID,
       MeetingAgendaMinutesID: AgendaWiseData.minuteID,
     };
 
@@ -580,7 +580,7 @@ const AgendaWise = ({ currentMeeting }) => {
         navigate,
         Data,
         t,
-        currentMeeting,
+        setCurrentMeetingID,
         AgendaWiseData,
         agendaSelect.agendaSelectOptions.id
       )
