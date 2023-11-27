@@ -196,16 +196,18 @@ const MeetingMaterial = ({
 
   const handleSaveAndNext = () => {
     // dispatch(ShowNextConfirmationModal(true));
-    if (
-      Number(editorRole.status) === 10 &&
-      editorRole.role === "Agenda Contributor"
-    ) {
-      setactionsPage(true);
-      setMeetingMaterial(false);
-    } else {
-      setMeetingMaterial(false);
-      setMinutes(true);
-    }
+    // if (
+    //   Number(editorRole.status) === 10 &&
+    //   editorRole.role === "Agenda Contributor"
+    // ) {
+    //   setactionsPage(true);
+    //   setMeetingMaterial(false);
+    // } else {
+    //   setMeetingMaterial(false);
+    //   setMinutes(true);
+    // }
+    setMeetingMaterial(false);
+    setMinutes(true);
   };
   const handlePublish = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
