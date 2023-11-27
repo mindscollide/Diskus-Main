@@ -103,9 +103,7 @@ const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
                   response.data.responseResult.fileID.toString(),
               };
               newFolder.push(newData);
-              await dispatch(
-                saveFiles_success(newData, t("Files-saved-successfully"))
-              );
+              await dispatch(saveFiles_success(newData, ""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -207,10 +205,7 @@ const uploadDocumentsResolutionApi = (
                 )
               );
               await dispatch(
-                uploadDocument_success(
-                  response.data.responseResult,
-                  t("Document-uploaded-successfully")
-                )
+                uploadDocument_success(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage

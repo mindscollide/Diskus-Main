@@ -41,6 +41,7 @@ const MeetingMaterial = ({
   setCalendarViewModal,
   editorRole,
   isEditMeeting,
+  setactionsPage,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -193,8 +194,16 @@ const MeetingMaterial = ({
 
   const handleSaveAndNext = () => {
     // dispatch(ShowNextConfirmationModal(true));
-    setMeetingMaterial(false);
-    setMinutes(true);
+    if (
+      Number(editorRole.status) === 10 &&
+      editorRole.role === "Agenda Contributor"
+    ) {
+      setactionsPage(true);
+      setMeetingMaterial(false);
+    } else {
+      setMeetingMaterial(false);
+      setMinutes(true);
+    }
   };
   const handlePublish = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };

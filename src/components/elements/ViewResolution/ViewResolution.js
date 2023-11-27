@@ -384,7 +384,7 @@ const ViewResolution = ({ setViewresolution }) => {
                                           .pK_ResolutionID,
                                       attachmentID: data.pK_RAID,
                                       fileName: data.displayAttachmentName,
-                                      commingFrom: 3,
+                                      commingFrom: 4,
                                     };
                                     const pdfDataJson = JSON.stringify(pdfData);
                                     return (

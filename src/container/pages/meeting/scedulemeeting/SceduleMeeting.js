@@ -32,7 +32,7 @@ const SceduleMeeting = ({
   dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
-
+  console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRoleeditorRole");
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
@@ -283,19 +283,17 @@ const SceduleMeeting = ({
                 />
                 <Button
                   disableBtn={
-                    (Number(editorRole.status) === 1 ||
-                      Number(editorRole.status) === 11 ||
-                      Number(editorRole.status) === 12) &&
-                    (editorRole.role === "Organizer" ||
-                      editorRole.role === "Participant" ||
-                      editorRole.role === "Agenda Contributor") &&
-                    isEditMeeting === true
+                    Number(editorRole.status) === 1 ||
+                    Number(editorRole.status) === 11 ||
+                    Number(editorRole.status) === 12
                       ? true
-                      : Number(currentMeeting) === 0
-                      ? true
-                      : isEditMeeting === false
-                      ? true
-                      : false
+                      : editorRole.role === "Organizer" &&
+                        Number(editorRole.status) === 9
+                      ? false
+                      : Number(editorRole.status) === 10 &&
+                        editorRole.role === "Organizer"
+                      ? false
+                      : true
                   }
                   text={t("Minutes")}
                   className={
@@ -460,6 +458,7 @@ const SceduleMeeting = ({
                 setMeetingMaterial={setMeetingMaterial}
                 setMinutes={setMinutes}
                 currentMeeting={currentMeeting}
+                setactionsPage={setactionsPage}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}

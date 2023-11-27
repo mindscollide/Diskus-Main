@@ -1073,11 +1073,26 @@ const Minutes = ({
         </>
       ) : null}
       <Row className="mt-5">
-        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex gap-3 justify-content-end"
+        >
           <Button
             text={t("Cancel")}
             className={styles["Cancel_button_Minutes"]}
             onClick={handleUNsaveChangesModal}
+          />
+          <Button
+            text={t("Previous")}
+            className={styles["Previous_button_Minutes"]}
+            // onClick={handleUNsaveChangesModal}
+          />
+          <Button
+            text={t("Next")}
+            className={styles["Next_button_Minutes"]}
+            // onClick={handleUNsaveChangesModal}
           />
         </Col>
       </Row>

@@ -355,47 +355,47 @@ const Actions = ({
                           </Col>
                         </Row>
                       )}
-                      <Row className="mt-5">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-end gap-2"
-                        >
-                          <Button
-                            text={t("Cancel")}
-                            className={styles["CloneMeetingButton"]}
-                            onClick={handleCancelActions}
-                          />
-                          <Button
-                            text={t("Previous")}
-                            className={styles["CloneMeetingButton"]}
-                            onClick={prevTabToMinutes}
-                          />
-                          <Button
-                            text={t("Next")}
-                            className={styles["CloneMeetingButton"]}
-                            onClick={nextTabToPolls}
-                          />
-
-                          {((Number(editorRole.status) === 1 ||
-                            Number(editorRole.status) === 10 ||
-                            Number(editorRole.status) === 11 ||
-                            Number(editorRole.status) === 12) &&
-                            editorRole.role === "Organizer" &&
-                            isEditMeeting === true) ||
-                          ((Number(editorRole.status) === 9 ||
-                            Number(editorRole.status) === 10) &&
-                            (editorRole.role === "Participant" ||
-                              editorRole.role === "Agenda Contributor") &&
-                            isEditMeeting === true) ? (
-                            <></>
-                          ) : null}
-                        </Col>
-                      </Row>
                     </section>
                   </>
                 )}
+              </Col>
+            </Row>
+            <Row className="mt-5">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                <Button
+                  text={t("Cancel")}
+                  className={styles["CloneMeetingButton"]}
+                  onClick={handleCancelActions}
+                />
+                <Button
+                  text={t("Previous")}
+                  className={styles["CloneMeetingButton"]}
+                  onClick={prevTabToMinutes}
+                />
+                <Button
+                  text={t("Next")}
+                  className={styles["CloneMeetingButton"]}
+                  onClick={nextTabToPolls}
+                />
+
+                {((Number(editorRole.status) === 1 ||
+                  Number(editorRole.status) === 10 ||
+                  Number(editorRole.status) === 11 ||
+                  Number(editorRole.status) === 12) &&
+                  editorRole.role === "Organizer" &&
+                  isEditMeeting === true) ||
+                ((Number(editorRole.status) === 9 ||
+                  Number(editorRole.status) === 10) &&
+                  (editorRole.role === "Participant" ||
+                    editorRole.role === "Agenda Contributor") &&
+                  isEditMeeting === true) ? (
+                  <></>
+                ) : null}
               </Col>
             </Row>
           </>

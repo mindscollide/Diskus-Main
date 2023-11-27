@@ -672,9 +672,33 @@ const Participants = ({
                     editorRole.role === "Organizer" &&
                     isEditMeeting === true) ||
                   (editorRole.role === "Agenda Contributor" &&
-                    isEditMeeting === true) ? null : Number(
-                      editorRole.status
-                    ) === 1 || isEditClicked ? null : (
+                    isEditMeeting === true) ? (
+                    <>
+                      <Button
+                        text={t("Propose-meeting-dates")}
+                        className={styles["Next_Organization"]}
+                        onClick={handleProposedmeetingDates}
+                      />
+                      <Button
+                        text={t("Cancel")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={handleCancelParticipants}
+                      />
+
+                      <Button
+                        text={t("Previous")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={previousTabOrganizer}
+                      />
+
+                      <Button
+                        text={t("Next")}
+                        className={styles["Cancel_Organization"]}
+                        onClick={nextTabOrganizer}
+                      />
+                    </>
+                  ) : Number(editorRole.status) === 1 ||
+                    isEditClicked ? null : (
                     <>
                       <Button
                         text={t("Propose-meeting-dates")}

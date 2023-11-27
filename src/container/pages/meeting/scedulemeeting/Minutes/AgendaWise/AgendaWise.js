@@ -1086,7 +1086,7 @@ const AgendaWise = ({ currentMeeting }) => {
             : null}
         </Col>
       </Row>
-      <Row className="mt-3">
+      {/* <Row className="mt-3">
         <Col
           lg={12}
           md={12}
@@ -1096,7 +1096,7 @@ const AgendaWise = ({ currentMeeting }) => {
           <Button text={t("Previous")} className={styles["Previous_Button"]} />
           <Button text={t("Next")} className={styles["Button_General"]} />
         </Col>
-      </Row>
+      </Row> */}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );
