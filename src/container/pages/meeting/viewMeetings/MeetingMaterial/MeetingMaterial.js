@@ -184,29 +184,31 @@ const MeetingMaterial = ({
       { editorRole },
       "handleClickSavehandleClickSavehandleClickSave"
     );
-    if (
-      editorRole.role === "Organizer" &&
-      (Number(editorRole.status) === 9 || Number(editorRole.status) === 10)
-    ) {
-      setMinutes(true);
-      setMeetingMaterial(false);
-    }
-    if (
-      (editorRole.role === "Participant" ||
-        editorRole.role === "Agenda Contributor") &&
-      Number(editorRole.status) === 10
-    ) {
-      setactionsPage(true);
-      setMeetingMaterial(false);
-    }
-    if (
-      (editorRole.role === "Agenda Contributor" ||
-        editorRole.role === "Participant") &&
-      Number(editorRole.status) === 9
-    ) {
-      setactionsPage(true);
-      setMeetingMaterial(false);
-    }
+    // if (
+    //   editorRole.role === "Organizer" &&
+    //   (Number(editorRole.status) === 9 || Number(editorRole.status) === 10)
+    // ) {
+    //   setMinutes(true);
+    //   setMeetingMaterial(false);
+    // }
+    // if (
+    //   (editorRole.role === "Participant" ||
+    //     editorRole.role === "Agenda Contributor") &&
+    //   Number(editorRole.status) === 10
+    // ) {
+    //   setactionsPage(true);
+    //   setMeetingMaterial(false);
+    // }
+    // if (
+    //   (editorRole.role === "Agenda Contributor" ||
+    //     editorRole.role === "Participant") &&
+    //   Number(editorRole.status) === 9
+    // ) {
+    //   setactionsPage(true);
+    //   setMeetingMaterial(false);
+    // }
+    setMinutes(true);
+    setMeetingMaterial(false);
     // setMinutes(true);
   };
 
