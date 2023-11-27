@@ -350,7 +350,7 @@ const AgendaContributers = ({
       )}
 
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-      {NewMeetingreducer.Loader2 && <Loader />}
+      {/* {NewMeetingreducer.Loader2 && <Loader />} */}
     </>
   );
 };

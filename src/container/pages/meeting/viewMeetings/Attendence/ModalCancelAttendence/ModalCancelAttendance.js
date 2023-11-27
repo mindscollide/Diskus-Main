@@ -14,6 +14,8 @@ import { useSelector } from "react-redux";
 const ModalCancelAttendance = ({
   setAttendance,
   setViewAdvanceMeetingModal,
+  useCase,
+  setPolls,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -30,19 +32,27 @@ const ModalCancelAttendance = ({
 
   const handleYesFunctionality = () => {
     dispatch(showAttendanceConfirmationModal(false));
-    setAttendance(false);
-    setViewAdvanceMeetingModal(false);
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    if (useCase) {
+      if (Number(useCase) === 1) {
+        setAttendance(false);
+        setPolls(true);
+      } else {
+        setAttendance(false);
+        setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      }
+    }
   };
   return (
     <section>

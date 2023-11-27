@@ -23,6 +23,11 @@ import {
   showVoteAgendaModal,
 } from "./NewMeetingActions";
 
+const clearAgendaReducerState = () => {
+  return {
+    type: actions.CLEAR_MEETING_AGENDA_REDUCER,
+  };
+};
 const clearResponseMessage = (message) => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_AGENDAMEETING,
@@ -1455,4 +1460,5 @@ export {
   uploadDocument_success,
   getAllVotingResultDisplay_success,
   getAdvanceMeetingAgendabyMeetingID_fail,
+  clearAgendaReducerState,
 };

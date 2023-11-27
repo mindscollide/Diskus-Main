@@ -656,7 +656,7 @@ const ViewMeetingDetails = ({
           />
         </Col>
       </Row>
-      {NewMeetingreducer.LoadingViewModal && <Loader />}
+      {/* {NewMeetingreducer.LoadingViewModal && <Loader />} */}
       {cancelModalView && (
         <CancelButtonModal
           setCancelModalView={setCancelModalView}
