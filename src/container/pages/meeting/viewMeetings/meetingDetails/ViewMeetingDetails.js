@@ -9,7 +9,8 @@ import {
 } from "../../../../../components/elements";
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../assets/images/blue Camera.svg";
-import ClipboardIcon from "../../../../../assets/images/Clipboard_Icon.png";
+import ClipboardIcon from "../../../../../assets/images/clipboard-01.svg";
+import copyToClipboard from "../../../../../hooks/useClipBoard";
 import { useDispatch } from "react-redux";
 import {
   cleareAllState,
@@ -335,13 +336,13 @@ const ViewMeetingDetails = ({
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
   };
 
-  const copyToClipboard = () => {
+  const copyToClipboardd = () => {
     if (
       NewMeetingreducer.CurrentMeetingURL !== undefined &&
       NewMeetingreducer.CurrentMeetingURL !== null &&
       NewMeetingreducer.CurrentMeetingURL !== ""
     ) {
-      navigator.clipboard.writeText(NewMeetingreducer.CurrentMeetingURL);
+      copyToClipboard(NewMeetingreducer.CurrentMeetingURL);
       setOpen({
         ...open,
         flag: true,
@@ -384,39 +385,6 @@ const ViewMeetingDetails = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [NewMeetingreducer.ResponseMessage]);
-
-  // useEffect(() => {
-  //   if (
-  //     NewMeetingreducer.CurrentMeetingURL !== null &&
-  //     NewMeetingreducer.CurrentMeetingURL !== undefined &&
-  //     NewMeetingreducer.CurrentMeetingURL !== ""
-  //   ) {
-  //     const copyToClipboard = async () => {
-  //       try {
-  //         await navigator.clipboard.writeText(
-  //           NewMeetingreducer.CurrentMeetingURL
-  //         );
-  //         setOpen({
-  //           ...open,
-  //           flag: true,
-  //           message: "URL copied to clipboard",
-  //         });
-  //         setTimeout(() => {
-  //           setOpen({
-  //             ...open,
-  //             flag: false,
-  //             message: "",
-  //           });
-  //         }, 3000);
-  //         dispatch(CleareMessegeNewMeeting());
-  //       } catch (error) {
-  //         console.error("Unable to copy text to clipboard", error);
-  //       }
-  //     };
-
-  //     copyToClipboard();
-  //   }
-  // }, [NewMeetingreducer.CurrentMeetingURL]);
 
   console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
   console.log("meetingDetailsmeetingDetails", meetingDetails);
@@ -574,11 +542,6 @@ const ViewMeetingDetails = ({
                   )}
                   {meetingDetails.IsVideoCall && (
                     <>
-                      <Button
-                        text={t("Join-Video-Call")}
-                        className={styles["JoinMeetingButton"]}
-                        onClick={joinMeetingCall}
-                      />
                       <img
                         src={BlueCamera}
                         height="17.84px"
@@ -591,8 +554,13 @@ const ViewMeetingDetails = ({
                         height="40px"
                         width="40px"
                         alt=""
-                        onClick={() => copyToClipboard()}
+                        onClick={() => copyToClipboardd()}
                         className={styles["clipboard-icon"]}
+                      />
+                      <Button
+                        text={t("Join-Video-Call")}
+                        className={styles["JoinMeetingButton"]}
+                        onClick={joinMeetingCall}
                       />
                       {/* <span className={styles["LinkClass"]}>
                         {meetingDetails.Link}

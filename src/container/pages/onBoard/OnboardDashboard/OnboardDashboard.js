@@ -26,7 +26,7 @@ import {
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 // import Calendar from "react-calendar";
 // Branch number 3;
@@ -190,8 +190,8 @@ const OnboardDashboard = () => {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
       } else if (lang === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
     }
   }, [lang]);
