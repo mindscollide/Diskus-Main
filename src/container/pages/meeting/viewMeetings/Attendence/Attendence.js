@@ -329,12 +329,6 @@ const Attendence = ({
       attendanceMeetingReducer.attendanceMeetings,
       attendenceRows
     );
-
-    console.log(
-      ReducerAttendeceData,
-      "ReducerAttendeceDataReducerAttendeceData"
-    );
-
     if (ReducerAttendeceData) {
       setViewAdvanceMeetingModal(false);
       setAttendance(false);

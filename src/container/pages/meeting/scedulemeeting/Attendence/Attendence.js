@@ -16,21 +16,35 @@ import whitepresentIcon from "../../../../../assets/images/whitepresent.png";
 import whiteAbsentICon from "../../../../../assets/images/whiteabsent.png";
 import whiteworkhome from "../../../../../assets/images/whitehomework.png";
 import { useSelector } from "react-redux";
+import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
+import {
+  searchNewUserMeeting,
+  showAttendanceConfirmationModal,
+} from "../../../../../store/actions/NewMeetingActions";
+import CancelModal from "./ModalCancelAttendence/ModalCancelAttendance";
 const Attendence = ({
   currentMeeting,
   setSceduleMeeting,
   setDataroomMapFolderId,
   setEdiorRole,
+  setPolls,
+  setAttendance,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   //reducer call from Attendance_Reducers
-  const { attendanceMeetingReducer } = useSelector((state) => state);
+  const { attendanceMeetingReducer, NewMeetingreducer } = useSelector(
+    (state) => state
+  );
   console.log(attendanceMeetingReducer, "attendanceMeetingReducer");
-
+  const [useCase, setUseCase] = useState(0);
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingID = Number(localStorage.getItem("meetingID"));
+  let userID = localStorage.getItem("userID");
 
   const [attendenceRows, setAttendenceRows] = useState([]);
   console.log(attendenceRows, "attendenceRowsattendenceRows");
@@ -285,6 +299,46 @@ const Attendence = ({
     }
   };
 
+  const navigatePrevHandler = () => {
+    let ReducerAttendeceData = deepEqual(
+      attendanceMeetingReducer.attendanceMeetings,
+      attendenceRows
+    );
+    if (ReducerAttendeceData) {
+      setPolls(true);
+      setAttendance(false);
+    } else {
+      dispatch(showAttendanceConfirmationModal(true));
+      setUseCase(1);
+    }
+  };
+  const handleCancelBtn = () => {
+    let ReducerAttendeceData = deepEqual(
+      attendanceMeetingReducer.attendanceMeetings,
+      attendenceRows
+    );
+    if (ReducerAttendeceData) {
+      setSceduleMeeting(false);
+      setPolls(false);
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber:
+          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      dispatch(searchNewUserMeeting(navigate, searchData, t));
+      localStorage.removeItem("folderDataRoomMeeting");
+      setEdiorRole({ status: null, role: null });
+    } else {
+      dispatch(showAttendanceConfirmationModal(true));
+      setUseCase(2);
+    }
+  };
   return (
     <>
       <section className={styles["fixedHeight"]}>
@@ -309,6 +363,16 @@ const Attendence = ({
           className="d-flex justify-content-end gap-2 mt-4"
         >
           <Button
+            text={t("Cancel")}
+            className={styles["CloneMeetingStyles"]}
+            onClick={handleCancelBtn}
+          />
+          <Button
+            text={t("Previous")}
+            onClick={navigatePrevHandler}
+            className={styles["CloneMeetingStyles"]}
+          />
+          <Button
             text={t("Save")}
             onClick={() => saveHandler()}
             className={styles["CloneMeetingStyles"]}
@@ -322,6 +386,14 @@ const Attendence = ({
       </Row>
 
       {attendanceMeetingReducer.Loading ? <Loader /> : null}
+      {NewMeetingreducer.attendanceConfirmationModal && (
+        <CancelModal
+          setAttendance={setAttendance}
+          setPolls={setPolls}
+          useCase={useCase}
+          setSceduleMeeting={setSceduleMeeting}
+        />
+      )}
     </>
   );
 };
