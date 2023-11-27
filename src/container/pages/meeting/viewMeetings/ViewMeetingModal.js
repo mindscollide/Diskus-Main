@@ -27,6 +27,7 @@ const ViewMeetingModal = ({
   dataroomMapFolderId,
   setDataroomMapFolderId,
 }) => {
+  console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
