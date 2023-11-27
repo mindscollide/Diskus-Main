@@ -3,7 +3,7 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { useDispatch } from "react-redux";
@@ -348,8 +348,8 @@ const ParentAgenda = ({
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
     }
   }, [currentLanguage]);
