@@ -546,7 +546,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_ROLES_PARTICIPANTS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         getAllPartiicpantsRoles: action.response,
         ResponseMessage: action.message,
       };

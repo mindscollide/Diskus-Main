@@ -1106,11 +1106,11 @@ const showParticipantsRolesFailed = (message) => {
 
 const GetAllParticipantsRoleNew = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(showParticipantsRolesInit());
+  return async (dispatch) => {
+    await dispatch(showParticipantsRolesInit());
     let form = new FormData();
     form.append("RequestMethod", getParticipantsRoles.RequestMethod);
-    axios({
+    await axios({
       method: "post",
       url: meetingApi,
       data: form,
@@ -1713,12 +1713,12 @@ const showAllMeetingParticipantsFailed = (message) => {
 
 const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(showAllMeetingParticipantsInit());
+  return async (dispatch) => {
+    // dispatch(showAllMeetingParticipantsInit());
     let form = new FormData();
     form.append("RequestMethod", getAllSavedParticipants.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
+    await axios({
       method: "post",
       url: meetingApi,
       data: form,
@@ -1910,12 +1910,12 @@ const GetAllMeetingDetailsApiFunc = (
   setDataroomMapFolderId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(showGetAllMeetingDetialsInit());
+  return async (dispatch) => {
+    await dispatch(showGetAllMeetingDetialsInit());
     let form = new FormData();
     form.append("RequestMethod", getAllMeetingDetailsByMeetingID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
+    await axios({
       method: "post",
       url: meetingApi,
       data: form,
@@ -1946,13 +1946,6 @@ const GetAllMeetingDetailsApiFunc = (
                   "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                showGetAllMeetingDetialsSuccess(
-                  response.data.responseResult,
-                  t("Record-found"),
-                  loader
-                )
-              );
               localStorage.setItem(
                 "currentMeetingLS",
                 response.data.responseResult.advanceMeetingDetails.meetingID
@@ -1965,7 +1958,14 @@ const GetAllMeetingDetailsApiFunc = (
                     .meetingTitle,
                 IsUpdateFlow: true,
               };
-              dispatch(
+              await dispatch(
+                showGetAllMeetingDetialsSuccess(
+                  response.data.responseResult,
+                  t("Record-found"),
+                  loader
+                )
+              );
+              await dispatch(
                 CreateUpdateMeetingDataRoomMapeedApiFunc(
                   navigate,
                   MappedData,
@@ -2330,23 +2330,13 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
                   "Meeting_MeetingServiceManager_GetAllMeetingProposedDates_01".toLowerCase()
                 )
             ) {
-              if (flag) {
-                dispatch(
-                  showGetAllProposedMeetingDatesSuccess(
-                    response.data.responseResult,
-                    t("Record-found"),
-                    true
-                  )
-                );
-              } else {
-                dispatch(
-                  showGetAllProposedMeetingDatesSuccess(
-                    response.data.responseResult,
-                    t("Record-found"),
-                    false
-                  )
-                );
-              }
+              dispatch(
+                showGetAllProposedMeetingDatesSuccess(
+                  response.data.responseResult,
+                  t("Record-found"),
+                  flag
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2355,7 +2345,11 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
                 )
             ) {
               dispatch(
-                showGetAllProposedMeetingDatesFailed(t("No-record-found"))
+                showGetAllProposedMeetingDatesSuccess(
+                  [],
+                  t("No-record-found"),
+                  flag
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2452,7 +2446,9 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
               let NewData = {
                 MeetingID: Data.MeetingID,
               };
-              dispatch(GetAllProposedMeetingDateApiFunc(NewData, navigate, t));
+              dispatch(
+                GetAllProposedMeetingDateApiFunc(NewData, navigate, t, false)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
