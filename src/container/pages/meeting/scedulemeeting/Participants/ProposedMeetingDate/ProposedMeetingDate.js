@@ -28,12 +28,14 @@ import {
   convertGMTDateintoUTC,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
-import { async } from "q";
 const ProposedMeetingDate = ({
   setProposedMeetingDates,
   setParticipants,
   setViewProposedMeetingDate,
   currentMeeting,
+  setCurrentMeetingID,
+  setSceduleMeeting,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -84,16 +86,51 @@ const ProposedMeetingDate = ({
       startDateView: "",
     },
   ]);
+
   const callApis = async () => {
     let Data = {
       MeetingID: Number(currentMeeting),
     };
-    await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
-    await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
+    await dispatch(
+      GetAllMeetingDetailsApiFunc(
+        navigate,
+        t,
+        Data,
+        true,
+        setCurrentMeetingID,
+        setSceduleMeeting,
+        setDataroomMapFolderId
+      )
+    );
   };
   useEffect(() => {
     callApis();
+    return () => {
+      setRows([
+        {
+          selectedOption: "",
+          startDate: "",
+          endDate: "",
+          selectedOptionView: "",
+          endDateView: "",
+          startDateView: "",
+        },
+      ]);
+    };
   }, []);
+
+  useEffect(() => {
+    if (currentLanguage !== undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
 
   useEffect(() => {
     try {
@@ -111,74 +148,12 @@ const ProposedMeetingDate = ({
     } catch {}
   }, [getAllMeetingDetails]);
 
-  //Onchange Function For DatePicker inAdd datess First
-
-  // const changeDateStartHandler = (date, index) => {
-  //   let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-  //   let DateDate = convertGMTDateintoUTC(date);
-  //   const updatedRows = [...rows];
-  //   updatedRows[index].selectedOption = DateDate.slice(0, 8);
-  //   updatedRows[index].selectedOptionView = meetingDateValueFormat;
-  //   updatedRows[index].isComing = false;
-  //   updatedRows[index].proposedDateID = 0;
-
-  //   setRows(updatedRows);
-  // };
-
-  // const handleStartDateChange = (index, date) => {
-  //   let newDate = new Date(date);
-  //   if (newDate instanceof Date && !isNaN(newDate)) {
-  //     const hours = ("0" + newDate.getUTCHours()).slice(-2);
-  //     const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-  //     const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-  //     // Format the time as HH:mm:ss
-  //     const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-  //       .toString()
-  //       .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-  //     const updatedRows = [...rows];
-  //     updatedRows[index].startDate = formattedTime;
-  //     updatedRows[index].startDateView = newDate;
-  //     updatedRows[index].isComing = false;
-  //     updatedRows[index].proposedDateID = 0;
-  //     setRows(updatedRows);
-  //     // You can use 'formattedTime' as needed.
-  //   } else {
-  //     console.error("Invalid date and time object:", date);
-  //   }
-  // };
-
-  // const handleEndDateChange = (index, date) => {
-  //   let newDate = new Date(date);
-  //   if (newDate instanceof Date && !isNaN(newDate)) {
-  //     const hours = ("0" + newDate.getUTCHours()).slice(-2);
-  //     const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-  //     const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-  //     // Format the time as HH:mm:ss
-  //     const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-  //       .toString()
-  //       .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-
-  //     const updatedRows = [...rows];
-  //     updatedRows[index].endDate = formattedTime;
-  //     updatedRows[index].endDateView = newDate;
-  //     updatedRows[index].isComing = false;
-  //     updatedRows[index].proposedDateID = 0;
-
-  //     setRows(updatedRows);
-  //   } else {
-  //     console.error("Invalid date and time object:", date);
-  //   }
-  // };
-
   const changeDateStartHandler = (date, index) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = convertGMTDateintoUTC(date);
     const updatedRows = [...rows];
 
     if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
-      console.error("Selected-date-should-not-be-less-than-the-previous-one");
       return;
     } else {
       updatedRows[index].selectedOption = DateDate.slice(0, 8);
@@ -331,36 +306,11 @@ const ProposedMeetingDate = ({
     });
   };
 
-  const validate = () => {
-    // Check if any of the fields are empty
-    const hasSelectError = rows.some((row) => row.selectedOption === "");
-    const hasStartDateError = rows.some((row) => row.startDate === "");
-    const hasEndDateError = rows.some((row) => row.endDate === "");
-    setSelectError(hasSelectError);
-    setStartDateError(hasStartDateError);
-    setEndDateError(hasEndDateError);
-  };
-
-  //Function that will check the assending order of the dates
-  // const isAscendingOrder = () => {
-  //   for (let i = 1; i < rows.length; i++) {
-  //     if (
-  //       rows[i].selectedOption < rows[i - 1].selectedOption ||
-  //       (rows[i].selectedOption === rows[i - 1].selectedOption &&
-  //         rows[i].endDate <= rows[i - 1].endDate)
-  //     ) {
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  // };
-
   // Function to handle the save Proposed button click
   const handleSave = () => {
     let newArr = [];
 
     rows.forEach((data) => {
-      console.log(data, "datadatadatadatadatahandleSave");
       newArr.push({
         ProposedDate: data.selectedOption,
         StartTime: data.startDate,
@@ -375,31 +325,40 @@ const ProposedMeetingDate = ({
       SendResponsebyDate: sendResponseBy.date,
       ProposedDates: newArr,
     };
-    console.log(Data, "DataDataDataData");
     dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
-    // } else {
-    // Rows are not in ascending order
+  };
 
-    // }
+  const validate = () => {
+    // Check if any of the fields are empty
+    const hasSelectError = rows.some((row) => row.selectedOption === "");
+    const hasStartDateError = rows.some((row) => row.startDate === "");
+    const hasEndDateError = rows.some((row) => row.endDate === "");
+    setSelectError(hasSelectError);
+    setStartDateError(hasStartDateError);
+    setEndDateError(hasEndDateError);
   };
 
   // Function to handle the save Proposed button click
-
   useEffect(() => {
     validate();
   }, [rows]);
 
-  useEffect(() => {
-    if (currentLanguage !== undefined) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
-      }
-    }
-  }, [currentLanguage]);
+  // useEffect(() => {
+  //   if (rows.length > 0) {
+  //     if (
+  //       rows[0].selectedOption === "" &&
+  //       rows[0].startDate === "" &&
+  //       rows[0].endDate === ""
+  //     ) {
+  //       let getifTrue = rows.some((data, index) => data.isComing === false);
+  //       setIsEdit(getifTrue);
+  //     } else {
+  //       setIsEdit(false);
+  //     }
+  //   } else {
+  //     setIsEdit(false);
+  //   }
+  // }, [rows]);
 
   const CancelModal = () => {
     setProposedMeetingDates(false);
@@ -423,7 +382,6 @@ const ProposedMeetingDate = ({
 
         const newDataforView = proposedMeetingData.meetingProposedDates.map(
           (dates) => {
-            console.log(dates, "meetingProposedDates");
             if (
               dates.proposedDate === "10000101" &&
               dates.endTime === "000000" &&
@@ -466,23 +424,6 @@ const ProposedMeetingDate = ({
       console.error(error);
     }
   }, [getAllProposedDates]);
-
-  useEffect(() => {
-    if (rows.length > 0) {
-      if (
-        rows[0].selectedOption === "" &&
-        rows[0].startDate === "" &&
-        rows[0].endDate === ""
-      ) {
-        let getifTrue = rows.some((data, index) => data.isComing === false);
-        setIsEdit(getifTrue);
-      } else {
-        setIsEdit(false);
-      }
-    } else {
-      setIsEdit(false);
-    }
-  }, [rows]);
 
   return (
     <section>
@@ -542,7 +483,6 @@ const ProposedMeetingDate = ({
                 >
                   {rows.length > 0
                     ? rows.map((data, index) => {
-                        console.log(data, "datadatadatarows");
                         return (
                           <>
                             <Row>

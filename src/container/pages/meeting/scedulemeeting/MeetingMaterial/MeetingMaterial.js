@@ -41,6 +41,7 @@ const MeetingMaterial = ({
   setCalendarViewModal,
   editorRole,
   isEditMeeting,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
