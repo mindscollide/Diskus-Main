@@ -363,6 +363,10 @@ const Minutes = ({
   };
 
   const handleGeneralButtonClick = () => {
+    let Meet = {
+      MeetingID: Number(currentMeeting),
+    };
+    dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Meet, currentMeeting));
     setAgenda(false);
     setGeneral(true);
   };
