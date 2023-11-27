@@ -5,7 +5,7 @@ import { Col, Row } from "react-bootstrap";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
 import DatePicker from "react-multi-date-picker";
 import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { DateObject } from "react-multi-date-picker";
 import plusFaddes from "../../../../../../assets/images/BluePlus.svg";
@@ -127,8 +127,8 @@ const ProposedMeetingDate = ({
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
     }
   }, [currentLanguage]);

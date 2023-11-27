@@ -24,8 +24,8 @@ import {
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
+// import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 
 import {

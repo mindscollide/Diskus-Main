@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
@@ -14,17 +14,10 @@ import {
   TextField,
   Button,
   Modal,
-  TimePickers,
-  CustomDatePicker,
   Notification,
   InputSearchFilter,
-  MultiDatePicker,
 } from "./../../components/elements";
-import userImage from "../../assets/images/user.png";
 import {
-  RemoveTimeDashes,
-  TimeSendingFormat,
-  DateSendingFormat,
   createConvert,
 } from "./../../commen/functions/date_formater";
 import CustomUpload from "./../../components/elements/upload/Upload";
@@ -32,24 +25,17 @@ import { Row, Col, Container } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
   CreateToDoList,
-  GetTodoListByUser,
-  HideNotificationTodo,
   uploadDocumentsTaskApi,
   saveTaskDocumentsAndAssigneesApi,
 } from "./../../store/actions/ToDoList_action";
 import { useDispatch, useSelector } from "react-redux";
-import TodoList from "../pages/todolist/Todolist";
-import { FileUploadToDo } from "../../store/actions/Upload_action";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import TextFieldTime from "../../components/elements/input_field_time/Input_field";
 
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
-  const timePickerRef = useRef();
   const [fileSize, setFileSize] = useState(0);
-  const [visible, setVisible] = useState(false);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
@@ -90,8 +76,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
     }
   }, [currentLanguage]);
