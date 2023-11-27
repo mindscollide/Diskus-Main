@@ -84,6 +84,7 @@ const ProposedMeetingDate = ({
       startDateView: "",
     },
   ]);
+
   const callApis = async () => {
     let Data = {
       MeetingID: Number(currentMeeting),
@@ -91,6 +92,7 @@ const ProposedMeetingDate = ({
     await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
     await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
   };
+
   useEffect(() => {
     callApis();
   }, []);
@@ -111,70 +113,18 @@ const ProposedMeetingDate = ({
     } catch {}
   }, [getAllMeetingDetails]);
 
-  //Onchange Function For DatePicker inAdd datess First
-
-  // const changeDateStartHandler = (date, index) => {
-  //   let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-  //   let DateDate = convertGMTDateintoUTC(date);
-  //   const updatedRows = [...rows];
-  //   updatedRows[index].selectedOption = DateDate.slice(0, 8);
-  //   updatedRows[index].selectedOptionView = meetingDateValueFormat;
-  //   updatedRows[index].isComing = false;
-  //   updatedRows[index].proposedDateID = 0;
-
-  //   setRows(updatedRows);
-  // };
-
-  // const handleStartDateChange = (index, date) => {
-  //   let newDate = new Date(date);
-  //   if (newDate instanceof Date && !isNaN(newDate)) {
-  //     const hours = ("0" + newDate.getUTCHours()).slice(-2);
-  //     const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-  //     const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-  //     // Format the time as HH:mm:ss
-  //     const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-  //       .toString()
-  //       .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-  //     const updatedRows = [...rows];
-  //     updatedRows[index].startDate = formattedTime;
-  //     updatedRows[index].startDateView = newDate;
-  //     updatedRows[index].isComing = false;
-  //     updatedRows[index].proposedDateID = 0;
-  //     setRows(updatedRows);
-  //     // You can use 'formattedTime' as needed.
-  //   } else {
-  //     console.error("Invalid date and time object:", date);
-  //   }
-  // };
-
-  // const handleEndDateChange = (index, date) => {
-  //   let newDate = new Date(date);
-  //   if (newDate instanceof Date && !isNaN(newDate)) {
-  //     const hours = ("0" + newDate.getUTCHours()).slice(-2);
-  //     const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-  //     const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
-
-  //     // Format the time as HH:mm:ss
-  //     const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-  //       .toString()
-  //       .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-
-  //     const updatedRows = [...rows];
-  //     updatedRows[index].endDate = formattedTime;
-  //     updatedRows[index].endDateView = newDate;
-  //     updatedRows[index].isComing = false;
-  //     updatedRows[index].proposedDateID = 0;
-
-  //     setRows(updatedRows);
-  //   } else {
-  //     console.error("Invalid date and time object:", date);
-  //   }
-  // };
-
+  // On Change Function IN Mapped Rows
   const changeDateStartHandler = (date, index) => {
+    console.log(date, "changeDateStartHandlerchangeDateStartHandler");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    console.log(
+      meetingDateValueFormat,
+      "changeDateStartHandlerchangeDateStartHandler"
+    );
+
     let DateDate = convertGMTDateintoUTC(date);
+    console.log(DateDate, "changeDateStartHandlerchangeDateStartHandler");
+
     const updatedRows = [...rows];
 
     if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
