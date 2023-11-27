@@ -81,7 +81,7 @@ const Minutes = ({
   const [isEdit, setisEdit] = useState(false);
   const [updateData, setupdateData] = useState(null);
   const [showMore, setShowMore] = useState(false);
-  const [generalShowMore, setGeneralShowMore] = useState(false);
+  const [generalShowMore, setGeneralShowMore] = useState(null);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -558,8 +558,15 @@ const Minutes = ({
   };
 
   const handleshowMore = (index) => {
-    setGeneralShowMore(index);
-    setShowMore(!showMore);
+    if (generalShowMore === index) {
+      // If the clicked index is the same as the expanded one, collapse it
+      setGeneralShowMore(null);
+      setShowMore(false);
+    } else {
+      // If a different index is clicked, expand the clicked section and collapse the previous one
+      setGeneralShowMore(index);
+      setShowMore(true);
+    }
   };
 
   const handleUNsaveChangesModal = () => {
@@ -1005,7 +1012,9 @@ const Minutes = ({
                                     className={styles["Show_more"]}
                                     onClick={() => handleshowMore(index)}
                                   >
-                                    {t("Show-more")}
+                                    {generalShowMore === index
+                                      ? t("Hide-details")
+                                      : t("Show-more")}
                                   </span>
                                 </Col>
                               </Row>
