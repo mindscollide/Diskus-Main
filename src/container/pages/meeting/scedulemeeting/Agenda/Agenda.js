@@ -980,19 +980,19 @@ const Agenda = ({
                 /> */}
                 <Button
                   text={t("Previous")}
-                  className={styles["Agenda_Buttons"]}
+                  className={styles["Save_Agenda_btn"]}
                   onClick={handlePerviousAgenda}
                 />
                 <Button
                   text={t("Next")}
-                  className={styles["Agenda_Buttons"]}
+                  className={styles["Save_Agenda_btn"]}
                   onClick={handleNextAgenda}
                 />
 
                 <Button
                   onClick={saveAgendaData}
                   text={t("Save")}
-                  className={styles["Agenda_Buttons"]}
+                  className={styles["Save_Agenda_btn"]}
                 />
                 {Number(editorRole.status) === 11 ||
                 Number(editorRole.status) === 12 ? (
