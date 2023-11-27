@@ -39,6 +39,7 @@ const Minutes = ({
   setSceduleMeeting,
   setMeetingMaterial,
   setactionsPage,
+  setDataroomMapFolderId,
 }) => {
   // Newly Implemented
   const navigate = useNavigate();

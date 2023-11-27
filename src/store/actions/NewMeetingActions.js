@@ -330,70 +330,69 @@ const handlegetAllMeetingTypesFailed = (message) => {
 
 const GetAllMeetingTypesNewFunction = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(handlegetAllMeetingTypesInit());
     let form = new FormData();
     form.append("RequestMethod", getallMeetingType.RequestMethod);
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllMeetingTypesNewFunction(navigate, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAllMeetingTypes_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                handlegetAllMeetingTypesSuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAllMeetingTypes_02".toLowerCase()
-                )
-            ) {
-              dispatch(handlegetAllMeetingTypesFailed(t("No-record-found")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAllMeetingTypes_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                handlegetAllMeetingTypesFailed(t("Something-went-wrong"))
-              );
-            } else {
-              dispatch(
-                handlegetAllMeetingTypesFailed(t("Something-went-wrong"))
-              );
-            }
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API request
+        await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAllMeetingTypes_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              handlegetAllMeetingTypesSuccess(
+                response.data.responseResult,
+                t("Record-found")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAllMeetingTypes_02".toLowerCase()
+              )
+          ) {
+            dispatch(handlegetAllMeetingTypesFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAllMeetingTypes_03".toLowerCase()
+              )
+          ) {
+            dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
           } else {
             dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
           }
         } else {
           dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
         }
-      })
-      .catch((response) => {
+      } else {
         dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
-      });
+      }
+    } catch (error) {
+      // Retry the API request in case of an error
+      await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+    }
   };
 };
 
@@ -673,62 +672,58 @@ const handlegetallReminderFrequencyFailed = (message) => {
 //Functions Get All Meeting Reminder Frequency API
 const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(handlegetallReminderFrequencyInit());
+  return async (dispatch) => {
+    // dispatch(handlegetallReminderFrequencyInit());
     let form = new FormData();
     form.append("RequestMethod", GetMeetingNewFrequencyReminder.RequestMethod);
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingReminders_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                handlegetallReminderFrequencySuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingReminders_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                handlegetallReminderFrequencyFailed(t("No-record-found"))
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingReminders_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
-              );
-            } else {
-              dispatch(
-                handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
-              );
-            }
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API request
+        await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetMeetingReminders_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              handlegetallReminderFrequencySuccess(
+                response.data.responseResult,
+                t("Record-found")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetMeetingReminders_02".toLowerCase()
+              )
+          ) {
+            dispatch(handlegetallReminderFrequencyFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetMeetingReminders_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
+            );
           } else {
             dispatch(
               handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
@@ -739,12 +734,15 @@ const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
             handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
           );
         }
-      })
-      .catch((response) => {
+      } else {
         dispatch(
           handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
         );
-      });
+      }
+    } catch (error) {
+      // Retry the API request in case of an error
+      await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+    }
   };
 };
 
@@ -773,7 +771,7 @@ const handleReucrringFailed = (message) => {
 const GetAllMeetingRecurringApiNew = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(handleReucrringInit());
+    // dispatch(handleReucrringInit());
     let form = new FormData();
     form.append("RequestMethod", GetAllRecurringNewMeeting.RequestMethod);
     axios({
@@ -1881,11 +1879,12 @@ const showGetAllMeetingDetialsInit = () => {
   };
 };
 
-const showGetAllMeetingDetialsSuccess = (response, message) => {
+const showGetAllMeetingDetialsSuccess = (response, message, loader) => {
   return {
     type: actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -1902,9 +1901,10 @@ const cleareAllState = () => {
 };
 //GET ALL MEETING DETAILS API Function
 const GetAllMeetingDetailsApiFunc = (
-  Data,
   navigate,
   t,
+  Data,
+  loader,
   setCurrentMeetingID,
   setSceduleMeeting,
   setDataroomMapFolderId
@@ -1928,9 +1928,10 @@ const GetAllMeetingDetailsApiFunc = (
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             GetAllMeetingDetailsApiFunc(
-              Data,
               navigate,
               t,
+              Data,
+              loader,
               setCurrentMeetingID,
               setSceduleMeeting,
               setDataroomMapFolderId
@@ -1948,7 +1949,8 @@ const GetAllMeetingDetailsApiFunc = (
               dispatch(
                 showGetAllMeetingDetialsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  t("Record-found"),
+                  loader
                 )
               );
               localStorage.setItem(
@@ -2284,11 +2286,12 @@ const showGetAllProposedMeetingDatesInit = () => {
   };
 };
 
-const showGetAllProposedMeetingDatesSuccess = (response, message) => {
+const showGetAllProposedMeetingDatesSuccess = (response, message, flag) => {
   return {
     type: actions.GET_ALL_PRPOSED_DATES_SUCCESS,
     response: response,
     message: message,
+    loader: flag,
   };
 };
 
@@ -2299,7 +2302,7 @@ const showGetAllProposedMeetingDatesFailed = (message) => {
   };
 };
 
-const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
+const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showGetAllProposedMeetingDatesInit());
@@ -2317,7 +2320,7 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+          dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2327,12 +2330,23 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
                   "Meeting_MeetingServiceManager_GetAllMeetingProposedDates_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                showGetAllProposedMeetingDatesSuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
+              if (flag) {
+                dispatch(
+                  showGetAllProposedMeetingDatesSuccess(
+                    response.data.responseResult,
+                    t("Record-found"),
+                    true
+                  )
+                );
+              } else {
+                dispatch(
+                  showGetAllProposedMeetingDatesSuccess(
+                    response.data.responseResult,
+                    t("Record-found"),
+                    false
+                  )
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3303,9 +3317,7 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
           ) {
-            dispatch(
-              showAllGeneralMinutesFailed(t("Something-went-wrong"))
-            );
+            dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
           }
         } else {
           dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
