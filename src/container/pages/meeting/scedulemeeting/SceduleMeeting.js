@@ -426,6 +426,7 @@ const SceduleMeeting = ({
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
+                setEdiorRole={setEdiorRole}
                 setDataroomMapFolderId={setDataroomMapFolderId}
               />
             )}
@@ -443,6 +444,7 @@ const SceduleMeeting = ({
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
                 setDataroomMapFolderId={setDataroomMapFolderId}
+                setEdiorRole={setEdiorRole}
               />
             )}
             {agenda && (
@@ -458,6 +460,7 @@ const SceduleMeeting = ({
                 setParticipants={setParticipants}
                 dataroomMapFolderId={dataroomMapFolderId}
                 setDataroomMapFolderId={setDataroomMapFolderId}
+                setEdiorRole={setEdiorRole}
               />
             )}
             {meetingMaterial && (
@@ -472,6 +475,7 @@ const SceduleMeeting = ({
                 editorRole={editorRole}
                 setAgenda={setAgenda}
                 setDataroomMapFolderId={setDataroomMapFolderId}
+                setEdiorRole={setEdiorRole}
               />
             )}
             {minutes && (
@@ -486,6 +490,7 @@ const SceduleMeeting = ({
                 editorRole={editorRole}
                 setactionsPage={setactionsPage}
                 setDataroomMapFolderId={setDataroomMapFolderId}
+                setEdiorRole={setEdiorRole}
               />
             )}
             {actionsPage && (
@@ -501,6 +506,7 @@ const SceduleMeeting = ({
                 editorRole={editorRole}
                 dataroomMapFolderId={dataroomMapFolderId}
                 setDataroomMapFolderId={setDataroomMapFolderId}
+                setEdiorRole={setEdiorRole}
               />
             )}
             {polls && (
@@ -514,6 +520,7 @@ const SceduleMeeting = ({
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
                 setDataroomMapFolderId={setDataroomMapFolderId}
+                setEdiorRole={setEdiorRole}
               />
             )}
             {attendance && (
@@ -526,6 +533,7 @@ const SceduleMeeting = ({
                 setAttendance={setAttendance}
                 setSceduleMeeting={setSceduleMeeting}
                 setDataroomMapFolderId={setDataroomMapFolderId}
+                setEdiorRole={setEdiorRole}
               />
             )}
           </Paper>

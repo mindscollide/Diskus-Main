@@ -14,11 +14,8 @@ import { useDispatch } from "react-redux";
 import {
   cleareAllState,
   CleareMessegeNewMeeting,
-  ClearMessegeMeetingdetails,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
-  showGetAllMeetingDetialsFailed,
-  showGetAllMeetingDetialsInit,
 } from "../../../../../store/actions/NewMeetingActions";
 import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
 import { useSelector } from "react-redux";
@@ -43,7 +40,6 @@ const ViewMeetingDetails = ({
   setAgenda,
   setEdiorRole,
   setCurrentMeetingID,
-  setSceduleMeeting,
   setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
@@ -52,12 +48,6 @@ const ViewMeetingDetails = ({
   const { NewMeetingreducer } = useSelector((state) => state);
   const [cancelModalView, setCancelModalView] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(0);
-  console.log(
-    NewMeetingreducer,
-    editorRole,
-    "MeetingOrganizersReducerMeetingOrganizersReducer"
-  );
-  console.log(editorRole, "editorRoleeditorRoleeditorRole");
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -83,6 +73,7 @@ const ViewMeetingDetails = ({
     flag: false,
     message: "",
   });
+
   const [meetingDetails, setMeetingDetailsData] = useState({
     MeetingTitle: "",
     MeetingType: 0,
@@ -112,25 +103,25 @@ const ViewMeetingDetails = ({
     IsVideoCall: false,
   });
 
-  useEffect(() => {
+  const callApiOnComponentMount = async () => {
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(
+    await dispatch(
       GetAllMeetingDetailsApiFunc(
         navigate,
         t,
         Data,
-        loader,
-        setCurrentMeetingID,
-        setSceduleMeeting,
+        true,
+        setAdvanceMeetingModalID,
+        setViewAdvanceMeetingModal,
         setDataroomMapFolderId
       )
     );
     let Data2 = {
       MeetingID: Number(advanceMeetingModalID),
     };
-    dispatch(
+    await dispatch(
       FetchMeetingURLClipboard(
         Data2,
         navigate,
@@ -139,6 +130,10 @@ const ViewMeetingDetails = ({
         currentOrganization
       )
     );
+  };
+
+  useEffect(() => {
+    callApiOnComponentMount();
     return () => {
       setMeetingDetailsData({
         MeetingTitle: "",
@@ -442,11 +437,13 @@ const ViewMeetingDetails = ({
                     dispatch(
                       UpdateOrganizersMeeting(
                         navigate,
-                        endMeetingRequest,
                         t,
                         4,
-                        setViewAdvanceMeetingModal,
-                        setAdvanceMeetingModalID
+                        endMeetingRequest,
+                        setEdiorRole,
+                        setAdvanceMeetingModalID,
+                        setDataroomMapFolderId,
+                        setViewAdvanceMeetingModal
                       )
                     )
                   }

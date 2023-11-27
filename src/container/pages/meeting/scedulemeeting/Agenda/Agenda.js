@@ -53,6 +53,7 @@ const Agenda = ({
   currentMeeting,
   isEditMeeting,
   editorRole,
+  setEdiorRole,
   dataroomMapFolderId,
   setMeetingMaterial,
   setAgenda,
@@ -268,15 +269,15 @@ const Agenda = ({
     dispatch(
       UpdateOrganizersMeeting(
         navigate,
-        Data,
         t,
         5,
-        setPublishState,
+        Data,
+        setEdiorRole,
         setAdvanceMeetingModalID,
-        setViewFlag,
-        setEditFlag,
-        setCalendarViewModal,
-        setSceduleMeeting
+        setDataroomMapFolderId,
+        setSceduleMeeting,
+        setPublishState,
+        setCalendarViewModal
       )
     );
     // setSceduleMeeting(false);
