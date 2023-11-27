@@ -3903,7 +3903,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return async (dispatch) => {
-    dispatch(showGetAllAgendaWiseMinutesInit());
+    // dispatch(showGetAllAgendaWiseMinutesInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getAllAgendaWiseMinutes.RequestMethod);
@@ -3937,6 +3937,7 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
               MDID: Number(currentMeeting),
             };
             // Call AllDocumentsForAgendaWiseMinutesApiFunc and wait for it to complete
+            console.log("loader check");
             await dispatch(
               AllDocumentsForAgendaWiseMinutesApiFunc(
                 navigate,
@@ -6533,6 +6534,7 @@ const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                 "DataRoom_DataRoomManager_GetAllAgendaWiseMinuteDocumentsForMeeting_01".toLowerCase()
               )
           ) {
+            console.log("loader check");
             await dispatch(
               showAllDocumentsAgendaWiseMinutesSuccess(
                 response.data.responseResult,
