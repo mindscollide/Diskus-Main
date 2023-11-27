@@ -26,6 +26,7 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
+  margin-left: 10px;
 }
 
 .JoinMeetingButton:is(:active, :hover, :focus, :focus-visible) {
@@ -36,6 +37,7 @@
   color: #fff !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
+  margin-left: 10px;
 }
 
 .ScrollerMeeting_Active {
@@ -158,6 +160,6 @@ img.clipboard-icon {
   cursor: pointer;
 }
 
-img.blue-icon {
+/* img.blue-icon {
   margin-left: 10px;
-}
+} */

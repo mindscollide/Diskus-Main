@@ -1288,6 +1288,7 @@ const FetchMeetingURLApi = (
               };
               if (activeCallStatus === true && meetingStatus === false) {
                 dispatch(LeaveCall(Data, navigate, t));
+                localStorage.setItem("isCaller", false);
               }
               localStorage.setItem("CallType", 2);
               localStorage.setItem("callTypeID", 2);
