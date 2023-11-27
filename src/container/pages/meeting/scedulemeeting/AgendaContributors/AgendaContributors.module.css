@@ -94,7 +94,12 @@
 }
 
 .OverAll_padding {
-  padding: 0px 30px !important;
+  padding: 6px 30px !important;
+}
+
+.option {
+  width: 100% !important;
+  overflow-x: hidden !important;
 }
 
 .option:nth-child(1) {

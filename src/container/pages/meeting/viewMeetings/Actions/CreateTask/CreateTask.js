@@ -96,6 +96,129 @@ const CreateTask = ({
   }, []);
 
   useEffect(() => {
+    let createMeetingTaskData = NewMeetingreducer.getMeetingusers;
+    if (createMeetingTaskData !== undefined && createMeetingTaskData !== null) {
+      let newmembersArray = [];
+      if (Object.keys(createMeetingTaskData).length > 0) {
+        if (createMeetingTaskData.meetingOrganizers.length > 0) {
+          createMeetingTaskData.meetingOrganizers.map(
+            (MorganizerData, MorganizerIndex) => {
+              let MeetingOrganizerData = {
+                value: MorganizerData.userID,
+                label: (
+                  <>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
+                            height="16.45px"
+                            width="18.32px"
+                            alt=""
+                            draggable="false"
+                            className={styles["Image_class_Agenda"]}
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {MorganizerData.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  </>
+                ),
+                type: 1,
+              };
+              newmembersArray.push(MeetingOrganizerData);
+            }
+          );
+        }
+        if (createMeetingTaskData.meetingAgendaContributors.length > 0) {
+          createMeetingTaskData.meetingAgendaContributors.map(
+            (meetAgendaContributor, meetAgendaContributorIndex) => {
+              let MeetingAgendaContributorData = {
+                value: meetAgendaContributor.userID,
+                label: (
+                  <>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={GroupIcon}
+                            height="16.45px"
+                            alt=""
+                            width="18.32px"
+                            draggable="false"
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {meetAgendaContributor.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  </>
+                ),
+                type: 2,
+              };
+              newmembersArray.push(MeetingAgendaContributorData);
+            }
+          );
+        }
+        if (createMeetingTaskData.meetingParticipants.length > 0) {
+          createMeetingTaskData.meetingParticipants.map(
+            (meetParticipants, meetParticipantsIndex) => {
+              let MeetingParticipantsData = {
+                value: meetParticipants.userID,
+                label: (
+                  <>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex gap-2 align-items-center"
+                        >
+                          <img
+                            src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
+                            height="16.45px"
+                            width="18.32px"
+                            alt=""
+                            draggable="false"
+                          />
+                          <span className={styles["NameDropDown"]}>
+                            {meetParticipants.userName}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  </>
+                ),
+                type: 3,
+              };
+              newmembersArray.push(MeetingParticipantsData);
+            }
+          );
+        }
+      }
+      console.log(newmembersArray, "pollMeetingDatapollMeetingData");
+
+      setTaskMemberSelect(newmembersArray);
+    } else {
+      setTaskMemberSelect([]);
+    }
+  }, [NewMeetingreducer.getMeetingusers]);
+
+  useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
@@ -228,8 +351,11 @@ const CreateTask = ({
     };
     let newData = {
       TaskID: Number(createTaskID),
-      MeetingID: currentMeeting,
-      AgendaID: createTaskDetails.AgendaID.toString(),
+      MeetingID: Number(currentMeeting),
+      AgendaID:
+        createTaskDetails.AgendaID !== 0
+          ? createTaskDetails.AgendaID.toString()
+          : "-1",
     };
     await dispatch(
       saveTaskDocumentsAndAssigneesApi(
@@ -249,129 +375,6 @@ const CreateTask = ({
       documentsUploadCall(dataroomMapFolderId);
     }
   }, [createTaskID]);
-
-  useEffect(() => {
-    let createMeetingTaskData = NewMeetingreducer.getMeetingusers;
-    if (createMeetingTaskData !== undefined && createMeetingTaskData !== null) {
-      let newmembersArray = [];
-      if (Object.keys(createMeetingTaskData).length > 0) {
-        if (createMeetingTaskData.meetingOrganizers.length > 0) {
-          createMeetingTaskData.meetingOrganizers.map(
-            (MorganizerData, MorganizerIndex) => {
-              let MeetingOrganizerData = {
-                value: MorganizerData.userID,
-                label: (
-                  <>
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
-                          <img
-                            src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
-                            height="16.45px"
-                            width="18.32px"
-                            alt=""
-                            draggable="false"
-                            className={styles["Image_class_Agenda"]}
-                          />
-                          <span className={styles["NameDropDown"]}>
-                            {MorganizerData.userName}
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
-                  </>
-                ),
-                type: 1,
-              };
-              newmembersArray.push(MeetingOrganizerData);
-            }
-          );
-        }
-        if (createMeetingTaskData.meetingAgendaContributors.length > 0) {
-          createMeetingTaskData.meetingAgendaContributors.map(
-            (meetAgendaContributor, meetAgendaContributorIndex) => {
-              let MeetingAgendaContributorData = {
-                value: meetAgendaContributor.userID,
-                label: (
-                  <>
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
-                          <img
-                            src={GroupIcon}
-                            height="16.45px"
-                            alt=""
-                            width="18.32px"
-                            draggable="false"
-                          />
-                          <span className={styles["NameDropDown"]}>
-                            {meetAgendaContributor.userName}
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
-                  </>
-                ),
-                type: 2,
-              };
-              newmembersArray.push(MeetingAgendaContributorData);
-            }
-          );
-        }
-        if (createMeetingTaskData.meetingParticipants.length > 0) {
-          createMeetingTaskData.meetingParticipants.map(
-            (meetParticipants, meetParticipantsIndex) => {
-              let MeetingParticipantsData = {
-                value: meetParticipants.userID,
-                label: (
-                  <>
-                    <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
-                          <img
-                            src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
-                            height="16.45px"
-                            width="18.32px"
-                            alt=""
-                            draggable="false"
-                          />
-                          <span className={styles["NameDropDown"]}>
-                            {meetParticipants.userName}
-                          </span>
-                        </Col>
-                      </Row>
-                    </>
-                  </>
-                ),
-                type: 3,
-              };
-              newmembersArray.push(MeetingParticipantsData);
-            }
-          );
-        }
-      }
-      console.log(newmembersArray, "pollMeetingDatapollMeetingData");
-
-      setTaskMemberSelect(newmembersArray);
-    } else {
-      setTaskMemberSelect([]);
-    }
-  }, [NewMeetingreducer.getMeetingusers]);
 
   // useEffect for agenda Dropdown
   useEffect(() => {
@@ -462,7 +465,7 @@ const CreateTask = ({
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["SubHeading"]}>
-                      {t("Actions-to-take")}{" "}
+                      {t("Task-title")}{" "}
                       <span className={styles["Steric"]}>*</span>
                     </span>
                   </Col>
@@ -470,6 +473,7 @@ const CreateTask = ({
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <TextField
+                      placeholder={t("Task-title")}
                       labelClass={"d-none"}
                       change={HandleChange}
                       name={"ActionsToTake"}
@@ -593,7 +597,7 @@ const CreateTask = ({
                                   : `${styles["errorMessage-inLogin_hidden"]}`
                               }
                             >
-                              {t("Please-select-date")}
+                              {t("Enter-date-must-Action")}
                             </p>
                           </Col>
                         </Row>
@@ -632,7 +636,7 @@ const CreateTask = ({
                               : `${styles["errorMessage-inLogin_hidden"]}`
                           }
                         >
-                          {t("Description-is-required")}
+                          {t("Description-is-required-Action")}
                         </p>
                       </Col>
                     </Row>
@@ -840,7 +844,10 @@ const CreateTask = ({
               </Col>
             </Row>
             {NewMeetingreducer.unsavedActions && (
-              <UnsavedActions setCreateaTask={setCreateaTask} />
+              <UnsavedActions
+                setCreateaTask={setCreateaTask}
+                currentMeeting={currentMeeting}
+              />
             )}
           </section>
         </>

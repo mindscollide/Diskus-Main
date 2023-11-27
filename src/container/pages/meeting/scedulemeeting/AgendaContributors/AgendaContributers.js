@@ -573,6 +573,11 @@ const AgendaContributers = ({
     }
   }, [NewMeetingreducer.getAllAgendaContributors]);
 
+  console.log(
+    NewMeetingreducer.getAllAgendaContributor,
+    "gdjvwgjvwjehvcjhwevc"
+  );
+
   useEffect(() => {
     if (rowsData.length > 0) {
       let getifTrue = rowsData.some((data, index) => data.isEdit === false);

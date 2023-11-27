@@ -7,11 +7,15 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-const CancelActions = ({ setSceduleMeeting }) => {
+import { getMeetingTaskMainApi } from "../../../../../../store/actions/Action_Meeting";
+const CancelActions = ({ setSceduleMeeting, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
 
   const handleNOFunctionality = () => {
     dispatch(showCancelActions(false));
@@ -19,6 +23,16 @@ const CancelActions = ({ setSceduleMeeting }) => {
 
   const handleYesFunctionality = () => {
     setSceduleMeeting(false);
+    let meetingTaskData = {
+      MeetingID: Number(currentMeeting),
+      Date: "",
+      Title: "",
+      AssignedToName: "",
+      UserID: Number(userID),
+      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+    };
+    dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
   };
 
   return (
