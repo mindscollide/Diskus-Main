@@ -25,7 +25,6 @@ const ViewMeetingModal = ({
   editorRole,
   setEdiorRole,
   dataroomMapFolderId,
-  setCurrentMeetingID,
   setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
@@ -357,7 +356,6 @@ const ViewMeetingModal = ({
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   editorRole={editorRole}
                   setEdiorRole={setEdiorRole}
-                  setCurrentMeetingID={setCurrentMeetingID}
                   setDataroomMapFolderId={setDataroomMapFolderId}
                 />
               )}
@@ -436,7 +434,7 @@ const ViewMeetingModal = ({
                       setEdiorRole={setEdiorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                      setCurrentMeetingID={setCurrentMeetingID}
+                      setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                     />
                   )}
                   {actionsPage && (

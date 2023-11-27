@@ -35,7 +35,7 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
 
-const AgendaWise = ({ setCurrentMeetingID }) => {
+const AgendaWise = ({ advanceMeetingModalID }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -88,14 +88,14 @@ const AgendaWise = ({ setCurrentMeetingID }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: Number(setCurrentMeetingID),
+      MeetingID: Number(advanceMeetingModalID),
     };
     dispatch(
       GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
         Data,
         navigate,
         t,
-        setCurrentMeetingID
+        advanceMeetingModalID
       )
     );
   }, []);
@@ -389,13 +389,18 @@ const AgendaWise = ({ setCurrentMeetingID }) => {
 
     let docsData = {
       FK_MeetingAgendaMinutesID: minuteID,
-      FK_MDID: setCurrentMeetingID,
+      FK_MDID: advanceMeetingModalID,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
     dispatch(
-      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, setCurrentMeetingID)
+      SaveAgendaWiseDocumentsApiFunc(
+        navigate,
+        docsData,
+        t,
+        advanceMeetingModalID
+      )
     );
 
     setFileAttachments([]);
@@ -538,20 +543,25 @@ const AgendaWise = ({ setCurrentMeetingID }) => {
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
     console.log(messages, "messagesmessages");
-    console.log(setCurrentMeetingID, "messagesmessages");
+    console.log(advanceMeetingModalID, "messagesmessages");
 
     console.log(newfile, "messagesmessages");
 
     let docsData = {
       FK_MeetingAgendaMinutesID: updateData.minuteID,
-      FK_MDID: setCurrentMeetingID,
+      FK_MDID: advanceMeetingModalID,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
     console.log(docsData, "messagesmessages");
     dispatch(
-      SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, setCurrentMeetingID)
+      SaveAgendaWiseDocumentsApiFunc(
+        navigate,
+        docsData,
+        t,
+        advanceMeetingModalID
+      )
     );
     setAddNoteFields({
       ...addNoteFields,
@@ -571,7 +581,7 @@ const AgendaWise = ({ setCurrentMeetingID }) => {
     console.log(AgendaWiseData, "AgendaWiseDataAgendaWiseData");
 
     let Data = {
-      MDID: setCurrentMeetingID,
+      MDID: advanceMeetingModalID,
       MeetingAgendaMinutesID: AgendaWiseData.minuteID,
     };
 
@@ -580,7 +590,7 @@ const AgendaWise = ({ setCurrentMeetingID }) => {
         navigate,
         Data,
         t,
-        setCurrentMeetingID,
+        advanceMeetingModalID,
         AgendaWiseData,
         agendaSelect.agendaSelectOptions.id
       )
