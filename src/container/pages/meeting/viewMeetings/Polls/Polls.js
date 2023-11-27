@@ -39,7 +39,7 @@ import {
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
 
 const Polls = ({
-  setSceduleMeeting,
+  setViewAdvanceMeetingModal,
   setPolls,
   setAttendance,
   currentMeeting,
@@ -421,7 +421,7 @@ const Polls = ({
   };
 
   const handleCancelPolls = () => {
-    setSceduleMeeting(false);
+    setViewAdvanceMeetingModal(false);
     let searchData = {
       Date: "",
       Title: "",
@@ -700,7 +700,9 @@ const Polls = ({
             )}
 
             {NewMeetingreducer.cancelPolls && (
-              <CancelPolls setSceduleMeeting={setSceduleMeeting} />
+              <CancelPolls
+                setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+              />
             )}
             <Notification
               setOpen={setOpen}

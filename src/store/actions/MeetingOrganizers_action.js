@@ -253,16 +253,18 @@ const updateOrganizerMeetingStatus_fail = (message) => {
 // Save Meeting Organizers Api
 const UpdateOrganizersMeeting = (
   navigate,
-  Data,
   t,
   route,
-  setPublishState,
+  Data,
+  setEdiorRole,
   setAdvanceMeetingModalID,
+  setDataroomMapFolderId,
+  // THIS IS FOR OPEN MODAL FOR QUICK OR FOR ADVANCE
+  setSceduleMeeting,
+  // THIS IS FOR QUICK MEETINGS CHECK
   setViewFlag,
   setEditFlag,
-  setCalendarViewModal,
-  setSceduleMeeting,
-  setEdiorRole
+  setCalendarViewModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -284,16 +286,18 @@ const UpdateOrganizersMeeting = (
           dispatch(
             UpdateOrganizersMeeting(
               navigate,
-              Data,
               t,
               route,
-              setPublishState,
+              Data,
+              setEdiorRole,
               setAdvanceMeetingModalID,
+              setDataroomMapFolderId,
+              // THIS IS FOR OPEN MODAL FOR QUICK OR FOR ADVANCE
+              setSceduleMeeting,
+              // THIS IS FOR QUICK MEETINGS CHECK
               setViewFlag,
               setEditFlag,
-              setCalendarViewModal,
-              setSceduleMeeting,
-              setEdiorRole
+              setCalendarViewModal
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -305,43 +309,29 @@ const UpdateOrganizersMeeting = (
                   "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                updateOrganizerMeetingStatus_success(
-                  response.data.responseResult,
-                  t("Meeting-started-successfully")
-                )
-              );
-              if (route) {
+              try {
+                await dispatch(
+                  updateOrganizerMeetingStatus_success(
+                    response.data.responseResult,
+                    t("Meeting-started-successfully")
+                  )
+                );
                 if (route === 3) {
                   let requestDataForMeetingDetails = {
                     MeetingID: Number(Data.MeetingID),
                   };
                   await dispatch(
                     GetAllMeetingDetailsApiFunc(
-                      requestDataForMeetingDetails,
                       navigate,
-                      t
+                      t,
+                      requestDataForMeetingDetails,
+                      true,
+                      setAdvanceMeetingModalID,
+                      setSceduleMeeting,
+                      setDataroomMapFolderId
                     )
                   );
-                  setAdvanceMeetingModalID(Data.MeetingID);
-                  setPublishState(true);
-                  setEdiorRole({
-                    status: "10",
-                    role: "Organizer",
-                  });
-                } else if (route === 3) {
-                  let requestDataForMeetingDetails = {
-                    MeetingID: Number(Data.MeetingID),
-                  };
-                  await dispatch(
-                    GetAllMeetingDetailsApiFunc(
-                      requestDataForMeetingDetails,
-                      navigate,
-                      t
-                    )
-                  );
-                  setAdvanceMeetingModalID(null);
-                  setPublishState(false);
+                  // setPublishState(true);
                   setEdiorRole({
                     status: "10",
                     role: "Organizer",
@@ -362,7 +352,7 @@ const UpdateOrganizersMeeting = (
                     )
                   );
                   setAdvanceMeetingModalID(Data.MeetingID);
-                  setPublishState(false);
+                  // setPublishState(false);
                   setEdiorRole({
                     status: "10",
                     role: "Organizer",
@@ -391,9 +381,9 @@ const UpdateOrganizersMeeting = (
                   };
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else {
-                  setPublishState(Data.MeetingID);
+                  // setPublishState(Data.MeetingID);
                 }
-              }
+              } catch {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -25,9 +25,10 @@ const ViewMeetingModal = ({
   editorRole,
   setEdiorRole,
   dataroomMapFolderId,
+  setCurrentMeetingID,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
-  const { Loading } = useSelector((state) => state.NewMeetingreducer);
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
@@ -38,7 +39,6 @@ const ViewMeetingModal = ({
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
-  const [seduleMeeting, setSceduleMeeting] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -357,6 +357,8 @@ const ViewMeetingModal = ({
                   setAdvanceMeetingModalID={setAdvanceMeetingModalID}
                   editorRole={editorRole}
                   setEdiorRole={setEdiorRole}
+                  setCurrentMeetingID={setCurrentMeetingID}
+                  setDataroomMapFolderId={setDataroomMapFolderId}
                 />
               )}
               {organizers && (
@@ -434,13 +436,11 @@ const ViewMeetingModal = ({
                       setEdiorRole={setEdiorRole}
                       advanceMeetingModalID={advanceMeetingModalID}
                       setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-                      setSceduleMeeting={setSceduleMeeting}
                     />
                   )}
                   {actionsPage && (
                     <Actions
                       setPolls={setPolls}
-                      setSceduleMeeting={setViewAdvanceMeetingModal}
                       setMinutes={setMinutes}
                       setactionsPage={setactionsPage}
                       editorRole={editorRole}
@@ -462,7 +462,7 @@ const ViewMeetingModal = ({
                       setEdiorRole={setEdiorRole}
                       currentMeeting={advanceMeetingModalID}
                       setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                      setSceduleMeeting={setViewAdvanceMeetingModal}
+                      setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
                     />
                   )}
                   {attendance && (
