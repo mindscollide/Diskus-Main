@@ -158,6 +158,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       CallTypeID: currentCallType,
     };
     dispatch(LeaveCall(Data, navigate, t));
+    localStorage.setItem("isCaller", false);
     const emptyArray = [];
     localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
     setParticipantStatus([]);

@@ -65,6 +65,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   let callerObject = localStorage.getItem("callerStatusObject");
   let currentCallType = Number(localStorage.getItem("CallType"));
   let meetingTitle = localStorage.getItem("meetingTitle");
+  let isCallerFlag = JSON.parse(localStorage.getItem("isCaller"));
 
   const dispatch = useDispatch();
 
@@ -244,10 +245,13 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       CallTypeID: currentCallType,
     };
     dispatch(LeaveCall(Data, navigate, t));
+    localStorage.setItem("isCaller", false);
+
     const emptyArray = [];
     localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
     setParticipantStatus([]);
     localStorage.setItem("activeCall", false);
+    localStorage.setItem("isCaller", false);
     dispatch(normalizeVideoPanelFlag(false));
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
@@ -327,7 +331,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   return (
     <>
       <Row className="mb-4">
-        {(currentCallType === 2 || callTypeID === 2) && meetingTitle === "" ? (
+        {currentCallType === 2 && callTypeID === 2 && meetingTitle === "" ? (
           <Col lg={3} md={3} sm={12} className="mt-1">
             <p className="title-heading">{t("Group-call")}</p>
           </Col>
@@ -560,6 +564,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
           <Col lg={1} md={1} sm={12}></Col>
         </>
       </Row>
+
       <div ref={leaveModalPopupRef}>
         {videoFeatureReducer.LeaveCallModalFlag === true ? (
           <div className="leave-meeting-options leave-meeting-options-position">
