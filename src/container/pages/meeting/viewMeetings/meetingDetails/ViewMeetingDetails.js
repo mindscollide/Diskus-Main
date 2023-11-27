@@ -40,7 +40,6 @@ const ViewMeetingDetails = ({
   editorRole,
   setAgenda,
   setEdiorRole,
-  setCurrentMeetingID,
   setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
