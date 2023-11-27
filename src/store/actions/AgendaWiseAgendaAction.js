@@ -4,6 +4,7 @@ import { RefreshToken } from "./Auth_action";
 import { GetAllAgendaWiseMinutesApiFunc } from "./NewMeetingActions";
 import { getAllAgendaForAgendaWise } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
+import { Await } from "react-router-dom";
 
 const getAllAgendaForAgendaWiseInit = () => ({
   type: actions.GET_ALL_AGENDAWISE_AGENDA_INIT,
@@ -27,80 +28,81 @@ const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
   currentMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(getAllAgendaForAgendaWiseInit());
+  return async (dispatch) => {
+    await dispatch(getAllAgendaForAgendaWiseInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getAllAgendaForAgendaWise.RequestMethod);
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
-              Data,
-              navigate,
-              t,
-              currentMeeting
-            )
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                getAllAgendaForAgendaWiseSuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
 
-              let newData = {
-                MeetingID: currentMeeting,
-              };
-              dispatch(
-                GetAllAgendaWiseMinutesApiFunc(
-                  navigate,
-                  newData,
-                  t,
-                  currentMeeting
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_02".toLowerCase()
-                )
-            ) {
-              dispatch(getAllAgendaForAgendaWiseFailed(t("No-records-found")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                getAllAgendaForAgendaWiseFailed(t("Something-went-wrong"))
-              );
-            } else {
-              dispatch(
-                getAllAgendaForAgendaWiseFailed(t("Something-went-wrong"))
-              );
-            }
+    try {
+      const response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API request
+        await dispatch(
+          GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes(
+            Data,
+            navigate,
+            t,
+            currentMeeting
+          )
+        );
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_01".toLowerCase()
+              )
+          ) {
+            let newData = {
+              MeetingID: currentMeeting,
+            };
+
+            // Call GetAllAgendaWiseMinutesApiFunc and wait for it to complete
+            await dispatch(
+              GetAllAgendaWiseMinutesApiFunc(
+                navigate,
+                newData,
+                t,
+                currentMeeting
+              )
+            );
+
+            // Dispatch success after GetAllAgendaWiseMinutesApiFunc has completed
+            await dispatch(
+              getAllAgendaForAgendaWiseSuccess(
+                response.data.responseResult,
+                t("Record-found")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_02".toLowerCase()
+              )
+          ) {
+            dispatch(getAllAgendaForAgendaWiseFailed(t("No-records-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAdvanceMeetingAgendabyMeetingID_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              getAllAgendaForAgendaWiseFailed(t("Something-went-wrong"))
+            );
           } else {
             dispatch(
               getAllAgendaForAgendaWiseFailed(t("Something-went-wrong"))
@@ -109,11 +111,14 @@ const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
         } else {
           dispatch(getAllAgendaForAgendaWiseFailed(t("Something-went-wrong")));
         }
-      })
-      .catch((error) => {
+      } else {
         dispatch(getAllAgendaForAgendaWiseFailed(t("Something-went-wrong")));
-      });
+      }
+    } catch (error) {
+      dispatch(getAllAgendaForAgendaWiseFailed(t("Something-went-wrong")));
+    }
   };
 };
+
 
 export { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes };
