@@ -746,12 +746,12 @@ const AgendaContributers = ({
               />
               <Button
                 text={t("Previous")}
-                className={styles["Cancel_Organization"]}
+                className={styles["publish_button_AgendaContributor"]}
                 onClick={previousTabOrganizer}
               />
               <Button
                 text={t("Next")}
-                className={styles["Cancel_Organization"]}
+                className={styles["publish_button_AgendaContributor"]}
                 onClick={nextTabOrganizer}
               />
               {/* {((Number(editorRole.status) === 9 ||

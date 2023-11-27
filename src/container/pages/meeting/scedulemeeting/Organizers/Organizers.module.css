@@ -79,10 +79,9 @@
 .publish_button_Organization {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #fff !important;
-  color: #5a5a5a !important;
+  background: #6172d6 !important;
+  color: #fff !important;
   font-family: "MontserratSemiBold" !important;
 }
 
@@ -92,10 +91,9 @@
 .publish_button_Organization:focus-visible {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #fff !important;
-  color: #5a5a5a !important;
+  background: #6172d6 !important;
+  color: #fff !important;
   font-family: "MontserratSemiBold" !important;
 }
 

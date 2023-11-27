@@ -969,7 +969,7 @@ const Organizers = ({
 
                   <Button
                     text={t("Previous")}
-                    className={styles["Cancel_Organization"]}
+                    className={styles["publish_button_Organization"]}
                     onClick={previousTabOrganizer}
                   />
 

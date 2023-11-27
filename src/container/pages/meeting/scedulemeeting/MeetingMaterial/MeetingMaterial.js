@@ -41,6 +41,7 @@ const MeetingMaterial = ({
   setCalendarViewModal,
   editorRole,
   isEditMeeting,
+  setactionsPage,
   setDataroomMapFolderId,
   setEdiorRole,
 }) => {
@@ -195,8 +196,16 @@ const MeetingMaterial = ({
 
   const handleSaveAndNext = () => {
     // dispatch(ShowNextConfirmationModal(true));
-    setMeetingMaterial(false);
-    setMinutes(true);
+    if (
+      Number(editorRole.status) === 10 &&
+      editorRole.role === "Agenda Contributor"
+    ) {
+      setactionsPage(true);
+      setMeetingMaterial(false);
+    } else {
+      setMeetingMaterial(false);
+      setMinutes(true);
+    }
   };
   const handlePublish = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
@@ -282,18 +291,18 @@ const MeetingMaterial = ({
           {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} /> */}
           <Button
             text={t("Previous")}
-            className={styles["Cancel_Classname"]}
+            className={styles["Save_Classname"]}
             onClick={handlePreviousButtonMeetingMaterial}
           />
           <Button
             text={t("Next")}
-            className={styles["Cancel_Classname"]}
+            className={styles["Save_Classname"]}
             onClick={handleSaveAndNext}
             disableBtn={Number(editorRole.status) === 10 ? false : true}
           />
           <Button
             text={t("Save")}
-            className={styles["Cancel_Classname"]}
+            className={styles["Save_Classname"]}
             onClick={handleSaveAndNext}
           />
           {Number(editorRole.status) === 11 ||

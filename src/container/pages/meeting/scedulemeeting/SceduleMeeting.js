@@ -32,7 +32,7 @@ const SceduleMeeting = ({
   dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
-
+  console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRoleeditorRole");
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
@@ -284,21 +284,20 @@ const SceduleMeeting = ({
                   onClick={showMeetingMaterial}
                 />
                 <Button
-                  disableBtn={
-                    (Number(editorRole.status) === 1 ||
-                      Number(editorRole.status) === 11 ||
-                      Number(editorRole.status) === 12) &&
-                    (editorRole.role === "Organizer" ||
-                      editorRole.role === "Participant" ||
-                      editorRole.role === "Agenda Contributor") &&
-                    isEditMeeting === true
-                      ? true
-                      : Number(currentMeeting) === 0
-                      ? true
-                      : isEditMeeting === false
-                      ? true
-                      : false
-                  }
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  // disableBtn={
+                  //   Number(editorRole.status) === 1 ||
+                  //   Number(editorRole.status) === 11 ||
+                  //   Number(editorRole.status) === 12
+                  //     ? true
+                  //     : editorRole.role === "Organizer" &&
+                  //       Number(editorRole.status) === 9
+                  //     ? false
+                  //     : Number(editorRole.status) === 10 &&
+                  //       editorRole.role === "Organizer"
+                  //     ? false
+                  //     : true
+                  // }
                   text={t("Minutes")}
                   className={
                     minutes === true
@@ -308,22 +307,23 @@ const SceduleMeeting = ({
                   onClick={showMinutes}
                 />
                 <Button
-                  disableBtn={
-                    (Number(editorRole.status) === 1 ||
-                      Number(editorRole.status) === 11 ||
-                      Number(editorRole.status) === 12) &&
-                    (editorRole.role === "Organizer" ||
-                      editorRole.role === "Participant" ||
-                      editorRole.role === "Agenda Contributor") &&
-                    isEditMeeting === true
-                      ? true
-                      : Number(currentMeeting) === 0
-                      ? true
-                      : isEditMeeting === false
-                      ? true
-                      : false
-                  }
-                  text={t("Task")}
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  // disableBtn={
+                  //   (Number(editorRole.status) === 1 ||
+                  //     Number(editorRole.status) === 11 ||
+                  //     Number(editorRole.status) === 12) &&
+                  //   (editorRole.role === "Organizer" ||
+                  //     editorRole.role === "Participant" ||
+                  //     editorRole.role === "Agenda Contributor") &&
+                  //   isEditMeeting === true
+                  //     ? true
+                  //     : Number(currentMeeting) === 0
+                  //     ? true
+                  //     : isEditMeeting === false
+                  //     ? true
+                  //     : false
+                  // }
+                  text={t("Actions")}
                   className={
                     actionsPage === true
                       ? styles["Schedule_meetings_options_active"]
@@ -332,21 +332,22 @@ const SceduleMeeting = ({
                   onClick={showActions}
                 />
                 <Button
-                  disableBtn={
-                    (Number(editorRole.status) === 1 ||
-                      Number(editorRole.status) === 11 ||
-                      Number(editorRole.status) === 12) &&
-                    (editorRole.role === "Organizer" ||
-                      editorRole.role === "Participant" ||
-                      editorRole.role === "Agenda Contributor") &&
-                    isEditMeeting === true
-                      ? true
-                      : Number(currentMeeting) === 0
-                      ? true
-                      : isEditMeeting === false
-                      ? true
-                      : false
-                  }
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  // disableBtn={
+                  //   (Number(editorRole.status) === 1 ||
+                  //     Number(editorRole.status) === 11 ||
+                  //     Number(editorRole.status) === 12) &&
+                  //   (editorRole.role === "Organizer" ||
+                  //     editorRole.role === "Participant" ||
+                  //     editorRole.role === "Agenda Contributor") &&
+                  //   isEditMeeting === true
+                  //     ? true
+                  //     : Number(currentMeeting) === 0
+                  //     ? true
+                  //     : isEditMeeting === false
+                  //     ? true
+                  //     : false
+                  // }
                   text={t("Polls")}
                   className={
                     polls === true
@@ -469,6 +470,7 @@ const SceduleMeeting = ({
                 setMeetingMaterial={setMeetingMaterial}
                 setMinutes={setMinutes}
                 currentMeeting={currentMeeting}
+                setactionsPage={setactionsPage}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
@@ -505,6 +507,7 @@ const SceduleMeeting = ({
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
                 dataroomMapFolderId={dataroomMapFolderId}
+                setMeetingMaterial={setMeetingMaterial}
                 setDataroomMapFolderId={setDataroomMapFolderId}
                 setEdiorRole={setEdiorRole}
               />
@@ -519,6 +522,7 @@ const SceduleMeeting = ({
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
+                setactionsPage={setactionsPage}
                 setDataroomMapFolderId={setDataroomMapFolderId}
                 setEdiorRole={setEdiorRole}
               />

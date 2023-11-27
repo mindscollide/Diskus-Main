@@ -116,8 +116,7 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
-  border: none;
-  color: #fff;
+  color: #fff !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }
@@ -126,8 +125,8 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
-  border: none;
-  color: #fff;
+  border: none !important;
+  color: #fff !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }
