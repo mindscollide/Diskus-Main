@@ -291,18 +291,18 @@ const MeetingMaterial = ({
           {/* <Button text={t("Save")} className={styles["Cancel_Classname"]} /> */}
           <Button
             text={t("Previous")}
-            className={styles["Cancel_Classname"]}
+            className={styles["Save_Classname"]}
             onClick={handlePreviousButtonMeetingMaterial}
           />
           <Button
             text={t("Next")}
-            className={styles["Cancel_Classname"]}
+            className={styles["Save_Classname"]}
             onClick={handleSaveAndNext}
             disableBtn={Number(editorRole.status) === 10 ? false : true}
           />
           <Button
             text={t("Save")}
-            className={styles["Cancel_Classname"]}
+            className={styles["Save_Classname"]}
             onClick={handleSaveAndNext}
           />
           {Number(editorRole.status) === 11 ||

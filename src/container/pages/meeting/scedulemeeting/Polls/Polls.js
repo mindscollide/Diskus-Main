@@ -584,12 +584,12 @@ const Polls = ({
 
                     <Button
                       text={t("Cancel")}
-                      className={styles["Cancel_Button_Polls_meeting"]}
+                      className={styles["Save_Button_Polls_meeting"]}
                       onClick={handleCacnelbutton}
                     />
                     <Button
                       text={t("Previous")}
-                      className={styles["Cancel_Button_Polls_meeting"]}
+                      className={styles["Save_Button_Polls_meeting"]}
                       onClick={handleClickPrevPolls}
                     />
                     {Number(editorRole.status) === 10 &&

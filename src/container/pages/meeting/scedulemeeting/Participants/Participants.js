@@ -684,13 +684,13 @@ const Participants = ({
 
                       <Button
                         text={t("Previous")}
-                        className={styles["Cancel_Organization"]}
+                        className={styles["publish_button_participant"]}
                         onClick={previousTabOrganizer}
                       />
 
                       <Button
                         text={t("Next")}
-                        className={styles["Cancel_Organization"]}
+                        className={styles["publish_button_participant"]}
                         onClick={nextTabOrganizer}
                       />
                     </>
@@ -713,13 +713,13 @@ const Participants = ({
 
                       <Button
                         text={t("Previous")}
-                        className={styles["Cancel_Organization"]}
+                        className={styles["publish_button_participant"]}
                         onClick={previousTabOrganizer}
                       />
 
                       <Button
                         text={t("Next")}
-                        className={styles["Cancel_Organization"]}
+                        className={styles["publish_button_participant"]}
                         onClick={nextTabOrganizer}
                       />
                     </>

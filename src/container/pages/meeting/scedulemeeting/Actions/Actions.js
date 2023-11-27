@@ -385,12 +385,12 @@ const Actions = ({
                 />
                 <Button
                   text={t("Previous")}
-                  className={styles["CloneMeetingButton"]}
+                  className={styles["SaveButtonActions"]}
                   onClick={prevTabToMinutes}
                 />
                 <Button
                   text={t("Next")}
-                  className={styles["CloneMeetingButton"]}
+                  className={styles["SaveButtonActions"]}
                   onClick={nextTabToPolls}
                 />
 

@@ -79,9 +79,8 @@
 .Save_Classname {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #5f78d6 !important;
+  background: #6172d6 !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
 }
@@ -89,9 +88,8 @@
 .Save_Classname:is(:hover, :active, :focus, :focus-visible) {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #5f78d6 !important;
+  background: #6172d6 !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
 }
