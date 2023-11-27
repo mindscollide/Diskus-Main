@@ -111,49 +111,184 @@ const ProposedMeetingDate = ({
     } catch {}
   }, [getAllMeetingDetails]);
 
-  const handleStartDateChange = (index, date) => {
+  //Onchange Function For DatePicker inAdd datess First
+
+  // const changeDateStartHandler = (date, index) => {
+  //   let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+  //   let DateDate = convertGMTDateintoUTC(date);
+  //   const updatedRows = [...rows];
+  //   updatedRows[index].selectedOption = DateDate.slice(0, 8);
+  //   updatedRows[index].selectedOptionView = meetingDateValueFormat;
+  //   updatedRows[index].isComing = false;
+  //   updatedRows[index].proposedDateID = 0;
+
+  //   setRows(updatedRows);
+  // };
+
+  // const handleStartDateChange = (index, date) => {
+  //   let newDate = new Date(date);
+  //   if (newDate instanceof Date && !isNaN(newDate)) {
+  //     const hours = ("0" + newDate.getUTCHours()).slice(-2);
+  //     const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+  //     const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+  //     // Format the time as HH:mm:ss
+  //     const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+  //       .toString()
+  //       .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+  //     const updatedRows = [...rows];
+  //     updatedRows[index].startDate = formattedTime;
+  //     updatedRows[index].startDateView = newDate;
+  //     updatedRows[index].isComing = false;
+  //     updatedRows[index].proposedDateID = 0;
+  //     setRows(updatedRows);
+  //     // You can use 'formattedTime' as needed.
+  //   } else {
+  //     console.error("Invalid date and time object:", date);
+  //   }
+  // };
+
+  // const handleEndDateChange = (index, date) => {
+  //   let newDate = new Date(date);
+  //   if (newDate instanceof Date && !isNaN(newDate)) {
+  //     const hours = ("0" + newDate.getUTCHours()).slice(-2);
+  //     const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+  //     const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
+
+  //     // Format the time as HH:mm:ss
+  //     const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
+  //       .toString()
+  //       .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+
+  //     const updatedRows = [...rows];
+  //     updatedRows[index].endDate = formattedTime;
+  //     updatedRows[index].endDateView = newDate;
+  //     updatedRows[index].isComing = false;
+  //     updatedRows[index].proposedDateID = 0;
+
+  //     setRows(updatedRows);
+  //   } else {
+  //     console.error("Invalid date and time object:", date);
+  //   }
+  // };
+
+  const changeDateStartHandler = (date, index) => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let DateDate = convertGMTDateintoUTC(date);
+    const updatedRows = [...rows];
+
+    if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
+      console.error("Selected-date-should-not-be-less-than-the-previous-one");
+      return;
+    } else {
+      updatedRows[index].selectedOption = DateDate.slice(0, 8);
+      updatedRows[index].selectedOptionView = meetingDateValueFormat;
+      updatedRows[index].isComing = false;
+      updatedRows[index].proposedDateID = 0;
+
+      setRows(updatedRows);
+    }
+  };
+
+  const handleStartTimeChange = (index, date) => {
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getUTCHours()).slice(-2);
       const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
       const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
 
-      // Format the time as HH:mm:ss
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
         .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
-      console.log(formattedTime, "formattedTimeformattedTimeformattedTime");
+
       const updatedRows = [...rows];
-      updatedRows[index].startDate = formattedTime;
-      updatedRows[index].startDateView = newDate;
-      updatedRows[index].isComing = false;
-      updatedRows[index].proposedDateID = 0;
-      setRows(updatedRows);
-      // You can use 'formattedTime' as needed.
+
+      if (
+        index > 0 &&
+        updatedRows[index - 1].selectedOption ===
+          updatedRows[index].selectedOption
+      ) {
+        if (formattedTime < updatedRows[index - 1].endDate) {
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected-start-time-should-not-be-less-than-the-previous-endTime"
+            ),
+          });
+          return;
+        } else {
+          updatedRows[index].startDate = formattedTime;
+          updatedRows[index].startDateView = newDate;
+          updatedRows[index].isComing = false;
+          updatedRows[index].proposedDateID = 0;
+
+          setRows(updatedRows);
+        }
+      } else {
+        updatedRows[index].startDate = formattedTime;
+        updatedRows[index].startDateView = newDate;
+        updatedRows[index].isComing = false;
+        updatedRows[index].proposedDateID = 0;
+
+        setRows(updatedRows);
+      }
     } else {
       console.error("Invalid date and time object:", date);
     }
   };
 
-  const handleEndDateChange = (index, date) => {
+  const handleEndTimeChange = (index, date) => {
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getUTCHours()).slice(-2);
       const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
       const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
 
-      // Format the time as HH:mm:ss
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
         .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
 
       const updatedRows = [...rows];
-      updatedRows[index].endDate = formattedTime;
-      updatedRows[index].endDateView = newDate;
-      updatedRows[index].isComing = false;
-      updatedRows[index].proposedDateID = 0;
 
-      setRows(updatedRows);
+      if (
+        index > 0 &&
+        updatedRows[index - 1].selectedOption ===
+          updatedRows[index].selectedOption
+      ) {
+        if (formattedTime <= updatedRows[index].startDate) {
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected-end-time-should-not-be-less-than-the-previous-one"
+            ),
+          });
+          return;
+        } else {
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endDateView = newDate;
+          updatedRows[index].isComing = false;
+          updatedRows[index].proposedDateID = 0;
+
+          setRows(updatedRows);
+        }
+      } else {
+        if (formattedTime <= updatedRows[index].startDate) {
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected end time should be greater than the start time."
+            ),
+          });
+          return;
+        } else {
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endDateView = newDate;
+          updatedRows[index].isComing = false;
+          updatedRows[index].proposedDateID = 0;
+
+          setRows(updatedRows);
+        }
+      }
     } else {
       console.error("Invalid date and time object:", date);
     }
@@ -168,7 +303,7 @@ const ProposedMeetingDate = ({
     } else {
       setOpen({
         flag: true,
-        message: t("You Cant enter more then Five Dates"),
+        message: t("You-cant-enter-more-then-five-dates"),
       });
     }
   };
@@ -183,19 +318,6 @@ const ProposedMeetingDate = ({
     let optionscross = [...rows];
     optionscross.splice(index, 1);
     setRows(optionscross);
-  };
-
-  //Onchange Function For DatePicker inAdd datess First
-  const changeDateStartHandler = (date, index) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = convertGMTDateintoUTC(date);
-    const updatedRows = [...rows];
-    updatedRows[index].selectedOption = DateDate.slice(0, 8);
-    updatedRows[index].selectedOptionView = meetingDateValueFormat;
-    updatedRows[index].isComing = false;
-    updatedRows[index].proposedDateID = 0;
-
-    setRows(updatedRows);
   };
 
   //Send Response By Handler
@@ -219,14 +341,19 @@ const ProposedMeetingDate = ({
     setEndDateError(hasEndDateError);
   };
 
-  const isAscendingOrder = () => {
-    for (let i = 1; i < rows.length; i++) {
-      if (rows[i].selectedOption <= rows[i - 1].selectedOption) {
-        return false;
-      }
-    }
-    return true;
-  };
+  //Function that will check the assending order of the dates
+  // const isAscendingOrder = () => {
+  //   for (let i = 1; i < rows.length; i++) {
+  //     if (
+  //       rows[i].selectedOption < rows[i - 1].selectedOption ||
+  //       (rows[i].selectedOption === rows[i - 1].selectedOption &&
+  //         rows[i].endDate <= rows[i - 1].endDate)
+  //     ) {
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // };
 
   // Function to handle the save Proposed button click
   const handleSave = () => {
@@ -251,13 +378,8 @@ const ProposedMeetingDate = ({
     console.log(Data, "DataDataDataData");
     dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
     // } else {
-    //   // Rows are not in ascending order
-    //   setOpen({
-    //     flag: true,
-    //     message: t(
-    //       "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time"
-    //     ),
-    //   });
+    // Rows are not in ascending order
+
     // }
   };
 
@@ -485,7 +607,7 @@ const ProposedMeetingDate = ({
                                       selected={data.startDate}
                                       plugins={[<TimePicker hideSeconds />]}
                                       onChange={(date) =>
-                                        handleStartDateChange(index, date)
+                                        handleStartTimeChange(index, date)
                                       }
                                     />
                                   </Col>
@@ -522,7 +644,7 @@ const ProposedMeetingDate = ({
                                       selected={data.startDate}
                                       plugins={[<TimePicker hideSeconds />]}
                                       onChange={(date) =>
-                                        handleEndDateChange(index, date)
+                                        handleEndTimeChange(index, date)
                                       }
                                     />
                                   </Col>
@@ -533,17 +655,23 @@ const ProposedMeetingDate = ({
                                     className="d-flex justify-content-end position-relative align-items-center"
                                   >
                                     <>
-                                      <img
-                                        draggable={false}
-                                        src={redcrossIcon}
-                                        width="23px"
-                                        height="23px"
-                                        alt=""
-                                        className={styles["Cross_icon_class"]}
-                                        onClick={() => {
-                                          HandleCancelFunction(index);
-                                        }}
-                                      />
+                                      {index === 0 ? null : (
+                                        <>
+                                          <img
+                                            draggable={false}
+                                            src={redcrossIcon}
+                                            width="23px"
+                                            height="23px"
+                                            alt=""
+                                            className={
+                                              styles["Cross_icon_class"]
+                                            }
+                                            onClick={() => {
+                                              HandleCancelFunction(index);
+                                            }}
+                                          />
+                                        </>
+                                      )}
                                     </>
                                   </Col>
                                 </Row>
@@ -586,6 +714,7 @@ const ProposedMeetingDate = ({
                             <img
                               draggable={false}
                               src={plusFaddes}
+                              alt=""
                               width="15.87px"
                               height="15.87px"
                             />
