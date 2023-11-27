@@ -104,12 +104,8 @@ const initialState = {
 const NewMeetingreducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.CLEAR_MEETING_MESSAGES: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
       return {
         ...state,
-        Loading: false,
         ResponseMessage: "",
       };
     }
@@ -343,9 +339,6 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GET_SEARCH_NEW_MEETINGS_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
       return {
         ...state,
         Loading: false,
@@ -354,9 +347,6 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GET_SEARCH_NEW_MEETINGS_FAIL: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
       return {
         ...state,
         Loading: false,
@@ -379,9 +369,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_TYPES_NEW_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
       return {
         ...state,
         Loading: false,
@@ -390,10 +377,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_TYPES_NEW_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -402,10 +385,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_MEETING_DETAILS_INIT: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: true,
@@ -413,10 +392,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_MEETING_DETAILS_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -426,10 +401,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_MEETING_DETAILS_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -438,10 +409,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_REMINDER_FREQUENCY_INIT: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: true,
@@ -449,10 +416,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_REMINDER_FREQUENCY_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -462,10 +425,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_REMINDER_FREQUENCY_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -474,10 +433,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_RECURRING_INIT: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: true,
@@ -485,10 +440,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_RECURRING_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -498,10 +449,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_RECURRING_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -573,10 +520,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.ADD_MORE_PARTICIPANTS_MODAL_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -586,10 +529,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.ADD_MORE_PARTICIPANTS_MODAL_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -605,10 +544,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_ROLES_PARTICIPANTS_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -618,10 +553,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_ROLES_PARTICIPANTS_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -637,10 +568,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_MEETING_URL_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -650,10 +577,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_MEETING_URL_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -676,10 +599,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_MEETING_PARTICIPANTS_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -689,10 +608,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_MEETING_PARTICIPANTS_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -707,10 +622,6 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.SAVE_AGENDACONTRIBUTORS_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -718,10 +629,6 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.SAVE_AGENDACONTRIBUTORS_FAIL: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -738,10 +645,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_SAVED_PARTICIPATNS_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -753,10 +656,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_SAVED_PARTICIPATNS_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -773,10 +672,6 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GET_ALL_AGENDACONTRIBUTOR_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -787,10 +682,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_AGENDACONTRIBUTOR_FAIL: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -809,10 +700,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SEND_NOTIFICATION_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -821,10 +708,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SEND_NOTIFICATION_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -833,10 +716,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_INIT: {
-      console.log(
-        action,
-        "GET_ALL_MEETING_DETAILS_BY_MEETINGID_INITGET_ALL_MEETING_DETAILS_BY_MEETINGID_INIT"
-      );
       return {
         ...state,
         Loading: true,
@@ -845,10 +724,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -859,10 +734,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -880,10 +751,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_POLLS_BY_MEETING_ID_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -893,10 +760,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_POLLS_BY_MEETING_ID_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -912,10 +775,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_USER_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -925,10 +784,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_USER_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -967,10 +822,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SET_MEETING_PROPOSED_DATE_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -980,10 +831,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SET_MEETING_PROPOSED_DATE_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1008,10 +855,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_PRPOSED_DATES_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1027,10 +870,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SET_MEETING_RESPONSE_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1040,10 +879,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SET_MEETING_RESPONSE_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1060,11 +895,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_MATERIAL_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
-      console.log("meetingMaterial", action);
       return {
         ...state,
         Loading: false,
@@ -1074,10 +904,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_MATERIAL_FAIL: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1094,10 +920,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1106,10 +928,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1125,10 +943,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_AGENDA_RIGHTS_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1138,10 +952,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_AGENDA_RIGHTS_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1158,10 +968,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_USER_ATTACHMENT_PERMISSION_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1171,10 +977,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_USER_ATTACHMENT_PERMISSION_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1183,10 +985,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_GENERAL_MINTES_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1196,10 +994,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_GENERAL_MINTES_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1225,10 +1019,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ADD_GENERAL_MINUTES_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1253,10 +1043,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_GENERAL_MIN_DOCUMENTS_FAILED: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1272,10 +1058,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_SUCCESS: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
-
       return {
         ...state,
         Loading: false,
@@ -1293,8 +1075,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GENERAL_DOCUMENT_FOR_MEETING_INIT: {
-      console.log("LoadingLoadingLoading 12");
-
       return {
         ...state,
         Loading: true,
@@ -1302,8 +1082,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GENERAL_DOCUMENT_FOR_MEETING_SUCCESS: {
-      console.log("LoadingLoadingLoading 12");
-
       return {
         ...state,
         generalminutesDocumentForMeeting: action.response,
@@ -1312,8 +1090,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GENERAL_DOCUMENT_FOR_MEETING_FAILED: {
-      console.log("LoadingLoadingLoading 12");
-
       return {
         ...state,
         Loading: false,
@@ -1469,10 +1245,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_USER_WISE_PROPOSED_SUCCESS: {
-      console.log(
-        action.response,
-        "userWiseMeetingProposeduserWiseMeetingProposed"
-      );
       return {
         ...state,
         Loading: false,
@@ -1992,9 +1764,6 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GET_GENERAL_MINTES_INIT: {
-      console.log(
-        "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-      );
       return {
         ...state,
         Loading: true,

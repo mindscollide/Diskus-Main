@@ -138,7 +138,7 @@ const Minutes = ({
       dispatch(cleareMinutsData());
     };
   }, []);
-  console.log("LoadingLoadingLoading", Loading);
+
   useEffect(() => {
     try {
       if (
@@ -553,8 +553,8 @@ const Minutes = ({
           flag: false,
           message: "",
         });
+        dispatch(CleareMessegeNewMeeting());
       }, 3000);
-      dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
