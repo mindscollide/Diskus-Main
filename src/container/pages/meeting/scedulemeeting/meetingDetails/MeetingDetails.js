@@ -166,7 +166,7 @@ const MeetingDetails = ({
       }
     }
   }, [currentLanguage]);
-  
+
   const apiCallsForComponentMound = async () => {
     try {
       // Meeting Type Drop Down API
@@ -175,7 +175,7 @@ const MeetingDetails = ({
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       // Recurring Drop Down API
       await dispatch(GetAllMeetingRecurringApiNew(navigate, t));
-  
+
       // All API calls are successful, proceed with the next steps if needed.
       console.log("All API calls are completed successfully.");
     } catch (error) {
@@ -991,10 +991,14 @@ const MeetingDetails = ({
 
     return true; // If no differences were found, the arrays are considered equal
   }
+  console.log(
+    getAllMeetingDetails,
+    "getAllMeetingDetailsgetAllMeetingDetailsgetAllMeetingDetails"
+  );
   const handleUpdateNext = () => {
     //Function For Next Checks ValidationS
     try {
-      let MeetingData = getAllMeetingDetails?.advanceMeetingDetails;
+      let MeetingData = getAllMeetingDetails;
       console.log(MeetingData, "MeetingDataMeetingDataMeetingData");
 
       let getmeetingType = MeetingData.meetingType;
