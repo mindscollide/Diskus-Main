@@ -64,7 +64,7 @@ const initialState = {
   getAllSavedparticipants: [],
   sendNotificationOrganizerModal: false,
   getAllMeetingDetails: null,
-  getPollsMeetingID: [],
+  getPollsMeetingID: null,
   getMeetingusers: [],
   setMeetingProposeDate: [],
   getAllProposedDates: [],
@@ -793,6 +793,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        getPollsMeetingID: null,
         ResponseMessage: action.message,
       };
     }
@@ -1803,7 +1804,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         getAllSavedparticipants: [],
         sendNotificationOrganizerModal: false,
         getAllMeetingDetails: null,
-        getPollsMeetingID: [],
+        getPollsMeetingID: null,
         getMeetingusers: [],
         setMeetingProposeDate: [],
         getAllProposedDates: [],

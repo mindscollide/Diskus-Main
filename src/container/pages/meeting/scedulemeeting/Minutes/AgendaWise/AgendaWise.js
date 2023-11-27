@@ -795,7 +795,11 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                               }
                                             >
                                               <img
-                                                src={pdfIcon}
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    data.DisplayAttachmentName
+                                                  )
+                                                )}
                                                 height="10px"
                                                 width="10px"
                                                 className={styles["IconPDF"]}
@@ -1066,6 +1070,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                     src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                                     height="39px"
                                     width="39px"
+                                    alt=""
                                     className={styles["Profile_minutes"]}
                                   />
                                 </Col>

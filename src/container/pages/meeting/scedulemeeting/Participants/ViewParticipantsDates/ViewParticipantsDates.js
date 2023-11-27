@@ -3,7 +3,6 @@ import styles from "./ViewParticipantsDates.module.css";
 import {
   Button,
   Checkbox,
-  Notification,
 } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -13,19 +12,22 @@ import { Paper } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import {
   GetAllMeetingDetailsApiFunc,
-  GetAllProposedMeetingDateApiFunc,
   SetMeetingResponseApiFunc,
   getUserProposedWiseApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import { useState } from "react";
 import {
-  formatDateToMMDDYY,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
 import moment from "moment";
 
-const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
+const ViewParticipantsDates = ({
+  setViewProposeDatePoll,
+  setCurrentMeetingID,
+  setSceduleMeeting,
+  setDataroomMapFolderId,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,11 +43,6 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
 
   const userWiseMeetingProposed = useSelector(
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
-  );
-
-  console.log(
-    userWiseMeetingProposed,
-    "userWiseMeetingProposeduserWiseMeetingProposed"
   );
 
   const [deadline, setDeadline] = useState("");
@@ -76,14 +73,27 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
     };
     // await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
     await dispatch(getUserProposedWiseApi(navigate, t, Data));
-    await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t,));
-    return () => {
-      localStorage.removeItem("viewProposeDatePollMeetingID");
-    };
+    await dispatch(
+      GetAllMeetingDetailsApiFunc(
+        navigate,
+        t,
+        Data,
+        false,
+        setCurrentMeetingID,
+        setSceduleMeeting,
+        setDataroomMapFolderId
+      )
+    );
+  
   };
 
   useEffect(() => {
     callApis();
+    return () => {
+      localStorage.removeItem("viewProposeDatePollMeetingID");
+      setCurrentMeetingID(null)
+      setDataroomMapFolderId(null)
+    };
   }, []);
 
   //Previous API for Dates that have to be Inserted new
@@ -95,15 +105,9 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
         userWiseMeetingProposed.length > 0
       ) {
         let datesarry = [];
-        console.log(
-          userWiseMeetingProposed,
-          "datesDatadatesDatadatesDatadatesData"
-        );
         userWiseMeetingProposed.forEach((datesData, index) => {
-          console.log(datesData, "datesDatadatesDatadatesDatadatesData");
           setApiUserID(datesData.userID);
           datesData.selectedProposedDates.map((data, index) => {
-            console.log(data, "consoleconsoleconsoleconsole");
             if (
               data.proposedDate === "10000101" &&
               data.endTime === "000000" &&
@@ -145,7 +149,6 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
           // now for the default Data
           let DefaultDate = [];
           datesData.selectedProposedDates.map((data, index) => {
-            console.log(data, "datadatadata");
             if (
               data.proposedDate === "10000101" &&
               data.endTime === "000000" &&
@@ -176,8 +179,6 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   useEffect(() => {
     try {
       if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
-        console.log(getAllMeetingDetails, "getAllMeetingDetails");
-
         setMeetingDeatils({
           MeetingTitle: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
           MeetingType:
@@ -196,10 +197,6 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
   useEffect(() => {
     try {
       if (getAllProposedDates !== null && getAllProposedDates !== undefined) {
-        console.log(
-          getAllProposedDates,
-          "NewMeetingreducergetAllProposedDates"
-        );
         let deadline = getAllProposedDates.deadLineDate;
         setDeadline(deadline);
       }
@@ -231,7 +228,6 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
     }
     setSelectAll(false);
   };
-  console.log(prposedData, "prposedDataprposedData");
 
   const handleSelectAllChange = (event) => {
     if (event.target.checked) {
@@ -273,8 +269,6 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
         MeetingID: currentMeetingID,
         ProposedDates: defaultarr,
       };
-      console.log(Data, "DataDataDataData");
-
       dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
     } else {
       let newarr = [];
@@ -292,7 +286,6 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
         MeetingID: currentMeetingID,
         ProposedDates: newarr,
       };
-      console.log(Data, "DataDataDataData");
       dispatch(SetMeetingResponseApiFunc(Data, navigate, t));
     }
   };
