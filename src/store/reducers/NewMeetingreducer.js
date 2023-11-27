@@ -1218,12 +1218,14 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_AGENDA_WISE_MINUTES_INIT: {
       return {
         ...state,
+        Loading: true,
       };
     }
 
     case actions.GET_ALL_AGENDA_WISE_MINUTES_SUCCESS: {
       return {
         ...state,
+        Loading: true,
         agendaWiseMinutesReducer: action.response,
         ResponseMessage: action.message,
       };
