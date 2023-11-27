@@ -70,6 +70,22 @@ const Actions = ({
     dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
   }, []);
 
+  // for pagination in Create Task
+  const handleForPagination = (current, pageSize) => {
+    let data = {
+      MeetingID: Number(currentMeeting),
+      Date: actionState.Date,
+      Title: actionState.Title,
+      AssignedToName: actionState.AssignedToName,
+      UserID: Number(userID),
+      PageNumber: Number(current),
+      Length: Number(pageSize),
+    };
+    localStorage.setItem("MeetingPageRows", pageSize);
+    localStorage.setItem("MeetingPageCurrent", current);
+    dispatch(getMeetingTaskMainApi(navigate, t, data));
+  };
+
   // Rows for table rendering in Action
   const [actionsRows, setActionsRows] = useState([]);
 
@@ -176,22 +192,6 @@ const Actions = ({
     }
   }, [actionMeetingReducer.todoListMeetingTask]);
 
-  // for pagination in Create Task
-  const handleForPagination = (current, pageSize) => {
-    let data = {
-      MeetingID: Number(currentMeeting),
-      Date: actionState.Date,
-      Title: actionState.Title,
-      AssignedToName: actionState.AssignedToName,
-      UserID: Number(userID),
-      PageNumber: Number(current),
-      Length: Number(pageSize),
-    };
-    localStorage.setItem("MeetingPageRows", pageSize);
-    localStorage.setItem("MeetingPageCurrent", current);
-    dispatch(getMeetingTaskMainApi(navigate, t, data));
-  };
-
   const handleCreateTaskButton = () => {
     setCreateaTask(true);
     dispatch(showUnsavedActionsModal(false));
@@ -200,6 +200,11 @@ const Actions = ({
   const handleCancelActions = () => {
     dispatch(showCancelActions(true));
   };
+
+  // to close modal while user comes on Action tab
+  useEffect(() => {
+    dispatch(showCancelActions(false));
+  }, []);
 
   // to move in next to polls handler
   const nextTabToPolls = () => {
@@ -270,7 +275,7 @@ const Actions = ({
                         className="d-flex justify-content-center"
                       >
                         <span className={styles["Empty-State_Heading"]}>
-                          {t("Take-action")}
+                          {t("Take-Task")}
                         </span>
                       </Col>
                     </Row>
@@ -282,9 +287,7 @@ const Actions = ({
                         className="d-flex justify-content-center"
                       >
                         <span className={styles["EmptyState_SubHeading"]}>
-                          {t(
-                            "The-meeting-wrapped-up-lets-dive-into-some-action"
-                          )}
+                          {t("The-meeting-wrapped-up-lets-dive-into-some-task")}
                         </span>
                       </Col>
                     </Row>

@@ -1602,5 +1602,9 @@
   "Add-some-purpose-start-by-creating-your-agenda": "Add some purpose - start by creating your agenda",
   "Thank-you-for-participanting-in-voting": "Thank you for participating in voting",
   "Agenda-voting-details-saved-successfully": "Agenda Voting details saved successfully",
-  "Agenda-voting-details-updated-successfully": "Agenda Voting details updated successfully"
+  "Agenda-voting-details-updated-successfully": "Agenda Voting details updated successfully",
+  "Enter-date-must-Action": "Please select date *",
+  "Take-Task": "Take Task",
+  "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up, let's dive into some task!",
+  "Description-is-required-Action": "Description is required *"
 }

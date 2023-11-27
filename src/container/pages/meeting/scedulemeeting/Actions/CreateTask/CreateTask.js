@@ -581,7 +581,7 @@ const CreateTask = ({
                                 : `${styles["errorMessage-inLogin_hidden"]}`
                             }
                           >
-                            {t("Please-select-date")}
+                            {t("Enter-date-must-Action")}
                           </p>
                         </Col>
                       </Row>
@@ -620,7 +620,7 @@ const CreateTask = ({
                             : `${styles["errorMessage-inLogin_hidden"]}`
                         }
                       >
-                        {t("Description-is-required")}
+                        {t("Description-is-required-Action")}
                       </p>
                     </Col>
                   </Row>
