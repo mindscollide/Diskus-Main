@@ -733,6 +733,7 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
                                 width="20px"
                                 height="15px"
                                 draggable="false"
+                                alt=""
                               />
                             }
                             onClick={SlideLeft}
@@ -768,6 +769,7 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
                                           src={CrossIcon}
                                           height="12.68px"
                                           width="12.68px"
+                                          alt=""
                                           onClick={() => handleRemoveFile(data)}
                                         />
                                       </span>
@@ -802,6 +804,7 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
                                                 height="10px"
                                                 width="10px"
                                                 className={styles["IconPDF"]}
+                                                alt=""
                                               />
                                               <span
                                                 className={styles["FileName"]}
@@ -830,6 +833,7 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
                                 width="20px"
                                 height="15px"
                                 draggable="false"
+                                alt=""
                               />
                             }
                             onClick={Slideright}
@@ -855,6 +859,7 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
                           width="18.87px"
                           height="18.87px"
                           draggable="false"
+                          alt=""
                         />
                       </span>
                     </p>
