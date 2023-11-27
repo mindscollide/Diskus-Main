@@ -81,6 +81,7 @@ const Organizers = ({
   setViewFlag,
   setCalendarViewModal,
   setEditFlag,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
 

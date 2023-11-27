@@ -137,9 +137,10 @@ const UnpublishedProposedMeeting = ({
     };
     await dispatch(
       GetAllMeetingDetailsApiFunc(
-        Data,
         navigate,
         t,
+        Data,
+        false,
         setCurrentMeetingID,
         setSceduleMeeting,
         setDataroomMapFolderId
