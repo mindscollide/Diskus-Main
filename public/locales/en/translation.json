@@ -55,7 +55,7 @@
   "Tasks": "Tasks",
   "Deadline": "Deadline",
   "Things": "Things",
-  "Task": "Task",
+  "Task": "Tasks",
   "Finish": "Finish",
   "Meetings": "Meetings",
   "Meeting": "Meeting",
@@ -1415,7 +1415,7 @@
   "The-meeting-wrapped-up-lets-dive-into-some-action": "The meeting wrapped up, let's dive into some action!",
   "Actions-to-take": "Actions to take",
   "Select-agenda": "Select Agenda",
-  "Please-enter-action-to-take": "Please enter action to take *",
+  "Please-enter-action-to-take": "Please enter task to take *",
   "Please-select-assignees": "Please select assignees *",
   "Remove-the-action": "remove the action?",
   "Create-polls": "Create Polls",
@@ -1647,5 +1647,7 @@
   "Selected-date-should-not-be-less-than-the-previous-one": "Selected date should not be less than the previous one",
   "Selected-end-time-should-not-be-less-than-the-previous-one": "Selected end time should not be less than the previous one",
   "Description-is-required-action": "Description is required action *",
-  "Enter-date-must-action": "Enter date must action *"
+  "Enter-date-must-action": "Enter date must action *",
+  "Take-Task": "Take Task",
+  "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up lets dive into some task"
 }
