@@ -104,6 +104,7 @@ const ProposedMeetingDate = ({
       )
     );
   };
+
   useEffect(() => {
     callApis();
     return () => {
@@ -149,8 +150,16 @@ const ProposedMeetingDate = ({
   }, [getAllMeetingDetails]);
 
   const changeDateStartHandler = (date, index) => {
+    console.log(date, "changeDateStartHandlerchangeDateStartHandler");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    console.log(
+      meetingDateValueFormat,
+      "changeDateStartHandlerchangeDateStartHandler"
+    );
+
     let DateDate = convertGMTDateintoUTC(date);
+    console.log(DateDate, "changeDateStartHandlerchangeDateStartHandler");
+
     const updatedRows = [...rows];
 
     if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
