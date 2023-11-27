@@ -25,37 +25,53 @@ import {
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
   GetAllGeneralMinutesApiFunc,
-  searchNewUserMeeting,
-  showPreviousConfirmationModal,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
-  showAllGeneralMinutesFailed,
+  cleareMinutsData,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
+// import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 
 const Minutes = ({
   setMinutes,
-  setPolls,
-  setAttendance,
-  // setAgenda,
-  setactionsPage,
-  setMeetingMaterial,
-  editorRole,
-  advanceMeetingModalID,
-  setViewAdvanceMeetingModal,
+  currentMeeting,
   setSceduleMeeting,
+  setMeetingMaterial,
+  setactionsPage,
 }) => {
-  const [fileSize, setFileSize] = useState(0);
+  // Newly Implemented
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  let userID = localStorage.getItem("userID");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
-  console.log(folderID, "folderIDfolderIDfolderIDfolderID");
   let currentLanguage = localStorage.getItem("i18nextLng");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let currentView = localStorage.getItem("MeetingCurrentView");
-  const { NewMeetingreducer } = useSelector((state) => state);
   const editorRef = useRef(null);
   const { Dragger } = Upload;
+  const generalMinutes = useSelector(
+    (state) => state.NewMeetingreducer.generalMinutes
+  );
+  const generalminutesDocumentForMeeting = useSelector(
+    (state) => state.NewMeetingreducer.generalminutesDocumentForMeeting
+  );
+  const ShowPreviousModal = useSelector(
+    (state) => state.NewMeetingreducer.ShowPreviousModal
+  );
+  const unsaveFileUploadMinutes = useSelector(
+    (state) => state.NewMeetingreducer.unsaveFileUploadMinutes
+  );
+  const generalMinutesDocument = useSelector(
+    (state) => state.NewMeetingreducer.generalMinutesDocument
+  );
+  const addMinuteID = useSelector(
+    (state) => state.NewMeetingreducer.addMinuteID
+  );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
+  const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [general, setGeneral] = useState(true);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
@@ -64,9 +80,7 @@ const Minutes = ({
   const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const [expandedFiles, setExpandedFiles] = useState([]);
   const [isEdit, setisEdit] = useState(false);
-  const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [showMore, setShowMore] = useState(false);
   const [generalShowMore, setGeneralShowMore] = useState(false);
@@ -74,7 +88,6 @@ const Minutes = ({
     flag: false,
     message: "",
   });
-
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
       value: "",
@@ -83,10 +96,6 @@ const Minutes = ({
     },
   });
 
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  let userID = localStorage.getItem("userID");
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
@@ -119,37 +128,48 @@ const Minutes = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: advanceMeetingModalID,
+      MeetingID: Number(currentMeeting),
     };
-    dispatch(
-      GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
-    );
+    dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     return () => {
+      setMessages([]);
       setFileAttachments([]);
-      dispatch(showAllGeneralMinutesFailed(""));
+      setPreviousFileIDs([]);
+      dispatch(cleareMinutsData());
     };
   }, []);
 
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.generalMinutes !== null &&
-        NewMeetingreducer.generalMinutes
+        (Object.keys(generalMinutes).length > 0 || generalMinutes.length > 0) &&
+        (Object.keys(generalminutesDocumentForMeeting).length > 0 ||
+          generalminutesDocumentForMeeting.length > 0)
       ) {
-        if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
-          let newarr = [];
-          NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
-            console.log(data, "generalMinutesgeneralMinutes");
-            newarr.push(data);
-            setMinuteID(data.minuteID);
-          });
-          setMessages(newarr);
-        }
+        const minutesData = generalMinutes.meetingMinutes;
+        const documentsData = generalminutesDocumentForMeeting.data;
+        const combinedData = minutesData.map((item1) => {
+          const matchingItem = documentsData.find(
+            (item2) => item2.pK_MeetingGeneralMinutesID === item1.minuteID
+          );
+          if (matchingItem) {
+            return {
+              ...item1,
+              minutesAttachmets: matchingItem.files,
+            };
+          }
+          return item1;
+        });
+        setMessages(combinedData);
+      } else {
+        setMessages([]);
       }
-    } catch {}
-  }, [NewMeetingreducer.generalMinutes]);
+    } catch (error) {
+      // Handle any errors here
+      console.error(error);
+    }
+  }, [generalMinutes, generalminutesDocumentForMeeting]);
 
-  //onChange function for React Quill
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText) {
@@ -271,7 +291,6 @@ const Minutes = ({
   };
 
   //Sliders For Attachments
-
   const SlideLeft = () => {
     var Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft - 300;
@@ -285,7 +304,10 @@ const Minutes = ({
   //Edit Button Function
   const handleEditFunc = async (data) => {
     setupdateData(data);
+    console.log(data, "handleEditFunccalled");
+    console.log(data, "dataminutesDetails");
     if (data.minutesDetails !== "") {
+      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         Description: {
           value: data.minutesDetails,
@@ -295,6 +317,7 @@ const Minutes = ({
       });
       setisEdit(true);
     } else {
+      console.log("data.minutesDetails is undefined or null");
     }
     let Retrive = {
       FK_MeetingGeneralMinutesID: data.minuteID,
@@ -309,12 +332,13 @@ const Minutes = ({
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.generalMinutesDocument !== undefined &&
-        NewMeetingreducer.generalMinutesDocument !== null
+        generalMinutesDocument !== undefined &&
+        generalMinutesDocument !== null &&
+        generalMinutesDocument.data.length > 0
       ) {
         let files = [];
         let prevData = [];
-        NewMeetingreducer.generalMinutesDocument.data.map((data, index) => {
+        generalMinutesDocument.data.map((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,
@@ -326,9 +350,12 @@ const Minutes = ({
         });
         setFileAttachments(files);
         setPreviousFileIDs(prevData);
+      } else {
+        setFileAttachments([]);
+        setPreviousFileIDs([]);
       }
     } catch {}
-  }, [NewMeetingreducer.generalMinutesDocument]);
+  }, [generalMinutesDocument]);
 
   const handleAgendaWiseClick = () => {
     setGeneral(false);
@@ -345,13 +372,10 @@ const Minutes = ({
   };
   const handleAddClick = async () => {
     let Data = {
-      MeetingID: advanceMeetingModalID,
+      MeetingID: currentMeeting,
       MinuteText: addNoteFields.Description.value,
     };
-    dispatch(
-      ADDGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
-    );
-    setFileAttachments([]);
+    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
   };
 
   const documentUploadingFunc = async (minuteID) => {
@@ -370,16 +394,15 @@ const Minutes = ({
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: advanceMeetingModalID,
+      FK_MDID: currentMeeting,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
     dispatch(
-      SaveMinutesDocumentsApiFunc(navigate, docsData, t, advanceMeetingModalID)
+      SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
     );
     setFileAttachments([]);
     setPreviousFileIDs([]);
@@ -393,15 +416,16 @@ const Minutes = ({
       },
     });
   };
+
   useEffect(() => {
-    if (NewMeetingreducer.addMinuteID !== 0) {
-      documentUploadingFunc(NewMeetingreducer.addMinuteID);
+    if (addMinuteID !== 0) {
+      documentUploadingFunc(addMinuteID);
     }
-  }, [NewMeetingreducer.addMinuteID]);
+  }, [addMinuteID]);
 
   const handleRemovingTheMinutes = (MinuteData) => {
     let Data = {
-      MDID: advanceMeetingModalID,
+      MDID: currentMeeting,
       MeetingGeneralMinutesID: MinuteData.minuteID,
     };
     dispatch(
@@ -409,7 +433,7 @@ const Minutes = ({
         navigate,
         Data,
         t,
-        advanceMeetingModalID,
+        currentMeeting,
         MinuteData
       )
     );
@@ -473,16 +497,19 @@ const Minutes = ({
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
+
     let docsData = {
-      FK_MeetingGeneralMinutesID: minuteID,
-      FK_MDID: advanceMeetingModalID,
+      FK_MeetingGeneralMinutesID: updateData.minuteID,
+      FK_MDID: currentMeeting,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    dispatch(SaveMinutesDocumentsApiFunc(navigate, docsData, t));
-    setisEdit(false);
+    dispatch(
+      SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
+    );
     setFileAttachments([]);
+    setisEdit(false);
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -499,97 +526,26 @@ const Minutes = ({
   };
 
   const handleUNsaveChangesModal = () => {
-    try {
-      const isDescriptionEmpty = addNoteFields.Description.value === "";
-      const areFileAttachmentsEmpty = fileAttachments.length === 0;
-
-      if (isDescriptionEmpty && areFileAttachmentsEmpty && isEdit === false) {
-        console.log(
-          addNoteFields.Description.value,
-          "setSceduleMeetingsetSceduleMeeting"
-        );
-
-        // Your code when both description and file attachments are empty
-        setMinutes(false);
-        setSceduleMeeting(false);
-        setViewAdvanceMeetingModal(false);
-        dispatch(showUnsaveMinutesFileUpload(false));
-
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-      } else {
-        dispatch(showUnsaveMinutesFileUpload(true));
-      }
-    } catch (error) {}
-  };
-
-  const handleNext = () => {
-    try {
-      const isDescriptionEmpty = addNoteFields.Description.value === "";
-      const areFileAttachmentsEmpty = fileAttachments.length === 0;
-
-      if (isDescriptionEmpty && areFileAttachmentsEmpty && isEdit === false) {
-        console.log(
-          addNoteFields.Description.value,
-          "setSceduleMeetingsetSceduleMeeting"
-        );
-
-        // Your code when both description and file attachments are empty
-        // setMinutes(false);
-        // setSceduleMeeting(false);
-        // setViewAdvanceMeetingModal(false);
-        dispatch(showUnsaveMinutesFileUpload(false));
-        setactionsPage(true);
-        setMinutes(false);
-
-        // let searchData = {
-        //   Date: "",
-        //   Title: "",
-        //   HostName: "",
-        //   UserID: Number(userID),
-        //   PageNumber:
-        //     meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-        //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-        //   PublishedMeetings:
-        //     currentView && Number(currentView) === 1 ? true : false,
-        // };
-        // dispatch(searchNewUserMeeting(navigate, searchData, t));
-      } else {
-        dispatch(showUnsaveMinutesFileUpload(true));
-      }
-    } catch (error) {}
+    dispatch(showUnsaveMinutesFileUpload(true));
   };
 
   const handlePreviousButton = () => {
-    dispatch(showPreviousConfirmationModal(true));
+    setMinutes(false);
+    setMeetingMaterial(true);
+    // dispatch(showPreviousConfirmationModal(true));
   };
-  console.log(
-    NewMeetingreducer.ResponseMessage,
-    NewMeetingreducer,
-    "ResponseMessage222"
-  );
+  const handleNextButton = () => {
+    setactionsPage(true);
+    setMinutes(false);
+    // dispatch(showPreviousConfirmationModal(true));
+  };
+
   useEffect(() => {
-    if (
-      NewMeetingreducer.ResponseMessage !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("Data-available") &&
-      NewMeetingreducer.ResponseMessage !== t("No-data-available") &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
-    ) {
+    if (ResponseMessage !== "") {
       setOpen({
         ...open,
         flag: true,
-        message: NewMeetingreducer.ResponseMessage,
+        message: ResponseMessage,
       });
       setTimeout(() => {
         setOpen({
@@ -597,12 +553,12 @@ const Minutes = ({
           flag: false,
           message: "",
         });
+        dispatch(CleareMessegeNewMeeting());
       }, 3000);
-      dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <section>
@@ -610,86 +566,85 @@ const Minutes = ({
         <Col lg={12} md={12} sm={12} className="d-flex gap-2">
           <Button
             text={t("General")}
-            className={styles["Button_General"]}
+            className={
+              general
+                ? styles["Button_General"]
+                : styles["Button_General_nonActive"]
+            }
             onClick={handleGeneralButtonClick}
           />
           <Button
             text={t("Agenda-wise")}
-            className={styles["Button_General"]}
+            className={
+              agenda
+                ? styles["Button_General"]
+                : styles["Button_General_nonActive"]
+            }
             onClick={handleAgendaWiseClick}
           />
         </Col>
       </Row>
 
       {agenda ? (
-        <AgendaWise
-          advanceMeetingModalID={advanceMeetingModalID}
-          editorRole={editorRole}
-        />
+        <AgendaWise currentMeeting={currentMeeting} />
       ) : general ? (
         <>
           <Row className="mt-4">
             <Col lg={6} md={6} sm={6}>
-              {(editorRole.role === "Organizer" &&
-                Number(editorRole.status) === 10) ||
-              Number(editorRole.status) === 9 ? (
-                <>
-                  <Row className={styles["Add-note-QuillRow"]}>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      className={styles["Arabic_font_Applied"]}
-                    >
-                      <ReactQuill
-                        ref={editorRef}
-                        theme="snow"
-                        value={addNoteFields.Description.value || ""}
-                        placeholder={t("Note-details")}
-                        onChange={onTextChange}
-                        modules={modules}
-                        className={styles["quill-height-addNote"]}
-                        style={{
-                          direction: currentLanguage === "ar" ? "rtl" : "ltr",
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                  {/* Button For Saving the The Minutes  */}
-                  <Row className="mt-5">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 justify-content-end"
-                    >
+              <Row className={styles["Add-note-QuillRow"]}>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className={styles["Arabic_font_Applied"]}
+                >
+                  <ReactQuill
+                    ref={editorRef}
+                    theme="snow"
+                    value={addNoteFields.Description.value || ""}
+                    placeholder={t("Note-details")}
+                    onChange={onTextChange}
+                    modules={modules}
+                    className={styles["quill-height-addNote"]}
+                    style={{
+                      direction: currentLanguage === "ar" ? "rtl" : "ltr",
+                    }}
+                  />
+                </Col>
+              </Row>
+              {/* Button For Saving the The Minutes  */}
+              <Row className="mt-5">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex gap-2 justify-content-end"
+                >
+                  <Button
+                    text={t("Reset")}
+                    className={styles["Previous_Button"]}
+                    onClick={handleResetBtnFunc}
+                  />
+                  {isEdit === true ? (
+                    <>
                       <Button
-                        text={t("Reset")}
-                        className={styles["Previous_Button"]}
-                        onClick={handleResetBtnFunc}
+                        text={t("Update")}
+                        className={styles["Button_General"]}
+                        onClick={handleUpdateFunc}
                       />
-                      {isEdit === true ? (
-                        <>
-                          <Button
-                            text={t("Update")}
-                            className={styles["Button_General"]}
-                            onClick={handleUpdateFunc}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <Button
-                            text={t("Save")}
-                            className={styles["Button_General"]}
-                            onClick={handleAddClick}
-                          />
-                        </>
-                      )}
-                    </Col>
-                  </Row>
-                </>
-              ) : null}
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        text={t("Save")}
+                        className={styles["Button_General"]}
+                        onClick={handleAddClick}
+                      />
+                    </>
+                  )}
+                </Col>
+              </Row>
             </Col>
             <Col lg={6} md={6} sm={6}>
               {fileAttachments.length > 0 ? (
@@ -725,10 +680,6 @@ const Minutes = ({
                         >
                           {fileAttachments.length > 0
                             ? fileAttachments.map((data, index) => {
-                                console.log(
-                                  data,
-                                  "fileAttachmentsfileAttachments"
-                                );
                                 return (
                                   <>
                                     <Col
@@ -737,24 +688,17 @@ const Minutes = ({
                                       sm={12}
                                       className="position-relative gap-2"
                                     >
-                                      {(editorRole.role === "Organizer" &&
-                                        Number(editorRole.status) === 10) ||
-                                      Number(editorRole.status) === 9 ? (
-                                        <span
-                                          className={styles["Crossicon_Class"]}
-                                        >
-                                          <img
-                                            src={CrossIcon}
-                                            height="12.68px"
-                                            width="12.68px"
-                                            onClick={() =>
-                                              handleRemoveFile(data)
-                                            }
-                                            alt=""
-                                          />
-                                        </span>
-                                      ) : null}
-
+                                      <span
+                                        className={styles["Crossicon_Class"]}
+                                      >
+                                        <img
+                                          src={CrossIcon}
+                                          height="12.68px"
+                                          width="12.68px"
+                                          onClick={() => handleRemoveFile(data)}
+                                          alt=""
+                                        />
+                                      </span>
                                       <section className={styles["Outer_Box"]}>
                                         <Row>
                                           <Col lg={12} md={12} sm={12}>
@@ -827,39 +771,34 @@ const Minutes = ({
                   </Row>
                 </>
               ) : null}
-              {(editorRole.role === "Organizer" &&
-                Number(editorRole.status) === 10) ||
-              Number(editorRole.status) === 9 ? (
-                <Row className="mt-2">
-                  <Col lg={12} md={12} sm={12}>
-                    <Dragger
-                      {...props}
-                      className={
-                        styles["dragdrop_attachment_create_resolution"]
-                      }
-                    >
-                      <p className="ant-upload-drag-icon">
-                        <span className={styles["create_resolution_dragger"]}>
-                          <img
-                            src={featherupload}
-                            width="18.87px"
-                            height="18.87px"
-                            draggable="false"
-                            alt=""
-                          />
-                        </span>
-                      </p>
-                      <p className={styles["ant-upload-text"]}>
-                        {t("Drag-&-drop-or")}
-                        <span className={styles["Choose_file_style"]}>
-                          {t("Choose-file")}
-                        </span>
-                        <span className={styles["here_text"]}>{t("Here")}</span>
-                      </p>
-                    </Dragger>
-                  </Col>
-                </Row>
-              ) : null}
+
+              <Row className="mt-2">
+                <Col lg={12} md={12} sm={12}>
+                  <Dragger
+                    {...props}
+                    className={styles["dragdrop_attachment_create_resolution"]}
+                  >
+                    <p className="ant-upload-drag-icon">
+                      <span className={styles["create_resolution_dragger"]}>
+                        <img
+                          src={featherupload}
+                          width="18.87px"
+                          height="18.87px"
+                          draggable="false"
+                          alt=""
+                        />
+                      </span>
+                    </p>
+                    <p className={styles["ant-upload-text"]}>
+                      {t("Drag-&-drop-or")}
+                      <span className={styles["Choose_file_style"]}>
+                        {t("Choose-file")}
+                      </span>
+                      <span className={styles["here_text"]}>{t("Here")}</span>
+                    </p>
+                  </Dragger>
+                </Col>
+              </Row>
             </Col>
           </Row>
           {/* Mapping of The Create Minutes */}
@@ -908,13 +847,9 @@ const Minutes = ({
                                           className={styles["Show_more_Styles"]}
                                           onClick={toggleExpansion}
                                         >
-                                          {!expanded &&
-                                          data.minutesDetails.substring(0, 120)
-                                            ? t("See-more")
-                                            : ""}
                                           {expanded &&
                                           data.minutesDetails.substring(0, 120)
-                                            ? t("See-less")
+                                            ? t("See-more")
                                             : ""}
                                         </span>
                                       </span>
@@ -972,26 +907,22 @@ const Minutes = ({
                                         </Col>
                                       </Row>
                                     </Col>
-                                    {(editorRole.role === "Organizer" &&
-                                      Number(editorRole.status) === 10) ||
-                                    Number(editorRole.status) === 9 ? (
-                                      <Col
-                                        lg={3}
-                                        md={3}
-                                        sm={3}
-                                        className="d-flex justify-content-start align-items-center"
-                                      >
-                                        <img
-                                          draggable={false}
-                                          src={EditIcon}
-                                          height="21.55px"
-                                          width="21.55px"
-                                          className="cursor-pointer"
-                                          onClick={() => handleEditFunc(data)}
-                                          alt=""
-                                        />
-                                      </Col>
-                                    ) : null}
+                                    <Col
+                                      lg={3}
+                                      md={3}
+                                      sm={3}
+                                      className="d-flex justify-content-start align-items-center"
+                                    >
+                                      <img
+                                        draggable={false}
+                                        src={EditIcon}
+                                        height="21.55px"
+                                        width="21.55px"
+                                        className="cursor-pointer"
+                                        onClick={() => handleEditFunc(data)}
+                                        alt=""
+                                      />
+                                    </Col>
                                   </Row>
                                 </Col>
                               </Row>
@@ -1001,7 +932,7 @@ const Minutes = ({
                                     className={styles["Show_more"]}
                                     onClick={() => handleshowMore(index)}
                                   >
-                                    Show more
+                                    {t("Show-more")}
                                   </span>
                                 </Col>
                               </Row>
@@ -1083,7 +1014,7 @@ const Minutes = ({
                                                             }
                                                           >
                                                             {
-                                                              data.DisplayAttachmentName
+                                                              filesname.displayFileName
                                                             }
                                                           </span>
                                                         </Col>
@@ -1101,19 +1032,16 @@ const Minutes = ({
                                   </Row>
                                 </>
                               ) : null}
-                              {(editorRole.role === "Organizer" &&
-                                Number(editorRole.status) === 10) ||
-                              Number(editorRole.status) === 9 ? (
-                                <img
-                                  draggable={false}
-                                  src={RedCroseeIcon}
-                                  height="20.76px"
-                                  width="20.76px"
-                                  className={styles["RedCrossClass"]}
-                                  onClick={() => handleRemovingTheMinutes(data)}
-                                  alt=""
-                                />
-                              ) : null}
+
+                              <img
+                                draggable={false}
+                                src={RedCroseeIcon}
+                                height="20.76px"
+                                width="20.76px"
+                                className={styles["RedCrossClass"]}
+                                onClick={() => handleRemovingTheMinutes(data)}
+                                alt=""
+                              />
                             </Col>
                           </Row>
                         </section>
@@ -1129,37 +1057,46 @@ const Minutes = ({
               md={12}
               sm={12}
               className="d-flex justify-content-end gap-2"
-            ></Col>
+            >
+              {/* <Button
+                text={t("Previous")}
+                className={styles["Previous_Button"]}
+                onClick={handlePreviousButton}
+              />
+              <Button
+                text={t("Next")}
+                onClick={handleNextButton}
+                className={styles["Button_General"]}
+              /> */}
+            </Col>
           </Row>
         </>
       ) : null}
       <Row className="mt-5">
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          className="d-flex justify-content-end gap-3"
-        >
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
           <Button
             text={t("Cancel")}
             className={styles["Cancel_button_Minutes"]}
             onClick={handleUNsaveChangesModal}
           />
-          <Button
-            text={t("Next")}
-            className={styles["Save_button_Minutes"]}
-            onClick={handleNext}
-          />
         </Col>
       </Row>
 
-      {NewMeetingreducer.unsaveFileUploadMinutes && (
+      {unsaveFileUploadMinutes && (
         <UnsavedMinutes
           setMinutes={setMinutes}
           setSceduleMeeting={setSceduleMeeting}
-          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          setFileAttachments={setFileAttachments}
         />
       )}
+
+      {/* {ShowPreviousModal && (
+        <PreviousModal
+          setMinutes={setMinutes}
+          setMeetingMaterial={setMeetingMaterial}
+          prevFlag={prevFlag}
+        />
+      )} */}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );

@@ -15,6 +15,7 @@ import {
   searchNewUserMeeting,
   getMeetingMaterialAPI,
   meetingMaterialFail,
+  cleareAllState,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getFileExtension,
@@ -30,6 +31,7 @@ const MeetingMaterial = ({
   setMinutes,
   editorRole,
   setEdiorRole,
+  setactionsPage,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -59,7 +61,8 @@ const MeetingMaterial = ({
     };
     dispatch(getMeetingMaterialAPI(navigate, t, meetingMaterialData, rows));
     return () => {
-      dispatch(meetingMaterialFail(""));
+      dispatch(cleareAllState());
+
       setRows([]);
     };
   }, []);
@@ -159,8 +162,9 @@ const MeetingMaterial = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.removeItem("folderDataRoomMeeting");
     setViewAdvanceMeetingModal(false);
-    setMeetingMaterial(false);
+    setactionsPage(false);
   };
 
   // To render data in table
@@ -180,12 +184,41 @@ const MeetingMaterial = ({
     dispatch(showCancelMeetingMaterial(true));
   };
   const handleClickSave = () => {
-    setMeetingMaterial(false);
-
-    setMinutes(true);
+    console.log(
+      { editorRole },
+      "handleClickSavehandleClickSavehandleClickSave"
+    );
+    if (
+      editorRole.role === "Organizer" &&
+      (Number(editorRole.status) === 9 || Number(editorRole.status) === 10)
+    ) {
+      setMinutes(true);
+      setMeetingMaterial(false);
+    }
+    if (
+      (editorRole.role === "Participant" ||
+        editorRole.role === "Agenda Contributor") &&
+      Number(editorRole.status) === 10
+    ) {
+      setactionsPage(true);
+      setMeetingMaterial(false);
+    }
+    if (
+      (editorRole.role === "Agenda Contributor" ||
+        editorRole.role === "Participant") &&
+      Number(editorRole.status) === 9
+    ) {
+      setactionsPage(true);
+      setMeetingMaterial(false);
+    }
+    // setMinutes(true);
   };
 
   const prevHandlerClick = () => {
+    console.log(
+      { editorRole },
+      "handleClickSavehandleClickSavehandleClickSave"
+    );
     setMeetingMaterial(false);
     setAgenda(true);
   };

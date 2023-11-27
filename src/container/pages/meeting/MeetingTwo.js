@@ -95,6 +95,8 @@ const NewMeeting = () => {
     ResponseMessage,
     endMeetingModal,
   } = useSelector((state) => state.NewMeetingreducer);
+  const [publishState, setPublishState] = useState(null);
+
   // const searchMeetings = useSelector(
   //   (state) => state.NewMeetingreducer.searchMeetings
   // );
@@ -113,7 +115,6 @@ const NewMeeting = () => {
   // const Loading = useSelector((state) => state.downloadReducer.Loading);
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-  console.log(Loading, "LoadingLoadingLoadingLoadingLoading");
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
 
@@ -421,9 +422,10 @@ const NewMeeting = () => {
       };
       await dispatch(
         GetAllMeetingDetailsApiFunc(
-          Data,
           navigate,
           t,
+          Data,
+          true,
           setCurrentMeetingID,
           setSceduleMeeting,
           setDataroomMapFolderId
@@ -724,11 +726,12 @@ const NewMeeting = () => {
                             startMeetingRequest,
                             t,
                             4,
-                            setViewFlag,
+                            setPublishState,
                             setAdvanceMeetingModalID,
                             setViewFlag,
                             setEditFlag,
                             setCalendarViewModal,
+                            setSceduleMeeting,
                             setEdiorRole
                           )
                         );
@@ -754,6 +757,10 @@ const NewMeeting = () => {
                             3,
                             setViewAdvanceMeetingModal,
                             setAdvanceMeetingModalID,
+                            setViewFlag,
+                            setEditFlag,
+                            setCalendarViewModal,
+                            setSceduleMeeting,
                             setEdiorRole
                           )
                         );

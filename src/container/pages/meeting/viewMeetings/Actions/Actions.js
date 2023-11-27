@@ -13,6 +13,7 @@ import EmptyStates from "../../../../../assets/images/EmptystateAction.svg";
 import CreateTask from "./CreateTask/CreateTask";
 import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import {
+  cleareAllState,
   searchNewUserMeeting,
   showUnsavedActionsModal,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -24,6 +25,7 @@ import {
 import CancelActions from "./CancelActions/CancelActions";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
+import { clearAttendanceState } from "../../../../../store/actions/Attendance_Meeting";
 
 const Actions = ({
   setSceduleMeeting,
@@ -36,6 +38,7 @@ const Actions = ({
   isEditMeeting,
   dataroomMapFolderId,
   setViewAdvanceMeetingModal,
+  setMeetingMaterial,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -75,7 +78,7 @@ const Actions = ({
 
     dispatch(getMeetingTaskMainApi(navigate, t, meetingTaskData));
     return () => {
-      dispatch(getMeetingTask_Fail());
+      dispatch(clearAttendanceState());
       setActionsRows([]);
     };
   }, []);
@@ -211,6 +214,7 @@ const Actions = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.removeItem("folderDataRoomMeeting");
     setViewAdvanceMeetingModal(false);
     setactionsPage(false);
   };
@@ -228,8 +232,34 @@ const Actions = ({
 
   // To go on Previous tab
   const prevTabToMinutes = () => {
-    setactionsPage(false);
-    setMinutes(true);
+    console.log(
+      { editorRole },
+      "handleClickSavehandleClickSavehandleClickSave"
+    );
+    if (
+      (editorRole.role === "Agenda Contributor" ||
+        editorRole.role === "Participant") &&
+      Number(editorRole.status) === 9
+    ) {
+      setactionsPage(false);
+      setMeetingMaterial(true);
+    } else if (
+      (editorRole.role === "Participant" ||
+        editorRole.role === "Agenda Contributor") &&
+      Number(editorRole.status) === 10
+    ) {
+      setactionsPage(false);
+      setMeetingMaterial(true);
+    } else {
+      setactionsPage(false);
+      setMinutes(true);
+    }
+    // if (editorRole.role === "Participant" && Number(editorRole.status) === 10) {
+    //   setactionsPage(false);
+    //   setMeetingMaterial(true);
+    // }
+    // setactionsPage(false);
+    // setMinutes(true);
   };
 
   return (
@@ -366,33 +396,39 @@ const Actions = ({
                         </Col>
                       </Row>
                     )}
-                    <Row className="mt-5">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-end gap-2"
-                      >
-                        <Button
-                          text={t("Cancel")}
-                          className={styles["CloneMeetingButton"]}
-                          onClick={handleCancelActionNoPopup}
-                        />
-                        <Button
-                          text={t("Previous")}
-                          className={styles["CloneMeetingButton"]}
-                          onClick={prevTabToMinutes}
-                        />
-                        <Button
-                          text={t("Next")}
-                          className={styles["CloneMeetingButton"]}
-                          onClick={nextTabToPolls}
-                        />
-                      </Col>
-                    </Row>
                   </section>
                 </>
               )}
+              <Row className="mt-5">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-end gap-2"
+                >
+                  <Button
+                    text={t("Cancel")}
+                    className={styles["CloneMeetingButton"]}
+                    onClick={handleCancelActionNoPopup}
+                  />
+                  <Button
+                    text={t("Previous")}
+                    className={styles["SaveButtonActions"]}
+                    onClick={prevTabToMinutes}
+                  />
+                  {Number(editorRole.status) === 9 &&
+                  (editorRole.role === "Participant" ||
+                    editorRole.role === "Agenda Contributor") ? null : (
+                    <>
+                      <Button
+                        text={t("Next")}
+                        className={styles["SaveButtonActions"]}
+                        onClick={nextTabToPolls}
+                      />
+                    </>
+                  )}
+                </Col>
+              </Row>
             </Col>
           </Row>
         </>

@@ -43,6 +43,11 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
 
+  console.log(
+    userWiseMeetingProposed,
+    "userWiseMeetingProposeduserWiseMeetingProposed"
+  );
+
   const [deadline, setDeadline] = useState("");
   const [prposedData, setPrposedData] = useState([]);
   const [sendProposedData, setSendProposedData] = useState([]);
@@ -71,11 +76,12 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
     };
     // await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
     await dispatch(getUserProposedWiseApi(navigate, t, Data));
-    await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t));
+    await dispatch(GetAllMeetingDetailsApiFunc(Data, navigate, t,));
     return () => {
       localStorage.removeItem("viewProposeDatePollMeetingID");
     };
   };
+
   useEffect(() => {
     callApis();
   }, []);
@@ -196,65 +202,6 @@ const ViewParticipantsDates = ({ setViewProposeDatePoll }) => {
         );
         let deadline = getAllProposedDates.deadLineDate;
         setDeadline(deadline);
-        // let datesarry = [];
-        // getAllProposedDates.meetingProposedDates.map((data, index) => {
-        //   console.log(data, "getAllProposedDatesgetAllProposedDates");
-        //   if (
-        //     data.proposedDate === "10000101" &&
-        //     data.endTime === "000000" &&
-        //     data.startTime === "000000"
-        //   ) {
-        //   } else {
-        //     datesarry.push({
-        //       endTime: resolutionResultTable(data.proposedDate + data.endTime),
-        //       proposedDate: resolutionResultTable(
-        //         data.proposedDate + data.startTime
-        //       ),
-        //       proposedDateID: data.proposedDateID,
-        //       startTime: resolutionResultTable(
-        //         data.proposedDate + data.startTime
-        //       ),
-        //       EndtimeSend: data.endTime,
-        //       ProposedDateSend: data.proposedDate,
-        //       proposedDateIDSend: data.proposedDateID,
-        //       StartTimeSend: data.startTime,
-        //     });
-        //   }
-        // });
-        // //For Sending  Date
-
-        // let SenddataObject = [];
-
-        // getAllProposedDates.meetingProposedDates.map((data, index) => {
-        //   SenddataObject.push({
-        //     EndtimeSend: data.endTime,
-        //     ProposedDateSend: data.proposedDate,
-        //     proposedDateIDSend: data.proposedDateID,
-        //     StartTimeSend: data.startTime,
-        //   });
-        // });
-
-        // let DefaultDate = [];
-        // //For Sending Default Date
-        // getAllProposedDates.meetingProposedDates.map((data, index) => {
-        //   console.log(data, "datadatadata");
-        //   if (
-        //     data.proposedDate === "10000101" &&
-        //     data.endTime === "000000" &&
-        //     data.startTime === "000000"
-        //   ) {
-        //     DefaultDate.push({
-        //       EndtimeSend: data.endTime,
-        //       ProposedDateSend: data.proposedDate,
-        //       proposedDateIDSend: data.proposedDateID,
-        //       StartTimeSend: data.startTime,
-        //     });
-        //   } else {
-        //   }
-        // });
-        // setNoneOfAbove(DefaultDate);
-        // setPrposedData(datesarry);
-        // setSendProposedData(SenddataObject);
       }
     } catch (error) {
       console.error(error);

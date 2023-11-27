@@ -14,6 +14,7 @@ import emptyContributorState from "../../../../../assets/images/emptyStateContri
 import { useNavigate } from "react-router-dom";
 import {
   CleareMessegeNewMeeting,
+  cleareAllState,
   getAllAgendaContributorApi,
   getAllAgendaContributor_fail,
   searchNewUserMeeting,
@@ -29,6 +30,7 @@ const AgendaContributers = ({
   setorganizers,
   setViewAdvanceMeetingModal,
   advanceMeetingModalID,
+  setEdiorRole,
   setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
@@ -55,7 +57,7 @@ const AgendaContributers = ({
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
     return () => {
-      dispatch(getAllAgendaContributor_fail(""));
+      dispatch(cleareAllState());
     };
   }, []);
 
@@ -113,6 +115,10 @@ const AgendaContributers = ({
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
     setAgendaContributors(false);
+    localStorage.removeItem("folderDataRoomMeeting");
+    setEdiorRole({ status: null, role: null });
+    setAdvanceMeetingModalID(null);
+    // setMeetingDetails(false);
   };
 
   const AgendaContributorViewColoumns = [
@@ -249,7 +255,7 @@ const AgendaContributers = ({
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={AgendaContributorViewColoumns}
-                  scroll={{ y: "62vh" }}
+                  scroll={{ y: "36vh" }}
                   pagination={false}
                   locale={{
                     emptyText: (

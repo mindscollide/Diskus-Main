@@ -330,70 +330,69 @@ const handlegetAllMeetingTypesFailed = (message) => {
 
 const GetAllMeetingTypesNewFunction = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(handlegetAllMeetingTypesInit());
     let form = new FormData();
     form.append("RequestMethod", getallMeetingType.RequestMethod);
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllMeetingTypesNewFunction(navigate, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAllMeetingTypes_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                handlegetAllMeetingTypesSuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAllMeetingTypes_02".toLowerCase()
-                )
-            ) {
-              dispatch(handlegetAllMeetingTypesFailed(t("No-record-found")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetAllMeetingTypes_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                handlegetAllMeetingTypesFailed(t("Something-went-wrong"))
-              );
-            } else {
-              dispatch(
-                handlegetAllMeetingTypesFailed(t("Something-went-wrong"))
-              );
-            }
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API request
+        await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAllMeetingTypes_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              handlegetAllMeetingTypesSuccess(
+                response.data.responseResult,
+                t("Record-found")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAllMeetingTypes_02".toLowerCase()
+              )
+          ) {
+            dispatch(handlegetAllMeetingTypesFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAllMeetingTypes_03".toLowerCase()
+              )
+          ) {
+            dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
           } else {
             dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
           }
         } else {
           dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
         }
-      })
-      .catch((response) => {
+      } else {
         dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
-      });
+      }
+    } catch (error) {
+      // Retry the API request in case of an error
+      await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+    }
   };
 };
 
@@ -512,22 +511,44 @@ const SaveMeetingDetialsNewApiFunction = (
                       t("Meeting-details-updated-and-published-successfully")
                     )
                   );
+
+                  let currentView = localStorage.getItem("MeetingCurrentView");
+                  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                  let meetingPageCurrent = parseInt(
+                    localStorage.getItem("MeetingPageCurrent")
+                  );
+                  let userID = localStorage.getItem("userID");
+                  let searchData = {
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(userID),
+                    PageNumber:
+                      meetingPageCurrent !== null
+                        ? Number(meetingPageCurrent)
+                        : 1,
+                    Length:
+                      meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                    PublishedMeetings:
+                      currentView && Number(currentView) === 1 ? true : false,
+                  };
+                  await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                } else {
+                  let MappedData = {
+                    MeetingID: response.data.responseResult.meetingID,
+                    MeetingTitle: meetingDetails.MeetingTitle,
+                    IsUpdateFlow: false,
+                  };
+                  dispatch(
+                    CreateUpdateMeetingDataRoomMapeedApiFunc(
+                      navigate,
+                      MappedData,
+                      t,
+                      setDataroomMapFolderId
+                    )
+                  );
                 }
 
-                let MappedData = {
-                  MeetingID: response.data.responseResult.meetingID,
-                  MeetingTitle: meetingDetails.MeetingTitle,
-                  IsUpdateFlow: false,
-                };
-                console.log(MappedData, "MappedDataMappedData");
-                dispatch(
-                  CreateUpdateMeetingDataRoomMapeedApiFunc(
-                    navigate,
-                    MappedData,
-                    t,
-                    setDataroomMapFolderId
-                  )
-                );
                 // setSceduleMeeting(false);
               } else if (viewValue === 3) {
                 setorganizers(true);
@@ -651,62 +672,58 @@ const handlegetallReminderFrequencyFailed = (message) => {
 //Functions Get All Meeting Reminder Frequency API
 const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(handlegetallReminderFrequencyInit());
+  return async (dispatch) => {
+    // dispatch(handlegetallReminderFrequencyInit());
     let form = new FormData();
     form.append("RequestMethod", GetMeetingNewFrequencyReminder.RequestMethod);
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingReminders_01".toLowerCase()
-                )
-            ) {
-              dispatch(
-                handlegetallReminderFrequencySuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingReminders_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                handlegetallReminderFrequencyFailed(t("No-record-found"))
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingReminders_03".toLowerCase()
-                )
-            ) {
-              dispatch(
-                handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
-              );
-            } else {
-              dispatch(
-                handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
-              );
-            }
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API request
+        await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetMeetingReminders_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              handlegetallReminderFrequencySuccess(
+                response.data.responseResult,
+                t("Record-found")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetMeetingReminders_02".toLowerCase()
+              )
+          ) {
+            dispatch(handlegetallReminderFrequencyFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetMeetingReminders_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
+            );
           } else {
             dispatch(
               handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
@@ -717,12 +734,15 @@ const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
             handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
           );
         }
-      })
-      .catch((response) => {
+      } else {
         dispatch(
           handlegetallReminderFrequencyFailed(t("Something-went-wrong"))
         );
-      });
+      }
+    } catch (error) {
+      // Retry the API request in case of an error
+      await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+    }
   };
 };
 
@@ -751,7 +771,7 @@ const handleReucrringFailed = (message) => {
 const GetAllMeetingRecurringApiNew = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(handleReucrringInit());
+    // dispatch(handleReucrringInit());
     let form = new FormData();
     form.append("RequestMethod", GetAllRecurringNewMeeting.RequestMethod);
     axios({
@@ -1086,11 +1106,11 @@ const showParticipantsRolesFailed = (message) => {
 
 const GetAllParticipantsRoleNew = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(showParticipantsRolesInit());
+  return async (dispatch) => {
+    await dispatch(showParticipantsRolesInit());
     let form = new FormData();
     form.append("RequestMethod", getParticipantsRoles.RequestMethod);
-    axios({
+    await axios({
       method: "post",
       url: meetingApi,
       data: form,
@@ -1694,12 +1714,12 @@ const showAllMeetingParticipantsFailed = (message) => {
 
 const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(showAllMeetingParticipantsInit());
+  return async (dispatch) => {
+    // dispatch(showAllMeetingParticipantsInit());
     let form = new FormData();
     form.append("RequestMethod", getAllSavedParticipants.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
+    await axios({
       method: "post",
       url: meetingApi,
       data: form,
@@ -1860,11 +1880,12 @@ const showGetAllMeetingDetialsInit = () => {
   };
 };
 
-const showGetAllMeetingDetialsSuccess = (response, message) => {
+const showGetAllMeetingDetialsSuccess = (response, message, loader) => {
   return {
     type: actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -1881,20 +1902,21 @@ const cleareAllState = () => {
 };
 //GET ALL MEETING DETAILS API Function
 const GetAllMeetingDetailsApiFunc = (
-  Data,
   navigate,
   t,
+  Data,
+  loader,
   setCurrentMeetingID,
   setSceduleMeeting,
   setDataroomMapFolderId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
-    dispatch(showGetAllMeetingDetialsInit());
+  return async (dispatch) => {
+    await dispatch(showGetAllMeetingDetialsInit());
     let form = new FormData();
     form.append("RequestMethod", getAllMeetingDetailsByMeetingID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
+    await axios({
       method: "post",
       url: meetingApi,
       data: form,
@@ -1907,9 +1929,10 @@ const GetAllMeetingDetailsApiFunc = (
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             GetAllMeetingDetailsApiFunc(
-              Data,
               navigate,
               t,
+              Data,
+              loader,
               setCurrentMeetingID,
               setSceduleMeeting,
               setDataroomMapFolderId
@@ -1924,37 +1947,36 @@ const GetAllMeetingDetailsApiFunc = (
                   "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                showGetAllMeetingDetialsSuccess(
-                  response.data.responseResult,
-                  t("Record-found")
-                )
-              );
               localStorage.setItem(
                 "currentMeetingLS",
                 response.data.responseResult.advanceMeetingDetails.meetingID
               );
-
+              let MappedData = {
+                MeetingID:
+                  response.data.responseResult.advanceMeetingDetails.meetingID,
+                MeetingTitle:
+                  response.data.responseResult.advanceMeetingDetails
+                    .meetingTitle,
+                IsUpdateFlow: true,
+              };
+              await dispatch(
+                showGetAllMeetingDetialsSuccess(
+                  response.data.responseResult,
+                  t("Record-found"),
+                  loader
+                )
+              );
+              await dispatch(
+                CreateUpdateMeetingDataRoomMapeedApiFunc(
+                  navigate,
+                  MappedData,
+                  t,
+                  setDataroomMapFolderId
+                )
+              );
               try {
                 setSceduleMeeting(true);
                 setCurrentMeetingID(Data.MeetingID);
-                let MappedData = {
-                  MeetingID:
-                    response.data.responseResult.advanceMeetingDetails
-                      .meetingID,
-                  MeetingTitle:
-                    response.data.responseResult.advanceMeetingDetails
-                      .meetingTitle,
-                  IsUpdateFlow: true,
-                };
-                dispatch(
-                  CreateUpdateMeetingDataRoomMapeedApiFunc(
-                    navigate,
-                    MappedData,
-                    t,
-                    setDataroomMapFolderId
-                  )
-                );
               } catch {}
             } else if (
               response.data.responseResult.responseMessage
@@ -2009,7 +2031,7 @@ const showPollsByMeetingIdSuccess = (response, message) => {
 
 const showPollsByMeetingIdFailed = (message) => {
   return {
-    type: actions.GET_POLLS_BY_MEETING_ID_SUCCESS,
+    type: actions.GET_POLLS_BY_MEETING_ID_FAILED,
     message: message,
   };
 };
@@ -2265,22 +2287,23 @@ const showGetAllProposedMeetingDatesInit = () => {
   };
 };
 
-const showGetAllProposedMeetingDatesSuccess = (response, message) => {
+const showGetAllProposedMeetingDatesSuccess = (response, message, flag) => {
   return {
     type: actions.GET_ALL_PRPOSED_DATES_SUCCESS,
     response: response,
     message: message,
+    loader: flag,
   };
 };
 
 const showGetAllProposedMeetingDatesFailed = (message) => {
   return {
-    type: actions.GET_ALL_PRPOSED_DATES_SUCCESS,
+    type: actions.GET_ALL_PRPOSED_DATES_FAILED,
     message: message,
   };
 };
 
-const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
+const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showGetAllProposedMeetingDatesInit());
@@ -2298,7 +2321,7 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
+          dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2311,7 +2334,8 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
               dispatch(
                 showGetAllProposedMeetingDatesSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  t("Record-found"),
+                  flag
                 )
               );
             } else if (
@@ -2322,7 +2346,11 @@ const GetAllProposedMeetingDateApiFunc = (Data, navigate, t) => {
                 )
             ) {
               dispatch(
-                showGetAllProposedMeetingDatesFailed(t("No-record-found"))
+                showGetAllProposedMeetingDatesSuccess(
+                  [],
+                  t("No-record-found"),
+                  flag
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -2382,12 +2410,13 @@ const showPrposedMeetingDateFailed = (message) => {
 };
 
 const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(showPrposedMeetingDateInit());
+    let token = JSON.parse(localStorage.getItem("token"));
     let form = new FormData();
     form.append("RequestMethod", SettingMeetingProposedDates.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
+
     axios({
       method: "post",
       url: meetingApi,
@@ -2406,20 +2435,26 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatess_01".toLowerCase()
                 )
             ) {
               dispatch(
                 showPrposedMeetingDateSuccess(
-                  response.data.responseResult.responseMessage,
+                  response.data.responseResult,
                   t("Record-saved")
                 )
+              );
+              let NewData = {
+                MeetingID: Data.MeetingID,
+              };
+              dispatch(
+                GetAllProposedMeetingDateApiFunc(NewData, navigate, t, false)
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatess_02".toLowerCase()
                 )
             ) {
               dispatch(showPrposedMeetingDateFailed(t("No-record-saved")));
@@ -2427,7 +2462,7 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatess_03".toLowerCase()
                 )
             ) {
               dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
@@ -2435,7 +2470,7 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SetMeetingProposedDates_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_SetMeetingProposedDatess_04".toLowerCase()
                 )
             ) {
               dispatch(
@@ -2453,7 +2488,8 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
           dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
         }
       })
-      .catch((response) => {
+      .catch((error) => {
+        console.error("Error occurred in API call:", error);
         dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
       });
   };
@@ -3014,9 +3050,8 @@ const ShowADDGeneralMinutesFailed = (message) => {
   };
 };
 
-const ADDGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
+const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(ShowADDGeneralMinutesInit());
     let form = new FormData();
@@ -3046,10 +3081,6 @@ const ADDGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
                   t("Record-saved")
                 )
               );
-              // let Meet = {
-              //   MeetingID: Number(currentMeeting),
-              // };
-              // dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Meet));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_AddGeneralMinute_02"
@@ -3087,10 +3118,16 @@ const showRetriveGeneralMinutesDocsMeetingInit = () => {
 };
 
 const showRetriveGeneralMinutesDocsMeetingSuccess = (response, message) => {
-  return {
-    type: actions.GENERAL_DOCUMENT_FOR_MEETING_SUCCESS,
-    response: response,
-    message: message,
+  return async (dispatch) => {
+    return new Promise((resolve) => {
+      console.log("LoadingLoadingLoading");
+      dispatch({
+        type: actions.GENERAL_DOCUMENT_FOR_MEETING_SUCCESS,
+        response: response,
+        message: message,
+      });
+      resolve("Success");
+    });
   };
 };
 
@@ -3103,91 +3140,107 @@ const showRetriveGeneralMinutesDocsMeetingFailed = (message) => {
 
 const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
-  return (dispatch) => {
-    dispatch(showRetriveGeneralMinutesDocsMeetingInit());
-    let form = new FormData();
-    form.append("RequestData", JSON.stringify(Data));
-    form.append("RequestMethod", getAllGeneralMiintuesDocument.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(DocumentsOfMeetingGenralMinutesApiFunc(navigate, Data, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                showRetriveGeneralMinutesDocsMeetingSuccess(
-                  response.data.responseResult,
-                  t("Data-available")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_02".toLowerCase()
-                )
-            ) {
-              dispatch(
-                showRetriveGeneralMinutesDocsMeetingFailed(
-                  t("No-data-available")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_03".toLowerCase()
-                )
-            ) {
+  console.log("LoadingLoadingLoading");
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      let form = new FormData();
+      form.append("RequestData", JSON.stringify(Data));
+      form.append("RequestMethod", getAllGeneralMiintuesDocument.RequestMethod);
+
+      axios({
+        method: "post",
+        url: dataRoomApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      })
+        .then(async (response) => {
+          if (response.data.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t));
+            dispatch(DocumentsOfMeetingGenralMinutesApiFunc(navigate, Data, t));
+            reject("Response code 417");
+          } else if (response.data.responseCode === 200) {
+            if (response.data.responseResult.isExecuted === true) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_01".toLowerCase()
+                  )
+              ) {
+                console.log("LoadingLoadingLoading");
+                await dispatch(
+                  showRetriveGeneralMinutesDocsMeetingSuccess(
+                    response.data.responseResult,
+                    t("Data-available")
+                  )
+                );
+                resolve("Success");
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_02".toLowerCase()
+                  )
+              ) {
+                console.log("LoadingLoadingLoading");
+                dispatch(
+                  showRetriveGeneralMinutesDocsMeetingFailed(
+                    t("No-data-available")
+                  )
+                );
+                reject("No data available");
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_03".toLowerCase()
+                  )
+              ) {
+                console.log("LoadingLoadingLoading");
+                dispatch(
+                  showRetriveGeneralMinutesDocsMeetingFailed(
+                    t("Something-went-wrong")
+                  )
+                );
+                reject("Something went wrong");
+              }
+            } else {
+              console.log("LoadingLoadingLoading");
               dispatch(
                 showRetriveGeneralMinutesDocsMeetingFailed(
                   t("Something-went-wrong")
                 )
               );
+              reject("Something went wrong");
             }
           } else {
+            console.log("LoadingLoadingLoading");
             dispatch(
               showRetriveGeneralMinutesDocsMeetingFailed(
                 t("Something-went-wrong")
               )
             );
+            reject("Something went wrong");
           }
-        } else {
+        })
+        .catch((error) => {
+          console.log("LoadingLoadingLoading");
           dispatch(
             showRetriveGeneralMinutesDocsMeetingFailed(
               t("Something-went-wrong")
             )
           );
-        }
-      })
-      .catch((response) => {
-        dispatch(
-          showRetriveGeneralMinutesDocsMeetingFailed(t("Something-went-wrong"))
-        );
-      });
+          reject("Something went wrong");
+        });
+    });
   };
 };
 
 //Getting all the General Mintues
 
 const showAllGeneralMinutesInit = () => {
-  console.log("ShowAllGeneralMinutesInitShowAllGeneralMinutesInit");
   return {
     type: actions.GET_GENERAL_MINTES_INIT,
   };
@@ -3211,80 +3264,87 @@ const showAllGeneralMinutesFailed = (message) => {
 // Api Function For General Minutes
 const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(showAllGeneralMinutesInit());
-    console.log("ShowAllGeneralMinutesInitShowAllGeneralMinutesInit");
     let form = new FormData();
     form.append("RequestMethod", getGeneralMinutes.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
-            ) {
-              dispatch(
-                showAllGeneralMinutesSuccess(response.data.responseResult, "")
-              );
+    try {
+      const response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
 
-              let MeetingDocs = {
-                MDID: currentMeeting,
-              };
-              console.log(MeetingDocs, "MeetingDocsMeetingDocs");
-              dispatch(
-                DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
-              );
-            } else if (
-              response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
-            ) {
-              dispatch(showAllGeneralMinutesFailed("", ""));
-            } else if (
-              response.data.responseResult.responseMessage ===
-              "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
-            ) {
-              dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
-            }
-          } else {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        await dispatch(
+          GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting)
+        );
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_01"
+          ) {
+            let MeetingDocs = {
+              MDID: currentMeeting,
+            };
+            // Call DocumentsOfMeetingGenralMinutesApiFunc and wait for its response
+            await dispatch(
+              DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
+            );
+
+            // After DocumentsOfMeetingGenralMinutesApiFunc is done, call showAllGeneralMinutesSuccess
+            dispatch(
+              showAllGeneralMinutesSuccess(
+                response.data.responseResult,
+                t("Record-found")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
+          ) {
+            dispatch(showAllGeneralMinutesFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
+          ) {
             dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
           }
         } else {
           dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
         }
-      })
-      .catch((response) => {
+      } else {
         dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
-      });
+      }
+    } catch (error) {
+      dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
+    }
   };
 };
-
+const cleareMinutsData = () => {
+  return {
+    type: actions.CLEARE_MINUTS_DATA,
+  };
+};
 // Documents Upload And Save
 
 // Upload Documents Init
 const uploadDocument_init = () => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
+    type: actions.UPLOAD_DOCUMENT_INIT,
   };
 };
 
 // Upload Documents Success
 const uploadDocument_success = (response, message) => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    type: actions.UPLOAD_DOCUMENT_SUCCESS,
     response: response,
     message: message,
   };
@@ -3293,7 +3353,7 @@ const uploadDocument_success = (response, message) => {
 // Upload Documents Fail
 const uploadDocument_fail = (message) => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    type: actions.UPLOAD_DOCUMENT_FAILED,
     message: message,
   };
 };
@@ -3390,14 +3450,14 @@ const uploadDocumentsMeetingMinutesApi = (
 // Save Files Init
 const saveFiles_init = () => {
   return {
-    type: actions.SAVEFILES_DATAROOM_INIT,
+    type: actions.SAVED_FILES_INIT,
   };
 };
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
   return {
-    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    type: actions.SAVED_FILES_SUCCESS,
     response: response,
     message: message,
   };
@@ -3406,7 +3466,7 @@ const saveFiles_success = (response, message) => {
 // Save Files Fail
 const saveFiles_fail = (message) => {
   return {
-    type: actions.SAVEFILES_DATAROOM_FAIL,
+    type: actions.SAVED_FILES_FAILED,
     message: message,
   };
 };
@@ -3712,6 +3772,7 @@ const getProposedWiseInit = () => {
 };
 
 const getProposedWiseSuccess = (response, message) => {
+  console.log(response, "getProposedWiseSuccess");
   return {
     type: actions.GET_USER_WISE_PROPOSED_SUCCESS,
     response,
@@ -3751,7 +3812,7 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -3760,11 +3821,15 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
                   t("Record-found")
                 )
               );
+              console.log(
+                response.data.responseResult.userWiseMeetingProposedDates,
+                "includesincludesincludesincludes"
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_02".toLowerCase()
                 )
             ) {
               dispatch(getProposedWiseFail(t("No-record-found")));
@@ -3772,7 +3837,7 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetUserWiseProposedDates_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_03".toLowerCase()
                 )
             ) {
               dispatch(getProposedWiseFail(t("Something-went-wrong")));
@@ -4589,11 +4654,6 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
 //Upload Documents for agendawise minutes
 
 // Upload Documents Init
-const uploadDocument_init_agenda_Wise = () => {
-  return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT,
-  };
-};
 
 // Upload Documents Success
 const uploadDocument_success_agenda_wise = (response, message) => {
@@ -4623,7 +4683,6 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
   let token = JSON.parse(localStorage.getItem("token"));
 
   return async (dispatch) => {
-    dispatch(uploadDocument_init_agenda_Wise());
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
@@ -4708,11 +4767,6 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
 };
 
 // Save Files Init
-const saveFiles_init_agenda_wise = () => {
-  return {
-    type: actions.SAVEFILES_DATAROOM_INIT,
-  };
-};
 
 // Save Files Success
 const saveFiles_success_agenda_wise = (response, message) => {
@@ -4759,7 +4813,6 @@ const saveFilesMeetingagendaWiseMinutesApi = (
     Type: 0,
   };
   return async (dispatch) => {
-    dispatch(saveFiles_init_agenda_wise());
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -5350,7 +5403,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               await dispatch(
                 showCreateUpdateMeetingDataRoomSuccess(
                   response.data.responseResult,
-                  t("New-mapping-created")
+                  ""
                 )
               );
               localStorage.setItem(
@@ -5382,20 +5435,17 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               );
             }
           } else {
-            console.log(response, "response");
             dispatch(
               showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log(response, "response");
           dispatch(
             showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        console.log(response, "response");
         dispatch(
           showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
         );
@@ -6121,6 +6171,7 @@ const UpdateMeetingUserForAgendaContributor = (
                 let newData = [];
                 let copyData = [...rowsData];
                 copyData.forEach((data, index) => {
+                  console.log(data, "rowsDatarowsDatarowsData");
                   newData.push({
                     UserID: data.userID,
                     Title: data.Title,
@@ -6143,6 +6194,8 @@ const UpdateMeetingUserForAgendaContributor = (
                 let newData = [];
                 let copyData = [...rowsData];
                 copyData.forEach((data, index) => {
+                  console.log(data, "rowsDatarowsDatarowsData");
+
                   newData.push({
                     UserID: data.userID,
                     Title: data.Title,
@@ -6622,5 +6675,6 @@ export {
   getAllAgendaContributor_fail,
   showAllMeetingParticipantsFailed,
   meetingMaterialFail,
+  cleareMinutsData,
   showAllGeneralMinutesFailed,
 };

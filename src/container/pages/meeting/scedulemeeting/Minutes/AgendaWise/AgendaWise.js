@@ -3,11 +3,7 @@ import styles from "./AgendaWise.module.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import {
-  Button,
-  Notification,
-  Loader,
-} from "../../../../../../components/elements";
+import { Button, Notification } from "../../../../../../components/elements";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
 import { useRef } from "react";
@@ -129,10 +125,6 @@ const AgendaWise = ({ currentMeeting }) => {
             });
 
             agenda.subAgenda.map((subajendaData, index) => {
-              console.log(
-                subajendaData,
-                "subajendaDatasubajendaDatasubajendaData"
-              );
               NewData.push({
                 value: subajendaData.subAgendaID,
                 label: subajendaData.subTitle,
@@ -145,8 +137,6 @@ const AgendaWise = ({ currentMeeting }) => {
       }
     } catch {}
   }, [AgendaWiseAgendaListReducer.AllAgendas]);
-
-  console.log(agendaOptions, "agendaOptionsagendaOptions");
 
   // Combined Data for both Documents and Minutes Agenda Wise
   useEffect(() => {
@@ -161,13 +151,6 @@ const AgendaWise = ({ currentMeeting }) => {
           NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
         const documentsData =
           NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
-
-        console.log(
-          minutesData,
-          documentsData,
-          "minutesDataminutesDataminutesData"
-        );
-
         const combinedData = minutesData.map((item1) => {
           const matchingItem = documentsData.find(
             (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
@@ -180,7 +163,6 @@ const AgendaWise = ({ currentMeeting }) => {
           }
           return item1;
         });
-        console.log(combinedData, "minutesDataminutesDataminutesData");
         setMessages(combinedData);
       } else {
         setMessages([]);
@@ -193,10 +175,8 @@ const AgendaWise = ({ currentMeeting }) => {
     NewMeetingreducer.agendaWiseMinutesReducer,
     NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
   ]);
-  console.log(messages, "minutesDataminutesDataminutesData");
 
   let userID = localStorage.getItem("userID");
-  const date = new Date();
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
@@ -352,7 +332,6 @@ const AgendaWise = ({ currentMeeting }) => {
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText) {
-      console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -365,7 +344,6 @@ const AgendaWise = ({ currentMeeting }) => {
   };
 
   const handleAgendaSelect = (selectoptions) => {
-    console.log(selectoptions, "selectoptionsselectoptions");
     setAgendaSelect({
       ...agendaSelect,
       agendaSelectOptions: {
@@ -379,14 +357,11 @@ const AgendaWise = ({ currentMeeting }) => {
     });
   };
 
-  console.log(agendaID, "agendaIDagendaIDagendaID");
-
   const handleAddClickAgendaWise = async () => {
     let Data = {
       AgendaID: agendaSelect.agendaSelectOptions.id,
       MinuteText: addNoteFields.Description.value,
     };
-    console.log(Data, "addNoteFieldsaddNoteFields");
     dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
     setAgendaOptionValue({
       value: 0,

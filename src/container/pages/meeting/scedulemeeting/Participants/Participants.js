@@ -21,24 +21,11 @@ import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import {
   GetAllParticipantsRoleNew,
   GetAllSavedparticipantsAPI,
-  SaveparticipantsApi,
-  ShowNextConfirmationModal,
   UpdateMeetingUserApiFunc,
   showAddParticipantsModal,
   showCancelModalPartipants,
   showCrossConfirmationModal,
-  showPreviousConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
-import {
-  getAgendaAndVotingInfo_success,
-  GetCurrentAgendaDetails,
-  getAgendaVotingDetails_success,
-  saveFiles_success,
-  saveAgendaVoting_success,
-  addUpdateAdvanceMeetingAgenda_success,
-  uploadDocument_success,
-  getAllVotingResultDisplay_success,
-} from "../../../../../store/actions/MeetingAgenda_action";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
@@ -63,16 +50,16 @@ const Participants = ({
   setViewFlag,
   setEditFlag,
   setCalendarViewModal,
+  setDataroomMapFolderId,
+  setCurrentMeetingID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [isEditClicked, setIsEditClicked] = useState(false);
-  const [menuIsOpen, setMenuIsOpen] = useState(true);
   const [isEditable, setIsEditable] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
-  const [errorFileds, setErrorFileds] = useState(false);
   const [inputValues, setInputValues] = useState({});
   const [editableSave, setEditableSave] = useState(0);
   const [flag, setFlag] = useState(4);
@@ -82,6 +69,20 @@ const Participants = ({
     message: "",
   });
   const [rspvRows, setrspvRows] = useState([]);
+
+  const callApiOnComponentMount = async () => {
+    await dispatch(GetAllParticipantsRoleNew(navigate, t));
+    let Data = {
+      MeetingID: Number(currentMeeting),
+    };
+    await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
+  };
+
+  //For participants Role
+  useEffect(() => {
+    callApiOnComponentMount();
+  }, []);
+
   //open row icon cross modal
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
@@ -120,16 +121,6 @@ const Participants = ({
       zIndex: 9999,
     }),
   };
-
-  //For participants Role
-  useEffect(() => {
-    setMenuIsOpen(true);
-    dispatch(GetAllParticipantsRoleNew(navigate, t));
-    let Data = {
-      MeetingID: Number(currentMeeting),
-    };
-    dispatch(GetAllSavedparticipantsAPI(Data, navigate, t));
-  }, []);
 
   //Roles Drop Down Data
   useEffect(() => {
@@ -179,6 +170,8 @@ const Participants = ({
       }
 
       setrspvRows(getAllData);
+    } else {
+      setrspvRows([]);
     }
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
@@ -513,16 +506,16 @@ const Participants = ({
     }
   }, [rspvRows]);
 
-  useEffect(() => {
-    dispatch(getAgendaAndVotingInfo_success([], ""));
-    dispatch(GetCurrentAgendaDetails([]));
-    dispatch(getAgendaVotingDetails_success([], ""));
-    dispatch(saveFiles_success(null, ""));
-    dispatch(saveAgendaVoting_success([], ""));
-    dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
-    dispatch(uploadDocument_success(null, ""));
-    dispatch(getAllVotingResultDisplay_success([], ""));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAgendaAndVotingInfo_success([], ""));
+  //   dispatch(GetCurrentAgendaDetails([]));
+  //   dispatch(getAgendaVotingDetails_success([], ""));
+  //   dispatch(saveFiles_success(null, ""));
+  //   dispatch(saveAgendaVoting_success([], ""));
+  //   dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
+  //   dispatch(uploadDocument_success(null, ""));
+  //   dispatch(getAllVotingResultDisplay_success([], ""));
+  // }, []);
 
   return (
     <>
@@ -530,6 +523,9 @@ const Participants = ({
         <ProposedMeetingDate
           currentMeeting={currentMeeting}
           setProposedMeetingDates={setProposedMeetingDates}
+          setCurrentMeetingID={setCurrentMeetingID}
+          setSceduleMeeting={setSceduleMeeting}
+          setDataroomMapFolderId={setDataroomMapFolderId}
         />
       ) : (
         <>
@@ -585,7 +581,7 @@ const Participants = ({
 
                     <Button
                       text={t("Add-more")}
-                      icon={<img draggable={false} src={addmore} />}
+                      icon={<img draggable={false} src={addmore} alt="" />}
                       className={styles["AddMoreBtn"]}
                       onClick={openAddPartcipantModal}
                     />

@@ -57,6 +57,7 @@ const AgendaContributers = ({
   setViewFlag,
   setEditFlag,
   setCalendarViewModal,
+  setDataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -580,6 +581,8 @@ const AgendaContributers = ({
         });
       });
       setRowsData(newArr);
+    } else {
+      setRowsData([]);
     }
   }, [NewMeetingreducer.getAllAgendaContributors]);
 

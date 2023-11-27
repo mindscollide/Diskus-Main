@@ -15,157 +15,64 @@ import file_image from "../../../../../assets/images/file_image.svg";
 import pdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
 import Rightploygon from "../../../../../assets/images/Polygon right.svg";
-import AgendaImport from "./AgendaimportMinutes/AgendaImport";
-import profile from "../../../../../assets/images/newprofile.png";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import {
   ADDGeneralMinutesApiFunc,
   CleareMessegeNewMeeting,
   DeleteGeneralMinuteDocumentsApiFunc,
-  DeleteGeneralMinutesApiFunc,
   RetriveDocumentsMeetingGenralMinutesApiFunc,
   SaveMinutesDocumentsApiFunc,
   UpdateMinutesGeneralApiFunc,
   GetAllGeneralMinutesApiFunc,
-  showPreviousConfirmationModal,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
-  showRetriveGeneralMinutesDocsFailed,
+  cleareMinutsData,
 } from "../../../../../store/actions/NewMeetingActions";
-import { uploadDocumentsGroupsApi } from "../../../../../store/actions/Groups_actions";
-import downArrow from "../../../../../assets/images/whitedown.png";
-import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
-import moment from "moment";
-import {
-  convertintoGMTCalender,
-  newDateFormaterAsPerUTC,
-  newTimeFormaterAsPerUTCFullDate,
-  resolutionResultTable,
-} from "../../../../../commen/functions/date_formater";
+import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 
-// import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
-// import { message, Upload } from "antd";
-// import download from "../../../../../assets/images/UploaderIcon.svg";
-// import scratch from "../../../../../assets/images/Scracher.svg";
-// import AgendaIcon from "../../../../../assets/images/AgendaFull.svg";
-// import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-// import ImportMinutesModal from "./ImportPreviousMinutesModal/ImportMinutesModal";
-// import {
-//   showImportPreviousMinutes,
-//   showUnsaveMinutesFileUpload,
-// } from "../../../../../store/actions/NewMeetingActions";
-// import Clip from "../../../../../assets/images/ClipTurned.svg";
-// import profile from "../../../../../assets/images/newprofile.png";
-// import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
-// import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
-// import AgendaImport from "./AgendaimportMinutes/AgendaImport";
 const Minutes = ({
   setMinutes,
   currentMeeting,
   setSceduleMeeting,
   setMeetingMaterial,
   setactionsPage,
+  setDataroomMapFolderId,
 }) => {
-  // const { t } = useTranslation();
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const { Dragger } = Upload;
-  // const { NewMeetingreducer } = useSelector((state) => state);
-  // const [uploadbtn, setUploadbtn] = useState(false);
-  // const [createFromScratch, setCreateFromScratch] = useState(false);
-  // const [attachments, setAttachments] = useState([]);
-  // const [afterSaveFiles, setafterSaveFiles] = useState(false);
-  // const [agenda, setAgenda] = useState(false);
-  // const [afterSaveDocs, setafterSaveDocs] = useState([
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  // ]);
-  // const [docsName, setDocsName] = useState([
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  //   {
-  //     name: "teams_Collaboration.PDF",
-  //   },
-  // ]);
-  // const handleImportPreviousModal = () => {
-  //   dispatch(showImportPreviousMinutes(true));
-  // };
-
-  // const handleUploadButton = () => {
-  //   setUploadbtn(true);
-  // };
-
-  // const handleUnsaveFileUploadMinues = () => {
-  //   dispatch(showUnsaveMinutesFileUpload(true));
-  // };
-
-  // const handleSaveFunctionality = () => {
-  //   setUploadbtn(false);
-  //   setafterSaveFiles(true);
-  // };
-
-  // const props = {
-  //   name: "file",
-  //   // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-  //   multiple: true,
-  //   showUploadList: false,
-  //   onChange(data) {
-  //     const { status } = data.file;
-  //     console.log(data.file, " datafiledatafiledatafile");
-  //     setAttachments([...attachments, data.file.originFileObj]);
-  //   },
-  //   onDrop(e) {
-  //     console.log("Dropped files", e.dataTransfer.files);
-  //   },
-  //   customRequest() {},
-  // };
-
-  // const handleRemoveFiles = (index) => {
-  //   let optionscross = [...attachments];
-  //   optionscross.splice(index, 1);
-  //   setAttachments(optionscross);
-  // };
-
-  // const handleEditButton = () => {
-  //   setUploadbtn(true);
-  // };
-
-  // const handleCreateFromScratch = () => {
-  //   setCreateFromScratch(true);
-  // };
-
-  // const handleAgenadFile = () => {
-  //   setAgenda(true);
-  // };
-
   // Newly Implemented
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  let userID = localStorage.getItem("userID");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
-  console.log(folderID, "folderIDfolderIDfolderIDfolderID");
-  const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { NewMeetingreducer } = useSelector((state) => state);
   const editorRef = useRef(null);
   const { Dragger } = Upload;
+  const generalMinutes = useSelector(
+    (state) => state.NewMeetingreducer.generalMinutes
+  );
+  const generalminutesDocumentForMeeting = useSelector(
+    (state) => state.NewMeetingreducer.generalminutesDocumentForMeeting
+  );
+  const ShowPreviousModal = useSelector(
+    (state) => state.NewMeetingreducer.ShowPreviousModal
+  );
+  const unsaveFileUploadMinutes = useSelector(
+    (state) => state.NewMeetingreducer.unsaveFileUploadMinutes
+  );
+  const generalMinutesDocument = useSelector(
+    (state) => state.NewMeetingreducer.generalMinutesDocument
+  );
+  const addMinuteID = useSelector(
+    (state) => state.NewMeetingreducer.addMinuteID
+  );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+  const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
+  const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [general, setGeneral] = useState(true);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
@@ -174,9 +81,7 @@ const Minutes = ({
   const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const [expandedFiles, setExpandedFiles] = useState([]);
   const [isEdit, setisEdit] = useState(false);
-  const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [showMore, setShowMore] = useState(false);
   const [generalShowMore, setGeneralShowMore] = useState(false);
@@ -191,13 +96,7 @@ const Minutes = ({
       errorStatus: false,
     },
   });
-  const [notestext, setNotesText] = useState("");
 
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  let userID = localStorage.getItem("userID");
-  const date = new Date();
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
@@ -230,37 +129,26 @@ const Minutes = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: Number(currentMeeting),
     };
     dispatch(GetAllGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     return () => {
+      setMessages([]);
       setFileAttachments([]);
+      setPreviousFileIDs([]);
+      dispatch(cleareMinutsData());
     };
   }, []);
-
-  console.log(
-    NewMeetingreducer,
-    "NewMeetingreducerNewMeetingreducerNewMeetingreducer"
-  );
 
   useEffect(() => {
     try {
       if (
-        NewMeetingreducer.generalMinutes !== null &&
-        NewMeetingreducer.generalMinutes &&
-        NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
-        NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
+        (Object.keys(generalMinutes).length > 0 || generalMinutes.length > 0) &&
+        (Object.keys(generalminutesDocumentForMeeting).length > 0 ||
+          generalminutesDocumentForMeeting.length > 0)
       ) {
-        const minutesData = NewMeetingreducer.generalMinutes.meetingMinutes;
-        const documentsData =
-          NewMeetingreducer.generalminutesDocumentForMeeting.data;
-
-        console.log(
-          minutesData,
-          documentsData,
-          "minutesDataminutesDataminutesData"
-        );
-
+        const minutesData = generalMinutes.meetingMinutes;
+        const documentsData = generalminutesDocumentForMeeting.data;
         const combinedData = minutesData.map((item1) => {
           const matchingItem = documentsData.find(
             (item2) => item2.pK_MeetingGeneralMinutesID === item1.minuteID
@@ -273,7 +161,6 @@ const Minutes = ({
           }
           return item1;
         });
-        console.log(combinedData, "minutesDataminutesDataminutesData");
         setMessages(combinedData);
       } else {
         setMessages([]);
@@ -282,69 +169,11 @@ const Minutes = ({
       // Handle any errors here
       console.error(error);
     }
-  }, [
-    NewMeetingreducer.generalMinutes,
-    NewMeetingreducer.generalminutesDocumentForMeeting,
-  ]);
-  console.log(messages, "minutesDataminutesDataminutesData");
+  }, [generalMinutes, generalminutesDocumentForMeeting]);
 
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       NewMeetingreducer.generalMinutes !== null &&
-  //       NewMeetingreducer.generalMinutes
-  //     ) {
-  //       console.log(
-  //         NewMeetingreducer.generalMinutes,
-  //         "generalMinutesgeneralMinutes"
-  //       );
-  //       if (NewMeetingreducer.generalMinutes.meetingMinutes.length > 0) {
-  //         let newarr = [];
-  //         NewMeetingreducer.generalMinutes.meetingMinutes.map((data, index) => {
-  //           console.log(data, "newarrnewarrnewarr");
-  //           newarr.push(data);
-  //           setMinuteID(data.minuteID);
-  //         });
-  //         setMessages(newarr);
-  //       }
-  //     } else setMessages([]);
-  //   } catch {}
-  // }, [NewMeetingreducer.generalMinutes]);
-
-  // all Meeting Document
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       NewMeetingreducer.generalminutesDocumentForMeeting !== null &&
-  //       NewMeetingreducer.generalminutesDocumentForMeeting !== undefined
-  //     ) {
-  //       console.log(
-  //         NewMeetingreducer.generalminutesDocumentForMeeting,
-  //         "NewMeetingreducergeneralminutesDocumentForMeeting"
-  //       );
-  //       if (
-  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.length > 0
-  //       ) {
-  //         let FileObject = [];
-  //         NewMeetingreducer.generalminutesDocumentForMeeting.data.map(
-  //           (docs, index) => {
-  //             docs.files.map((filedata, index) => {
-  //               console.log(filedata, "filedatafiledata");
-  //               FileObject.push(filedata);
-  //             });
-  //           }
-  //         );
-  //         // setMessages(FileObject);
-  //       }
-  //     }
-  //   } catch {}
-  // }, [NewMeetingreducer.generalminutesDocumentForMeeting]);
-
-  //onChange function for React Quill
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText) {
-      console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -463,7 +292,6 @@ const Minutes = ({
   };
 
   //Sliders For Attachments
-
   const SlideLeft = () => {
     var Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft - 300;
@@ -501,27 +329,17 @@ const Minutes = ({
     // Ensure data.minutesDetails is not undefined or null before setting the state
   };
 
-  console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
-
   //For getting documents Agains Single Minutes Saved
   useEffect(() => {
-    console.log(
-      NewMeetingreducer.generalMinutesDocument,
-      "generalMinutesDocumentgeneralMinutesDocument"
-    );
     try {
       if (
-        NewMeetingreducer.generalMinutesDocument !== undefined &&
-        NewMeetingreducer.generalMinutesDocument !== null &&
-        NewMeetingreducer.generalMinutesDocument.data.length > 0
+        generalMinutesDocument !== undefined &&
+        generalMinutesDocument !== null &&
+        generalMinutesDocument.data.length > 0
       ) {
         let files = [];
         let prevData = [];
-        console.log(
-          NewMeetingreducer.generalMinutesDocument,
-          "generalMinutesDocumentgeneralMinutesDocumentgeneralMinutesDocument"
-        );
-        NewMeetingreducer.generalMinutesDocument.data.map((data, index) => {
+        generalMinutesDocument.data.map((data, index) => {
           files.push({
             DisplayAttachmentName: data.displayFileName,
             fileID: data.pK_FileID,
@@ -533,11 +351,12 @@ const Minutes = ({
         });
         setFileAttachments(files);
         setPreviousFileIDs(prevData);
+      } else {
+        setFileAttachments([]);
+        setPreviousFileIDs([]);
       }
     } catch {}
-  }, [NewMeetingreducer.generalMinutesDocument]);
-
-  console.log(fileAttachments, "fileAttachmentsfileAttachments");
+  }, [generalMinutesDocument]);
 
   const handleAgendaWiseClick = () => {
     setGeneral(false);
@@ -558,13 +377,10 @@ const Minutes = ({
       MinuteText: addNoteFields.Description.value,
     };
     dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
-    setFileAttachments([]);
   };
 
   const documentUploadingFunc = async (minuteID) => {
-    console.log(minuteID, "minuteIDminuteIDminuteID");
     let newfile = [...previousFileIDs];
-    console.log(newfile, "newfilenewfilenewfilenewfile");
     const uploadPromises = fileForSend.map(async (newData) => {
       await dispatch(
         uploadDocumentsMeetingMinutesApi(
@@ -579,11 +395,6 @@ const Minutes = ({
 
     // Wait for all promises to resolve
     await Promise.all(uploadPromises);
-    console.log(messages, "messagesmessages");
-    console.log(currentMeeting, "messagesmessages");
-
-    console.log(newfile, "messagesmessages");
-
     let docsData = {
       FK_MeetingGeneralMinutesID: minuteID,
       FK_MDID: currentMeeting,
@@ -591,14 +402,12 @@ const Minutes = ({
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    console.log(docsData, "messagesmessages");
     dispatch(
       SaveMinutesDocumentsApiFunc(navigate, docsData, t, currentMeeting)
     );
     setFileAttachments([]);
     setPreviousFileIDs([]);
     setFileForSend([]);
-    console.log("addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -610,17 +419,12 @@ const Minutes = ({
   };
 
   useEffect(() => {
-    if (NewMeetingreducer.addMinuteID !== 0) {
-      console.log(
-        NewMeetingreducer.addMinuteID,
-        "NewMeetingaddMinuteIDreducer"
-      );
-      documentUploadingFunc(NewMeetingreducer.addMinuteID);
+    if (addMinuteID !== 0) {
+      documentUploadingFunc(addMinuteID);
     }
-  }, [NewMeetingreducer.addMinuteID]);
+  }, [addMinuteID]);
 
   const handleRemovingTheMinutes = (MinuteData) => {
-    console.log(MinuteData, "handleRemovingTheMinutes");
     let Data = {
       MDID: currentMeeting,
       MeetingGeneralMinutesID: MinuteData.minuteID,
@@ -660,7 +464,6 @@ const Minutes = ({
   };
 
   const handleResetBtnFunc = () => {
-    console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -674,7 +477,6 @@ const Minutes = ({
   };
   //Updating the text of min
   const handleUpdateFunc = async () => {
-    console.log("UpdateCLickd");
     let Data = {
       MinuteID: updateData.minuteID,
       MinuteText: addNoteFields.Description.value,
@@ -740,11 +542,11 @@ const Minutes = ({
   };
 
   useEffect(() => {
-    if (NewMeetingreducer.ResponseMessage !== "") {
+    if (ResponseMessage !== "") {
       setOpen({
         ...open,
         flag: true,
-        message: NewMeetingreducer.ResponseMessage,
+        message: ResponseMessage,
       });
       setTimeout(() => {
         setOpen({
@@ -752,12 +554,12 @@ const Minutes = ({
           flag: false,
           message: "",
         });
+        dispatch(CleareMessegeNewMeeting());
       }, 3000);
-      dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <section>
@@ -879,10 +681,6 @@ const Minutes = ({
                         >
                           {fileAttachments.length > 0
                             ? fileAttachments.map((data, index) => {
-                                console.log(
-                                  data,
-                                  "fileAttachmentsfileAttachments"
-                                );
                                 return (
                                   <>
                                     <Col
@@ -1209,6 +1007,7 @@ const Minutes = ({
                                                             className={
                                                               styles["IconPDF"]
                                                             }
+                                                            alt=""
                                                           />
                                                           <span
                                                             className={
@@ -1242,6 +1041,7 @@ const Minutes = ({
                                 width="20.76px"
                                 className={styles["RedCrossClass"]}
                                 onClick={() => handleRemovingTheMinutes(data)}
+                                alt=""
                               />
                             </Col>
                           </Row>
@@ -1283,7 +1083,7 @@ const Minutes = ({
         </Col>
       </Row>
 
-      {NewMeetingreducer.unsaveFileUploadMinutes && (
+      {unsaveFileUploadMinutes && (
         <UnsavedMinutes
           setMinutes={setMinutes}
           setSceduleMeeting={setSceduleMeeting}
@@ -1291,7 +1091,7 @@ const Minutes = ({
         />
       )}
 
-      {NewMeetingreducer.ShowPreviousModal && (
+      {ShowPreviousModal && (
         <PreviousModal
           setMinutes={setMinutes}
           setMeetingMaterial={setMeetingMaterial}
@@ -1300,536 +1100,6 @@ const Minutes = ({
       )}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
-    // <section>
-    //   {NewMeetingreducer.afterImportState === true ? (
-    //     <>
-    //       <Row>
-    //         <Col lg={12} md={12} sm={12} className={styles["Scroller_Minutes"]}>
-    //           <Row className="mt-3 gap-3">
-    //             {docsName.length > 0
-    //               ? docsName.map((data, index) => {
-    //                   return (
-    //                     <>
-    //                       <Col
-    //                         lg={6}
-    //                         md={6}
-    //                         sm={6}
-    //                         className={styles["Box_Minutes"]}
-    //                       >
-    //                         <Row>
-    //                           <Col lg={8} md={8} sm={8}>
-    //                             <Row className="mt-3">
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex align-items-center gap-3"
-    //                               >
-    //                                 <img draggable={false} src={Clip} />
-    //                                 <span className={styles["Title_File"]}>
-    //                                   {data.name}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row className="mt-1">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={
-    //                                     styles["Date_Minutes_And_time"]
-    //                                   }
-    //                                 >
-    //                                   4:00pm, 18th May, 2020
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                           <Col lg={4} md={4} sm={4} className="">
-    //                             <Row className="mt-3">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={styles["Uploaded_heading"]}
-    //                                 >
-    //                                   {t("Uploaded-by")}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row>
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex gap-2 align-items-center"
-    //                               >
-    //                                 <img
-    //                                   draggable={false}
-    //                                   src={profile}
-    //                                   height="27px"
-    //                                   width="27px"
-    //                                   className={styles["Profile_minutes"]}
-    //                                 />
-    //                                 <span className={styles["Name"]}>
-    //                                   Saaf Fudda
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                         </Row>
-    //                         <img
-    //                           draggable={false}
-    //                           src={RedCroseeIcon}
-    //                           height="20.76px"
-    //                           width="20.76px"
-    //                           className={styles["RedCrossClass"]}
-    //                         />
-    //                       </Col>
-    //                     </>
-    //                   );
-    //                 })
-    //               : null}
-    //           </Row>
-    //         </Col>
-    //       </Row>
-    //     </>
-    //   ) : uploadbtn ? (
-    //     <>
-    //       <Row className="mt-5">
-    //         <Col lg={12} md={12} sm={12}>
-    //           <Dragger
-    //             {...props}
-    //             className={styles["dragdrop_attachment_create_resolution"]}
-    //           >
-    //             <Row>
-    //               <Col
-    //                 lg={5}
-    //                 md={5}
-    //                 sm={12}
-    //                 className="d-flex justify-content-end align-items-center"
-    //               >
-    //                 <img
-    //                   draggable={false}
-    //                   src={DrapDropIcon}
-    //                   width={100}
-    //                   className={styles["ClassImage"]}
-    //                 />
-    //               </Col>
-    //               <Col lg={7} md={7} sm={12}>
-    //                 <Row className="mt-3">
-    //                   <Col
-    //                     lg={12}
-    //                     md={12}
-    //                     sm={12}
-    //                     className="d-flex justify-content-start"
-    //                   >
-    //                     <span className={styles["ant-upload-text-Meetings"]}>
-    //                       {t("Drop-files-here")}
-    //                     </span>
-    //                   </Col>
-    //                 </Row>
-    //                 <Row>
-    //                   <Col
-    //                     lg={12}
-    //                     md={12}
-    //                     sm={12}
-    //                     className="d-flex justify-content-start"
-    //                   >
-    //                     <span className={styles["Choose_file_style-Meeting"]}>
-    //                       {t("The-following-file-formats-are")}
-    //                     </span>
-    //                   </Col>
-    //                 </Row>
-    //                 <Row>
-    //                   <Col
-    //                     lg={12}
-    //                     md={12}
-    //                     sm={12}
-    //                     className="d-flex justify-content-start"
-    //                   >
-    //                     <span className={styles["Choose_file_style-Meeting"]}>
-    //                       {t("Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png")}
-    //                     </span>
-    //                   </Col>
-    //                 </Row>
-    //               </Col>
-    //             </Row>
-    //           </Dragger>
-    //         </Col>
-    //       </Row>
-    //       <Row>
-    //         <Col lg={12} md={12} sm={12}>
-    //           <Row className={styles["Scroller"]}>
-    //             {attachments.length > 0
-    //               ? attachments.map((data, index) => {
-    //                   return (
-    //                     <>
-    //                       <Col
-    //                         lg={6}
-    //                         md={6}
-    //                         sm={6}
-    //                         className={styles["Box_Minutes"]}
-    //                       >
-    //                         <Row>
-    //                           <Col lg={8} md={8} sm={8}>
-    //                             <Row className="mt-3">
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex align-items-center gap-3"
-    //                               >
-    //                                 <img draggable={false} src={Clip} />
-    //                                 <span className={styles["Title_File"]}>
-    //                                   {data.name}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row className="mt-1">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={
-    //                                     styles["Date_Minutes_And_time"]
-    //                                   }
-    //                                 >
-    //                                   4:00pm, 18th May, 2020
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                           <Col lg={4} md={4} sm={4} className="">
-    //                             <Row className="mt-3">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={styles["Uploaded_heading"]}
-    //                                 >
-    //                                   {t("Uploaded-by")}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row>
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex gap-2 align-items-center"
-    //                               >
-    //                                 <img
-    //                                   draggable={false}
-    //                                   src={profile}
-    //                                   height="27px"
-    //                                   width="27px"
-    //                                   className={styles["Profile_minutes"]}
-    //                                 />
-    //                                 <span className={styles["Name"]}>
-    //                                   Saaf Fudda
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                         </Row>
-    //                         <img
-    //                           draggable={false}
-    //                           src={RedCroseeIcon}
-    //                           height="20.76px"
-    //                           width="20.76px"
-    //                           className={styles["RedCrossClass"]}
-    //                           onClick={() => {
-    //                             handleRemoveFiles(index);
-    //                           }}
-    //                         />
-    //                       </Col>
-    //                     </>
-    //                   );
-    //                 })
-    //               : null}
-    //           </Row>
-    //         </Col>
-    //       </Row>
-    //       <Row className="mt-5">
-    //         <Col
-    //           lg={12}
-    //           md={12}
-    //           sm={12}
-    //           className="d-flex justify-content-end gap-2"
-    //         >
-    //           <Button
-    //             text={t("Clone-meeting")}
-    //             className={styles["Cancel_Minutes_upload_section"]}
-    //           />
-    //           <Button
-    //             text={t("Cancel")}
-    //             className={styles["Cancel_Minutes_upload_section"]}
-    //             onClick={handleUnsaveFileUploadMinues}
-    //           />
-    //           <Button
-    //             disableBtn={attachments.length <= 0 ? true : false}
-    //             text={t("Save")}
-    //             className={styles["Save_Minutes_upload_section"]}
-    //             onClick={handleSaveFunctionality}
-    //           />
-    //         </Col>
-    //       </Row>
-    //     </>
-    //   ) : afterSaveFiles ? (
-    //     <>
-    //       <Row className="mt-3 m-0 p-0">
-    //         <Col
-    //           lg={12}
-    //           md={12}
-    //           sm={12}
-    //           className="d-flex justify-content-end gap-2"
-    //         >
-    //           <Button
-    //             text={t("Invite-to-contribute")}
-    //             className={styles["InviteToContributeButton"]}
-    //           />
-    //           <Button
-    //             text={t("Publish-minutes")}
-    //             className={styles["InviteToContributeButton"]}
-    //           />
-    //           <Button
-    //             text={t("Edit")}
-    //             icon={
-    //               <img
-    //                 draggable={false}
-    //                 src={EditIcon}
-    //                 width="11.75px"
-    //                 height="11.75px"
-    //               />
-    //             }
-    //             className={styles["InviteToContributeButton"]}
-    //             onClick={handleEditButton}
-    //           />
-    //         </Col>
-    //       </Row>
-    //       <Row>
-    //         <Col lg={12} md={12} sm={12}>
-    //           <Row className={styles["Scroller_On_Save"]}>
-    //             {attachments.length > 0
-    //               ? attachments.map((data, index) => {
-    //                   return (
-    //                     <>
-    //                       <Col
-    //                         lg={6}
-    //                         md={6}
-    //                         sm={6}
-    //                         className={styles["Box_Minutes"]}
-    //                       >
-    //                         <Row>
-    //                           <Col lg={8} md={8} sm={8}>
-    //                             <Row className="mt-3">
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex align-items-center gap-3"
-    //                               >
-    //                                 <img draggable={false} src={Clip} />
-    //                                 <span className={styles["Title_File"]}>
-    //                                   {data.name}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row className="mt-1">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={
-    //                                     styles["Date_Minutes_And_time"]
-    //                                   }
-    //                                 >
-    //                                   4:00pm, 18th May, 2020
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                           <Col lg={4} md={4} sm={4} className="">
-    //                             <Row className="mt-3">
-    //                               <Col lg={12} md={12} sm={12}>
-    //                                 <span
-    //                                   className={styles["Uploaded_heading"]}
-    //                                 >
-    //                                   {t("Uploaded-by")}
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                             <Row>
-    //                               <Col
-    //                                 lg={12}
-    //                                 md={12}
-    //                                 sm={12}
-    //                                 className="d-flex gap-2 align-items-center"
-    //                               >
-    //                                 <img
-    //                                   draggable={false}
-    //                                   src={profile}
-    //                                   height="27px"
-    //                                   width="27px"
-    //                                   className={styles["Profile_minutes"]}
-    //                                 />
-    //                                 <span className={styles["Name"]}>
-    //                                   Saaf Fudda
-    //                                 </span>
-    //                               </Col>
-    //                             </Row>
-    //                           </Col>
-    //                         </Row>
-    //                       </Col>
-    //                     </>
-    //                   );
-    //                 })
-    //               : null}
-    //           </Row>
-    //         </Col>
-    //       </Row>
-    //       <Row className="m-0 p-0 mt-5">
-    //         <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-    //           <Button
-    //             text={t("Save")}
-    //             className={styles["Save_Btn_After_save"]}
-    //           />
-    //         </Col>
-    //       </Row>
-    //     </>
-    //   ) : createFromScratch ? (
-    //     <CreateFromScratch />
-    //   ) : agenda ? (
-    //     <AgendaImport />
-    //   ) : (
-    //     <>
-    //       <Row className="m-0 p-0 mt-3">
-    //         <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-    //           <Button
-    //             text={t("Import-previous-minutes")}
-    //             className={styles["Minustes_Buttons_Import"]}
-    //             onClick={handleImportPreviousModal}
-    //           />
-    //         </Col>
-    //       </Row>
-    //       <Row className="d-flex justify-content-center gap-4 mt-5">
-    //         <Col lg={4} md={4} sm={4} className={styles["Box_For_Options"]}>
-    //           <Row className="mt-3">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Row>
-    //                 <Col lg={12} md={12} sm={12}>
-    //                   <Row>
-    //                     <Col lg={12} md={12} sm={12} className="mt-4">
-    //                       <img
-    //                         draggable={false}
-    //                         src={download}
-    //                         width="161.76px"
-    //                         height="161.76px"
-    //                       />
-    //                     </Col>
-    //                   </Row>
-    //                 </Col>
-    //               </Row>
-    //             </Col>
-    //           </Row>
-    //           <Row className="mt-4">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Button
-    //                 text={t("Upload")}
-    //                 className={styles["Upload_Btn_Styles"]}
-    //                 onClick={handleUploadButton}
-    //               />
-    //             </Col>
-    //           </Row>
-    //         </Col>
-    //         <Col lg={4} md={4} sm={4} className={styles["Box_For_Options"]}>
-    //           <Row className="mt-3">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Row>
-    //                 <Col lg={12} md={12} sm={12}>
-    //                   <Row className="mt-4">
-    //                     <Col lg={12} md={12} sm={12}>
-    //                       <img
-    //                         draggable={false}
-    //                         src={scratch}
-    //                         width="161.76px"
-    //                         height="161.76px"
-    //                       />
-    //                     </Col>
-    //                   </Row>
-    //                 </Col>
-    //               </Row>
-    //             </Col>
-    //           </Row>
-    //           <Row className="mt-4">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Button
-    //                 text={t("Create-from-scratch")}
-    //                 className={styles["Upload_Btn_Styles"]}
-    //                 onClick={handleCreateFromScratch}
-    //               />
-    //             </Col>
-    //           </Row>
-    //         </Col>
-    //         <Col lg={4} md={4} sm={4} className={styles["Box_For_Options"]}>
-    //           <Row className="mt-4">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Row>
-    //                 <Col lg={12} md={12} sm={12}>
-    //                   <Row className="mt-2">
-    //                     <Col lg={12} md={12} sm={12}>
-    //                       <img
-    //                         draggable={false}
-    //                         src={AgendaIcon}
-    //                         width="161.76px"
-    //                         height="161.76px"
-    //                         className={styles["AgendaIconStyles"]}
-    //                       />
-    //                     </Col>
-    //                   </Row>
-    //                 </Col>
-    //               </Row>
-    //             </Col>
-    //           </Row>
-    //           <Row className="mt-4">
-    //             <Col
-    //               lg={12}
-    //               md={12}
-    //               sm={12}
-    //               className="d-flex justify-content-center"
-    //             >
-    //               <Button
-    //                 text={t("Agenda")}
-    //                 className={styles["Upload_Btn_Styles"]}
-    //                 onClick={handleAgenadFile}
-    //               />
-    //             </Col>
-    //           </Row>
-    //         </Col>
-    //       </Row>
-    //     </>
-    //   )}
-
-    //   {NewMeetingreducer.ImportPreviousMinutes && <ImportMinutesModal />}
-
-    //   )}
-    // </section>
   );
 };
 

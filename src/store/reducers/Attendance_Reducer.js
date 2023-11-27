@@ -58,7 +58,14 @@ const attendanceMeetingReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-
+    case actions.ATTENDANCE_REDUCER_STATE_CLEAR: {
+      return {
+        ...state,
+        ResponseMessage: "",
+        saveAttendanceMeeting: [],
+        attendanceMeetings: [],
+      };
+    }
     default:
       return { ...state };
   }

@@ -62,7 +62,6 @@ export const dateTime = (data) => {
     data.slice(10, 12) +
     ":" +
     data.slice(12, 14);
-  console.log(newtime, "checkingdatetimtconvertcheckingdatetimtconvert");
   return newtime;
 };
 
@@ -71,17 +70,12 @@ export const CardNumberFormatter = (num) => {
 };
 
 export const newDateFormaterAsPerUTC = (date) => {
-  console.log("getCalendarDataResponse", date);
   let dateConvert = moment(date, "YYYYMMDD").format();
-  console.log("getCalendarDataResponse", dateConvert);
   const englishFormat = moment(dateConvert).format(
     "MMMM Do, YYYY [at] HH:mm:ss"
   );
-  console.log("getCalendarDataResponse", englishFormat);
   let newDate = moment(dateConvert).toDate().toISOString();
-  console.log("getCalendarDataResponse", newDate);
   let formattedDate = newDate.slice(0, 10).replace(/-/g, "");
-  console.log("getCalendarDataResponse", formattedDate);
 
   return newDate.slice(0, 10).replace(/-/g, "");
 };
@@ -96,7 +90,6 @@ export const convertintoGMTCalender = (date) => {
 };
 
 export const newTimeFormaterAsPerUTC = (dateTime) => {
-  console.log(dateTime, "checking12121");
   let fullDateyear =
     dateTime.slice(0, 4) +
     "-" +
@@ -111,12 +104,10 @@ export const newTimeFormaterAsPerUTC = (dateTime) => {
     dateTime.slice(12, 14) +
     ".000Z";
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  console.log(_dateTime, "checking12121114");
   return moment(_dateTime).format("h:mm A");
 };
 
 export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
-  console.log("dateTimedateTimedateTime", dateTime);
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -130,14 +121,11 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
     ":" +
     dateTime?.slice(12, 14) +
     ".000Z";
-  console.log(fullDateyear, "dateTimedateTimedateTime2");
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  console.log(_dateTime, "dateTimedateTimedateTime3");
   return moment(_dateTime).format("h:mm A, Do MMM, YYYY");
 };
 
 export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
-  // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -228,8 +216,6 @@ export const forRecentActivity = (dateTime) => {
 };
 
 export const startDateTimeMeetingCalendar = (dateTime) => {
-  console.log("newListnewListnewList", dateTime);
-
   let fullDateYear =
     dateTime.slice(0, 4) +
     "-" +
@@ -243,13 +229,11 @@ export const startDateTimeMeetingCalendar = (dateTime) => {
     ":" +
     dateTime.slice(12, 14) +
     ".000Z";
-  console.log("newListnewListnewList", fullDateYear);
 
   // let _dateTime = new Date(fullDateYear).toString('YYYYMMDDHHmmss')
   let _dateTime = moment(fullDateYear, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
     "YYYYMMDD"
   );
-  console.log("newListnewListnewList123456", _dateTime);
 
   return _dateTime;
 };
@@ -294,8 +278,6 @@ export const forHomeCalendar = (dateTime) => {
 };
 
 export const forMainCalendar = (dateTime) => {
-  // console.log("newListnewListnewListcalender", dateTime);
-
   let fullDateYear =
     dateTime.slice(0, 4) +
     "-" +
@@ -309,7 +291,6 @@ export const forMainCalendar = (dateTime) => {
     ":" +
     dateTime.slice(12, 14) +
     ".000Z";
-  console.log("newListnewListnewListcalender", fullDateYear);
 
   let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
   let _dateTime2 = new Date(fullDateYear);
@@ -317,11 +298,6 @@ export const forMainCalendar = (dateTime) => {
   // let _dateTime = moment(fullDateYear, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
   //   "YYYYMMDD"
   // );
-  console.log("newListnewListnewListcalender", {
-    _dateTime,
-    _dateTime2,
-    dateTime,
-  });
 
   return _dateTime;
 };
@@ -345,7 +321,6 @@ export const endDateTimeMeetingCalender = (dateTime) => {
 };
 
 export const createResolutionDateTime = (dateTime) => {
-  console.log("createResolutionDateTime12", dateTime);
   // let convertUTC = new Date(dateTime,"YYYYMMDDHHmmss").toISOString()
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -362,12 +337,7 @@ export const createResolutionDateTime = (dateTime) => {
     ".000Z";
   let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
   let convertGMT = new Date(_dateTime).toString();
-  console.log(
-    "createResolutionDateTime12",
-    _dateTime,
-    convertGMT,
-    dateTime.split("T")
-  );
+
   return _dateTime;
 };
 
@@ -387,7 +357,6 @@ export const editResolutionDate = (dateTime) => {
     ".000Z";
   let convertGMT = new Date(fullDateYear);
   let convertDate = moment(convertGMT).format("YYYY-MM-DD");
-  console.log(convertDate, "convertDateconvertDateconvertDate");
   return convertDate;
 };
 
@@ -407,12 +376,10 @@ export const editResolutionTime = (dateTime) => {
     ".000Z";
   let convertGMT = new Date(fullDateYear).toString();
   let convertTime = moment(convertGMT).format("HH:mm");
-  console.log(convertTime, convertGMT, "convertDateconvertDateconvertDate");
   return convertTime;
 };
 
 export const resolutionResultTable = (dateTime) => {
-  console.log(dateTime, "dateTimedateTimedateTime");
   let fullDateYear =
     dateTime.slice(0, 4) +
     "-" +
@@ -433,11 +400,8 @@ export const resolutionResultTable = (dateTime) => {
 };
 
 export const createConvert = (dateTime) => {
-  console.log(dateTime, "createConvertcreateConvert"); // Output: "20230505123456"
   let convertintoISO = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
   var utcDate = new Date(convertintoISO).toUTCString();
-  console.log(utcDate, "createConvertcreateConvert"); // Output: "20230505123456"
-  console.log(convertintoISO, "createConvertcreateConvert"); // Output: "20230505123456"
 
   // Convert ISO date string to a Date object
   const date = new Date(utcDate);
@@ -457,7 +421,6 @@ export const createConvert = (dateTime) => {
 };
 
 export const EditmeetingDateFormat = (dateTime) => {
-  console.log("convertintoISOconvertintoISO", dateTime);
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -476,7 +439,6 @@ export const EditmeetingDateFormat = (dateTime) => {
 };
 
 export const newTimeFormaterAsPerUTCTalkTime = (dateTime) => {
-  // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -495,7 +457,6 @@ export const newTimeFormaterAsPerUTCTalkTime = (dateTime) => {
 };
 
 export const newTimeFormaterAsPerUTCTalkDate = (dateTime) => {
-  // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -514,7 +475,6 @@ export const newTimeFormaterAsPerUTCTalkDate = (dateTime) => {
 };
 
 export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime) => {
-  // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -533,7 +493,6 @@ export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime) => {
 };
 
 export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime) => {
-  // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -554,9 +513,7 @@ export const newTimeFormaterMIAsPerUTCTalkDateTime = (dateTime) => {
 // h:mm:ss
 
 export const convertGMTDateintoUTC = (GMTdate) => {
-  console.log(GMTdate, "convertGMTDateintoUTC");
   const currentDate = new Date(GMTdate);
-  console.log(currentDate, "convertGMTDateintoUTC");
   // Extract the individual components of the date
   const year = currentDate.getUTCFullYear();
   const month = ("0" + (currentDate.getUTCMonth() + 1)).slice(-2);
@@ -567,7 +524,6 @@ export const convertGMTDateintoUTC = (GMTdate) => {
 
   // Concatenate the components into the desired format
   const result = `${year}${month}${day}${hours}${minutes}${seconds}`;
-  console.log(result, "convertGMTDateintoUTC");
   return result;
 };
 

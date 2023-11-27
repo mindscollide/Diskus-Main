@@ -25,14 +25,11 @@ import desh from "../../../../../assets/images/desh.svg";
 import {
   containsStringandNumericCharacters,
   regexOnlyCharacters,
-  urlPatternValidation,
   validateInput,
 } from "../../../../../commen/functions/regex";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import {
-  ClearMessegeMeetingdetails,
-  FetchMeetingURLApi,
   GetAllMeetingRecurringApiNew,
   GetAllMeetingRemindersApiFrequencyNew,
   GetAllMeetingTypesNewFunction,
@@ -42,9 +39,8 @@ import {
   showCancelModalmeetingDeitals,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import {
-  convertGMTDateintoUTC,
   createConvert,
   resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
@@ -170,14 +166,25 @@ const MeetingDetails = ({
       }
     }
   }, [currentLanguage]);
-
+  
+  const apiCallsForComponentMound = async () => {
+    try {
+      // Meeting Type Drop Down API
+      await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+      // Reminder Frequency Drop Down API
+      await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+      // Recurring Drop Down API
+      await dispatch(GetAllMeetingRecurringApiNew(navigate, t));
+  
+      // All API calls are successful, proceed with the next steps if needed.
+      console.log("All API calls are completed successfully.");
+    } catch (error) {
+      console.error("An error occurred during API calls:", error);
+    }
+  };
   useEffect(() => {
-    //Meeting Type Drop Down API
-    dispatch(GetAllMeetingTypesNewFunction(navigate, t));
-    //Reminder Frequency Drop Down API
-    dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-    //Recurring Drop Down API
-    dispatch(GetAllMeetingRecurringApiNew(navigate, t));
+    apiCallsForComponentMound();
+
     //Calling getAll Meeting Details By Meeting ID
     return () => {
       setMeetingDetails({
