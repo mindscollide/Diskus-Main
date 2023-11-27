@@ -340,6 +340,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GET_SEARCH_NEW_MEETINGS_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -348,6 +349,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GET_SEARCH_NEW_MEETINGS_FAIL: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -378,6 +380,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_TYPES_NEW_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -393,6 +396,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_MEETING_DETAILS_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -402,6 +406,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_MEETING_DETAILS_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -417,6 +422,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_REMINDER_FREQUENCY_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         // Loading: false,
@@ -426,6 +432,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_REMINDER_FREQUENCY_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -441,6 +448,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_RECURRING_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -450,6 +458,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_RECURRING_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -521,6 +530,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.ADD_MORE_PARTICIPANTS_MODAL_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -530,6 +540,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.ADD_MORE_PARTICIPANTS_MODAL_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -554,6 +565,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_ROLES_PARTICIPANTS_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -569,6 +581,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_MEETING_URL_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -578,6 +591,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_MEETING_URL_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -600,6 +614,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_MEETING_PARTICIPANTS_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -609,6 +624,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_MEETING_PARTICIPANTS_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -623,6 +639,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.SAVE_AGENDACONTRIBUTORS_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -630,6 +647,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.SAVE_AGENDACONTRIBUTORS_FAIL: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -646,6 +664,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_SAVED_PARTICIPATNS_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -657,6 +676,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_SAVED_PARTICIPATNS_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -673,6 +693,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GET_ALL_AGENDACONTRIBUTOR_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -683,6 +704,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_AGENDACONTRIBUTOR_FAIL: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -701,6 +723,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SEND_NOTIFICATION_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -709,6 +732,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SEND_NOTIFICATION_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -735,6 +759,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -752,6 +777,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_POLLS_BY_MEETING_ID_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -761,6 +787,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_POLLS_BY_MEETING_ID_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -776,6 +803,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_USER_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -785,6 +813,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_USER_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -823,6 +852,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SET_MEETING_PROPOSED_DATE_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -832,6 +862,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SET_MEETING_PROPOSED_DATE_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -856,6 +887,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_PRPOSED_DATES_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -871,6 +903,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SET_MEETING_RESPONSE_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -880,6 +913,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SET_MEETING_RESPONSE_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -896,6 +930,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_MATERIAL_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -905,6 +940,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_MEETING_MATERIAL_FAIL: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -921,6 +957,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -929,6 +966,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_MEETING_AGENDA_LOCK_STATUS_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -944,6 +982,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_AGENDA_RIGHTS_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -953,6 +992,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_AGENDA_RIGHTS_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -969,6 +1009,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_USER_ATTACHMENT_PERMISSION_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -978,6 +1019,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_USER_ATTACHMENT_PERMISSION_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -986,6 +1028,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_GENERAL_MINTES_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -995,6 +1038,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_GENERAL_MINTES_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1020,6 +1064,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ADD_GENERAL_MINUTES_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1044,6 +1089,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_GENERAL_MIN_DOCUMENTS_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1059,6 +1105,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1068,6 +1115,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.RETRIEVE_DOCUMENT_GENERAL_MINUTES_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1091,6 +1139,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GENERAL_DOCUMENT_FOR_MEETING_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1137,6 +1186,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_GENERAL_MINUTES_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1161,6 +1211,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.AGENDA_WISE_MINUTES_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1177,6 +1228,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.DELETE_AGENDA_WISE_MINUTES_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1185,6 +1237,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.DELETE_AGENDA_WISE_MINUTES_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1208,6 +1261,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_AGENDA_WISE_MINUTES_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1232,6 +1286,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_AGENDA_WISE_MINUTES_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1248,6 +1303,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_USER_WISE_PROPOSED_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1257,6 +1313,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_USER_WISE_PROPOSED_FAIL: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1273,6 +1330,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_DOCUMENTS_AGENDA_WISE_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1296,6 +1354,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.RETRIVE_AGENDA_WISE_DOCUMENTS_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1305,6 +1364,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.RETRIVE_AGENDA_WISE_DOCUMENTS_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1320,6 +1380,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.DELETE_GENERAL_MINUTE_DCOUMENTS_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1328,6 +1389,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.DELETE_GENERAL_MINUTE_DCOUMENTS_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1343,6 +1405,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1351,6 +1414,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.DELETE_AGENDA_WISE_DOCUMENT_DELETE_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1366,6 +1430,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1375,6 +1440,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1391,6 +1457,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_MEETING_USERS_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1404,6 +1471,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GETMEETINGBYCOMMITTEEID_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1412,6 +1480,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GETMEETINGBYCOMMITTEEID_FAIL: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1421,6 +1490,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_MEETING_USERS_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1434,6 +1504,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SCHEDULE_MEETING_ON_SELECT_DATE_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1443,6 +1514,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SCHEDULE_MEETING_ON_SELECT_DATE_FAIL: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1458,6 +1530,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.SETMEETINGBYCOMMITTEEID_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1466,6 +1539,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.SETMEETINGBYCOMMITTEEID_FAIL: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1482,6 +1556,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GETMEETINGBYGROUPID_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1490,6 +1565,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.GETMEETINGBYGROUPID_FAIL: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1505,6 +1581,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.SETMEETINGBYGROUPID_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1513,6 +1590,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
     case actions.SETMEETINGBYGROUPID_FAIL: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1599,6 +1677,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_AGENDAWISE_DOCUMENT_SUCCESS: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1608,6 +1687,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_AGENDAWISE_DOCUMENT_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1634,6 +1714,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.UPLOAD_DOCUMENT_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,
@@ -1658,6 +1739,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVED_FILES_FAILED: {
+      console.log("loader check");
       return {
         ...state,
         Loading: false,

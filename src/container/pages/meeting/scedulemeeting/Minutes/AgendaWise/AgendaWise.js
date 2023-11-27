@@ -62,14 +62,10 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
-  const [general, setGeneral] = useState(false);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [agenda, setAgenda] = useState(false);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const [expandedFiles, setExpandedFiles] = useState([]);
-  const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
   const [agendaOptionvalue, setAgendaOptionValue] = useState({
@@ -99,11 +95,6 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
       )
     );
   }, []);
-
-  console.log(
-    AgendaWiseAgendaListReducer.AllAgendas,
-    "AgendaWiseAgendaListReducer"
-  );
 
   useEffect(() => {
     try {

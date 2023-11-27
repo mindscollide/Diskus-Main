@@ -15,10 +15,9 @@ const AgendaWiseAgendaListReducer = (state = initialState, action) => {
       };
 
     case actions.GET_ALL_AGENDAWISE_AGENDA_SUCCESS:
-      console.log(action.response, "statestatestatestate");
       return {
         ...state,
-        loading: true,
+        loading: false,
         AllAgendas: action.response,
         responseMessage: action.message,
       };
