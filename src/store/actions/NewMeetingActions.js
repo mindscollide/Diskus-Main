@@ -3230,9 +3230,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
 //Getting all the General Mintues
 
 const showAllGeneralMinutesInit = () => {
-  console.log(
-    "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-  );
   return {
     type: actions.GET_GENERAL_MINTES_INIT,
   };
@@ -3258,9 +3255,6 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(showAllGeneralMinutesInit());
-    console.log(
-      "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer"
-    );
     let form = new FormData();
     form.append("RequestMethod", getGeneralMinutes.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -3289,13 +3283,11 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
               MDID: currentMeeting,
             };
             // Call DocumentsOfMeetingGenralMinutesApiFunc and wait for its response
-            console.log("LoadingLoadingLoading");
             await dispatch(
               DocumentsOfMeetingGenralMinutesApiFunc(navigate, MeetingDocs, t)
             );
 
             // After DocumentsOfMeetingGenralMinutesApiFunc is done, call showAllGeneralMinutesSuccess
-            console.log("LoadingLoadingLoading");
             dispatch(
               showAllGeneralMinutesSuccess(
                 response.data.responseResult,
@@ -3306,27 +3298,23 @@ const GetAllGeneralMinutesApiFunc = (navigate, t, Data, currentMeeting) => {
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_02"
           ) {
-            console.log("LoadingLoadingLoading");
-            dispatch(showAllGeneralMinutesFailed([], t("No-record-found")));
+            dispatch(showAllGeneralMinutesFailed(t("No-record-found")));
           } else if (
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingGeneralMinutes_03"
           ) {
-            console.log("LoadingLoadingLoading");
             dispatch(
-              showAllGeneralMinutesFailed([], t("Something-went-wrong"))
+              showAllGeneralMinutesFailed(t("Something-went-wrong"))
             );
           }
         } else {
-          console.log("LoadingLoadingLoading");
-          dispatch(showAllGeneralMinutesFailed([], t("Something-went-wrong")));
+          dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
         }
       } else {
-        dispatch(showAllGeneralMinutesFailed([], t("Something-went-wrong")));
+        dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
       }
     } catch (error) {
-      console.log("LoadingLoadingLoading");
-      dispatch(showAllGeneralMinutesFailed([], t("Something-went-wrong")));
+      dispatch(showAllGeneralMinutesFailed(t("Something-went-wrong")));
     }
   };
 };
