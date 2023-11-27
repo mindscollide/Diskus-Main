@@ -302,11 +302,11 @@ const MeetingMaterial = ({
             onClick={handleSaveAndNext}
             disableBtn={Number(editorRole.status) === 10 ? false : true}
           />
-          <Button
+          {/* <Button
             text={t("Save")}
             className={styles["Save_Classname"]}
             onClick={handleSaveAndNext}
-          />
+          /> */}
           {Number(editorRole.status) === 11 ||
           Number(editorRole.status) === 12 ? (
             <Button
