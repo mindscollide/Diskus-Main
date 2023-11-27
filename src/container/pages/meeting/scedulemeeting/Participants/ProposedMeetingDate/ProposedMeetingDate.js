@@ -219,9 +219,12 @@ const ProposedMeetingDate = ({
     setEndDateError(hasEndDateError);
   };
 
+  //Function that will check the assending order of the dates
   const isAscendingOrder = () => {
     for (let i = 1; i < rows.length; i++) {
       if (rows[i].selectedOption <= rows[i - 1].selectedOption) {
+        return false;
+      } else if (rows[i].endDate <= rows[i - 1].endDate) {
         return false;
       }
     }
@@ -242,23 +245,23 @@ const ProposedMeetingDate = ({
       });
     });
 
-    // if (isAscendingOrder()) {
-    let Data = {
-      MeetingID: currentMeeting,
-      SendResponsebyDate: sendResponseBy.date,
-      ProposedDates: newArr,
-    };
-    console.log(Data, "DataDataDataData");
-    dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
-    // } else {
-    //   // Rows are not in ascending order
-    //   setOpen({
-    //     flag: true,
-    //     message: t(
-    //       "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time"
-    //     ),
-    //   });
-    // }
+    if (isAscendingOrder()) {
+      let Data = {
+        MeetingID: currentMeeting,
+        SendResponsebyDate: sendResponseBy.date,
+        ProposedDates: newArr,
+      };
+      console.log(Data, "DataDataDataData");
+      // dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
+    } else {
+      // Rows are not in ascending order
+      setOpen({
+        flag: true,
+        message: t(
+          "Proposed-dates-should-be-in-increasing-order-of-date-and-start-time"
+        ),
+      });
+    }
   };
 
   // Function to handle the save Proposed button click
