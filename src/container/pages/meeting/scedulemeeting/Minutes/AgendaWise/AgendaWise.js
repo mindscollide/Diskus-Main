@@ -604,7 +604,12 @@ const AgendaWise = ({ currentMeeting }) => {
   };
 
   useEffect(() => {
-    if (NewMeetingreducer.ResponseMessage !== "") {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
+      NewMeetingreducer.ResponseMessage !== t("Record-found")
+    ) {
       setOpen({
         ...open,
         flag: true,

@@ -101,7 +101,6 @@ const Minutes = ({
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
-  console.log("fileSizefileSize", fileSize);
   var FontAttributor = Quill.import("formats/font");
   var fonts = ["impact", "courier", "comic"];
   FontAttributor.whitelist = fonts;
@@ -203,7 +202,7 @@ const Minutes = ({
         let flag = false;
         let sizezero;
         let size;
-        fileAttachments.map((arData, index) => {
+        fileAttachments.forEach((arData, index) => {
           if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
             flag = true;
           }
@@ -372,6 +371,7 @@ const Minutes = ({
   const toggleExpansion = () => {
     setExpanded(!expanded);
   };
+
   const handleAddClick = async () => {
     let Data = {
       MeetingID: currentMeeting,
@@ -543,11 +543,16 @@ const Minutes = ({
   };
 
   useEffect(() => {
+    console.log(
+      ResponseMessage,
+      "ResponseMessageResponseMessageResponseMessageResponseMessage"
+    );
     if (
-      ResponseMessage !== "" &&
+      ResponseMessage.trim() !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== t("Record-found")
+      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== t("No-record-found")
     ) {
       setOpen({
         ...open,
