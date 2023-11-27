@@ -491,6 +491,7 @@ const SceduleMeeting = ({
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
                 dataroomMapFolderId={dataroomMapFolderId}
+                setMeetingMaterial={setMeetingMaterial}
               />
             )}
             {polls && (
@@ -503,6 +504,7 @@ const SceduleMeeting = ({
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
+                setactionsPage={setactionsPage}
               />
             )}
             {attendance && (

@@ -34,6 +34,7 @@ const Actions = ({
   setEditMeeting,
   isEditMeeting,
   dataroomMapFolderId,
+  setMeetingMaterial,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -209,8 +210,16 @@ const Actions = ({
 
   // To go on Previous tab
   const prevTabToMinutes = () => {
-    setactionsPage(false);
-    setMinutes(true);
+    if (
+      Number(editorRole.status) === 10 &&
+      editorRole.role === "Agenda Contributor"
+    ) {
+      setactionsPage(false);
+      setMeetingMaterial(true);
+    } else {
+      setactionsPage(false);
+      setMinutes(true);
+    }
   };
 
   return (
