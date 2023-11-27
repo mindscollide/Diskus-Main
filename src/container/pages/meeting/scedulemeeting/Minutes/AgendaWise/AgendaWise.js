@@ -34,6 +34,10 @@ import {
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../../DataRoom/SearchFunctionality/option";
 
 const AgendaWise = ({ currentMeeting, editorRole }) => {
   const navigate = useNavigate();
@@ -609,7 +613,8 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
       NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
       NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
       NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully")
     ) {
       setOpen({
         ...open,
@@ -1016,8 +1021,13 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                                           }
                                                         >
                                                           <img
-                                                            src={pdfIcon}
+                                                            src={getIconSource(
+                                                              getFileExtension(
+                                                                filesname.displayFileName
+                                                              )
+                                                            )}
                                                             height="10px"
+                                                            alt=""
                                                             width="10px"
                                                             className={
                                                               styles["IconPDF"]

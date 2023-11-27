@@ -626,7 +626,8 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
       NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
       NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
       NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found")
+      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
+      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully")
     ) {
       setOpen({
         ...open,

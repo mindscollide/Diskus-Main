@@ -32,6 +32,10 @@ import {
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../DataRoom/SearchFunctionality/option";
 
 const Minutes = ({
   setMinutes,
@@ -583,7 +587,8 @@ const Minutes = ({
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== t("Record-found") &&
-      ResponseMessage !== t("No-record-found")
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("List-updated-successfully")
     ) {
       setOpen({
         ...open,
@@ -780,7 +785,11 @@ const Minutes = ({
                                                 }
                                               >
                                                 <img
-                                                  src={pdfIcon}
+                                                  src={getIconSource(
+                                                    getFileExtension(
+                                                      data.DisplayAttachmentName
+                                                    )
+                                                  )}
                                                   height="10px"
                                                   width="10px"
                                                   className={styles["IconPDF"]}
