@@ -941,7 +941,9 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
                                     className={styles["Show_more"]}
                                     onClick={() => handleshowMore(index)}
                                   >
-                                    {t("Show-more")}
+                                    {showMoreIndex === index && showMore
+                                      ? t("Hide-details")
+                                      : t("Show-more")}
                                   </span>
                                 </Col>
                               </Row>

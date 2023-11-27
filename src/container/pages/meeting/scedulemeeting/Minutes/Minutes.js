@@ -999,7 +999,9 @@ const Minutes = ({
                                     className={styles["Show_more"]}
                                     onClick={() => handleshowMore(index)}
                                   >
-                                    {t("Show-more")}
+                                    {generalShowMore === index
+                                      ? t("Hide-details")
+                                      : t("Show-more")}
                                   </span>
                                 </Col>
                               </Row>
