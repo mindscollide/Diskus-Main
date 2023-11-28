@@ -1011,6 +1011,7 @@ const ScheduleNewResolution = () => {
     });
   };
 
+  //Custom Input For Time selectors
   function CustomInput({ onFocus, value, onChange }) {
     return (
       <input
@@ -1021,6 +1022,19 @@ const ScheduleNewResolution = () => {
       />
     );
   }
+
+  // custom react select styles Reminder Frequency
+  const customStyles = {
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999, // Ensure the dropdown is rendered above other elements
+    }),
+    menu: (provided, state) => ({
+      ...provided,
+      marginTop: state.selectProps.menuPlacement === "top" ? "0" : null,
+      marginBottom: state.selectProps.menuPlacement === "bottom" ? "0" : null,
+    }),
+  };
 
   return (
     <>
@@ -1558,6 +1572,9 @@ const ScheduleNewResolution = () => {
                             name="Participant"
                             placeholder={t("Time")}
                             className="select-voting-deadline"
+                            styles={customStyles}
+                            menuPlacement="top" // Set menuPlacement to 'top' to open the dropdown upwards
+                            menuPortalTarget={document.body}
                             options={reminderData}
                             onChange={ReminderChangeHandler}
                           />
