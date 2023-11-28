@@ -39,19 +39,27 @@ import {
   getIconSource,
 } from "../../../../../DataRoom/SearchFunctionality/option";
 
-const AgendaWise = ({ currentMeeting, editorRole }) => {
+const AgendaWise = ({
+  currentMeeting,
+  editorRole,
+  agendaOptionvalue,
+  setAgendaOptionValue,
+  addNoteFields,
+  setAddNoteFields,
+  fileAttachments,
+  setFileAttachments,
+}) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let folderID = localStorage.getItem("folderDataRoomMeeting");
-  console.log(folderID, "localStoragelocalStorage");
-  const [addNoteFields, setAddNoteFields] = useState({
-    Description: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-  });
+  // const [addNoteFields, setAddNoteFields] = useState({
+  //   Description: {
+  //     value: "",
+  //     errorMessage: "",
+  //     errorStatus: false,
+  //   },
+  // });
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -62,22 +70,25 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
   const { NewMeetingreducer, AgendaWiseAgendaListReducer } = useSelector(
     (state) => state
   );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
   console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [fileAttachments, setFileAttachments] = useState([]);
+  // const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
   const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [showMore, setShowMore] = useState(false);
-  const [agendaOptionvalue, setAgendaOptionValue] = useState({
-    label: "",
-    value: 0,
-  });
+  // const [agendaOptionvalue, setAgendaOptionValue] = useState({
+  //   label: "",
+  //   value: 0,
+  // });
   const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
@@ -331,6 +342,15 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
         ...addNoteFields,
         Description: {
           value: content,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: "",
           errorMessage: "",
           errorStatus: false,
         },
@@ -609,17 +629,17 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage.trim() !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully")
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found") &&
+      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("List-updated-successfully")
     ) {
       setOpen({
         ...open,
         flag: true,
-        message: NewMeetingreducer.ResponseMessage,
+        message: ResponseMessage,
       });
       setTimeout(() => {
         setOpen({
@@ -632,7 +652,7 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <section>

@@ -1611,5 +1611,7 @@
   "Enter-date-must-action": "Enter date must action *",
   "Take-Task": "Take Task",
   "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up lets dive into some task",
-  "Create-a-to-do-list": "Create a Task"
+  "Selected-start-time-should-not-be-greater-than-the-endTime": "Selected start time should not be greater than the end time",
+  "Create-a-to-do-list": "Create a Task",
+  "Selected-end-time-should-not-be-less-than-start-time":"Selected end time should not be less than start time"
 }
