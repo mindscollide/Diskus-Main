@@ -31,7 +31,6 @@ const ViewParticipantsDates = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let UserID = localStorage.getItem("userID");
 
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
@@ -48,7 +47,6 @@ const ViewParticipantsDates = ({
   const [deadline, setDeadline] = useState("");
   const [prposedData, setPrposedData] = useState([]);
   const [sendProposedData, setSendProposedData] = useState([]);
-  const [checkedObjects, setCheckedObjects] = useState([]);
   const [noneOfAbove, setNoneOfAbove] = useState([]);
   const [apiUserID, setApiUserID] = useState("");
   const [meetingDeatils, setMeetingDeatils] = useState({
@@ -72,7 +70,7 @@ const ViewParticipantsDates = ({
       MeetingID: Number(currentMeetingID),
     };
     // await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
-    await dispatch(getUserProposedWiseApi(navigate, t, Data));
+    await dispatch(getUserProposedWiseApi(navigate, t, Data,true));
     await dispatch(
       GetAllMeetingDetailsApiFunc(
         navigate,
