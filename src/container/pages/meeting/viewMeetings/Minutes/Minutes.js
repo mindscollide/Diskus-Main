@@ -28,6 +28,7 @@ import {
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
   cleareMinutsData,
+  searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -74,6 +75,8 @@ const Minutes = ({
   );
   const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
   const [fileSize, setFileSize] = useState(0);
+  const [useCase, setUseCase] = useState(null);
+
   const [fileForSend, setFileForSend] = useState([]);
   const [general, setGeneral] = useState(true);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
@@ -96,6 +99,19 @@ const Minutes = ({
       errorMessage: "",
       errorStatus: false,
     },
+  });
+
+  const [addAgendaWiseFields, setAgendaWiseFields] = useState({
+    Description: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+  });
+  const [addAgendaWiseFiles, setaddAgendaWiseFiles] = useState([]);
+  const [agendaOptionvalue, setAgendaOptionValue] = useState({
+    label: "",
+    value: 0,
   });
 
   var Size = Quill.import("attributors/style/size");
@@ -136,6 +152,7 @@ const Minutes = ({
       GetAllGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
     );
     return () => {
+      setUseCase(null);
       setMessages([]);
       setFileAttachments([]);
       setPreviousFileIDs([]);
@@ -574,17 +591,119 @@ const Minutes = ({
   };
 
   const handleUNsaveChangesModal = () => {
-    dispatch(showUnsaveMinutesFileUpload(true));
+    // dispatch(showUnsaveMinutesFileUpload(true));
+    let userID = localStorage.getItem("userID");
+    let meetingpageRow = localStorage.getItem("MeetingPageRows");
+    let meetingPageCurrent = parseInt(
+      localStorage.getItem("MeetingPageCurrent")
+    );
+    let currentView = localStorage.getItem("MeetingCurrentView");
+    if (agenda) {
+      if (
+        addAgendaWiseFields.Description.value.trimStart() !== "" ||
+        addAgendaWiseFiles.length !== 0 ||
+        agendaOptionvalue.value !== 0
+      ) {
+        dispatch(showUnsaveMinutesFileUpload(true));
+        setUseCase(3);
+      } else {
+        setFileAttachments([]);
+        setMinutes(false);
+        setViewAdvanceMeetingModal(false);
+        dispatch(showUnsaveMinutesFileUpload(false));
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      }
+    } else if (general) {
+      if (
+        addNoteFields.Description.value.trimStart() !== "" ||
+        fileAttachments.length !== 0
+      ) {
+        dispatch(showUnsaveMinutesFileUpload(true));
+        setUseCase(3);
+      } else {
+        setFileAttachments([]);
+        setMinutes(false);
+        setViewAdvanceMeetingModal(false);
+        dispatch(showUnsaveMinutesFileUpload(false));
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      }
+    }
   };
 
   const handlePreviousButton = () => {
-    setMinutes(false);
-    setMeetingMaterial(true);
+    if (agenda) {
+      if (
+        addAgendaWiseFields.Description.value.trimStart() !== "" ||
+        addAgendaWiseFiles.length !== 0 ||
+        agendaOptionvalue.value !== 0
+      ) {
+        dispatch(showUnsaveMinutesFileUpload(true));
+        setUseCase(1);
+      } else {
+        setMinutes(false);
+        setMeetingMaterial(true);
+      }
+    } else if (general) {
+      if (
+        addNoteFields.Description.value.trimStart() !== "" ||
+        fileAttachments.length !== 0
+      ) {
+        dispatch(showUnsaveMinutesFileUpload(true));
+        setUseCase(1);
+      } else {
+        setMinutes(false);
+        setMeetingMaterial(true);
+      }
+    }
     // dispatch(showPreviousConfirmationModal(true));
   };
   const handleNextButton = () => {
-    setactionsPage(true);
-    setMinutes(false);
+    if (agenda) {
+      if (
+        addAgendaWiseFields.Description.value.trimStart() !== "" ||
+        addAgendaWiseFiles.length !== 0 ||
+        agendaOptionvalue.value !== 0
+      ) {
+        dispatch(showUnsaveMinutesFileUpload(true));
+        setUseCase(2);
+      } else {
+        setactionsPage(true);
+        setMinutes(false);
+      }
+    } else if (general) {
+      if (
+        addNoteFields.Description.value.trimStart() !== "" ||
+        fileAttachments.length !== 0
+      ) {
+        dispatch(showUnsaveMinutesFileUpload(true));
+        setUseCase(2);
+      } else {
+        setactionsPage(true);
+        setMinutes(false);
+      }
+    }
     // dispatch(showPreviousConfirmationModal(true));
   };
 
@@ -648,6 +767,12 @@ const Minutes = ({
         <AgendaWise
           advanceMeetingModalID={advanceMeetingModalID}
           editorRole={editorRole}
+          agendaOptionvalue={agendaOptionvalue}
+          setAgendaOptionValue={setAgendaOptionValue}
+          addNoteFields={addAgendaWiseFields}
+          setAddNoteFields={setAgendaWiseFields}
+          fileAttachments={addAgendaWiseFiles}
+          setFileAttachments={setaddAgendaWiseFiles}
         />
       ) : general ? (
         <>
@@ -1101,7 +1226,11 @@ const Minutes = ({
                                                           }
                                                         >
                                                           <img
-                                                            src={pdfIcon}
+                                                            src={getIconSource(
+                                                              getFileExtension(
+                                                                filesname.displayFileName
+                                                              )
+                                                            )}
                                                             height="10px"
                                                             width="10px"
                                                             className={
@@ -1192,6 +1321,9 @@ const Minutes = ({
           setMinutes={setMinutes}
           setSceduleMeeting={setViewAdvanceMeetingModal}
           setFileAttachments={setFileAttachments}
+          useCase={useCase}
+          setactionsPage={setactionsPage}
+          setMeetingMaterial={setMeetingMaterial}
         />
       )}
 
