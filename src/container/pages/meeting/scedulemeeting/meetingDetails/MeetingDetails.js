@@ -249,7 +249,6 @@ const MeetingDetails = ({
   };
 
   const handleStartDateChange = (index, date) => {
-    console.log("changeDateStartHandler", date);
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getHours()).slice(-2);
@@ -276,14 +275,12 @@ const MeetingDetails = ({
         } else {
           updatedRows[index].startDate = formattedTime;
           updatedRows[index].startTime = newDate;
-          console.log("changeDateStartHandler", updatedRows);
           setRows(updatedRows);
           // You can use 'formattedTime' as needed.
         }
       } else {
         updatedRows[index].startDate = formattedTime;
         updatedRows[index].startTime = newDate;
-        console.log("changeDateStartHandler", updatedRows);
         setRows(updatedRows);
         // You can use 'formattedTime' as needed.
       }
@@ -350,6 +347,12 @@ const MeetingDetails = ({
     setMeetingDate(meetingDateValueFormat);
     const updatedRows = [...rows];
     if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
+      setOpen({
+        flag: true,
+        message: t(
+          "Selected-date-should-not-be-less-than-the-previous-one"
+        ),
+      });
       return;
     } else {
       updatedRows[index].selectedOption = DateDate;
@@ -1496,19 +1499,6 @@ const MeetingDetails = ({
                                     >
                                       {t("Scheduled-date-is-required")}
                                     </p>
-                                    {/* <Row>
-                                      <Col>
-                                        <p
-                                          className={
-                                            error && data.selectedOption === ""
-                                              ? ` ${styles["errorMessage-inLogin"]} `
-                                              : `${styles["errorMessage-inLogin_hidden"]}`
-                                          }
-                                        >
-                                          {t("Please-select-data-and-time")}
-                                        </p>
-                                      </Col>
-                                    </Row> */}
                                   </Col>
                                   <Col
                                     lg={3}
