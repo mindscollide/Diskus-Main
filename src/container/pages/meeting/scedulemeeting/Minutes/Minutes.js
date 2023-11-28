@@ -29,6 +29,7 @@ import {
   uploadDocumentsMeetingMinutesApi,
   cleareMinutsData,
   searchNewUserMeeting,
+  cleareAllState,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -154,7 +155,7 @@ const Minutes = ({
       setMessages([]);
       setFileAttachments([]);
       setPreviousFileIDs([]);
-      dispatch(cleareMinutsData());
+      dispatch(cleareAllState());
       setUseCase(null);
     };
   }, []);

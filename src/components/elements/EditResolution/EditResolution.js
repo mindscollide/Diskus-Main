@@ -154,26 +154,33 @@ const EditResolution = ({ setCancelresolution }) => {
     date: "",
     time: new Date(),
     dateValue: "",
+    timeCirculationforView: "",
   });
-  console.log("circulationDateTimecirculationDateTime", circulationDateTime);
+
   const [votingDateTime, setVotingDateTime] = useState({
     date: "",
     time: new Date(),
     dateValue: "",
+    timeVotingforView: "",
   });
+
   const [decisionDateTime, setDecisionDateTime] = useState({
     date: "",
     time: new Date(),
     dateValue: "",
+    timeDecisionforView: "",
   });
+
   const [ReminderFrequncyValue, setReminderFrequencyValue] = useState({
     label: "",
     value: 0,
   });
+
   const [votingMethodValue, setVotingMethodValue] = useState({
     label: "",
     value: 0,
   });
+
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");

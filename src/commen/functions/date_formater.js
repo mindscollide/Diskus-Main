@@ -375,8 +375,8 @@ export const editResolutionTime = (dateTime) => {
     dateTime.slice(12, 14) +
     ".000Z";
   let convertGMT = new Date(fullDateYear).toString();
-  let convertTime = moment(convertGMT).format("HH:mm");
-  return convertTime;
+  // let convertTime = moment(convertGMT).format("HH:mm");
+  return convertGMT;
 };
 
 export const resolutionResultTable = (dateTime) => {
