@@ -658,6 +658,8 @@ const Agenda = ({
         };
       });
 
+      setFileForSend([]);
+
       let Data = {
         MeetingID: currentMeetingIDLS,
         AgendaList: updatedData,
