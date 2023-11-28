@@ -181,22 +181,7 @@ const MeetingDetails = ({
     }
   }, [currentLanguage]);
 
-  const apiCallsForComponentMound = async () => {
-    try {
-      // Meeting Type Drop Down API
-      await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
-      // Reminder Frequency Drop Down API
-      await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-      // Recurring Drop Down API
-      await dispatch(GetAllMeetingRecurringApiNew(navigate, t));
-      
-    } catch (error) {
-      console.error("An error occurred during API calls:", error);
-    }
-  };
   useEffect(() => {
-    // apiCallsForComponentMound();
-
     //Calling getAll Meeting Details By Meeting ID
     return () => {
       setMeetingDetails({
@@ -291,9 +276,24 @@ const MeetingDetails = ({
           // You can use 'formattedTime' as needed.
         }
       } else {
-        updatedRows[index].startDate = formattedTime;
-        updatedRows[index].startTime = newDate;
-        setRows(updatedRows);
+        if (
+          updatedRows[index].endDate !== "" &&
+          formattedTime < updatedRows[index].endDate
+        ) {
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected-start-time-should-not-be-greater-than-the-endTime"
+            ),
+          });
+          return;
+        } else {
+          updatedRows[index].startDate = formattedTime;
+          updatedRows[index].startTime = newDate;
+          setRows(updatedRows);
+          // You can use 'formattedTime' as needed.
+        }
+
         // You can use 'formattedTime' as needed.
       }
     } else {

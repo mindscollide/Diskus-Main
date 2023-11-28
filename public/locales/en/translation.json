@@ -1649,5 +1649,6 @@
   "Description-is-required-action": "Description is required action *",
   "Enter-date-must-action": "Enter date *",
   "Take-Task": "Take Task",
-  "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up lets dive into some task"
+  "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up lets dive into some task",
+  "Selected-start-time-should-not-be-greater-than-the-endTime": "Selected start time should not be greater than the end time"
 }
