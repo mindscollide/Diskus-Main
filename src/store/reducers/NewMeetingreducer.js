@@ -1334,7 +1334,6 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.SAVE_DOCUMENTS_AGENDA_WISE_SUCCESS: {
-      console.log("loader check");
       return {
         ...state,
         Loading: true,

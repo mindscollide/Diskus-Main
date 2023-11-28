@@ -4530,7 +4530,6 @@ const showSavedAgendaWiseDocumentFailed = (message) => {
 
 const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showSavedAgendaWiseDocumentInit());
     let form = new FormData();
