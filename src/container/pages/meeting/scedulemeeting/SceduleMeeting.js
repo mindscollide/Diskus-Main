@@ -57,7 +57,7 @@ const SceduleMeeting = ({
       // Reminder Frequency Drop Down API
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       // Recurring Drop Down API
-      await dispatch(GetAllMeetingRecurringApiNew(navigate, t,false));
+      await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
     } catch (error) {
       console.error("An error occurred during API calls:", error);
     }
@@ -227,7 +227,7 @@ const SceduleMeeting = ({
         <Col lg={12} md={12} sm={12}>
           {isEditMeeting ? (
             <span className={styles["Scedule_newMeeting_Heading"]}>
-              {t("Edit-new-meeting")}
+              {t("Edit-meeting")}
             </span>
           ) : (
             <span className={styles["Scedule_newMeeting_Heading"]}>

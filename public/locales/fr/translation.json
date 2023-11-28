@@ -1111,7 +1111,7 @@
   "Record-saved": "Record Saved",
   "Only-a-organizer-can-perform-this-operation": "only a organizer can perform this operation",
   "Record-not-updated": "Record Not Updated",
-  "Edit-new-meeting": "Edit New Meeting",
+  "Edit-meeting": "Edit Meeting",
   "No-record-found": "No Record Found",
   "Please-enter-video-link": "Please enter video link",
   "Please-add-agenda-organizers-and-participants-to-publish-the-meeting": "Please Add Agenda,Organizers and Participants to Publish the Meeting",
@@ -1146,5 +1146,5 @@
   "Selected-date-should-not-be-less-than-the-previous-one": "Selected date should not be less than the previous one",
   "Selected-end-time-should-not-be-less-than-the-previous-one": "Selected end time should not be less than the Start Time",
   "Selected-start-time-should-not-be-greater-than-the-endTime": "Selected start time should not be greater than the end time",
-  "Selected-end-time-should-not-be-less-than-start-time":"Selected end time should not be less than start time"
+  "Selected-end-time-should-not-be-less-than-start-time": "Selected end time should not be less than start time"
 }

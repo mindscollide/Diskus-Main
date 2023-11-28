@@ -52,6 +52,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     postAssigneeComments,
     "postAssigneeCommentspostAssigneeCommentspostAssigneeComments"
   );
+  console.log(Comments, "CommentsCommentsComments");
   //To Display Modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -78,12 +79,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   let currentDateTime = new Date();
   let changeDateFormat = moment(currentDateTime).utc();
   let convertFormation = moment(changeDateFormat).format("YYYYMMDDHHmmss");
-  console.log(
-    newTimeFormaterAsPerUTCFullDate(convertFormation),
-    changeDateFormat,
-    convertFormation,
-    "changeDateFormatchangeDateFormatchangeDateFormat"
-  );
+
   const year = currentDateTime.getFullYear();
   const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0");
   const day = currentDateTime.getDate().toString().padStart(2, "0");
@@ -113,7 +109,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const [todoCreator, setTodoCreator] = useState(null);
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assigeeDetails, setAssigneeDetails] = useState(null);
-  console.log(assigeeDetails, "assigeeDetailsassigeeDetails");
   const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
   const [assgineeComments, setAssgieeComments] = useState("");
   const [deleteCommentsId, setDeleteCommentsId] = useState(0);
@@ -125,14 +120,30 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   //To Set task Creater ID
   useEffect(() => {
     setTaskCreatorID(parseInt(createrID));
+    return () => {
+      setTaskAssigneeComments([]);
+      //task Object
+      setTask({
+        PK_TID: 0,
+        Title: "",
+        Description: "",
+        IsMainTask: true,
+        DeadLineDate: "",
+        DeadLineTime: "",
+        CreationDateTime: "",
+      });
+    };
   }, []);
   useEffect(() => {
     todoComments.current?.scrollIntoView({ behavior: "smooth" });
   }, [taskAssigneeComments, assgineeComments]);
-
+  console.log(
+    taskAssigneeComments,
+    assgineeComments,
+    "assgineeCommentsassgineeCommentsassgineeComments"
+  );
   useEffect(() => {
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
-      console.log("ViewToDoDetails", toDoListReducer.ToDoDetails);
       let viewData = toDoListReducer.ToDoDetails;
       setTask({
         ...task,
@@ -204,7 +215,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         setTasksAttachments({ ["TasksAttachments"]: tem });
       }
       let assgineeeComments = toDoListReducer.ToDoDetails.taskComments;
-      if (assgineeeComments !== undefined) {
+      console.log(
+        assgineeeComments,
+        "assgineeeCommentsassgineeeCommentsassgineeeComments"
+      );
+      if (assgineeeComments.length > 0) {
         let assigneescommentsArr = [];
         assgineeeComments.map((assgineeData) => {
           assigneescommentsArr.push({
@@ -216,8 +231,23 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
             DateTime: assgineeData.dateTime,
           });
         });
-        setTaskAssigneeComments([...assigneescommentsArr]);
+        console.log(
+          assigneescommentsArr,
+          "assigneescommentsArrassigneescommentsArrassigneescommentsArr"
+        );
+        setTaskAssigneeComments(assigneescommentsArr);
       }
+    } else {
+      setTask({
+        PK_TID: 0,
+        Title: "",
+        Description: "",
+        IsMainTask: true,
+        DeadLineDate: "",
+        DeadLineTime: "",
+        CreationDateTime: "",
+      });
+      setAssgieeComments([]);
     }
   }, [toDoListReducer.ToDoDetails]);
 
@@ -270,6 +300,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
             postAssigneeComments.DeleteCommentsId.commentID
         );
         setTaskAssigneeComments(deleteComments);
+        setDeleteCommentsId(0);
       }
     }
   }, [postAssigneeComments.DeleteCommentsId]);
@@ -297,6 +328,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       setTaskAssignedName([]);
       setTaskAssigneeComments([]);
       setAssgieeComments("");
+      setDeleteCommentsId(0);
     }
   }, [viewFlagToDo]);
 
@@ -455,11 +487,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               <Row className="comment-Height" id="commentviews">
                 {taskAssigneeComments.length > 0
                   ? taskAssigneeComments.map((commentData, index) => {
-                      // console.log(
-                      //   "commentDatacommentData",
-                      //   Number(commentData.userID) === Number(createrID),
-                      //   commentData
-                      // );
                       if (Number(commentData.userID) === Number(createrID)) {
                         return (
                           <>
