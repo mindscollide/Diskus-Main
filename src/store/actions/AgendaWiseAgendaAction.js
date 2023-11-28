@@ -74,7 +74,8 @@ const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
                 navigate,
                 newData,
                 t,
-                currentMeeting
+                currentMeeting,
+                false
               )
             );
 
@@ -119,6 +120,5 @@ const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
     }
   };
 };
-
 
 export { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes };

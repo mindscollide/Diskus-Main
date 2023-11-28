@@ -1227,7 +1227,11 @@ const Minutes = ({
                                                           }
                                                         >
                                                           <img
-                                                            src={pdfIcon}
+                                                            src={getIconSource(
+                                                              getFileExtension(
+                                                                filesname.displayFileName
+                                                              )
+                                                            )}
                                                             height="10px"
                                                             width="10px"
                                                             className={

@@ -364,40 +364,29 @@ const Organizers = ({
 
   useEffect(() => {
     if (
-      MeetingOrganizersReducer.ResponseMessage ===
-      "Organizers-saved-successfully"
+      MeetingOrganizersReducer.ResponseMessage !== "" &&
+      MeetingOrganizersReducer.ResponseMessage !== t("No-record-found") &&
+      MeetingOrganizersReducer.ResponseMessage !== t("No-records-found") &&
+      MeetingOrganizersReducer.ResponseMessage !== t("Record-found") &&
+      MeetingOrganizersReducer.ResponseMessage !==
+        t("Organizers-saved-successfully")
     ) {
-      setTimeout(
+      setOpen({
+        ...open,
+        flag: true,
+        message: MeetingOrganizersReducer.ResponseMessage,
+      });
+      setTimeout(() => {
         setOpen({
-          open: true,
-          message: t("Organizers-saved-successfully"),
-        }),
-        3000
-      );
-    } else if (
-      MeetingOrganizersReducer.ResponseMessage ===
-      "Notification-sent-successfully"
-    ) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Notification-sent-successfully"),
-        }),
-        3000
-      );
-    } else if (
-      MeetingOrganizersReducer.ResponseMessage ===
-      "Notification-not-sent-successfully"
-    ) {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Notification-not-sent-successfully"),
-        }),
-        3000
-      );
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(clearResponseMessage(""));
+    } else {
+      dispatch(clearResponseMessage(""));
     }
-    dispatch(clearResponseMessage(""));
   }, [MeetingOrganizersReducer.ResponseMessage]);
 
   return (

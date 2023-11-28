@@ -70,6 +70,9 @@ const AgendaWise = ({
   const { NewMeetingreducer, AgendaWiseAgendaListReducer } = useSelector(
     (state) => state
   );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
   console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
   const editorRef = useRef(null);
   const { Dragger } = Upload;
@@ -626,17 +629,17 @@ const AgendaWise = ({
 
   useEffect(() => {
     if (
-      NewMeetingreducer.ResponseMessage.trim() !== "" &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-records-found") &&
-      NewMeetingreducer.ResponseMessage !== t("Record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("No-record-found") &&
-      NewMeetingreducer.ResponseMessage !== t("List-updated-successfully")
+      ResponseMessage !== "" &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found") &&
+      ResponseMessage !== t("Record-found") &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("List-updated-successfully")
     ) {
       setOpen({
         ...open,
         flag: true,
-        message: NewMeetingreducer.ResponseMessage,
+        message: ResponseMessage,
       });
       setTimeout(() => {
         setOpen({
@@ -649,7 +652,7 @@ const AgendaWise = ({
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
-  }, [NewMeetingreducer.ResponseMessage]);
+  }, [ResponseMessage]);
 
   return (
     <section>
