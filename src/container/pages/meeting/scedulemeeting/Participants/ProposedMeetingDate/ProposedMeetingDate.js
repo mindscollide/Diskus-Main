@@ -107,8 +107,8 @@ const ProposedMeetingDate = ({
   useEffect(() => {
     callApis();
     return () => {
-    setProposedMeetingDates(false);
-    setRows([
+      setProposedMeetingDates(false);
+      setRows([
         {
           selectedOption: "",
           startDate: "",
@@ -183,11 +183,45 @@ const ProposedMeetingDate = ({
         updatedRows[index - 1].selectedOption ===
           updatedRows[index].selectedOption
       ) {
-        if (formattedTime < updatedRows[index - 1].endDate) {
+        if (formattedTime <= updatedRows[index - 1].endDate) {
           setOpen({
             flag: true,
             message: t(
               "Selected-start-time-should-not-be-less-than-the-previous-endTime"
+            ),
+          });
+          return;
+        } else {
+          if (
+            updatedRows[index].endDate !== "" &&
+            formattedTime >= updatedRows[index].endDate
+          ) {
+            console.log("handleStartDateChange");
+            setOpen({
+              flag: true,
+              message: t(
+                "Selected-start-time-should-not-be-greater-than-the-endTime"
+              ),
+            });
+            return;
+          } else {
+            updatedRows[index].startDate = formattedTime;
+            updatedRows[index].startDateView = newDate;
+            updatedRows[index].isComing = false;
+            updatedRows[index].proposedDateID = 0;
+
+            setRows(updatedRows);
+          }
+        }
+      } else {
+        if (
+          updatedRows[index].endDate !== "" &&
+          formattedTime >= updatedRows[index].endDate
+        ) {
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected-start-time-should-not-be-greater-than-the-endTime"
             ),
           });
           return;
@@ -199,13 +233,6 @@ const ProposedMeetingDate = ({
 
           setRows(updatedRows);
         }
-      } else {
-        updatedRows[index].startDate = formattedTime;
-        updatedRows[index].startDateView = newDate;
-        updatedRows[index].isComing = false;
-        updatedRows[index].proposedDateID = 0;
-
-        setRows(updatedRows);
       }
     } else {
       console.error("Invalid date and time object:", date);
@@ -496,7 +523,11 @@ const ProposedMeetingDate = ({
                                       value={data.selectedOptionView}
                                       selected={data.selectedOption}
                                       format={"DD/MM/YYYY"}
-                                      minDate={moment().toDate()}
+                                      minDate={
+                                        index > 0
+                                          ? rows[index - 1].selectedOption
+                                          : moment().toDate()
+                                      }
                                       placeholder="DD/MM/YYYY"
                                       render={
                                         <InputIcon
