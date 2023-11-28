@@ -154,6 +154,20 @@ const MeetingDetails = ({
     },
     IsVideoCall: false,
   });
+
+  // custom react select styles recurring
+  const customStyles = {
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999, // Ensure the dropdown is rendered above other elements
+    }),
+    menu: (provided, state) => ({
+      ...provided,
+      marginTop: state.selectProps.menuPlacement === "top" ? "0" : null,
+      marginBottom: state.selectProps.menuPlacement === "bottom" ? "0" : null,
+    }),
+  };
+
   //language UseEffect
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -175,9 +189,6 @@ const MeetingDetails = ({
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       // Recurring Drop Down API
       await dispatch(GetAllMeetingRecurringApiNew(navigate, t));
-
-      // All API calls are successful, proceed with the next steps if needed.
-      console.log("All API calls are completed successfully.");
     } catch (error) {
       console.error("An error occurred during API calls:", error);
     }
@@ -341,24 +352,24 @@ const MeetingDetails = ({
 
   //Onchange Function For DatePicker inAdd datess First
   const changeDateStartHandler = (date, index) => {
-    let newDate = new Date(date);
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new DateObject(date).format("YYYYMMDD");
-    setMeetingDate(meetingDateValueFormat);
-    const updatedRows = [...rows];
-    if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
-      setOpen({
-        flag: true,
-        message: t(
-          "Selected-date-should-not-be-less-than-the-previous-one"
-        ),
-      });
-      return;
-    } else {
-      updatedRows[index].selectedOption = DateDate;
-      updatedRows[index].dateForView = newDate;
-      setRows(updatedRows);
-    }
+    try {
+      let newDate = new Date(date);
+      let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+      let DateDate = new DateObject(date).format("YYYYMMDD");
+      setMeetingDate(meetingDateValueFormat);
+      const updatedRows = [...rows];
+      if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
+        setOpen({
+          flag: true,
+          message: t("Selected-date-should-not-be-less-than-the-previous-one"),
+        });
+        return;
+      } else {
+        updatedRows[index].selectedOption = DateDate;
+        updatedRows[index].dateForView = newDate;
+        setRows(updatedRows);
+      }
+    } catch {}
   };
 
   const addRow = () => {
@@ -540,7 +551,6 @@ const MeetingDetails = ({
           MeetingStatusID: 11,
         },
       };
-      console.log(data, "SaveMeetingDetialsNewApiFunction");
 
       dispatch(
         SaveMeetingDetialsNewApiFunction(
@@ -734,19 +744,6 @@ const MeetingDetails = ({
         });
       }
     }
-    // if (name === "Link" && value !== "") {
-    //   if (urlPatternValidation(value)) {
-    //     setMeetingDetails({
-    //       ...meetingDetails,
-    //       Link: value,
-    //     });
-    //   } else {
-    //     setMeetingDetails({
-    //       ...meetingDetails,
-    //       Link: "",
-    //     });
-    //   }
-    // }
   };
 
   const handleGroupChat = () => {
@@ -776,11 +773,6 @@ const MeetingDetails = ({
       ...meetingDetails,
       IsVideoCall: !meetingDetails.IsVideoCall,
     });
-
-    // let Data = {
-    //   MeetingID: currentMeeting,
-    // };
-    // dispatch(FetchMeetingURLApi(Data, navigate, t));
   };
 
   useEffect(() => {
@@ -871,10 +863,6 @@ const MeetingDetails = ({
 
   // Showing The reposnse messege
   useEffect(() => {
-    console.log(
-      ResponseMessage,
-      "ResponseMessageResponseMessageResponseMessage"
-    );
     if (
       ResponseMessage !== "" &&
       ResponseMessage !== t("Record-found") &&
@@ -899,26 +887,6 @@ const MeetingDetails = ({
       dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [ResponseMessage]);
-  // //For reminder frequency uniqueness
-  // useEffect(() => {
-  //   const selectedValues = new Set([
-  //     meetingDetails.ReminderFrequency.value,
-  //     meetingDetails.ReminderFrequencyTwo.value,
-  //     meetingDetails.ReminderFrequencyThree.value,
-  //   ]);
-
-  //   // Filter out the selected options from the initial options
-  //   const updatedOptions = reminderFrequencyOne.filter(
-  //     (option) => !selectedValues.has(option.value)
-  //   );
-
-  //   // Update the available options
-  //   setReminderFrequencyOne(updatedOptions);
-  // }, [
-  //   meetingDetails.ReminderFrequency,
-  //   meetingDetails.ReminderFrequencyTwo,
-  //   meetingDetails.ReminderFrequencyThree,
-  // ]);
 
   //Fetching All Saved Data
   useEffect(() => {
@@ -1050,10 +1018,7 @@ const MeetingDetails = ({
 
     return true; // If no differences were found, the arrays are considered equal
   }
-  console.log(
-    getAllMeetingDetails,
-    "getAllMeetingDetailsgetAllMeetingDetailsgetAllMeetingDetails"
-  );
+
   const handleUpdateNext = () => {
     //Function For Next Checks ValidationS
     try {
@@ -1113,19 +1078,6 @@ const MeetingDetails = ({
     // dispatch(ShowNextConfirmationModal(true));
     // setmeetingDetails(false);
     // setorganizers(true);
-  };
-
-  // custom react select styles recurring
-  const customStyles = {
-    menuPortal: (base) => ({
-      ...base,
-      zIndex: 9999, // Ensure the dropdown is rendered above other elements
-    }),
-    menu: (provided, state) => ({
-      ...provided,
-      marginTop: state.selectProps.menuPlacement === "top" ? "0" : null,
-      marginBottom: state.selectProps.menuPlacement === "bottom" ? "0" : null,
-    }),
   };
 
   useEffect(() => {
@@ -1451,7 +1403,11 @@ const MeetingDetails = ({
                                       selected={data.selectedOption}
                                       value={data.dateForView}
                                       format={"DD/MM/YYYY"}
-                                      minDate={moment().toDate()}
+                                      minDate={
+                                        index > 0
+                                          ? rows[index - 1].selectedOption
+                                          : moment().toDate()
+                                      }
                                       placeholder="DD/MM/YYYY"
                                       render={
                                         <InputIcon
@@ -1461,7 +1417,7 @@ const MeetingDetails = ({
                                       }
                                       editable={false}
                                       className="datePickerTodoCreate2"
-                                      onOpenPickNewDate={true}
+                                      onOpenPickNewDate={false}
                                       inputMode=""
                                       calendar={calendarValue}
                                       locale={localValue}
@@ -1515,11 +1471,7 @@ const MeetingDetails = ({
                                       calendar={calendarValue}
                                       locale={localValue}
                                       format="hh:mm A"
-                                      selected={
-                                        currentMeeting === 0
-                                          ? data.startDate
-                                          : rows.startDate
-                                      }
+                                      selected={data.startDate}
                                       value={data.startTime}
                                       plugins={[<TimePicker hideSeconds />]}
                                       onChange={(date) =>
