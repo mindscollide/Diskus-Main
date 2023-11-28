@@ -15,6 +15,9 @@ const UnsavedMinutes = ({
   setMinutes,
   setSceduleMeeting,
   setFileAttachments,
+  useCase,
+  setactionsPage,
+  setMeetingMaterial,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -26,21 +29,35 @@ const UnsavedMinutes = ({
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleYesFunctionality = () => {
-    setFileAttachments([]);
-    setMinutes(false);
-    setSceduleMeeting(false);
-    dispatch(showUnsaveMinutesFileUpload(false));
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    if (useCase) {
+      if (useCase === 1) {
+        // Pervious Button
+        setMinutes(false);
+        setMeetingMaterial(true);
+      } else if (useCase === 2) {
+        // Next Tab
+        setactionsPage(true);
+        setMinutes(false);
+      } else if (useCase === 0) {
+        // Cancel Button
+        setFileAttachments([]);
+        setMinutes(false);
+        setSceduleMeeting(false);
+        dispatch(showUnsaveMinutesFileUpload(false));
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      }
+    }
   };
   return (
     <section>
@@ -92,6 +109,7 @@ const UnsavedMinutes = ({
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}
+                  onClick={() => dispatch(showUnsaveMinutesFileUpload(false))}
                 />
                 <Button
                   text={t("Yes")}
