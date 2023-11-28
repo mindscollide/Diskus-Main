@@ -772,6 +772,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                           components={animatedComponents}
                           isMulti
                           onChange={handleSelectValue}
+                          isSearchable={false}
                         />
                         <Button
                           text={t("ADD")}

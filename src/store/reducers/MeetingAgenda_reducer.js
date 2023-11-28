@@ -16,6 +16,8 @@ const initialState = {
   SaveDocumentsResponse: null,
   SaveUpdateAgendaData: [],
   GetCurrentAgendaDetails: [],
+  PreviousTabAgenda: false,
+  NextTabAgenda: false,
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -345,9 +347,32 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         GetCurrentAgendaDetails: action.response,
       };
     }
+
+    case actions.SET_LOADER_FALSE_AGENDA: {
+      return {
+        ...state,
+        Loading: action.response,
+      };
+    }
+
+    case actions.PREVIOUS_TAB_AGENDA: {
+      return {
+        ...state,
+        PreviousTabAgenda: action.response,
+      };
+    }
+
+    case actions.NEXT_TAB_AGENDA: {
+      return {
+        ...state,
+        NextTabAgenda: action.response,
+      };
+    }
+
     case actions.CLEAR_MEETING_AGENDA_REDUCER: {
       return {
         ...state,
+        Loading: false,
         ResponseMessage: "",
         MeetingAgendaVotingDetailsData: [],
         VotingResultDisplayData: [],
@@ -362,6 +387,8 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         SaveDocumentsResponse: null,
         SaveUpdateAgendaData: [],
         GetCurrentAgendaDetails: [],
+        PreviousTabAgenda: false,
+        NextTabAgenda: false,
       };
     }
 

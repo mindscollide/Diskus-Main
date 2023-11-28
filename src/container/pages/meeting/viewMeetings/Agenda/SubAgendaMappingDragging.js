@@ -559,12 +559,10 @@ const SubAgendaMappingDragging = ({
                                                       }
                                                     >
                                                       {
-                                                        subAgendaData
-                                                          .userProfilePicture
-                                                          .orignalProfilePictureName
+                                                        subAgendaData?.presenterName
                                                       }
                                                     </p>
-                                                    <span
+                                                    {/* <span
                                                       className={
                                                         styles[
                                                           "agendaCreationTime"
@@ -572,11 +570,9 @@ const SubAgendaMappingDragging = ({
                                                       }
                                                     >
                                                       {
-                                                        subAgendaData
-                                                          .userProfilePicture
-                                                          .orignalProfilePictureName
+                                                        subAgendaData?.presenterName
                                                       }
-                                                    </span>
+                                                    </span> */}
                                                   </div>
                                                 </Col>
                                               </Row>
@@ -593,7 +589,7 @@ const SubAgendaMappingDragging = ({
                                                   </span>
                                                 </Col>
                                               </Row>
-                                              <Row className="mt-3">
+                                              {/* <Row className="mt-3">
                                                 <Col lg={12} md={12} sm={12}>
                                                   <span
                                                     className={
@@ -603,10 +599,10 @@ const SubAgendaMappingDragging = ({
                                                     {t("Attachments")}
                                                   </span>
                                                 </Col>
-                                              </Row>
+                                              </Row> */}
                                               <Row className="mt-3">
                                                 <Col lg={6} md={6} sm={6}>
-                                                  <Radio.Group
+                                                  {/* <Radio.Group
                                                     value={
                                                       subAgendaData.subSelectRadio
                                                     }
@@ -653,7 +649,37 @@ const SubAgendaMappingDragging = ({
                                                         )}
                                                       </span>
                                                     </Radio>
-                                                  </Radio.Group>
+                                                  </Radio.Group> */}
+                                                  {subAgendaData.subSelectRadio ===
+                                                  1 ? (
+                                                    <span
+                                                      className={
+                                                        styles["Agenda_Heading"]
+                                                      }
+                                                    >
+                                                      {t("Documents")}
+                                                    </span>
+                                                  ) : subAgendaData.subSelectRadio ===
+                                                    2 ? (
+                                                    <span
+                                                      className={
+                                                        styles["Agenda_Heading"]
+                                                      }
+                                                    >
+                                                      {t("URL")}
+                                                    </span>
+                                                  ) : subAgendaData.subSelectRadio ===
+                                                    3 ? (
+                                                    <span
+                                                      className={
+                                                        styles["Agenda_Heading"]
+                                                      }
+                                                    >
+                                                      {t(
+                                                        "Request-from-contributor"
+                                                      )}
+                                                    </span>
+                                                  ) : null}
                                                 </Col>
                                               </Row>
                                               <Droppable
@@ -667,9 +693,10 @@ const SubAgendaMappingDragging = ({
                                                   >
                                                     {subAgendaData.subSelectRadio ===
                                                       1 &&
-                                                      Object.keys(
-                                                        subAgendaData.subfiles
-                                                      ).length > 0 && (
+                                                    Object.keys(
+                                                      subAgendaData.subfiles
+                                                    ).length > 0 ? (
+                                                      <>
                                                         <Row>
                                                           {subAgendaData.subfiles.map(
                                                             (
@@ -716,7 +743,22 @@ const SubAgendaMappingDragging = ({
                                                             )
                                                           )}
                                                         </Row>
-                                                      )}
+                                                      </>
+                                                    ) : subAgendaData.subSelectRadio ===
+                                                        1 &&
+                                                      Object.keys(
+                                                        subAgendaData.subfiles
+                                                      ).length === 0 ? (
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "NoFiles_Heading"
+                                                          ]
+                                                        }
+                                                      >
+                                                        No Files Attached
+                                                      </span>
+                                                    ) : null}
 
                                                     {subAgendaData.subSelectRadio ===
                                                       2 && (

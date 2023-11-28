@@ -514,6 +514,7 @@ const CreateTask = ({
                           // components={animatedComponents}
                           // isMulti
                           onChange={handleSelectMemberValue}
+                          isSearchable={false}
                         />
                         <Row>
                           <Col>

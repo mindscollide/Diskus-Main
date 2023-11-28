@@ -1,55 +1,34 @@
 import React from "react";
-import styles from "./CancelAgenda.module.css";
+import styles from "./PreviousAgenda.module.css";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import {
-  showCancelModalAgenda,
-  searchNewUserMeeting,
-} from "../../../../../../store/actions/NewMeetingActions";
+import { useDispatch, useSelector } from "react-redux";
+import { showCancelModalAgenda } from "../../../../../../store/actions/NewMeetingActions";
+import { previousTabAgenda } from "../../../../../../store/actions/MeetingAgenda_action";
 import { Col, Row } from "react-bootstrap";
 import { Button, Modal } from "../../../../../../components/elements";
 
-const CancelAgenda = ({ setSceduleMeeting }) => {
+const PreviousAgenda = ({ setAgenda, setParticipants }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
-
-  let currentView = localStorage.getItem("MeetingCurrentView");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
-  let userID = localStorage.getItem("userID");
-
+  const { MeetingAgendaReducer } = useSelector((state) => state);
   const handleNOFunctionality = () => {
-    dispatch(showCancelModalAgenda(false));
+    dispatch(previousTabAgenda(false));
   };
 
   const handleYesFunctionality = async () => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setSceduleMeeting(false);
-    localStorage.setItem("folderDataRoomMeeting", 0);
+    setAgenda(false);
+    setParticipants(true);
+    dispatch(previousTabAgenda(false));
   };
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.cancelAgenda}
-        setShow={dispatch(showCancelModalAgenda)}
+        show={MeetingAgendaReducer.PreviousTabAgenda}
+        setShow={dispatch(previousTabAgenda)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showCancelModalAgenda(false));
+          dispatch(previousTabAgenda(false));
         }}
         ModalBody={
           <>
@@ -107,4 +86,4 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
   );
 };
 
-export default CancelAgenda;
+export default PreviousAgenda;

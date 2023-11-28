@@ -1,6 +1,7 @@
 import * as actions from "../action_types";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
+import { UpdateOrganizersMeeting } from "./MeetingOrganizers_action";
 import {
   getAgendaVotingDetails,
   getAllVotingResultDisplay,
@@ -1148,7 +1149,20 @@ const addUpdateAdvanceMeetingAgenda_fail = (message) => {
     message: message,
   };
 };
-const AddUpdateAdvanceMeetingAgenda = (Data, navigate, t, currentMeeting) => {
+const AddUpdateAdvanceMeetingAgenda = (
+  Data,
+  navigate,
+  t,
+  currentMeeting,
+  flag,
+  publishMeetingData,
+  setEdiorRole,
+  setAdvanceMeetingModalID,
+  setDataroomMapFolderId,
+  setSceduleMeeting,
+  setPublishState,
+  setCalendarViewModal
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let getMeetingData = {
     MeetingID: currentMeeting,
@@ -1169,7 +1183,22 @@ const AddUpdateAdvanceMeetingAgenda = (Data, navigate, t, currentMeeting) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAgendaVotingDetails(Data, navigate, t));
+          dispatch(
+            AddUpdateAdvanceMeetingAgenda(
+              Data,
+              navigate,
+              t,
+              currentMeeting,
+              flag,
+              publishMeetingData,
+              setEdiorRole,
+              setAdvanceMeetingModalID,
+              setDataroomMapFolderId,
+              setSceduleMeeting,
+              setPublishState,
+              setCalendarViewModal
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1261,9 +1290,31 @@ const AddUpdateAdvanceMeetingAgenda = (Data, navigate, t, currentMeeting) => {
               await dispatch(
                 SaveMeetingDocuments(newUpdateFileList, navigate, t)
               );
-              await dispatch(
-                GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t)
-              );
+              if (flag === 1) {
+                await dispatch(
+                  GetAdvanceMeetingAgendabyMeetingID(
+                    getMeetingData,
+                    navigate,
+                    t
+                  )
+                );
+              } else if (flag === 2) {
+                dispatch(
+                  UpdateOrganizersMeeting(
+                    navigate,
+                    t,
+                    5,
+                    publishMeetingData,
+                    setEdiorRole,
+                    setAdvanceMeetingModalID,
+                    setDataroomMapFolderId,
+                    setSceduleMeeting,
+                    setPublishState,
+                    setCalendarViewModal
+                  )
+                );
+                setSceduleMeeting(false);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1437,6 +1488,26 @@ const GetCurrentAgendaDetails = (response) => {
   };
 };
 
+const setLoaderFalse = () => {
+  return {
+    type: actions.SET_LOADER_FALSE_AGENDA,
+  };
+};
+
+const previousTabAgenda = (response) => {
+  return {
+    type: actions.PREVIOUS_TAB_AGENDA,
+    response: response,
+  };
+};
+
+const nextTabAgenda = (response) => {
+  return {
+    type: actions.NEXT_TAB_AGENDA,
+    response: response,
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -1461,4 +1532,7 @@ export {
   getAllVotingResultDisplay_success,
   getAdvanceMeetingAgendabyMeetingID_fail,
   clearAgendaReducerState,
+  setLoaderFalse,
+  previousTabAgenda,
+  nextTabAgenda,
 };

@@ -8,6 +8,7 @@ import {
   getAllMeetingOrganizers,
   sendNotification,
 } from "../../commen/apis/Api_config";
+import { setLoaderFalse } from "./MeetingAgenda_action";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import {
   GetAllMeetingDetailsApiFunc,
@@ -316,6 +317,7 @@ const UpdateOrganizersMeeting = (
                     t("Meeting-started-successfully")
                   )
                 );
+                dispatch(setLoaderFalse(false));
                 if (route === 3) {
                   let requestDataForMeetingDetails = {
                     MeetingID: Number(Data.MeetingID),
@@ -394,6 +396,7 @@ const UpdateOrganizersMeeting = (
               dispatch(
                 updateOrganizerMeetingStatus_fail(t("Record-not-updated"))
               );
+              dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -404,6 +407,7 @@ const UpdateOrganizersMeeting = (
               dispatch(
                 updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
               );
+              dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -416,6 +420,7 @@ const UpdateOrganizersMeeting = (
                   t("Add-meeting-agenda-to-publish")
                 )
               );
+              dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -428,6 +433,7 @@ const UpdateOrganizersMeeting = (
                   t("Add-meeting-organizers-to-publish")
                 )
               );
+              dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -440,24 +446,29 @@ const UpdateOrganizersMeeting = (
                   t("Add-meeting-participants-to-publish")
                 )
               );
+              dispatch(setLoaderFalse(false));
             } else {
               dispatch(
                 updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
               );
+              dispatch(setLoaderFalse(false));
             }
           } else {
             dispatch(
               updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
             );
+            dispatch(setLoaderFalse(false));
           }
         } else {
           dispatch(
             updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
           );
+          dispatch(setLoaderFalse(false));
         }
       })
       .catch((response) => {
         dispatch(updateOrganizerMeetingStatus_fail(t("Something-went-wrong")));
+        dispatch(setLoaderFalse(false));
       });
   };
 };

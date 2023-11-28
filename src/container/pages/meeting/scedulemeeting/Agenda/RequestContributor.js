@@ -153,6 +153,7 @@ const RequestContributor = ({
                 ? true
                 : false
             }
+            isSearchable={false}
           />
           {/* <TextField
             applyClass={"AgendaTextField"}
