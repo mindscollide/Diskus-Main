@@ -42,7 +42,7 @@ const Attendence = ({
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
-
+  const [useCase, setUseCase] = useState(0);
   //reducer call from Attendance_Reducers
   const { attendanceMeetingReducer, NewMeetingreducer } = useSelector(
     (state) => state
@@ -311,8 +311,17 @@ const Attendence = ({
   };
 
   const navigatePrevHandler = () => {
-    setPolls(true);
-    setAttendance(false);
+    let ReducerAttendeceData = deepEqual(
+      attendanceMeetingReducer.attendanceMeetings,
+      attendenceRows
+    );
+    if (ReducerAttendeceData) {
+      setPolls(true);
+      setAttendance(false);
+    } else {
+      dispatch(showAttendanceConfirmationModal(true));
+      setUseCase(1);
+    }
   };
 
   const handleCancelBtn = () => {
@@ -320,12 +329,6 @@ const Attendence = ({
       attendanceMeetingReducer.attendanceMeetings,
       attendenceRows
     );
-
-    console.log(
-      ReducerAttendeceData,
-      "ReducerAttendeceDataReducerAttendeceData"
-    );
-
     if (ReducerAttendeceData) {
       setViewAdvanceMeetingModal(false);
       setAttendance(false);
@@ -346,6 +349,7 @@ const Attendence = ({
       setAdvanceMeetingModalID(null);
     } else {
       dispatch(showAttendanceConfirmationModal(true));
+      setUseCase(2);
     }
   };
 
@@ -413,6 +417,8 @@ const Attendence = ({
         <ModalCancelAttendance
           setAttendance={setAttendance}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+          useCase={useCase}
+          setPolls={setPolls}
         />
       )}
     </>

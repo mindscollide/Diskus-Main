@@ -492,7 +492,6 @@ const SaveMeetingDetialsNewApiFunction = (
                   MeetingTitle: meetingDetails.MeetingTitle,
                   IsUpdateFlow: false,
                 };
-                console.log(MappedData, "MappedDataMappedData");
                 dispatch(
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
@@ -575,7 +574,6 @@ const SaveMeetingDetialsNewApiFunction = (
                   MeetingTitle: meetingDetails.MeetingTitle,
                   IsUpdateFlow: true,
                 };
-                console.log(MappedData, "MappedDataMappedData");
                 dispatch(
                   CreateUpdateMeetingDataRoomMapeedApiFunc(
                     navigate,
@@ -1524,15 +1522,12 @@ const SaveparticipantsApi = (Data, navigate, t, currentMeeting) => {
 };
 
 const getAllAgendaContributor_init = () => {
-  console.log("NewMeetingreducerNewMeetingreducer");
   return {
     type: actions.GET_ALL_AGENDACONTRIBUTOR_INIT,
   };
 };
 
 const getAllAgendaContributor_success = (response, message) => {
-  console.log("NewMeetingreducerNewMeetingreducer");
-
   return {
     type: actions.GET_ALL_AGENDACONTRIBUTOR_SUCCESS,
     response,
@@ -1731,7 +1726,7 @@ const showAllMeetingParticipantsFailed = (message) => {
 const GetAllSavedparticipantsAPI = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
-    // dispatch(showAllMeetingParticipantsInit());
+    dispatch(showAllMeetingParticipantsInit());
     let form = new FormData();
     form.append("RequestMethod", getAllSavedParticipants.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -1927,7 +1922,6 @@ const GetAllMeetingDetailsApiFunc = (
   setDataroomMapFolderId,
   viewValue
 ) => {
-  console.log(viewValue, "viewValueviewValueviewValue");
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     await dispatch(showGetAllMeetingDetialsInit());
@@ -2031,7 +2025,6 @@ const GetAllMeetingDetailsApiFunc = (
         }
       })
       .catch((response) => {
-        console.log(response, "responseresponseresponse");
         dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
       });
   };
@@ -2513,7 +2506,6 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
         }
       })
       .catch((error) => {
-        console.error("Error occurred in API call:", error);
         dispatch(showPrposedMeetingDateFailed(t("Something-went-wrong")));
       });
   };
@@ -3211,7 +3203,6 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
                     "DataRoom_DataRoomManager_GetAllGeneralMiuteDocumentsForMeeting_02".toLowerCase()
                   )
               ) {
-                console.log("LoadingLoadingLoading");
                 dispatch(
                   showRetriveGeneralMinutesDocsMeetingFailed(
                     t("No-data-available")

@@ -260,11 +260,33 @@ const MeetingDetails = ({
         .toString()
         .padStart(2, "0")}${"00"}`;
       const updatedRows = [...rows];
-      updatedRows[index].startDate = formattedTime;
-      updatedRows[index].startTime = newDate;
-      console.log("changeDateStartHandler", updatedRows);
-      setRows(updatedRows);
-      // You can use 'formattedTime' as needed.
+      if (
+        index > 0 &&
+        updatedRows[index - 1].selectedOption ===
+          updatedRows[index].selectedOption
+      ) {
+        if (formattedTime < updatedRows[index - 1].endDate) {
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected-start-time-should-not-be-less-than-the-previous-endTime"
+            ),
+          });
+          return;
+        } else {
+          updatedRows[index].startDate = formattedTime;
+          updatedRows[index].startTime = newDate;
+          console.log("changeDateStartHandler", updatedRows);
+          setRows(updatedRows);
+          // You can use 'formattedTime' as needed.
+        }
+      } else {
+        updatedRows[index].startDate = formattedTime;
+        updatedRows[index].startTime = newDate;
+        console.log("changeDateStartHandler", updatedRows);
+        setRows(updatedRows);
+        // You can use 'formattedTime' as needed.
+      }
     } else {
       console.error("Invalid date and time object:", date);
     }
@@ -282,9 +304,39 @@ const MeetingDetails = ({
         .padStart(2, "0")}${"00"}`;
 
       const updatedRows = [...rows];
-      updatedRows[index].endDate = formattedTime;
-      updatedRows[index].endTime = newDate;
-      setRows(updatedRows);
+      if (
+        index > 0 &&
+        updatedRows[index - 1].selectedOption ===
+          updatedRows[index].selectedOption
+      ) {
+        if (formattedTime <= updatedRows[index].startDate) {
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected-end-time-should-not-be-less-than-the-previous-one"
+            ),
+          });
+          return;
+        } else {
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
+          setRows(updatedRows);
+        }
+      } else {
+        if (formattedTime <= updatedRows[index].startDate) {
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected-end-time-should-not-be-less-than-the-previous-one"
+            ),
+          });
+          return;
+        } else {
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
+          setRows(updatedRows);
+        }
+      }
     } else {
       console.error("Invalid date and time object:", date);
     }
@@ -297,9 +349,13 @@ const MeetingDetails = ({
     let DateDate = new DateObject(date).format("YYYYMMDD");
     setMeetingDate(meetingDateValueFormat);
     const updatedRows = [...rows];
-    updatedRows[index].selectedOption = DateDate;
-    updatedRows[index].dateForView = newDate;
-    setRows(updatedRows);
+    if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
+      return;
+    } else {
+      updatedRows[index].selectedOption = DateDate;
+      updatedRows[index].dateForView = newDate;
+      setRows(updatedRows);
+    }
   };
 
   const addRow = () => {

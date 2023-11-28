@@ -17,6 +17,7 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   GetAdvanceMeetingAgendabyMeetingID,
+  clearAgendaReducerState,
   clearResponseMessage,
   getAdvanceMeetingAgendabyMeetingID_fail,
 } from "../../../../../store/actions/MeetingAgenda_action";
@@ -114,7 +115,8 @@ const Agenda = ({
     };
     dispatch(GetAdvanceMeetingAgendabyMeetingID(Data, navigate, t));
     return () => {
-      dispatch(cleareAllState());
+      dispatch(clearAgendaReducerState());
+      setRows([]);
     };
   }, []);
   //   updatedRows.push(newMainAgenda);

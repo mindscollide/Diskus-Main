@@ -64,7 +64,7 @@ const initialState = {
   getAllSavedparticipants: [],
   sendNotificationOrganizerModal: false,
   getAllMeetingDetails: null,
-  getPollsMeetingID: [],
+  getPollsMeetingID: null,
   getMeetingusers: [],
   setMeetingProposeDate: [],
   getAllProposedDates: [],
@@ -656,10 +656,12 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.GET_ALL_SAVED_PARTICIPATNS_INIT: {
+      console.log("loader check");
+
       return {
         ...state,
         Loading: true,
-        LoadingParticipants: true,
+        // LoadingParticipants: true,
       };
     }
 
@@ -668,7 +670,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        LoadingParticipants: false,
+        // LoadingParticipants: false,
 
         getAllSavedparticipants: action.response,
         ResponseMessage: action.message,
@@ -680,7 +682,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        LoadingParticipants: false,
+        // LoadingParticipants: false,
         getAllSavedparticipants: [],
         ResponseMessage: action.message,
       };
@@ -791,6 +793,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        getPollsMeetingID: null,
         ResponseMessage: action.message,
       };
     }
@@ -1801,7 +1804,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         getAllSavedparticipants: [],
         sendNotificationOrganizerModal: false,
         getAllMeetingDetails: null,
-        getPollsMeetingID: [],
+        getPollsMeetingID: null,
         getMeetingusers: [],
         setMeetingProposeDate: [],
         getAllProposedDates: [],

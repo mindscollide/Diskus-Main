@@ -1126,6 +1126,9 @@ const NewMeeting = () => {
       ) : viewProposeDatePoll ? (
         <ViewParticipantsDates
           setViewProposeDatePoll={setViewProposeDatePoll}
+          setCurrentMeetingID={setCurrentMeetingID}
+          setSceduleMeeting={setViewProposeDatePoll}
+          setDataroomMapFolderId={setDataroomMapFolderId}
         />
       ) : viewAdvanceMeetingModal ? (
         <ViewMeetingModal

@@ -345,6 +345,25 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         GetCurrentAgendaDetails: action.response,
       };
     }
+    case actions.CLEAR_MEETING_AGENDA_REDUCER: {
+      return {
+        ...state,
+        ResponseMessage: "",
+        MeetingAgendaVotingDetailsData: [],
+        VotingResultDisplayData: [],
+        SaveAgendaVotingData: [],
+        AgendaVotingInfoData: [],
+        CastAgendaVoteData: [],
+        ViewAgendaVotingResultData: null,
+        GetAdvanceMeetingAgendabyMeetingIDData: [],
+        MeetingAgendaFolderID: 0,
+        UploadDocumentsResponse: null,
+        SaveFilesResponse: null,
+        SaveDocumentsResponse: null,
+        SaveUpdateAgendaData: [],
+        GetCurrentAgendaDetails: [],
+      };
+    }
 
     default:
       return { ...state };

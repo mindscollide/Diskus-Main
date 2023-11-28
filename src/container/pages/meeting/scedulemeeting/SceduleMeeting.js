@@ -517,6 +517,7 @@ const SceduleMeeting = ({
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
                 setAttendance={setAttendance}
+                setPolls={setPolls}
                 setSceduleMeeting={setSceduleMeeting}
                 setDataroomMapFolderId={setDataroomMapFolderId}
                 setEdiorRole={setEdiorRole}

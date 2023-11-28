@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 
 const ModalCancelAttendance = ({
   setAttendance,
-  setViewAdvanceMeetingModal,
+  setSceduleMeeting,
   useCase,
   setPolls,
 }) => {
@@ -38,7 +38,7 @@ const ModalCancelAttendance = ({
         setPolls(true);
       } else {
         setAttendance(false);
-        setViewAdvanceMeetingModal(false);
+        setSceduleMeeting(false);
         let searchData = {
           Date: "",
           Title: "",
