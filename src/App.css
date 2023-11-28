@@ -5810,6 +5810,55 @@ abbr[title] {
 }
 
 /* timePicker */
+.containerResolutionTimePicker {
+  width: 100% !important;
+}
+
+.containerResolutionTimePicker .rmdp-input {
+  height: 39px !important;
+  width: 100% !important;
+}
+
+.containerResolutionTimePicker .rmdp-time-picker.bottom {
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  box-shadow: 0px 0px 5px #ccc;
+  width: 188px !important;
+  padding: 0px 7px;
+}
+.containerResolutionTimePicker i.rmdp-arrow {
+  border: solid #0074d9 !important;
+  border-width: 0 2px 2px 0 !important;
+  display: inline-block !important;
+  height: 3px !important;
+  margin-top: 5px !important;
+  padding: 4px !important;
+  width: 3px !important;
+}
+.containerResolutionTimePicker input[type="text"] {
+  color: #5f78d6 !important;
+  width: 100% !important;
+  height: 18px;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+  padding: 10px !important;
+}
+
+.containerResolutionTimePicker
+  input[type="text"]:is(:focus, :focus-visible, :active, :visited) {
+  outline: none !important;
+}
+
+.containerResolutionTimePicker .rmdp-time-picker div .rmdp-am {
+  color: #5f78d6 !important;
+  width: 42px !important;
+  height: 12px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+  padding: 0px !important;
+}
 
 .containerClassTimePicker .rmdp-input {
   height: 39px !important;
@@ -6200,6 +6249,7 @@ input[type="time"]::-webkit-clear-button {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 0px 5px !important;
+  outline: none !important;
 }
 
 .input-with-icon:focus,
