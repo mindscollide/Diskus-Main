@@ -181,22 +181,7 @@ const MeetingDetails = ({
     }
   }, [currentLanguage]);
 
-  const apiCallsForComponentMound = async () => {
-    try {
-      // Meeting Type Drop Down API
-      await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
-      // Reminder Frequency Drop Down API
-      await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-      // Recurring Drop Down API
-      await dispatch(GetAllMeetingRecurringApiNew(navigate, t));
-      
-    } catch (error) {
-      console.error("An error occurred during API calls:", error);
-    }
-  };
   useEffect(() => {
-    // apiCallsForComponentMound();
-
     //Calling getAll Meeting Details By Meeting ID
     return () => {
       setMeetingDetails({
@@ -276,7 +261,8 @@ const MeetingDetails = ({
         updatedRows[index - 1].selectedOption ===
           updatedRows[index].selectedOption
       ) {
-        if (formattedTime < updatedRows[index - 1].endDate) {
+        if (formattedTime <= updatedRows[index - 1].endDate) {
+          console.log("handleStartDateChange");
           setOpen({
             flag: true,
             message: t(
@@ -285,15 +271,49 @@ const MeetingDetails = ({
           });
           return;
         } else {
+          if (
+            updatedRows[index].endDate !== "" &&
+            formattedTime >= updatedRows[index].endDate
+          ) {
+            console.log("handleStartDateChange");
+            setOpen({
+              flag: true,
+              message: t(
+                "Selected-start-time-should-not-be-greater-than-the-endTime"
+              ),
+            });
+            return;
+          } else {
+            console.log("handleStartDateChange");
+            updatedRows[index].startDate = formattedTime;
+            updatedRows[index].startTime = newDate;
+            setRows(updatedRows);
+            // You can use 'formattedTime' as needed.
+          }
+          // You can use 'formattedTime' as needed.
+        }
+      } else {
+        console.log("handleStartDateChange");
+        if (
+          updatedRows[index].endDate !== "" &&
+          formattedTime >= updatedRows[index].endDate
+        ) {
+          console.log("handleStartDateChange");
+          setOpen({
+            flag: true,
+            message: t(
+              "Selected-start-time-should-not-be-greater-than-the-endTime"
+            ),
+          });
+          return;
+        } else {
+          console.log("handleStartDateChange");
           updatedRows[index].startDate = formattedTime;
           updatedRows[index].startTime = newDate;
           setRows(updatedRows);
           // You can use 'formattedTime' as needed.
         }
-      } else {
-        updatedRows[index].startDate = formattedTime;
-        updatedRows[index].startTime = newDate;
-        setRows(updatedRows);
+
         // You can use 'formattedTime' as needed.
       }
     } else {
@@ -318,7 +338,9 @@ const MeetingDetails = ({
         updatedRows[index - 1].selectedOption ===
           updatedRows[index].selectedOption
       ) {
+        console.log("handleStartDateChange");
         if (formattedTime <= updatedRows[index].startDate) {
+          console.log("handleStartDateChange");
           setOpen({
             flag: true,
             message: t(
@@ -327,20 +349,21 @@ const MeetingDetails = ({
           });
           return;
         } else {
+          console.log("handleStartDateChange");
           updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       } else {
         if (formattedTime <= updatedRows[index].startDate) {
+          console.log("handleStartDateChange");
           setOpen({
             flag: true,
-            message: t(
-              "Selected-end-time-should-not-be-less-than-the-previous-one"
-            ),
+            message: t("Selected-end-time-should-not-be-less-than-start-time"),
           });
           return;
         } else {
+          console.log("handleStartDateChange");
           updatedRows[index].endDate = formattedTime;
           updatedRows[index].endTime = newDate;
           setRows(updatedRows);
@@ -359,7 +382,10 @@ const MeetingDetails = ({
       let DateDate = new DateObject(date).format("YYYYMMDD");
       setMeetingDate(meetingDateValueFormat);
       const updatedRows = [...rows];
-      if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
+      if (
+        index > 0 &&
+        Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
+      ) {
         setOpen({
           flag: true,
           message: t("Selected-date-should-not-be-less-than-the-previous-one"),

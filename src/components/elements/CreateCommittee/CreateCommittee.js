@@ -34,6 +34,10 @@ import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Spin } from "antd";
 import { saveCommitteeDocumentsApi } from "../../../store/actions/Committee_actions";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../container/DataRoom/SearchFunctionality/option";
 const CreateCommittee = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
   const navigate = useNavigate();
@@ -1684,7 +1688,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                   }
                                                 >
                                                   <img
-                                                    src={pdfIcon}
+                                                    src={getIconSource(
+                                                      getFileExtension(
+                                                        data.DisplayAttachmentName
+                                                      )
+                                                    )}
+                                                    alt=""
                                                     height="10px"
                                                     width="10px"
                                                     className={
