@@ -373,6 +373,8 @@ const ModalOrganizor = ({ currentMeeting }) => {
 
   console.log("MeetingOrganizersReducer", MeetingOrganizersReducer);
 
+  console.log("dropdownDatadropdownData", dropdowndata);
+
   return (
     <section>
       <Modal
@@ -435,6 +437,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                       components={animatedComponents}
                       isMulti
                       options={dropdowndata}
+                      isSearchable={false}
                     />
                     <Button
                       text={t("ADD")}

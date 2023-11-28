@@ -617,6 +617,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                     isMulti
                     value={selectedsearch}
                     onChange={handleSelectValue}
+                    isSearchable={false}
                   />
                   <Button
                     text={t("ADD")}

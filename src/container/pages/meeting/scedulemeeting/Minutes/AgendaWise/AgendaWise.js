@@ -683,6 +683,7 @@ const AgendaWise = ({
                   label: agendaOptionvalue.label,
                 }}
                 onChange={handleAgendaSelect}
+                isSearchable={false}
               />
             </Col>
           </Row>

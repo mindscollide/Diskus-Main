@@ -1026,6 +1026,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                             label: agendaDetails.organizerUserName,
                           }}
                           classNamePrefix={"SelectOrganizersSelect_active"}
+                          isSearchable={false}
                         />
                       </Col>
                       <Row>
@@ -1062,6 +1063,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
                             value: agendaDetails.votingResultDisplayID,
                             label: agendaDetails.votingResultDisplay,
                           }}
+                          isSearchable={false}
                         />
                       </Col>
                       <Row>

@@ -391,7 +391,7 @@ const NewMeeting = () => {
           1
         )
       );
-      setViewFlag(true);
+      // setViewFlag(true);
     } else {
       setAdvanceMeetingModalID(id);
       setViewAdvanceMeetingModal(true);
@@ -408,7 +408,15 @@ const NewMeeting = () => {
 
     if (isQuick) {
       await dispatch(
-        ViewMeeting(navigate, Data, t, setViewFlag, setEditFlag, 2)
+        ViewMeeting(
+          navigate,
+          Data,
+          t,
+          setViewFlag,
+          setEditFlag,
+          setSceduleMeeting,
+          2
+        )
       );
     } else if (isQuick === false) {
       let Data = {

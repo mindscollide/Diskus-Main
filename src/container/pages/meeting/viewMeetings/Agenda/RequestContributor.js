@@ -38,17 +38,17 @@ const RequestContributor = ({ data, index, setRows, rows }) => {
           <span className={styles["ContributorTitle_Heading"]}>
             <div className={styles["agendaCreationDetail"]}>
               <img
-                src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                src={`data:image/jpeg;base64,${data?.contributor?.displayProfilePictureName}`}
                 className={styles["Image"]}
                 alt=""
                 draggable={false}
               />
               <p className={styles["agendaCreater"]}>
-                {data.userProfilePicture.orignalProfilePictureName}
+                {data?.contributor?.contributorName}
               </p>
-              <span className={styles["agendaCreationTime"]}>
-                {data.userProfilePicture.orignalProfilePictureName}
-              </span>
+              {/* <span className={styles["agendaCreationTime"]}>
+                {data?.contributor?.contributorName}
+              </span> */}
             </div>
           </span>
         </Col>
