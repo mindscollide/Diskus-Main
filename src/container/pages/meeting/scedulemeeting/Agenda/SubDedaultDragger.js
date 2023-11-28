@@ -81,7 +81,7 @@ const SubDedaultDragger = ({
             displayAttachmentName: data.file.originFileObj.name,
             originalAttachmentName: data.file.originFileObj.name,
             agendaAttachmentsID: getRandomUniqueNumber(),
-            fK_MAID: 0,
+            fK_MAID: Number(newRows[index].subAgenda[subIndex].subAgendaID),
           };
           setFileForSend([...fileForSend, data.file.originFileObj]);
           newRows[index].subAgenda[subIndex].subfiles.push(file);
@@ -117,7 +117,7 @@ const SubDedaultDragger = ({
             displayAttachmentName: data.file.originFileObj.name,
             originalAttachmentName: data.file.originFileObj.name,
             agendaAttachmentsID: getRandomUniqueNumber(),
-            fK_MAID: 0,
+            fK_MAID: Number(newRows[index].subAgenda[subIndex].subAgendaID),
           };
           newRows[index].subAgenda[subIndex].subfiles.push(file);
           setFileForSend([...fileForSend, data.file.originFileObj]);

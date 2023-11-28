@@ -53,17 +53,17 @@ const SubRequestContributor = ({
           <span className={styles["ContributorTitle_Heading"]}>
             <div className={styles["agendaCreationDetail"]}>
               <img
-                src={`data:image/jpeg;base64,${subAgendaData.userProfilePicture.displayProfilePictureName}`}
+                src={`data:image/jpeg;base64,${subAgendaData?.contributor?.displayProfilePictureName}`}
                 className={styles["Image"]}
                 alt=""
                 draggable={false}
               />
               <p className={styles["agendaCreater"]}>
-                {subAgendaData.userProfilePicture.orignalProfilePictureName}
+                {subAgendaData?.contributor?.displayProfilePictureName}
               </p>
-              <span className={styles["agendaCreationTime"]}>
-                {subAgendaData.userProfilePicture.orignalProfilePictureName}
-              </span>
+              {/* <span className={styles["agendaCreationTime"]}>
+                {subAgendaData?.contributor?.displayProfilePictureName}
+              </span> */}
             </div>
             .
           </span>

@@ -795,6 +795,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                           options={optionsIndividualOpenCloseVoting}
                           onChange={dropDownSelectOrganizers}
                           classNamePrefix={"SelectOrganizersSelect_active"}
+                          isSearchable={false}
                         />
                       </Col>
                       <Row>
@@ -827,6 +828,7 @@ const VoteModal = ({ setenableVotingPage }) => {
                           options={options}
                           classNamePrefix={"SelectOptions_drop_active"}
                           onChange={dropDownSelectOptions}
+                          isSearchable={false}
                         />
                       </Col>
                       <Row>
