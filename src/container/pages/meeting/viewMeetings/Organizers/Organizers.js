@@ -364,12 +364,10 @@ const Organizers = ({
 
   useEffect(() => {
     if (
-      MeetingOrganizersReducer.ResponseMessage !== "" &&
-      MeetingOrganizersReducer.ResponseMessage !== t("No-record-found") &&
-      MeetingOrganizersReducer.ResponseMessage !== t("No-records-found") &&
-      MeetingOrganizersReducer.ResponseMessage !== t("Record-found") &&
-      MeetingOrganizersReducer.ResponseMessage !==
-        t("Organizers-saved-successfully")
+      MeetingOrganizersReducer.ResponseMessage !== "" ||
+      MeetingOrganizersReducer.ResponseMessage !== t("No-record-found") ||
+      MeetingOrganizersReducer.ResponseMessage !== t("No-records-found") ||
+      MeetingOrganizersReducer.ResponseMessage !== t("Record-found")
     ) {
       setOpen({
         ...open,

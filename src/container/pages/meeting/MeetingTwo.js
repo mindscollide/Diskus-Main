@@ -86,8 +86,9 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   const { talkStateData } = useSelector((state) => state);
-  const { searchMeetings, endForAllMeeting, ResponseMessage, endMeetingModal } =
-    useSelector((state) => state.NewMeetingreducer);
+  const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
+    (state) => state.NewMeetingreducer
+  );
 
   // const searchMeetings = useSelector(
   //   (state) => state.NewMeetingreducer.searchMeetings
@@ -98,9 +99,9 @@ const NewMeeting = () => {
   // const endMeetingModal = useSelector(
   //   (state) => state.NewMeetingreducer.endMeetingModal
   // );
-  // const ResponseMessage = useSelector(
-  //   (state) => state.NewMeetingreducer.ResponseMessage
-  // );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
@@ -1066,7 +1067,8 @@ const NewMeeting = () => {
       ResponseMessages !== "" &&
       ResponseMessages !== undefined &&
       ResponseMessages !== t("Record-found") &&
-      ResponseMessages !== t("No-records-found")
+      ResponseMessages !== t("No-records-found") &&
+      ResponseMessages !== t("No-record-found")
     ) {
       setOpen({
         message: ResponseMessages,
@@ -1079,16 +1081,19 @@ const NewMeeting = () => {
         });
         dispatch(clearResponseMessage(""));
       }, 4000);
+    } else {
     }
   }, [ResponseMessages]);
 
   useEffect(() => {
     if (
       ResponseMessage !== "" &&
-      ResponseMessage !== undefined &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== t("Record-found") &&
-      ResponseMessage !== t("No-records-found")
+      ResponseMessage !== t("List-updated-successfully")
     ) {
+      console.log("ResponseMessageResponseMessage", ResponseMessage);
       setOpen({
         message: ResponseMessage,
         open: true,
