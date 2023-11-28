@@ -421,7 +421,9 @@ const NewMeeting = () => {
           true,
           setCurrentMeetingID,
           setSceduleMeeting,
-          setDataroomMapFolderId
+          setDataroomMapFolderId,
+          0,
+          1
         )
       );
     } else {
