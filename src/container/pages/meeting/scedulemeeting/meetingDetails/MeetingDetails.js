@@ -189,12 +189,13 @@ const MeetingDetails = ({
       await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
       // Recurring Drop Down API
       await dispatch(GetAllMeetingRecurringApiNew(navigate, t));
+      
     } catch (error) {
       console.error("An error occurred during API calls:", error);
     }
   };
   useEffect(() => {
-    apiCallsForComponentMound();
+    // apiCallsForComponentMound();
 
     //Calling getAll Meeting Details By Meeting ID
     return () => {
