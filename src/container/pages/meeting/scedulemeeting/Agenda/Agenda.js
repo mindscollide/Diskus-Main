@@ -47,6 +47,12 @@ import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 import VotingPage from "./VotingPage/VotingPage";
 import CancelAgenda from "./CancelAgenda/CancelAgenda";
 import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
+import NextAgenda from "./NextAgenda/NextAgenda";
+import PreviousAgenda from "./PreviousAgenda/PreviousAgenda";
+import {
+  previousTabAgenda,
+  nextTabAgenda,
+} from "../../../../../store/actions/MeetingAgenda_action";
 
 const Agenda = ({
   setSceduleMeeting,
@@ -251,14 +257,21 @@ const Agenda = ({
   };
 
   const handleNextAgenda = () => {
-    setMeetingMaterial(true);
-    setAgenda(false);
-    // setsavedViewAgenda(true);
+    if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
+      dispatch(nextTabAgenda(true));
+    } else {
+      setMeetingMaterial(true);
+      setAgenda(false);
+    }
   };
 
   const handlePerviousAgenda = () => {
-    setAgenda(false);
-    setParticipants(true);
+    if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
+      dispatch(previousTabAgenda(true));
+    } else {
+      setAgenda(false);
+      setParticipants(true);
+    }
   };
 
   const EnableAgendaView = () => {
@@ -266,24 +279,24 @@ const Agenda = ({
     // setagendaViewPage(true);
     // dispatch(showCancelModalAgenda(true));
   };
-  const handlePublishClick = () => {
-    let Data = { MeetingID: currentMeeting, StatusID: 1 };
-    dispatch(
-      UpdateOrganizersMeeting(
-        navigate,
-        t,
-        5,
-        Data,
-        setEdiorRole,
-        setAdvanceMeetingModalID,
-        setDataroomMapFolderId,
-        setSceduleMeeting,
-        setPublishState,
-        setCalendarViewModal
-      )
-    );
-    // setSceduleMeeting(false);
-  };
+  // const handlePublishClick = () => {
+  //   let Data = { MeetingID: currentMeeting, StatusID: 1 };
+  //   dispatch(
+  //     UpdateOrganizersMeeting(
+  //       navigate,
+  //       t,
+  //       5,
+  //       Data,
+  //       setEdiorRole,
+  //       setAdvanceMeetingModalID,
+  //       setDataroomMapFolderId,
+  //       setSceduleMeeting,
+  //       setPublishState,
+  //       setCalendarViewModal
+  //     )
+  //   );
+  //   // setSceduleMeeting(false);
+  // };
   const handleCancelClick = async () => {
     if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
       dispatch(showCancelModalAgenda(true));
@@ -369,6 +382,7 @@ const Agenda = ({
         requestContributorURlName,
         subAgendarequestContributorUrlName,
         userProfilePicture,
+        contributor,
         ...rest
       } = data;
       for (const key in rest) {
@@ -380,7 +394,7 @@ const Agenda = ({
     }
   }
 
-  const saveAgendaData = async () => {
+  const saveAgendaData = async (flag) => {
     let isValid = true;
     let shouldResetFileForSend = true;
 
@@ -673,12 +687,21 @@ const Agenda = ({
       };
 
       let capitalizedData = capitalizeKeys(Data);
+      let publishMeetingData = { MeetingID: currentMeeting, StatusID: 1 };
       dispatch(
         AddUpdateAdvanceMeetingAgenda(
           capitalizedData,
           navigate,
           t,
-          currentMeetingIDLS
+          currentMeetingIDLS,
+          flag,
+          publishMeetingData,
+          setEdiorRole,
+          setAdvanceMeetingModalID,
+          setDataroomMapFolderId,
+          setSceduleMeeting,
+          setPublishState,
+          setCalendarViewModal
         )
       );
     } else {
@@ -1071,7 +1094,7 @@ const Agenda = ({
                 />
 
                 <Button
-                  onClick={saveAgendaData}
+                  onClick={() => saveAgendaData(1)}
                   text={t("Save")}
                   className={styles["Save_Agenda_btn"]}
                 />
@@ -1081,14 +1104,14 @@ const Agenda = ({
                     disableBtn={Number(currentMeeting) === 0 ? true : false}
                     text={t("Publish")}
                     className={styles["Save_Agenda_btn"]}
-                    onClick={handlePublishClick}
+                    onClick={() => saveAgendaData(2)}
                   />
                 ) : isEditMeeting === true ? null : (
                   <Button
                     disableBtn={Number(currentMeeting) === 0 ? true : false}
                     text={t("Publish")}
                     className={styles["Save_Agenda_btn"]}
-                    onClick={handlePublishClick}
+                    onClick={() => saveAgendaData(2)}
                   />
                 )}
 
@@ -1140,6 +1163,18 @@ const Agenda = ({
       {NewMeetingreducer.importPreviousAgendaModal && <ImportPrevious />}
       {NewMeetingreducer.cancelAgenda && (
         <CancelAgenda setSceduleMeeting={setSceduleMeeting} />
+      )}
+      {MeetingAgendaReducer.PreviousTabAgenda && (
+        <PreviousAgenda
+          setAgenda={setAgenda}
+          setParticipants={setParticipants}
+        />
+      )}
+      {MeetingAgendaReducer.NextTabAgenda && (
+        <NextAgenda
+          setMeetingMaterial={setMeetingMaterial}
+          setAgenda={setAgenda}
+        />
       )}
       {/* {DataRoomReducer.Loading === true ||
       MeetingAgendaReducer.Loading === true ? (
