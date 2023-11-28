@@ -1649,5 +1649,6 @@
   "Description-is-required-action": "Description is required action *",
   "Enter-date-must-action": "Please Enter date *",
   "Take-Task": "Take Task",
-  "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up lets dive into some task"
+  "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up lets dive into some task",
+  "Create-a-to-do-list": "Create a Task"
 }
