@@ -142,9 +142,9 @@ const downloadAttendanceReportApi = (navigate, t, downloadData) => {
   let form = new FormData();
   form.append("RequestMethod", downloadAttendanceReport.RequestMethod);
   form.append("RequestData", JSON.stringify(downloadData));
-  return (dispatch) => {
+  return async (dispatch) => {
     console.log("downloadAttendanceReportApi");
-    dispatch(DownloadLoaderStart());
+    await dispatch(DownloadLoaderStart());
     axios({
       method: "post",
       url: reportDownload,

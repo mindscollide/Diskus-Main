@@ -32,6 +32,7 @@ import {
   VideoMainReducer,
   videoFeatureReducer,
   AgendaWiseAgendaListReducer,
+  downloadReducer,
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -43,7 +44,6 @@ import { calendarReducer } from "./reducers";
 import { OnBoardModalStates } from "./reducers";
 import { RoleListReducer } from "./reducers";
 import { webViewerReducer } from "./reducers";
-import downloadReducer from "./reducers/Download_reducer";
 //Aun Attendance Meeting Reducer
 import attendanceMeetingReducer from "./reducers/Attendance_Reducer";
 import actionMeetingReducer from "./reducers/ActionMeeting_Reducer";
