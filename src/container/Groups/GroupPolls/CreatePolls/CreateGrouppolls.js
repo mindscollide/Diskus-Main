@@ -473,6 +473,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                                             src={WhiteCrossIcon}
                                             width="31.76px"
                                             height="31.76px"
+                                            alt=""
                                             onClick={() =>
                                               HandleCancelFunction(index)
                                             }
@@ -510,6 +511,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                               <img
                                 draggable={false}
                                 src={plusFaddes}
+                                alt=""
                                 width="15.87px"
                                 height="15.87px"
                               />
@@ -642,6 +644,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                                               draggable={false}
                                               height="33px"
                                               width="33px"
+                                              alt=""
                                               className={
                                                 styles["ProfileStyles"]
                                               }
@@ -661,6 +664,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                                             <img
                                               draggable={false}
                                               src={RedCross}
+                                              alt=""
                                               height="14px"
                                               width="14px"
                                               className="cursor-pointer"
