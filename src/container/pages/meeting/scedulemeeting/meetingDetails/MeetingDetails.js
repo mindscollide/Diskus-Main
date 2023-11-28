@@ -1711,6 +1711,7 @@ const MeetingDetails = ({
                         ? true
                         : false
                     }
+                    isSearchable={false}
                   />
                 </Col>
                 <Col lg={4} md={4} sm={12}>
@@ -1745,6 +1746,7 @@ const MeetingDetails = ({
                         ? true
                         : false
                     }
+                    isSearchable={false}
                   />
                 </Col>
                 <Col lg={4} md={4} sm={12}>
@@ -1778,6 +1780,7 @@ const MeetingDetails = ({
                         ? true
                         : false
                     }
+                    isSearchable={false}
                   />
                 </Col>
                 <Row>
@@ -1923,6 +1926,7 @@ const MeetingDetails = ({
                     styles={customStyles}
                     menuPlacement="top" // Set menuPlacement to 'top' to open the dropdown upwards
                     menuPortalTarget={document.body}
+                    isSearchable={false}
                   />
                 </Col>
               </Row>

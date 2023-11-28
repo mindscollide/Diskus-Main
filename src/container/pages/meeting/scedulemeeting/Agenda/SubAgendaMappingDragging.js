@@ -557,6 +557,7 @@ const SubAgendaMappingDragging = ({
                                               classNamePrefix={
                                                 "SelectOrganizersSelect_active"
                                               }
+                                              isSearchable={false}
                                             />
                                           </Col>
                                           <Col

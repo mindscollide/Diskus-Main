@@ -339,19 +339,13 @@ const ParentAgenda = ({
                                     draggable={false}
                                   />
                                   <p className={styles["agendaCreater"]}>
-                                    {
-                                      data?.userProfilePicture
-                                        ?.orignalProfilePictureName
-                                    }
+                                    {data?.presenterName}
                                   </p>
-                                  <span
+                                  {/* <span
                                     className={styles["agendaCreationTime"]}
                                   >
-                                    {
-                                      data?.userProfilePicture
-                                        ?.orignalProfilePictureName
-                                    }
-                                  </span>
+                                    {data?.presenterName}
+                                  </span> */}
                                 </div>
                               </Col>
                             </Row>
@@ -364,16 +358,16 @@ const ParentAgenda = ({
                                 </span>
                               </Col>
                             </Row>
-                            <Row key={index + 3} className="mt-3">
+                            {/* <Row key={index + 3} className="mt-3">
                               <Col lg={12} md={12} sm={12}>
                                 <span className={styles["Agenda_Heading"]}>
                                   {t("Attachments")}
                                 </span>
                               </Col>
-                            </Row>
+                            </Row> */}
                             <Row key={index + 4} className="mt-3">
                               <Col lg={6} md={6} sm={6}>
-                                <Radio.Group
+                                {/* <Radio.Group
                                   onChange={(e) =>
                                     handleRadioChange(index, e.target.value)
                                   }
@@ -400,7 +394,20 @@ const ParentAgenda = ({
                                       {t("Request from contributor")}
                                     </span>
                                   </Radio>
-                                </Radio.Group>
+                                </Radio.Group> */}
+                                {data.selectedRadio === 1 ? (
+                                  <span className={styles["Agenda_Heading"]}>
+                                    {t("Documents")}
+                                  </span>
+                                ) : data.selectedRadio === 2 ? (
+                                  <span className={styles["Agenda_Heading"]}>
+                                    {t("URL")}
+                                  </span>
+                                ) : data.selectedRadio === 3 ? (
+                                  <span className={styles["Agenda_Heading"]}>
+                                    {t("Request-from-contributor")}
+                                  </span>
+                                ) : null}
                               </Col>
                             </Row>
                             <Droppable
@@ -413,47 +420,50 @@ const ParentAgenda = ({
                                   ref={provided.innerRef}
                                 >
                                   {data.selectedRadio === 1 &&
-                                    Object.keys(data.files).length > 0 && (
-                                      <Row>
-                                        {data.files.map(
-                                          (filesData, fileIndex) => (
-                                            <Col
-                                              key={fileIndex}
-                                              lg={3}
-                                              md={3}
-                                              sm={12}
+                                  Object.keys(data.files).length > 0 ? (
+                                    <Row>
+                                      {data.files.map(
+                                        (filesData, fileIndex) => (
+                                          <Col
+                                            key={fileIndex}
+                                            lg={3}
+                                            md={3}
+                                            sm={12}
+                                          >
+                                            <div
+                                              className={
+                                                styles["agendaFileAttachedView"]
+                                              }
                                             >
-                                              <div
+                                              <span
                                                 className={
-                                                  styles[
-                                                    "agendaFileAttachedView"
-                                                  ]
+                                                  styles["agendaFileSpan"]
                                                 }
                                               >
-                                                <span
-                                                  className={
-                                                    styles["agendaFileSpan"]
-                                                  }
-                                                >
-                                                  <img
-                                                    draggable={false}
-                                                    src={getIconSource(
-                                                      getFileExtension(
-                                                        filesData?.displayAttachmentName
-                                                      )
-                                                    )}
-                                                    alt=""
-                                                  />{" "}
-                                                  {
-                                                    filesData?.displayAttachmentName
-                                                  }
-                                                </span>
-                                              </div>
-                                            </Col>
-                                          )
-                                        )}
-                                      </Row>
-                                    )}
+                                                <img
+                                                  draggable={false}
+                                                  src={getIconSource(
+                                                    getFileExtension(
+                                                      filesData?.displayAttachmentName
+                                                    )
+                                                  )}
+                                                  alt=""
+                                                />{" "}
+                                                {
+                                                  filesData?.displayAttachmentName
+                                                }
+                                              </span>
+                                            </div>
+                                          </Col>
+                                        )
+                                      )}
+                                    </Row>
+                                  ) : data.selectedRadio === 1 &&
+                                    Object.keys(data.files).length === 0 ? (
+                                    <span className={styles["NoFiles_Heading"]}>
+                                      No Files Attached
+                                    </span>
+                                  ) : null}
 
                                   {data.selectedRadio === 2 && (
                                     <Urls

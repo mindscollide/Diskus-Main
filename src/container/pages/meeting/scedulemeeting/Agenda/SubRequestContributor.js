@@ -171,6 +171,7 @@ const SubRequestContributor = ({
                 ? true
                 : false
             }
+            isSearchable={false}
           />
           {/* <TextField
             labelClass={"d-none"}
