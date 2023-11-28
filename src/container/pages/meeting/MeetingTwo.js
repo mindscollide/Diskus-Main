@@ -363,6 +363,8 @@ const NewMeeting = () => {
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
+    localStorage.setItem("MeetingPageRows", 50);
+    localStorage.setItem("MeetingPageCurrent", 1);
   };
 
   //UnPublished Meeting Page
@@ -378,6 +380,8 @@ const NewMeeting = () => {
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
+    localStorage.setItem("MeetingPageRows", 50);
+    localStorage.setItem("MeetingPageCurrent", 1);
   };
 
   const handleViewMeeting = async (id, isQuickMeeting) => {
