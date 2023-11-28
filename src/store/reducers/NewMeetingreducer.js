@@ -1283,7 +1283,7 @@ const NewMeetingreducer = (state = initialState, action) => {
     case actions.GET_ALL_AGENDA_WISE_MINUTES_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         agendaWiseMinutesReducer: action.response,
         ResponseMessage: action.message,
       };
@@ -1337,7 +1337,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       console.log("loader check");
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         ResponseMessage: action.message,
       };
     }

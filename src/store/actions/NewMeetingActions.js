@@ -3903,11 +3903,12 @@ const showGetAllAgendaWiseMinutesInit = () => {
   };
 };
 
-const showGetAllAgendaWiseMinutesSuccess = (response, message) => {
+const showGetAllAgendaWiseMinutesSuccess = (response, message, loader) => {
   return {
     type: actions.GET_ALL_AGENDA_WISE_MINUTES_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -3918,7 +3919,13 @@ const showGetAllAgendaWiseMinutesFailed = (message) => {
   };
 };
 
-const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
+const GetAllAgendaWiseMinutesApiFunc = (
+  navigate,
+  Data,
+  t,
+  currentMeeting,
+  loader
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return async (dispatch) => {
@@ -3941,7 +3948,13 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
         await dispatch(RefreshToken(navigate, t));
         // Retry the API request
         await dispatch(
-          GetAllAgendaWiseMinutesApiFunc(navigate, Data, t, currentMeeting)
+          GetAllAgendaWiseMinutesApiFunc(
+            navigate,
+            Data,
+            t,
+            currentMeeting,
+            loader
+          )
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -3967,7 +3980,8 @@ const GetAllAgendaWiseMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
             await dispatch(
               showGetAllAgendaWiseMinutesSuccess(
                 response.data.responseResult,
-                t("Record-found")
+                t("Record-found"),
+                loader
               )
             );
           } else if (
@@ -4556,7 +4570,9 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
                 MeetingID: Number(id),
               };
 
-              dispatch(GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t, id));
+              dispatch(
+                GetAllAgendaWiseMinutesApiFunc(navigate, getAll, t, id, true)
+              );
               dispatch(showAgendaWiseAddMinutesFailed(""));
             } else if (
               response.data.responseResult.responseMessage
