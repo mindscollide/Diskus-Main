@@ -151,32 +151,24 @@ const saveMeetingAttendanceApi = (navigate, t, Data) => {
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveMeetingAttendanceReport_01"
             ) {
-              dispatch(
-                saveAttendanceSuccess(
-                  response.data.responseResult.responseMessage,
-                  t("Record-saved")
-                )
-              );
+              dispatch(saveAttendanceSuccess(t("Record-saved")));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveMeetingAttendanceReport_02"
             ) {
-              dispatch(
-                saveAttendanceFail(
-                  response.data.responseResult.responseMessage,
-                  t("No-record-save")
-                )
-              );
+              dispatch(saveAttendanceFail(t("No-record-save")));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveMeetingAttendanceReport_03"
             ) {
-              dispatch(
-                saveAttendanceFail(
-                  response.data.responseResult.responseMessage,
-                  t("Something-went-wrong")
-                )
-              );
+              dispatch(saveAttendanceFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Meeting_MeetingServiceManager_SaveMeetingAttendanceReport_04"
+            ) {
+              dispatch(saveAttendanceFail(t("The-meeting-has-been-ended")));
+            } else {
+              dispatch(saveAttendanceFail(t("Something-went-wrong")));
             }
           } else {
             dispatch(saveAttendanceFail(t("Something-went-wrong")));

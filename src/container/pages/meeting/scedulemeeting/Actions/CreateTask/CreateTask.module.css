@@ -212,4 +212,5 @@ body[dir="rtl"] .errorMessage-inLogin {
 
 .react-select__control {
   cursor: pointer !important;
+  outline: none !important;
 }
