@@ -123,16 +123,19 @@ const ScheduleNewResolution = () => {
     date: "",
     time: new Date(),
     dateValue: "",
+    timeCirculationforView: "",
   });
   const [votingDateTime, setVotingDateTime] = useState({
     dateValue: "",
     date: "",
     time: new Date(),
+    timeVotingforView: "",
   });
   const [decisionDateTime, setDecisionDateTime] = useState({
     date: "",
     time: new Date(),
     dateValue: "",
+    timeDecisionforView: "",
   });
   console.log("votingDateTime", votingDateTime);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
@@ -439,7 +442,19 @@ const ScheduleNewResolution = () => {
     setTaskAssignedName("");
     setEmailValue("");
   };
-
+  console.log(
+    createResolutionData.Title,
+    circulationDateTime.dateValue,
+    decisionDateTime.dateValue,
+    votingDateTime.dateValue,
+    decisionDateTime.time,
+    circulationDateTime.time,
+    votingDateTime.time,
+    createResolutionData.NotesToVoter,
+    createResolutionData.FK_ResolutionVotingMethodID,
+    createResolutionData.FK_ResolutionReminderFrequency_ID,
+    "resolutionSaveHandlerresolutionSaveHandler"
+  );
   const resolutionSaveHandler = async () => {
     if (
       createResolutionData.Title !== "" &&
@@ -867,68 +882,26 @@ const ScheduleNewResolution = () => {
       setVotingMethods(newArr);
     }
   }, [ResolutionReducer.GetAllVotingMethods]);
+  console.log(circulationDateTime, "circulationDateTimecirculationDateTime");
+  console.log(votingDateTime, "circulationDateTimecirculationDateTime");
 
-  const handleChangeDateSelection = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    console.log(value, "valuevaluevalue");
-    if (name === "circulation") {
-      setCirculationDateTime({
-        ...circulationDateTime,
-        date: value,
-      });
-    } else if (name === "voting") {
-      setVotingDateTime({
-        ...votingDateTime,
-        date: value,
-      });
-    } else if (name === "decision") {
-      setDecisionDateTime({
-        ...decisionDateTime,
-        date: value,
-      });
-    }
-  };
-
-  // const handleChangeTimeSelection = (e) => {
-  //   let name = e.target.name;
-  //   let value = e.target.value;
-  //   if (name === "circulation") {
-  //     setCirculationDateTime({
-  //       ...circulationDateTime,
-  //       time: value,
-  //     });
-  //   } else if (name === "voting") {
-  //     setVotingDateTime({
-  //       ...votingDateTime,
-  //       time: value,
-  //     });
-  //   } else if (name === "decision") {
-  //     setDecisionDateTime({
-  //       ...decisionDateTime,
-  //       time: value,
-  //     });
-  //   }
-  // };
+  console.log(decisionDateTime, "circulationDateTimecirculationDateTime");
 
   //Circulation Time
   const handleCirculationTimeChange = (date) => {
-    console.log("changeDateStartHandler", date);
-    if (date instanceof Date && !isNaN(date)) {
-      const hours = ("0" + date.getHours()).slice(-2);
-      const minutes = ("0" + date.getMinutes()).slice(-2);
+    let newDate = new Date(date);
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${hours}:${minutes}:00`;
-
-      // Create a new object with updated values
-      const updatedDateTime = {
+      const formattedTime = `${hours}:${minutes}`;
+      // setCirculationDateTime(date);
+      setCirculationDateTime({
         ...circulationDateTime,
         time: formattedTime,
-      };
-
-      console.log("changeDateStartHandler", updatedDateTime);
-      setCirculationDateTime(updatedDateTime);
+        timeCirculationforView: date,
+      });
     } else {
       console.error("Invalid date object:", date);
     }
@@ -937,21 +910,20 @@ const ScheduleNewResolution = () => {
   //Voting Time
   const handleVotingTimeChange = (date) => {
     console.log("changeDateStartHandler", date);
-    if (date instanceof Date && !isNaN(date)) {
-      const hours = ("0" + date.getHours()).slice(-2);
-      const minutes = ("0" + date.getMinutes()).slice(-2);
+    let newDate = new Date(date);
+
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${hours}:${minutes}:00`;
+      const formattedTime = `${hours}:${minutes}`;
 
-      // Create a new object with updated values
-      const updatedDateTime = {
+      setVotingDateTime({
         ...votingDateTime,
         time: formattedTime,
-      };
-
-      console.log("changeDateStartHandler", updatedDateTime);
-      setCirculationDateTime(updatedDateTime);
+        timeVotingforView: date,
+      });
     } else {
       console.error("Invalid date object:", date);
     }
@@ -959,22 +931,19 @@ const ScheduleNewResolution = () => {
 
   //Decisions Time
   const handleDecisionTimeChange = (date) => {
-    console.log("changeDateStartHandler", date);
-    if (date instanceof Date && !isNaN(date)) {
-      const hours = ("0" + date.getHours()).slice(-2);
-      const minutes = ("0" + date.getMinutes()).slice(-2);
+    let newDate = new Date(date);
+
+    if (newDate instanceof Date && !isNaN(newDate)) {
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${hours}:${minutes}:00`;
-
-      // Create a new object with updated values
-      const updatedDateTime = {
+      const formattedTime = `${hours}:${minutes}`;
+      setDecisionDateTime({
         ...decisionDateTime,
         time: formattedTime,
-      };
-
-      console.log("changeDateStartHandler", updatedDateTime);
-      setCirculationDateTime(updatedDateTime);
+        timeCirculationforView: date,
+      });
     } else {
       console.error("Invalid date object:", date);
     }
@@ -1265,26 +1234,10 @@ const ScheduleNewResolution = () => {
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           {/* Circualtion Time */}
-                          {/* <TextFieldTime
-                            type="time"
-                            labelClass="d-none"
-                            name="circulation"
-                            value={circulationDateTime.time}
-                            onKeyDown={(e) => e.preventDefault()}
-                            applyClass={"search_voterInput"}
-                            change={(e) => {
-                              handleChangeTimeSelection(e);
-                            }}
-                            onClick={() => {
-                              setCirculationDateTime({
-                                ...circulationDateTime,
-                                time: getcurrentTime,
-                              });
-                            }}
-                          /> */}
+
                           <DatePicker
                             arrowClassName="arrowClass"
-                            containerClassName="containerClassTimePicker"
+                            containerClassName="containerResolutionTimePicker"
                             className="timePicker"
                             disableDayPicker
                             inputClass="inputTImeMeeting"
@@ -1293,8 +1246,10 @@ const ScheduleNewResolution = () => {
                             format="hh:mm A"
                             plugins={[<TimePicker hideSeconds />]}
                             render={<CustomInput />}
-                            selected={circulationDateTime.time}
-                            value={circulationDateTime.time}
+                            selected={
+                              circulationDateTime.timeCirculationforView
+                            }
+                            value={circulationDateTime.timeCirculationforView}
                             onChange={(date) =>
                               handleCirculationTimeChange(date)
                             }
@@ -1405,7 +1360,7 @@ const ScheduleNewResolution = () => {
 
                           <DatePicker
                             arrowClassName="arrowClass"
-                            containerClassName="containerClassTimePicker"
+                            containerClassName="containerResolutionTimePicker"
                             className="timePicker"
                             disableDayPicker
                             inputClass="inputTImeMeeting"
@@ -1414,8 +1369,8 @@ const ScheduleNewResolution = () => {
                             format="hh:mm A"
                             plugins={[<TimePicker hideSeconds />]}
                             render={<CustomInput />}
-                            selected={votingDateTime.time}
-                            value={votingDateTime.time}
+                            selected={votingDateTime.timeVotingforView}
+                            value={votingDateTime.timeVotingforView}
                             onChange={(date) => handleVotingTimeChange(date)}
                           />
                           <Row>
@@ -1523,7 +1478,7 @@ const ScheduleNewResolution = () => {
                           /> */}
                           <DatePicker
                             arrowClassName="arrowClass"
-                            containerClassName="containerClassTimePicker"
+                            containerClassName="containerResolutionTimePicker"
                             className="timePicker"
                             disableDayPicker
                             inputClass="inputTImeMeeting"
@@ -1532,8 +1487,8 @@ const ScheduleNewResolution = () => {
                             format="hh:mm A"
                             plugins={[<TimePicker hideSeconds />]}
                             render={<CustomInput />}
-                            selected={decisionDateTime.time}
-                            value={decisionDateTime.time}
+                            selected={decisionDateTime.timeDecisionforView}
+                            value={decisionDateTime.timeDecisionforView}
                             onChange={(date) => handleDecisionTimeChange(date)}
                           />
                           <Row>
