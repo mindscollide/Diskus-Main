@@ -39,19 +39,27 @@ import {
   getIconSource,
 } from "../../../../../DataRoom/SearchFunctionality/option";
 
-const AgendaWise = ({ currentMeeting, editorRole }) => {
+const AgendaWise = ({
+  currentMeeting,
+  editorRole,
+  agendaOptionvalue,
+  setAgendaOptionValue,
+  addNoteFields,
+  setAddNoteFields,
+  fileAttachments,
+  setFileAttachments,
+}) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let folderID = localStorage.getItem("folderDataRoomMeeting");
-  console.log(folderID, "localStoragelocalStorage");
-  const [addNoteFields, setAddNoteFields] = useState({
-    Description: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-  });
+  // const [addNoteFields, setAddNoteFields] = useState({
+  //   Description: {
+  //     value: "",
+  //     errorMessage: "",
+  //     errorStatus: false,
+  //   },
+  // });
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -71,16 +79,16 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
   const [fileForSend, setFileForSend] = useState([]);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [fileAttachments, setFileAttachments] = useState([]);
+  // const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
   const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [showMore, setShowMore] = useState(false);
-  const [agendaOptionvalue, setAgendaOptionValue] = useState({
-    label: "",
-    value: 0,
-  });
+  // const [agendaOptionvalue, setAgendaOptionValue] = useState({
+  //   label: "",
+  //   value: 0,
+  // });
   const [agendaID, setAgendaID] = useState([]);
   const [agendaSelect, setAgendaSelect] = useState({
     agendaSelectOptions: {
@@ -334,6 +342,15 @@ const AgendaWise = ({ currentMeeting, editorRole }) => {
         ...addNoteFields,
         Description: {
           value: content,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: "",
           errorMessage: "",
           errorStatus: false,
         },

@@ -34,6 +34,10 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import { Upload } from "antd";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../container/DataRoom/SearchFunctionality/option";
 
 const CreateGroup = ({ setCreategrouppage }) => {
   const { Dragger } = Upload;
@@ -1331,6 +1335,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             <img
                                               src={CrossIcon}
                                               height="12.68px"
+                                              alt=""
                                               width="12.68px"
                                               onClick={() =>
                                                 handleRemoveFile(index)
@@ -1366,9 +1371,14 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                   }
                                                 >
                                                   <img
-                                                    src={pdfIcon}
+                                                    src={getIconSource(
+                                                      getFileExtension(
+                                                        data.DisplayAttachmentName
+                                                      )
+                                                    )}
                                                     height="10px"
                                                     width="10px"
+                                                    alt=""
                                                     className={
                                                       styles["IconPDF"]
                                                     }
