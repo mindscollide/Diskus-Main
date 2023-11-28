@@ -127,11 +127,11 @@ const ScheduleNewResolution = () => {
   const [votingDateTime, setVotingDateTime] = useState({
     dateValue: "",
     date: "",
-    time: "",
+    time: new Date(),
   });
   const [decisionDateTime, setDecisionDateTime] = useState({
     date: "",
-    time: "",
+    time: new Date(),
     dateValue: "",
   });
   console.log("votingDateTime", votingDateTime);
@@ -890,26 +890,26 @@ const ScheduleNewResolution = () => {
     }
   };
 
-  const handleChangeTimeSelection = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "circulation") {
-      setCirculationDateTime({
-        ...circulationDateTime,
-        time: value,
-      });
-    } else if (name === "voting") {
-      setVotingDateTime({
-        ...votingDateTime,
-        time: value,
-      });
-    } else if (name === "decision") {
-      setDecisionDateTime({
-        ...decisionDateTime,
-        time: value,
-      });
-    }
-  };
+  // const handleChangeTimeSelection = (e) => {
+  //   let name = e.target.name;
+  //   let value = e.target.value;
+  //   if (name === "circulation") {
+  //     setCirculationDateTime({
+  //       ...circulationDateTime,
+  //       time: value,
+  //     });
+  //   } else if (name === "voting") {
+  //     setVotingDateTime({
+  //       ...votingDateTime,
+  //       time: value,
+  //     });
+  //   } else if (name === "decision") {
+  //     setDecisionDateTime({
+  //       ...decisionDateTime,
+  //       time: value,
+  //     });
+  //   }
+  // };
 
   //Circulation Time
   const handleCirculationTimeChange = (date) => {
