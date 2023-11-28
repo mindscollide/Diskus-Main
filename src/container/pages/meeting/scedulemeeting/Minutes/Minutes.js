@@ -712,7 +712,7 @@ const Minutes = ({
 
   useEffect(() => {
     if (
-      ResponseMessage.trim() !== "" &&
+      ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== t("Record-found") &&
@@ -730,8 +730,8 @@ const Minutes = ({
           flag: false,
           message: "",
         });
-        dispatch(CleareMessegeNewMeeting());
       }, 3000);
+      dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
