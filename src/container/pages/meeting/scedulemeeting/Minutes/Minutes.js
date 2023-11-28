@@ -115,12 +115,6 @@ const Minutes = ({
     label: "",
     value: 0,
   });
-  console.log(
-    addAgendaWiseFields,
-    addAgendaWiseFiles,
-    agendaOptionvalue,
-    "agendaOptionvalueagendaOptionvalueagendaOptionvalueagendaOptionvalue"
-  );
 
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -609,7 +603,7 @@ const Minutes = ({
         agendaOptionvalue.value !== 0
       ) {
         dispatch(showUnsaveMinutesFileUpload(true));
-        setUseCase(0);
+        setUseCase(3);
       } else {
         setFileAttachments([]);
         setMinutes(false);
@@ -627,7 +621,6 @@ const Minutes = ({
             currentView && Number(currentView) === 1 ? true : false,
         };
         dispatch(searchNewUserMeeting(navigate, searchData, t));
-        setUseCase(0);
       }
     } else if (general) {
       if (
@@ -635,6 +628,7 @@ const Minutes = ({
         fileAttachments.length !== 0
       ) {
         dispatch(showUnsaveMinutesFileUpload(true));
+        setUseCase(3);
       } else {
         setFileAttachments([]);
         setMinutes(false);

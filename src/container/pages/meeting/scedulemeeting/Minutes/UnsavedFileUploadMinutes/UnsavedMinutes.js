@@ -29,18 +29,20 @@ const UnsavedMinutes = ({
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleYesFunctionality = () => {
+    console.log(useCase, "useCaseuseCaseuseCase");
     if (useCase) {
       if (useCase === 1) {
         // Pervious Button
         setMinutes(false);
         setMeetingMaterial(true);
+        dispatch(showUnsaveMinutesFileUpload(false));
       } else if (useCase === 2) {
         // Next Tab
         setactionsPage(true);
         setMinutes(false);
-      } else if (useCase === 0) {
+        dispatch(showUnsaveMinutesFileUpload(false));
+      } else if (useCase === 3) {
         // Cancel Button
-        setFileAttachments([]);
         setMinutes(false);
         setSceduleMeeting(false);
         dispatch(showUnsaveMinutesFileUpload(false));
@@ -56,6 +58,7 @@ const UnsavedMinutes = ({
             currentView && Number(currentView) === 1 ? true : false,
         };
         dispatch(searchNewUserMeeting(navigate, searchData, t));
+        setFileAttachments([]);
       }
     }
   };

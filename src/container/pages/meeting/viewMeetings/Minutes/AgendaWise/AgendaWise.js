@@ -38,19 +38,22 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
 
-const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
+const AgendaWise = ({
+  advanceMeetingModalID,
+  editorRole,
+  agendaOptionvalue,
+  setAgendaOptionValue,
+  addNoteFields,
+  setAddNoteFields,
+  fileAttachments,
+  setFileAttachments,
+}) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   console.log(folderID, "localStoragelocalStorage");
-  const [addNoteFields, setAddNoteFields] = useState({
-    Description: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
-  });
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -61,7 +64,6 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
   const { NewMeetingreducer, AgendaWiseAgendaListReducer } = useSelector(
     (state) => state
   );
-  console.log(NewMeetingreducer, "NewMeetingreducerNewMeetingreducer");
   const editorRef = useRef(null);
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
@@ -69,16 +71,12 @@ const AgendaWise = ({ advanceMeetingModalID, editorRole }) => {
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
-  const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [expandedFiles, setExpandedFiles] = useState([]);
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
   const [agendaOptions, setAgendaOptions] = useState([]);
-  const [agendaOptionvalue, setAgendaOptionValue] = useState({
-    label: "",
-    value: 0,
-  });
+
   const [showMore, setShowMore] = useState(false);
   const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [agendaID, setAgendaID] = useState([]);

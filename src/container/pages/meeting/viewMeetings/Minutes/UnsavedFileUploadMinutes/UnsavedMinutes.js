@@ -11,7 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 
-const UnsavedMinutes = ({ setMinutes, setSceduleMeeting ,setViewAdvanceMeetingModal}) => {
+const UnsavedMinutes = ({
+  setMinutes,
+  setSceduleMeeting,
+  useCase,
+  setactionsPage,
+  setMeetingMaterial,
+  setFileAttachments,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,21 +29,54 @@ const UnsavedMinutes = ({ setMinutes, setSceduleMeeting ,setViewAdvanceMeetingMo
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleYesFunctionality = () => {
-    setMinutes(false);
-    setSceduleMeeting(false);
-    setViewAdvanceMeetingModal(false)
-    dispatch(showUnsaveMinutesFileUpload(false));
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log(useCase, Boolean(useCase), "useCaseuseCaseuseCase");
+
+    if (useCase) {
+      if (useCase === 1) {
+        // Pervious Button
+        setMinutes(false);
+        setMeetingMaterial(true);
+        dispatch(showUnsaveMinutesFileUpload(false));
+      } else if (useCase === 2) {
+        // Next Tab
+        setactionsPage(true);
+        setMinutes(false);
+        dispatch(showUnsaveMinutesFileUpload(false));
+      } else if (useCase === 3) {
+        // Cancel Button
+        setFileAttachments([]);
+        setMinutes(false);
+        setSceduleMeeting(false);
+        dispatch(showUnsaveMinutesFileUpload(false));
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+      }
+    }
+    // setMinutes(false);
+    // setSceduleMeeting(false);
+    // setViewAdvanceMeetingModal(false);
+    // dispatch(showUnsaveMinutesFileUpload(false));
+    // let searchData = {
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: Number(userID),
+    //   PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+    //   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+    //   PublishedMeetings:
+    //     currentView && Number(currentView) === 1 ? true : false,
+    // };
+    // dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
   return (
     <section>
@@ -87,11 +127,12 @@ const UnsavedMinutes = ({ setMinutes, setSceduleMeeting ,setViewAdvanceMeetingMo
               >
                 <Button
                   text={t("No")}
-                  className={styles["Yes_unsave_File_Upload"]}
+                  className={styles["No_unsave_File_Upload"]}
+                  onClick={() => dispatch(showUnsaveMinutesFileUpload(false))}
                 />
                 <Button
                   text={t("Yes")}
-                  className={styles["No_unsave_File_Upload"]}
+                  className={styles["Yes_unsave_File_Upload"]}
                   onClick={handleYesFunctionality}
                 />
               </Col>
