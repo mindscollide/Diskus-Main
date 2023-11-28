@@ -166,6 +166,7 @@ const AdvancePersmissionModal = () => {
                       <Select
                         options={options}
                         classNamePrefix={"AdvancePermission"}
+                        isSearchable={false}
                       />
                     </Col>
                   </Row>

@@ -565,6 +565,7 @@ const ParentAgenda = ({
                                   : false
                               }
                               classNamePrefix={"SelectOrganizersSelect_active"}
+                              isSearchable={false}
                             />
                           </Col>
                           <Col

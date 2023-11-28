@@ -252,6 +252,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                         value={options.find(
                           (option) => option.value === selectedRole
                         )}
+                        isSearchable={false}
                       />
                     </Col>
                   </Row>
