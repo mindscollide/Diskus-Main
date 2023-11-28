@@ -16,6 +16,9 @@ import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
 import {
   GetAllMeetingDetailsApiFunc,
+  GetAllMeetingRecurringApiNew,
+  GetAllMeetingRemindersApiFrequencyNew,
+  GetAllMeetingTypesNewFunction,
   showCancelModalAgenda,
 } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
@@ -32,7 +35,6 @@ const SceduleMeeting = ({
   dataroomMapFolderId,
 }) => {
   const { t } = useTranslation();
-  console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRoleeditorRole");
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
@@ -48,8 +50,22 @@ const SceduleMeeting = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //  Call all search meetings api
+  const apiCallsForComponentMound = async () => {
+    try {
+      // Meeting Type Drop Down API
+      await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+      // Reminder Frequency Drop Down API
+      await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+      // Recurring Drop Down API
+      await dispatch(GetAllMeetingRecurringApiNew(navigate, t,false));
+    } catch (error) {
+      console.error("An error occurred during API calls:", error);
+    }
+  };
   useEffect(() => {
+    if (currentMeeting === 0) {
+      apiCallsForComponentMound();
+    }
     return () => {
       setEditMeeting(false);
       setEdiorRole({ status: null, role: null });
@@ -70,7 +86,9 @@ const SceduleMeeting = ({
         true,
         setCurrentMeetingID,
         setSceduleMeeting,
-        setDataroomMapFolderId
+        setDataroomMapFolderId,
+        0,
+        1
       )
     );
     setmeetingDetails(true);

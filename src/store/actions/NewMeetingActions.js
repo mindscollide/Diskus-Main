@@ -766,23 +766,25 @@ const handleReucrringInit = () => {
   };
 };
 
-const handleReucrringSuccess = (response, message) => {
+const handleReucrringSuccess = (response, message, loader) => {
   return {
     type: actions.GET_ALL_RECURRING_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
-const handleReucrringFailed = (message) => {
+const handleReucrringFailed = (message, loader) => {
   return {
     type: actions.GET_ALL_RECURRING_FAILED,
     message: message,
+    loader: loader,
   };
 };
 
 //Functions Get All Meeting Recurring API
-const GetAllMeetingRecurringApiNew = (navigate, t) => {
+const GetAllMeetingRecurringApiNew = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     // dispatch(handleReucrringInit());
@@ -812,7 +814,8 @@ const GetAllMeetingRecurringApiNew = (navigate, t) => {
               dispatch(
                 handleReucrringSuccess(
                   response.data.responseResult,
-                  t("Record-found")
+                  t("Record-found"),
+                  loader
                 )
               );
             } else if (
@@ -822,7 +825,7 @@ const GetAllMeetingRecurringApiNew = (navigate, t) => {
                   "Meeting_MeetingServiceManager_GetAllRecurringFactor_02".toLowerCase()
                 )
             ) {
-              dispatch(handleReucrringFailed(t("No-record-found")));
+              dispatch(handleReucrringFailed(t("No-record-found"), loader));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -830,19 +833,23 @@ const GetAllMeetingRecurringApiNew = (navigate, t) => {
                   "Meeting_MeetingServiceManager_GetAllRecurringFactor_03".toLowerCase()
                 )
             ) {
-              dispatch(handleReucrringFailed(t("Something-went-wrong")));
+              dispatch(
+                handleReucrringFailed(t("Something-went-wrong"), loader)
+              );
             } else {
-              dispatch(handleReucrringFailed(t("Something-went-wrong")));
+              dispatch(
+                handleReucrringFailed(t("Something-went-wrong"), loader)
+              );
             }
           } else {
-            dispatch(handleReucrringFailed(t("Something-went-wrong")));
+            dispatch(handleReucrringFailed(t("Something-went-wrong"), loader));
           }
         } else {
-          dispatch(handleReucrringFailed(t("Something-went-wrong")));
+          dispatch(handleReucrringFailed(t("Something-went-wrong"), loader));
         }
       })
       .catch((response) => {
-        dispatch(handleReucrringFailed(t("Something-went-wrong")));
+        dispatch(handleReucrringFailed(t("Something-went-wrong"), loader));
       });
   };
 };
@@ -1920,7 +1927,8 @@ const GetAllMeetingDetailsApiFunc = (
   setCurrentMeetingID,
   setSceduleMeeting,
   setDataroomMapFolderId,
-  viewValue
+  viewValue,
+  flag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -1948,7 +1956,8 @@ const GetAllMeetingDetailsApiFunc = (
               setCurrentMeetingID,
               setSceduleMeeting,
               setDataroomMapFolderId,
-              viewValue
+              viewValue,
+              flag
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1973,10 +1982,24 @@ const GetAllMeetingDetailsApiFunc = (
                 IsUpdateFlow:
                   viewValue !== null &&
                   viewValue !== undefined &&
+                  viewValue !== 0 &&
                   Number(viewValue) === 11
                     ? false
                     : true,
               };
+              if (flag !== undefined && flag != null) {
+                if (flag === 1) {
+                  await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+                  // Reminder Frequency Drop Down API
+                  await dispatch(
+                    GetAllMeetingRemindersApiFrequencyNew(navigate, t)
+                  );
+                  // Recurring Drop Down API
+                  await dispatch(
+                    GetAllMeetingRecurringApiNew(navigate, t, true)
+                  );
+                }
+              }
               await dispatch(
                 showGetAllMeetingDetialsSuccess(
                   response.data.responseResult,
@@ -3789,23 +3812,25 @@ const getProposedWiseInit = () => {
   };
 };
 
-const getProposedWiseSuccess = (response, message) => {
+const getProposedWiseSuccess = (response, message, loader) => {
   console.log(response, "getProposedWiseSuccess");
   return {
     type: actions.GET_USER_WISE_PROPOSED_SUCCESS,
-    response,
-    message,
+    response: response,
+    message: message,
+    loader: loader,
   };
 };
 
-const getProposedWiseFail = (message) => {
+const getProposedWiseFail = (message, loader) => {
   return {
     type: actions.GET_USER_WISE_PROPOSED_FAIL,
-    message,
+    message: message,
+    loader: loader,
   };
 };
 
-const getUserProposedWiseApi = (navigate, t, proposedData) => {
+const getUserProposedWiseApi = (navigate, t, proposedData, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getProposedWiseInit());
@@ -3823,7 +3848,7 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getUserProposedWiseApi(navigate, t, proposedData));
+          dispatch(getUserProposedWiseApi(navigate, t, proposedData, loader));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -3836,12 +3861,9 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
               dispatch(
                 getProposedWiseSuccess(
                   response.data.responseResult.userWiseMeetingProposedDates,
-                  t("Record-found")
+                  t("Record-found"),
+                  loader
                 )
-              );
-              console.log(
-                response.data.responseResult.userWiseMeetingProposedDates,
-                "includesincludesincludesincludes"
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -3850,7 +3872,7 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
                   "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_02".toLowerCase()
                 )
             ) {
-              dispatch(getProposedWiseFail(t("No-record-found")));
+              dispatch(getProposedWiseFail(t("No-record-found"), loader));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3858,19 +3880,19 @@ const getUserProposedWiseApi = (navigate, t, proposedData) => {
                   "Meeting_MeetingServiceManager_GetParticipantWiseProposedDates_03".toLowerCase()
                 )
             ) {
-              dispatch(getProposedWiseFail(t("Something-went-wrong")));
+              dispatch(getProposedWiseFail(t("Something-went-wrong"), loader));
             } else {
-              dispatch(getProposedWiseFail(t("Something-went-wrong")));
+              dispatch(getProposedWiseFail(t("Something-went-wrong"), loader));
             }
           } else {
-            dispatch(getProposedWiseFail(t("Something-went-wrong")));
+            dispatch(getProposedWiseFail(t("Something-went-wrong"), loader));
           }
         } else {
-          dispatch(getProposedWiseFail(t("Something-went-wrong")));
+          dispatch(getProposedWiseFail(t("Something-went-wrong"), loader));
         }
       })
       .catch((response) => {
-        dispatch(getProposedWiseFail(t("Something-went-wrong")));
+        dispatch(getProposedWiseFail(t("Something-went-wrong"), loader));
       });
   };
 };

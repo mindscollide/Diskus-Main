@@ -77,7 +77,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
     let proposedData = {
       MeetingID: Number(viewProposeDatePollMeetingID),
     };
-    dispatch(getUserProposedWiseApi(navigate, t, proposedData));
+    dispatch(getUserProposedWiseApi(navigate, t, proposedData,false));
     return () => {
       localStorage.removeItem("viewProposeDatePollMeetingID");
     };

@@ -451,9 +451,10 @@ const NewMeetingreducer = (state = initialState, action) => {
       console.log("loader check");
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         recurring: action.response,
         ResponseMessage: action.message,
+        Loading: action.loader,
       };
     }
 
@@ -461,7 +462,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       console.log("loader check");
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         ResponseMessage: action.message,
       };
     }
@@ -1309,7 +1310,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       console.log("loader check");
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         userWiseMeetingProposed: action.response,
         ResponseMessage: action.message,
       };
@@ -1319,7 +1320,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       console.log("loader check");
       return {
         ...state,
-        Loading: false,
+        Loading: action.loader,
         userWiseMeetingProposed: [],
         ResponseMessage: action.message,
       };
