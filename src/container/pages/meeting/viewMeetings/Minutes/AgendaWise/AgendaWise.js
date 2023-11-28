@@ -1038,9 +1038,14 @@ const AgendaWise = ({
                                                           }
                                                         >
                                                           <img
-                                                            src={pdfIcon}
+                                                            src={getIconSource(
+                                                              getFileExtension(
+                                                                filesname.displayFileName
+                                                              )
+                                                            )}
                                                             height="10px"
                                                             width="10px"
+                                                            alt=""
                                                             className={
                                                               styles["IconPDF"]
                                                             }
