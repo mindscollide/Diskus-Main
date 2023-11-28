@@ -148,6 +148,8 @@ const Agenda = ({
   ]);
   console.log("result Dropped files", rows);
 
+  const [currentState, setCurrentState] = useState(rows);
+
   useEffect(() => {
     setRows({
       ...rows,
@@ -262,7 +264,7 @@ const Agenda = ({
   const EnableAgendaView = () => {
     // Enable View page From it
     // setagendaViewPage(true);
-    dispatch(showCancelModalAgenda(true));
+    // dispatch(showCancelModalAgenda(true));
   };
   const handlePublishClick = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
@@ -283,19 +285,24 @@ const Agenda = ({
     // setSceduleMeeting(false);
   };
   const handleCancelClick = async () => {
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
-    setSceduleMeeting(false);
-    localStorage.setItem("folderDataRoomMeeting", 0);
+    if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
+      dispatch(showCancelModalAgenda(true));
+    } else {
+      let searchData = {
+        Date: "",
+        Title: "",
+        HostName: "",
+        UserID: Number(userID),
+        PageNumber:
+          meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+        Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+      };
+      await dispatch(searchNewUserMeeting(navigate, searchData, t));
+      setSceduleMeeting(false);
+      localStorage.setItem("folderDataRoomMeeting", 0);
+    }
   };
   useEffect(() => {
     let getAllData = {
@@ -755,6 +762,68 @@ const Agenda = ({
 
         return updatedRows;
       });
+      setCurrentState((prevRows) => {
+        const updatedRows = newData.map((agendaItem) => {
+          const { id, presenterID, userID, subAgenda, ...rest } = agendaItem;
+          const matchingPresenter = allSavedPresenters.find(
+            (presenter) => presenter.value === presenterID
+          );
+          const matchinguserID = allUsersRC.find(
+            (rcuser) => rcuser.value === userID
+          );
+          const updatedSubAgenda = subAgenda
+            ? subAgenda.map((subAgendaItem) => {
+                const { subAgendaID, presenterID, userID, ...subAgendaRest } =
+                  subAgendaItem;
+                const matchingSubPresenter = allSavedPresenters.find(
+                  (subPresenter) => subPresenter.value === presenterID
+                );
+                const matchingSubUserID = allUsersRC.find(
+                  (subRcuser) => subRcuser.value === userID
+                );
+                return {
+                  subAgendaID,
+                  ...subAgendaRest,
+                  presenterID, // Retain presenterID
+                  userID,
+                  subAgendarequestContributorUrlName: matchingSubUserID
+                    ? matchingSubUserID.label
+                    : "",
+                  presenterName: matchingSubPresenter
+                    ? matchingSubPresenter.label
+                    : "",
+                  startDate: subAgendaItem.startDate
+                    ? convertUtcToGmt(subAgendaItem.startDate)
+                    : null,
+                  endDate: subAgendaItem.endDate
+                    ? convertUtcToGmt(subAgendaItem.endDate)
+                    : null,
+                  subfiles: subAgendaItem.subfiles,
+                };
+              })
+            : null;
+
+          return {
+            iD: id,
+            ...rest,
+            presenterID,
+            presenterName: matchingPresenter ? matchingPresenter.label : "",
+            userID,
+            requestContributorURlName: matchinguserID
+              ? matchinguserID.label
+              : "",
+            startDate: agendaItem.startDate
+              ? convertUtcToGmt(agendaItem.startDate)
+              : null,
+            endDate: agendaItem.endDate
+              ? convertUtcToGmt(agendaItem.endDate)
+              : null,
+            subAgenda: updatedSubAgenda,
+          };
+        });
+
+        return updatedRows;
+      });
     } else {
       setRows([
         {
@@ -804,6 +873,16 @@ const Agenda = ({
     allSavedPresenters,
     allUsersRC,
   ]);
+
+  // useEffect(() => {
+  //   console.log("State changed:", currentState);
+
+  //   if (JSON.stringify(currentState) !== JSON.stringify(rows)) {
+  //     console.log("Rows have changed");
+  //   } else {
+  //     console.log("Rows Have Not Changed");
+  //   }
+  // }, [currentState, rows]);
 
   console.log("allSavedPresenters", allSavedPresenters);
   console.log("allRCUSERS", allUsersRC);
