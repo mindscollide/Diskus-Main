@@ -53,6 +53,7 @@ import {
   createResolutionDateTime,
   editResolutionDate,
   editResolutionTime,
+  editResolutionTimeView,
   removeDashesFromDate,
   RemoveTimeDashes,
   utcConvertintoGMT,
@@ -1154,6 +1155,9 @@ const EditResolution = ({ setCancelresolution }) => {
         setCirculationDateTime({
           date: editResolutionDate(resolutionData.circulationDateTime),
           time: editResolutionTime(resolutionData.circulationDateTime),
+          timeCirculationforView: editResolutionTimeView(
+            resolutionData.circulationDateTime
+          ),
           dateValue: moment(
             utcConvertintoGMT(resolutionData.circulationDateTime)
           ).format("DD/MM/YYYY"),
@@ -1161,6 +1165,9 @@ const EditResolution = ({ setCancelresolution }) => {
         setVotingDateTime({
           date: editResolutionDate(resolutionData?.votingDeadline),
           time: editResolutionTime(resolutionData?.votingDeadline),
+          timeVotingforView: editResolutionTimeView(
+            resolutionData?.votingDeadline
+          ),
           dateValue: moment(
             utcConvertintoGMT(resolutionData.votingDeadline)
           ).format("DD/MM/YYYY"),
@@ -1168,6 +1175,9 @@ const EditResolution = ({ setCancelresolution }) => {
         setDecisionDateTime({
           date: editResolutionDate(resolutionData.decisionAnnouncementDateTime),
           time: editResolutionTime(resolutionData.decisionAnnouncementDateTime),
+          timeDecisionforView: editResolutionTimeView(
+            resolutionData.decisionAnnouncementDateTime
+          ),
           dateValue: moment(
             utcConvertintoGMT(resolutionData.decisionAnnouncementDateTime)
           ).format("DD/MM/YYYY"),
@@ -1176,7 +1186,7 @@ const EditResolution = ({ setCancelresolution }) => {
           let atCH = [];
 
           let newData = [];
-          attachmentsResolution.map((data, index) => {
+          attachmentsResolution.forEach((data, index) => {
             atCH.push({
               DisplayAttachmentName: data.displayAttachmentName,
               OriginalAttachmentName: data.originalAttachmentName,
@@ -1197,13 +1207,13 @@ const EditResolution = ({ setCancelresolution }) => {
         ) {
           let vTrs = [];
           let vTrsVie = [];
-          votersResolutionMembers.map((voterMember, index) => {
+          votersResolutionMembers.forEach((voterMember, index) => {
             meetingAttendeesList
               .filter(
                 (assigneeData, index) =>
                   assigneeData.pK_UID === voterMember.fK_UID
               )
-              .map((data, index) => {
+              .forEach((data, index) => {
                 vTrs.push({
                   FK_UID: data.pK_UID,
                   FK_VotingStatus_ID: 3,
@@ -1228,7 +1238,7 @@ const EditResolution = ({ setCancelresolution }) => {
                 (assigneeData, index) =>
                   assigneeData.pK_UID === voterMember.fK_UID
               )
-              .map((data, index) => {
+              .forEach((data, index) => {
                 nVtr.push({
                   FK_UID: data.pK_UID,
                   FK_VotingStatus_ID: 3,
@@ -1243,7 +1253,9 @@ const EditResolution = ({ setCancelresolution }) => {
           // }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error, "errorerror");
+    }
   }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
 
   const circulationDateChangeHandler = (date) => {
@@ -1306,16 +1318,13 @@ const EditResolution = ({ setCancelresolution }) => {
       const minutes = ("0" + date.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${hours}:${minutes}:00`;
+      const formattedTime = `${hours}:${minutes}`;
 
-      // Create a new object with updated values
-      const updatedDateTime = {
+      setCirculationDateTime({
         ...circulationDateTime,
         time: formattedTime,
-      };
-
-      console.log("changeDateStartHandler", updatedDateTime);
-      setCirculationDateTime(updatedDateTime);
+        timeCirculationforView: date,
+      });
     } else {
       console.error("Invalid date object:", date);
     }
@@ -1329,16 +1338,13 @@ const EditResolution = ({ setCancelresolution }) => {
       const minutes = ("0" + date.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${hours}:${minutes}:00`;
+      const formattedTime = `${hours}:${minutes}`;
 
-      // Create a new object with updated values
-      const updatedDateTime = {
+      setVotingDateTime({
         ...votingDateTime,
         time: formattedTime,
-      };
-
-      console.log("changeDateStartHandler", updatedDateTime);
-      setCirculationDateTime(updatedDateTime);
+        timeVotingforView: date,
+      });
     } else {
       console.error("Invalid date object:", date);
     }
@@ -1347,21 +1353,19 @@ const EditResolution = ({ setCancelresolution }) => {
   //Decisions Time
   const handleDecisionTimeChange = (date) => {
     console.log("changeDateStartHandler", date);
-    if (date instanceof Date && !isNaN(date)) {
-      const hours = ("0" + date.getHours()).slice(-2);
-      const minutes = ("0" + date.getMinutes()).slice(-2);
+    let newData = new Date(date);
+    if (newData instanceof Date && !isNaN(newData)) {
+      const hours = ("0" + newData.getHours()).slice(-2);
+      const minutes = ("0" + newData.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${hours}:${minutes}:00`;
+      const formattedTime = `${hours}:${minutes}`;
 
-      // Create a new object with updated values
-      const updatedDateTime = {
+      setDecisionDateTime({
         ...decisionDateTime,
         time: formattedTime,
-      };
-
-      console.log("changeDateStartHandler", updatedDateTime);
-      setCirculationDateTime(updatedDateTime);
+        timeDecisionforView: date,
+      });
     } else {
       console.error("Invalid date object:", date);
     }
@@ -1628,8 +1632,12 @@ const EditResolution = ({ setCancelresolution }) => {
                                 format="hh:mm A"
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
-                                selected={circulationDateTime.time}
-                                value={circulationDateTime.time}
+                                selected={
+                                  circulationDateTime.timeCirculationforView
+                                }
+                                value={
+                                  circulationDateTime.timeCirculationforView
+                                }
                                 onChange={(date) =>
                                   handleCirculationTimeChange(date)
                                 }
@@ -1742,8 +1750,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                 format="hh:mm A"
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
-                                selected={votingDateTime.time}
-                                value={votingDateTime.time}
+                                selected={votingDateTime.timeVotingforView}
+                                value={votingDateTime.timeVotingforView}
                                 onChange={(date) =>
                                   handleVotingTimeChange(date)
                                 }
@@ -1859,8 +1867,8 @@ const EditResolution = ({ setCancelresolution }) => {
                                 format="hh:mm A"
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
-                                selected={decisionDateTime.time}
-                                value={decisionDateTime.time}
+                                selected={decisionDateTime.timeDecisionforView}
+                                value={decisionDateTime.timeDecisionforView}
                                 onChange={(date) =>
                                   handleDecisionTimeChange(date)
                                 }

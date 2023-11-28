@@ -1557,9 +1557,9 @@ const saveTaskDocumentsAndAssigneesApi = (
               )
             );
             let NewData = {
-              ToDoID: Number(Data.TaskID),
-              UpdateFileList: Data.TasksAttachments.map((data, index) => {
-                return { PK_FileID: Number(data.OriginalAttachmentName) };
+              ToDoID: Number(Data?.TaskID),
+              UpdateFileList: Data?.TasksAttachments.map((data, index) => {
+                return { PK_FileID: Number(data?.OriginalAttachmentName) };
               }),
             };
             dispatch(
