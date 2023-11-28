@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { Paper } from "@material-ui/core";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
@@ -120,7 +121,7 @@ const ScheduleNewResolution = () => {
   ]);
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",
-    time: "",
+    time: new Date(),
     dateValue: "",
   });
   const [votingDateTime, setVotingDateTime] = useState({
@@ -910,6 +911,75 @@ const ScheduleNewResolution = () => {
     }
   };
 
+  //Circulation Time
+  const handleCirculationTimeChange = (date) => {
+    console.log("changeDateStartHandler", date);
+    if (date instanceof Date && !isNaN(date)) {
+      const hours = ("0" + date.getHours()).slice(-2);
+      const minutes = ("0" + date.getMinutes()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours}:${minutes}:00`;
+
+      // Create a new object with updated values
+      const updatedDateTime = {
+        ...circulationDateTime,
+        time: formattedTime,
+      };
+
+      console.log("changeDateStartHandler", updatedDateTime);
+      setCirculationDateTime(updatedDateTime);
+    } else {
+      console.error("Invalid date object:", date);
+    }
+  };
+
+  //Voting Time
+  const handleVotingTimeChange = (date) => {
+    console.log("changeDateStartHandler", date);
+    if (date instanceof Date && !isNaN(date)) {
+      const hours = ("0" + date.getHours()).slice(-2);
+      const minutes = ("0" + date.getMinutes()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours}:${minutes}:00`;
+
+      // Create a new object with updated values
+      const updatedDateTime = {
+        ...votingDateTime,
+        time: formattedTime,
+      };
+
+      console.log("changeDateStartHandler", updatedDateTime);
+      setCirculationDateTime(updatedDateTime);
+    } else {
+      console.error("Invalid date object:", date);
+    }
+  };
+
+  //Decisions Time
+  const handleDecisionTimeChange = (date) => {
+    console.log("changeDateStartHandler", date);
+    if (date instanceof Date && !isNaN(date)) {
+      const hours = ("0" + date.getHours()).slice(-2);
+      const minutes = ("0" + date.getMinutes()).slice(-2);
+
+      // Format the time as HH:mm:ss
+      const formattedTime = `${hours}:${minutes}:00`;
+
+      // Create a new object with updated values
+      const updatedDateTime = {
+        ...decisionDateTime,
+        time: formattedTime,
+      };
+
+      console.log("changeDateStartHandler", updatedDateTime);
+      setCirculationDateTime(updatedDateTime);
+    } else {
+      console.error("Invalid date object:", date);
+    }
+  };
+
   const circulationDateChangeHandler = (date) => {
     let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
@@ -940,6 +1010,17 @@ const ScheduleNewResolution = () => {
       dateValue: meetingDateValueFormat,
     });
   };
+
+  function CustomInput({ onFocus, value, onChange }) {
+    return (
+      <input
+        onFocus={onFocus}
+        value={value}
+        onChange={onChange}
+        className="input-with-icon"
+      />
+    );
+  }
 
   return (
     <>
@@ -1170,7 +1251,7 @@ const ScheduleNewResolution = () => {
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           {/* Circualtion Time */}
-                          <TextFieldTime
+                          {/* <TextFieldTime
                             type="time"
                             labelClass="d-none"
                             name="circulation"
@@ -1186,6 +1267,23 @@ const ScheduleNewResolution = () => {
                                 time: getcurrentTime,
                               });
                             }}
+                          /> */}
+                          <DatePicker
+                            arrowClassName="arrowClass"
+                            containerClassName="containerClassTimePicker"
+                            className="timePicker"
+                            disableDayPicker
+                            inputClass="inputTImeMeeting"
+                            calendar={calendarValue}
+                            locale={localValue}
+                            format="hh:mm A"
+                            plugins={[<TimePicker hideSeconds />]}
+                            render={<CustomInput />}
+                            selected={circulationDateTime.time}
+                            value={circulationDateTime.time}
+                            onChange={(date) =>
+                              handleCirculationTimeChange(date)
+                            }
                           />
                           <Row>
                             <Col>
@@ -1273,7 +1371,7 @@ const ScheduleNewResolution = () => {
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          <TextFieldTime
+                          {/* <TextFieldTime
                             type="time"
                             applyClass={"search_voterInput"}
                             labelClass="d-none"
@@ -1289,6 +1387,22 @@ const ScheduleNewResolution = () => {
                                 time: getcurrentTime,
                               });
                             }}
+                          /> */}
+
+                          <DatePicker
+                            arrowClassName="arrowClass"
+                            containerClassName="containerClassTimePicker"
+                            className="timePicker"
+                            disableDayPicker
+                            inputClass="inputTImeMeeting"
+                            calendar={calendarValue}
+                            locale={localValue}
+                            format="hh:mm A"
+                            plugins={[<TimePicker hideSeconds />]}
+                            render={<CustomInput />}
+                            selected={votingDateTime.time}
+                            value={votingDateTime.time}
+                            onChange={(date) => handleVotingTimeChange(date)}
                           />
                           <Row>
                             <Col>
@@ -1376,7 +1490,7 @@ const ScheduleNewResolution = () => {
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          <TextFieldTime
+                          {/* <TextFieldTime
                             applyClass={"search_voterInput"}
                             type="time"
                             onKeyDown={(e) => e.preventDefault()}
@@ -1392,6 +1506,21 @@ const ScheduleNewResolution = () => {
                                 time: getcurrentTime,
                               });
                             }}
+                          /> */}
+                          <DatePicker
+                            arrowClassName="arrowClass"
+                            containerClassName="containerClassTimePicker"
+                            className="timePicker"
+                            disableDayPicker
+                            inputClass="inputTImeMeeting"
+                            calendar={calendarValue}
+                            locale={localValue}
+                            format="hh:mm A"
+                            plugins={[<TimePicker hideSeconds />]}
+                            render={<CustomInput />}
+                            selected={decisionDateTime.time}
+                            value={decisionDateTime.time}
+                            onChange={(date) => handleDecisionTimeChange(date)}
                           />
                           <Row>
                             <Col>
