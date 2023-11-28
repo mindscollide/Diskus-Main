@@ -35,6 +35,7 @@ import {
   TextField,
   ResultMessage,
   Notification,
+  Loader,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
 
@@ -88,6 +89,9 @@ const NewMeeting = () => {
   const { talkStateData } = useSelector((state) => state);
   const { searchMeetings, endForAllMeeting, ResponseMessage, endMeetingModal } =
     useSelector((state) => state.NewMeetingreducer);
+  const downloadState = useSelector((state) => state);
+  const { downloadReducer } = downloadState;
+  console.log(downloadReducer, "downloadReducerfirst");
 
   // const searchMeetings = useSelector(
   //   (state) => state.NewMeetingreducer.searchMeetings
@@ -1481,9 +1485,7 @@ const NewMeeting = () => {
       {editFlag ? (
         <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
-      {/* {Loading ? <Loader /> : null} */}
-
-      {/* {Loading ? <Loader /> : null} */}
+      {downloadReducer.Loading ? <Loader /> : null}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </section>
   );

@@ -52,3 +52,4 @@ export { default as actionMeetingReducer } from "./ActionMeeting_Reducer";
 //AgendaWise Agenda List Reducer
 
 export { default as AgendaWiseAgendaListReducer } from "./AgendaWiseAgendaReducer";
+export { default as downloadReducer } from "./Download_reducer";
