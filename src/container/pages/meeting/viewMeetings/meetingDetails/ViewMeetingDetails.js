@@ -225,12 +225,6 @@ const ViewMeetingDetails = ({
     StatusID: 9,
   };
 
-  console.log(
-    NewMeetingreducer.Loading,
-    NewMeetingreducer,
-    "NewMeetingreducerNewMeetingreducer"
-  );
-
   //Fetching All Saved Data
   useEffect(() => {
     try {

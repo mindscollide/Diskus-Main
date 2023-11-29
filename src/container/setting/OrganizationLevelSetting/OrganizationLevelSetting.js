@@ -2268,7 +2268,6 @@ const OrganizationLevelSetting = () => {
           </Col>
         </Row>
       </section>
-      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

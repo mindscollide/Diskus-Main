@@ -3456,7 +3456,6 @@ const DataRoom = () => {
           setRequestFile={setRequestFile}
         />
       )}
-      {DataRoomReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification open={open.open} message={open.message} setOpen={setOpen} />
     </>
   );

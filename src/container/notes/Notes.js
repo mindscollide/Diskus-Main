@@ -97,13 +97,11 @@ const Notes = () => {
       ) {
         setTotalRecords(NotesReducer.GetAllNotesResponse.totalRecords);
         if (NotesReducer.GetAllNotesResponse.getNotes === null) {
-          
           setNotes([]);
         } else if (
           Array.isArray(NotesReducer.GetAllNotesResponse.getNotes) &&
           NotesReducer.GetAllNotesResponse.getNotes.length > 0
         ) {
-          
           let notes = [];
           NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push({
@@ -619,7 +617,6 @@ const Notes = () => {
         />
       ) : null}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
-      {NotesReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

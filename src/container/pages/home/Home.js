@@ -1712,9 +1712,7 @@ const Home = () => {
           setViewFlagToDo={setTodoViewModal}
         />
       ) : null}
-      {settingReducer.Loading ||
-      LanguageReducer.Loading ||
-      (NotesReducer.Loading && getNoteID !== 0) ||
+      {(NotesReducer.Loading && getNoteID !== 0) ||
       (toDoListReducer.Loading && getTodoID !== 0) ? (
         <Loader />
       ) : null}

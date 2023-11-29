@@ -487,7 +487,6 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
       </section>
-      {/* {NewMeetingreducer.Loading && <Loader />} */}
     </>
   );
 };

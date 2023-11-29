@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react"
-import UserProfileSetting from "../../../../src/assets/images/Userprofile-1.png"
-import ImageUpload from "react-image-easy-upload"
+import React, { useState, useRef, useEffect } from "react";
+import UserProfileSetting from "../../../../src/assets/images/Userprofile-1.png";
+import ImageUpload from "react-image-easy-upload";
 import {
   TextField,
   Button,
@@ -8,31 +8,31 @@ import {
   Notification,
   EmployeeCard,
   Loader,
-} from "./../../../components/elements"
-import { Row, Col, Container } from "react-bootstrap"
-import styles from "./UserProfile.module.css"
-import Form from "react-bootstrap/Form"
+} from "./../../../components/elements";
+import { Row, Col, Container } from "react-bootstrap";
+import styles from "./UserProfile.module.css";
+import Form from "react-bootstrap/Form";
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
 import {
   countryName,
   countryNameforPhoneNumber,
-} from "../../Admin/AllUsers/AddUser/CountryJson"
-import ReactFlagsSelect from "react-flags-select"
-import { useTranslation } from "react-i18next"
-import { style } from "@mui/system"
-import arabic_ar from "react-date-object/locales/arabic_ar"
-import gregorian_en from "react-date-object/locales/gregorian_en"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+} from "../../Admin/AllUsers/AddUser/CountryJson";
+import ReactFlagsSelect from "react-flags-select";
+import { useTranslation } from "react-i18next";
+import { style } from "@mui/system";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   getUserDetails,
   settingClearMessege,
   updateuserprofile,
-} from "../../../store/actions/GetUserSetting"
-import settingReducer from "../../../store/reducers/Setting_reducer"
-import { updateUserProfilePicture } from "../../../store/actions/UpdateUserProfile"
-import AvatarEditorComponent from "../../../components/elements/imageUploader/ImageUploader"
-import { base64UrlToFile } from "../../../commen/functions/getBase64"
+} from "../../../store/actions/GetUserSetting";
+import settingReducer from "../../../store/reducers/Setting_reducer";
+import { updateUserProfilePicture } from "../../../store/actions/UpdateUserProfile";
+import AvatarEditorComponent from "../../../components/elements/imageUploader/ImageUploader";
+import { base64UrlToFile } from "../../../commen/functions/getBase64";
 
 const UserProfileModal = ({
   ModalTitle,
@@ -42,8 +42,8 @@ const UserProfileModal = ({
   setUserProfileModal,
   calenderFlag,
 }) => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // states for UserProfile
   const [userProfileEdit, setUserProfileEdit] = useState({
     Name: "",
@@ -55,112 +55,112 @@ const UserProfileModal = ({
       DisplayProfilePictureName: "",
       OrignalProfilePictureName: "",
     },
-  })
+  });
 
   //For Localization
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   // for enable states
-  const [nameEnable, setNameEanble] = useState(true)
-  const [erorbar, setErrorBar] = useState(false)
-  const [userProfile, setUserProfile] = useState("")
-  const [Base64Url, setBase64Url] = useState(null)
-  console.log(userProfile, "userProfileuserProfileuserProfile")
-  let currentLanguage = localStorage.getItem("i18nextLng")
-  const [designationEnable, setDesignationEnable] = useState(true)
-  const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("")
-  const [mobileEnable, setMobileEnable] = useState(true)
+  const [nameEnable, setNameEanble] = useState(true);
+  const [erorbar, setErrorBar] = useState(false);
+  const [userProfile, setUserProfile] = useState("");
+  const [Base64Url, setBase64Url] = useState(null);
+  console.log(userProfile, "userProfileuserProfileuserProfile");
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  const [designationEnable, setDesignationEnable] = useState(true);
+  const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("");
+  const [mobileEnable, setMobileEnable] = useState(true);
   // const [isFlagEnable, setIsFlagEnable] = useState(false);
   // const [localValue, setLocalValue] = useState(gregorian_en);
-  const [message, setMessege] = useState("")
+  const [message, setMessege] = useState("");
   // const [errorMessage, setErrorMessage] = useState(false);
-  const state = useSelector((state) => state)
-  const { settingReducer, LanguageReducer } = state
-  console.log("settingReducer", settingReducer)
-  const [userPicture, setUserPicture] = useState([])
-  console.log(userPicture, "userPictureuserPicture")
-  const [selected, setSelected] = useState("US")
-  const [selectedCountry, setSelectedCountry] = useState({})
+  const state = useSelector((state) => state);
+  const { settingReducer, LanguageReducer } = state;
+  console.log("settingReducer", settingReducer);
+  const [userPicture, setUserPicture] = useState([]);
+  console.log(userPicture, "userPictureuserPicture");
+  const [selected, setSelected] = useState("US");
+  const [selectedCountry, setSelectedCountry] = useState({});
 
   const handleSelect = (country) => {
-    console.log(country, "country")
-    setSelected(country)
-    setSelectedCountry(country)
+    console.log(country, "country");
+    setSelected(country);
+    setSelectedCountry(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-      return obj.primary === country
-    })
-    console.log("Selected-Values", a, country)
+      return obj.primary === country;
+    });
+    console.log("Selected-Values", a, country);
     setUserProfileEdit({
       ...userProfileEdit,
       CountyCode: a.id,
-    })
-  }
+    });
+  };
 
   //For Localization
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  })
+  });
   // for edit User Input Fields
-  const Name = useRef(null)
-  const Designation = useRef(null)
-  const Mobile = useRef(null)
-  const SelectFlag = useRef(null)
+  const Name = useRef(null);
+  const Designation = useRef(null);
+  const Mobile = useRef(null);
+  const SelectFlag = useRef(null);
 
   // for UserProfile edit handler
   const userProfileEditHandler = (e) => {
-    let name = e.target.name
-    let value = e.target.value
+    let name = e.target.name;
+    let value = e.target.value;
 
     if (name === "Name" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "")
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
         setUserProfileEdit({
           ...userProfileEdit,
           Name: valueCheck.trimStart(),
-        })
+        });
       }
     } else if (name === "Name" && value === "") {
       setUserProfileEdit({
         ...userProfileEdit,
         Name: "",
-      })
+      });
     }
 
     if (name === "Designation" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "")
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
         // setErrorMessage(false);
         setUserProfileEdit({
           ...userProfileEdit,
           Designation: valueCheck.trimStart(),
-        })
-        setMessege(t("(Maximum-character-100.-alpha-numeric-field)"))
+        });
+        setMessege(t("(Maximum-character-100.-alpha-numeric-field)"));
       }
     } else if (name === "Designation" && value === "") {
       // setErrorMessage(true);
       setUserProfileEdit({
         ...userProfileEdit,
         Designation: "",
-      })
-      setMessege("")
+      });
+      setMessege("");
     }
 
     if (name === "Mobile" && value !== "") {
-      let valueCheck = value.replace(/[^\d]/g, "")
+      let valueCheck = value.replace(/[^\d]/g, "");
       if (valueCheck !== "") {
         setUserProfileEdit({
           ...userProfileEdit,
           Mobile: valueCheck.trimStart(),
-        })
+        });
       }
     } else if (name === "Mobile" && value === "") {
       setUserProfileEdit({
         ...userProfileEdit,
         Mobile: "",
-      })
+      });
     }
-  }
+  };
 
   // Reset Input fields
   const userProfileReset = () => {
@@ -168,7 +168,7 @@ const UserProfileModal = ({
       settingReducer.GetUserDetailsResponse !== null &&
       settingReducer.GetUserDetailsResponse !== undefined
     ) {
-      let UserData = settingReducer.GetUserDetailsResponse
+      let UserData = settingReducer.GetUserDetailsResponse;
 
       let data = {
         Name: UserData.name,
@@ -183,66 +183,66 @@ const UserProfileModal = ({
           OrignalProfilePictureName:
             UserData.profilePicture.orignalProfilePictureName,
         },
-      }
+      };
 
       // console.log(getimgObj, "getimgObjgetimgObjgetimgObjgetimgObj")
-      setMessege("")
-      setMobileEnable(true)
-      setDesignationEnable(true)
-      setNameEanble(true)
-      console.log("UserData", UserData)
-      setUserProfileEdit(data)
+      setMessege("");
+      setMobileEnable(true);
+      setDesignationEnable(true);
+      setNameEanble(true);
+      console.log("UserData", UserData);
+      setUserProfileEdit(data);
       setSelectedCountry(
         UserData.organization.numberWorldCountry.fK_NumberWorldCountryID
-      )
+      );
       let a = Object.values(countryNameforPhoneNumber).find((obj) => {
         return (
           obj.primary ===
           UserData.organization.countryCode.fK_NumberWorldCountryID
-        )
-      })
-      setSelectedNonEditCountry(a.secondary)
-      setSelected(a.primary)
-      console.log("Selected-Values", a.secondary)
+        );
+      });
+      setSelectedNonEditCountry(a.secondary);
+      setSelected(a.primary);
+      console.log("Selected-Values", a.secondary);
     }
-  }
+  };
 
   // for edit name field
   const nameHandler = () => {
-    Name.current.disabled = false
-    Name.current.focus()
-    setNameEanble(false)
-  }
+    Name.current.disabled = false;
+    Name.current.focus();
+    setNameEanble(false);
+  };
 
   //for edit Designation field
   const designationHandler = () => {
-    Designation.current.disabled = false
-    Designation.current.focus()
-    setDesignationEnable(false)
-  }
+    Designation.current.disabled = false;
+    Designation.current.focus();
+    setDesignationEnable(false);
+  };
 
   //for edit Mobile field
   const mobileHandler = () => {
-    setMobileEnable(false)
-  }
+    setMobileEnable(false);
+  };
 
   //for next enter key
   const enterKeyHandler = (event, nextInput) => {
     if (event.key === "Enter") {
-      nextInput.current.focus()
+      nextInput.current.focus();
     }
-  }
+  };
 
   useEffect(() => {
     if (
       settingReducer.GetUserDetailsResponse !== null &&
       settingReducer.GetUserDetailsResponse !== undefined
     ) {
-      setMessege("")
-      setMobileEnable(true)
-      setDesignationEnable(true)
-      setNameEanble(true)
-      let UserData = settingReducer.GetUserDetailsResponse
+      setMessege("");
+      setMobileEnable(true);
+      setDesignationEnable(true);
+      setNameEanble(true);
+      let UserData = settingReducer.GetUserDetailsResponse;
       let data = {
         Name: UserData.name,
         Designation: UserData.designation,
@@ -255,20 +255,20 @@ const UserProfileModal = ({
           OrignalProfilePictureName:
             UserData.profilePicture.orignalProfilePictureName,
         },
-      }
-      console.log("UserData", data)
+      };
+      console.log("UserData", data);
 
-      setUserProfileEdit(data)
-      setSelectedCountry(UserData.numberWorldCountry.fK_NumberWorldCountryID)
+      setUserProfileEdit(data);
+      setSelectedCountry(UserData.numberWorldCountry.fK_NumberWorldCountryID);
       let a = Object.values(countryName).find((obj) => {
-        console.log(obj, "Selected-Values")
-        return obj.secondary === UserData.numberWorldCountry.code
-      })
-      setSelected(a.primary)
-      console.log("Selected-Values", a)
-      setSelectedNonEditCountry(a.secondary)
+        console.log(obj, "Selected-Values");
+        return obj.secondary === UserData.numberWorldCountry.code;
+      });
+      setSelected(a.primary);
+      console.log("Selected-Values", a);
+      setSelectedNonEditCountry(a.secondary);
     }
-  }, [settingReducer.GetUserDetailsResponse])
+  }, [settingReducer.GetUserDetailsResponse]);
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -278,7 +278,7 @@ const UserProfileModal = ({
         // setLocalValue(gregorian_ar);
       }
     }
-  }, [currentLanguage])
+  }, [currentLanguage]);
 
   const updateuserprofiledata = () => {
     if (
@@ -286,9 +286,9 @@ const UserProfileModal = ({
       userProfileEdit.Designation !== "" &&
       userProfileEdit.Mobile !== ""
     ) {
-      setErrorBar(false)
-      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"))
-      let userID = JSON.parse(localStorage.getItem("userID"))
+      setErrorBar(false);
+      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let userID = JSON.parse(localStorage.getItem("userID"));
       if (
         userProfileEdit.Designation !== "" &&
         userProfileEdit.Name !== "" &&
@@ -303,11 +303,11 @@ const UserProfileModal = ({
           MobileNumber: userProfileEdit.Mobile,
           ProfilePicture: userProfileEdit.ProfilePicture,
           FK_NumberWorldCountryID: userProfileEdit.CountyCode,
-        }
-        setMessege("")
-        setMobileEnable(true)
-        setDesignationEnable(true)
-        setNameEanble(true)
+        };
+        setMessege("");
+        setMobileEnable(true);
+        setDesignationEnable(true);
+        setNameEanble(true);
         dispatch(
           updateuserprofile(
             navigate,
@@ -318,16 +318,16 @@ const UserProfileModal = ({
             setNameEanble,
             setUser
           )
-        )
+        );
       }
     } else {
-      setErrorBar(true)
+      setErrorBar(true);
       setOpen({
         flag: true,
         message: t("Please-fill-all-the-fields"),
-      })
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -621,10 +621,9 @@ const UserProfileModal = ({
           }
         />
       </Container>
-      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
-  )
-}
+  );
+};
 
-export default UserProfileModal
+export default UserProfileModal;
