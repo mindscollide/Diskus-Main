@@ -435,6 +435,11 @@ const Polls = ({
     // if(editorRole.statu)
   };
 
+  const handleNextButtonPolls = () => {
+    setPolls(false);
+    setAttendance(true);
+  };
+
   useEffect(() => {
     if (
       NewMeetingreducer.ResponseMessage !== "" ||
@@ -615,6 +620,7 @@ const Polls = ({
                       <Button
                         text={t("Next")}
                         className={styles["Save_Button_Polls_meeting"]}
+                        onClick={handleNextButtonPolls}
                       />
                     )}
 
