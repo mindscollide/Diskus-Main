@@ -267,3 +267,46 @@ body[dir="rtl"] .Leftpolygon {
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
 }
+
+.errorNotesMessage {
+  height: 0px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorNotesMessage {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.errorNotesMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorNotesMessage_hidden {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.errorNotesMessage_description {
+  margin: 7% 4px 4px 0px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorNotesMessage_description {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.errorNotesMessage_hidden_description {
+  visibility: hidden;
+  margin: 7% 4px 4px 4px;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorNotesMessage_hidden_description {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
