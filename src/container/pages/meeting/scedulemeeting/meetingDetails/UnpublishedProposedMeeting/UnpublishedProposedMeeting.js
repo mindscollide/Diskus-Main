@@ -622,7 +622,7 @@ const UnpublishedProposedMeeting = ({
             expandable={{
               expandedRowRender: (record) => {
                 return record.meetingAgenda.map((data) => (
-                  <p className="meeting-expanded-row">
+                  <p className={styles["meeting-expanded-row"]}>
                     {data.objMeetingAgenda.title}
                   </p>
                 ));

@@ -6451,3 +6451,11 @@ textarea {
   cursor: pointer !important;
   outline: none !important;
 }
+
+.rmdp-time-picker .dvdr {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 5px !important;
+  margin-top: 5px !important;
+}

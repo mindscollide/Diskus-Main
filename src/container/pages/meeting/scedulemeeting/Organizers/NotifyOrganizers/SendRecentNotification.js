@@ -131,18 +131,18 @@ const SendNotificationOrganizer = () => {
 
   const [NotifyMessageError, setNotifyMessaegError] = useState(false);
   const sendNotification = () => {
-    if (notifyOrganizerData.Messege !== "") {
-      let Data = {
-        UserID: MeetingOrganizersReducer.NotificationSendData[0].userID,
-        Message: notifyOrganizerData.Messege,
-        IsAgendaContributor: false,
-      };
-      dispatch(sendNotificationOrganizer(Data, navigate, t));
-      dispatch(notificationUpdateData(membersOrganizers));
-      dispatch(sendRecentNotificationOrganizerModal(false));
-    } else {
-      setNotifyMessaegError(true);
-    }
+    // if (notifyOrganizerData.Messege !== "") {
+    let Data = {
+      UserID: MeetingOrganizersReducer.NotificationSendData[0].userID,
+      Message: notifyOrganizerData.Messege,
+      IsAgendaContributor: false,
+    };
+    dispatch(sendNotificationOrganizer(Data, navigate, t));
+    dispatch(notificationUpdateData(membersOrganizers));
+    dispatch(sendRecentNotificationOrganizerModal(false));
+    // } else {
+    //   setNotifyMessaegError(true);
+    // }
   };
 
   const handleCancelButton = () => {
@@ -176,6 +176,7 @@ const SendNotificationOrganizer = () => {
                   draggable={false}
                   src={BlackCrossIcon}
                   className="cursor-pointer"
+                  alt=""
                   width="16px"
                   height="16px"
                   onClick={handleCrossIcon}
@@ -196,7 +197,7 @@ const SendNotificationOrganizer = () => {
                   name="Message"
                   maxLength={500}
                 />
-                {NotifyMessageError && notifyOrganizerData.Messege === "" ? (
+                {/* {NotifyMessageError && notifyOrganizerData.Messege === "" ? (
                   <span
                     className={
                       NotifyMessageError && notifyOrganizerData.Messege === ""
@@ -206,7 +207,7 @@ const SendNotificationOrganizer = () => {
                   >
                     {t("Please-enter-message")}
                   </span>
-                ) : null}
+                ) : null} */}
               </Col>
             </Row>
             <Row className="mt-2">
