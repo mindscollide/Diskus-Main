@@ -415,7 +415,6 @@ const Minutes = ({
       };
       dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
     } else {
-      console.log("i am in else");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
