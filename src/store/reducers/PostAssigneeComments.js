@@ -51,7 +51,6 @@ const postAssigneeComments = (state = initialState, action) => {
       };
     }
     case actions.POST_COMMENTS: {
-      console.log("POST_COMMENTS", action);
       return {
         ...state,
         Loading: false,

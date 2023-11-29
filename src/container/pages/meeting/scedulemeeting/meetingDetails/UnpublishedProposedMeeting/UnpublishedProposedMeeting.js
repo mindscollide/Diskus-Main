@@ -330,6 +330,7 @@ const UnpublishedProposedMeeting = ({
       key: "Edit",
       width: "90px",
       render: (text, record) => {
+        console.log(record.status, "fjaanajdkamenmf");
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
@@ -463,13 +464,7 @@ const UnpublishedProposedMeeting = ({
                       className={styles["publish_meeting_btn"]}
                       onClick={() =>
                         dispatch(
-                          UpdateOrganizersMeeting(
-                            navigate,
-                            apiData,
-                            t,
-                            2,
-                            setPublishState
-                          )
+                          UpdateOrganizersMeeting(navigate, t, 5, apiData)
                         )
                       }
                     />

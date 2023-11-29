@@ -1598,7 +1598,7 @@
   "Record-saved": "Record Saved",
   "Only-a-organizer-can-perform-this-operation": "only a organizer can perform this operation",
   "Record-not-updated": "Record Not Updated",
-  "Edit-new-meeting": "Edit New Meeting",
+  "Edit-meeting": "Edit Meeting",
   "The-meeting-must-be-in-a-proposed-state": "The meeting must be in a proposed state",
   "The-user-must-be-an-organizer": "The user must be an organizer",
   "No-Meeting-Material": "No Meeting Material",
@@ -1652,5 +1652,5 @@
   "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up lets dive into some task",
   "Selected-start-time-should-not-be-greater-than-the-endTime": "Selected start time should not be greater than the end time",
   "Create-a-to-do-list": "Create a Task",
-  "Selected-end-time-should-not-be-less-than-start-time":"Selected end time should not be less than start time"
+  "Selected-end-time-should-not-be-less-than-start-time": "Selected end time should not be less than start time"
 }

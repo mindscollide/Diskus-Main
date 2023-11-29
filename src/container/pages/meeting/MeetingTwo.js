@@ -35,6 +35,7 @@ import {
   TextField,
   ResultMessage,
   Notification,
+  Loader,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
 
@@ -86,8 +87,9 @@ const NewMeeting = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   const { talkStateData } = useSelector((state) => state);
-  const { searchMeetings, endForAllMeeting, ResponseMessage, endMeetingModal } =
-    useSelector((state) => state.NewMeetingreducer);
+  const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
+    (state) => state.NewMeetingreducer
+  );
 
   // const searchMeetings = useSelector(
   //   (state) => state.NewMeetingreducer.searchMeetings
@@ -98,9 +100,9 @@ const NewMeeting = () => {
   // const endMeetingModal = useSelector(
   //   (state) => state.NewMeetingreducer.endMeetingModal
   // );
-  // const ResponseMessage = useSelector(
-  //   (state) => state.NewMeetingreducer.ResponseMessage
-  // );
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
@@ -359,6 +361,8 @@ const NewMeeting = () => {
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
+    localStorage.setItem("MeetingPageRows", 50);
+    localStorage.setItem("MeetingPageCurrent", 1);
   };
 
   //UnPublished Meeting Page
@@ -374,6 +378,8 @@ const NewMeeting = () => {
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
+    localStorage.setItem("MeetingPageRows", 50);
+    localStorage.setItem("MeetingPageCurrent", 1);
   };
 
   const handleViewMeeting = async (id, isQuickMeeting) => {
@@ -1074,7 +1080,8 @@ const NewMeeting = () => {
       ResponseMessages !== "" &&
       ResponseMessages !== undefined &&
       ResponseMessages !== t("Record-found") &&
-      ResponseMessages !== t("No-records-found")
+      ResponseMessages !== t("No-records-found") &&
+      ResponseMessages !== t("No-record-found")
     ) {
       setOpen({
         message: ResponseMessages,
@@ -1087,16 +1094,19 @@ const NewMeeting = () => {
         });
         dispatch(clearResponseMessage(""));
       }, 4000);
+    } else {
     }
   }, [ResponseMessages]);
 
   useEffect(() => {
     if (
       ResponseMessage !== "" &&
-      ResponseMessage !== undefined &&
+      ResponseMessage !== t("No-record-found") &&
+      ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== t("Record-found") &&
-      ResponseMessage !== t("No-records-found")
+      ResponseMessage !== t("List-updated-successfully")
     ) {
+      console.log("ResponseMessageResponseMessage", ResponseMessage);
       setOpen({
         message: ResponseMessage,
         open: true,
@@ -1489,9 +1499,7 @@ const NewMeeting = () => {
       {editFlag ? (
         <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
-      {/* {Loading ? <Loader /> : null} */}
-
-      {/* {Loading ? <Loader /> : null} */}
+      {/* {downloadReducer.Loading ? <Loader /> : null} */}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </section>
   );

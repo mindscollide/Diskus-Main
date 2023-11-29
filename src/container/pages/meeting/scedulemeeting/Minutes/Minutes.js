@@ -712,14 +712,15 @@ const Minutes = ({
   };
 
   useEffect(() => {
+    console.log("ResponseMessageResponseMessage", ResponseMessage);
     if (
       ResponseMessage !== "" &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
       ResponseMessage !== t("Record-found") &&
-      ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("List-updated-successfully")
     ) {
+      console.log("ResponseMessageResponseMessage", ResponseMessage);
       setOpen({
         ...open,
         flag: true,
@@ -731,8 +732,8 @@ const Minutes = ({
           flag: false,
           message: "",
         });
+        dispatch(CleareMessegeNewMeeting());
       }, 3000);
-      dispatch(CleareMessegeNewMeeting());
     } else {
       dispatch(CleareMessegeNewMeeting());
     }
