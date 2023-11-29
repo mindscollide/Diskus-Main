@@ -371,7 +371,7 @@ const TodoList = () => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0 MontserratRegular color-505050 FontArabicRegular">
+              <p className="m-0 MontserratRegular color-505050 FontArabicRegular ">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
@@ -405,15 +405,20 @@ const TodoList = () => {
       title: t("Deadline"),
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
-      className: "deadLineTodo",
-      width: "180px",
+      // className: "deadLineTodo",
+      width: "280px",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         utcConvertintoGMT(a.deadlineDateTime) -
         utcConvertintoGMT(b.deadlineDateTime),
       // width: "220px",
       render: (text, record) => {
-        return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
+        return (
+          <p className="text-nowrap text-center">
+            {newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)}
+          </p>
+        );
       },
     },
     {

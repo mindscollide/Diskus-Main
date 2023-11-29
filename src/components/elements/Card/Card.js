@@ -14,6 +14,7 @@ import doticon from "../../../assets/images/Dsvg.svg";
 import img6 from "../../../assets/images/DropdownSIX.svg";
 import img7 from "../../../assets/images/DropdownSEVEN.svg";
 import Group_Icon from "../../../assets/images/group_Icons.svg";
+import { useMemo } from "react";
 const Card = ({
   CardHeading,
   profile,
@@ -78,26 +79,27 @@ const Card = ({
           }
         }
       });
-    } catch {
-      console.log("error");
+    } catch (error) {
+      console.log("error", error);
     }
   }, []);
-  let sortedArraay =
+  let sortedArraay = useMemo(() => {
     profile !== null &&
-    profile !== undefined &&
-    profile.length > 0 &&
-    profile.sort((a, b) => {
-      const userNameA = a.userName.toLowerCase();
-      const userNameB = b.userName.toLowerCase();
+      profile !== undefined &&
+      profile.length > 0 &&
+      profile.sort((a, b) => {
+        const userNameA = a.userName.toLowerCase();
+        const userNameB = b.userName.toLowerCase();
 
-      if (userNameA < userNameB) {
-        return -1;
-      }
-      if (userNameA > userNameB) {
-        return 1;
-      }
-      return 0;
-    });
+        if (userNameA < userNameB) {
+          return -1;
+        }
+        if (userNameA > userNameB) {
+          return 1;
+        }
+        return 0;
+      });
+  }, [profile]);
 
   useEffect(() => {}, [editdropdown, dropdownthreedots]);
   return (
@@ -507,7 +509,6 @@ const Card = ({
             sortedArraay !== undefined &&
             sortedArraay.length > 0
               ? sortedArraay.map((data, index) => {
-                  console.log(data, "datadatadatadata1212");
                   if (index <= 3) {
                     return (
                       <Col
