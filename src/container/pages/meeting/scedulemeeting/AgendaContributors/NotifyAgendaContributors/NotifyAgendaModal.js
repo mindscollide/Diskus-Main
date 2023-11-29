@@ -95,27 +95,27 @@ const NotifyAgendaModal = ({
 
   const handleSendIcon = () => {
     if (specificUser !== 0) {
-      if (notifyMessageField !== "") {
-        // Corrected variable name
-        let Data = {
-          UserID: Number(userID),
-          Message: notifyMessageField,
-          IsAgendaContributor: false,
-        };
-        console.log(Data, "notifyMessageFieldnotifyMessageField");
-        dispatch(SendNotificationApiFunc(Data, navigate, t));
-        dispatch(showAgendaContributorsModals(false));
-        setSpecifiUser(0);
-      } else {
-        setNotifyMessaegError(true);
-      }
+      // if (notifyMessageField === "") {
+      // Corrected variable name
+      let Data = {
+        UserID: Number(userID),
+        Message: notifyMessageField,
+        IsAgendaContributor: false,
+      };
+      console.log(Data, "notifyMessageFieldnotifyMessageField");
+      dispatch(SendNotificationApiFunc(Data, navigate, t));
+      dispatch(showAgendaContributorsModals(false));
+      setSpecifiUser(0);
+      // } else {
+      // setNotifyMessaegError(true);
+      // }
     } else {
-      if (notifyMessageField === "") {
-        setNotifyMessaegError(true);
-      } else {
-        setNotifyMessaegError(false);
-        dispatch(showAgendaContributorsModals(false));
-      }
+      // if (notifyMessageField === "") {
+      //   setNotifyMessaegError(true);
+      // } else {
+      //   setNotifyMessaegError(false);
+      //   dispatch(showAgendaContributorsModals(false));
+      // }
     }
   };
 
@@ -168,7 +168,7 @@ const NotifyAgendaModal = ({
                   required={true}
                   maxLength={500}
                 />
-                {NotifyMessageError && notifyMessageField === "" ? (
+                {/* {NotifyMessageError && notifyMessageField === "" ? (
                   <span
                     className={
                       NotifyMessageError && notifyMessageField === ""
@@ -178,7 +178,7 @@ const NotifyAgendaModal = ({
                   >
                     {t("Response-Message-is-required")}
                   </span>
-                ) : null}
+                ) : null} */}
               </Col>
             </Row>
             <Row className="mt-4">
