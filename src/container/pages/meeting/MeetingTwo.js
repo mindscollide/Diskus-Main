@@ -35,6 +35,7 @@ import {
   TextField,
   ResultMessage,
   Notification,
+  Loader,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
 
@@ -360,6 +361,8 @@ const NewMeeting = () => {
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
+    localStorage.setItem("MeetingPageRows", 50);
+    localStorage.setItem("MeetingPageCurrent", 1);
   };
 
   //UnPublished Meeting Page
@@ -375,6 +378,8 @@ const NewMeeting = () => {
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
+    localStorage.setItem("MeetingPageRows", 50);
+    localStorage.setItem("MeetingPageCurrent", 1);
   };
 
   const handleViewMeeting = async (id, isQuickMeeting) => {
@@ -1494,9 +1499,7 @@ const NewMeeting = () => {
       {editFlag ? (
         <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
-      {/* {Loading ? <Loader /> : null} */}
-
-      {/* {Loading ? <Loader /> : null} */}
+      {/* {downloadReducer.Loading ? <Loader /> : null} */}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </section>
   );

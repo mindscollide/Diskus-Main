@@ -360,7 +360,6 @@ const UpdateOrganizersMeeting = (
                     role: "Organizer",
                   });
                 } else if (route === 5) {
-                  setSceduleMeeting(false);
                   let currentView = localStorage.getItem("MeetingCurrentView");
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
                   let meetingPageCurrent = parseInt(
@@ -382,6 +381,7 @@ const UpdateOrganizersMeeting = (
                       currentView && Number(currentView) === 1 ? true : false,
                   };
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
+                  setSceduleMeeting(false);
                 } else {
                   // setPublishState(Data.MeetingID);
                 }
