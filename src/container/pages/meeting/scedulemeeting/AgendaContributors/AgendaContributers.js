@@ -444,6 +444,13 @@ const AgendaContributers = ({
   //   setrspvTable(!rspvTable);
   // };
 
+  //Initiate the Add Flow with Empty stae
+
+  const handleInitiatewithEmptyState = () => {
+    setIsEditFlag(0);
+    dispatch(showAddAgendaContributor(true));
+  };
+
   const nextTabOrganizer = () => {
     // dispatch(ShowNextConfirmationModal(true));
     setAgendaContributors(false);
@@ -696,9 +703,11 @@ const AgendaContributers = ({
                         <img
                           draggable={false}
                           src={emptyContributorState}
+                          className="cursor-pointer"
                           width="274.05px"
                           alt=""
                           height="230.96px"
+                          onClick={handleInitiatewithEmptyState}
                         />
                       </Col>
                     </Row>
