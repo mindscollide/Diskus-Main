@@ -2112,7 +2112,6 @@ const UserSettings = () => {
           </Col>
         </Row>
       </section>
-      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

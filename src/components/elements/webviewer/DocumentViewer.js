@@ -242,7 +242,6 @@ const DocumentViewer = () => {
       <div className="documnetviewer">
         <div className="webviewer" ref={viewer}></div>
       </div>
-      {webViewer.Loading && <Loader />}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </>
   );

@@ -460,7 +460,7 @@ const EmailValidation = () => {
       </Container>
 
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {/* {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

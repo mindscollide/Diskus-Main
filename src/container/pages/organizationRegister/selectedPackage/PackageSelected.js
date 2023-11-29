@@ -653,7 +653,7 @@ const PackageSelected = () => {
             </Row>
           </Col>
         </Row>
-        {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+        {/* {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null} */}
         <Notification
           setOpen={setOpen}
           open={open.open}

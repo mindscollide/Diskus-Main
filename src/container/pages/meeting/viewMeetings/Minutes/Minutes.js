@@ -74,7 +74,6 @@ const Minutes = ({
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
-  const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
   const [fileSize, setFileSize] = useState(0);
   const [useCase, setUseCase] = useState(null);
 

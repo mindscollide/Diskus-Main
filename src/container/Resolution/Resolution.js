@@ -1679,7 +1679,6 @@ const Resolution = () => {
         setCancelresolution={setCancelResolutionModal}
         Id={resolutionIDForCancel}
       />
-      {ResolutionReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );

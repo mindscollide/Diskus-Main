@@ -693,11 +693,11 @@ const PackageSelection = () => {
           </Row>
         )}
 
-        {GetSubscriptionPackage.Loading ||
+        {/* {GetSubscriptionPackage.Loading ||
         LanguageReducer.Loading ||
         Authreducer.Loading ? (
           <Loader />
-        ) : null}
+        ) : null} */}
         <Notification
           open={open.open}
           message={open.message}

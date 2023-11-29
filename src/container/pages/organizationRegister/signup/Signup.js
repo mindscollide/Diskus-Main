@@ -709,7 +709,7 @@ const Signup = () => {
         message: "",
       });
     }
-  }, [Authreducer.Loading]);
+  }, [Authreducer.OrganizationCreateResponseMessage]);
 
   // to change select border color functionality
   const borderChanges = {
@@ -1139,7 +1139,7 @@ const Signup = () => {
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {/* {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

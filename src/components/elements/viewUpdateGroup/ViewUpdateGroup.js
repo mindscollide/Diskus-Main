@@ -583,7 +583,6 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
         </Row>
         {/* </Paper> */}
       </section>
-      {DataRoomReducer.Loading ? <Loader /> : null}
     </>
   );
 };

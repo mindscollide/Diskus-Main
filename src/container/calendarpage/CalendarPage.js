@@ -671,11 +671,7 @@ const CalendarPage = () => {
           />
         </Row>
       </div>
-      {calendarReducer.Loading ||
-      toDoListReducer.Loading ||
-      LanguageReducer.Loading ? (
-        <Loader />
-      ) : null}
+
       <MeetingViewModalCalendar
         viewFlag={calendarViewModal}
         setViewFlag={setCalendarViewModal}
