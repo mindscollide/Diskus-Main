@@ -1148,5 +1148,5 @@
   "Selected-start-time-should-not-be-greater-than-the-endTime": "Selected start time should not be greater than the end time",
   "Selected-end-time-should-not-be-less-than-start-time": "Selected end time should not be less than start time",
   "Minutes-text-is-required": "Minutes Text is required",
-  "Minutes-details": "Minutes Details"
+  "Minutes-details": "Minutes Text"
 }
