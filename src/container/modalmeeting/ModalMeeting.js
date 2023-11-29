@@ -1242,6 +1242,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     });
     setAddedParticipantNameList([]);
     setCreateMeetingTime("");
+    setModalField(false);
+    setIsDetails(false);
+    setIsAgenda(false);
+    setIsAttendees(false);
   };
 
   const handleCancel = () => {
@@ -1337,78 +1341,75 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           ButtonTitle={ModalTitle}
           modalBodyClassName="modalMeetingCreateBody"
           modalFooterClassName="modalMeetingCreateFooter"
-          modalHeaderClassName={
-            isPublishMeeting === true ? "d-none" : "modalMeetingCreateHeader"
-          }
+          modalHeaderClassName={"modalMeetingCreateHeader"}
           centered
-          size={isPublishMeeting === true ? null : "lg"}
+          size={"lg"}
           ModalBody={
             <>
-              {isPublishMeeting === false ? (
-                <Row>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
+              <Row>
+                <Col
+                  lg={2}
+                  md={2}
+                  sm={3}
+                  xs={12}
+                  className={
+                    currentLanguage === "ar"
+                      ? "margin-left-10"
+                      : "p-0 margin-left-10"
+                  }
+                >
+                  <Button
                     className={
-                      currentLanguage === "ar"
-                        ? "margin-left-10"
-                        : "p-0 margin-left-10"
+                      isDetails
+                        ? "btn btn-primary isDetail-Schedule-top-btn"
+                        : "btn btn-outline-primary isDetail-Schedule-top-btn-Outline"
                     }
-                  >
-                    <Button
-                      className={
-                        isDetails
-                          ? "btn btn-primary isDetail-Schedule-top-btn"
-                          : "btn btn-outline-primary isDetail-Schedule-top-btn-Outline"
-                      }
-                      variant={"Primary"}
-                      text={t("Details")}
-                      onClick={changeSelectDetails}
-                    />
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className="agenda-upper-button"
-                  >
-                    <Button
-                      className={
-                        isAgenda
-                          ? "btn btn-primary isAgenda-Schedule-top-btn"
-                          : "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
-                      }
-                      variant={"Primary"}
-                      text={t("Agendas")}
-                      onClick={changeSelectAgenda}
-                      datatut="show-agenda"
-                    />
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className="attendees-upper-button"
-                  >
-                    <Button
-                      className={
-                        isAttendees
-                          ? "btn btn-primary isAttendee-Schedule-top-btn"
-                          : "btn btn-outline-primary isAttendee-Schedule-top-btn-Outline"
-                      }
-                      variant={"Primary"}
-                      text={t("Attendees")}
-                      datatut="show-meeting-attendees"
-                      onClick={changeSelectAttendees}
-                    ></Button>
-                  </Col>
-                  <Col lg={6} md={6} sm={3} xs={12} className="p-0"></Col>
-                </Row>
-              ) : null}
+                    variant={"Primary"}
+                    text={t("Details")}
+                    onClick={changeSelectDetails}
+                  />
+                </Col>
+                <Col
+                  lg={2}
+                  md={2}
+                  sm={3}
+                  xs={12}
+                  className="agenda-upper-button"
+                >
+                  <Button
+                    className={
+                      isAgenda
+                        ? "btn btn-primary isAgenda-Schedule-top-btn"
+                        : "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
+                    }
+                    variant={"Primary"}
+                    text={t("Agendas")}
+                    onClick={changeSelectAgenda}
+                    datatut="show-agenda"
+                  />
+                </Col>
+                <Col
+                  lg={2}
+                  md={2}
+                  sm={3}
+                  xs={12}
+                  className="attendees-upper-button"
+                >
+                  <Button
+                    className={
+                      isAttendees
+                        ? "btn btn-primary isAttendee-Schedule-top-btn"
+                        : "btn btn-outline-primary isAttendee-Schedule-top-btn-Outline"
+                    }
+                    variant={"Primary"}
+                    text={t("Attendees")}
+                    datatut="show-meeting-attendees"
+                    onClick={changeSelectAttendees}
+                  ></Button>
+                </Col>
+                <Col lg={6} md={6} sm={3} xs={12} className="p-0"></Col>
+              </Row>
+
               {isDetails ? (
                 <>
                   <Row className="createmeetingtime-row-1">
@@ -2175,17 +2176,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     </Row>
                   </div>
                 </>
-              ) : isPublishMeeting ? (
-                <>
-                  <Row className="confirmationDialogue">
-                    <Col lg={12} md={12} sm={12}>
-                      <p className="publishMessageModal">
-                        {/* Are you sure you want to schedule this meeting? */}
-                        {t("Are-you-sure-you-want-to-schedule-this-meeting")}
-                      </p>
-                    </Col>
-                  </Row>
-                </>
               ) : null}
             </>
           }
@@ -2280,29 +2270,12 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           "btn btn-primary modal-createMeeting-publish"
                         }
                         text={t("Publish")}
-                        onClick={navigateToPublish}
+                        onClick={handleSubmit}
                         type="submit"
                       />
                     </Col>
                   </Row>
                 </>
-              ) : isPublishMeeting ? (
-                <Row className="confirmationDialogue-2 mb-3">
-                  <Col lg={6} md={6} sm={6} xs={12} className="text-end">
-                    <Button
-                      className={"cancel-schedule-meeting"}
-                      text={t("Cancel")}
-                      onClick={handleCancel}
-                    />
-                  </Col>
-                  <Col lg={6} md={6} sm={6} xs={12} className="text-start">
-                    <Button
-                      className={"btn btn-primary schedule-modal-meeting"}
-                      text={t("Schedule")}
-                      onClick={handleSubmit}
-                    />
-                  </Col>
-                </Row>
               ) : null}
             </>
           }

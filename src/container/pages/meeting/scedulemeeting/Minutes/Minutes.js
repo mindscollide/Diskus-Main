@@ -408,11 +408,28 @@ const Minutes = ({
   };
 
   const handleAddClick = async () => {
-    let Data = {
-      MeetingID: currentMeeting,
-      MinuteText: addNoteFields.Description.value,
-    };
-    dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    if (addNoteFields.Description.value !== "") {
+      let Data = {
+        MeetingID: currentMeeting,
+        MinuteText: addNoteFields.Description.value,
+      };
+      dispatch(ADDGeneralMinutesApiFunc(navigate, t, Data, currentMeeting));
+    } else {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: addNoteFields.Description.value,
+          errorMessage:
+            addNoteFields.Description.value === ""
+              ? t("Minutes-text-is-required")
+              : addNoteFields.Description.errorMessage,
+          errorStatus:
+            addNoteFields.Description.value === ""
+              ? true
+              : addNoteFields.Description.errorStatus,
+        },
+      });
+    }
   };
 
   const documentUploadingFunc = async (minuteID) => {
@@ -798,7 +815,7 @@ const Minutes = ({
                       ref={editorRef}
                       theme="snow"
                       value={addNoteFields.Description.value || ""}
-                      placeholder={t("Note-details")}
+                      placeholder={t("Minutes-details")}
                       onChange={onTextChange}
                       modules={modules}
                       className={styles["quill-height-addNote"]}
@@ -808,8 +825,22 @@ const Minutes = ({
                     />
                   </Col>
                 </Row>
-                {/* Button For Saving the The Minutes  */}
                 <Row className="mt-5">
+                  <Col>
+                    <p
+                      className={
+                        addNoteFields.Description.errorStatus &&
+                        addNoteFields.Description.value === ""
+                          ? ` ${styles["errorNotesMessage"]} `
+                          : `${styles["errorNotesMessage_hidden"]}`
+                      }
+                    >
+                      {addNoteFields.Description.errorMessage}
+                    </p>
+                  </Col>
+                </Row>
+                {/* Button For Saving the The Minutes  */}
+                <Row className="mt-0">
                   <Col
                     lg={12}
                     md={12}

@@ -130,18 +130,19 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
     setMembersOrganizers(updatedMembers);
   };
   const [NotifyMessageError, setNotifyMessaegError] = useState(false);
+
   const sendNotification = () => {
-    if (notifyOrganizerData.Messege !== "") {
-      dispatch(showNotifyOrganizors(false));
-      const updatedMembersOrganizers = membersOrganizers.map((member) => ({
-        ...member,
-        NotificationMessage: notifyOrganizerData.Messege,
-      }));
-      console.log(updatedMembersOrganizers, "updatedMembersOrganizers");
-      dispatch(meetingOrganizers(updatedMembersOrganizers));
-    } else {
-      setNotifyMessaegError(true);
-    }
+    // if (notifyOrganizerData.Messege !== "") {
+    dispatch(showNotifyOrganizors(false));
+    const updatedMembersOrganizers = membersOrganizers.map((member) => ({
+      ...member,
+      NotificationMessage: notifyOrganizerData.Messege,
+    }));
+    console.log(updatedMembersOrganizers, "updatedMembersOrganizers");
+    dispatch(meetingOrganizers(updatedMembersOrganizers));
+    // } else {
+    // setNotifyMessaegError(true);
+    // }
   };
 
   const handleCancelButton = () => {
@@ -193,6 +194,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
                   draggable={false}
                   src={BlackCrossIcon}
                   className="cursor-pointer"
+                  alt=""
                   width="16px"
                   height="16px"
                   onClick={handleCrossIcon}
@@ -213,7 +215,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
                   name="Message"
                   maxLength={500}
                 />
-                {NotifyMessageError && notificationMessage === "" ? (
+                {/* {NotifyMessageError && notificationMessage === "" ? (
                   <span
                     className={
                       NotifyMessageError && notificationMessage === ""
@@ -223,7 +225,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
                   >
                     {t("Response-Message-is-required")}
                   </span>
-                ) : null}
+                ) : null} */}
               </Col>
             </Row>
             <Row className="mt-2">
@@ -252,6 +254,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
                   src={membersHide ? downdirect : UpperArrow}
                   width="18.4px"
                   height="9.2px"
+                  alt=""
                   className={styles["UparrowClasss"]}
                   onClick={handleHideItems}
                 />
@@ -287,6 +290,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
                                     draggable={false}
                                     src={`data:image/jpeg;base64,${data.displayPicture}`}
                                     width="33px"
+                                    alt=""
                                     height="33px"
                                     className={styles["ProfilePic"]}
                                   />
