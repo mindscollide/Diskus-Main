@@ -167,10 +167,8 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
         let pollsData = PollsReducer.getPollByCommitteeID.polls;
         let newPollsArray = [];
         pollsData.forEach((data, index) => {
-          console.log(data, "datadatadatadata");
           newPollsArray.push(data);
         });
-        console.log(newPollsArray, "newPollsArraynewPollsArray");
         setPollsRows(newPollsArray);
       } else {
         setPollsRows([]);
@@ -222,7 +220,6 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       onFilter: (value, record) =>
         record.pollStatus.status.indexOf(value) === 0,
       render: (text, record) => {
-        console.log(record, "recordrecord");
         if (record.pollStatus?.pollStatusId === 2) {
           return (
             <span className={styles["text-success"]}>{t("Published")}</span>
@@ -267,6 +264,9 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       dataIndex: "PollType",
       key: "PollType",
       width: "90px",
+      render: () => {
+        return <span className={styles["text-success"]}>{t("Meetings")}</span>;
+      },
     },
     {
       title: t("Created-by"),
@@ -285,8 +285,6 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       width: "70px",
       align: "center",
       render: (text, record) => {
-        console.log("votevotevotevote", record);
-        console.log("votevotevotevote", record.isVoter);
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
             if (record.voteStatus === "Not Voted") {
