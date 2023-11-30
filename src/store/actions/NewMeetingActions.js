@@ -6683,7 +6683,7 @@ const InviteToCollaborateMinutesApiFunc = (navigate, Data, t) => {
             await dispatch(
               showIniviteToCollaborateSuccess(
                 response.data.responseResult,
-                "Notification-sent"
+                t("Notification-sent")
               )
             );
           } else if (
