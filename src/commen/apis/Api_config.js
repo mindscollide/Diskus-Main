@@ -1295,6 +1295,14 @@ const getAllAgendaForAgendaWise = {
   RequestMethod: "ServiceManager.GetAdvanceMeetingAgendabyMeetingID",
 };
 
+const getAllMeetingForAgendaImport = {
+  RequestMethod: "ServiceManager.GetAllMeetingForAgendaImport",
+};
+
+const getAgendaWithMeetingIDForImport = {
+  RequestMethod: "ServiceManager.GetAgendaWithMeetingIDForImport",
+};
+
 export {
   saveTaskandAssgineesRM,
   saveTaskDocuments,
@@ -1640,4 +1648,7 @@ export {
   removeTaskMeetingMapping,
   getAllagendaWiseDocumentsApi,
   getAllAgendaForAgendaWise,
+  //Import Agenda
+  getAllMeetingForAgendaImport,
+  getAgendaWithMeetingIDForImport,
 };

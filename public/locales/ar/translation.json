@@ -1613,5 +1613,7 @@
   "The-meeting-wrapped-up-lets-dive-into-some-task": "The meeting wrapped up lets dive into some task",
   "Selected-start-time-should-not-be-greater-than-the-endTime": "Selected start time should not be greater than the end time",
   "Create-a-to-do-list": "Create a Task",
-  "Selected-end-time-should-not-be-less-than-start-time": "Selected end time should not be less than start time"
+  "Selected-end-time-should-not-be-less-than-start-time": "Selected end time should not be less than start time",
+  "Agendas-imported-successfully": "Agendas imported successfully",
+  "No-agendas-exist": "No Agendas Exist"
 }
