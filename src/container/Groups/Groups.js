@@ -717,12 +717,12 @@ const Groups = () => {
         />
       ) : null}
 
-      {GroupsReducer.getAllLoading ||
+      {/* {GroupsReducer.getAllLoading ||
       GroupsReducer.Loading ||
       DataRoomReducer.Loading ||
       LanguageReducer.Loading ? (
         <Loader />
-      ) : null}
+      ) : null} */}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );

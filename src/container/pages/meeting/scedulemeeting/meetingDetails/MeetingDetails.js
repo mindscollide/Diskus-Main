@@ -128,7 +128,10 @@ const MeetingDetails = ({
   });
   const [meetingDetails, setMeetingDetails] = useState({
     MeetingTitle: "",
-    MeetingType: 0,
+    MeetingType: {
+      PK_MTID: 1,
+      Type: t("Board-meeting"),
+    },
     Location: "",
     Description: "",
     Link: "",
@@ -152,7 +155,7 @@ const MeetingDetails = ({
       value: 0,
       label: "",
     },
-    IsVideoCall: false,
+    IsVideoCall: true,
   });
 
   // custom react select styles recurring
@@ -461,11 +464,11 @@ const MeetingDetails = ({
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
-      meetingDetails.Location !== "" &&
-      meetingDetails.Description !== "" &&
+      // meetingDetails.Description !== "" &&
       newArr.length > 0 &&
-      newReminderData.length > 0 &&
-      meetingDetails.Notes !== ""
+      newReminderData.length > 0
+      // &&
+      // meetingDetails.Notes !== ""
     ) {
       let recurringMeetingID =
         meetingDetails.RecurringOptions.value !== 0
@@ -545,11 +548,11 @@ const MeetingDetails = ({
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
-      meetingDetails.Location !== "" &&
-      meetingDetails.Description !== "" &&
+      // meetingDetails.Description !== "" &&
       areAllValuesNotEmpty(newArr) &&
-      newReminderData.length > 0 &&
-      meetingDetails.Notes !== ""
+      newReminderData.length > 0
+      //  &&
+      // meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       // Check if RecurringOptions.value is defined and use it
@@ -635,11 +638,11 @@ const MeetingDetails = ({
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
-      meetingDetails.Location !== "" &&
-      meetingDetails.Description !== "" &&
+      // meetingDetails.Description !== "" &&
       areAllValuesNotEmpty(newArr) &&
-      newReminderData.length > 0 &&
-      meetingDetails.Notes !== ""
+      newReminderData.length > 0
+      // &&
+      // meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       let data = {
@@ -828,6 +831,13 @@ const MeetingDetails = ({
           Newdata.push({
             value: data.pK_MTID,
             label: data.type,
+          });
+          setMeetingDetails({
+            ...meetingDetails,
+            MeetingType: {
+              PK_MTID: getALlMeetingTypes.meetingTypes[0].pK_MTID,
+              Type: getALlMeetingTypes.meetingTypes[0].type,
+            },
           });
         });
         setmeetingTypeDropdown(Newdata);
@@ -1223,7 +1233,7 @@ const MeetingDetails = ({
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Meeting_type_heading"]}>
                         {t("Location")}
-                        <span className={styles["steric"]}>*</span>
+                        {/* <span className={styles["steric"]}>*</span> */}
                       </span>
                     </Col>
                   </Row>
@@ -1249,7 +1259,7 @@ const MeetingDetails = ({
                             : false
                         }
                       />
-                      <Row>
+                      {/* <Row>
                         <Col>
                           <p
                             className={
@@ -1261,7 +1271,7 @@ const MeetingDetails = ({
                             {t("Please-select-location")}
                           </p>
                         </Col>
-                      </Row>
+                      </Row> */}
                     </Col>
                   </Row>
                 </Col>
@@ -1272,8 +1282,8 @@ const MeetingDetails = ({
                     applyClass="text-area-create-resolution"
                     type="text"
                     as={"textarea"}
-                    rows="4"
-                    placeholder={t("Description") + "*"}
+                    rows="2"
+                    placeholder={t("Description")}
                     required={true}
                     name={"Description"}
                     change={HandleChange}
@@ -1292,7 +1302,7 @@ const MeetingDetails = ({
                         : false
                     }
                   />
-                  <Row>
+                  {/* <Row>
                     <Col>
                       <p
                         className={
@@ -1304,7 +1314,7 @@ const MeetingDetails = ({
                         {t("Please-enter-meeting-description")}
                       </p>
                     </Col>
-                  </Row>
+                  </Row> */}
                 </Col>
               </Row>
               <Row className="mt-3">
@@ -1444,7 +1454,7 @@ const MeetingDetails = ({
                                       }
                                       editable={false}
                                       className="datePickerTodoCreate2"
-                                      onOpenPickNewDate={false}
+                                      onOpenPickNewDate={true}
                                       inputMode=""
                                       calendar={calendarValue}
                                       locale={localValue}
@@ -1803,10 +1813,10 @@ const MeetingDetails = ({
                     applyClass="text-area-create-meeting"
                     type="text"
                     as={"textarea"}
-                    rows="6"
+                    rows="5"
                     name={"Notes"}
                     change={HandleChange}
-                    placeholder={t("Note-for-this-meeting") + "*"}
+                    placeholder={t("Note-for-this-meeting")}
                     required={true}
                     maxLength={500}
                     value={meetingDetails.Notes}
@@ -1823,7 +1833,7 @@ const MeetingDetails = ({
                         : false
                     }
                   />
-                  <Row>
+                  {/* <Row>
                     <Col>
                       <p
                         className={
@@ -1835,7 +1845,7 @@ const MeetingDetails = ({
                         {t("Please-enter-meeting-notes")}
                       </p>
                     </Col>
-                  </Row>
+                  </Row> */}
                 </Col>
               </Row>
               <Row className="mt-4">
@@ -1957,7 +1967,7 @@ const MeetingDetails = ({
             <>
               <Button
                 text={t("Save")}
-                className={styles["Published"]}
+                className={styles["Update_Next"]}
                 onClick={SaveMeeting}
               />
             </>
@@ -1965,34 +1975,37 @@ const MeetingDetails = ({
             <>
               <Button
                 text={t("Update")}
-                className={styles["Published"]}
+                className={styles["Update_Next"]}
                 onClick={UpdateMeetings}
               />
             </>
           )}
+          {Number(currentMeeting) !== 0 && (
+            <>
+              <Button
+                disableBtn={Number(currentMeeting) === 0 ? true : false}
+                text={t("Next")}
+                className={styles["Published"]}
+                onClick={handleUpdateNext}
+              />
 
-          <Button
-            disableBtn={Number(currentMeeting) === 0 ? true : false}
-            text={t("Next")}
-            className={styles["Published"]}
-            onClick={handleUpdateNext}
-          />
-
-          {Number(editorRole.status) === 11 ||
-          Number(editorRole.status) === 12 ? (
-            <Button
-              disableBtn={Number(currentMeeting) === 0 ? true : false}
-              text={t("Publish")}
-              className={styles["Update_Next"]}
-              onClick={handlePublish}
-            />
-          ) : isEditMeeting === true ? null : (
-            <Button
-              disableBtn={Number(currentMeeting) === 0 ? true : false}
-              text={t("Publish")}
-              className={styles["Update_Next"]}
-              onClick={handlePublish}
-            />
+              {Number(editorRole.status) === 11 ||
+              Number(editorRole.status) === 12 ? (
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Publish")}
+                  className={styles["Update_Next"]}
+                  onClick={handlePublish}
+                />
+              ) : isEditMeeting === true ? null : (
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Publish")}
+                  className={styles["Update_Next"]}
+                  onClick={handlePublish}
+                />
+              )}
+            </>
           )}
         </Col>
       </Row>

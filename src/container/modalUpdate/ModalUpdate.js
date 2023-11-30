@@ -374,136 +374,217 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
   };
 
   const navigateToPublish = async () => {
-    if (minutesOftheMeatingStatus) {
-      if (endMeetingStatus2) {
-        let Data = { MinutesOfMeeting: minutesOfMeeting };
-        await setModalField(false);
-        await setIsPublishMeeting(false);
-        await setEditFlag(false);
-        await seteditRecordIndex(null);
-        await seteditRecordFlag(false);
-        await await setIsDetails(true);
-        await setIsMinutes(false);
-        await setIsAgenda(false);
-        await setMinutesOftheMeatingStatus(false);
-        await setObjMeetingAgenda({
-          PK_MAID: 0,
-          Title: "",
-          PresenterName: "",
-          URLs: "",
-          FK_MDID: 0,
-        });
-        await setMeetingAgendaAttachments({
-          MeetingAgendaAttachments: [],
-        });
-        await setParticipantRoleName("");
-        await setSelectedAttendeesName("");
-        await setCreateMeeting({
-          MeetingTitle: "",
-          MeetingDescription: "",
-          MeetingTypeID: 0,
-          MeetingDate: "",
-          MeetingStartTime: "",
-          MeetingEndTime: "",
-          MeetingLocation: "",
-          IsVideoCall: false,
-          IsChat: false,
-          MeetingReminderID: [],
-          MeetingAgendas: [],
-          MeetingAttendees: [],
-          ExternalMeetingAttendees: [],
-        });
-        await setMeetingAttendees({
-          User: {
-            PK_UID: 0,
-          },
-          MeetingAttendeeRole: {
-            PK_MARID: 0,
-          },
-          AttendeeAvailability: {
-            PK_AAID: 1,
-          },
-        });
-        await setRecordMinutesOfTheMeeting({
-          PK_MOMID: 0,
-          Description: "",
-          CreationDate: "",
-          CreationTime: "",
-          FK_MDID: 0,
-        });
-        setReminder("");
-        setReminderValue("");
-        setTaskAssignedToInput("");
-      } else {
-        let Data = { MinutesOfMeeting: minutesOfMeeting };
-        await setModalField(false);
-        await setIsPublishMeeting(false);
-        await setEditFlag(false);
-        await seteditRecordIndex(null);
-        await seteditRecordFlag(false);
-        await await setIsDetails(true);
-        await setIsMinutes(false);
-        await setIsAgenda(false);
-        await setMinutesOftheMeatingStatus(false);
-        await dispatch(addMinutesofMeetings(navigate, Data, t));
-        await setObjMeetingAgenda({
-          PK_MAID: 0,
-          Title: "",
-          PresenterName: "",
-          URLs: "",
-          FK_MDID: 0,
-        });
-        await setMeetingAgendaAttachments({
-          MeetingAgendaAttachments: [],
-        });
-        await setParticipantRoleName("");
-        await setSelectedAttendeesName("");
-        await setCreateMeeting({
-          MeetingTitle: "",
-          MeetingDescription: "",
-          MeetingTypeID: 0,
-          MeetingDate: "",
-          MeetingStartTime: "",
-          MeetingEndTime: "",
-          MeetingLocation: "",
-          IsVideoCall: false,
-          IsChat: false,
-          MeetingReminderID: [],
-          MeetingAgendas: [],
-          MeetingAttendees: [],
-          ExternalMeetingAttendees: [],
-        });
-        await setMeetingAttendees({
-          User: {
-            PK_UID: 0,
-          },
-          MeetingAttendeeRole: {
-            PK_MARID: 0,
-          },
-          AttendeeAvailability: {
-            PK_AAID: 1,
-          },
-        });
-        await setRecordMinutesOfTheMeeting({
-          PK_MOMID: 0,
-          Description: "",
-          CreationDate: "",
-          CreationTime: "",
-          FK_MDID: 0,
-        });
-        setReminder("");
-        setReminderValue("");
-        setTaskAssignedToInput("");
-      }
-      console.log("recordsMinutesOfTheMeeting", minutesOfMeeting);
-    } else {
-      setModalField(false);
-      setIsDetails(false);
-      setIsAgenda(false);
-      setIsAttendees(false);
-      setIsMinutes(false);
-      setIsPublishMeeting(true);
-    }
+    await setEditFlag(false);
+    await seteditRecordIndex(null);
+    await seteditRecordFlag(false);
+    await setIsDetails(true);
+    await setIsMinutes(false);
+    await setIsAgenda(false);
+    await setIsAttendees(false);
+    let finalDateTime = createConvert(
+      createMeeting.MeetingDate + createMeeting.MeetingStartTime
+    );
+    let newDate = finalDateTime.slice(0, 8);
+    let newTime = finalDateTime.slice(8, 14);
+
+    let newData = {
+      MeetingID: createMeeting.MeetingID,
+      MeetingTitle: createMeeting.MeetingTitle,
+      MeetingDescription: createMeeting.MeetingDescription,
+      MeetingTypeID: 0,
+      MeetingDate: newDate,
+      OrganizationId: parseInt(OrganizationId),
+      MeetingStartTime: newTime,
+      MeetingEndTime: newTime,
+      MeetingLocation: createMeeting.MeetingLocation,
+      IsVideoCall: createMeeting.IsVideoCall,
+      IsChat: createMeeting.IsChat,
+      MeetingReminderID: createMeeting.MeetingReminderID,
+      MeetingAgendas: createMeeting.MeetingAgendas,
+      MeetingAttendees: createMeeting.MeetingAttendees,
+      ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
+    };
+    await dispatch(UpdateMeeting(navigate, newData, t));
+    await setObjMeetingAgenda({
+      PK_MAID: 0,
+      Title: "",
+      PresenterName: "",
+      URLs: "",
+      FK_MDID: 0,
+    });
+    await setMeetingAgendaAttachments({
+      MeetingAgendaAttachments: [],
+    });
+    await setParticipantRoleName("");
+    await setSelectedAttendeesName("");
+    await setCreateMeeting({
+      MeetingTitle: "",
+      MeetingDescription: "",
+      MeetingTypeID: 0,
+      MeetingDate: "",
+      MeetingStartTime: "",
+      MeetingEndTime: "",
+      MeetingLocation: "",
+      IsVideoCall: false,
+      IsChat: false,
+      MeetingReminderID: [],
+      MeetingAgendas: [],
+      MeetingAttendees: [],
+      ExternalMeetingAttendees: [],
+    });
+    await setMeetingAttendees({
+      User: {
+        PK_UID: 0,
+      },
+      MeetingAttendeeRole: {
+        PK_MARID: 0,
+      },
+      AttendeeAvailability: {
+        PK_AAID: 1,
+      },
+    });
+    await setRecordMinutesOfTheMeeting({
+      PK_MOMID: 0,
+      Description: "",
+      CreationDate: "",
+      CreationTime: "",
+      FK_MDID: 0,
+    });
+    // await setMeetingReminderValue("");
+    // await setMeetingReminderID([]);
+    setReminder("");
+    setReminderValue("");
+    setTaskAssignedToInput("");
+    // if (minutesOftheMeatingStatus) {
+    //   if (endMeetingStatus2) {
+    //     let Data = { MinutesOfMeeting: minutesOfMeeting };
+    //     await setModalField(false);
+    //     await setIsPublishMeeting(false);
+    //     await setEditFlag(false);
+    //     await seteditRecordIndex(null);
+    //     await seteditRecordFlag(false);
+    //     await await setIsDetails(true);
+    //     await setIsMinutes(false);
+    //     await setIsAgenda(false);
+    //     await setMinutesOftheMeatingStatus(false);
+    //     await setObjMeetingAgenda({
+    //       PK_MAID: 0,
+    //       Title: "",
+    //       PresenterName: "",
+    //       URLs: "",
+    //       FK_MDID: 0,
+    //     });
+    //     await setMeetingAgendaAttachments({
+    //       MeetingAgendaAttachments: [],
+    //     });
+    //     await setParticipantRoleName("");
+    //     await setSelectedAttendeesName("");
+    //     await setCreateMeeting({
+    //       MeetingTitle: "",
+    //       MeetingDescription: "",
+    //       MeetingTypeID: 0,
+    //       MeetingDate: "",
+    //       MeetingStartTime: "",
+    //       MeetingEndTime: "",
+    //       MeetingLocation: "",
+    //       IsVideoCall: false,
+    //       IsChat: false,
+    //       MeetingReminderID: [],
+    //       MeetingAgendas: [],
+    //       MeetingAttendees: [],
+    //       ExternalMeetingAttendees: [],
+    //     });
+    //     await setMeetingAttendees({
+    //       User: {
+    //         PK_UID: 0,
+    //       },
+    //       MeetingAttendeeRole: {
+    //         PK_MARID: 0,
+    //       },
+    //       AttendeeAvailability: {
+    //         PK_AAID: 1,
+    //       },
+    //     });
+    //     await setRecordMinutesOfTheMeeting({
+    //       PK_MOMID: 0,
+    //       Description: "",
+    //       CreationDate: "",
+    //       CreationTime: "",
+    //       FK_MDID: 0,
+    //     });
+    //     setReminder("");
+    //     setReminderValue("");
+    //     setTaskAssignedToInput("");
+    //   } else {
+    //     let Data = { MinutesOfMeeting: minutesOfMeeting };
+    //     await setModalField(false);
+    //     await setIsPublishMeeting(false);
+    //     await setEditFlag(false);
+    //     await seteditRecordIndex(null);
+    //     await seteditRecordFlag(false);
+    //     await await setIsDetails(true);
+    //     await setIsMinutes(false);
+    //     await setIsAgenda(false);
+    //     await setMinutesOftheMeatingStatus(false);
+    //     await dispatch(addMinutesofMeetings(navigate, Data, t));
+    //     await setObjMeetingAgenda({
+    //       PK_MAID: 0,
+    //       Title: "",
+    //       PresenterName: "",
+    //       URLs: "",
+    //       FK_MDID: 0,
+    //     });
+    //     await setMeetingAgendaAttachments({
+    //       MeetingAgendaAttachments: [],
+    //     });
+    //     await setParticipantRoleName("");
+    //     await setSelectedAttendeesName("");
+    //     await setCreateMeeting({
+    //       MeetingTitle: "",
+    //       MeetingDescription: "",
+    //       MeetingTypeID: 0,
+    //       MeetingDate: "",
+    //       MeetingStartTime: "",
+    //       MeetingEndTime: "",
+    //       MeetingLocation: "",
+    //       IsVideoCall: false,
+    //       IsChat: false,
+    //       MeetingReminderID: [],
+    //       MeetingAgendas: [],
+    //       MeetingAttendees: [],
+    //       ExternalMeetingAttendees: [],
+    //     });
+    //     await setMeetingAttendees({
+    //       User: {
+    //         PK_UID: 0,
+    //       },
+    //       MeetingAttendeeRole: {
+    //         PK_MARID: 0,
+    //       },
+    //       AttendeeAvailability: {
+    //         PK_AAID: 1,
+    //       },
+    //     });
+    //     await setRecordMinutesOfTheMeeting({
+    //       PK_MOMID: 0,
+    //       Description: "",
+    //       CreationDate: "",
+    //       CreationTime: "",
+    //       FK_MDID: 0,
+    //     });
+    //     setReminder("");
+    //     setReminderValue("");
+    //     setTaskAssignedToInput("");
+    //   }
+    //   console.log("recordsMinutesOfTheMeeting", minutesOfMeeting);
+    // } else {
+    //   setModalField(false);
+    //   setIsDetails(false);
+    //   setIsAgenda(false);
+    //   setIsAttendees(false);
+    //   setIsMinutes(false);
+    //   setIsPublishMeeting(true);
+    // }
   };
 
   // for Participant id's

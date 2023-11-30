@@ -106,7 +106,6 @@ const NewMeeting = () => {
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
-  // const Loading = useSelector((state) => state.downloadReducer.Loading);
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
   //Current User ID
@@ -1499,7 +1498,6 @@ const NewMeeting = () => {
       {editFlag ? (
         <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
-      {/* {downloadReducer.Loading ? <Loader /> : null} */}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </section>
   );

@@ -1024,7 +1024,6 @@ const CreatePolling = () => {
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-      {/* {PollsReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };
