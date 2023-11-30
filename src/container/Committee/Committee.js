@@ -500,7 +500,13 @@ const Committee = () => {
                       {getcommitteedata.length > 0 ? (
                         getcommitteedata.map((data, index) => {
                           return (
-                            <Col lg={3} md={3} sm={12} className="mb-3">
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={12}
+                              className="mb-3"
+                              key={index}
+                            >
                               <Card
                                 setUniqCardID={setUniqCardID}
                                 uniqCardID={uniqCardID}
@@ -540,7 +546,7 @@ const Committee = () => {
                                 }
                                 titleOnCLick={() => viewTitleModal(data)}
                                 associatedTags={data.listofGroups}
-                                flag={false}
+                                flag={true}
                                 assignGroupBtn={() =>
                                   showMarketingModal(data.committeeID)
                                 }

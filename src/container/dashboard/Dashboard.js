@@ -1666,6 +1666,7 @@ const Dashboard = () => {
             roleListReducer.Loading ||
             NotesReducer.Loading ||
             GroupsReducer.Loading ||
+            GroupsReducer.getAllLoading ||
             ResolutionReducer.Loading ||
             RealtimeNotification.Loading ||
             OrganizationBillingReducer.Loading ||

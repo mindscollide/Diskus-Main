@@ -18,7 +18,6 @@ import { useMemo } from "react";
 const Card = ({
   CardHeading,
   profile,
-  BtnText,
   StatusID,
   onClickFunction,
   flag,
@@ -83,23 +82,22 @@ const Card = ({
       console.log("error", error);
     }
   }, []);
-  let sortedArraay = useMemo(() => {
+  let sortedArraay =
     profile !== null &&
-      profile !== undefined &&
-      profile.length > 0 &&
-      profile.sort((a, b) => {
-        const userNameA = a.userName.toLowerCase();
-        const userNameB = b.userName.toLowerCase();
+    profile !== undefined &&
+    profile.length > 0 &&
+    profile.sort((a, b) => {
+      const userNameA = a.userName.toLowerCase();
+      const userNameB = b.userName.toLowerCase();
 
-        if (userNameA < userNameB) {
-          return -1;
-        }
-        if (userNameA > userNameB) {
-          return 1;
-        }
-        return 0;
-      });
-  }, [profile]);
+      if (userNameA < userNameB) {
+        return -1;
+      }
+      if (userNameA > userNameB) {
+        return 1;
+      }
+      return 0;
+    });
 
   useEffect(() => {}, [editdropdown, dropdownthreedots]);
   return (

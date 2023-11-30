@@ -39,6 +39,10 @@ import { FileUploadToDo } from "../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import {
+  getCurrentDate,
+  getStartTimeWithCeilFunction,
+} from "../../commen/functions/time_formatter";
 
 const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   //For Localization
@@ -104,13 +108,17 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
 
+  const getStartTime = getStartTimeWithCeilFunction();
   //Attendees States
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [forUpdateAttachments, setForUpdateAttachent] = useState([]);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
-  const [createMeetingTime, setCreateMeetingTime] = useState("");
+  const [createMeetingTime, setCreateMeetingTime] = useState(
+    getStartTime.newFormatTime
+  );
+  const getCurrentDateforMeeting = getCurrentDate();
   const [onclickFlag, setOnclickFlag] = useState(false);
 
   // for Participant options
@@ -119,12 +127,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   const currentHours = currentDate.getHours().toString().padStart(2, "0");
   const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
   const getcurrentTime = `${currentHours}:${currentMinutes}`;
-  const [meetingDate, setMeetingDate] = useState("");
+  const [meetingDate, setMeetingDate] = useState(
+    getCurrentDateforMeeting.DateGMT
+  );
   const [fileForSend, setFileForSend] = useState([]);
   const [fileSize, setFileSize] = useState(0);
 
   //Reminder Stats
-  const [reminderValue, setReminderValue] = useState("");
+  const [reminderValue, setReminderValue] = useState(t("1-hour-before"));
   const [reminder, setReminder] = useState("");
   let OrganizationId = localStorage.getItem("organizationID");
   // for main json for create meating
@@ -132,14 +142,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     MeetingTitle: "",
     MeetingDescription: "",
     MeetingTypeID: 0,
-    MeetingDate: "",
+    MeetingDate: getCurrentDateforMeeting.dateFormat,
     OrganizationId: parseInt(OrganizationId),
-    MeetingStartTime: "",
-    MeetingEndTime: "",
+    MeetingStartTime: getStartTime.formattedTime,
+    MeetingEndTime: getStartTime.formattedTime,
     MeetingLocation: "",
-    IsVideoCall: false,
+    IsVideoCall: true,
     IsChat: false,
-    MeetingReminderID: [],
+    MeetingReminderID: [4],
     MeetingAgendas: [],
     MeetingAttendees: [],
     ExternalMeetingAttendees: [],
@@ -180,8 +190,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingDate !== "" &&
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription !== "" &&
-      createMeeting.MeetingLocation !== "" &&
-      createMeeting.MeetingTitle !== ""
+      createMeeting.MeetingLocation !== ""
+      //  &&
+      // createMeeting.MeetingTitle !== ""
     ) {
       setModalField(false);
       setIsDetails(false);
@@ -204,7 +215,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingDate !== "" &&
       // createMeeting.MeetingReminderID.length > 0 &&
       createMeeting.MeetingLocation !== "" &&
-      createMeeting.MeetingTitle !== "" &&
+      // createMeeting.MeetingTitle !== "" &&
       createMeeting.MeetingAgendas.length > 0
     ) {
       setModalField(false);
@@ -217,8 +228,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingEndTime === "" ||
       createMeeting.MeetingDate === "" ||
       // createMeeting.MeetingReminderID.length === 0 ||
-      createMeeting.MeetingLocation === "" ||
-      createMeeting.MeetingTitle === ""
+      createMeeting.MeetingLocation === ""
+      // createMeeting.MeetingTitle === ""
     ) {
       setModalField(true);
       setIsDetails(true);
@@ -254,8 +265,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingDate !== "" &&
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription !== "" &&
-      createMeeting.MeetingLocation !== "" &&
-      createMeeting.MeetingTitle !== ""
+      createMeeting.MeetingLocation !== ""
+      // &&
+      // createMeeting.MeetingTitle !== ""
     ) {
       setModalField(false);
       setIsDetails(false);
@@ -331,11 +343,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getHours()).slice(-2);
       const minutes = ("0" + newDate.getMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getSeconds()).slice(-2);
       const formattedTime = `${hours.padStart(2, "0")}${minutes.padStart(
         2,
         "0"
-      )}${seconds.padStart(2, "0")}`;
+      )}${"00"}`;
       setCreateMeeting({
         ...createMeeting,
         MeetingStartTime: formattedTime,
@@ -1180,8 +1191,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     );
     let newDate = finalDateTime.slice(0, 8);
     let newTime = finalDateTime.slice(8, 14);
+    let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
+    let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
+
     let newData = {
-      MeetingTitle: createMeeting.MeetingTitle,
+      MeetingTitle:
+        createMeeting.MeetingTitle !== ""
+          ? createMeeting.MeetingTitle
+          : `Untitled @ ${ifemptyDate} ${ifemptyTime}`,
       MeetingDescription: createMeeting.MeetingDescription,
       MeetingTypeID: 0,
       MeetingDate: newDate,
@@ -1433,6 +1450,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         selected={createMeetingTime}
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
+                        editable={false}
                         onChange={handleTimeChange}
                       />
 
