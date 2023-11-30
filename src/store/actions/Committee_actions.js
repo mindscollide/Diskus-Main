@@ -1455,11 +1455,12 @@ const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
                 t("Update-successfully")
               )
             );
+            dispatch(createUpdateCommitteeDocuments_fail(""));
+
             await setCreategrouppage(false);
             await dispatch(
               getAllCommitteesByUserIdActions(navigate, t, currentPage)
             );
-            dispatch(createUpdateCommitteeDocuments_fail(""));
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
             "DataRoom_DataRoomManager_SaveCommitteeDocuments_02".toLowerCase()
