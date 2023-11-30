@@ -409,6 +409,7 @@ const Organizers = ({
               draggable={false}
               src={CrossResolution}
               height="30px"
+              alt=""
               width="30px"
               className="cursor-pointer"
               onClick={() => deleteRow(record)}
@@ -574,6 +575,7 @@ const Organizers = ({
   };
 
   const enableEditButton = () => {
+    setIsEdit(true);
     const updatedRowsData = rowsData.map((row) => ({
       ...row,
       disabledNotification: true,
@@ -594,6 +596,7 @@ const Organizers = ({
 
   const handleCancelEdit = () => {
     // setCurrentMeetingID(0);
+    setIsEdit(false);
     setEditState(false);
     dispatch(meetingOrganizers([]));
     dispatch(selectedMeetingOrganizers([]));
@@ -641,6 +644,7 @@ const Organizers = ({
           notificationMessage
         )
       );
+      setIsEdit(false);
     } else {
       setOpen({
         message: t("At-least-one-primary-organizer-is-required"),
@@ -819,14 +823,15 @@ const Organizers = ({
     setRowsData(updatedRowsData);
   }, [MeetingOrganizersReducer.NotificationUpdateData]);
 
-  useEffect(() => {
-    if (rowsData.length > 0) {
-      let getifTrue = rowsData.some((data, index) => data.isEdit === false);
-      setIsEdit(getifTrue);
-    } else {
-      setIsEdit(false);
-    }
-  }, [rowsData]);
+  // useEffect(() => {
+  //   if (rowsData.length > 0) {
+  //     const getIfFalse = rowsData.some((data) => data.isEdit === false);
+  //     setIsEdit(getIfFalse);
+  //   } else {
+  //     setIsEdit(false);
+  //   }
+  //   console.log("Console is running");
+  // }, [rowsData]);
 
   useEffect(() => {
     if (
@@ -1027,6 +1032,7 @@ const Organizers = ({
         <NotifyOrganizers
           notificationMessage={notificationMessage}
           setNotificationMessage={setNotificationMessage}
+          setIsEdit={setIsEdit}
         />
       )}
       {NewMeetingreducer.sendNotificationOrganizerModal === true ? (
