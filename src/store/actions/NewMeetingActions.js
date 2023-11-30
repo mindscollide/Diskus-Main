@@ -57,6 +57,7 @@ import {
   getMeetingbyGroupIDRM,
   getAdvanceMeetingAgendabyMeetingID,
   getAllagendaWiseDocumentsApi,
+  inviteForCollaboration,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -6625,6 +6626,97 @@ const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
   };
 };
 
+//INVITE TO COLLABORATE
+
+const showIniviteToCollaborateInit = () => {
+  return {
+    type: actions.INVITE_TO_COLLABORATE_INIT,
+  };
+};
+
+const showIniviteToCollaborateSuccess = (response, message) => {
+  return {
+    type: actions.INVITE_TO_COLLABORATE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const showIniviteToCollaborateFailed = (message) => {
+  return {
+    type: actions.INVITE_TO_COLLABORATE_FAILED,
+    message: message,
+  };
+};
+
+const InviteToCollaborateMinutesApiFunc = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(showIniviteToCollaborateInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", inviteForCollaboration.RequestMethod);
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API request
+        await dispatch(InviteToCollaborateMinutesApiFunc(navigate, Data, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_InviteForMinuteCollaboration_01".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              showIniviteToCollaborateSuccess(
+                response.data.responseResult,
+                t("Notification-sent")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_InviteForMinuteCollaboration_02".toLowerCase()
+              )
+          ) {
+            dispatch(showIniviteToCollaborateFailed(t("No-notification-sent")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_InviteForMinuteCollaboration_03".toLowerCase()
+              )
+          ) {
+            dispatch(showIniviteToCollaborateFailed(t("Something-went-wrong")));
+          } else {
+            dispatch(showIniviteToCollaborateFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(showIniviteToCollaborateFailed(t("Something-went-wrong")));
+        }
+      } else {
+        dispatch(showIniviteToCollaborateFailed(t("Something-went-wrong")));
+      }
+    } catch (error) {
+      dispatch(showIniviteToCollaborateFailed(t("Something-went-wrong")));
+    }
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -6741,4 +6833,5 @@ export {
   meetingMaterialFail,
   cleareMinutsData,
   showAllGeneralMinutesFailed,
+  InviteToCollaborateMinutesApiFunc,
 };

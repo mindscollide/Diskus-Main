@@ -27,9 +27,9 @@ import {
   GetAllGeneralMinutesApiFunc,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
-  cleareMinutsData,
   searchNewUserMeeting,
   cleareAllState,
+  InviteToCollaborateMinutesApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -79,6 +79,7 @@ const Minutes = ({
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
+
   const [useCase, setUseCase] = useState(null);
   const [fileSize, setFileSize] = useState(0);
   const [generalShowMore, setGeneralShowMore] = useState(null);
@@ -86,6 +87,7 @@ const Minutes = ({
   const [general, setGeneral] = useState(true);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [organizerID, setOrganizerID] = useState(0);
   const [agenda, setAgenda] = useState(false);
   const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
@@ -167,8 +169,14 @@ const Minutes = ({
         (Object.keys(generalminutesDocumentForMeeting).length > 0 ||
           generalminutesDocumentForMeeting.length > 0)
       ) {
+        console.log(
+          generalMinutes.organizerID,
+          "generalMinutesgeneralMinutesgeneralMinutes"
+        );
+
         const minutesData = generalMinutes.meetingMinutes;
         const documentsData = generalminutesDocumentForMeeting.data;
+        setOrganizerID(generalMinutes.organizerID);
         const combinedData = minutesData.map((item1) => {
           const matchingItem = documentsData.find(
             (item2) => item2.pK_MeetingGeneralMinutesID === item1.minuteID
@@ -605,6 +613,14 @@ const Minutes = ({
     }
   };
 
+  //handle Invite to Collaborate
+  const handleInvitetoCollaborate = () => {
+    let Data = {
+      MeetingID: Number(currentMeeting),
+    };
+    dispatch(InviteToCollaborateMinutesApiFunc(navigate, Data, t));
+  };
+
   // Cancel Button
   const handleUNsaveChangesModal = () => {
     // dispatch(showUnsaveMinutesFileUpload(true));
@@ -755,6 +771,9 @@ const Minutes = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [ResponseMessage]);
+
+  console.log(organizerID, "userIDuserIDuserIDuserID");
+  console.log(userID, "userIDuserIDuserIDuserID");
 
   return (
     <section>
@@ -1287,7 +1306,8 @@ const Minutes = ({
                                 12 ? null : (editorRole.role === "Organizer" &&
                                   Number(editorRole.status) === 9) ||
                                 (Number(editorRole.status) === 10 &&
-                                  editorRole.role === "Organizer") ? (
+                                  editorRole.role === "Organizer") ||
+                                userID === organizerID ? (
                                 <img
                                   draggable={false}
                                   src={RedCroseeIcon}
@@ -1339,6 +1359,11 @@ const Minutes = ({
             text={t("Cancel")}
             className={styles["Cancel_button_Minutes"]}
             onClick={handleUNsaveChangesModal}
+          />
+          <Button
+            text={t("Invite-to-collaborate")}
+            className={styles["Next_button_Minutes"]}
+            onClick={handleInvitetoCollaborate}
           />
           <Button
             text={t("Previous")}

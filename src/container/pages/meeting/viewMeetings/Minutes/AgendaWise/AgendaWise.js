@@ -72,6 +72,7 @@ const AgendaWise = ({
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [organizerID, setOrganizerID] = useState(0);
   const [expandedFiles, setExpandedFiles] = useState([]);
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
@@ -152,6 +153,7 @@ const AgendaWise = ({
           NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
         const documentsData =
           NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
+        setOrganizerID(NewMeetingreducer.agendaWiseMinutesReducer.organizerID);
         const combinedData = minutesData.map((item1) => {
           const matchingItem = documentsData.find(
             (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
@@ -1175,7 +1177,8 @@ const AgendaWise = ({
                             12 ? null : (editorRole.role === "Organizer" &&
                               Number(editorRole.status) === 9) ||
                             (Number(editorRole.status) === 10 &&
-                              editorRole.role === "Organizer") ? (
+                              editorRole.role === "Organizer") ||
+                            userID === organizerID ? (
                             <img
                               draggable={false}
                               src={RedCroseeIcon}

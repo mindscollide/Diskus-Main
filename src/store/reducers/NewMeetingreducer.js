@@ -1751,6 +1751,31 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    //INVITE TO COLLABORATE
+
+    case actions.INVITE_TO_COLLABORATE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.INVITE_TO_COLLABORATE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.INVITE_TO_COLLABORATE_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     case actions.CLEARE_ALL_MEETING_STATE: {
       return {
         ...state,
