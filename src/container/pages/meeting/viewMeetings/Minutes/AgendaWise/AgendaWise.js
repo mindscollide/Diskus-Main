@@ -179,8 +179,6 @@ const AgendaWise = ({
     NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
   ]);
 
-  console.log(organizerID, "VieworganizerIDorganizerID");
-
   let userID = localStorage.getItem("userID");
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -1179,8 +1177,8 @@ const AgendaWise = ({
                             12 ? null : (editorRole.role === "Organizer" &&
                               Number(editorRole.status) === 9) ||
                             (Number(editorRole.status) === 10 &&
-                              editorRole.role === "Organizer" &&
-                              userID === organizerID) ? (
+                              editorRole.role === "Organizer") ||
+                            userID === organizerID ? (
                             <img
                               draggable={false}
                               src={RedCroseeIcon}

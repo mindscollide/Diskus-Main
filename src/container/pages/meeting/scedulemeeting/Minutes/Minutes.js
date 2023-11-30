@@ -772,6 +772,9 @@ const Minutes = ({
     }
   }, [ResponseMessage]);
 
+  console.log(organizerID, "userIDuserIDuserIDuserID");
+  console.log(userID, "userIDuserIDuserIDuserID");
+
   return (
     <section>
       <Row className="mt-3">
@@ -1303,8 +1306,8 @@ const Minutes = ({
                                 12 ? null : (editorRole.role === "Organizer" &&
                                   Number(editorRole.status) === 9) ||
                                 (Number(editorRole.status) === 10 &&
-                                  editorRole.role === "Organizer" &&
-                                  userID === organizerID) ? (
+                                  editorRole.role === "Organizer") ||
+                                userID === organizerID ? (
                                 <img
                                   draggable={false}
                                   src={RedCroseeIcon}
