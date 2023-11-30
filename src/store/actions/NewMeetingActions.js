@@ -6634,9 +6634,10 @@ const showIniviteToCollaborateInit = () => {
   };
 };
 
-const showIniviteToCollaborateSuccess = (message) => {
+const showIniviteToCollaborateSuccess = (response, message) => {
   return {
     type: actions.INVITE_TO_COLLABORATE_SUCCESS,
+    response: response,
     message: message,
   };
 };
@@ -6681,7 +6682,7 @@ const InviteToCollaborateMinutesApiFunc = (navigate, Data, t) => {
           ) {
             await dispatch(
               showIniviteToCollaborateSuccess(
-                response.data.responseResult.responseMessage,
+                response.data.responseResult,
                 "Notification-sent"
               )
             );

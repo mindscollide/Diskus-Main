@@ -1296,7 +1296,7 @@ const getAllAgendaForAgendaWise = {
 };
 
 const inviteForCollaboration = {
-  RequestMethod: "ServiceManager.GetAgendaWithMeetingIDForImport",
+  RequestMethod: "ServiceManager.InviteForMinuteCollaboration",
 };
 
 export {
