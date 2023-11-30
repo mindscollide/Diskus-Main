@@ -94,6 +94,7 @@ const NotifyAgendaModal = ({
   const [NotifyMessageError, setNotifyMessaegError] = useState(false);
 
   const handleSendIcon = () => {
+    console.log("hellloooooo");
     if (specificUser !== 0) {
       // if (notifyMessageField === "") {
       // Corrected variable name
@@ -110,12 +111,12 @@ const NotifyAgendaModal = ({
       // setNotifyMessaegError(true);
       // }
     } else {
-      // if (notifyMessageField === "") {
-      //   setNotifyMessaegError(true);
-      // } else {
-      //   setNotifyMessaegError(false);
-      //   dispatch(showAgendaContributorsModals(false));
-      // }
+      if (notifyMessageField === "") {
+        setNotifyMessaegError(true);
+      } else {
+        setNotifyMessaegError(false);
+        dispatch(showAgendaContributorsModals(false));
+      }
     }
   };
 

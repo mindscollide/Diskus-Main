@@ -3026,7 +3026,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                             "MontserratSemiBold-600 btn btn-primary publish-meeting-btn"
                           }
                           text={t("Publish")}
-                          onClick={navigateToPublish}
+                          onClick={handleSubmit}
                         />
                       </Col>
                     </Row>

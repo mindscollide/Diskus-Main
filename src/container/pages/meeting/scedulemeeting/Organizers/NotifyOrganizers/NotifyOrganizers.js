@@ -23,7 +23,11 @@ import { Col, Row } from "react-bootstrap";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import downdirect from "../../../../../../assets/images/downDirect.png";
 
-const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
+const NotifyOrganizers = ({
+  setNotificationMessage,
+  notificationMessage,
+  setIsEdit,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -119,20 +123,32 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
   };
 
   const handleCheckboxChange = (index, isChecked, data) => {
-    setAllOrganizersAccept(false);
     const updatedCheckboxes = [...memberCheckboxes];
     updatedCheckboxes[index] = isChecked;
 
     const updatedMembers = [...membersOrganizers];
     updatedMembers[index] = { ...data, isOrganizerNotified: isChecked };
 
+    const areAllChecked = updatedCheckboxes.every((checkbox) => checkbox);
+    const areAnyUnchecked = updatedCheckboxes.some((checkbox) => !checkbox);
+
+    // If any single checkbox is unchecked, uncheck the checkbox outside the mapping
+    if (areAnyUnchecked) {
+      setAllOrganizersAccept(false);
+    } else if (areAllChecked) {
+      // If all checkboxes are checked, check the checkbox outside the mapping
+      setAllOrganizersAccept(true);
+    }
+
     setMemberCheckboxes(updatedCheckboxes);
     setMembersOrganizers(updatedMembers);
   };
+
   const [NotifyMessageError, setNotifyMessaegError] = useState(false);
 
   const sendNotification = () => {
     // if (notifyOrganizerData.Messege !== "") {
+    setIsEdit(true);
     dispatch(showNotifyOrganizors(false));
     const updatedMembersOrganizers = membersOrganizers.map((member) => ({
       ...member,
@@ -140,14 +156,17 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
     }));
     console.log(updatedMembersOrganizers, "updatedMembersOrganizers");
     dispatch(meetingOrganizers(updatedMembersOrganizers));
+    setNotificationMessage("");
     // } else {
     // setNotifyMessaegError(true);
     // }
   };
 
   const handleCancelButton = () => {
+    setIsEdit(true);
     dispatch(showNotifyOrganizors(false));
     dispatch(meetingOrganizers([]));
+    setNotificationMessage("");
   };
 
   useEffect(() => {
@@ -180,6 +199,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
         modalFooterClassName={"d-block"}
         onHide={() => {
           dispatch(showNotifyOrganizors(false));
+          setIsEdit(true);
         }}
         ModalBody={
           <>
