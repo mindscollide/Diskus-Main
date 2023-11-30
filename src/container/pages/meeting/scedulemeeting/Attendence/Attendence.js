@@ -385,7 +385,6 @@ const Attendence = ({
         </Col>
       </Row>
 
-      {attendanceMeetingReducer.Loading ? <Loader /> : null}
       {NewMeetingreducer.attendanceConfirmationModal && (
         <CancelModal
           setAttendance={setAttendance}

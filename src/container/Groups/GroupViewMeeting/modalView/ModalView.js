@@ -1176,7 +1176,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           }
         />
       </Container>
-      {/* {assignees.Loading ? <Loader /> : null} */}
     </>
   );
 };

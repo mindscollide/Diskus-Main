@@ -72,6 +72,7 @@ const AgendaWise = ({
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [organizerID, setOrganizerID] = useState(0);
   const [expandedFiles, setExpandedFiles] = useState([]);
   const [minuteID, setMinuteID] = useState(0);
   const [updateData, setupdateData] = useState(null);
@@ -152,6 +153,7 @@ const AgendaWise = ({
           NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
         const documentsData =
           NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
+        setOrganizerID(NewMeetingreducer.agendaWiseMinutesReducer.organizerID);
         const combinedData = minutesData.map((item1) => {
           const matchingItem = documentsData.find(
             (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
@@ -359,16 +361,33 @@ const AgendaWise = ({
   };
 
   const handleAddClickAgendaWise = async () => {
-    let Data = {
-      AgendaID: agendaSelect.agendaSelectOptions.id,
-      MinuteText: addNoteFields.Description.value,
-    };
-    dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
-    setAgendaOptionValue({
-      value: 0,
-      label: "",
-    });
-    // setAgendaOptions([]);
+    if (addNoteFields.Description.value !== "") {
+      let Data = {
+        AgendaID: agendaSelect.agendaSelectOptions.id,
+        MinuteText: addNoteFields.Description.value,
+      };
+      dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
+      setAgendaOptionValue({
+        value: 0,
+        label: "",
+      });
+      // setAgendaOptions([]);
+    } else {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: addNoteFields.Description.value,
+          errorMessage:
+            addNoteFields.Description.value === ""
+              ? t("Minutes-text-is-required")
+              : addNoteFields.Description.errorMessage,
+          errorStatus:
+            addNoteFields.Description.value === ""
+              ? true
+              : addNoteFields.Description.errorStatus,
+        },
+      });
+    }
   };
 
   const documentUploadingFunc = async (minuteID) => {
@@ -685,7 +704,7 @@ const AgendaWise = ({
                     ref={editorRef}
                     theme="snow"
                     value={addNoteFields.Description.value || ""}
-                    placeholder={t("Note-details")}
+                    placeholder={t("Minutes-details")}
                     onChange={onTextChange}
                     modules={modules}
                     className={styles["quill-height-addNote"]}
@@ -695,8 +714,22 @@ const AgendaWise = ({
                   />
                 </Col>
               </Row>
-              {/* Button For Saving the The Minutes  */}
               <Row className="mt-5">
+                <Col>
+                  <p
+                    className={
+                      addNoteFields.Description.errorStatus &&
+                      addNoteFields.Description.value === ""
+                        ? ` ${styles["errorNotesMessage"]} `
+                        : `${styles["errorNotesMessage_hidden"]}`
+                    }
+                  >
+                    {addNoteFields.Description.errorMessage}
+                  </p>
+                </Col>
+              </Row>
+              {/* Button For Saving the The Minutes  */}
+              <Row className="mt-0">
                 <Col
                   lg={12}
                   md={12}
@@ -1144,7 +1177,8 @@ const AgendaWise = ({
                             12 ? null : (editorRole.role === "Organizer" &&
                               Number(editorRole.status) === 9) ||
                             (Number(editorRole.status) === 10 &&
-                              editorRole.role === "Organizer") ? (
+                              editorRole.role === "Organizer") ||
+                            userID === organizerID ? (
                             <img
                               draggable={false}
                               src={RedCroseeIcon}

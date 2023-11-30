@@ -15,12 +15,7 @@ import { showSceduleProposedMeeting } from "../../../../../../../store/actions/N
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
 import { scheduleMeetingMainApi } from "../../../../../../../store/actions/NewMeetingActions";
-const SceduleProposedmeeting = ({
-  organizerRows,
-  proposedDates,
-}) => {
-
-
+const SceduleProposedmeeting = ({ organizerRows, proposedDates }) => {
   let viewProposeDatePollMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID")
   );
@@ -31,9 +26,7 @@ const SceduleProposedmeeting = ({
   const sceduleproposedMeeting = useSelector(
     (state) => state.NewMeetingreducer.sceduleproposedMeeting
   );
-  const Loading = useSelector(
-    (state) => state.NewMeetingreducer.Loading
-  );
+
   const [isActive, setIsActive] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectProposedDate, setSelectPropsed] = useState(null);
@@ -247,7 +240,6 @@ const SceduleProposedmeeting = ({
           </>
         }
       />
-      {Loading ? <Loader /> : null}
     </section>
   );
 };

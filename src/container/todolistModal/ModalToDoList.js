@@ -17,9 +17,7 @@ import {
   Notification,
   InputSearchFilter,
 } from "./../../components/elements";
-import {
-  createConvert,
-} from "./../../commen/functions/date_formater";
+import { createConvert } from "./../../commen/functions/date_formater";
 import CustomUpload from "./../../components/elements/upload/Upload";
 import { Row, Col, Container } from "react-bootstrap";
 import {
@@ -688,6 +686,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         render={<CustomInput />}
                         plugins={[<TimePicker hideSeconds />]}
                         onChange={handleTimeChange}
+                        editable={false}
                       />
 
                       <DatePicker

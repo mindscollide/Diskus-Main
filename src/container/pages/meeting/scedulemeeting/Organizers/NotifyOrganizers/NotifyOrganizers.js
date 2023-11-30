@@ -23,7 +23,11 @@ import { Col, Row } from "react-bootstrap";
 import { validateInput } from "../../../../../../commen/functions/regex";
 import downdirect from "../../../../../../assets/images/downDirect.png";
 
-const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
+const NotifyOrganizers = ({
+  setNotificationMessage,
+  notificationMessage,
+  setIsEdit,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -119,34 +123,50 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
   };
 
   const handleCheckboxChange = (index, isChecked, data) => {
-    setAllOrganizersAccept(false);
     const updatedCheckboxes = [...memberCheckboxes];
     updatedCheckboxes[index] = isChecked;
 
     const updatedMembers = [...membersOrganizers];
     updatedMembers[index] = { ...data, isOrganizerNotified: isChecked };
 
+    const areAllChecked = updatedCheckboxes.every((checkbox) => checkbox);
+    const areAnyUnchecked = updatedCheckboxes.some((checkbox) => !checkbox);
+
+    // If any single checkbox is unchecked, uncheck the checkbox outside the mapping
+    if (areAnyUnchecked) {
+      setAllOrganizersAccept(false);
+    } else if (areAllChecked) {
+      // If all checkboxes are checked, check the checkbox outside the mapping
+      setAllOrganizersAccept(true);
+    }
+
     setMemberCheckboxes(updatedCheckboxes);
     setMembersOrganizers(updatedMembers);
   };
+
   const [NotifyMessageError, setNotifyMessaegError] = useState(false);
+
   const sendNotification = () => {
-    if (notifyOrganizerData.Messege !== "") {
-      dispatch(showNotifyOrganizors(false));
-      const updatedMembersOrganizers = membersOrganizers.map((member) => ({
-        ...member,
-        NotificationMessage: notifyOrganizerData.Messege,
-      }));
-      console.log(updatedMembersOrganizers, "updatedMembersOrganizers");
-      dispatch(meetingOrganizers(updatedMembersOrganizers));
-    } else {
-      setNotifyMessaegError(true);
-    }
+    // if (notifyOrganizerData.Messege !== "") {
+    setIsEdit(true);
+    dispatch(showNotifyOrganizors(false));
+    const updatedMembersOrganizers = membersOrganizers.map((member) => ({
+      ...member,
+      NotificationMessage: notifyOrganizerData.Messege,
+    }));
+    console.log(updatedMembersOrganizers, "updatedMembersOrganizers");
+    dispatch(meetingOrganizers(updatedMembersOrganizers));
+    setNotificationMessage("");
+    // } else {
+    // setNotifyMessaegError(true);
+    // }
   };
 
   const handleCancelButton = () => {
+    setIsEdit(true);
     dispatch(showNotifyOrganizors(false));
     dispatch(meetingOrganizers([]));
+    setNotificationMessage("");
   };
 
   useEffect(() => {
@@ -179,6 +199,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
         modalFooterClassName={"d-block"}
         onHide={() => {
           dispatch(showNotifyOrganizors(false));
+          setIsEdit(true);
         }}
         ModalBody={
           <>
@@ -193,6 +214,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
                   draggable={false}
                   src={BlackCrossIcon}
                   className="cursor-pointer"
+                  alt=""
                   width="16px"
                   height="16px"
                   onClick={handleCrossIcon}
@@ -213,7 +235,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
                   name="Message"
                   maxLength={500}
                 />
-                {NotifyMessageError && notificationMessage === "" ? (
+                {/* {NotifyMessageError && notificationMessage === "" ? (
                   <span
                     className={
                       NotifyMessageError && notificationMessage === ""
@@ -223,7 +245,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
                   >
                     {t("Response-Message-is-required")}
                   </span>
-                ) : null}
+                ) : null} */}
               </Col>
             </Row>
             <Row className="mt-2">
@@ -252,6 +274,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
                   src={membersHide ? downdirect : UpperArrow}
                   width="18.4px"
                   height="9.2px"
+                  alt=""
                   className={styles["UparrowClasss"]}
                   onClick={handleHideItems}
                 />
@@ -287,6 +310,7 @@ const NotifyOrganizers = ({ setNotificationMessage, notificationMessage }) => {
                                     draggable={false}
                                     src={`data:image/jpeg;base64,${data.displayPicture}`}
                                     width="33px"
+                                    alt=""
                                     height="33px"
                                     className={styles["ProfilePic"]}
                                   />

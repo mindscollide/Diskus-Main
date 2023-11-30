@@ -67,7 +67,6 @@ const CustomMiscellaneous = () => {
           );
         })}
       </section>
-      {fAQsReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

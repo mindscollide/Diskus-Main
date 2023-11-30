@@ -94,18 +94,41 @@ const Dashboard = () => {
   const {
     talkStateData,
     videoFeatureReducer,
-    VideoMainReducer,
     assignees,
-    NewMeetingreducer,
-    MeetingOrganizersReducer,
-    MeetingAgendaReducer,
-    PollsReducer,
     CommitteeReducer,
     toDoListReducer,
     getTodosStatus,
+    downloadReducer,
+    todoStatus,
+    uploadReducer,
+    settingReducer,
+    fAQsReducer,
+    meetingIdReducer,
+    calendarReducer,
+    OnBoardModal,
+    postAssigneeComments,
+    VideoChatReducer,
+    minuteofMeetingReducer,
+    countryNamesReducer,
+    GetSubscriptionPackage,
+    Authreducer,
+    roleListReducer,
+    NotesReducer,
+    GroupsReducer,
+    ResolutionReducer,
+    RealtimeNotification,
+    OrganizationBillingReducer,
+    PollsReducer,
+    NewMeetingreducer,
+    LanguageReducer,
+    VideoMainReducer,
+    webViewer,
+    MeetingOrganizersReducer,
+    MeetingAgendaReducer,
+    attendanceMeetingReducer,
     actionMeetingReducer,
     AgendaWiseAgendaListReducer,
-    downloadReducer,
+    DataRoomReducer,
   } = useSelector((state) => state);
   // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate();
@@ -1611,21 +1634,7 @@ const Dashboard = () => {
               <VideoCallScreen />
             ) : null}
             {activateBlur ? null : <Talk />}
-            {/* {MeetingOrganizersReducer.LoadingMeetingOrganizer ? <Loader /> : null} */}
-            {console.log(
-              "NewMeetingreducerNewMeetingreducerNewMeetingreducerNewMeetingreducer",
-              NewMeetingreducer.Loading,
-              assignees.Loading,
-              MeetingOrganizersReducer.LoadingMeetingOrganizer,
-              MeetingOrganizersReducer.Loading,
-              PollsReducer.Loading,
-              CommitteeReducer.Loading,
-              toDoListReducer.Loading,
-              getTodosStatus.Loading,
-              MeetingAgendaReducer.Loading,
-              actionMeetingReducer.Loading,
-              AgendaWiseAgendaListReducer.loading
-            )}
+
             {NewMeetingreducer.Loading ||
             assignees.Loading ||
             MeetingOrganizersReducer.LoadingMeetingOrganizer ||
@@ -1633,11 +1642,35 @@ const Dashboard = () => {
             PollsReducer.Loading ||
             CommitteeReducer.Loading ||
             toDoListReducer.Loading ||
+            todoStatus.Loading ||
             getTodosStatus.Loading ||
             MeetingAgendaReducer.Loading ||
             actionMeetingReducer.Loading ||
             AgendaWiseAgendaListReducer.loading ||
-            downloadReducer.Loading ? (
+            downloadReducer.Loading ||
+            attendanceMeetingReducer.Loading ||
+            webViewer.Loading ||
+            LanguageReducer.Loading ||
+            uploadReducer.Loading ||
+            settingReducer.Loading ||
+            fAQsReducer.Loading ||
+            meetingIdReducer.Loading ||
+            calendarReducer.Loading ||
+            OnBoardModal.Loading ||
+            postAssigneeComments.Loading ||
+            VideoChatReducer.Loading ||
+            minuteofMeetingReducer.Loading ||
+            countryNamesReducer.Loading ||
+            GetSubscriptionPackage.Loading ||
+            Authreducer.Loading ||
+            roleListReducer.Loading ||
+            NotesReducer.Loading ||
+            GroupsReducer.Loading ||
+            GroupsReducer.getAllLoading ||
+            ResolutionReducer.Loading ||
+            RealtimeNotification.Loading ||
+            OrganizationBillingReducer.Loading ||
+            DataRoomReducer.Loading ? (
               <Loader />
             ) : null}
           </Layout>

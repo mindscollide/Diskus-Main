@@ -14,10 +14,10 @@ import doticon from "../../../assets/images/Dsvg.svg";
 import img6 from "../../../assets/images/DropdownSIX.svg";
 import img7 from "../../../assets/images/DropdownSEVEN.svg";
 import Group_Icon from "../../../assets/images/group_Icons.svg";
+import { useMemo } from "react";
 const Card = ({
   CardHeading,
   profile,
-  BtnText,
   StatusID,
   onClickFunction,
   flag,
@@ -78,8 +78,8 @@ const Card = ({
           }
         }
       });
-    } catch {
-      console.log("error");
+    } catch (error) {
+      console.log("error", error);
     }
   }, []);
   let sortedArraay =
@@ -507,7 +507,6 @@ const Card = ({
             sortedArraay !== undefined &&
             sortedArraay.length > 0
               ? sortedArraay.map((data, index) => {
-                  console.log(data, "datadatadatadata1212");
                   if (index <= 3) {
                     return (
                       <Col

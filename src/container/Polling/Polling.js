@@ -959,7 +959,6 @@ const Polling = () => {
         </>
       ) : null}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-      {LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

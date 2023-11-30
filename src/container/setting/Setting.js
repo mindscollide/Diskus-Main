@@ -1624,7 +1624,6 @@ const Organization = () => {
           </Row>
         </Col>
       </Container>
-      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification
         open={open.flag}
         message={open.message}

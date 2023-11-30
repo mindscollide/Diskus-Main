@@ -62,3 +62,7 @@
 .DefineTableFixedheight {
   height: 60vh !important;
 }
+
+.meeting-expanded-row {
+  margin-left: 22px !important;
+}

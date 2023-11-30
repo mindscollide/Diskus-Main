@@ -1244,6 +1244,7 @@ const ScheduleNewResolution = () => {
                             calendar={calendarValue}
                             locale={localValue}
                             format="hh:mm A"
+                            editable={false}
                             plugins={[<TimePicker hideSeconds />]}
                             render={<CustomInput />}
                             selected={
@@ -1367,6 +1368,7 @@ const ScheduleNewResolution = () => {
                             calendar={calendarValue}
                             locale={localValue}
                             format="hh:mm A"
+                            editable={false}
                             plugins={[<TimePicker hideSeconds />]}
                             render={<CustomInput />}
                             selected={votingDateTime.timeVotingforView}
@@ -1485,6 +1487,7 @@ const ScheduleNewResolution = () => {
                             calendar={calendarValue}
                             locale={localValue}
                             format="hh:mm A"
+                            editable={false}
                             plugins={[<TimePicker hideSeconds />]}
                             render={<CustomInput />}
                             selected={decisionDateTime.timeDecisionforView}

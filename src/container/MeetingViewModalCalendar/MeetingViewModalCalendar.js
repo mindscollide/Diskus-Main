@@ -1181,7 +1181,6 @@ const MeetingViewModalCalendar = ({
           }
         />
       </Container>
-      {/* {assignees.Loading ? <Loader /> : null} */}
     </>
   );
 };

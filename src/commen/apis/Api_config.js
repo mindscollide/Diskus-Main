@@ -1302,6 +1302,9 @@ const getAllMeetingForAgendaImport = {
 const getAgendaWithMeetingIDForImport = {
   RequestMethod: "ServiceManager.GetAgendaWithMeetingIDForImport",
 };
+const inviteForCollaboration = {
+  RequestMethod: "ServiceManager.InviteForMinuteCollaboration",
+};
 
 export {
   saveTaskandAssgineesRM,
@@ -1651,4 +1654,5 @@ export {
   //Import Agenda
   getAllMeetingForAgendaImport,
   getAgendaWithMeetingIDForImport,
+  inviteForCollaboration,
 };

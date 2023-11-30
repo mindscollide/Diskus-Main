@@ -705,6 +705,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         format="hh:mm A"
                         selected={task.timeforView}
                         render={<CustomInput />}
+                        editable={false}
                         plugins={[<TimePicker hideSeconds />]}
                         onChange={handleTimeChange}
                       />
