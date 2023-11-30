@@ -27,7 +27,6 @@ import {
   GetAllGeneralMinutesApiFunc,
   showUnsaveMinutesFileUpload,
   uploadDocumentsMeetingMinutesApi,
-  cleareMinutsData,
   searchNewUserMeeting,
   cleareAllState,
   InviteToCollaborateMinutesApiFunc,
@@ -80,6 +79,7 @@ const Minutes = ({
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
+
   const [useCase, setUseCase] = useState(null);
   const [fileSize, setFileSize] = useState(0);
   const [generalShowMore, setGeneralShowMore] = useState(null);
@@ -87,6 +87,7 @@ const Minutes = ({
   const [general, setGeneral] = useState(true);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [organizerID, setOrganizerID] = useState(0);
   const [agenda, setAgenda] = useState(false);
   const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
@@ -168,8 +169,14 @@ const Minutes = ({
         (Object.keys(generalminutesDocumentForMeeting).length > 0 ||
           generalminutesDocumentForMeeting.length > 0)
       ) {
+        console.log(
+          generalMinutes.organizerID,
+          "generalMinutesgeneralMinutesgeneralMinutes"
+        );
+
         const minutesData = generalMinutes.meetingMinutes;
         const documentsData = generalminutesDocumentForMeeting.data;
+        setOrganizerID(generalMinutes.organizerID);
         const combinedData = minutesData.map((item1) => {
           const matchingItem = documentsData.find(
             (item2) => item2.pK_MeetingGeneralMinutesID === item1.minuteID
@@ -1296,7 +1303,8 @@ const Minutes = ({
                                 12 ? null : (editorRole.role === "Organizer" &&
                                   Number(editorRole.status) === 9) ||
                                 (Number(editorRole.status) === 10 &&
-                                  editorRole.role === "Organizer") ? (
+                                  editorRole.role === "Organizer" &&
+                                  userID === organizerID) ? (
                                 <img
                                   draggable={false}
                                   src={RedCroseeIcon}

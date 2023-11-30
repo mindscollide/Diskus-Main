@@ -65,6 +65,7 @@ const AgendaWise = ({
     message: "",
   });
   const [isEdit, setisEdit] = useState(false);
+  const [organizerID, setOrganizerID] = useState(0);
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { NewMeetingreducer, AgendaWiseAgendaListReducer } = useSelector(
@@ -157,8 +158,13 @@ const AgendaWise = ({
       ) {
         const minutesData =
           NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
+        console.log(
+          minutesData,
+          "minutesDataminutesDataminutesDataminutesData"
+        );
         const documentsData =
           NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
+        // setOrganizerID();
         const combinedData = minutesData.map((item1) => {
           const matchingItem = documentsData.find(
             (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
@@ -1192,7 +1198,8 @@ const AgendaWise = ({
                             12 ? null : (editorRole.role === "Organizer" &&
                               Number(editorRole.status) === 9) ||
                             (Number(editorRole.status) === 10 &&
-                              editorRole.role === "Organizer") ? (
+                              editorRole.role === "Organizer" &&
+                              userID === organizerID) ? (
                             <img
                               draggable={false}
                               src={RedCroseeIcon}
