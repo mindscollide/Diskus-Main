@@ -156,15 +156,17 @@ const AgendaWise = ({
         NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
         NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
       ) {
+        console.log(
+          NewMeetingreducer.agendaWiseMinutesReducer.organizerID,
+          "NewMeetingreducerNewMeetingreducer"
+        );
+
         const minutesData =
           NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
-        console.log(
-          minutesData,
-          "minutesDataminutesDataminutesDataminutesData"
-        );
+
         const documentsData =
           NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
-        // setOrganizerID();
+        setOrganizerID(NewMeetingreducer.agendaWiseMinutesReducer.organizerID);
         const combinedData = minutesData.map((item1) => {
           const matchingItem = documentsData.find(
             (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID

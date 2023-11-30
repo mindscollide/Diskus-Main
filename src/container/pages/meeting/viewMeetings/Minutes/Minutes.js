@@ -83,6 +83,7 @@ const Minutes = ({
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
+  const [organizerID, setOrganizerID] = useState(0);
   const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
@@ -168,8 +169,13 @@ const Minutes = ({
         (Object.keys(generalminutesDocumentForMeeting).length > 0 ||
           generalminutesDocumentForMeeting.length > 0)
       ) {
+        console.log(
+          generalMinutes.organizerID,
+          "generalMinutesgeneralMinutesgeneralMinutes"
+        );
         const minutesData = generalMinutes.meetingMinutes;
         const documentsData = generalminutesDocumentForMeeting.data;
+        setOrganizerID(generalMinutes.organizerID);
         const combinedData = minutesData.map((item1) => {
           const matchingItem = documentsData.find(
             (item2) => item2.pK_MeetingGeneralMinutesID === item1.minuteID
@@ -1309,7 +1315,8 @@ const Minutes = ({
                                 12 ? null : (editorRole.role === "Organizer" &&
                                   Number(editorRole.status) === 9) ||
                                 (Number(editorRole.status) === 10 &&
-                                  editorRole.role === "Organizer") ? (
+                                  editorRole.role === "Organizer" &&
+                                  userID === organizerID) ? (
                                 <img
                                   draggable={false}
                                   src={RedCroseeIcon}
@@ -1346,7 +1353,7 @@ const Minutes = ({
 
           <Button
             text={t("Invite-to-collaborate")}
-            className={styles["Next_button_Minutes"]}
+            className={styles["Button_General"]}
             onClick={handleInvitetoCollaborateView}
           />
 
