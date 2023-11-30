@@ -30,6 +30,7 @@ import {
   cleareMinutsData,
   searchNewUserMeeting,
   cleareAllState,
+  InviteToCollaborateMinutesApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -667,6 +668,15 @@ const Minutes = ({
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
     }
+  };
+
+  //Invite To Collaborate
+
+  const handleInvitetoCollaborateView = () => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(InviteToCollaborateMinutesApiFunc(navigate, Data, t));
   };
 
   const handlePreviousButton = () => {
@@ -1332,6 +1342,12 @@ const Minutes = ({
             text={t("Cancel")}
             className={styles["Cancel_button_Minutes"]}
             onClick={handleUNsaveChangesModal}
+          />
+
+          <Button
+            text={t("Invite-to-collaborate")}
+            className={styles["Next_button_Minutes"]}
+            onClick={handleInvitetoCollaborateView}
           />
 
           <Button
