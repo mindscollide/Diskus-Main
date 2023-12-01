@@ -140,8 +140,8 @@ const ParentAgenda = ({
       subTitle: "",
       description: "",
       agendaVotingID: 0,
-      presenterID: 0,
-      presenterName: "",
+      presenterID: allSavedPresenters[0]?.value,
+      presenterName: allSavedPresenters[0]?.label,
       startDate: "",
       endDate: "",
       subSelectRadio: 1,
@@ -381,6 +381,7 @@ const ParentAgenda = ({
       setPresenters(allPresentersReducer);
     }
   }, [allPresenters]);
+
   useEffect(() => {
     if (presenters.lenth > 0 || Object.keys(presenters).length > 0) {
       const mappedPresenters = presenters.map((presenter) => ({
@@ -413,6 +414,11 @@ const ParentAgenda = ({
         return prevPresenters; // No change, return the current state
       });
     }
+    const updatedAgendaItems = [...rows];
+    updatedAgendaItems[index].presenterID = allSavedPresenters[0]?.value;
+    updatedAgendaItems[index].presenterName = allSavedPresenters[0]?.label;
+    setRows(updatedAgendaItems);
+    console.log("presenterspresenters", presenters);
   }, [presenters]);
 
   useEffect(() => {
@@ -610,6 +616,7 @@ const ParentAgenda = ({
                                       ? true
                                       : false
                                   }
+                                  editable={false}
                                 />
                               </Col>
                               <Col
@@ -660,6 +667,7 @@ const ParentAgenda = ({
                                       ? true
                                       : false
                                   }
+                                  editable={false}
                                 />
                               </Col>
                             </Row>

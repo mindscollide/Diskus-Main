@@ -8,12 +8,59 @@ import { Col, Row } from "react-bootstrap";
 import { Progress } from "antd";
 import Profile from "../../../../../assets/images/newprofile.png";
 import { Button } from "../../../../../components/elements";
+import { useEffect } from "react";
 
 const ViewVotesScreen = ({ setviewVotes }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { PollsReducer } = useSelector((state) => state);
+  const [pollId, setPollId] = useState(0);
+  let userID = localStorage.getItem("userID");
+  const [pollTitle, setPollTitle] = useState("");
+  const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
+    []
+  );
+  const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
+  console.log(
+    votePollDetailsOptions,
+    pollAttendiesOpptionsVise,
+    "pollAttendiesOpptionsVisepollAttendiesOpptionsVise"
+  );
+  useEffect(() => {
+    if (
+      PollsReducer.viewVotes !== null &&
+      PollsReducer.viewVotes !== undefined
+    ) {
+      let vieVotePollDetails = PollsReducer.viewVotes;
+      let pollOptions = vieVotePollDetails.pollOptions;
+      let pollAttendies = vieVotePollDetails.pollParticipants;
+      let Options = [];
+      console.log("handleClosed", vieVotePollDetails);
+
+      if (vieVotePollDetails !== undefined && vieVotePollDetails !== null) {
+        if (Object.keys(vieVotePollDetails).length > 0) {
+          // for poll ID
+          setPollId(vieVotePollDetails.pollDetails.pollID);
+
+          // for poll Title
+          setPollTitle(vieVotePollDetails.pollDetails.pollTitle);
+
+          // for options
+          if (Object.keys(pollOptions).length > 0) {
+            pollOptions.forEach((data, index) => {
+              Options.push(data);
+            });
+            setVotePollDetailsOptions(Options);
+          }
+
+          if (Object.keys(pollAttendies).length > 0) {
+            setPollAttendiesOpptionsVise(pollAttendies);
+          }
+        }
+      }
+    }
+  }, [PollsReducer.viewVotes]);
   const [messeges, setMesseges] = useState([
     {
       text: "In-person meetings",
@@ -52,8 +99,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
           <Row className="mt-3">
             <Col lg={12} md={12} sm={12}>
               <span className={styles["Heading_vewPolls_Published"]}>
-                How do you prefer to collaborate with your colleagues in the
-                office?
+                {pollTitle}
               </span>
             </Col>
           </Row>
@@ -65,8 +111,8 @@ const ViewVotesScreen = ({ setviewVotes }) => {
               className={styles["Scroller_View_Published_Polls"]}
             >
               <Row>
-                {messeges.length > 0
-                  ? messeges.map((data, index) => {
+                {votePollDetailsOptions.length > 0
+                  ? votePollDetailsOptions.map((data, index) => {
                       return (
                         <>
                           <Col lg={12} md={12} sm={12} className="mt-2">
@@ -76,8 +122,8 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                                   <span
                                     className={styles["Messege_span_Class"]}
                                   >
-                                    {data.text}
-                                    {""} <span>-20%</span>
+                                    {data.answer}
+                                    {""} <span>{data.totalVotes}</span>
                                   </span>
                                 </Col>
                               </Row>
@@ -91,7 +137,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                                       className="d-flex gap-3"
                                     >
                                       <Progress
-                                        percent={20}
+                                        percent={data.votePercentage}
                                         status="active"
                                         className="pollsDetailsProgress"
                                       />
