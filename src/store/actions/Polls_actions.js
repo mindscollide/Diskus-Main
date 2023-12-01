@@ -861,7 +861,7 @@ const viewVoteFailed = (message) => {
   };
 };
 
-const viewVotesApi = (navigate, data, t) => {
+const viewVotesApi = (navigate, data, t, check, setviewVotes) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(viewVotesInit());
@@ -886,20 +886,32 @@ const viewVotesApi = (navigate, data, t) => {
               .toLowerCase()
               .includes("Polls_PollsServiceManager_ViewVotes_01".toLowerCase())
           ) {
-            await dispatch(setEditpollModal(false));
-            await dispatch(setCreatePollModal(false));
-            await dispatch(setviewpollModal(false));
-            await dispatch(globalFlag(false));
-            await dispatch(setviewpollProgressModal(false));
-            await dispatch(
-              viewVotesSuccess(
-                response.data.responseResult.voteDetails,
-                t("Record-found")
-              )
-            );
-            console.log("handleClosed", response.data.responseResult);
+            if (check) {
+              if (Number(check) === 1) {
+                setviewVotes(true);
+                await dispatch(
+                  viewVotesSuccess(
+                    response.data.responseResult.voteDetails,
+                    t("Record-found")
+                  )
+                );
+              }
+            } else {
+              await dispatch(setEditpollModal(false));
+              await dispatch(setCreatePollModal(false));
+              await dispatch(setviewpollModal(false));
+              await dispatch(globalFlag(false));
+              await dispatch(setviewpollProgressModal(false));
+              await dispatch(
+                viewVotesSuccess(
+                  response.data.responseResult.voteDetails,
+                  t("Record-found")
+                )
+              );
+              console.log("handleClosed", response.data.responseResult);
 
-            await dispatch(viewVotesDetailsModal(true));
+              await dispatch(viewVotesDetailsModal(true));
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -2332,7 +2344,8 @@ const getPollsByPollIdforCommitteeApi = (
   t,
   setEditPolls,
   setvotePolls,
-  setUnPublished
+  setUnPublished,
+  setViewPublishedPoll
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -2358,7 +2371,8 @@ const getPollsByPollIdforCommitteeApi = (
             t,
             setEditPolls,
             setvotePolls,
-            setUnPublished
+            setUnPublished,
+            setViewPublishedPoll
           )
         );
       } else if (response.data.responseCode === 200) {
@@ -2377,6 +2391,8 @@ const getPollsByPollIdforCommitteeApi = (
               setvotePolls(true);
             } else if (Number(check) === 3) {
               setUnPublished(true);
+            } else if (Number(check) === 4) {
+              setViewPublishedPoll(true);
             }
             // if (parseInt(check) === 1) {
             //   await dispatch(setviewpollModal(false));

@@ -16,6 +16,8 @@ import {
   addUpdateAdvanceMeetingAgenda,
   agendaVotingStatusUpdate,
   saveMeetingDocuments,
+  getAllMeetingForAgendaImport,
+  getAgendaWithMeetingIDForImport,
 } from "../../commen/apis/Api_config";
 import { meetingApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
 import {
@@ -1508,6 +1510,196 @@ const nextTabAgenda = (response) => {
   };
 };
 
+const getAllMeetingForAgendaImport_init = () => {
+  return {
+    type: actions.GET_ALLMEETINGFORAGENDAIMPORT_INIT,
+  };
+};
+const getAllMeetingForAgendaImport_success = (response, message) => {
+  return {
+    type: actions.GET_ALLMEETINGFORAGENDAIMPORT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAllMeetingForAgendaImport_fail = (message) => {
+  return {
+    type: actions.GET_ALLMEETINGFORAGENDAIMPORT_FAIL,
+    message: message,
+  };
+};
+const GetAllMeetingForAgendaImport = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAllMeetingForAgendaImport_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getAllMeetingForAgendaImport.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllMeetingForAgendaImport(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingForAgendaImport_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllMeetingForAgendaImport_success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingForAgendaImport_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllMeetingForAgendaImport_fail(t("No-records-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAllMeetingForAgendaImport_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAllMeetingForAgendaImport_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAllMeetingForAgendaImport_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getAllMeetingForAgendaImport_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getAllMeetingForAgendaImport_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllMeetingForAgendaImport_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const getAgendaWithMeetingIDForImport_init = () => {
+  return {
+    type: actions.GET_AGENDAWITHMEETINGIDFORIMPORT_INIT,
+  };
+};
+const getAgendaWithMeetingIDForImport_success = (response, message) => {
+  return {
+    type: actions.GET_AGENDAWITHMEETINGIDFORIMPORT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getAgendaWithMeetingIDForImport_fail = (message) => {
+  return {
+    type: actions.GET_AGENDAWITHMEETINGIDFORIMPORT_FAIL,
+    message: message,
+  };
+};
+const GetAgendaWithMeetingIDForImport = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(getAgendaWithMeetingIDForImport_init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", getAgendaWithMeetingIDForImport.RequestMethod);
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAgendaWithMeetingIDForImport(Data, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAgendaWithMeetingIDForImport_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAgendaWithMeetingIDForImport_success(
+                  response.data.responseResult,
+                  t("Agendas-imported-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAgendaWithMeetingIDForImport_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAgendaWithMeetingIDForImport_fail(t("No-agendas-exist"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAgendaWithMeetingIDForImport_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getAgendaWithMeetingIDForImport_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                getAgendaWithMeetingIDForImport_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              getAgendaWithMeetingIDForImport_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            getAgendaWithMeetingIDForImport_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          getAgendaWithMeetingIDForImport_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -1535,4 +1727,8 @@ export {
   setLoaderFalse,
   previousTabAgenda,
   nextTabAgenda,
+  GetAllMeetingForAgendaImport,
+  GetAgendaWithMeetingIDForImport,
+  getAgendaWithMeetingIDForImport_success,
+  getAllMeetingForAgendaImport_success,
 };

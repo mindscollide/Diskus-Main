@@ -617,6 +617,7 @@ const SubAgendaMappingDragging = ({
                                                   plugins={[
                                                     <TimePicker hideSeconds />,
                                                   ]}
+                                                  editable={false}
                                                 />
                                               </Col>
                                               <Col
@@ -680,6 +681,7 @@ const SubAgendaMappingDragging = ({
                                                   plugins={[
                                                     <TimePicker hideSeconds />,
                                                   ]}
+                                                  editable={false}
                                                 />
                                               </Col>
                                             </Row>

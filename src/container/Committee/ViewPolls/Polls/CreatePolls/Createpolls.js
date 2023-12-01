@@ -641,8 +641,11 @@ const Createpolls = ({ setCreatepoll }) => {
                     lg={6}
                     md={6}
                     sm={6}
-                    className="d-flex align-items-center"
+                    className="d-flex align-items-start flex-column justify-content-start"
                   >
+                    <span className={styles["Title_heading"]}>
+                      {t("Due-date")}
+                    </span>
                     <DatePicker
                       value={meetingDate}
                       format={"DD/MM/YYYY"}
@@ -654,6 +657,7 @@ const Createpolls = ({ setCreatepoll }) => {
                           className="datepicker_input"
                         />
                       }
+                      title={t("Due-date")}
                       editable={false}
                       className="datePickerTodoCreate2"
                       onOpenPickNewDate={true}

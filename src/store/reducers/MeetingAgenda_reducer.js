@@ -18,6 +18,8 @@ const initialState = {
   GetCurrentAgendaDetails: [],
   PreviousTabAgenda: false,
   NextTabAgenda: false,
+  GetAllMeetingForAgendaImportData: null,
+  GetAgendaWithMeetingIDForImportData: null,
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -389,6 +391,52 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         GetCurrentAgendaDetails: [],
         PreviousTabAgenda: false,
         NextTabAgenda: false,
+      };
+    }
+
+    case actions.GET_ALLMEETINGFORAGENDAIMPORT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_ALLMEETINGFORAGENDAIMPORT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetAllMeetingForAgendaImportData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ALLMEETINGFORAGENDAIMPORT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetAllMeetingForAgendaImportData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_AGENDAWITHMEETINGIDFORIMPORT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GET_AGENDAWITHMEETINGIDFORIMPORT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetAgendaWithMeetingIDForImportData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_AGENDAWITHMEETINGIDFORIMPORT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetAgendaWithMeetingIDForImportData: null,
+        ResponseMessage: action.message,
       };
     }
 
