@@ -1,7 +1,6 @@
 import * as actions from "../action_types";
 import { settingApi, getCalender } from "../../commen/apis/Api_ends_points";
 import {
-  updateUserGeneralSetting,
   updateOrganizationUserSetting,
   googleValidToken,
   revoketoken,
@@ -9,7 +8,6 @@ import {
 import { RefreshToken } from "../actions/Auth_action";
 import axios from "axios";
 import { getUserSetting } from "../actions/GetUserSetting";
-import { async } from "q";
 
 const updateUserSettinginit = () => {
   return {
@@ -100,8 +98,7 @@ const updateUserSettingFunc = (navigate, userOptionsSettings, t) => {
         userOptionsSettings.PushNotificationWhenResolutionISClosed,
       PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
         userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
-      UserAllowGoogleCalendarSynch:
-        userOptionsSettings.AllowGoogleCalenderSync,
+      UserAllowGoogleCalendarSynch: userOptionsSettings.AllowGoogleCalenderSync,
       UserAllowMicrosoftCalendarSynch:
         userOptionsSettings.AllowMicrosoftCalenderSync,
       GoogleEventColor: userOptionsSettings.GoogleCalenderColor,

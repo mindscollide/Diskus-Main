@@ -314,7 +314,11 @@ const UpdateOrganizersMeeting = (
                 await dispatch(
                   updateOrganizerMeetingStatus_success(
                     response.data.responseResult,
-                    t("Meeting-started-successfully")
+                    route === 5
+                      ? t("Meeting-published-successfully")
+                      : route === 4
+                      ? t("Meeting-started-successfully")
+                      : ""
                   )
                 );
                 dispatch(setLoaderFalse(false));

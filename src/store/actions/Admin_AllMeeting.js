@@ -64,7 +64,9 @@ const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(OrganizationMeetings(navigate, t));
+          dispatch(
+            OrganizationMeetings(navigate, currentPage, currentPageSize, t)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

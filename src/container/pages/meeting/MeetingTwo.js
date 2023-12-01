@@ -86,7 +86,7 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const { talkStateData } = useSelector((state) => state);
+  const { talkStateData, NewMeetingreducer } = useSelector((state) => state);
   const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
     (state) => state.NewMeetingreducer
   );
@@ -1127,6 +1127,8 @@ const NewMeeting = () => {
       }, 4000);
     }
   }, [ResponseMessage]);
+
+  console.log("Meeting Actions", NewMeetingreducer);
 
   return (
     <section className={styles["NewMeeting_container"]}>
