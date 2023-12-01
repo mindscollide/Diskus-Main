@@ -1,12 +1,11 @@
-import { CardActionArea } from '@material-ui/core'
-import * as actions from '../action_types'
+import * as actions from "../action_types";
 
 const initialState = {
   isLoggedIn: false,
   ShowNotification: false,
-  Token: '',
-  Refresh: '',
-  SessionExpireResponseMessage: '',
+  Token: "",
+  Refresh: "",
+  SessionExpireResponseMessage: "",
   OtoMessageFlag: false,
 
   AllMessagesData: [],
@@ -16,208 +15,208 @@ const initialState = {
 
   activeChatIdData: {
     id: 0,
-    messageType: '',
+    messageType: "",
   },
 
   activeMessageIdData: {
-    attachmentLocation: '',
+    attachmentLocation: "",
     blockCount: 0,
-    broadcastName: '',
-    currDate: '',
-    fileGeneratedName: '',
-    fileName: '',
-    frMessages: '',
+    broadcastName: "",
+    currDate: "",
+    fileGeneratedName: "",
+    fileName: "",
+    frMessages: "",
     isFlag: 0,
-    messageBody: '',
+    messageBody: "",
     messageCount: 0,
     messageID: 0,
-    messageStatus: '',
-    receivedDate: '',
+    messageStatus: "",
+    receivedDate: "",
     receiverID: 0,
-    receiverName: '',
-    seenDate: '',
+    receiverName: "",
+    seenDate: "",
     senderID: 0,
-    senderName: '',
-    sentDate: '',
+    senderName: "",
+    sentDate: "",
     shoutAll: 0,
-    uid: '',
+    uid: "",
   },
 
   UserDetails: [],
 
   AllUserChats: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     AllUserChatsData: [],
     Loading: false,
   },
 
   UserOTOMessages: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     UserOTOMessagesData: [],
     Loading: false,
   },
 
   UserOTOUndeliveredMessages: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     UserOTOUndeliveredMessagesData: [],
   },
 
   GroupMessages: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     GroupMessagesData: [],
     Loading: false,
   },
 
   BroadcastMessages: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     BroadcastMessagesData: [],
     Loading: false,
   },
 
   ArchivedDataByUserID: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     ArchivedDataByUserIDData: [],
   },
 
   FlagMessages: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     FlagMessagesData: [],
   },
 
   FollowMessages: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     FollowMessagesData: [],
   },
 
   RecentTags: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     RecentTagsData: [],
   },
 
   TagsMessages: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     TagsMessagesData: [],
   },
 
   MessageSentReceiveTime: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     MessageSentReceiveTimeData: [],
   },
 
   RecentFlagCount: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     RecentFlagCountData: [],
   },
 
   RecentFollowDataCountByUserID: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     RecentFollowDataCountByUserIDData: [],
   },
 
   AllRecentTagsCount: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     AllRecentTagsCountData: [],
   },
 
   RecentDataArchiveCountByUserID: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     RecentDataArchiveCountByUserIDData: [],
   },
 
   BlockedUsersCount: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     BlockedUsersCountData: [],
   },
 
   BlockedUsers: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     BlockedUsersData: [],
   },
 
   AllUsers: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     AllUsersData: [],
   },
 
   AllUsersGroupsRoomsList: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     AllUsersGroupsRoomsListData: [],
   },
 
   ActiveUsersByGroupID: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     ActiveUsersByGroupIDData: [],
   },
 
   ActiveUsersByRoomID: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     ActiveUsersByRoomIDData: [],
   },
 
   ActiveUsersByBroadcastID: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     ActiveUsersByBroadcastIDData: [],
   },
 
   MessageSendOTO: {
-    ResponseMessage: '',
+    ResponseMessage: "",
     MessageSendResponseData: [],
   },
 
   MessageSendPrivateGroup: {
-    ResponseMessage: '',
+    ResponseMessage: "",
   },
 
   BlockUnblockUser: {
-    ResponseMessage: '',
+    ResponseMessage: "",
   },
 
   DeleteSingleMessage: {
     DeleteMessageResponse: [],
-    DeleteMessageResponseMessage: '',
+    DeleteMessageResponseMessage: "",
   },
 
   MessageSendBroadcast: {
-    ResponseMessage: '',
+    ResponseMessage: "",
   },
 
   CreatePrivateGroup: {
     CreatePrivateGroupResponse: [],
-    CreatePrivateGroupResponseMessage: '',
+    CreatePrivateGroupResponseMessage: "",
   },
 
   CreateShoutAllList: {
     CreateShoutAllListResponse: [],
-    CreateShoutAllListResponseMessage: '',
+    CreateShoutAllListResponseMessage: "",
   },
 
   UpdatePrivateGroup: {
     UpdatePrivateGroupResponse: [],
-    UpdatePrivateGroupResponseMessage: '',
+    UpdatePrivateGroupResponseMessage: "",
   },
 
   LeaveGroup: {
     LeaveGroupResponse: [],
-    LeaveGroupResponseMessage: '',
+    LeaveGroupResponseMessage: "",
   },
 
   DeleteShout: {
     DeleteShoutResponse: [],
-    DeleteShoutResponseMessage: '',
+    DeleteShoutResponseMessage: "",
   },
 
   GetPrivateGroupMembers: {
     GetPrivateGroupMembersResponse: [],
-    GetPrivateGroupMembersResponseMessage: '',
+    GetPrivateGroupMembersResponseMessage: "",
   },
 
   InsertBulkMessageData: {
     InsertBulkMessageResponse: [],
-    InsertBulkMessageResponseMessage: '',
+    InsertBulkMessageResponseMessage: "",
   },
 
   MarkStarUnstarMessage: {
-    MarkStarUnstarMessageResponseMessage: '',
+    MarkStarUnstarMessageResponseMessage: "",
   },
 
   talkSocketData: {
@@ -234,9 +233,9 @@ const initialState = {
     socketStarMessage: {
       isFlag: 0,
       messageID: 0,
-      messageType: '',
+      messageType: "",
     },
-    socketUnstarMessage: { isFlag: 0, messageID: 0, messageType: '' },
+    socketUnstarMessage: { isFlag: 0, messageID: 0, messageType: "" },
   },
 
   talkSocketGroupCreation: {
@@ -259,22 +258,22 @@ const initialState = {
 
   UpdateShoutAllData: {
     UpdateShoutAllResponse: [],
-    UpdateShoutAllResponseMessage: '',
+    UpdateShoutAllResponseMessage: "",
   },
 
   DownloadChatData: {
     DownloadChatResponse: [],
-    DownloadChatResponseMessage: '',
+    DownloadChatResponseMessage: "",
   },
 
   EmailChatData: {
     EmailChatResponse: [],
-    EmailChatResponseMessage: '',
+    EmailChatResponseMessage: "",
   },
 
   UpdateMessageAcknowledgementData: {
     UpdateMessageAcknowledgementResponse: [],
-    UpdateMessageAcknowledgementResponseMessage: '',
+    UpdateMessageAcknowledgementResponseMessage: "",
   },
 
   MessageStatusUpdateData: {
@@ -289,7 +288,7 @@ const initialState = {
 
   PushChatData: [],
 
-  FileUploadData: '',
+  FileUploadData: "",
 
   ActiveMessageData: [],
 
@@ -297,62 +296,62 @@ const initialState = {
 
   AllStarMessagesData: {
     AllStarMessagesResponse: [],
-    AllStarMessagesResponseMessage: '',
+    AllStarMessagesResponseMessage: "",
     Loading: false,
   },
 
   MultipleMessagesDeletedData: {
     MultipleMessagesDeletedResponse: [],
-    MultipleMessagesDeletedResponseMessage: '',
+    MultipleMessagesDeletedResponseMessage: "",
   },
 
   LastMessageDeletionObject: [],
-}
+};
 
 const talkReducer = (state = initialState, action) => {
-  console.log('talkReducer', state)
+  console.log("talkReducer", state);
 
   switch (action.type) {
     case actions.REFRESH_TOKEN_TALK_SUCCESS: {
-      localStorage.setItem('token', JSON.stringify(action.response.token))
+      localStorage.setItem("token", JSON.stringify(action.response.token));
       localStorage.setItem(
-        'RefreshToken',
-        JSON.stringify(action.response.refreshToken),
-      )
+        "RefreshToken",
+        JSON.stringify(action.response.refreshToken)
+      );
       return {
         ...state,
         ResponseMessage: action.message,
         Token: action.response.token,
         Refresh: action.response.refreshToken,
-      }
+      };
     }
 
     case actions.REFRESH_TOKEN_TALK_FAIL: {
-      console.log('RefreshToken', action)
+      console.log("RefreshToken", action);
       return {
         ...state,
         UserDetails: action.response,
         isLoggedIn: false,
         Loading: false,
         SessionExpireResponseMessage: action.message,
-        Token: '',
-        Refresh: '',
-      }
+        Token: "",
+        Refresh: "",
+      };
     }
 
     case actions.GET_ACTIVECHATID: {
-      console.log('GET_ACTIVECHATID', action)
+      console.log("GET_ACTIVECHATID", action);
       return {
         ...state,
         activeChatIdData: {
           id: action.response.id,
           messageType: action.response.messageType,
         },
-      }
+      };
     }
 
     case actions.GET_ACTIVEMESSAGEID: {
-      console.log('GET_ACTIVEMESSAGEID', action)
+      console.log("GET_ACTIVEMESSAGEID", action);
       return {
         ...state,
         activeMessageIdData: {
@@ -378,105 +377,93 @@ const talkReducer = (state = initialState, action) => {
           shoutAll: action.response.shoutAll,
           uid: action.response.uid,
         },
-      }
+      };
     }
 
     case actions.GET_USERCHATS_INIT: {
-      {
-        return {
-          ...state,
-          AllUserChats: {
-            Loading: true,
-            AllUserChatsData: [],
-            ResponseMessage: '',
-          },
-        }
-      }
+      return {
+        ...state,
+        AllUserChats: {
+          Loading: true,
+          AllUserChatsData: [],
+          ResponseMessage: "",
+        },
+      };
     }
+
     case actions.GET_USERCHATS_SUCCESS: {
-      {
-        return {
-          ...state,
-          AllUserChats: {
-            Loading: false,
-            AllUserChatsData: action.response,
-            ResponseMessage: action.message,
-          },
-        }
-      }
+      return {
+        ...state,
+        AllUserChats: {
+          Loading: false,
+          AllUserChatsData: action.response,
+          ResponseMessage: action.message,
+        },
+      };
     }
+
     case actions.GET_USERCHATS_FAIL: {
-      {
-        return {
-          ...state,
-          AllUserChats: {
-            Loading: false,
-            AllUserChatsData: [],
-            ResponseMessage: action.message,
-          },
-        }
-      }
+      return {
+        ...state,
+        AllUserChats: {
+          Loading: false,
+          AllUserChatsData: [],
+          ResponseMessage: action.message,
+        },
+      };
     }
 
     case actions.GET_OTOUSERMESSAGES_INIT: {
-      {
-        return {
-          ...state,
-          UserOTOMessages: {
-            ResponseMessage: action.message,
-            UserOTOMessagesData: action.response,
-            Loading: true,
-          },
-          ChatSpinner: true,
-        }
-      }
+      return {
+        ...state,
+        UserOTOMessages: {
+          ResponseMessage: action.message,
+          UserOTOMessagesData: action.response,
+          Loading: true,
+        },
+        ChatSpinner: true,
+      };
     }
+
     case actions.GET_OTOUSERMESSAGES_SUCCESS: {
-      {
-        return {
-          ...state,
-          UserOTOMessages: {
-            ResponseMessage: action.message,
-            UserOTOMessagesData: action.response,
-            Loading: false,
-          },
-          ChatSpinner: false,
-        }
-      }
+      return {
+        ...state,
+        UserOTOMessages: {
+          ResponseMessage: action.message,
+          UserOTOMessagesData: action.response,
+          Loading: false,
+        },
+        ChatSpinner: false,
+      };
     }
+
     case actions.GET_OTOUSERMESSAGES_FAIL: {
-      {
-        return {
-          ...state,
-          UserOTOMessages: {
-            ResponseMessage: action.message,
-            UserOTOMessagesData: [],
-            Loading: false,
-          },
-          ChatSpinner: false,
-        }
-      }
+      return {
+        ...state,
+        UserOTOMessages: {
+          ResponseMessage: action.message,
+          UserOTOMessagesData: [],
+          Loading: false,
+        },
+        ChatSpinner: false,
+      };
     }
 
     case actions.GET_OTOUSERUNDELIVEREDMESSAGES_INIT: {
-      {
-        return {
-          ...state,
-          // Loading: false,
-        }
-      }
+      return {
+        ...state,
+        // Loading: false,
+      };
     }
 
     case actions.GET_OTOUSERUNDELIVEREDMESSAGES_SUCCESS: {
-      {
-        return {
-          ...state,
-          UserOTOUndeliveredMessages: {
-            ResponseMessage: action.message,
-            UserOTOUndeliveredMessagesData: action.response,
-          },
-        }
-      }
+      return {
+        ...state,
+        UserOTOUndeliveredMessages: {
+          ResponseMessage: action.message,
+          UserOTOUndeliveredMessagesData: action.response,
+        },
+      };
     }
 
     case actions.GET_OTOUSERUNDELIVEREDMESSAGES_FAIL: {
@@ -486,19 +473,19 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           UserOTOUndeliveredMessagesData: [],
         },
-      }
+      };
     }
 
     case actions.GET_GROUPMESSAGES_INIT: {
       return {
         ...state,
         GroupMessages: {
-          ResponseMessage: '',
+          ResponseMessage: "",
           GroupMessagesData: [],
           Loading: true,
         },
         ChatSpinner: true,
-      }
+      };
     }
 
     case actions.GET_GROUPMESSAGES_SUCCESS: {
@@ -510,7 +497,7 @@ const talkReducer = (state = initialState, action) => {
           Loading: false,
         },
         ChatSpinner: false,
-      }
+      };
     }
 
     case actions.GET_GROUPMESSAGES_FAIL: {
@@ -522,19 +509,19 @@ const talkReducer = (state = initialState, action) => {
           Loading: false,
         },
         ChatSpinner: false,
-      }
+      };
     }
 
     case actions.GET_BROADCASTMESSAGES_INIT: {
       return {
         ...state,
         BroadcastMessages: {
-          ResponseMessage: '',
+          ResponseMessage: "",
           BroadcastMessagesData: [],
           Loading: true,
         },
         ChatSpinner: true,
-      }
+      };
     }
 
     case actions.GET_BROADCASTMESSAGES_SUCCESS: {
@@ -546,7 +533,7 @@ const talkReducer = (state = initialState, action) => {
           Loading: false,
         },
         ChatSpinner: false,
-      }
+      };
     }
 
     case actions.GET_BROADCASTMESSAGES_FAIL: {
@@ -558,14 +545,14 @@ const talkReducer = (state = initialState, action) => {
           Loading: false,
         },
         ChatSpinner: false,
-      }
+      };
     }
 
     case actions.GET_ARCHIVEDDATABYUSERID_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_ARCHIVEDDATABYUSERID_SUCCESS: {
@@ -575,7 +562,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ArchivedDataByUserIDData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_ARCHIVEDDATABYUSERID_FAIL: {
@@ -585,14 +572,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ArchivedDataByUserIDData: [],
         },
-      }
+      };
     }
 
     case actions.GET_FLAGMESSAGES_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_FLAGMESSAGES_SUCCESS: {
@@ -602,7 +589,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           FlagMessagesData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_FLAGMESSAGES_FAIL: {
@@ -612,14 +599,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           FlagMessagesData: [],
         },
-      }
+      };
     }
 
     case actions.GET_FOLLOWMESSAGES_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_FOLLOWMESSAGES_SUCCESS: {
@@ -629,7 +616,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           FollowMessagesData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_FOLLOWMESSAGES_FAIL: {
@@ -639,14 +626,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           FollowMessagesData: [],
         },
-      }
+      };
     }
 
     case actions.GET_RECENTTAGS_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_RECENTTAGS_SUCCESS: {
@@ -656,7 +643,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentTagsData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_RECENTTAGS_FAIL: {
@@ -666,14 +653,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentTagsData: [],
         },
-      }
+      };
     }
 
     case actions.GET_TAGSMESSAGES_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_TAGSMESSAGES_SUCCESS: {
@@ -683,7 +670,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           TagsMessagesData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_TAGSMESSAGES_FAIL: {
@@ -693,14 +680,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           TagsMessagesData: [],
         },
-      }
+      };
     }
 
     case actions.GET_MESSAGESENTRECEIVETIME_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_MESSAGESENTRECEIVETIME_SUCCESS: {
@@ -710,7 +697,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           MessageSentReceiveTimeData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_MESSAGESENTRECEIVETIME_FAIL: {
@@ -720,14 +707,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           MessageSentReceiveTimeData: [],
         },
-      }
+      };
     }
 
     case actions.GET_RECENTFLAGCOUNT_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_RECENTFLAGCOUNT_SUCCESS: {
@@ -737,7 +724,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.response,
           RecentFlagCountData: action.message,
         },
-      }
+      };
     }
 
     case actions.GET_RECENTFLAGCOUNT_FAIL: {
@@ -747,14 +734,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentFlagCountData: [],
         },
-      }
+      };
     }
 
     case actions.GET_RECENTFOLLOWDATACOUNT_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_RECENTFOLLOWDATACOUNT_SUCCESS: {
@@ -764,7 +751,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentFollowDataCountByUserIDData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_RECENTFOLLOWDATACOUNT_FAIL: {
@@ -774,14 +761,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentFollowDataCountByUserIDData: [],
         },
-      }
+      };
     }
 
     case actions.GET_ALLRECENTTAGSCOUNT_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_ALLRECENTTAGSCOUNT_SUCCESS: {
@@ -791,7 +778,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllRecentTagsCountData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_ALLRECENTTAGSCOUNT_FAIL: {
@@ -801,14 +788,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllRecentTagsCountData: [],
         },
-      }
+      };
     }
 
     case actions.GET_RECENTDATAARCHIVECOUNT_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_RECENTDATAARCHIVECOUNT_SUCCESS: {
@@ -818,7 +805,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentDataArchiveCountByUserIDData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_RECENTDATAARCHIVECOUNT_FAIL: {
@@ -828,14 +815,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           RecentDataArchiveCountByUserIDData: [],
         },
-      }
+      };
     }
 
     case actions.GET_BLOCKEDUSERSCOUNT_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_BLOCKEDUSERSCOUNT_SUCCESS: {
@@ -845,7 +832,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           BlockedUsersCountData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_BLOCKEDUSERSCOUNT_FAIL: {
@@ -855,22 +842,22 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           BlockedUsersCountData: [],
         },
-      }
+      };
     }
 
     case actions.GET_BLOCKEDUSERS_INIT: {
       return {
         ...state,
         BlockedUsers: {
-          ResponseMessage: '',
+          ResponseMessage: "",
           BlockedUsersData: [],
           Loading: true,
         },
-      }
+      };
     }
 
     case actions.GET_BLOCKEDUSERS_SUCCESS: {
-      console.log('GET_BLOCKEDUSERS', action)
+      console.log("GET_BLOCKEDUSERS", action);
       return {
         ...state,
         BlockedUsers: {
@@ -878,11 +865,11 @@ const talkReducer = (state = initialState, action) => {
           BlockedUsersData: action.response,
           Loading: false,
         },
-      }
+      };
     }
 
     case actions.GET_BLOCKEDUSERS_FAIL: {
-      console.log('GET_BLOCKEDUSERS', action)
+      console.log("GET_BLOCKEDUSERS", action);
       return {
         ...state,
         BlockedUsers: {
@@ -890,14 +877,14 @@ const talkReducer = (state = initialState, action) => {
           BlockedUsersData: [],
           Loading: false,
         },
-      }
+      };
     }
 
     case actions.GET_ALLUSERS_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_ALLUSERS_SUCCESS: {
@@ -907,7 +894,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllUsersData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_ALLUSERS_FAIL: {
@@ -917,14 +904,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllUsersData: [],
         },
-      }
+      };
     }
 
     case actions.GET_ALLUSERSGROUPSROOMSLIST_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_ALLUSERSGROUPSROOMSLIST_SUCCESS: {
@@ -934,7 +921,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllUsersGroupsRoomsListData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_ALLUSERSGROUPSROOMSLIST_FAIL: {
@@ -944,14 +931,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           AllUsersGroupsRoomsListData: [],
         },
-      }
+      };
     }
 
     case actions.GET_ACTIVEUSERSBYGROUPID_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_ACTIVEUSERSBYGROUPID_SUCCESS: {
@@ -961,7 +948,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.response,
           ActiveUsersByGroupIDData: action.message,
         },
-      }
+      };
     }
 
     case actions.GET_ACTIVEUSERSBYGROUPID_FAIL: {
@@ -971,14 +958,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ActiveUsersByGroupIDData: [],
         },
-      }
+      };
     }
 
     case actions.GET_ACTIVEUSERSBYROOMID_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_ACTIVEUSERSBYROOMID_SUCCESS: {
@@ -988,7 +975,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ActiveUsersByRoomIDData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_ACTIVEUSERSBYROOMID_FAIL: {
@@ -998,14 +985,14 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ActiveUsersByRoomIDData: [],
         },
-      }
+      };
     }
 
     case actions.GET_ACTIVEUSERSBYBROADCASTID_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
 
     case actions.GET_ACTIVEUSERSBYBROADCASTID_SUCCESS: {
@@ -1015,7 +1002,7 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ActiveUsersByBroadcastIDData: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_ACTIVEUSERSBYBROADCASTID_FAIL: {
@@ -1025,52 +1012,52 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
           ActiveUsersByBroadcastIDData: [],
         },
-      }
+      };
     }
 
     case actions.OTO_MESSAGESEND_INIT:
       return {
         ...state,
         MessageSendOTO: {
-          ResponseMessage: '',
+          ResponseMessage: "",
           MessageSendResponseData: [],
         },
-      }
+      };
 
     case actions.OTO_RETRY_FLAG:
-      console.log('OTO_RETRY_FLAG', action)
+      console.log("OTO_RETRY_FLAG", action);
       return {
         ...state,
         OtoMessageFlag: action.response,
-      }
+      };
 
     case actions.OTO_MESSAGESEND_SUCCESS:
-      console.log('OTO_MESSAGESEND_SUCCESS', action)
+      console.log("OTO_MESSAGESEND_SUCCESS", action);
       return {
         ...state,
         MessageSendOTO: {
           ResponseMessage: action.message,
           MessageSendResponseData: action.response,
         },
-      }
+      };
 
     case actions.OTO_MESSAGESEND_FAIL:
-      console.log('OTO_MESSAGESEND_FAIL', action)
+      console.log("OTO_MESSAGESEND_FAIL", action);
       return {
         ...state,
         MessageSendOTO: {
           ResponseMessage: action.message,
           MessageSendResponseData: [],
         },
-      }
+      };
 
     case actions.PRIVATEGROUP_MESSAGESEND_INIT:
       return {
         ...state,
         MessageSendPrivateGroup: {
-          ResponseMessage: '',
+          ResponseMessage: "",
         },
-      }
+      };
 
     case actions.PRIVATEGROUP_MESSAGESEND_NOTIFICATION:
       return {
@@ -1078,15 +1065,15 @@ const talkReducer = (state = initialState, action) => {
         MessageSendPrivateGroup: {
           ResponseMessage: action.message,
         },
-      }
+      };
 
     case actions.BLOCK_UNBLOCK_USER_INIT:
       return {
         ...state,
         BlockUnblockUser: {
-          ResponseMessage: '',
+          ResponseMessage: "",
         },
-      }
+      };
 
     case actions.BLOCK_UNBLOCK_USER_NOTIFICATION:
       return {
@@ -1094,13 +1081,13 @@ const talkReducer = (state = initialState, action) => {
         BlockUnblockUser: {
           ResponseMessage: action.message,
         },
-      }
+      };
 
     case actions.DELETE_SINGLEMESSAGE_INIT: {
       return {
         ...state,
         // Loading: true,
-      }
+      };
     }
     case actions.DELETE_SINGLEMESSAGE_SUCCESS: {
       return {
@@ -1109,7 +1096,7 @@ const talkReducer = (state = initialState, action) => {
           DeleteMessageResponse: action.response,
           DeleteMessageResponseMessage: action.message,
         },
-      }
+      };
     }
     case actions.DELETE_SINGLEMESSAGE_FAIL: {
       return {
@@ -1118,16 +1105,16 @@ const talkReducer = (state = initialState, action) => {
           DeleteMessageResponse: [],
           DeleteMessageResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.BROADCAST_MESSAGESEND_INIT: {
       return {
         ...state,
         MessageSendBroadcast: {
-          ResponseMessage: '',
+          ResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.BROADCAST_MESSAGESEND_NOTIFICATION: {
@@ -1136,7 +1123,7 @@ const talkReducer = (state = initialState, action) => {
         MessageSendBroadcast: {
           ResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.CREATE_PRIVATEGROUP_INIT: {
@@ -1146,7 +1133,7 @@ const talkReducer = (state = initialState, action) => {
           CreatePrivateGroupResponse: action.response,
           CreatePrivateGroupResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.CREATE_PRIVATEGROUP_NOTIFICATION: {
@@ -1156,58 +1143,58 @@ const talkReducer = (state = initialState, action) => {
           CreatePrivateGroupResponse: [],
           CreatePrivateGroupResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.UPDATE_PRIVATEGROUP_INIT: {
-      console.log('UPDATE_PRIVATEGROUP_INIT', action)
+      console.log("UPDATE_PRIVATEGROUP_INIT", action);
       return {
         ...state,
         UpdatePrivateGroup: {
           UpdatePrivateGroupResponse: action.response,
           UpdatePrivateGroupResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.UPDATE_PRIVATEGROUP_NOTIFICATION: {
-      console.log('UPDATE_PRIVATEGROUP_NOTIFICATION', action)
+      console.log("UPDATE_PRIVATEGROUP_NOTIFICATION", action);
       return {
         ...state,
         UpdatePrivateGroup: {
           UpdatePrivateGroupResponse: [],
           UpdatePrivateGroupResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.LEAVE_GROUP_INIT: {
-      console.log('LEAVE_GROUP_INIT', action)
+      console.log("LEAVE_GROUP_INIT", action);
       return {
         ...state,
         LeaveGroup: {
           LeaveGroupResponse: action.response,
           LeaveGroupResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.LEAVE_GROUP_NOTIFICATION: {
-      console.log('LEAVE_GROUP_NOTIFICATION', action)
+      console.log("LEAVE_GROUP_NOTIFICATION", action);
       return {
         ...state,
         LeaveGroup: {
           LeaveGroupResponse: [],
           LeaveGroupResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.GET_PRIVATEGROUPMEMBERS_INIT: {
       return {
         ...state,
         // Loading: false,
-      }
+      };
     }
     case actions.GET_PRIVATEGROUPMEMBERS_SUCCESS: {
       return {
@@ -1216,7 +1203,7 @@ const talkReducer = (state = initialState, action) => {
           GetPrivateGroupMembersResponse: action.response,
           GetPrivateGroupMembersResponseMessage: action.message,
         },
-      }
+      };
     }
     case actions.GET_PRIVATEGROUPMEMBERS_FAIL: {
       return {
@@ -1225,32 +1212,32 @@ const talkReducer = (state = initialState, action) => {
           GetPrivateGroupMembersResponse: [],
           GetPrivateGroupMembersResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.STAR_UNSTAR_MESSAGE_INIT: {
-      console.log('STAR_UNSTAR_MESSAGE_INIT', action.response)
+      console.log("STAR_UNSTAR_MESSAGE_INIT", action.response);
       return {
         ...state,
         MarkStarUnstarMessage: {
-          MarkStarUnstarMessageResponseMessage: '',
+          MarkStarUnstarMessageResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.STAR_UNSTAR_MESSAGE_NOTIFICATION: {
-      console.log('STAR_UNSTAR_MESSAGE_NOTIFICATION', action.response)
+      console.log("STAR_UNSTAR_MESSAGE_NOTIFICATION", action.response);
       return {
         ...state,
 
         MarkStarUnstarMessage: {
           MarkStarUnstarMessageResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.MQTT_INSERT_OTO_MESSAGE: {
-      console.log('MQTT_INSERT_OTO_MESSAGE', action)
+      console.log("MQTT_INSERT_OTO_MESSAGE", action);
       return {
         ...state,
         talkSocketData: {
@@ -1258,7 +1245,7 @@ const talkReducer = (state = initialState, action) => {
           socketInsertGroupMessageData:
             initialState.talkSocketData.socketInsertGroupMessageData,
         },
-      }
+      };
     }
 
     case actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE: {
@@ -1276,13 +1263,13 @@ const talkReducer = (state = initialState, action) => {
             initialState.talkSocketData.socketInsertOTOMessageData,
           socketInsertGroupMessageData: action.response,
         },
-      }
+      };
       // }
     }
 
     case actions.MQTT_BLOCK_USER: {
-      console.log('MQTT_BLOCK_USER', action.response)
-      console.log('MQTT_INSERT_OTO_MESSAGE')
+      console.log("MQTT_BLOCK_USER", action.response);
+      console.log("MQTT_INSERT_OTO_MESSAGE");
 
       // if (
       //   action.response.message !== 'NEW_ONE_TO_ONE_MESSAGE' &&
@@ -1294,13 +1281,13 @@ const talkReducer = (state = initialState, action) => {
           socketBlockUser: action.response,
           socketUnblockUser: null,
         },
-      }
+      };
     }
     // }
 
     case actions.MQTT_UNBLOCK_USER: {
-      console.log('MQTT_UNBLOCK_USER', action.response)
-      console.log('MQTT_INSERT_OTO_MESSAGE')
+      console.log("MQTT_UNBLOCK_USER", action.response);
+      console.log("MQTT_INSERT_OTO_MESSAGE");
 
       // if (
       //   action.response.message !== 'NEW_ONE_TO_ONE_MESSAGE' &&
@@ -1312,12 +1299,12 @@ const talkReducer = (state = initialState, action) => {
           socketBlockUser: null,
           socketUnblockUser: action.response,
         },
-      }
+      };
     }
     // }
 
     case actions.MQTT_STAR_MESSAGE: {
-      console.log('MQTT_STAR_MESSAGE', action.response)
+      console.log("MQTT_STAR_MESSAGE", action.response);
       return {
         ...state,
         talkSocketDataStarUnstar: {
@@ -1328,11 +1315,11 @@ const talkReducer = (state = initialState, action) => {
           },
           socketUnstarMessage: null,
         },
-      }
+      };
     }
 
     case actions.MQTT_UNSTAR_MESSAGE: {
-      console.log('MQTT_UNSTAR_MESSAGE', action.response)
+      console.log("MQTT_UNSTAR_MESSAGE", action.response);
       return {
         ...state,
         talkSocketDataStarUnstar: {
@@ -1343,148 +1330,148 @@ const talkReducer = (state = initialState, action) => {
             messageType: action.response.data[0].messageType,
           },
         },
-      }
+      };
     }
 
     case actions.MQTT_GROUP_CREATED: {
-      console.log('reciver check reducer', action.response)
+      console.log("reciver check reducer", action.response);
 
-      console.log('MQTT_GROUP_CREATED', action.response)
+      console.log("MQTT_GROUP_CREATED", action.response);
       return {
         ...state,
         talkSocketGroupCreation: {
           groupCreatedData: action.response,
         },
-      }
+      };
     }
 
     case actions.MQTT_GROUP_UPDATED: {
-      console.log('MQTT_GROUP_UPDATED', action.response)
+      console.log("MQTT_GROUP_UPDATED", action.response);
       return {
         ...state,
         talkSocketGroupUpdation: {
           groupUpdatedData: action.response,
         },
-      }
+      };
     }
 
     case actions.MQTT_UNREAD_MESSAGE_COUNT: {
-      console.log('MQTT_UNREAD_MESSAGE_COUNT', action.response)
+      console.log("MQTT_UNREAD_MESSAGE_COUNT", action.response);
       return {
         ...state,
         talkSocketUnreadMessageCount: {
           unreadMessageData: action.response,
         },
-      }
+      };
     }
 
     case actions.RESET_LEAVE_GROUP_MESSAGE: {
-      console.log('RESET_LEAVE_GROUP_MESSAGE', action.response)
+      console.log("RESET_LEAVE_GROUP_MESSAGE", action.response);
       return {
         ...state,
         LeaveGroup: {
           LeaveGroupResponse: [],
-          LeaveGroupResponseMessage: '',
+          LeaveGroupResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.RESET_GROUP_MODIFY_MESSAGE: {
-      console.log('RESET_GROUP_MODIFY_MESSAGE', action.response)
+      console.log("RESET_GROUP_MODIFY_MESSAGE", action.response);
       return {
         ...state,
         UpdatePrivateGroup: {
           UpdatePrivateGroupResponse: [],
-          UpdatePrivateGroupResponseMessage: '',
+          UpdatePrivateGroupResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.CREATE_SHOUTALL_INIT: {
-      console.log('CREATE_SHOUTALL_INIT', action.response)
+      console.log("CREATE_SHOUTALL_INIT", action.response);
       return {
         ...state,
         CreateShoutAllList: {
           CreateShoutAllListResponse: [],
-          CreateShoutAllListResponseMessage: '',
+          CreateShoutAllListResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.CREATE_SHOUTALL_SUCCESS: {
-      console.log('CREATE_SHOUTALL_SUCCESS', action.response)
+      console.log("CREATE_SHOUTALL_SUCCESS", action.response);
       return {
         ...state,
         CreateShoutAllList: {
           CreateShoutAllListResponse: action.response,
           CreateShoutAllListResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.CREATE_SHOUTALL_FAIL: {
-      console.log('CREATE_SHOUTALL_FAIL', action.response)
+      console.log("CREATE_SHOUTALL_FAIL", action.response);
       return {
         ...state,
         CreateShoutAllList: {
           CreateShoutAllListResponse: [],
           CreateShoutAllListResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.RESET_SHOUTALL_CREATED_MESSAGE: {
-      console.log('RESET_SHOUTALL_CREATED_MESSAGE', action.response)
+      console.log("RESET_SHOUTALL_CREATED_MESSAGE", action.response);
       return {
         ...state,
         CreateShoutAllList: {
           CreateShoutAllListResponse: [],
-          CreateShoutAllListResponseMessage: '',
+          CreateShoutAllListResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.MQTT_INSERT_BROADCAST_MESSAGE: {
-      console.log('MQTT_INSERT_BROADCAST_MESSAGE', action.response)
+      console.log("MQTT_INSERT_BROADCAST_MESSAGE", action.response);
       return {
         ...state,
         talkSocketInsertBroadcastMessage: {
           MessageSendBroadcastResponseData: action.response,
         },
-      }
+      };
     }
 
     case actions.DELETE_SHOUT_INIT: {
-      console.log('DELETE_SHOUT_INIT', action.response)
+      console.log("DELETE_SHOUT_INIT", action.response);
       return {
         ...state,
         DeleteShout: {
           DeleteShoutResponse: [],
-          DeleteShoutResponseMessage: '',
+          DeleteShoutResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.DELETE_SHOUT_SUCCESS: {
-      console.log('DELETE_SHOUT_SUCCESS', action.response)
+      console.log("DELETE_SHOUT_SUCCESS", action.response);
       return {
         ...state,
         DeleteShout: {
           DeleteShoutResponse: action.response,
           DeleteShoutResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.DELETE_SHOUT_FAIL: {
-      console.log('DELETE_SHOUT_FAIL', action.response)
+      console.log("DELETE_SHOUT_FAIL", action.response);
       return {
         ...state,
         DeleteShout: {
           DeleteShoutResponse: [],
           DeleteShoutResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.UPDATE_SHOUTALL_INIT: {
@@ -1492,9 +1479,9 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         UpdateShoutAllData: {
           UpdateShoutAllResponse: [],
-          UpdateShoutAllResponseMessage: '',
+          UpdateShoutAllResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.UPDATE_SHOUTALL_SUCCESS: {
@@ -1504,7 +1491,7 @@ const talkReducer = (state = initialState, action) => {
           UpdateShoutAllResponse: action.response,
           UpdateShoutAllResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.UPDATE_SHOUTALL_FAIL: {
@@ -1514,7 +1501,7 @@ const talkReducer = (state = initialState, action) => {
           UpdateShoutAllResponse: [],
           UpdateShoutAllResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.INSERT_BULKMESSAGES_INIT: {
@@ -1522,9 +1509,9 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         InsertBulkMessageData: {
           InsertBulkMessageResponse: [],
-          InsertBulkMessageResponseMessage: '',
+          InsertBulkMessageResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.INSERT_BULKMESSAGES_SUCCESS: {
@@ -1534,7 +1521,7 @@ const talkReducer = (state = initialState, action) => {
           InsertBulkMessageResponse: action.response,
           InsertBulkMessageResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.INSERT_BULKMESSAGES_FAIL: {
@@ -1544,7 +1531,7 @@ const talkReducer = (state = initialState, action) => {
           InsertBulkMessageResponse: [],
           InsertBulkMessageResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.DOWNLOAD_CHAT_INIT: {
@@ -1552,9 +1539,9 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         DownloadChatData: {
           DownloadChatResponse: [],
-          DownloadChatResponseMessage: '',
+          DownloadChatResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.DOWNLOAD_CHAT_SUCCESS: {
@@ -1564,7 +1551,7 @@ const talkReducer = (state = initialState, action) => {
           DownloadChatResponse: action.response,
           DownloadChatResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.DOWNLOAD_CHAT_FAIL: {
@@ -1574,7 +1561,7 @@ const talkReducer = (state = initialState, action) => {
           DownloadChatResponse: [],
           DownloadChatResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.EMAIL_CHAT_INIT: {
@@ -1582,9 +1569,9 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         EmailChatData: {
           EmailChatResponse: [],
-          EmailChatResponseMessage: '',
+          EmailChatResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.EMAIL_CHAT_SUCCESS: {
@@ -1594,7 +1581,7 @@ const talkReducer = (state = initialState, action) => {
           EmailChatResponse: action.response,
           EmailChatResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.EMAIL_CHAT_FAIL: {
@@ -1604,7 +1591,7 @@ const talkReducer = (state = initialState, action) => {
           EmailChatResponse: [],
           EmailChatResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.MQTT_MESSAGE_STATUS_UPDATE: {
@@ -1613,88 +1600,82 @@ const talkReducer = (state = initialState, action) => {
         MessageStatusUpdateData: {
           MessageStatusUpdateResponse: action.response,
         },
-      }
+      };
     }
 
     case actions.GET_ACTIVE_CHAT: {
       return {
         ...state,
         ActiveChatData: action.response,
-      }
+      };
     }
 
     case actions.PUSH_MESSAGE_DATA: {
       return {
         ...state,
         PushMessageData: action.response,
-      }
+      };
     }
 
     case actions.PUSH_CHAT_DATA: {
       return {
         ...state,
         PushChatData: action.response,
-      }
+      };
     }
 
     case actions.FILE_UPLOAD_DATA: {
       return {
         ...state,
         FileUploadData: action.response,
-      }
+      };
     }
 
     case actions.ACTIVE_MESSAGE_DATA: {
       return {
         ...state,
         ActiveMessageData: action.response,
-      }
+      };
     }
 
     case actions.GET_ALL_STARRED_MESSAGES_INIT: {
-      {
-        return {
-          ...state,
-          AllStarMessagesData: {
-            AllStarMessagesResponse: [],
-            AllStarMessagesResponseMessage: '',
-            Loading: true,
-          },
-        }
-      }
+      return {
+        ...state,
+        AllStarMessagesData: {
+          AllStarMessagesResponse: [],
+          AllStarMessagesResponseMessage: "",
+          Loading: true,
+        },
+      };
     }
+
     case actions.GET_ALL_STARRED_MESSAGES_SUCCESS: {
-      {
-        return {
-          ...state,
-          AllStarMessagesData: {
-            AllStarMessagesResponse: action.response,
-            AllStarMessagesResponseMessage: action.message,
-            Loading: false,
-          },
-        }
-      }
+      return {
+        ...state,
+        AllStarMessagesData: {
+          AllStarMessagesResponse: action.response,
+          AllStarMessagesResponseMessage: action.message,
+          Loading: false,
+        },
+      };
     }
+
     case actions.GET_ALL_STARRED_MESSAGES_FAIL: {
-      {
-        return {
-          ...state,
-          AllStarMessagesData: {
-            AllStarMessagesResponse: [],
-            AllStarMessagesResponseMessage: action.message,
-            Loading: false,
-          },
-        }
-      }
+      return {
+        ...state,
+        AllStarMessagesData: {
+          AllStarMessagesResponse: [],
+          AllStarMessagesResponseMessage: action.message,
+          Loading: false,
+        },
+      };
     }
 
     case actions.MQTT_MESSAGE_DELETED: {
-      {
-        return {
-          ...state,
-          MqttMessageDeleteData: action.response,
-        }
-      }
+      return {
+        ...state,
+        MqttMessageDeleteData: action.response,
+      };
     }
 
     case actions.DOWNLOAD_CHAT_EMPTY: {
@@ -1702,16 +1683,16 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         DownloadChatData: {
           DownloadChatResponse: action.response,
-          DownloadChatResponseMessage: '',
+          DownloadChatResponseMessage: "",
         },
-      }
+      };
     }
 
     case actions.GET_ALL_MESSAGES_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
 
     case actions.GET_ALL_MESSAGES_SUCCESS: {
@@ -1719,7 +1700,7 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         AllMessagesData: action.response,
         Loading: false,
-      }
+      };
     }
 
     case actions.GET_ALL_MESSAGES_FAIL: {
@@ -1727,21 +1708,21 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         AllMessagesData: action.response,
         Loading: false,
-      }
+      };
     }
 
     case actions.MQTT_GROUP_LEFT: {
       return {
         ...state,
         MqttGroupLeftData: action.response,
-      }
+      };
     }
 
     case actions.DELETE_MULTIPLE_MESSAGES_INIT: {
       return {
         ...state,
         // Loading: true,
-      }
+      };
     }
 
     case actions.DELETE_MULTIPLE_MESSAGES_SUCCESS: {
@@ -1751,7 +1732,7 @@ const talkReducer = (state = initialState, action) => {
           MultipleMessagesDeletedResponse: action.response,
           MultipleMessagesDeletedResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.DELETE_MULTIPLE_MESSAGES_FAIL: {
@@ -1761,18 +1742,18 @@ const talkReducer = (state = initialState, action) => {
           MultipleMessagesDeletedResponse: [],
           MultipleMessagesDeletedResponseMessage: action.message,
         },
-      }
+      };
     }
 
     case actions.LAST_MESSAGE_DELETION: {
       return {
         ...state,
         LastMessageDeletionObject: action.response,
-      }
+      };
     }
 
     default:
-      return { ...state }
+      return { ...state };
   }
-}
-export default talkReducer
+};
+export default talkReducer;

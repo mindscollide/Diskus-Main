@@ -187,8 +187,6 @@ const updateAgendaAttachment = (navigate, data, t) => {
     JSON.stringify(AgendaAttachments)
   );
   let token = JSON.parse(localStorage.getItem("token"));
-  let meetingID = localStorage.getItem("MeetingId");
-  let obj = { MeetingID: JSON.parse(meetingID) };
 
   return (dispatch) => {
     dispatch(updateAgendaAttahmentsInit());
