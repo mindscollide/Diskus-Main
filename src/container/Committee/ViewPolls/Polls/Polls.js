@@ -41,14 +41,20 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const { NewMeetingreducer, PollsReducer, CommitteeReducer } = useSelector(
     (state) => state
   );
+  // Vote Cast Polls
   const [votePolls, setvotePolls] = useState(false);
+  // console.log(first)
+  // Create Poll
   const [createpoll, setCreatepoll] = useState(false);
+  // Edit Polls
   const [editPolls, setEditPolls] = useState(false);
   const [pollsRows, setPollsRows] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
   const [afterViewPolls, setafterViewPolls] = useState(false);
+  const [viewPublishedPoll, setViewPublishedPoll] = useState(true);
+  // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
@@ -108,25 +114,43 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   };
 
   const handleClickonTitle = (record) => {
-    navigate("/DisKus/polling", { state: { record, isVote: false } });
+    // navigate("/DisKus/polling", { state: { record, isVote: false } });
     // if (Object.keys(record).length > 0) {
-    //   if (record.pollStatus.pollStatusId === 1) {
-    //     let data = {
-    //       PollID: record.pollID,
-    //       UserID: parseInt(userID),
-    //     };
-    //     dispatch(
-    //       getPollsByPollIdforCommitteeApi(
-    //         navigate,
-    //         data,
-    //         3,
-    //         t,
-    //         setEditPolls,
-    //         setvotePolls,
-    //         setUnPublished
-    //       )
-    //     );
-    //   }
+    if (record.pollStatus.pollStatusId === 1) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(
+        getPollsByPollIdforCommitteeApi(
+          navigate,
+          data,
+          3,
+          t,
+          setEditPolls,
+          setvotePolls,
+          setUnPublished,
+          setViewPublishedPoll
+        )
+      );
+    } else if (record.pollStatus.pollStatusId === 2) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(
+        getPollsByPollIdforCommitteeApi(
+          navigate,
+          data,
+          4,
+          t,
+          setEditPolls,
+          setvotePolls,
+          setUnPublished,
+          setViewPublishedPoll
+        )
+      );
+    }
     // }
     // if (Object.keys(record).length > 0) {
     //   let data = {
@@ -481,6 +505,11 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
               <EditPollsMeeting setEditPolls={setEditPolls} />
             ) : unPublished ? (
               <ViewPollsUnPublished setUnPublished={setUnPublished} />
+            ) : viewPublishedPoll ? (
+              <ViewPollsPublishedScreen
+                // setViewPublishedPoll={setViewPublishedPoll}
+                setSavePollsPublished={setViewPublishedPoll}
+              />
             ) : (
               <>
                 <Row className="mt-4">
