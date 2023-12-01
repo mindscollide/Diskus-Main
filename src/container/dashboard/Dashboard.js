@@ -1519,7 +1519,6 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    console.log("Connected to MQTT broker onConnectionLost useEffect");
     if (Helper.socket === null) {
       let userID = localStorage.getItem("userID");
       mqttConnection(userID);
