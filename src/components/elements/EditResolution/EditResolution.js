@@ -1629,6 +1629,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                 inputClass="inputTImeMeeting"
                                 calendar={calendarValue}
                                 locale={localValue}
+                                editable={false}
                                 format="hh:mm A"
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
@@ -1748,6 +1749,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                 calendar={calendarValue}
                                 locale={localValue}
                                 format="hh:mm A"
+                                editable={false}
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
                                 selected={votingDateTime.timeVotingforView}
@@ -1865,6 +1867,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                 calendar={calendarValue}
                                 locale={localValue}
                                 format="hh:mm A"
+                                editable={false}
                                 plugins={[<TimePicker hideSeconds />]}
                                 render={<CustomInput />}
                                 selected={decisionDateTime.timeDecisionforView}

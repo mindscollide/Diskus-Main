@@ -461,6 +461,11 @@ const Participants = ({
     });
   };
 
+  //Intiating Add Flow Particiapnt from Empty State
+  const handleParticipantEmptyStateIntiate = () => {
+    dispatch(showAddParticipantsModal(true));
+  };
+
   const handleSaveparticpants = () => {
     let findshouldnotempty = rspvRows.every(
       (newData, index) => Object.keys(newData.participantRole).length > 0
@@ -611,8 +616,10 @@ const Participants = ({
                               draggable={false}
                               src={emptyContributorState}
                               width="274.05px"
+                              className="cursor-pointer"
                               alt=""
                               height="230.96px"
+                              onClick={handleParticipantEmptyStateIntiate}
                             />
                           </Col>
                         </Row>

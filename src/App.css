@@ -9,7 +9,10 @@ body::-webkit-scrollbar-thumb {
   background: #ccc;
   margin-left: -15px;
 }
-
+::placeholder {
+  font-family: "MontserratSemiBold-600" !important;
+  color: #bbbbbb !important;
+}
 /*
 File Updated on  Dated Aug 24 2022 
 
@@ -2053,7 +2056,10 @@ span.agendaIndex {
   margin-top: 20px;
   text-decoration: underline;
   color: #6172d6 !important;
-  word-wrap: break-word;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 p.fileUploadLabel {
@@ -6239,7 +6245,7 @@ input[type="time"]::-webkit-clear-button {
 .input-with-icon {
   padding-right: 30px;
   /* Adjust the padding to position the icon on the right side */
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23e1e1e1' class='bi bi-clock' viewBox='0 0 16 16'%3E%3Cpath d='M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM7 1.5a.5.5 0 0 0-1 0V8a.5.5 0 0 0 .252.434l5 3a.5.5 0 0 0 .496-.868L7 7.999V1.5z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%707070' class='bi bi-clock' viewBox='0 0 16 16'%3E%3Cpath d='M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM7 1.5a.5.5 0 0 0-1 0V8a.5.5 0 0 0 .252.434l5 3a.5.5 0 0 0 .496-.868L7 7.999V1.5z'/%3E%3C/svg%3E");
   /* Clock Icon SVG Data URL */
   background-repeat: no-repeat;
   background-position: right 5px center;
@@ -6250,6 +6256,7 @@ input[type="time"]::-webkit-clear-button {
   border-radius: 4px !important;
   padding: 0px 5px !important;
   outline: none !important;
+  cursor: pointer !important;
 }
 
 .input-with-icon:focus,
@@ -6450,4 +6457,12 @@ textarea {
 .css-13cymwt-control {
   cursor: pointer !important;
   outline: none !important;
+}
+
+.rmdp-time-picker .dvdr {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 5px !important;
+  margin-top: 5px !important;
 }

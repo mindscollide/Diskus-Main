@@ -1176,10 +1176,7 @@ const Agenda = ({
           setAgenda={setAgenda}
         />
       )}
-      {/* {DataRoomReducer.Loading === true ||
-      MeetingAgendaReducer.Loading === true ? (
-        <Loader />
-      ) : null} */}
+
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );

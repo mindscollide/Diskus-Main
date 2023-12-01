@@ -30,6 +30,7 @@ import {
   cleareMinutsData,
   searchNewUserMeeting,
   cleareAllState,
+  InviteToCollaborateMinutesApiFunc,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -74,7 +75,6 @@ const Minutes = ({
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
-  const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
   const [fileSize, setFileSize] = useState(0);
   const [useCase, setUseCase] = useState(null);
 
@@ -83,6 +83,7 @@ const Minutes = ({
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
   const [messages, setMessages] = useState([]);
   const [agenda, setAgenda] = useState(false);
+  const [organizerID, setOrganizerID] = useState(0);
   const [prevFlag, setprevFlag] = useState(6);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
@@ -168,8 +169,13 @@ const Minutes = ({
         (Object.keys(generalminutesDocumentForMeeting).length > 0 ||
           generalminutesDocumentForMeeting.length > 0)
       ) {
+        console.log(
+          generalMinutes.organizerID,
+          "generalMinutesgeneralMinutesgeneralMinutes"
+        );
         const minutesData = generalMinutes.meetingMinutes;
         const documentsData = generalminutesDocumentForMeeting.data;
+        setOrganizerID(generalMinutes.organizerID);
         const combinedData = minutesData.map((item1) => {
           const matchingItem = documentsData.find(
             (item2) => item2.pK_MeetingGeneralMinutesID === item1.minuteID
@@ -399,13 +405,30 @@ const Minutes = ({
     setExpanded(!expanded);
   };
   const handleAddClick = async () => {
-    let Data = {
-      MeetingID: advanceMeetingModalID,
-      MinuteText: addNoteFields.Description.value,
-    };
-    dispatch(
-      ADDGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
-    );
+    if (addNoteFields.Description.value !== "") {
+      let Data = {
+        MeetingID: advanceMeetingModalID,
+        MinuteText: addNoteFields.Description.value,
+      };
+      dispatch(
+        ADDGeneralMinutesApiFunc(navigate, t, Data, advanceMeetingModalID)
+      );
+    } else {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: addNoteFields.Description.value,
+          errorMessage:
+            addNoteFields.Description.value === ""
+              ? t("Minutes-text-is-required")
+              : addNoteFields.Description.errorMessage,
+          errorStatus:
+            addNoteFields.Description.value === ""
+              ? true
+              : addNoteFields.Description.errorStatus,
+        },
+      });
+    }
   };
 
   const documentUploadingFunc = async (minuteID) => {
@@ -653,6 +676,15 @@ const Minutes = ({
     }
   };
 
+  //Invite To Collaborate
+
+  const handleInvitetoCollaborateView = () => {
+    let Data = {
+      MeetingID: Number(advanceMeetingModalID),
+    };
+    dispatch(InviteToCollaborateMinutesApiFunc(navigate, Data, t));
+  };
+
   const handlePreviousButton = () => {
     if (agenda) {
       if (
@@ -799,7 +831,7 @@ const Minutes = ({
                         ref={editorRef}
                         theme="snow"
                         value={addNoteFields.Description.value || ""}
-                        placeholder={t("Note-details")}
+                        placeholder={t("Minutes-details")}
                         onChange={onTextChange}
                         modules={modules}
                         className={styles["quill-height-addNote"]}
@@ -809,8 +841,22 @@ const Minutes = ({
                       />
                     </Col>
                   </Row>
-                  {/* Button For Saving the The Minutes  */}
                   <Row className="mt-5">
+                    <Col>
+                      <p
+                        className={
+                          addNoteFields.Description.errorStatus &&
+                          addNoteFields.Description.value === ""
+                            ? ` ${styles["errorNotesMessage"]} `
+                            : `${styles["errorNotesMessage_hidden"]}`
+                        }
+                      >
+                        {addNoteFields.Description.errorMessage}
+                      </p>
+                    </Col>
+                  </Row>
+                  {/* Button For Saving the The Minutes  */}
+                  <Row className="mt-0">
                     <Col
                       lg={12}
                       md={12}
@@ -1269,7 +1315,8 @@ const Minutes = ({
                                 12 ? null : (editorRole.role === "Organizer" &&
                                   Number(editorRole.status) === 9) ||
                                 (Number(editorRole.status) === 10 &&
-                                  editorRole.role === "Organizer") ? (
+                                  editorRole.role === "Organizer") ||
+                                userID === organizerID ? (
                                 <img
                                   draggable={false}
                                   src={RedCroseeIcon}
@@ -1302,6 +1349,12 @@ const Minutes = ({
             text={t("Cancel")}
             className={styles["Cancel_button_Minutes"]}
             onClick={handleUNsaveChangesModal}
+          />
+
+          <Button
+            text={t("Invite-to-collaborate")}
+            className={styles["Button_General"]}
+            onClick={handleInvitetoCollaborateView}
           />
 
           <Button

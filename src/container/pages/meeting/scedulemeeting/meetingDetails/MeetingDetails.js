@@ -56,6 +56,12 @@ import {
   uploadDocument_success,
   getAllVotingResultDisplay_success,
 } from "../../../../../store/actions/MeetingAgenda_action";
+import {
+  getCurrentDate,
+  getEndTimeWitlCeilFunction,
+  getStartTimeWithCeilFunction,
+  getTimeWithCeilFunction,
+} from "../../../../../commen/functions/time_formatter";
 
 const MeetingDetails = ({
   setorganizers,
@@ -100,25 +106,26 @@ const MeetingDetails = ({
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
   const [reminderFrequencyOne, setReminderFrequencyOne] = useState([]);
   const [recurringDropDown, setRecurringDropDown] = useState([]);
-
-  const [flag, setFlag] = useState(1);
-
+  const startTime = getStartTimeWithCeilFunction();
+  const getEndTime = getEndTimeWitlCeilFunction();
+  const getCurrentDateforMeeting = getCurrentDate();
   const [rows, setRows] = useState([
     {
-      selectedOption: "",
-      dateForView: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
+      selectedOption:
+        currentMeeting === 0 ? getCurrentDateforMeeting.dateFormat : "",
+      dateForView: currentMeeting === 0 ? getCurrentDateforMeeting.DateGMT : "",
+      startDate: currentMeeting === 0 ? startTime?.formattedTime : "",
+      startTime: currentMeeting === 0 ? startTime?.newFormatTime : "",
+      endDate: currentMeeting === 0 ? getEndTime?.formattedTime : "",
+      endTime: currentMeeting === 0 ? getEndTime?.newFormatTime : "",
     },
   ]);
-
+  console.log(rows, "rowsrowsrowsrows");
   //For Custom language datepicker
-  const [meetingDate, setMeetingDate] = useState("");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
+
   const calendRef = useRef();
   const [error, seterror] = useState(false);
   const [publishedFlag, setPublishedFlag] = useState(null);
@@ -128,13 +135,16 @@ const MeetingDetails = ({
   });
   const [meetingDetails, setMeetingDetails] = useState({
     MeetingTitle: "",
-    MeetingType: 0,
+    MeetingType: {
+      PK_MTID: 1,
+      Type: t("Board-meeting"),
+    },
     Location: "",
     Description: "",
     Link: "",
     ReminderFrequency: {
-      value: 0,
-      label: "",
+      value: 4,
+      label: t("1-hour-before"),
     },
     ReminderFrequencyTwo: {
       value: 0,
@@ -152,7 +162,7 @@ const MeetingDetails = ({
       value: 0,
       label: "",
     },
-    IsVideoCall: false,
+    IsVideoCall: true,
   });
 
   // custom react select styles recurring
@@ -247,22 +257,25 @@ const MeetingDetails = ({
 
   const handleStartDateChange = (index, date) => {
     let newDate = new Date(date);
+    console.log(newDate, "handleStartDateChangehandleStartDateChange");
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+      // Round up to the next hour
+      const nextHour = Math.ceil(
+        newDate.getHours() + newDate.getMinutes() / 60
+      );
+      newDate.setHours(nextHour, 0, 0, 0);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${"00"}`;
+      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+
       const updatedRows = [...rows];
+
       if (
         index > 0 &&
         updatedRows[index - 1].selectedOption ===
           updatedRows[index].selectedOption
       ) {
         if (formattedTime <= updatedRows[index - 1].endDate) {
-          console.log("handleStartDateChange");
           setOpen({
             flag: true,
             message: t(
@@ -275,7 +288,6 @@ const MeetingDetails = ({
             updatedRows[index].endDate !== "" &&
             formattedTime >= updatedRows[index].endDate
           ) {
-            console.log("handleStartDateChange");
             setOpen({
               flag: true,
               message: t(
@@ -284,21 +296,24 @@ const MeetingDetails = ({
             });
             return;
           } else {
-            console.log("handleStartDateChange");
-            updatedRows[index].startDate = formattedTime;
-            updatedRows[index].startTime = newDate;
-            setRows(updatedRows);
-            // You can use 'formattedTime' as needed.
+            setRows((prev) =>
+              prev.map((data, rowIndex) => {
+                if (rowIndex === index) {
+                  return {
+                    ...data,
+                    startDate: formattedTime,
+                    startTime: newDate,
+                  };
+                }
+              })
+            );
           }
-          // You can use 'formattedTime' as needed.
         }
       } else {
-        console.log("handleStartDateChange");
         if (
           updatedRows[index].endDate !== "" &&
           formattedTime >= updatedRows[index].endDate
         ) {
-          console.log("handleStartDateChange");
           setOpen({
             flag: true,
             message: t(
@@ -307,14 +322,18 @@ const MeetingDetails = ({
           });
           return;
         } else {
-          console.log("handleStartDateChange");
-          updatedRows[index].startDate = formattedTime;
-          updatedRows[index].startTime = newDate;
-          setRows(updatedRows);
-          // You can use 'formattedTime' as needed.
+          setRows((prev) =>
+            prev.map((data, rowIndex) => {
+              if (rowIndex === index) {
+                return {
+                  ...data,
+                  startDate: formattedTime,
+                  startTime: newDate,
+                };
+              }
+            })
+          );
         }
-
-        // You can use 'formattedTime' as needed.
       }
     } else {
       console.error("Invalid date and time object:", date);
@@ -323,24 +342,27 @@ const MeetingDetails = ({
 
   const handleEndDateChange = (index, date) => {
     let newDate = new Date(date);
+
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
+      // Check if the selected time is greater than 0:00
+      // if (newDate.getHours() > 0 || newDate.getMinutes() > 0) {
+      // Round up to the next hour
+      const nextHour = Math.ceil(
+        newDate.getHours() + newDate.getMinutes() / 60
+      );
+      newDate.setHours(nextHour, 0, 0, 0);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${"00"}`;
+      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
 
       const updatedRows = [...rows];
+
       if (
         index > 0 &&
         updatedRows[index - 1].selectedOption ===
           updatedRows[index].selectedOption
       ) {
-        console.log("handleStartDateChange");
         if (formattedTime <= updatedRows[index].startDate) {
-          console.log("handleStartDateChange");
           setOpen({
             flag: true,
             message: t(
@@ -349,26 +371,40 @@ const MeetingDetails = ({
           });
           return;
         } else {
-          console.log("handleStartDateChange");
-          updatedRows[index].endDate = formattedTime;
-          updatedRows[index].endTime = newDate;
-          setRows(updatedRows);
+          setRows((prev) =>
+            prev.map((data, rowIndex) => {
+              if (rowIndex === index) {
+                return {
+                  ...data,
+                  endDate: formattedTime,
+                  endTime: newDate,
+                };
+              }
+            })
+          );
         }
       } else {
         if (formattedTime <= updatedRows[index].startDate) {
-          console.log("handleStartDateChange");
           setOpen({
             flag: true,
             message: t("Selected-end-time-should-not-be-less-than-start-time"),
           });
           return;
         } else {
-          console.log("handleStartDateChange");
-          updatedRows[index].endDate = formattedTime;
-          updatedRows[index].endTime = newDate;
-          setRows(updatedRows);
+          setRows((prev) =>
+            prev.map((data, rowIndex) => {
+              if (rowIndex === index) {
+                return {
+                  ...data,
+                  endDate: formattedTime,
+                  endTime: newDate,
+                };
+              }
+            })
+          );
         }
       }
+      // }
     } else {
       console.error("Invalid date and time object:", date);
     }
@@ -378,9 +414,7 @@ const MeetingDetails = ({
   const changeDateStartHandler = (date, index) => {
     try {
       let newDate = new Date(date);
-      let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
       let DateDate = new DateObject(date).format("YYYYMMDD");
-      setMeetingDate(meetingDateValueFormat);
       const updatedRows = [...rows];
       if (
         index > 0 &&
@@ -461,11 +495,11 @@ const MeetingDetails = ({
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
-      meetingDetails.Location !== "" &&
-      meetingDetails.Description !== "" &&
+      // meetingDetails.Description !== "" &&
       newArr.length > 0 &&
-      newReminderData.length > 0 &&
-      meetingDetails.Notes !== ""
+      newReminderData.length > 0
+      // &&
+      // meetingDetails.Notes !== ""
     ) {
       let recurringMeetingID =
         meetingDetails.RecurringOptions.value !== 0
@@ -545,11 +579,11 @@ const MeetingDetails = ({
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
-      meetingDetails.Location !== "" &&
-      meetingDetails.Description !== "" &&
+      // meetingDetails.Description !== "" &&
       areAllValuesNotEmpty(newArr) &&
-      newReminderData.length > 0 &&
-      meetingDetails.Notes !== ""
+      newReminderData.length > 0
+      //  &&
+      // meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       // Check if RecurringOptions.value is defined and use it
@@ -635,11 +669,11 @@ const MeetingDetails = ({
     if (
       meetingDetails.MeetingTitle !== "" &&
       meetingDetails.MeetingType !== 0 &&
-      meetingDetails.Location !== "" &&
-      meetingDetails.Description !== "" &&
+      // meetingDetails.Description !== "" &&
       areAllValuesNotEmpty(newArr) &&
-      newReminderData.length > 0 &&
-      meetingDetails.Notes !== ""
+      newReminderData.length > 0
+      // &&
+      // meetingDetails.Notes !== ""
     ) {
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       let data = {
@@ -828,6 +862,13 @@ const MeetingDetails = ({
           Newdata.push({
             value: data.pK_MTID,
             label: data.type,
+          });
+          setMeetingDetails({
+            ...meetingDetails,
+            MeetingType: {
+              PK_MTID: getALlMeetingTypes.meetingTypes[0].pK_MTID,
+              Type: getALlMeetingTypes.meetingTypes[0].type,
+            },
           });
         });
         setmeetingTypeDropdown(Newdata);
@@ -1223,7 +1264,7 @@ const MeetingDetails = ({
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Meeting_type_heading"]}>
                         {t("Location")}
-                        <span className={styles["steric"]}>*</span>
+                        {/* <span className={styles["steric"]}>*</span> */}
                       </span>
                     </Col>
                   </Row>
@@ -1249,7 +1290,7 @@ const MeetingDetails = ({
                             : false
                         }
                       />
-                      <Row>
+                      {/* <Row>
                         <Col>
                           <p
                             className={
@@ -1261,7 +1302,7 @@ const MeetingDetails = ({
                             {t("Please-select-location")}
                           </p>
                         </Col>
-                      </Row>
+                      </Row> */}
                     </Col>
                   </Row>
                 </Col>
@@ -1272,8 +1313,8 @@ const MeetingDetails = ({
                     applyClass="text-area-create-resolution"
                     type="text"
                     as={"textarea"}
-                    rows="4"
-                    placeholder={t("Description") + "*"}
+                    rows="2"
+                    placeholder={t("Description")}
                     required={true}
                     name={"Description"}
                     change={HandleChange}
@@ -1292,7 +1333,7 @@ const MeetingDetails = ({
                         : false
                     }
                   />
-                  <Row>
+                  {/* <Row>
                     <Col>
                       <p
                         className={
@@ -1304,7 +1345,7 @@ const MeetingDetails = ({
                         {t("Please-enter-meeting-description")}
                       </p>
                     </Col>
-                  </Row>
+                  </Row> */}
                 </Col>
               </Row>
               <Row className="mt-3">
@@ -1420,9 +1461,10 @@ const MeetingDetails = ({
                 >
                   {rows.length > 0
                     ? rows.map((data, index) => {
+                        console.log(data, "datadatadatadatadatadata");
                         return (
                           <>
-                            <Row>
+                            <Row key={index}>
                               <Col lg={12} md={12} sm={12} key={index}>
                                 <Row className="mt-2">
                                   <Col lg={4} md={4} sm={12}>
@@ -1444,7 +1486,7 @@ const MeetingDetails = ({
                                       }
                                       editable={false}
                                       className="datePickerTodoCreate2"
-                                      onOpenPickNewDate={false}
+                                      onOpenPickNewDate={true}
                                       inputMode=""
                                       calendar={calendarValue}
                                       locale={localValue}
@@ -1499,7 +1541,9 @@ const MeetingDetails = ({
                                       locale={localValue}
                                       format="hh:mm A"
                                       selected={data.startDate}
+                                      // onOpen={() => handleOpenStartTime(index)}
                                       value={data.startTime}
+                                      editable={false}
                                       plugins={[<TimePicker hideSeconds />]}
                                       onChange={(date) =>
                                         handleStartDateChange(index, date)
@@ -1564,8 +1608,11 @@ const MeetingDetails = ({
                                       locale={localValue}
                                       value={data.endTime}
                                       format="hh:mm A"
+                                      // onOpen={() => handleOpenEndTime(index)}
+                                      // onOpen={() => handleOpenStartTime()}
                                       selected={data.endDate}
                                       plugins={[<TimePicker hideSeconds />]}
+                                      editable={false}
                                       onChange={(date) =>
                                         handleEndDateChange(index, date)
                                       }
@@ -1803,10 +1850,10 @@ const MeetingDetails = ({
                     applyClass="text-area-create-meeting"
                     type="text"
                     as={"textarea"}
-                    rows="6"
+                    rows="5"
                     name={"Notes"}
                     change={HandleChange}
-                    placeholder={t("Note-for-this-meeting") + "*"}
+                    placeholder={t("Note-for-this-meeting")}
                     required={true}
                     maxLength={500}
                     value={meetingDetails.Notes}
@@ -1823,7 +1870,7 @@ const MeetingDetails = ({
                         : false
                     }
                   />
-                  <Row>
+                  {/* <Row>
                     <Col>
                       <p
                         className={
@@ -1835,7 +1882,7 @@ const MeetingDetails = ({
                         {t("Please-enter-meeting-notes")}
                       </p>
                     </Col>
-                  </Row>
+                  </Row> */}
                 </Col>
               </Row>
               <Row className="mt-4">
@@ -1957,7 +2004,7 @@ const MeetingDetails = ({
             <>
               <Button
                 text={t("Save")}
-                className={styles["Published"]}
+                className={styles["Update_Next"]}
                 onClick={SaveMeeting}
               />
             </>
@@ -1965,34 +2012,37 @@ const MeetingDetails = ({
             <>
               <Button
                 text={t("Update")}
-                className={styles["Published"]}
+                className={styles["Update_Next"]}
                 onClick={UpdateMeetings}
               />
             </>
           )}
+          {Number(currentMeeting) !== 0 && (
+            <>
+              <Button
+                disableBtn={Number(currentMeeting) === 0 ? true : false}
+                text={t("Next")}
+                className={styles["Published"]}
+                onClick={handleUpdateNext}
+              />
 
-          <Button
-            disableBtn={Number(currentMeeting) === 0 ? true : false}
-            text={t("Next")}
-            className={styles["Published"]}
-            onClick={handleUpdateNext}
-          />
-
-          {Number(editorRole.status) === 11 ||
-          Number(editorRole.status) === 12 ? (
-            <Button
-              disableBtn={Number(currentMeeting) === 0 ? true : false}
-              text={t("Publish")}
-              className={styles["Update_Next"]}
-              onClick={handlePublish}
-            />
-          ) : isEditMeeting === true ? null : (
-            <Button
-              disableBtn={Number(currentMeeting) === 0 ? true : false}
-              text={t("Publish")}
-              className={styles["Update_Next"]}
-              onClick={handlePublish}
-            />
+              {Number(editorRole.status) === 11 ||
+              Number(editorRole.status) === 12 ? (
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Publish")}
+                  className={styles["Update_Next"]}
+                  onClick={handlePublish}
+                />
+              ) : isEditMeeting === true ? null : (
+                <Button
+                  disableBtn={Number(currentMeeting) === 0 ? true : false}
+                  text={t("Publish")}
+                  className={styles["Update_Next"]}
+                  onClick={handlePublish}
+                />
+              )}
+            </>
           )}
         </Col>
       </Row>
@@ -2008,7 +2058,7 @@ const MeetingDetails = ({
         <NextModal
           setmeetingDetails={setmeetingDetails}
           setorganizers={setorganizers}
-          flag={flag}
+          flag={1}
         />
       )}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />

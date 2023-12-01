@@ -766,13 +766,6 @@ const CreateTodoCommittee = () => {
         />
       ) : null}
       {/* <Notification setOpen={setOpen} open={open.open} message={open.message} /> */}
-
-      {/* {toDoListReducer.Loading ||
-      todoStatus.Loading ||
-      LanguageReducer.Loading ||
-      uploadReducer.Loading ? (
-        <Loader />
-      ) : null} */}
     </>
   );
 };

@@ -505,6 +505,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         <img
                           draggable="false"
                           src={hollowstar}
+                          alt=""
                           className={styles["star-addnote-modal"]}
                           onClick={() => setIsStarrted(!isStarrted)}
                         />
@@ -512,6 +513,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         <img
                           draggable="false"
                           src={StarIcon}
+                          alt=""
                           className={styles["star-addnote-modal"]}
                           onClick={() => setIsStarrted(!isStarrted)}
                         />
