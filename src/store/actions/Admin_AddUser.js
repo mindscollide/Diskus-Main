@@ -33,7 +33,13 @@ const addUserFail = (message) => {
   };
 };
 
-const addUserAction = (navigate, Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
+const addUserAction = (
+  navigate,
+  Data,
+  setEmailVerifyModal,
+  setAllowedLimitModal,
+  t
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(addUserInit());
@@ -52,7 +58,13 @@ const addUserAction = (navigate, Data, setEmailVerifyModal, setAllowedLimitModal
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            addUserAction(navigate, Data, setEmailVerifyModal, setAllowedLimitModal, t)
+            addUserAction(
+              navigate,
+              Data,
+              setEmailVerifyModal,
+              setAllowedLimitModal,
+              t
+            )
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -77,7 +89,7 @@ const addUserAction = (navigate, Data, setEmailVerifyModal, setAllowedLimitModal
             dispatch(addUserSuccess(response.data.responseResult, newMessage));
             try {
               setEmailVerifyModal(true);
-            } catch { }
+            } catch {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -142,7 +154,7 @@ const addUserAction = (navigate, Data, setEmailVerifyModal, setAllowedLimitModal
             dispatch(addUserFail(newMessage));
             try {
               setAllowedLimitModal(true);
-            } catch { }
+            } catch {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -361,7 +373,7 @@ const AllUserAction = (navigate, Data, t, setIsUpdateSuccessfully) => {
               );
               try {
                 setIsUpdateSuccessfully(false);
-              } catch (response) { }
+              } catch (response) {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -421,11 +433,13 @@ const editUserFail = (message) => {
   };
 };
 
-const editUserAction = (navigate,
+const editUserAction = (
+  navigate,
   setIsUpdateSuccessfully,
   setEditModal,
   updateData,
-  t, setIsUserNotUpdate
+  t,
+  setIsUserNotUpdate
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -445,7 +459,14 @@ const editUserAction = (navigate,
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            editUserAction(navigate, setIsUpdateSuccessfully, setEditModal, updateData, t)
+            editUserAction(
+              navigate,
+              setIsUpdateSuccessfully,
+              setEditModal,
+              updateData,
+              t,
+              setIsUserNotUpdate
+            )
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -469,10 +490,10 @@ const editUserAction = (navigate,
               editUserSuccess(response.data.responseResult, newMessage)
             );
             try {
-              setIsUserNotUpdate(false)
+              setIsUserNotUpdate(false);
               setIsUpdateSuccessfully(true);
               setEditModal(false);
-            } catch (response) { }
+            } catch (response) {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -496,10 +517,10 @@ const editUserAction = (navigate,
               editUserSuccess(response.data.responseResult, newMessage)
             );
             try {
-              setIsUserNotUpdate(true)
+              setIsUserNotUpdate(true);
               setIsUpdateSuccessfully(false);
               setEditModal(false);
-            } catch (response) { }
+            } catch (response) {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -546,7 +567,13 @@ const deleteUserFail = (message) => {
   };
 };
 
-const deleteUserAction = (navigate, dataForDelete, setDeleteEditModal, newData, t) => {
+const deleteUserAction = (
+  navigate,
+  dataForDelete,
+  setDeleteEditModal,
+  newData,
+  t
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(deleteUserInit());
@@ -565,7 +592,13 @@ const deleteUserAction = (navigate, dataForDelete, setDeleteEditModal, newData, 
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            deleteUserAction(navigate, dataForDelete, setDeleteEditModal, newData, t)
+            deleteUserAction(
+              navigate,
+              dataForDelete,
+              setDeleteEditModal,
+              newData,
+              t
+            )
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
