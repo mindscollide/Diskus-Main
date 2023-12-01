@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { setClient } from "../../store/actions/Auth2_actions";
 import Helper from "./history_logout";
 let newClient;
-
 export const onConnected = (newClient, subscribeID) => {
   console.log("Connected to MQTT broker onConnected");
   newClient.subscribe(subscribeID.toString());
@@ -27,8 +26,21 @@ export const mqttConnection = (subscribeID) => {
     8228,
     parseInt(subscribeID) + "-" + id
   );
-  newClient.connect({
-    // cleanSession: false,
+  // newClient.connect({
+  //   // cleanSession: false,
+  //   onSuccess: () => {
+  //     console.log("Connected to MQTT broker");
+  //     onConnected(newClient, subscribeID);
+  //   },
+
+  //   onFailure: () => {
+  //     console.log("Connected to MQTT broker onFailedConnect");
+  //     setTimeout(onConnectionLost(subscribeID), 6000);
+  //   },
+  //   keepAliveInterval: 30,
+  //   reconnect: true, // Enable automatic reconnect
+  // });
+  var options = {
     onSuccess: () => {
       console.log("Connected to MQTT broker");
       onConnected(newClient, subscribeID);
@@ -40,7 +52,10 @@ export const mqttConnection = (subscribeID) => {
     },
     keepAliveInterval: 30,
     reconnect: true, // Enable automatic reconnect
-  });
+    userName: process.env.REACT_APP_MQTT_User,
+    password: process.env.REACT_APP_MQTT_Pass,
+  };
+  newClient.connect(options);
   Helper.socket = newClient;
   setClient(newClient);
 };
