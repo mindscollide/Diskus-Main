@@ -112,7 +112,12 @@ const VerificationCodeThree = () => {
           if (isFirstLogin === true) {
             navigate("/onboard");
           } else {
-            navigate("/Diskus/");
+            let RSVP = localStorage.getItem("RSVP");
+            if (RSVP !== undefined && RSVP !== null) {
+              navigate("/DisKus/Meeting/Useravailabilityformeeting");
+            } else {
+              navigate("/Diskus/");
+            }
           }
         }
       }

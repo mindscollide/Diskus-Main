@@ -64,6 +64,7 @@ import {
   UserSettings,
   OrganizationLevelSetting,
   EmptyState,
+  RSVP,
 } from "../container";
 
 import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
@@ -118,7 +119,7 @@ export const router = createHashRouter(
           <Route path="Meeting" element={<NewMeeting />} />
           <Route
             path="Meeting/Useravailabilityformeeting"
-            element={<h1>User AvabilityConfirmation</h1>}
+            element={<RSVP />}
           />
           <Route path="videochat" element={<VideoChat />} />
           <Route path="setting" element={<UserSettings />} />
