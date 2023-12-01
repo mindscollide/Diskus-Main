@@ -172,10 +172,6 @@ const DataRoom = () => {
   const [directoryNames, setDirectoryNames] = useState("");
   // this state contain UploadingFolders Data
   const [detaUplodingForFOlder, setDetaUplodingForFOlder] = useState([]);
-  console.log(
-    detaUplodingForFOlder,
-    "detaUplodingForFOlderdetaUplodingForFOlderdetaUplodingForFOlder"
-  );
   // this is the state of existing modal option select
   const [folderUploadOptions, setFolderUploadOptions] = useState(1);
   // we are setting search tab for all view in different tab
@@ -236,7 +232,6 @@ const DataRoom = () => {
     Location: null,
     People: null,
   });
-  console.log(uploadOptionsmodal, "uploadOptionsmodaluploadOptionsmodal");
 
   useEffect(() => {
     try {
@@ -286,7 +281,6 @@ const DataRoom = () => {
     };
   }, []);
 
-  console.log("asdasdasdasdasdasd", isOnline);
   useEffect(() => {
     // Add an event listener to track changes in online status
     const handleOnlineStatusChange = () => {
@@ -302,6 +296,7 @@ const DataRoom = () => {
       window.removeEventListener("offline", handleOnlineStatusChange);
     };
   }, []);
+
   useEffect(() => {
     try {
       if (
@@ -391,10 +386,6 @@ const DataRoom = () => {
 
   useEffect(() => {
     try {
-      console.log(
-        DataRoomReducer.RecentDocuments,
-        "RecentDocumentsRecentDocumentsRecentDocumentsRecentDocuments"
-      );
       if (
         DataRoomReducer.RecentDocuments !== null &&
         DataRoomReducer.RecentDocuments !== undefined
@@ -406,6 +397,7 @@ const DataRoom = () => {
       }
     } catch {}
   }, [DataRoomReducer.RecentDocuments]);
+
   useEffect(() => {
     if (!isOnline) {
       // CanceUpload();
@@ -417,7 +409,6 @@ const DataRoom = () => {
   };
 
   const showRequestingAccessModal = (record) => {
-    console.log(record, "showRequestingAccessModalshowRequestingAccessModal");
     // setRequestingAccess(true);
     if (record.isFolder === true) {
       let data = {
@@ -534,12 +525,6 @@ const DataRoom = () => {
   };
 
   const fileOptionsSelect = (data, record, pdfDataJson) => {
-    console.log(
-      "fileOptionsSelectfileOptionsSelect",
-      data,
-      record,
-      pdfDataJson
-    );
     if (data.value === 1) {
       let ext = record.name.split(".").pop();
       if (ext === "pdf") {
@@ -571,7 +556,6 @@ const DataRoom = () => {
   };
 
   const handleSortChange = (pagination, filters, sorter) => {
-    console.log(filters, sorter, "filtersfiltersfilters");
     if (sorter.field === "sharedDate") {
       if (sorter.order === "ascend") {
         dispatch(
@@ -1340,7 +1324,6 @@ const DataRoom = () => {
 
   const handleLinkClick = (e, data) => {
     e.preventDefault();
-
     if (clicks === 1) {
       if (dataCheck === data) {
         // Perform the action you want to happen on the double-click here
@@ -1386,6 +1369,7 @@ const DataRoom = () => {
           attachmentID: data.id,
           isPermission: data.permissionID,
         };
+        console.log("pdfDataJson",data)
         const pdfDataJson = JSON.stringify(pdfData);
         if (data.isShared) {
           if (data.isFolder) {

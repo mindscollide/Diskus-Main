@@ -117,9 +117,17 @@ const EmailValidation = () => {
       let RememberPasswordLocalValue = localStorage.getItem(
         "rememberPasswordValue"
       );
+      let RSVP = localStorage.getItem(
+        "RSVP"
+      );
+      
       localStorage.clear();
       if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
+      }
+      if(RSVP){
+      localStorage.setItem("RSVP", RSVP);
+
       }
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
       localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
