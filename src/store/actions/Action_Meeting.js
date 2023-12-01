@@ -532,7 +532,8 @@ const saveMeetingActionsDocuments = (
               value,
               setCreateaTask,
               newData,
-              setCreateTaskID
+              setCreateTaskID,
+              currentMeeting
             )
           );
         } else if (

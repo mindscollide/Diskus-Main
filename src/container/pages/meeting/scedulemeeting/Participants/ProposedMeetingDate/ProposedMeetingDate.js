@@ -170,11 +170,10 @@ const ProposedMeetingDate = ({
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getUTCHours()).slice(-2);
       const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
 
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+        .padStart(2, "0")}${"00"}`;
 
       const updatedRows = [...rows];
 
@@ -244,11 +243,10 @@ const ProposedMeetingDate = ({
     if (newDate instanceof Date && !isNaN(newDate)) {
       const hours = ("0" + newDate.getUTCHours()).slice(-2);
       const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
-      const seconds = ("0" + newDate.getUTCSeconds()).slice(-2);
 
       const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
         .toString()
-        .padStart(2, "0")}${seconds.toString().padStart(2, "0")}`;
+        .padStart(2, "0")}${"00"}`;
 
       const updatedRows = [...rows];
 
