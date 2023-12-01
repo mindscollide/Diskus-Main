@@ -40,6 +40,7 @@ import {
 import { useSelector } from "react-redux";
 import { Await, useNavigate } from "react-router-dom";
 import {
+  convertDateTimetoGMTMeetingDetail,
   createConvert,
   resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
@@ -62,6 +63,7 @@ import {
   getStartTimeWithCeilFunction,
   getTimeWithCeilFunction,
 } from "../../../../../commen/functions/time_formatter";
+import { endDateTimeMeetingCalender } from "../../../../../commen/functions/date_formater";
 
 const MeetingDetails = ({
   setorganizers,
@@ -111,16 +113,14 @@ const MeetingDetails = ({
   const getCurrentDateforMeeting = getCurrentDate();
   const [rows, setRows] = useState([
     {
-      selectedOption:
-        currentMeeting === 0 ? getCurrentDateforMeeting.dateFormat : "",
-      dateForView: currentMeeting === 0 ? getCurrentDateforMeeting.DateGMT : "",
-      startDate: currentMeeting === 0 ? startTime?.formattedTime : "",
-      startTime: currentMeeting === 0 ? startTime?.newFormatTime : "",
-      endDate: currentMeeting === 0 ? getEndTime?.formattedTime : "",
-      endTime: currentMeeting === 0 ? getEndTime?.newFormatTime : "",
+      selectedOption: "",
+      dateForView: "",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
     },
   ]);
-  console.log(rows, "rowsrowsrowsrows");
   //For Custom language datepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -129,6 +129,7 @@ const MeetingDetails = ({
   const calendRef = useRef();
   const [error, seterror] = useState(false);
   const [publishedFlag, setPublishedFlag] = useState(null);
+  console.log(publishedFlag, "publishedFlagpublishedFlag");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -165,6 +166,22 @@ const MeetingDetails = ({
     IsVideoCall: true,
   });
 
+  useEffect(() => {
+    const updatedRows = [...rows];
+    updatedRows[0].selectedOption =
+      currentMeeting === 0 ? getCurrentDateforMeeting.dateFormat : "";
+    updatedRows[0].dateForView =
+      currentMeeting === 0 ? getCurrentDateforMeeting.DateGMT : "";
+    updatedRows[0].startDate =
+      currentMeeting === 0 ? startTime?.formattedTime : "";
+    updatedRows[0].startTime =
+      currentMeeting === 0 ? startTime?.newFormatTime : "";
+    updatedRows[0].endDate =
+      currentMeeting === 0 ? getEndTime?.formattedTime : "";
+    updatedRows[0].endTime =
+      currentMeeting === 0 ? getEndTime?.newFormatTime : "";
+    setRows(updatedRows);
+  }, []);
   // custom react select styles recurring
   const customStyles = {
     menuPortal: (base) => ({
@@ -296,17 +313,9 @@ const MeetingDetails = ({
             });
             return;
           } else {
-            setRows((prev) =>
-              prev.map((data, rowIndex) => {
-                if (rowIndex === index) {
-                  return {
-                    ...data,
-                    startDate: formattedTime,
-                    startTime: newDate,
-                  };
-                }
-              })
-            );
+            updatedRows[index].startDate = formattedTime;
+            updatedRows[index].startTime = newDate;
+            setRows(updatedRows);
           }
         }
       } else {
@@ -322,17 +331,9 @@ const MeetingDetails = ({
           });
           return;
         } else {
-          setRows((prev) =>
-            prev.map((data, rowIndex) => {
-              if (rowIndex === index) {
-                return {
-                  ...data,
-                  startDate: formattedTime,
-                  startTime: newDate,
-                };
-              }
-            })
-          );
+          updatedRows[index].startDate = formattedTime;
+          updatedRows[index].startTime = newDate;
+          setRows(updatedRows);
         }
       }
     } else {
@@ -371,17 +372,9 @@ const MeetingDetails = ({
           });
           return;
         } else {
-          setRows((prev) =>
-            prev.map((data, rowIndex) => {
-              if (rowIndex === index) {
-                return {
-                  ...data,
-                  endDate: formattedTime,
-                  endTime: newDate,
-                };
-              }
-            })
-          );
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
+          setRows(updatedRows);
         }
       } else {
         if (formattedTime <= updatedRows[index].startDate) {
@@ -391,17 +384,9 @@ const MeetingDetails = ({
           });
           return;
         } else {
-          setRows((prev) =>
-            prev.map((data, rowIndex) => {
-              if (rowIndex === index) {
-                return {
-                  ...data,
-                  endDate: formattedTime,
-                  endTime: newDate,
-                };
-              }
-            })
-          );
+          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endTime = newDate;
+          setRows(updatedRows);
         }
       }
       // }
@@ -609,7 +594,8 @@ const MeetingDetails = ({
           NotifyOrganizerOnRSVP: meetingDetails.NotifyMeetingOrganizer,
           ReucurringMeetingID: recurringMeetingID,
           VideoURL: meetingDetails.Link,
-          MeetingStatusID: 11,
+          MeetingStatusID:
+            publishedFlag !== null && publishedFlag === true ? 1 : 11,
         },
       };
 
@@ -1028,9 +1014,15 @@ const MeetingDetails = ({
         ) {
           getmeetingDates.forEach((data, index) => {
             newDateTimeData.push({
-              selectedOption: data.meetingDate,
-              startDate: data.startTime,
-              endDate: data.endTime,
+              selectedOption: convertDateTimetoGMTMeetingDetail(
+                data.meetingDate + data.startTime
+              ).slice(0, 8),
+              startDate: convertDateTimetoGMTMeetingDetail(
+                data.meetingDate + data.startTime
+              ).slice(8, 14),
+              endDate: convertDateTimetoGMTMeetingDetail(
+                data.meetingDate + data.endTime
+              ).slice(8, 14),
               endTime: resolutionResultTable(data.meetingDate + data.endTime),
               startTime: resolutionResultTable(
                 data.meetingDate + data.startTime
@@ -1178,6 +1170,7 @@ const MeetingDetails = ({
                     applyClass={"meetinInnerSearch"}
                     name={"Meetingtitle"}
                     labelClass="d-none"
+                    maxLength={250}
                     change={HandleChange}
                     value={meetingDetails.MeetingTitle}
                     disable={
@@ -1319,7 +1312,7 @@ const MeetingDetails = ({
                     name={"Description"}
                     change={HandleChange}
                     value={meetingDetails.Description}
-                    maxLength={500}
+                    maxLength={300}
                     disable={
                       (Number(editorRole.status) === 9 ||
                         Number(editorRole.status) === 8 ||
@@ -1855,7 +1848,7 @@ const MeetingDetails = ({
                     change={HandleChange}
                     placeholder={t("Note-for-this-meeting")}
                     required={true}
-                    maxLength={500}
+                    maxLength={300}
                     value={meetingDetails.Notes}
                     disable={
                       (Number(editorRole.status) === 9 ||
