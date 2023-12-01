@@ -56,6 +56,8 @@ import {
   addUpdateAdvanceMeetingAgenda_success,
   uploadDocument_success,
   getAllVotingResultDisplay_success,
+  getAgendaWithMeetingIDForImport_success,
+  getAllMeetingForAgendaImport_success,
 } from "../../../../../store/actions/MeetingAgenda_action";
 import {
   getCurrentDate,
@@ -1149,6 +1151,8 @@ const MeetingDetails = ({
     dispatch(addUpdateAdvanceMeetingAgenda_success([], ""));
     dispatch(uploadDocument_success(null, ""));
     dispatch(getAllVotingResultDisplay_success([], ""));
+    dispatch(getAgendaWithMeetingIDForImport_success(null, ""));
+    dispatch(getAllMeetingForAgendaImport_success([], ""));
   }, []);
 
   return (

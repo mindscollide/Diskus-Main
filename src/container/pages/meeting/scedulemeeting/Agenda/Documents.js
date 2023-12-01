@@ -43,21 +43,6 @@ const Documents = ({
 
   console.log("fileDataPropfileDataProp", fileForSend);
 
-  // const handleRemoveFile = (data) => {
-  //   setFileForSend((prevFiles) =>
-  //     prevFiles.filter(
-  //       (fileSend) => fileSend.name !== data.displayAttachmentName
-  //     )
-  //   );
-
-  //   setFileAttachments((prevFiles) =>
-  //     prevFiles.filter(
-  //       (fileSend) =>
-  //         fileSend.displayAttachmentName !== data.displayAttachmentName
-  //     )
-  //   );
-  // };
-
   return (
     <>
       <Row key={index + 5}>
