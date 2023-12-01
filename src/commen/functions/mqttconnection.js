@@ -20,7 +20,6 @@ export const mqttConnection = (subscribeID) => {
   console.log("mqtt resquest ");
   var max = 90000;
   var id = min + Math.random() * (max - min);
-
   newClient = new Paho.Client(
     "192.168.18.241",
     8228,
