@@ -1643,7 +1643,6 @@ const NewMeetingreducer = (state = initialState, action) => {
         action.response !== undefined &&
         action.response !== null
       ) {
-        let currentUserName = localStorage.getItem("name");
         let currentVideoURL = action.response;
         let match = currentVideoURL.match(/RoomID=([^&]*)/);
         let roomID = match[1];

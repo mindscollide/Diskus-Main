@@ -206,16 +206,6 @@ const setTodoStatusDataFormSocket = (response) => {
 const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
   console.log(value, "valuevaluevaluevalue");
   let token = JSON.parse(localStorage.getItem("token"));
-  let meetingPage = JSON.parse(localStorage.getItem("todoListPage"));
-  let meetingRow = JSON.parse(localStorage.getItem("todoListRow"));
-  //Data For ToDoList
-  //Get Current User ID
-  let createrID = localStorage.getItem("userID");
-  let dataForList = {
-    Date: "",
-    Title: "",
-    AssignedToName: "",
-  };
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
     let form = new FormData();
@@ -852,11 +842,6 @@ const SearchTodoListApi = (navigate, searchData, page, size, t) => {
   };
 };
 
-const deleteComment_init = () => {
-  return {
-    type: actions.DELETE_TODO_COMMENT_INIT,
-  };
-};
 const deleteComment_success = (response, message) => {
   return {
     type: actions.DELETE_TODO_COMMENT_SUCCESS,
@@ -1380,9 +1365,6 @@ const createUpdateTaskDataRoom_fail = (message) => {
 
 const createUpdateTaskDataRoomApi = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let creatorID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
-
   return async (dispatch) => {
     dispatch(createUpdateTaskDataRoom_init());
     let form = new FormData();
@@ -1629,9 +1611,6 @@ const saveTaskDocuments_fail = (message) => {
 
 const saveTaskDocumentsApi = (navigate, Data, t, value, setShow) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let creatorID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
-
   return async (dispatch) => {
     dispatch(saveTaskDocuments_init());
     let form = new FormData();

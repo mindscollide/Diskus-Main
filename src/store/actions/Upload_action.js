@@ -4,30 +4,9 @@ import { RefreshToken } from "./Auth_action";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { uploadDocument } from "../../commen/apis/Api_config";
 
-const ShowNotification = (message) => {
-  console.log("message", message);
-  return {
-    type: actions.SHOW,
-    message: message,
-  };
-};
-
 const UploadLoaderStart = () => {
   return {
     type: actions.GET_UPLOAD_LOADER_START,
-  };
-};
-
-const uploadFail = (response) => {
-  return {
-    type: actions.GET_UPLOAD_FAIL,
-    response: response,
-  };
-};
-
-const SetLoaderFalseUpload = () => {
-  return {
-    type: actions.SET_LOADER_FALSE_UPLOAD,
   };
 };
 
@@ -121,7 +100,7 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
                   OriginalAttachmentName: dataResultoriginalFileName,
                   // fileSize:data.size
                 };
-                await  newfile.push(dataresponce);
+                await newfile.push(dataresponce);
                 console.log("newfilenewfile", newfile);
               }
             } else if (

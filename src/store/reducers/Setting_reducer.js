@@ -26,7 +26,7 @@ const initialState = {
   GetUserDetailsResponseMessege: "",
   UpdateUserProfileResponse: null,
   UpdateUserProfileResponseMessege: "",
-  recentActivityDataFromMQTT: []
+  recentActivityDataFromMQTT: [],
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -162,23 +162,10 @@ const settingReducer = (state = initialState, action) => {
       };
     }
     case actions.SET_RECENT_ACTIVITY_NOTIFICATION: {
-      console.log("setRecentActivityDataNotification", action);
-
-      let data2 = {
-        creationDateTime: action.response.creationDateTime,
-        notificationTypes: {
-          pK_NTID: action.response.notificationStatusID,
-          description: "The New Todo Creation",
-          icon: "",
-        },
-        key: 0,
-      }
-      console.log("setRecentActivityDataNotification", action);
-        return {
-          ...state,
-          SocketRecentActivityData: action.response,
-        };
-      
+      return {
+        ...state,
+        SocketRecentActivityData: action.response,
+      };
     }
     case actions.GETUSERNOTIFICATION_FAIL: {
       return {
@@ -347,8 +334,8 @@ const settingReducer = (state = initialState, action) => {
         ...state,
         // Loading:false,
         UpdateUserProfileResponse: action.response,
-        UpdateUserProfileResponseMessege: action.message
-      }
+        UpdateUserProfileResponseMessege: action.message,
+      };
     }
 
     case actions.UPDATE_USER_PROFILE_FAIL: {
@@ -356,8 +343,8 @@ const settingReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         UpdateUserProfileResponse: null,
-        UpdateUserProfileResponseMessege: action.message
-      }
+        UpdateUserProfileResponseMessege: action.message,
+      };
     }
     case actions.UDPATEUSERSETTING_MESSAGE_CLEARE: {
       return {
@@ -368,54 +355,54 @@ const settingReducer = (state = initialState, action) => {
         GetOrganizationLevelSettingResponseMessage: "",
         UpdateResponseMessage: "",
         GetUserDetailsResponseMessege: "",
-        UpdateUserProfileResponseMessege: ""
+        UpdateUserProfileResponseMessege: "",
       };
     }
     case actions.RECENT_ACTIVITYDATA_MQTT: {
-      console.log(action, "recentActivityDataFromMQTT")
+      console.log(action, "recentActivityDataFromMQTT");
 
       return {
         ...state,
-        recentActivityDataFromMQTT: []
-      }
+        recentActivityDataFromMQTT: [],
+      };
     }
     case actions.GOOGLEVALIDTOKEN_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
     case actions.GOOGLEVALIDTOKEN_SUCCESS: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
     case actions.GOOGLEVALIDTOKEN_FAIL: {
       return {
         ...state,
         Loading: true,
-        message:action.message
-      }
+        message: action.message,
+      };
     }
     case actions.REVOKETOKEN_INIT: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
     case actions.REVOKETOKEN_SUCCESS: {
       return {
         ...state,
         Loading: true,
-      }
+      };
     }
     case actions.REVOKETOKEN_FAIL: {
       return {
         ...state,
         Loading: true,
-        message:action.message
-      }
+        message: action.message,
+      };
     }
     default:
       return {
