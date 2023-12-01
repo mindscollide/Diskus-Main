@@ -229,6 +229,8 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                 let meetingPageCurrent = parseInt(
                   localStorage.getItem("MeetingPageCurrent")
                 );
+                let currentView = localStorage.getItem("MeetingCurrentView");
+
                 let searchData = {
                   Date: "",
                   Title: "",
@@ -236,7 +238,8 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                   UserID: Number(createrID),
                   PageNumber: Number(meetingPageCurrent),
                   Length: Number(meetingpageRow),
-                  PublishedMeetings: true,
+                  PublishedMeetings:
+                    currentView && Number(currentView) === 1 ? true : false,
                 };
                 await dispatch(searchNewUserMeeting(navigate, searchData, t));
               }
