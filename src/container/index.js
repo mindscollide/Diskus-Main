@@ -65,3 +65,4 @@ export { default as UserSettings } from "../container/setting/UserLevelSettings/
 export { default as OrganizationLevelSetting } from "../container/setting/OrganizationLevelSetting/OrganizationLevelSetting";
 export { default as EmptyState } from "../container/Admin/Subscriptions/PackageDetail/EmptyStatePage/EmptyState";
 export { default as VideoPanelMaximize }  from "../components/layout/talk/videoCallScreen/videoCallPanels/videoCallMaximizePanel";
+export { default as RSVP }  from "../container/pages/meeting/RSVP";
