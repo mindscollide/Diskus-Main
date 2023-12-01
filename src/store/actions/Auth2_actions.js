@@ -744,7 +744,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 ) {
                   navigate("/onboard");
                 } else {
-                  navigate("/DisKus/");
+                  let RSVP = localStorage.getItem("RSVP");
+                  if (RSVP !== undefined && RSVP !== null) {
+                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                  } else {
+                    navigate("/Diskus/");
+                  }
                 }
               }
             } else if (
@@ -925,7 +930,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 ) {
                   navigate("/onboard");
                 } else {
-                  navigate("/DisKus/");
+                  let RSVP = localStorage.getItem("RSVP");
+                  if (RSVP !== undefined && RSVP !== null) {
+                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                  } else {
+                    navigate("/Diskus/");
+                  }
                 }
               }
             } else if (
@@ -1817,7 +1827,12 @@ const createPasswordAction = (value, navigate, t) => {
                 ) {
                   navigate("/onboard");
                 } else {
-                  navigate("/DisKus/");
+                  let RSVP = localStorage.getItem("RSVP");
+                  if (RSVP !== undefined && RSVP !== null) {
+                    navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                  } else {
+                    navigate("/Diskus/");
+                  }
                 }
               }
             } else if (
@@ -2048,7 +2063,12 @@ const createPasswordAction = (value, navigate, t) => {
                     t("User-is-not-a-new-user-the-user-is-not-an-admin-user")
                   )
                 );
-                navigate("/Diskus/");
+                let RSVP = localStorage.getItem("RSVP");
+                if (RSVP !== undefined && RSVP !== null) {
+                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else {
+                  navigate("/Diskus/");
+                }
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -2346,7 +2366,12 @@ const createPasswordAction = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/Diskus/");
+                let RSVP = localStorage.getItem("RSVP");
+                if (RSVP !== undefined && RSVP !== null) {
+                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else {
+                  navigate("/Diskus/");
+                }
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -2487,7 +2512,12 @@ const createPasswordAction = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/Diskus/");
+                let RSVP = localStorage.getItem("RSVP");
+                if (RSVP !== undefined && RSVP !== null) {
+                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else {
+                  navigate("/Diskus/");
+                }
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -2628,7 +2658,12 @@ const createPasswordAction = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/Diskus/");
+                let RSVP = localStorage.getItem("RSVP");
+                if (RSVP !== undefined && RSVP !== null) {
+                  navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else {
+                  navigate("/Diskus/");
+                }
               }
             } else {
               dispatch(createPasswordFail(t("Something-went-wrong")));
