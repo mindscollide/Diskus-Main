@@ -53,7 +53,7 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
   const [afterViewPolls, setafterViewPolls] = useState(false);
-  const [viewPublishedPoll, setViewPublishedPoll] = useState(true);
+  const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
@@ -179,6 +179,13 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       Length: 50,
     };
     dispatch(GetPollsByCommitteeIDapi(navigate, t, Data));
+    return () => {
+      setEditPolls(false);
+      setvotePolls(false);
+      setUnPublished(false);
+      setViewPublishedPoll(false);
+      setCreatepoll(false);
+    };
   }, []);
 
   useEffect(() => {
