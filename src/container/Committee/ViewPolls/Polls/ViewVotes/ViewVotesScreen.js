@@ -157,55 +157,82 @@ const ViewVotesScreen = ({ setviewVotes }) => {
         </Col>
         <Col lg={1} md={1} sm={1}></Col>
         <Col lg={5} md={5} sm={5}>
-          <Row className="mt-3">
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className={styles["Scroller_View_Published_Polls"]}
-            >
-              <Row className="mt-1">
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["Participant_Count"]}>
-                    Email Conference <span>(20)</span>
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                {participant.length > 0
-                  ? participant.map((data, index) => {
-                      return (
-                        <>
-                          <Col lg={6} md={6} sm={6} className="mt-2">
-                            <section className={styles["Partipants_box"]}>
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex align-items-center gap-2"
-                                >
-                                  <img
-                                    draggable={false}
-                                    src={Profile}
-                                    height="33px"
-                                    width="33px"
-                                    className={styles["Profile_Style"]}
-                                  />
-                                  <span className={styles["Participants_name"]}>
-                                    {data.name}
-                                  </span>
-                                </Col>
-                              </Row>
-                            </section>
-                          </Col>
-                        </>
-                      );
-                    })
-                  : null}
-              </Row>
-            </Col>
-          </Row>
+          {pollAttendiesOpptionsVise.length > 0 &&
+            pollAttendiesOpptionsVise.map((pollParticipantData, index) => {
+              return (
+                <>
+                  <Row className="mt-3">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      // className={styles["Scroller_View_Published_Polls"]}
+                    >
+                      <Row className="mt-1">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["Participant_Count"]}>
+                            {pollParticipantData.answer}{" "}
+                            <span>({pollParticipantData.totalVotes})</span>
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        {pollParticipantData.pollParticipants.length > 0
+                          ? pollParticipantData.pollParticipants.map(
+                              (data, index) => {
+                                return (
+                                  <>
+                                    <Col
+                                      lg={6}
+                                      md={6}
+                                      sm={6}
+                                      className={
+                                        styles["Scroller_View_Published_Polls"]
+                                      }
+                                    >
+                                      <section
+                                        className={styles["Partipants_box"]}
+                                      >
+                                        <Row>
+                                          <Col
+                                            lg={12}
+                                            md={12}
+                                            sm={12}
+                                            className="d-flex align-items-center gap-2"
+                                          >
+                                            <img
+                                              draggable={false}
+                                              src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
+                                              height="33px"
+                                              alt=""
+                                              width="33px"
+                                              className={
+                                                styles["Profile_Style"]
+                                              }
+                                            />
+                                            <span
+                                              className={
+                                                styles["Participants_name"]
+                                              }
+                                            >
+                                              {data?.userName}
+                                            </span>
+                                          </Col>
+                                        </Row>
+                                      </section>
+                                    </Col>
+                                  </>
+                                );
+                              }
+                            )
+                          : null}
+                      </Row>
+                    </Col>
+                  </Row>
+                </>
+              );
+            })}
+
           <Row className="mt-4">
             <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <Button

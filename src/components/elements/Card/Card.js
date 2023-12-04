@@ -384,7 +384,7 @@ const Card = ({
                         </div>
                       </Col>
                     </Row>
-                    {flag && creatorId === Number(creatorID) ? (
+                    {/* {flag && creatorId === Number(creatorID) ? (
                       <>
                         {" "}
                         <hr className={styles["HR-line-Committee-group"]} />
@@ -410,7 +410,7 @@ const Card = ({
                           </Col>
                         </Row>
                       </>
-                    ) : null}
+                    ) : null} */}
                   </Container>
                 </>
               ) : null}
