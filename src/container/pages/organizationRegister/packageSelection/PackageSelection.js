@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import PackageCards from "../../../../components/elements/packageselection/PackageCards";
-import SilverPackage from "./../../../../assets/images/Silver-Package.png";
-import GoldPackage from "./../../../../assets/images/Gold-Package.png";
-import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
 import styles from "./PackageSelection.module.css";
 import Button from "../../../../components/elements/button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
-
-import PackageCardRibbon from "../../../../assets/images/newElements/PackageCardRibbon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   cleareMessageSubsPac,
@@ -24,22 +18,12 @@ import {
   setLoader,
 } from "../../../../store/actions/Auth2_actions";
 import { Notification } from "../../../../components/elements";
-import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 import { isHTML } from "../../../../commen/functions/html_formater";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 const PackageSelection = () => {
   const navigate = useNavigate();
   const { GetSubscriptionPackage, Authreducer, LanguageReducer } = useSelector(
     (state) => state
-  );
-  const [dataset, setDataSet] = useState(
-    '<p>asdasdas </p><ul><li><strong class="ql-font-comic" style="font-size: 16px;">check</strong> </li></ul>'
-  );
-  const [withoutData, setWithOutData] = useState("asdasdas");
-  console.log(
-    "GetSubscriptionPackageGetSubscriptionPackage",
-    GetSubscriptionPackage,
-    Authreducer
   );
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
@@ -66,7 +50,6 @@ const PackageSelection = () => {
       FirstYearDiscountedPrice: 0,
     },
   ]);
-  console.log("packageDetailpackageDetail", packageDetail);
   const handleManualPackage = (packageId) => {
     setCurrentPackageId(packageId);
     setAnnualPackageShow(false);
@@ -82,28 +65,16 @@ const PackageSelection = () => {
 
   const currentLocale = Cookies.get("i18next") || "en";
 
-  const [language, setLanguage] = useState(currentLocale);
-
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    i18n.changeLanguage(lang);
-  };
-
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
-  let currentLanguage = localStorage.getItem("i18nextLng");
-
   // translate Languages end
 
   const handleAnnualPackage = (packageId) => {
     setCurrentPackageId(packageId);
-    console.log(packageId);
     setAnnualPackageShow(true);
     setMonthlyPackageShow(false);
   };
@@ -173,7 +144,6 @@ const PackageSelection = () => {
     if (GetSubscriptionPackage.PackageDetails.length > 0) {
       let packageData = [];
       GetSubscriptionPackage.PackageDetails.map((data, index) => {
-        console.log(data, "Datadatadata");
         packageData.push({
           PackageID: data.pK_SubscriptionPackageID,
           PackageName: data.packageName,
@@ -383,20 +353,10 @@ const PackageSelection = () => {
         <Row className="mt-3 ">
           {packageDetail.length > 0 ? (
             packageDetail.map((data, index) => {
-              console.log(data, "PackageData");
               let packageColorPath1 =
                 data.PackageBadgeColor.split("_SEPERATOR_")[0];
               let packageColorPath2 =
                 data.PackageBadgeColor.split("_SEPERATOR_")[1];
-              console.log(
-                packageColorPath1,
-                packageColorPath2,
-                "packageColorPath2packageColorPath2packageColorPath2"
-              );
-              console.log(
-                packageColorPath1,
-                "packageColorPath1packageColorPath1"
-              );
               return (
                 <Col
                   sm={12}
@@ -466,10 +426,6 @@ const PackageSelection = () => {
                           <Col sm={false} md={2} lg={2}></Col>
                           <Col sm={12} md={8} lg={8} className={"m-1"}>
                             <div className="d-flex">
-                              {console.log(
-                                "monthlyPackageShow",
-                                monthlyPackageShow
-                              )}
                               <span
                                 className={
                                   monthlyPackageShow
@@ -478,15 +434,9 @@ const PackageSelection = () => {
                                       currentPackageId === data.PackageID
                                     ? `${styles["span-formontly"]}`
                                     : monthlyPackageShow === false &&
-                                      currentPackageId != data.PackageID
+                                      currentPackageId !== data.PackageID
                                     ? `${styles["spanActive"]}`
-                                    : // : monthlyPackageShow &&
-                                      //   currentPackageId === data.PackageID
-                                      //   ? `${styles["spanActive"]}`
-                                      //   : monthlyPackageShow &&
-                                      //     currentPackageId === data.PackageID
-                                      //     ? `${styles["span-formontly"]}`
-                                      `${styles["span-formontly"]}`
+                                    : `${styles["span-formontly"]}`
                                 }
                                 onClick={() =>
                                   handleManualPackage(data.PackageID)
