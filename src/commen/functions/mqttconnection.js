@@ -27,8 +27,8 @@ export const mqttConnection = (subscribeID) => {
     8228,
     parseInt(subscribeID) + "-" + id
   );
-  newClient.connect({
-    // cleanSession: false,
+  
+  var options = {
     onSuccess: () => {
       console.log("Connected to MQTT broker");
       onConnected(newClient, subscribeID);
@@ -40,7 +40,10 @@ export const mqttConnection = (subscribeID) => {
     },
     keepAliveInterval: 30,
     reconnect: true, // Enable automatic reconnect
-  });
+    userName: process.env.REACT_APP_MQTT_User,
+    password: process.env.REACT_APP_MQTT_Pass,
+  };
+  newClient.connect(options);
   Helper.socket = newClient;
   setClient(newClient);
 };
