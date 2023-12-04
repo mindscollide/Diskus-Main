@@ -6538,7 +6538,6 @@ const showAllDocumentsAgendaWiseMinutesFailed = (message) => {
 
 const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return async (dispatch) => {
     dispatch(showAllDocumentsAgendaWiseMinutesInit());
     let form = new FormData();
@@ -6570,12 +6569,6 @@ const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                 "DataRoom_DataRoomManager_GetAllAgendaWiseMinuteDocumentsForMeeting_01".toLowerCase()
               )
           ) {
-            // await dispatch(
-            //   showAllDocumentsAgendaWiseMinutesSuccess(
-            //     response.data.responseResult,
-            //     t("Data-available")
-            //   )
-            // );
             console.log("loader check");
             await dispatch(
               showAllDocumentsAgendaWiseMinutesSuccess(
