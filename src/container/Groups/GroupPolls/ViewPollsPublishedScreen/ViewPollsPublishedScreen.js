@@ -10,7 +10,7 @@ import { Button, Checkbox } from "../../../../components/elements";
 import { Progress } from "antd";
 import ViewVotesScreen from "../ViewVotes/ViewVotesScreen";
 
-const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
+const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
   ]);
 
   const handleCancelButton = () => {
-    setSavePollsPublished(false);
+    setViewPublishedPoll(false);
   };
 
   const handleViewVotesScreen = () => {

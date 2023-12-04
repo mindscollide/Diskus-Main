@@ -490,7 +490,9 @@ const GroupViewPolls = ({
             ) : viewUnnPublished ? (
               <ViewPollsUnPublished setViewUnPublished={setViewUnPublished} />
             ) : viewPublishedPoll ? (
-              <EditPollsMeeting setViewPublishedPoll={setViewPublishedPoll} />
+              <ViewPollsPublishedScreen
+                setViewPublishedPoll={setViewPublishedPoll}
+              />
             ) : (
               <>
                 <Row className="mt-4">

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import Profile from "../../../../assets/images/newprofile.png";
 import { style } from "@mui/system";
 import { Button } from "../../../../components/elements";
-const ViewPollsUnPublished = ({ setSavedPolls }) => {
+const ViewPollsUnPublished = ({ setViewUnPublished }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const ViewPollsUnPublished = ({ setSavedPolls }) => {
   ]);
 
   const handleClosedButton = () => {
-    setSavedPolls(false);
+    setViewUnPublished(false);
   };
   return (
     <section>
