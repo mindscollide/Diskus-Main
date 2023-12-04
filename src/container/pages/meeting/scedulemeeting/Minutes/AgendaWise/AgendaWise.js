@@ -383,7 +383,7 @@ const AgendaWise = ({
   };
 
   const handleAddClickAgendaWise = async () => {
-    if (addNoteFields.Description.value !== "") {
+    if (addNoteFields.Description.value !== "" && agendaOptions.length === 0) {
       let Data = {
         AgendaID: agendaSelect.agendaSelectOptions.id,
         MinuteText: addNoteFields.Description.value,
@@ -408,6 +408,10 @@ const AgendaWise = ({
               ? true
               : addNoteFields.Description.errorStatus,
         },
+      });
+      setOpen({
+        flag: true,
+        message: t("Select-agenda"),
       });
     }
   };
