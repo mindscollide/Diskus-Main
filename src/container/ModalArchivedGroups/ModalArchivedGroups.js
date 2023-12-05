@@ -34,6 +34,7 @@ const ModalArchivedCommittee = ({
   const [groupsArheivedData, setGroupsArheivedData] = useState([]);
   const [totalRecords, setTotalrecord] = useState(0);
   let currentGroupPage = JSON.parse(localStorage.getItem("groupsArCurrent"));
+  const [uniqCardID, setUniqCardID] = useState(0);
 
   useEffect(() => {
     if (currentGroupPage !== null && currentGroupPage !== undefined) {
@@ -77,12 +78,16 @@ const ModalArchivedCommittee = ({
       try {
         if (GroupsReducer.ArcheivedGroups.groups.length > 0) {
           setTotalrecord(GroupsReducer.ArcheivedGroups.totalRecords);
-          let newArr = [];
-          let filterItems = GroupsReducer.ArcheivedGroups.groups;
-          filterItems.map((data, index) => {
-            newArr.push(data);
-          });
-          setGroupsArheivedData(newArr);
+          let copyData = [...GroupsReducer.ArcheivedGroups.groups];
+          // Create a new copy of committeeMembers array for each committee
+          const updateGroups = copyData.map((groups) => ({
+            ...groups,
+            groupMembers: [...groups.groupMembers],
+          }));
+
+          //  setgroupsData(updateGroups);
+
+          setGroupsArheivedData(updateGroups);
         }
       } catch (error) {}
     }
@@ -190,6 +195,8 @@ const ModalArchivedCommittee = ({
                         return (
                           <Col sm={12} md={4} lg={4} className="mb-3">
                             <Card
+                              setUniqCardID={setUniqCardID}
+                              uniqCardID={uniqCardID}
                               CardHeading={data.groupTitle}
                               IconOnClick={updateModal}
                               onClickFunction={() =>
@@ -199,11 +206,13 @@ const ModalArchivedCommittee = ({
                                 ViewGroupmodal(data.groupID, data.groupStatusID)
                               }
                               StatusID={data.groupStatusID}
+                              creatorId={data.creatorID}
                               profile={data.groupMembers}
                               Icon={
                                 <img
                                   draggable="false"
                                   src={GroupIcon}
+                                  alt=""
                                   width="32.39px"
                                   height="29.23px"
                                 />

@@ -158,7 +158,7 @@ const MeetingDetails = ({
       label: "",
     },
     Notes: "",
-    groupChat: true,
+    groupChat: false,
     AllowRSPV: true,
     NotifyMeetingOrganizer: true,
     RecurringOptions: {

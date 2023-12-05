@@ -1369,7 +1369,7 @@ const DataRoom = () => {
           attachmentID: data.id,
           isPermission: data.permissionID,
         };
-        console.log("pdfDataJson",data)
+        console.log("pdfDataJson", data);
         const pdfDataJson = JSON.stringify(pdfData);
         if (data.isShared) {
           if (data.isFolder) {
@@ -2666,7 +2666,9 @@ const DataRoom = () => {
       DataRoomReducer.ResponseMessage !==
         t("No-folder-exist-against-this-name") &&
       DataRoomReducer.ResponseMessage !== t("No-duplicate-found") &&
-      DataRoomReducer.ResponseMessage !== t("Record-found")
+      DataRoomReducer.ResponseMessage !== t("Record-found") &&
+      DataRoomReducer.ResponseMessage !== t("Document-uploaded-successfully") &&
+      DataRoomReducer.ResponseMessage !== t("Files-saved-successfully")
     ) {
       setOpen({
         open: true,

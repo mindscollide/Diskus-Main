@@ -34,9 +34,12 @@ import { _justShowDateformatBilling } from "../../../../../commen/functions/date
 import {
   clearPollsMesseges,
   deleteMeetingPollApi,
+  getPollByPollIdforMeeting,
   getPollsByPollIdApi,
 } from "../../../../../store/actions/Polls_actions";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
+import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
+import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 
 const Polls = ({
   setViewAdvanceMeetingModal,
@@ -74,17 +77,12 @@ const Polls = ({
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let currentView = localStorage.getItem("MeetingCurrentView");
   let currentUserID = Number(localStorage.getItem("userID"));
+  const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
+  // Unpublished Poll
+  const [unPublished, setUnPublished] = useState(false);
 
   const enableAfterSavedViewPolls = () => {
     setafterViewPolls(true);
-  };
-
-  const handleCastVotePollMeeting = () => {
-    setvotePolls(true);
-  };
-
-  const handleEditPollsMeeting = () => {
-    setEditPolls(true);
   };
 
   const handleCacnelbutton = () => {
@@ -109,6 +107,44 @@ const Polls = ({
       MeetingID: parseInt(currentMeeting),
     };
     dispatch(deleteMeetingPollApi(navigate, t, data, currentMeeting));
+  };
+
+  const handleClickTitle = (record) => {
+    if (record.pollStatus.pollStatusId === 1) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(
+        getPollByPollIdforMeeting(
+          navigate,
+          data,
+          3,
+          t,
+          setEditPolls,
+          setvotePolls,
+          setUnPublished,
+          setViewPublishedPoll
+        )
+      );
+    } else if (record.pollStatus.pollStatusId === 2) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(
+        getPollByPollIdforMeeting(
+          navigate,
+          data,
+          4,
+          t,
+          setEditPolls,
+          setvotePolls,
+          setUnPublished,
+          setViewPublishedPoll
+        )
+      );
+    }
   };
   useEffect(() => {
     let Data = {
@@ -170,6 +206,24 @@ const Polls = ({
 
   console.log(pollsRows, "pollsRowspollsRowspollsRows");
 
+  const voteCastModal = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(
+      getPollByPollIdforMeeting(
+        navigate,
+        data,
+        2,
+        t,
+        setEditPolls,
+        setvotePolls,
+        setUnPublished,
+        setViewPublishedPoll
+      )
+    );
+  };
   const PollsColoumn = [
     {
       title: t("Poll-title"),
@@ -180,8 +234,9 @@ const Polls = ({
         return (
           <span
             className={styles["DateClass"]}
-            onClick={() =>
-              navigate("/DisKus/polling", { state: { record, isVote: false } })
+            onClick={
+              () => handleClickTitle(record)
+              // navigate("/DisKus/polling", { state: { record, isVote: false } })
             }
           >
             {text}
@@ -275,10 +330,11 @@ const Polls = ({
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() =>
-                    navigate("/DisKus/polling", {
-                      state: { record, isVote: true },
-                    })
+                  onClick={
+                    () => voteCastModal(record)
+                    // navigate("/DisKus/polling", {
+                    //   state: { record, isVote: true },
+                    // })
                   }
                 />
               );
@@ -540,10 +596,23 @@ const Polls = ({
                 currentMeeting={currentMeeting}
               />
             ) : votePolls ? (
-              <CastVotePollsMeeting setvotePolls={setvotePolls} />
+              <CastVotePollsMeeting
+                setvotePolls={setvotePolls}
+                currentMeeting={currentMeeting}
+              />
             ) : editPolls ? (
               <EditPollsMeeting
                 setEditPolls={setEditPolls}
+                currentMeeting={currentMeeting}
+              />
+            ) : viewPublishedPoll ? (
+              <ViewPollsPublishedScreen
+                setViewPublishedPoll={setViewPublishedPoll}
+                currentMeeting={currentMeeting}
+              />
+            ) : unPublished ? (
+              <ViewPollsUnPublished
+                setUnPublished={setUnPublished}
                 currentMeeting={currentMeeting}
               />
             ) : (
@@ -586,26 +655,6 @@ const Polls = ({
                             </Col>
                           </Row>
                         </section>
-                        <Row className="mt-5">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end gap-2"
-                          >
-                            {/* <Button
-                              text={t("Clone-meeting")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={enableAfterSavedViewPolls}
-                            /> */}
-
-                            <Button
-                              text={t("Cancel")}
-                              className={styles["Cancel_Button_Polls_meeting"]}
-                              onClick={handleCacnelbutton}
-                            />
-                          </Col>
-                        </Row>
                       </>
                     ) : (
                       <>

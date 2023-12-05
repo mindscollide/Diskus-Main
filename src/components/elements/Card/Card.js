@@ -176,7 +176,7 @@ const Card = ({
               sm={12}
               className="d-flex justify-content-end gap-2 mt-4 pe-3"
             >
-              {creatorId === Number(creatorID) && (
+              {Number(creatorId) === Number(creatorID) && (
                 <img
                   src={editicon}
                   width="21px"
@@ -184,8 +184,7 @@ const Card = ({
                   alt=""
                   // className={StatusID === 1 ? "cursor-pointer" : ""}
                   className={
-                    (StatusID === 1 || StatusID === 3) &&
-                    creatorId === Number(creatorID)
+                    Number(creatorId) === Number(creatorID)
                       ? styles["Edit_icon_styles"]
                       : styles["Edit_icon_styles_InActive"]
                   }
@@ -264,12 +263,10 @@ const Card = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-start gap-2  ms-1 "
+                        className="d-flex justify-content-start gap-2  ms-1  "
+                        onClick={handleClickDocumentOption}
                       >
-                        <div
-                          className={"d-flex justify-content-start gap-2"}
-                          onClick={handleClickDocumentOption}
-                        >
+                        <div className={"d-flex justify-content-start gap-2"}>
                           <span>
                             <img
                               src={img1}
@@ -286,17 +283,19 @@ const Card = ({
                     </Row>
                     <hr className={styles["HR-line-Committee-group"]} />
                     <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        onClick={handleClickDiscussion}
+                      >
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
                           className="d-flex justify-content-start gap-2  ms-1 "
                         >
-                          <div
-                            className={discussionMenuClass}
-                            onClick={handleClickDiscussion}
-                          >
+                          <div className={discussionMenuClass}>
                             <span>
                               <img src={img3} width={15} draggable="false" />
                             </span>
@@ -315,11 +314,9 @@ const Card = ({
                           md={12}
                           sm={12}
                           className="d-flex justify-content-start gap-2  ms-1 "
+                          onClick={handleMeetingClickOption}
                         >
-                          <div
-                            className="d-flex justify-content-start gap-2  "
-                            onClick={handleMeetingClickOption}
-                          >
+                          <div className="d-flex justify-content-start gap-2  ">
                             <span>
                               <img
                                 src={img4}
@@ -343,11 +340,9 @@ const Card = ({
                           md={12}
                           sm={12}
                           className="d-flex justify-content-start gap-2  ms-1 "
+                          onClick={handlePollsClickOption}
                         >
-                          <div
-                            className="d-flex justify-content-start gap-2  "
-                            onClick={handlePollsClickOption}
-                          >
+                          <div className="d-flex justify-content-start gap-2  ">
                             <span>
                               <img
                                 src={img5}
@@ -370,13 +365,16 @@ const Card = ({
                         md={12}
                         sm={12}
                         className="d-flex justify-content-start gap-2  ms-1 "
+                        onClick={handleTasksClickOption}
                       >
-                        <div
-                          className="d-flex justify-content-start gap-2  "
-                          onClick={handleTasksClickOption}
-                        >
+                        <div className="d-flex justify-content-start gap-2  ">
                           <span>
-                            <img src={img6} width={17} draggable="false" />
+                            <img
+                              src={img6}
+                              width={17}
+                              draggable="false"
+                              alt=""
+                            />
                           </span>
                           <span className={styles["dropdown-text"]}>
                             {t("Tasks")}

@@ -151,7 +151,7 @@ const GroupViewPolls = ({
         UserID: parseInt(userID),
       };
       dispatch(
-        getPollsByGroupMainApi(
+        getPollByPollIdforGroups(
           navigate,
           data,
           3,
@@ -168,7 +168,7 @@ const GroupViewPolls = ({
         UserID: parseInt(userID),
       };
       dispatch(
-        getPollsByGroupMainApi(
+        getPollByPollIdforGroups(
           navigate,
           data,
           4,
@@ -188,7 +188,7 @@ const GroupViewPolls = ({
       UserID: parseInt(userID),
     };
     dispatch(
-      getPollsByGroupMainApi(
+      getPollByPollIdforGroups(
         navigate,
         data,
         2,

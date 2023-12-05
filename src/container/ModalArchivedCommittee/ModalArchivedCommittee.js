@@ -31,6 +31,7 @@ const ModalArchivedCommittee = ({
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [totalLength, setTotalLength] = useState(0);
   let currentArPage = JSON.parse(localStorage.getItem("CoArcurrentPage"));
+  const [uniqCardID, setUniqCardID] = useState(0);
 
   useEffect(() => {
     if (currentArPage != undefined && currentArPage != null) {
@@ -179,7 +180,10 @@ const ModalArchivedCommittee = ({
                       return (
                         <Col lg={4} md={4} sm={12} className="mb-3">
                           <Card
+                            setUniqCardID={setUniqCardID}
+                            uniqCardID={uniqCardID}
                             CardHeading={data.committeesTitle}
+                            creatorId={data.creatorID}
                             onClickFunction={() =>
                               viewCommitteeModal(
                                 data.committeeID,

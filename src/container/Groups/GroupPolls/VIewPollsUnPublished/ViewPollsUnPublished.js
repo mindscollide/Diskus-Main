@@ -1,47 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ViewPollsUnPublished.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import Profile from "../../../../assets/images/newprofile.png";
-import { style } from "@mui/system";
 import { Button } from "../../../../components/elements";
+import { EditmeetingDateFormat } from "../../../../commen/functions/date_formater";
+import moment from "moment";
 const ViewPollsUnPublished = ({ setViewUnPublished }) => {
   const { t } = useTranslation();
+  const { PollsReducer } = useSelector((state) => state);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const [messeges, setMesseges] = useState([
-    {
-      text: "In-person meetings",
-    },
-    {
-      text: "Video conferences",
-    },
-    {
-      text: "Email communication",
-    },
-  ]);
-  const [participant, setparticipant] = useState([
-    {
-      name: "Saif Ul Islam",
-    },
-    {
-      name: "Saif Ul Islam",
-    },
-    {
-      name: "Saif Ul Islam",
-    },
-    {
-      name: "Saif Ul Islam",
-    },
-  ]);
+
+  const [pollParticipants, setPollParticipants] = useState([]);
+  const [pollsOption, setPollsOption] = useState([]);
+
+  const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
+    PollID: 0,
+    PollTitle: "",
+    Date: "",
+    AllowMultipleAnswers: false,
+    answer: [],
+  });
 
   const handleClosedButton = () => {
     setViewUnPublished(false);
   };
+  useEffect(() => {
+    try {
+      if (
+        PollsReducer.Allpolls !== null &&
+        PollsReducer.Allpolls !== undefined
+      ) {
+        let pollData = PollsReducer.Allpolls.poll;
+        let pollDetails = pollData.pollDetails;
+        let pollOptions = pollData.pollOptions;
+        let pollParticipants = pollData.pollParticipants;
+
+        if (pollOptions.length > 0) {
+          setPollsOption(pollOptions);
+        }
+        if (pollParticipants.length > 0) {
+          setPollParticipants(pollParticipants);
+        }
+        if (Object.keys(pollDetails).length > 0) {
+          setViewProgressPollsDetails({
+            ...viewProgressPollsDetails,
+            PollTitle: pollDetails.pollTitle,
+            Date: pollDetails.dueDate,
+            AllowMultipleAnswers: pollDetails.allowMultipleAnswers,
+            PollID: pollDetails.pollID,
+          });
+        }
+      }
+    } catch {}
+  }, [PollsReducer.Allpolls]);
   return (
     <section>
       <Row>
@@ -49,8 +66,7 @@ const ViewPollsUnPublished = ({ setViewUnPublished }) => {
           <Row className="mt-3">
             <Col lg={12} md={12} sm={12}>
               <span className={styles["Heading_vewPolls_Published"]}>
-                How do you prefer to collaborate with your colleagues in the
-                office?
+                {viewProgressPollsDetails.PollTitle}
               </span>
             </Col>
           </Row>
@@ -62,8 +78,8 @@ const ViewPollsUnPublished = ({ setViewUnPublished }) => {
               className={styles["Scroller_View_Published_Polls"]}
             >
               <Row>
-                {messeges.length > 0
-                  ? messeges.map((data, index) => {
+                {pollsOption.length > 0
+                  ? pollsOption.map((data, index) => {
                       return (
                         <>
                           <Col lg={12} md={12} sm={12} className="mt-2">
@@ -73,7 +89,7 @@ const ViewPollsUnPublished = ({ setViewUnPublished }) => {
                                   <span
                                     className={styles["Messege_span_Class"]}
                                   >
-                                    {data.text}
+                                    {data.answer}
                                   </span>
                                 </Col>
                               </Row>
@@ -97,20 +113,34 @@ const ViewPollsUnPublished = ({ setViewUnPublished }) => {
               </Row>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <span className={styles["Date_Fetched"]}>18 March 2023</span>
+                  <span className={styles["Date_Fetched"]}>
+                    {viewProgressPollsDetails.Date !== "" && (
+                      <>
+                        {moment(
+                          EditmeetingDateFormat(
+                            viewProgressPollsDetails?.Date + "000000"
+                          )
+                        ).format("DD MMM YYYY")}
+                      </>
+                    )}
+                  </span>
                 </Col>
               </Row>
             </Col>
-            <Col
-              lg={6}
-              md={6}
-              sm={6}
-              className="d-flex justify-content-end align-items-center"
-            >
-              <span className={styles["Multiple_Answers_zstyles"]}>
-                {t("Multiple-answers-allowed")}
-              </span>
-            </Col>
+            {viewProgressPollsDetails.AllowMultipleAnswers === true ? (
+              <Col
+                lg={6}
+                md={6}
+                sm={6}
+                className="d-flex justify-content-end align-items-center"
+              >
+                <span className={styles["Multiple_Answers_zstyles"]}>
+                  {t("Multiple-answers-allowed")}
+                </span>
+              </Col>
+            ) : (
+              ""
+            )}
           </Row>
         </Col>
         <Col lg={1} md={1} sm={1}></Col>
@@ -128,8 +158,8 @@ const ViewPollsUnPublished = ({ setViewUnPublished }) => {
               className={styles["Scroller_View_Published_Polls"]}
             >
               <Row>
-                {participant.length > 0
-                  ? participant.map((data, index) => {
+                {pollParticipants.length > 0
+                  ? pollParticipants.map((data, index) => {
                       return (
                         <>
                           <Col lg={6} md={6} sm={6} className="mt-2">
@@ -143,13 +173,14 @@ const ViewPollsUnPublished = ({ setViewUnPublished }) => {
                                 >
                                   <img
                                     draggable={false}
-                                    src={Profile}
+                                    src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
                                     height="33px"
+                                    alt=""
                                     width="33px"
                                     className={styles["Profile_Style"]}
                                   />
                                   <span className={styles["Participants_name"]}>
-                                    {data.name}
+                                    {data.userName}
                                   </span>
                                 </Col>
                               </Row>
