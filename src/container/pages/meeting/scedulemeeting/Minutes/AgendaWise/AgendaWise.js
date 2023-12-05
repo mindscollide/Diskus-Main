@@ -172,9 +172,7 @@ const AgendaWise = ({
             // Push combined data to the grouped array
             acc[agendaID].push({
               ...item1,
-              minutesAttachmets: matchingItems.map(
-                (matchingItem) => matchingItem.files
-              ),
+              minutesAttachmets: matchingItems,
             });
           }
           return acc;
@@ -196,7 +194,7 @@ const AgendaWise = ({
     NewMeetingreducer.agendaWiseMinutesReducer,
     NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
   ]);
-
+  console.log(messages, "messagesmessagesmessages1");
   // Grouping the messages by agendaID while maintaining the unique titles
   const groupedMessages = messages.reduce((acc, curr) => {
     if (!acc[curr.agendaID]) {
@@ -229,7 +227,7 @@ const AgendaWise = ({
     return acc;
   }, {});
 
-  console.log(messages, "messagesmessagesmessages");
+  console.log(groupedMessages, "messagesmessagesmessages2");
 
   let userID = localStorage.getItem("userID");
   var Size = Quill.import("attributors/style/size");
@@ -1193,11 +1191,13 @@ const AgendaWise = ({
                                                         styles["Show_more"]
                                                       }
                                                       onClick={() =>
-                                                        handleshowMore(index)
+                                                        handleshowMore(
+                                                          detailIndex
+                                                        )
                                                       }
                                                     >
                                                       {showMoreIndex ===
-                                                        index && showMore
+                                                        detailIndex && showMore
                                                         ? t("Hide-details")
                                                         : t("Show-more")}
                                                     </span>
@@ -1221,106 +1221,113 @@ const AgendaWise = ({
                                                               filesname,
                                                               index
                                                             ) => {
-                                                              console.log(
-                                                                filesname,
-                                                                "filesnamefilesname"
-                                                              );
-                                                              return (
-                                                                <>
-                                                                  <Col
-                                                                    lg={3}
-                                                                    md={3}
-                                                                    sm={12}
-                                                                    className="position-relative gap-2"
-                                                                  >
-                                                                    <section
-                                                                      className={
-                                                                        styles[
-                                                                          "Outer_Box"
-                                                                        ]
-                                                                      }
-                                                                    >
-                                                                      <Row>
-                                                                        <Col
-                                                                          lg={
-                                                                            12
-                                                                          }
-                                                                          md={
-                                                                            12
-                                                                          }
-                                                                          sm={
-                                                                            12
+                                                              return filesname.files.map(
+                                                                (
+                                                                  fileData,
+                                                                  index
+                                                                ) => {
+                                                                  console.log(
+                                                                    fileData,
+                                                                    "fileDatafileDatafileData"
+                                                                  );
+                                                                  return (
+                                                                    <>
+                                                                      <Col
+                                                                        lg={3}
+                                                                        md={3}
+                                                                        sm={12}
+                                                                        className="position-relative gap-2"
+                                                                      >
+                                                                        <section
+                                                                          className={
+                                                                            styles[
+                                                                              "Outer_Box"
+                                                                            ]
                                                                           }
                                                                         >
-                                                                          <img
-                                                                            src={
-                                                                              file_image
-                                                                            }
-                                                                            width={
-                                                                              "100%"
-                                                                            }
-                                                                            alt=""
-                                                                            draggable="false"
-                                                                          />
-                                                                        </Col>
-                                                                      </Row>
+                                                                          <Row>
+                                                                            <Col
+                                                                              lg={
+                                                                                12
+                                                                              }
+                                                                              md={
+                                                                                12
+                                                                              }
+                                                                              sm={
+                                                                                12
+                                                                              }
+                                                                            >
+                                                                              <img
+                                                                                src={
+                                                                                  file_image
+                                                                                }
+                                                                                width={
+                                                                                  "100%"
+                                                                                }
+                                                                                alt=""
+                                                                                draggable="false"
+                                                                              />
+                                                                            </Col>
+                                                                          </Row>
 
-                                                                      <section
-                                                                        className={
-                                                                          styles[
-                                                                            "backGround_name_Icon"
-                                                                          ]
-                                                                        }
-                                                                      >
-                                                                        <Row className="mb-2">
-                                                                          <Col
-                                                                            lg={
-                                                                              12
-                                                                            }
-                                                                            md={
-                                                                              12
-                                                                            }
-                                                                            sm={
-                                                                              12
-                                                                            }
+                                                                          <section
                                                                             className={
                                                                               styles[
-                                                                                "IconTextClass"
+                                                                                "backGround_name_Icon"
                                                                               ]
                                                                             }
                                                                           >
-                                                                            {/* <img
-                                                                              src={getIconSource(
-                                                                                getFileExtension(
-                                                                                  filesname.displayFileName
-                                                                                )
-                                                                              )}
-                                                                              height="10px"
-                                                                              alt=""
-                                                                              width="10px"
-                                                                              className={
-                                                                                styles[
-                                                                                  "IconPDF"
-                                                                                ]
-                                                                              }
-                                                                            /> */}
-                                                                            <span
-                                                                              className={
-                                                                                styles[
-                                                                                  "FileName"
-                                                                                ]
-                                                                              }
-                                                                            >
-                                                                              {
-                                                                                filesname.displayFileName
-                                                                              }
-                                                                            </span>
-                                                                          </Col>
-                                                                        </Row>
-                                                                      </section>
-                                                                    </section>
-                                                                  </Col>
-                                                                </>
+                                                                            <Row className="mb-2">
+                                                                              <Col
+                                                                                lg={
+                                                                                  12
+                                                                                }
+                                                                                md={
+                                                                                  12
+                                                                                }
+                                                                                sm={
+                                                                                  12
+                                                                                }
+                                                                                className={
+                                                                                  styles[
+                                                                                    "IconTextClass"
+                                                                                  ]
+                                                                                }
+                                                                              >
+                                                                                <img
+                                                                                  src={getIconSource(
+                                                                                    getFileExtension(
+                                                                                      fileData.displayFileName
+                                                                                    )
+                                                                                  )}
+                                                                                  height="10px"
+                                                                                  alt=""
+                                                                                  width="10px"
+                                                                                  className={
+                                                                                    styles[
+                                                                                      "IconPDF"
+                                                                                    ]
+                                                                                  }
+                                                                                />
+                                                                                <span
+                                                                                  className={
+                                                                                    styles[
+                                                                                      "FileName"
+                                                                                    ]
+                                                                                  }
+                                                                                >
+                                                                                  {
+                                                                                    fileData.displayFileName
+                                                                                  }
+                                                                                </span>
+                                                                              </Col>
+                                                                            </Row>
+                                                                          </section>
+                                                                        </section>
+                                                                      </Col>
+                                                                    </>
+                                                                  );
+                                                                }
                                                               );
                                                             }
                                                           )}
