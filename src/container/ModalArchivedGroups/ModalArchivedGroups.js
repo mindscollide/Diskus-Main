@@ -14,6 +14,7 @@ import {
   getArcheivedGroups,
   getbyGroupID,
   getGroups,
+  updateGroupStatus,
 } from "../../store/actions/Groups_actions";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
@@ -35,7 +36,6 @@ const ModalArchivedCommittee = ({
   const [totalRecords, setTotalrecord] = useState(0);
   let currentGroupPage = JSON.parse(localStorage.getItem("groupsArCurrent"));
   const [uniqCardID, setUniqCardID] = useState(0);
-
   useEffect(() => {
     if (currentGroupPage !== null && currentGroupPage !== undefined) {
       dispatch(getArcheivedGroups(navigate, t, currentGroupPage));
@@ -88,6 +88,8 @@ const ModalArchivedCommittee = ({
           //  setgroupsData(updateGroups);
 
           setGroupsArheivedData(updateGroups);
+        } else {
+          setGroupsArheivedData([]);
         }
       } catch (error) {}
     }
@@ -123,6 +125,17 @@ const ModalArchivedCommittee = ({
       localStorage.setItem("groupsArCurrent", currentPage);
       dispatch(getArcheivedGroups(navigate, t, currentPage));
     }
+  };
+
+  const handleChangeStatus = async (e, CardID, setEditdropdown) => {
+    //Current Organization
+    let currentOrganizationId = localStorage.getItem("organizationID");
+    let Data = {
+      GroupID: Number(CardID),
+      GroupStatusId: Number(e.value),
+      OrganizationID: JSON.parse(currentOrganizationId),
+    };
+    await dispatch(updateGroupStatus(navigate, Data, t, setArchivedCommittee));
   };
 
   return (
@@ -199,6 +212,7 @@ const ModalArchivedCommittee = ({
                               uniqCardID={uniqCardID}
                               CardHeading={data.groupTitle}
                               IconOnClick={updateModal}
+                              CardID={data.groupID}
                               onClickFunction={() =>
                                 ViewGroupmodal(data.groupID, data.groupStatusID)
                               }
@@ -220,6 +234,7 @@ const ModalArchivedCommittee = ({
                               BtnText={
                                 data.groupStatusID === 2 ? t("View-group") : ""
                               }
+                              changeHandleStatus={handleChangeStatus}
                             />
                           </Col>
                         );

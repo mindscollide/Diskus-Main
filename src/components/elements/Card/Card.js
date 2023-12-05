@@ -71,6 +71,7 @@ const Card = ({
             } else {
               setEditdropdown(false);
               setdropdownthreedots(false);
+              setUniqCardID(0);
             }
           } else {
             setEditdropdown(false);
@@ -100,6 +101,12 @@ const Card = ({
     });
 
   useEffect(() => {}, [editdropdown, dropdownthreedots]);
+  console.log(
+    creatorID,
+    creatorId,
+    Number(creatorId) === Number(creatorID),
+    "uniqCardIDuniqCardIDuniqCardID"
+  );
   return (
     <Row
       className={
@@ -198,8 +205,10 @@ const Card = ({
                 height="21px"
                 // className={StatusID === 1 ? "cursor-pointer" : ""}
                 className={
-                  StatusID !== 1
+                  StatusID === 3
                     ? styles["dot_icon_styles"]
+                    : StatusID === 2
+                    ? styles["dot_icon_styles_InActive"]
                     : styles["dot_icon_styles_InActive"]
                 }
                 onClick={() => setUniqCardID(CardID)}

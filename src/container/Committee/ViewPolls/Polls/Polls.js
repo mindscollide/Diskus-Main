@@ -306,15 +306,15 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       },
     },
 
-    {
-      title: t("Poll-type"),
-      dataIndex: "PollType",
-      key: "PollType",
-      width: "90px",
-      render: () => {
-        return <span className={styles["text-success"]}>{t("Meetings")}</span>;
-      },
-    },
+    // {
+    //   title: t("Poll-type"),
+    //   dataIndex: "PollType",
+    //   key: "PollType",
+    //   width: "90px",
+    //   render: () => {
+    //     return <span className={styles["text-success"]}>{t("Meetings")}</span>;
+    //   },
+    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",

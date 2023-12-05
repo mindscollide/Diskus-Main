@@ -303,12 +303,12 @@ const Polls = ({
       },
     },
 
-    {
-      title: t("Poll-type"),
-      dataIndex: "PollType",
-      key: "PollType",
-      width: "90px",
-    },
+    // {
+    //   title: t("Poll-type"),
+    //   dataIndex: "PollType",
+    //   key: "PollType",
+    //   width: "90px",
+    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",
