@@ -148,30 +148,43 @@ const AgendaWise = ({
         NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== null &&
         NewMeetingreducer.getallDocumentsForAgendaWiseMinutes !== undefined
       ) {
-        console.log(
-          NewMeetingreducer.agendaWiseMinutesReducer.organizerID,
-          "NewMeetingreducerNewMeetingreducer"
-        );
-
         const minutesData =
           NewMeetingreducer.agendaWiseMinutesReducer.agendaWiseMinutes;
 
         const documentsData =
           NewMeetingreducer.getallDocumentsForAgendaWiseMinutes.data;
-        setOrganizerID(NewMeetingreducer.agendaWiseMinutesReducer.organizerID);
-        const combinedData = minutesData.map((item1) => {
-          const matchingItem = documentsData.find(
+
+        // Grouping data based on agendaID
+        const groupedData = minutesData.reduce((acc, item1) => {
+          const matchingItems = documentsData.filter(
             (item2) => item2.pK_MeetingAgendaMinutesID === item1.minuteID
           );
-          if (matchingItem) {
-            return {
+
+          // Check if there are matching items
+          if (matchingItems.length > 0) {
+            const agendaID = item1.agendaID;
+
+            // Check if there is an existing entry for the agendaID
+            if (!acc[agendaID]) {
+              acc[agendaID] = [];
+            }
+
+            // Push combined data to the grouped array
+            acc[agendaID].push({
               ...item1,
-              minutesAttachmets: matchingItem.files,
-            };
+              minutesAttachmets: matchingItems.map(
+                (matchingItem) => matchingItem.files
+              ),
+            });
           }
-          return item1;
-        });
-        setMessages(combinedData);
+          return acc;
+        }, {});
+
+        // Convert groupedData object to an array of values
+        const combinedDataArray = Object.values(groupedData).flat();
+
+        // Store combined data in the messages state
+        setMessages(combinedDataArray);
       } else {
         setMessages([]);
       }
@@ -183,6 +196,40 @@ const AgendaWise = ({
     NewMeetingreducer.agendaWiseMinutesReducer,
     NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
   ]);
+
+  // Grouping the messages by agendaID while maintaining the unique titles
+  const groupedMessages = messages.reduce((acc, curr) => {
+    if (!acc[curr.agendaID]) {
+      acc[curr.agendaID] = {
+        agendaID: curr.agendaID,
+        agendaTitle: curr.agendaTitle,
+        items: [
+          {
+            minutesDetails: curr.minutesDetails,
+            userID: curr.userID,
+            userName: curr.userName,
+            lastUpdatedDate: curr.lastUpdatedDate,
+            lastUpdatedTime: curr.lastUpdatedTime,
+            userProfilePicture: curr.userProfilePicture,
+            minutesAttachmets: curr.minutesAttachmets,
+          },
+        ],
+      };
+    } else {
+      acc[curr.agendaID].items.push({
+        minutesDetails: curr.minutesDetails,
+        userID: curr.userID,
+        userName: curr.userName,
+        lastUpdatedDate: curr.lastUpdatedDate,
+        lastUpdatedTime: curr.lastUpdatedTime,
+        userProfilePicture: curr.userProfilePicture,
+        minutesAttachmets: curr.minutesAttachmets,
+      });
+    }
+    return acc;
+  }, {});
+
+  console.log(messages, "messagesmessagesmessages");
 
   let userID = localStorage.getItem("userID");
   var Size = Quill.import("attributors/style/size");
@@ -990,405 +1037,452 @@ const AgendaWise = ({
       {/* Mapping of The Create Minutes */}
       <Row className="mt-2">
         <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
-          {messages.length > 0
-            ? messages.map((data, index) => {
-                console.log("className", data);
-                return (
-                  <>
-                    <Row>
-                      <Col lg={12} md={12} sm={12} className="mt-2">
-                        <Accordion
+          {Object.values(groupedMessages).map((data, index) => {
+            console.log(data, "groupedMessagesgroupedMessages");
+            return (
+              <>
+                <div key={data.agendaID}>
+                  {/* Display agendaTitle once */}
+
+                  {/* Map associated minutes within AccordionDetails */}
+                  <Row key={index}>
+                    <Col lg={12} md={12} sm={12} className="mt-2">
+                      <Accordion
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                        className={styles["notes_accordion"]}
+                        key={data.agendaID}
+                        // onChange={handleChangeExpanded(data?.pK_NotesID)}
+                      >
+                        <AccordionSummary
+                          disableRipple={true}
+                          disableTouchRipple={true}
+                          focusRipple={false}
+                          radioGroup={false}
+                          IconButtonProps={{
+                            onClick: () =>
+                              toggleAcordion(JSON.parse(data?.agendaID)),
+                          }}
+                          expandIcon={
+                            accordianExpand === JSON.parse(data?.agendaID) ? (
+                              <img
+                                draggable="false"
+                                src={PlusExpand}
+                                alt=""
+                                className={styles["PlusIcon"]}
+                              />
+                            ) : (
+                              <img
+                                draggable="false"
+                                src={MinusExpand}
+                                className={styles["MinusIcon"]}
+                                alt=""
+                              />
+                            )
+                          }
                           aria-controls="panel1a-content"
-                          id="panel1a-header"
-                          className={styles["notes_accordion"]}
-                          key={data?.agendaID}
-                          // onChange={handleChangeExpanded(data?.pK_NotesID)}
+                          className="TestAccordian position-relative"
                         >
-                          <AccordionSummary
-                            disableRipple={true}
-                            disableTouchRipple={true}
-                            focusRipple={false}
-                            radioGroup={false}
-                            IconButtonProps={{
-                              onClick: () =>
-                                toggleAcordion(JSON.parse(data?.agendaID)),
-                            }}
-                            expandIcon={
-                              accordianExpand === JSON.parse(data?.agendaID) ? (
-                                <img
-                                  draggable="false"
-                                  src={MinusExpand}
-                                  className={styles["MinusIcon"]}
-                                  alt=""
-                                />
-                              ) : (
-                                <img
-                                  draggable="false"
-                                  src={PlusExpand}
-                                  alt=""
-                                  className={styles["PlusIcon"]}
-                                />
-                              )
-                            }
-                            aria-controls="panel1a-content"
-                            className="TestAccordian position-relative"
-                          >
-                            <Row>
-                              <Col lg={6} md={6} sm={12}>
-                                <div
-                                  className={
-                                    styles["header-of-collapse-material"]
-                                  }
-                                >
-                                  <Row className="mt-1">
-                                    <Col lg={12} md={12} sm={12}>
-                                      <span
-                                        className={styles["AgendaTitleClass"]}
-                                      >
-                                        {data.agendaTitle.slice(0, 100)}
-                                      </span>
-                                    </Col>
-                                  </Row>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={3}
-                                md={3}
-                                sm={12}
-                                className="d-flex gap-3 align-items-center"
-                              ></Col>
-                            </Row>
-                          </AccordionSummary>
+                          <Row>
+                            <Col lg={12} md={12} sm={12} className="mt-2">
+                              <span className={styles["AgendaTitleClass"]}>
+                                {data.agendaTitle.slice(0, 100)}
+                              </span>
+                            </Col>
+                          </Row>
+                        </AccordionSummary>
 
-                          <AccordionDetails key={index}>
-                            <Row>
-                              <Col
-                                sm={12}
-                                lg={12}
-                                md={12}
-                                className={styles["NotesAttachments"]}
+                        <AccordionDetails key={index}>
+                          <Row>
+                            <Col
+                              sm={12}
+                              lg={12}
+                              md={12}
+                              className={styles["NotesAttachments"]}
+                            >
+                              <section
+                                className={styles["Sizing_Saved_Minutes"]}
                               >
-                                <section
-                                  className={styles["Sizing_Saved_Minutes"]}
-                                >
-                                  <Row className="mt-3">
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className={styles["Box_Minutes"]}
-                                    >
-                                      <Row>
-                                        <Col lg={8} md={8} sm={8}>
-                                          <Row className="mt-3">
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={styles["Title_File"]}
-                                              >
-                                                {expanded ? (
-                                                  <>
+                                {data.items.map((data, detailIndex) => {
+                                  console.log(
+                                    data,
+                                    "groupedMessagesgroupedMessages"
+                                  );
+                                  return (
+                                    <>
+                                      <div key={detailIndex}>
+                                        <Row className="mt-2">
+                                          <Col
+                                            lg={12}
+                                            md={12}
+                                            sm={12}
+                                            className={styles["Box_Minutes"]}
+                                          >
+                                            <Row>
+                                              <Col lg={8} md={8} sm={8}>
+                                                <Row className="mt-3">
+                                                  <Col lg={12} md={12} sm={12}>
                                                     <span
-                                                      dangerouslySetInnerHTML={{
-                                                        __html:
-                                                          data.minutesDetails.substring(
-                                                            0,
-                                                            120
-                                                          ),
-                                                      }}
-                                                    ></span>
-                                                    ...
-                                                  </>
-                                                ) : (
-                                                  <span
-                                                    dangerouslySetInnerHTML={{
-                                                      __html:
-                                                        data.minutesDetails,
-                                                    }}
-                                                  ></span>
-                                                )}
+                                                      className={
+                                                        styles["Title_File"]
+                                                      }
+                                                    >
+                                                      {expanded ? (
+                                                        <>
+                                                          <span
+                                                            dangerouslySetInnerHTML={{
+                                                              __html:
+                                                                data.minutesDetails.substring(
+                                                                  0,
+                                                                  120
+                                                                ),
+                                                            }}
+                                                          ></span>
+                                                          ...
+                                                        </>
+                                                      ) : (
+                                                        <span
+                                                          dangerouslySetInnerHTML={{
+                                                            __html:
+                                                              data.minutesDetails,
+                                                          }}
+                                                        ></span>
+                                                      )}
 
-                                                <span
-                                                  className={
-                                                    styles["Show_more_Styles"]
-                                                  }
-                                                  onClick={toggleExpansion}
-                                                >
-                                                  {expanded &&
-                                                  data.minutesDetails.substring(
-                                                    0,
-                                                    120
-                                                  )
-                                                    ? t("See-more")
-                                                    : ""}
-                                                </span>
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={
-                                                  styles[
-                                                    "Date_Minutes_And_time"
-                                                  ]
-                                                }
-                                              >
-                                                {newTimeFormaterAsPerUTCFullDate(
-                                                  data.lastUpdatedDate +
-                                                    data.lastUpdatedTime
-                                                ).toString()}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          <Row className="mt-2">
-                                            <Col lg={12} md={12} sm={12}>
-                                              <span
-                                                className={styles["Show_more"]}
-                                                onClick={() =>
-                                                  handleshowMore(index)
-                                                }
-                                              >
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "Show_more_Styles"
+                                                          ]
+                                                        }
+                                                        onClick={
+                                                          toggleExpansion
+                                                        }
+                                                      >
+                                                        {expanded &&
+                                                        data.minutesDetails.substring(
+                                                          0,
+                                                          120
+                                                        )
+                                                          ? t("See-more")
+                                                          : ""}
+                                                      </span>
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Date_Minutes_And_time"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {newTimeFormaterAsPerUTCFullDate(
+                                                        data.lastUpdatedDate +
+                                                          data.lastUpdatedTime
+                                                      ).toString()}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row className="mt-2">
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles["Show_more"]
+                                                      }
+                                                      onClick={() =>
+                                                        handleshowMore(index)
+                                                      }
+                                                    >
+                                                      {showMoreIndex ===
+                                                        index && showMore
+                                                        ? t("Hide-details")
+                                                        : t("Show-more")}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
                                                 {showMoreIndex === index &&
-                                                showMore
-                                                  ? t("Hide-details")
-                                                  : t("Show-more")}
-                                              </span>
-                                            </Col>
-                                          </Row>
-                                          {showMoreIndex === index &&
-                                          showMore === true ? (
-                                            <>
-                                              <Row>
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className={
-                                                    styles["DocsScroller"]
-                                                  }
-                                                >
-                                                  <Row className="mt-3">
-                                                    {data.minutesAttachmets.map(
-                                                      (filesname, index) => {
-                                                        console.log(
-                                                          filesname,
-                                                          "filesnamefilesname"
-                                                        );
-                                                        return (
-                                                          <>
-                                                            <Col
-                                                              lg={3}
-                                                              md={3}
-                                                              sm={12}
-                                                              className="position-relative gap-2"
-                                                            >
-                                                              <section
-                                                                className={
-                                                                  styles[
-                                                                    "Outer_Box"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                <Row>
+                                                showMore === true ? (
+                                                  <>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                        className={
+                                                          styles["DocsScroller"]
+                                                        }
+                                                      >
+                                                        <Row className="mt-3">
+                                                          {data.minutesAttachmets.map(
+                                                            (
+                                                              filesname,
+                                                              index
+                                                            ) => {
+                                                              console.log(
+                                                                filesname,
+                                                                "filesnamefilesname"
+                                                              );
+                                                              return (
+                                                                <>
                                                                   <Col
-                                                                    lg={12}
-                                                                    md={12}
+                                                                    lg={3}
+                                                                    md={3}
                                                                     sm={12}
+                                                                    className="position-relative gap-2"
                                                                   >
-                                                                    <img
-                                                                      src={
-                                                                        file_image
-                                                                      }
-                                                                      width={
-                                                                        "100%"
-                                                                      }
-                                                                      alt=""
-                                                                      draggable="false"
-                                                                    />
-                                                                  </Col>
-                                                                </Row>
-
-                                                                <section
-                                                                  className={
-                                                                    styles[
-                                                                      "backGround_name_Icon"
-                                                                    ]
-                                                                  }
-                                                                >
-                                                                  <Row className="mb-2">
-                                                                    <Col
-                                                                      lg={12}
-                                                                      md={12}
-                                                                      sm={12}
+                                                                    <section
                                                                       className={
                                                                         styles[
-                                                                          "IconTextClass"
+                                                                          "Outer_Box"
                                                                         ]
                                                                       }
                                                                     >
-                                                                      <img
-                                                                        src={getIconSource(
-                                                                          getFileExtension(
-                                                                            filesname.displayFileName
-                                                                          )
-                                                                        )}
-                                                                        height="10px"
-                                                                        alt=""
-                                                                        width="10px"
+                                                                      <Row>
+                                                                        <Col
+                                                                          lg={
+                                                                            12
+                                                                          }
+                                                                          md={
+                                                                            12
+                                                                          }
+                                                                          sm={
+                                                                            12
+                                                                          }
+                                                                        >
+                                                                          <img
+                                                                            src={
+                                                                              file_image
+                                                                            }
+                                                                            width={
+                                                                              "100%"
+                                                                            }
+                                                                            alt=""
+                                                                            draggable="false"
+                                                                          />
+                                                                        </Col>
+                                                                      </Row>
+
+                                                                      <section
                                                                         className={
                                                                           styles[
-                                                                            "IconPDF"
-                                                                          ]
-                                                                        }
-                                                                      />
-                                                                      <span
-                                                                        className={
-                                                                          styles[
-                                                                            "FileName"
+                                                                            "backGround_name_Icon"
                                                                           ]
                                                                         }
                                                                       >
-                                                                        {
-                                                                          filesname.displayFileName
-                                                                        }
-                                                                      </span>
-                                                                    </Col>
-                                                                  </Row>
-                                                                </section>
-                                                              </section>
-                                                            </Col>
-                                                          </>
-                                                        );
+                                                                        <Row className="mb-2">
+                                                                          <Col
+                                                                            lg={
+                                                                              12
+                                                                            }
+                                                                            md={
+                                                                              12
+                                                                            }
+                                                                            sm={
+                                                                              12
+                                                                            }
+                                                                            className={
+                                                                              styles[
+                                                                                "IconTextClass"
+                                                                              ]
+                                                                            }
+                                                                          >
+                                                                            {/* <img
+                                                                              src={getIconSource(
+                                                                                getFileExtension(
+                                                                                  filesname.displayFileName
+                                                                                )
+                                                                              )}
+                                                                              height="10px"
+                                                                              alt=""
+                                                                              width="10px"
+                                                                              className={
+                                                                                styles[
+                                                                                  "IconPDF"
+                                                                                ]
+                                                                              }
+                                                                            /> */}
+                                                                            <span
+                                                                              className={
+                                                                                styles[
+                                                                                  "FileName"
+                                                                                ]
+                                                                              }
+                                                                            >
+                                                                              {
+                                                                                filesname.displayFileName
+                                                                              }
+                                                                            </span>
+                                                                          </Col>
+                                                                        </Row>
+                                                                      </section>
+                                                                    </section>
+                                                                  </Col>
+                                                                </>
+                                                              );
+                                                            }
+                                                          )}
+                                                          <Col
+                                                            lg={12}
+                                                            md={12}
+                                                            sm={12}
+                                                          ></Col>
+                                                        </Row>
+                                                      </Col>
+                                                    </Row>
+                                                  </>
+                                                ) : null}
+                                              </Col>
+                                              <Col
+                                                lg={3}
+                                                md={3}
+                                                sm={3}
+                                                className="mt-4"
+                                              >
+                                                <Row className="d-flex justify-content-end">
+                                                  <Col lg={2} md={2} sm={2}>
+                                                    <img
+                                                      draggable={false}
+                                                      src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
+                                                      height="39px"
+                                                      width="39px"
+                                                      alt=""
+                                                      className={
+                                                        styles[
+                                                          "Profile_minutes"
+                                                        ]
                                                       }
-                                                    )}
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                    ></Col>
-                                                  </Row>
-                                                </Col>
-                                              </Row>
-                                            </>
-                                          ) : null}
-                                        </Col>
-                                        <Col
-                                          lg={3}
-                                          md={3}
-                                          sm={3}
-                                          className="mt-4"
-                                        >
-                                          <Row className="d-flex justify-content-end">
-                                            <Col lg={2} md={2} sm={2}>
-                                              <img
-                                                draggable={false}
-                                                src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                                height="39px"
-                                                width="39px"
-                                                alt=""
-                                                className={
-                                                  styles["Profile_minutes"]
-                                                }
-                                              />
-                                            </Col>
-                                            <Col
-                                              lg={6}
-                                              md={6}
-                                              sm={6}
-                                              className={styles["Line_heigh"]}
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
+                                                    />
+                                                  </Col>
+                                                  <Col
+                                                    lg={6}
+                                                    md={6}
+                                                    sm={6}
                                                     className={
-                                                      styles["Uploaded_heading"]
+                                                      styles["Line_heigh"]
                                                     }
                                                   >
-                                                    {t("Uploaded-by")}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={styles["Name"]}
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Uploaded_heading"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {t("Uploaded-by")}
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles["Name"]
+                                                          }
+                                                        >
+                                                          {data.userName}
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                  </Col>
+                                                  <Col
+                                                    lg={4}
+                                                    md={4}
+                                                    sm={4}
+                                                    className="d-flex justify-content-start align-items-center"
                                                   >
-                                                    {data.userName}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                            <Col
-                                              lg={4}
-                                              md={4}
-                                              sm={4}
-                                              className="d-flex justify-content-start align-items-center"
-                                            >
-                                              {Number(editorRole.status) ===
-                                                1 ||
-                                              Number(editorRole.status) ===
-                                                11 ||
-                                              Number(editorRole.status) ===
-                                                12 ? null : (editorRole.role ===
-                                                  "Organizer" &&
-                                                  Number(editorRole.status) ===
-                                                    9) ||
-                                                (Number(editorRole.status) ===
-                                                  10 &&
-                                                  editorRole.role ===
-                                                    "Organizer") ? (
-                                                <img
-                                                  draggable={false}
-                                                  src={EditIcon}
-                                                  alt=""
-                                                  height="21.55px"
-                                                  width="21.55px"
-                                                  className="cursor-pointer"
-                                                  onClick={() =>
-                                                    handleEditFunc(data)
-                                                  }
-                                                />
-                                              ) : null}
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </Row>
-                                      {Number(editorRole.status) === 1 ||
-                                      Number(editorRole.status) === 11 ||
-                                      Number(editorRole.status) ===
-                                        12 ? null : (editorRole.role ===
-                                          "Organizer" &&
-                                          Number(editorRole.status) === 9) ||
-                                        (Number(editorRole.status) === 10 &&
-                                          editorRole.role === "Organizer") ||
-                                        userID === organizerID ? (
-                                        <img
-                                          draggable={false}
-                                          src={RedCroseeIcon}
-                                          height="20.76px"
-                                          alt=""
-                                          width="20.76px"
-                                          className={styles["RedCrossClass"]}
-                                          onClick={() =>
-                                            handleRemovingTheMinutesAgendaWise(
-                                              data
-                                            )
-                                          }
-                                        />
-                                      ) : null}
-                                    </Col>
-                                  </Row>
-                                </section>
-                              </Col>
-                            </Row>
-                          </AccordionDetails>
-                        </Accordion>
-                      </Col>
-                    </Row>
-                  </>
-                );
-              })
-            : null}
+                                                    {Number(
+                                                      editorRole.status
+                                                    ) === 1 ||
+                                                    Number(
+                                                      editorRole.status
+                                                    ) === 11 ||
+                                                    Number(
+                                                      editorRole.status
+                                                    ) ===
+                                                      12 ? null : (editorRole.role ===
+                                                        "Organizer" &&
+                                                        Number(
+                                                          editorRole.status
+                                                        ) === 9) ||
+                                                      (Number(
+                                                        editorRole.status
+                                                      ) === 10 &&
+                                                        editorRole.role ===
+                                                          "Organizer") ? (
+                                                      <img
+                                                        draggable={false}
+                                                        src={EditIcon}
+                                                        alt=""
+                                                        height="21.55px"
+                                                        width="21.55px"
+                                                        className="cursor-pointer"
+                                                        onClick={() =>
+                                                          handleEditFunc(data)
+                                                        }
+                                                      />
+                                                    ) : null}
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                            {Number(editorRole.status) === 1 ||
+                                            Number(editorRole.status) === 11 ||
+                                            Number(editorRole.status) ===
+                                              12 ? null : (editorRole.role ===
+                                                "Organizer" &&
+                                                Number(editorRole.status) ===
+                                                  9) ||
+                                              (Number(editorRole.status) ===
+                                                10 &&
+                                                editorRole.role ===
+                                                  "Organizer") ||
+                                              userID === organizerID ? (
+                                              <img
+                                                draggable={false}
+                                                src={RedCroseeIcon}
+                                                height="20.76px"
+                                                alt=""
+                                                width="20.76px"
+                                                className={
+                                                  styles["RedCrossClass"]
+                                                }
+                                                onClick={() =>
+                                                  handleRemovingTheMinutesAgendaWise(
+                                                    data
+                                                  )
+                                                }
+                                              />
+                                            ) : null}
+                                          </Col>
+                                        </Row>
+                                      </div>
+                                    </>
+                                  );
+                                })}
+                              </section>
+                            </Col>
+                          </Row>
+                        </AccordionDetails>
+                      </Accordion>
+                    </Col>
+                  </Row>
+                </div>
+              </>
+            );
+          })}
         </Col>
       </Row>
       {/* <Row className="mt-3">

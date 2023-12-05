@@ -1,18 +1,38 @@
 {
-  "MeetingID": 2362,
-  "SendResponsebyDate": "20231129",
-  "ProposedDates": [
+  "minuteID": 118,
+  "agendaID": 2146,
+  "agendaTitle": "asas",
+  "minutesDetails": "<p>Testing TOken </p>",
+  "userID": 983,
+  "userName": "ErenOne",
+  "lastUpdatedDate": "20231205",
+  "lastUpdatedTime": "064721",
+  "userProfilePicture": {
+    "userID": 983,
+    "orignalProfilePictureName": "20230913130429182.jpg",
+    "displayProfilePictureName": "20230913130429182.jpg"
+  },
+  "minutesAttachmets": [
     {
-      "ProposedDate": "20231127",
-      "StartTime": "124827",
-      "EndTime": "124927",
-      "proposedDateID": 0
-    },
-    {
-      "ProposedDate": "20231127",
-      "StartTime": "134841",
-      "EndTime": "144846",
-      "proposedDateID": 0
+      "pK_FileID": 7344,
+      "displayFileName": "Profile.pdf",
+      "diskusFileName": 20231205064722640,
+      "diskusFileNameString": "",
+      "shareAbleLink": "D:\\Diskus\\Services\\DiskusFileStorage\\DataRoom\\983_417\\20231205064722640",
+      "fileSize": 0,
+      "fileSizeOnDisk": 0,
+      "fK_UserID": 983,
+      "fK_OrganizationID": 417,
+      "uriPath": null,
+      "fK_GAID": 0,
+      "createdDate": "",
+      "modifiedDate": "",
+      "modifiedByUser": "",
+      "openedDateTime": "",
+      "openedByUser": "",
+      "location": "",
+      "type": "",
+      "description": ""
     }
   ]
 }
