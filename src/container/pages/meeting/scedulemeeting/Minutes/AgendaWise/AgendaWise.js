@@ -44,8 +44,8 @@ const AgendaWise = ({
   editorRole,
   agendaOptionvalue,
   setAgendaOptionValue,
-  addNoteFields,
-  setAddNoteFields,
+  addAgendaWiseFields,
+  setAgendaWiseFields,
   fileAttachments,
   setFileAttachments,
 }) => {
@@ -53,13 +53,6 @@ const AgendaWise = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let folderID = localStorage.getItem("folderDataRoomMeeting");
-  // const [addNoteFields, setAddNoteFields] = useState({
-  //   Description: {
-  //     value: "",
-  //     errorMessage: "",
-  //     errorStatus: false,
-  //   },
-  // });
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -348,8 +341,8 @@ const AgendaWise = ({
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText) {
-      setAddNoteFields({
-        ...addNoteFields,
+      setAgendaWiseFields({
+        ...addAgendaWiseFields,
         Description: {
           value: content,
           errorMessage: "",
@@ -357,14 +350,14 @@ const AgendaWise = ({
         },
       });
     } else {
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
+      // setAgendaWiseFields({
+      //   ...addAgendaWiseFields,
+      //   Description: {
+      //     value: "",
+      //     errorMessage: "",
+      //     errorStatus: false,
+      //   },
+      // });
     }
   };
 
@@ -391,10 +384,10 @@ const AgendaWise = ({
       return;
     }
 
-    if (addNoteFields.Description.value !== "") {
+    if (addAgendaWiseFields.Description.value !== "") {
       let Data = {
         AgendaID: agendaSelect.agendaSelectOptions.id,
-        MinuteText: addNoteFields.Description.value,
+        MinuteText: addAgendaWiseFields.Description.value,
       };
       dispatch(AddAgendaWiseMinutesApiFunc(navigate, Data, t));
       setAgendaOptionValue({
@@ -402,18 +395,18 @@ const AgendaWise = ({
         label: "",
       });
     } else {
-      setAddNoteFields({
-        ...addNoteFields,
+      setAgendaWiseFields({
+        ...addAgendaWiseFields,
         Description: {
-          value: addNoteFields.Description.value,
+          value: addAgendaWiseFields.Description.value,
           errorMessage:
-            addNoteFields.Description.value === ""
+            addAgendaWiseFields.Description.value === ""
               ? t("Minutes-text-is-required")
-              : addNoteFields.Description.errorMessage,
+              : addAgendaWiseFields.Description.errorMessage,
           errorStatus:
-            addNoteFields.Description.value === ""
+            addAgendaWiseFields.Description.value === ""
               ? true
-              : addNoteFields.Description.errorStatus,
+              : addAgendaWiseFields.Description.errorStatus,
         },
       });
       setOpen({
@@ -453,15 +446,18 @@ const AgendaWise = ({
 
     setFileAttachments([]);
     setPreviousFileIDs([]);
-    // setAgendaOptions([]);
     setFileForSend([]);
-    setAddNoteFields({
-      ...addNoteFields,
+    setAgendaWiseFields({
+      ...addAgendaWiseFields,
       Description: {
         value: "",
         errorMessage: "",
         errorStatus: true,
       },
+    });
+    setAgendaOptionValue({
+      label: "",
+      value: 0,
     });
   };
   // For getting the MinuteID
@@ -498,9 +494,9 @@ const AgendaWise = ({
   };
 
   const handleResetBtnFunc = () => {
-    console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
-    setAddNoteFields({
-      ...addNoteFields,
+    console.log(addAgendaWiseFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
+    setAgendaWiseFields({
+      ...addAgendaWiseFields,
       Description: {
         value: "",
         errorMessage: "",
@@ -509,34 +505,53 @@ const AgendaWise = ({
     });
     setFileAttachments([]);
     setPreviousFileIDs([]);
+    setAgendaOptionValue({
+      label: "",
+      value: 0,
+    });
   };
 
   //handle Edit functionality
 
-  const handleEditFunc = (data) => {
-    setupdateData(data);
-    if (data.minutesDetails !== "") {
-      console.log(data, "addNoteFieldsaddNoteFieldsaddNoteFields");
-      setAddNoteFields({
+  const handleEditFunc = async (data) => {
+    setupdateData(data.minuteID);
+    let Data = {
+      FK_MeetingAgendaMinutesID: data.minuteID,
+    };
+    await dispatch(
+      AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
+    );
+    console.log(data, "setAddNoteFieldssetAddNoteFields");
+    if (data.minutesDetails !== undefined && data.minutesDetails !== null) {
+      let findOptionValue = agendaOptions.filter(
+        (agendaOption, index) => agendaOption.label === data.agendaTitle
+      );
+      console.log(data.minutesDetails, "setAddNoteFieldssetAddNoteFields");
+      setAgendaWiseFields({
         Description: {
           value: data.minutesDetails,
           errorMessage: "",
           errorStatus: false,
         },
       });
+      setAgendaSelect({
+        ...agendaSelect,
+        agendaSelectOptions: {
+          id: findOptionValue.value,
+          title: data.agendaTitle,
+        },
+      });
+      setAgendaOptionValue({
+        label: data.agendaTitle,
+        value: findOptionValue.value,
+      });
       setisEdit(true);
     } else {
       console.log("data.minutesDetails is undefined or null");
     }
-    setisEdit(true);
-    console.log(data, "handleEditFunchandleEditFunc");
-    let Data = {
-      FK_MeetingAgendaMinutesID: data.minuteID,
-    };
-    dispatch(
-      AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t)
-    );
   };
+
+  console.log(addAgendaWiseFields, "addNoteFieldsaddNoteFields");
 
   useEffect(() => {
     try {
@@ -571,7 +586,7 @@ const AgendaWise = ({
   const handleUpdateFuncagendaWise = async () => {
     let UpdateDataAgendaWise = {
       MinuteID: updateData.minuteID,
-      MinuteText: addNoteFields.Description.value,
+      MinuteText: addAgendaWiseFields.Description.value,
     };
     dispatch(UpdateAgendaWiseMinutesApiFunc(navigate, UpdateDataAgendaWise, t));
 
@@ -606,17 +621,20 @@ const AgendaWise = ({
     dispatch(
       SaveAgendaWiseDocumentsApiFunc(navigate, docsData, t, currentMeeting)
     );
-    setAddNoteFields({
-      ...addNoteFields,
+
+    setAgendaOptionValue({
+      label: "",
+      value: 0,
+    });
+    setAgendaWiseFields({
+      ...addAgendaWiseFields,
       Description: {
         value: "",
         errorMessage: "",
         errorStatus: true,
       },
     });
-
     setFileAttachments([]);
-    // setAgendaOptions([]);
     setisEdit(false);
   };
 
@@ -638,8 +656,8 @@ const AgendaWise = ({
         agendaSelect.agendaSelectOptions.id
       )
     );
-    setAddNoteFields({
-      ...addNoteFields,
+    setAgendaWiseFields({
+      ...addAgendaWiseFields,
       Description: {
         value: "",
         errorMessage: "",
@@ -698,7 +716,7 @@ const AgendaWise = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [NewMeetingreducer.ResponseMessage]);
-
+  console.log(addAgendaWiseFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
   return (
     <section>
       {Number(editorRole.status) === 1 ||
@@ -736,7 +754,7 @@ const AgendaWise = ({
                   <ReactQuill
                     ref={editorRef}
                     theme="snow"
-                    value={addNoteFields.Description.value || ""}
+                    value={addAgendaWiseFields.Description.value || ""}
                     placeholder={t("Minutes-details")}
                     onChange={onTextChange}
                     modules={modules}
@@ -751,13 +769,13 @@ const AgendaWise = ({
                 <Col>
                   <p
                     className={
-                      addNoteFields.Description.errorStatus &&
-                      addNoteFields.Description.value === ""
+                      addAgendaWiseFields.Description.errorStatus &&
+                      addAgendaWiseFields.Description.value === ""
                         ? ` ${styles["errorNotesMessage"]} `
                         : `${styles["errorNotesMessage_hidden"]}`
                     }
                   >
-                    {addNoteFields.Description.errorMessage}
+                    {addAgendaWiseFields.Description.errorMessage}
                   </p>
                 </Col>
               </Row>
