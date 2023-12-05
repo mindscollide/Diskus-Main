@@ -111,12 +111,7 @@ const NotifyAgendaModal = ({
       // setNotifyMessaegError(true);
       // }
     } else {
-      if (notifyMessageField === "") {
-        setNotifyMessaegError(true);
-      } else {
-        setNotifyMessaegError(false);
-        dispatch(showAgendaContributorsModals(false));
-      }
+      dispatch(showAgendaContributorsModals(false));
     }
   };
 
