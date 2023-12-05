@@ -1065,16 +1065,16 @@ const AgendaWise = ({
                             accordianExpand === JSON.parse(data?.agendaID) ? (
                               <img
                                 draggable="false"
-                                src={PlusExpand}
+                                src={MinusExpand}
+                                className={styles["MinusIcon"]}
                                 alt=""
-                                className={styles["PlusIcon"]}
                               />
                             ) : (
                               <img
                                 draggable="false"
-                                src={MinusExpand}
-                                className={styles["MinusIcon"]}
+                                src={PlusExpand}
                                 alt=""
+                                className={styles["PlusIcon"]}
                               />
                             )
                           }
