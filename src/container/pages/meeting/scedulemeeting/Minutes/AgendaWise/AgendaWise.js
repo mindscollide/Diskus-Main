@@ -77,7 +77,9 @@ const AgendaWise = ({
   const [messages, setMessages] = useState([]);
   // const [fileAttachments, setFileAttachments] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const [updateData, setupdateData] = useState(null);
+  const [updateData, setupdateData] = useState({
+    MinutesID: 0,
+  });
   const [agendaOptions, setAgendaOptions] = useState([]);
   const [showMoreIndex, setShowMoreIndex] = useState(null);
   const [showMore, setShowMore] = useState(false);
@@ -566,12 +568,15 @@ const AgendaWise = ({
       label: "",
       value: 0,
     });
+    setisEdit(false);
   };
 
   //handle Edit functionality
   const handleEditFunc = async (data) => {
     console.log(data, "handleEditFunchandleEditFunc");
-    setupdateData(data.minuteID);
+    setupdateData({
+      MinutesID: data.minuteID,
+    });
     let Data = {
       FK_MeetingAgendaMinutesID: data.minuteID,
     };
@@ -642,7 +647,7 @@ const AgendaWise = ({
   //Handle Update Button Api
   const handleUpdateFuncagendaWise = async () => {
     let UpdateDataAgendaWise = {
-      MinuteID: updateData.minuteID,
+      MinuteID: Number(updateData.MinutesID),
       MinuteText: addAgendaWiseFields.Description.value,
     };
     dispatch(UpdateAgendaWiseMinutesApiFunc(navigate, UpdateDataAgendaWise, t));
@@ -668,7 +673,7 @@ const AgendaWise = ({
     console.log(newfile, "messagesmessages");
 
     let docsData = {
-      FK_MeetingAgendaMinutesID: updateData.minuteID,
+      FK_MeetingAgendaMinutesID: Number(updateData.MinutesID),
       FK_MDID: currentMeeting,
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
