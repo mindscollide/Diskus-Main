@@ -298,3 +298,32 @@ body[dir="rtl"] .errorNotesMessage_description {
 body[dir="rtl"] .errorNotesMessage_hidden_description {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
+.header-of-collapse-material {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  width: 100% !important;
+  color: #2197d7;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
+}
+
+body[dir="rtl"] .header-of-collapse-material {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.PlusIcon {
+  margin-right: 30px !important;
+  color: #6172d6 !important;
+}
+
+.MinusIcon {
+  margin-right: 40px !important;
+  color: #6172d6 !important;
+  /* margin-bottom: 16px !important; */
+}
+body[dir="rtl"] .MinusIcon {
+  margin-right: 60px !important;
+}

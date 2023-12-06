@@ -25,6 +25,7 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   convertGMTDateintoUTC,
+  createConvert,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
 const ProposedMeetingDate = ({
@@ -151,7 +152,7 @@ const ProposedMeetingDate = ({
 
   const changeDateStartHandler = (date, index) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = convertGMTDateintoUTC(date);
+    let DateDate = new DateObject(date).format("YYYYMMDD");
     const updatedRows = [...rows];
     if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
       return;
@@ -167,13 +168,16 @@ const ProposedMeetingDate = ({
 
   const handleStartTimeChange = (index, date) => {
     let newDate = new Date(date);
+    console.log(newDate, "handleStartDateChangehandleStartDateChange");
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      // Round up to the next hour
+      const nextHour = Math.ceil(
+        newDate.getHours() + newDate.getMinutes() / 60
+      );
+      newDate.setHours(nextHour, 0, 0, 0);
 
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${"00"}`;
+      // Format the time as HH:mm:ss
+      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
 
       const updatedRows = [...rows];
 
@@ -241,12 +245,13 @@ const ProposedMeetingDate = ({
   const handleEndTimeChange = (index, date) => {
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getUTCHours()).slice(-2);
-      const minutes = ("0" + newDate.getUTCMinutes()).slice(-2);
+      const nextHour = Math.ceil(
+        newDate.getHours() + newDate.getMinutes() / 60
+      );
+      newDate.setHours(nextHour, 0, 0, 0);
 
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${"00"}`;
+      // Format the time as HH:mm:ss
+      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
 
       const updatedRows = [...rows];
 
@@ -337,9 +342,15 @@ const ProposedMeetingDate = ({
 
     rows.forEach((data) => {
       newArr.push({
-        ProposedDate: data.selectedOption,
-        StartTime: data.startDate,
-        EndTime: data.endDate,
+        ProposedDate: createConvert(data.selectedOption + data.startDate).slice(
+          0,
+          8
+        ),
+        StartTime: createConvert(data.selectedOption + data.startDate).slice(
+          0,
+          8
+        ),
+        EndTime: createConvert(data.selectedOption + data.endDate).slice(0, 8),
         proposedDateID: data.proposedDateID,
       });
     });
@@ -350,6 +361,7 @@ const ProposedMeetingDate = ({
       SendResponsebyDate: sendResponseBy.date,
       ProposedDates: newArr,
     };
+    console.log(Data, "setProposedMeetingDateApiFunc");
     dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
   };
 
