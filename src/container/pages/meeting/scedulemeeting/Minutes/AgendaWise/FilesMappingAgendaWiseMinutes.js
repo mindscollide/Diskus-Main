@@ -14,10 +14,11 @@ const FilesMappingAgendaWiseMinutes = ({
   index,
   data,
   showMore,
+  detailIndex,
 }) => {
   return (
     <section>
-      {showMoreIndex === index && showMore === true ? (
+      {showMoreIndex === detailIndex && showMore === true ? (
         <>
           <Row>
             <Col lg={12} md={12} sm={12} className={styles["DocsScroller"]}>
