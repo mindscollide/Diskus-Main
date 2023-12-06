@@ -58,6 +58,7 @@ const AgendaWise = ({
     message: "",
   });
   const [isEdit, setisEdit] = useState(false);
+  const [accordianExpand, setAccordianExpand] = useState(false);
   const [organizerID, setOrganizerID] = useState(0);
   const [fileSize, setFileSize] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -771,8 +772,6 @@ const AgendaWise = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [NewMeetingreducer.ResponseMessage]);
-
-  const [accordianExpand, setAccordianExpand] = useState(false);
 
   const toggleAcordion = (agendaID) => {
     console.log(agendaID, "notesIDnotesIDnotesID");
