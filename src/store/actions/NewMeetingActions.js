@@ -5214,11 +5214,9 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
   Data,
   t,
   currentMeeting,
-  AgendaWiseData,
   id
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showDeleteAgendaWiseDocumentInit());
     let form = new FormData();
@@ -5242,7 +5240,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               Data,
               t,
               currentMeeting,
-              AgendaWiseData,
+
               id
             )
           );
@@ -5264,7 +5262,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                 )
               );
               let AgendaWiseDelData = {
-                MinuteID: AgendaWiseData.minuteID,
+                MinuteID: Number(id),
               };
               dispatch(
                 DeleteAgendaWiseMinutesApiFunc(
@@ -5286,7 +5284,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                 showDeleteAgendaWiseDocumentFailed(t("No-record-deleted"))
               );
               let AgendaWiseDelData = {
-                MinuteID: AgendaWiseData.minuteID,
+                MinuteID: Number(id),
               };
               dispatch(
                 DeleteAgendaWiseMinutesApiFunc(

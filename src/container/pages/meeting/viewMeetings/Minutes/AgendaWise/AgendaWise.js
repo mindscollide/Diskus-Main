@@ -672,10 +672,13 @@ const AgendaWise = ({
 
   const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
     console.log(AgendaWiseData, "AgendaWiseDataAgendaWiseData");
-
+    let minuteID = 0;
+    AgendaWiseData.items.map((id, index) => {
+      minuteID = id.minuteID;
+    });
     let Data = {
       MDID: advanceMeetingModalID,
-      MeetingAgendaMinutesID: AgendaWiseData.minuteID,
+      MeetingAgendaMinutesID: Number(minuteID),
     };
 
     dispatch(
@@ -684,8 +687,7 @@ const AgendaWise = ({
         Data,
         t,
         advanceMeetingModalID,
-        AgendaWiseData,
-        agendaSelect.agendaSelectOptions.id
+        minuteID
       )
     );
     setAddNoteFields({
