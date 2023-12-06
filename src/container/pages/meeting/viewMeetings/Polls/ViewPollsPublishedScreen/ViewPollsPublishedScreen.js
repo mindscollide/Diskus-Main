@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ViewPollsPublishedScreen.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -9,45 +9,68 @@ import Profile from "../../../../../../assets/images/newprofile.png";
 import { Button, Checkbox } from "../../../../../../components/elements";
 import { Progress } from "antd";
 import ViewVotesScreen from "../ViewVotes/ViewVotesScreen";
+import moment from "moment";
+import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
+import { viewVotesApi } from "../../../../../../store/actions/Polls_actions";
 
-const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
+const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { PollsReducer } = useSelector((state) => state);
   const [viewVotes, setviewVotes] = useState(false);
-  const [messeges, setMesseges] = useState([
-    {
-      text: "In-person meetings",
-    },
-    {
-      text: "Video conferences",
-    },
-    {
-      text: "Email communication",
-    },
-  ]);
-  const [participant, setparticipant] = useState([
-    {
-      name: "Saif Ul Islam",
-    },
-    {
-      name: "Saif Ul Islam",
-    },
-    {
-      name: "Saif Ul Islam",
-    },
-    {
-      name: "Saif Ul Islam",
-    },
-  ]);
+
+  const [pollParticipants, setPollParticipants] = useState([]);
+  const [pollsOption, setPollsOption] = useState([]);
+
+  const [viewPublishedPollDetails, setViewPublishedPollDetails] = useState({
+    PollID: 0,
+    PollTitle: "",
+    Date: "",
+    AllowMultipleAnswers: false,
+    answer: [],
+  });
+
+  useEffect(() => {
+    try {
+      if (
+        PollsReducer.Allpolls !== null &&
+        PollsReducer.Allpolls !== undefined
+      ) {
+        let pollData = PollsReducer.Allpolls.poll;
+        let pollDetails = pollData.pollDetails;
+        let pollOptions = pollData.pollOptions;
+        let pollParticipants = pollData.pollParticipants;
+
+        if (pollOptions.length > 0) {
+          setPollsOption(pollOptions);
+        }
+        if (pollParticipants.length > 0) {
+          setPollParticipants(pollParticipants);
+        }
+        if (Object.keys(pollDetails).length > 0) {
+          setViewPublishedPollDetails({
+            ...viewPublishedPollDetails,
+            PollTitle: pollDetails.pollTitle,
+            Date: pollDetails.dueDate,
+            AllowMultipleAnswers: pollDetails.allowMultipleAnswers,
+            PollID: pollDetails.pollID,
+          });
+        }
+      }
+    } catch {}
+  }, [PollsReducer.Allpolls]);
 
   const handleCancelButton = () => {
-    setSavePollsPublished(false);
+    setViewPublishedPoll(false);
   };
 
   const handleViewVotesScreen = () => {
-    setviewVotes(true);
+    let data = {
+      PollID: viewPublishedPollDetails.PollID,
+    };
+    dispatch(viewVotesApi(navigate, data, t, 1, setviewVotes));
+    // setviewVotes(true);
   };
   return (
     <>
@@ -61,8 +84,7 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Heading_vewPolls_Published"]}>
-                      How do you prefer to collaborate with your colleagues in
-                      the office?
+                      {viewPublishedPollDetails.PollTitle}
                     </span>
                   </Col>
                 </Row>
@@ -74,11 +96,17 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                     className={styles["Scroller_View_Published_Polls"]}
                   >
                     <Row>
-                      {messeges.length > 0
-                        ? messeges.map((data, index) => {
+                      {pollsOption.length > 0
+                        ? pollsOption.map((data, index) => {
                             return (
                               <>
-                                <Col lg={12} md={12} sm={12} className="mt-2">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="mt-2"
+                                  key={index}
+                                >
                                   <section>
                                     <Row>
                                       <Col lg={12} md={12} sm={12}>
@@ -87,7 +115,8 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                                             styles["Messege_span_Class"]
                                           }
                                         >
-                                          {data.text} <span>(12)</span>
+                                          {data.answer}{" "}
+                                          <span>{data.totalVotes}</span>
                                         </span>
                                       </Col>
                                     </Row>
@@ -100,10 +129,10 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                                             sm={12}
                                             className="d-flex gap-3"
                                           >
-                                            <Checkbox />
+                                            <Checkbox disabled={true} />
                                             <Progress
                                               className="Progress_bar_Polls"
-                                              percent={20}
+                                              percent={data.votePercentage}
                                               status="active"
                                             />
                                           </Col>
@@ -131,7 +160,15 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Date_Fetched"]}>
-                          18 March 2023
+                          {viewPublishedPollDetails.Date !== "" && (
+                            <>
+                              {moment(
+                                EditmeetingDateFormat(
+                                  viewPublishedPollDetails?.Date + "000000"
+                                )
+                              ).format("DD MMM YYYY")}
+                            </>
+                          )}
                         </span>
                       </Col>
                     </Row>
@@ -155,8 +192,8 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                     className={styles["Scroller_View_Published_Polls"]}
                   >
                     <Row>
-                      {participant.length > 0
-                        ? participant.map((data, index) => {
+                      {pollParticipants.length > 0
+                        ? pollParticipants.map((data, index) => {
                             return (
                               <>
                                 <Col lg={6} md={6} sm={6} className="mt-2">
@@ -170,8 +207,9 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                                       >
                                         <img
                                           draggable={false}
-                                          src={Profile}
+                                          src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
                                           height="33px"
+                                          alt=""
                                           width="33px"
                                           className={styles["Profile_Style"]}
                                         />
@@ -180,7 +218,7 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                                             styles["Participants_name"]
                                           }
                                         >
-                                          {data.name}
+                                          {data?.userName}
                                         </span>
                                       </Col>
                                     </Row>

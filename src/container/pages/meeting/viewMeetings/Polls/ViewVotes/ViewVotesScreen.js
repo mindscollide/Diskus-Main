@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ViewVoteScreen.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -13,7 +13,53 @@ const ViewVotesScreen = ({ setviewVotes }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const { PollsReducer } = useSelector((state) => state);
+  const [pollId, setPollId] = useState(0);
+  let userID = localStorage.getItem("userID");
+  const [pollTitle, setPollTitle] = useState("");
+  const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
+    []
+  );
+  const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
+  console.log(
+    votePollDetailsOptions,
+    pollAttendiesOpptionsVise,
+    "pollAttendiesOpptionsVisepollAttendiesOpptionsVise"
+  );
+  useEffect(() => {
+    if (
+      PollsReducer.viewVotes !== null &&
+      PollsReducer.viewVotes !== undefined
+    ) {
+      let vieVotePollDetails = PollsReducer.viewVotes;
+      let pollOptions = vieVotePollDetails.pollOptions;
+      let pollAttendies = vieVotePollDetails.pollParticipants;
+      let Options = [];
+      console.log("handleClosed", vieVotePollDetails);
+
+      if (vieVotePollDetails !== undefined && vieVotePollDetails !== null) {
+        if (Object.keys(vieVotePollDetails).length > 0) {
+          // for poll ID
+          setPollId(vieVotePollDetails.pollDetails.pollID);
+
+          // for poll Title
+          setPollTitle(vieVotePollDetails.pollDetails.pollTitle);
+
+          // for options
+          if (Object.keys(pollOptions).length > 0) {
+            pollOptions.forEach((data, index) => {
+              Options.push(data);
+            });
+            setVotePollDetailsOptions(Options);
+          }
+
+          if (Object.keys(pollAttendies).length > 0) {
+            setPollAttendiesOpptionsVise(pollAttendies);
+          }
+        }
+      }
+    }
+  }, [PollsReducer.viewVotes]);
   const [messeges, setMesseges] = useState([
     {
       text: "In-person meetings",
@@ -52,8 +98,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
           <Row className="mt-3">
             <Col lg={12} md={12} sm={12}>
               <span className={styles["Heading_vewPolls_Published"]}>
-                How do you prefer to collaborate with your colleagues in the
-                office?
+                {pollTitle}
               </span>
             </Col>
           </Row>
@@ -65,8 +110,8 @@ const ViewVotesScreen = ({ setviewVotes }) => {
               className={styles["Scroller_View_Published_Polls"]}
             >
               <Row>
-                {messeges.length > 0
-                  ? messeges.map((data, index) => {
+                {votePollDetailsOptions.length > 0
+                  ? votePollDetailsOptions.map((data, index) => {
                       return (
                         <>
                           <Col lg={12} md={12} sm={12} className="mt-2">
@@ -76,8 +121,8 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                                   <span
                                     className={styles["Messege_span_Class"]}
                                   >
-                                    {data.text}
-                                    {""} <span>-20%</span>
+                                    {data.answer}
+                                    {""} <span>{data.totalVotes}</span>
                                   </span>
                                 </Col>
                               </Row>
@@ -91,7 +136,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                                       className="d-flex gap-3"
                                     >
                                       <Progress
-                                        percent={20}
+                                        percent={data.votePercentage}
                                         status="active"
                                         className="pollsDetailsProgress"
                                       />
@@ -112,53 +157,56 @@ const ViewVotesScreen = ({ setviewVotes }) => {
         <Col lg={1} md={1} sm={1}></Col>
         <Col lg={5} md={5} sm={5}>
           <Row className="mt-3">
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className={styles["Scroller_View_Published_Polls"]}
-            >
-              <Row className="mt-1">
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["Participant_Count"]}>
-                    Email Conference <span>(20)</span>
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                {participant.length > 0
-                  ? participant.map((data, index) => {
-                      return (
-                        <>
-                          <Col lg={6} md={6} sm={6} className="mt-2">
-                            <section className={styles["Partipants_box"]}>
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex align-items-center gap-2"
-                                >
-                                  <img
-                                    draggable={false}
-                                    src={Profile}
-                                    height="33px"
-                                    width="33px"
-                                    className={styles["Profile_Style"]}
-                                  />
-                                  <span className={styles["Participants_name"]}>
-                                    {data.name}
-                                  </span>
-                                </Col>
-                              </Row>
-                            </section>
-                          </Col>
-                        </>
-                      );
-                    })
-                  : null}
-              </Row>
-            </Col>
+            <section className={styles["Scroller_View_Published_Polls"]}>
+              {pollAttendiesOpptionsVise.length > 0 &&
+                pollAttendiesOpptionsVise.map((data, index) => {
+                  return (
+                    <Col lg={12} md={12} sm={12}>
+                      <Row className="mt-1">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["Participant_Count"]}>
+                            {data.answer} <span>({data.totalVotes})</span>
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        {data.pollParticipants.map((participantData, index) => {
+                          return (
+                            <>
+                              <Col lg={6} md={6} sm={6} className="mt-2">
+                                <section className={styles["Partipants_box"]}>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="d-flex align-items-center gap-2"
+                                    >
+                                      <img
+                                        draggable={false}
+                                        src={Profile}
+                                        height="33px"
+                                        alt=""
+                                        width="33px"
+                                        className={styles["Profile_Style"]}
+                                      />
+                                      <span
+                                        className={styles["Participants_name"]}
+                                      >
+                                        {participantData.name}
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                </section>
+                              </Col>
+                            </>
+                          );
+                        })}
+                      </Row>
+                    </Col>
+                  );
+                })}
+            </section>
           </Row>
           <Row className="mt-4">
             <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">

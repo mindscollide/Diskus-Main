@@ -279,7 +279,7 @@ const GroupsReducer = (state = initialState, action) => {
     case actions.CREAT_UPDATE_GROUP_ROADMAP_FAILED: {
       return {
         ...state,
-        Loading: false,
+        // Loading: false,
         FolderID: 0,
         ResponseMessage: action.message,
       };

@@ -158,7 +158,7 @@ const MeetingDetails = ({
       label: "",
     },
     Notes: "",
-    groupChat: true,
+    groupChat: false,
     AllowRSPV: true,
     NotifyMeetingOrganizer: true,
     RecurringOptions: {
@@ -278,14 +278,11 @@ const MeetingDetails = ({
     let newDate = new Date(date);
     console.log(newDate, "handleStartDateChangehandleStartDateChange");
     if (newDate instanceof Date && !isNaN(newDate)) {
-      // Round up to the next hour
-      const nextHour = Math.ceil(
-        newDate.getHours() + newDate.getMinutes() / 60
-      );
-      newDate.setHours(nextHour, 0, 0, 0);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+      const formattedTime = `${hours}${minutes}${"00"}`;
 
       const updatedRows = [...rows];
 
@@ -347,16 +344,11 @@ const MeetingDetails = ({
     let newDate = new Date(date);
 
     if (newDate instanceof Date && !isNaN(newDate)) {
-      // Check if the selected time is greater than 0:00
-      // if (newDate.getHours() > 0 || newDate.getMinutes() > 0) {
-      // Round up to the next hour
-      const nextHour = Math.ceil(
-        newDate.getHours() + newDate.getMinutes() / 60
-      );
-      newDate.setHours(nextHour, 0, 0, 0);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+      const formattedTime = `${hours}${minutes}${"00"}`;
 
       const updatedRows = [...rows];
 

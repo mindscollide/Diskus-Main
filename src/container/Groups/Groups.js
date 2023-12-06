@@ -186,7 +186,12 @@ const Groups = () => {
   useEffect(() => {
     if (GroupsReducer.realtimeGroupCreateResponse !== null) {
       let MQttgroupData = GroupsReducer.realtimeGroupCreateResponse;
-      setgroupsData([MQttgroupData, ...groupsData]);
+      let newData = {
+        ...MQttgroupData,
+        groupMembers: [...MQttgroupData.groupMembers],
+      };
+      // let copyData = [...]
+      setgroupsData([newData, ...groupsData]);
     }
   }, [GroupsReducer.realtimeGroupCreateResponse]);
 

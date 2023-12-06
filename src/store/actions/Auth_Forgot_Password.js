@@ -32,7 +32,7 @@ const changePasswordRequest = (email, t, navigate) => {
   var id = min + Math.random() * (max - min);
   let Data = {
     Email: email,
-    DeviceID: id.toString(),
+    DeviceID: "1",
     Device: "browser",
   };
   console.log(Data);
@@ -72,7 +72,10 @@ const changePasswordRequest = (email, t, navigate) => {
                 "ERM_AuthService_AuthManager_ForgotPassword_03".toLowerCase()
               )
           ) {
-            localStorage.setItem("UserEmail", response.data.responseResult.email);
+            localStorage.setItem(
+              "UserEmail",
+              response.data.responseResult.email
+            );
             localStorage.setItem("userID", response.data.responseResult.userID);
             dispatch(
               forgotPasswordSuccess(
