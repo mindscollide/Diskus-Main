@@ -176,11 +176,15 @@ const AgendaWise = ({
               minutesAttachmets: matchingItems,
             });
           }
+
+          console.log(acc, "groupedDatagroupedDatagroupedData");
+
           return acc;
         }, {});
 
         // Convert groupedData object to an array of values
         const combinedDataArray = Object.values(groupedData).flat();
+        console.log(combinedDataArray, "groupedDatagroupedDatagroupedData");
 
         // Store combined data in the messages state
         setMessages(combinedDataArray);
@@ -195,7 +199,9 @@ const AgendaWise = ({
     NewMeetingreducer.agendaWiseMinutesReducer,
     NewMeetingreducer.getallDocumentsForAgendaWiseMinutes,
   ]);
-  console.log(messages, "messagesmessagesmessages1");
+
+  console.log(messages, "NewMeetingreducerNewMeetingreducer");
+
   // Grouping the messages by agendaID while maintaining the unique titles
   const groupedMessages = messages.reduce((acc, curr) => {
     if (!acc[curr.agendaID]) {
@@ -204,6 +210,7 @@ const AgendaWise = ({
         agendaTitle: curr.agendaTitle,
         items: [
           {
+            minuteID: curr.minuteID,
             minutesDetails: curr.minutesDetails,
             userID: curr.userID,
             userName: curr.userName,
@@ -211,11 +218,13 @@ const AgendaWise = ({
             lastUpdatedTime: curr.lastUpdatedTime,
             userProfilePicture: curr.userProfilePicture,
             minutesAttachmets: curr.minutesAttachmets,
+            agendaTitle: curr.agendaTitle,
           },
         ],
       };
     } else {
       acc[curr.agendaID].items.push({
+        minuteID: curr.minuteID,
         minutesDetails: curr.minutesDetails,
         userID: curr.userID,
         userName: curr.userName,
@@ -223,8 +232,11 @@ const AgendaWise = ({
         lastUpdatedTime: curr.lastUpdatedTime,
         userProfilePicture: curr.userProfilePicture,
         minutesAttachmets: curr.minutesAttachmets,
+        agendaTitle: curr.agendaTitle,
       });
     }
+
+    console.log(acc, "returnreturnreturn");
     return acc;
   }, {});
 
@@ -557,9 +569,8 @@ const AgendaWise = ({
   };
 
   //handle Edit functionality
-
   const handleEditFunc = async (data) => {
-    console.log(data, "datadatadatadatadatadata");
+    console.log(data, "handleEditFunchandleEditFunc");
     setupdateData(data.minuteID);
     let Data = {
       FK_MeetingAgendaMinutesID: data.minuteID,
@@ -597,8 +608,7 @@ const AgendaWise = ({
     }
   };
 
-  console.log(addAgendaWiseFields, "addNoteFieldsaddNoteFields");
-
+  //Retirive Document of Specific Minutes
   useEffect(() => {
     try {
       if (
@@ -629,6 +639,7 @@ const AgendaWise = ({
     } catch {}
   }, [NewMeetingreducer.RetriveAgendaWiseDocuments]);
 
+  //Handle Update Button Api
   const handleUpdateFuncagendaWise = async () => {
     let UpdateDataAgendaWise = {
       MinuteID: updateData.minuteID,
@@ -716,12 +727,12 @@ const AgendaWise = ({
   };
 
   //Expanding and collapsing function
-
   const handleshowMore = (index) => {
     setShowMoreIndex((prevIndex) => (prevIndex === index ? null : index));
     setShowMore((prevState) => !prevState);
   };
 
+  //Handling of the Response Messege
   useEffect(() => {
     console.log(
       "ResponseMessageResponseMessage",
@@ -1096,7 +1107,7 @@ const AgendaWise = ({
                               <section
                                 className={styles["Sizing_Saved_Minutes"]}
                               >
-                                {data.items.map((data, detailIndex) => {
+                                {data.items.map((Itemsdata, detailIndex) => {
                                   console.log(
                                     data,
                                     "groupedMessagesgroupedMessages"
@@ -1125,7 +1136,7 @@ const AgendaWise = ({
                                                           <span
                                                             dangerouslySetInnerHTML={{
                                                               __html:
-                                                                data.minutesDetails.substring(
+                                                                Itemsdata.minutesDetails.substring(
                                                                   0,
                                                                   120
                                                                 ),
@@ -1137,7 +1148,7 @@ const AgendaWise = ({
                                                         <span
                                                           dangerouslySetInnerHTML={{
                                                             __html:
-                                                              data.minutesDetails,
+                                                              Itemsdata.minutesDetails,
                                                           }}
                                                         ></span>
                                                       )}
@@ -1153,7 +1164,7 @@ const AgendaWise = ({
                                                         }
                                                       >
                                                         {expanded &&
-                                                        data.minutesDetails.substring(
+                                                        Itemsdata.minutesDetails.substring(
                                                           0,
                                                           120
                                                         )
@@ -1173,8 +1184,8 @@ const AgendaWise = ({
                                                       }
                                                     >
                                                       {newTimeFormaterAsPerUTCFullDate(
-                                                        data.lastUpdatedDate +
-                                                          data.lastUpdatedTime
+                                                        Itemsdata.lastUpdatedDate +
+                                                          Itemsdata.lastUpdatedTime
                                                       ).toString()}
                                                     </span>
                                                   </Col>
@@ -1200,8 +1211,7 @@ const AgendaWise = ({
                                                 </Row>
                                                 <FilesMappingAgendaWiseMinutes
                                                   showMoreIndex={showMoreIndex}
-                                                  index={index}
-                                                  data={data}
+                                                  Itemsdata={Itemsdata}
                                                   showMore={showMore}
                                                   detailIndex={detailIndex}
                                                 />
@@ -1216,7 +1226,7 @@ const AgendaWise = ({
                                                   <Col lg={2} md={2} sm={2}>
                                                     <img
                                                       draggable={false}
-                                                      src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
+                                                      src={`data:image/jpeg;base64,${Itemsdata?.userProfilePicture?.displayProfilePictureName}`}
                                                       height="39px"
                                                       width="39px"
                                                       alt=""
@@ -1263,7 +1273,7 @@ const AgendaWise = ({
                                                             styles["Name"]
                                                           }
                                                         >
-                                                          {data.userName}
+                                                          {Itemsdata.userName}
                                                         </span>
                                                       </Col>
                                                     </Row>
@@ -1301,7 +1311,9 @@ const AgendaWise = ({
                                                         width="21.55px"
                                                         className="cursor-pointer"
                                                         onClick={() =>
-                                                          handleEditFunc(data)
+                                                          handleEditFunc(
+                                                            Itemsdata
+                                                          )
                                                         }
                                                       />
                                                     ) : null}

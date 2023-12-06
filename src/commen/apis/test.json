@@ -1,38 +1,43 @@
 {
-  "minuteID": 118,
-  "agendaID": 2146,
-  "agendaTitle": "asas",
-  "minutesDetails": "<p>Testing TOken </p>",
-  "userID": 983,
-  "userName": "ErenOne",
-  "lastUpdatedDate": "20231205",
-  "lastUpdatedTime": "064721",
+  "minuteID": 109,
+  "agendaID": 2108,
+  "agendaTitle": "Saif  Agenda No Number ",
+  "minutesDetails": "<p>Agenda Wise Loader Test on View </p>",
+  "userID": 987,
+  "userName": "ErenFive",
+  "lastUpdatedDate": "20231128",
+  "lastUpdatedTime": "113617",
   "userProfilePicture": {
-    "userID": 983,
-    "orignalProfilePictureName": "20230913130429182.jpg",
-    "displayProfilePictureName": "20230913130429182.jpg"
+    "userID": 987,
+    "orignalProfilePictureName": "20231017121031328.jpg",
+    "displayProfilePictureName": "20231017121031328.jpg"
   },
   "minutesAttachmets": [
     {
-      "pK_FileID": 7344,
-      "displayFileName": "Profile.pdf",
-      "diskusFileName": 20231205064722640,
-      "diskusFileNameString": "",
-      "shareAbleLink": "D:\\Diskus\\Services\\DiskusFileStorage\\DataRoom\\983_417\\20231205064722640",
-      "fileSize": 0,
-      "fileSizeOnDisk": 0,
-      "fK_UserID": 983,
-      "fK_OrganizationID": 417,
-      "uriPath": null,
-      "fK_GAID": 0,
-      "createdDate": "",
-      "modifiedDate": "",
-      "modifiedByUser": "",
-      "openedDateTime": "",
-      "openedByUser": "",
-      "location": "",
-      "type": "",
-      "description": ""
+      "pK_MeetingAgendaMinutesID": 109,
+      "files": [
+        {
+          "pK_FileID": 7325,
+          "displayFileName": "Screenshot 2023-04-06 135036.png",
+          "diskusFileName": 20231128113617400,
+          "diskusFileNameString": "",
+          "shareAbleLink": "D:\\Diskus\\Services\\DiskusFileStorage\\DataRoom\\987_417\\20231128113617402",
+          "fileSize": 0,
+          "fileSizeOnDisk": 0,
+          "fK_UserID": 987,
+          "fK_OrganizationID": 417,
+          "uriPath": null,
+          "fK_GAID": 0,
+          "createdDate": "",
+          "modifiedDate": "",
+          "modifiedByUser": "",
+          "openedDateTime": "",
+          "openedByUser": "",
+          "location": "",
+          "type": "",
+          "description": ""
+        }
+      ]
     }
   ]
 }

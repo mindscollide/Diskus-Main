@@ -11,8 +11,7 @@ import {
 } from "../../../../../DataRoom/SearchFunctionality/option";
 const FilesMappingAgendaWiseMinutes = ({
   showMoreIndex,
-  index,
-  data,
+  Itemsdata,
   showMore,
   detailIndex,
 }) => {
@@ -23,7 +22,7 @@ const FilesMappingAgendaWiseMinutes = ({
           <Row>
             <Col lg={12} md={12} sm={12} className={styles["DocsScroller"]}>
               <Row className="mt-3">
-                {data.minutesAttachmets.map((filesname, index) => {
+                {Itemsdata.minutesAttachmets.map((filesname, index) => {
                   return filesname.files.map((fileData, index) => {
                     console.log(fileData, "fileDatafileDatafileData");
                     return (
