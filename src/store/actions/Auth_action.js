@@ -54,7 +54,7 @@ const RefreshToken = (navigate, t) => {
         } else {
           console.log("RefreshToken", response);
           let message2 = t("Your-session-has-expired-please-login-again");
-          // await dispatch(signOut(navigate, message2));
+          await dispatch(signOut(navigate, message2));
           await dispatch(refreshtokenFail(message2));
         }
       })

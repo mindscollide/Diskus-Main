@@ -6717,6 +6717,21 @@ const InviteToCollaborateMinutesApiFunc = (navigate, Data, t) => {
   };
 };
 
+//MQTT RESPONSES OF MEETING
+const meetingStatusProposedMqtt = (response) => {
+  return {
+    type: actions.MQTT_MEETING_STATUS_PROPOSED,
+    response: response,
+  };
+};
+
+const meetingStatusPublishedMqtt = (response) => {
+  return {
+    type: actions.MQTT_MEETING_STATUS_PUBLISHED,
+    response: response,
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -6834,4 +6849,6 @@ export {
   cleareMinutsData,
   showAllGeneralMinutesFailed,
   InviteToCollaborateMinutesApiFunc,
+  meetingStatusProposedMqtt,
+  meetingStatusPublishedMqtt,
 };

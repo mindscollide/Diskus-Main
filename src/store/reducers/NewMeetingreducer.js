@@ -100,6 +100,8 @@ const initialState = {
   getallDocumentsForAgendaWiseMinutes: [],
   UploadDocumentsResponse: [],
   SaveFolderResponse: null,
+  meetingStatusProposedMqttData: null,
+  meetingStatusPublishedMqttData: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1876,12 +1878,28 @@ const NewMeetingreducer = (state = initialState, action) => {
         generalminutesDocumentForMeeting: [],
       };
     }
+
     case actions.GET_GENERAL_MINTES_INIT: {
       return {
         ...state,
         Loading: true,
       };
     }
+
+    case actions.MQTT_MEETING_STATUS_PROPOSED: {
+      return {
+        ...state,
+        meetingStatusProposedMqttData: action.response,
+      };
+    }
+
+    case actions.MQTT_MEETING_STATUS_PUBLISHED: {
+      return {
+        ...state,
+        meetingStatusPublishedMqttData: action.response,
+      };
+    }
+
     default:
       return {
         ...state,

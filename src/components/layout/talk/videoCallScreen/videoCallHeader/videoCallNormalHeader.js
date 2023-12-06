@@ -15,6 +15,9 @@ import HandRaise from "../../../../../assets/images/newElements/HandRaiseIcon.sv
 import Board from "../../../../../assets/images/newElements/WhiteBoard.svg";
 import ThreeDots from "../../../../../assets/images/newElements/ThreeDotsIcon.svg";
 import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.png";
+import LayoutIconPurple from "../../../../../assets/images/Layout-Icon-Purple.svg";
+import LayoutIconSelected from "../../../../../assets/images/Layout-Icon-Selected-with-shape.svg";
+import LayoutIconWhite from "../../../../../assets/images/Layout-Icon-White.svg";
 import ChatNonActive from "../../../../../assets/images/newElements/ChatIconNonActive.svg";
 import ActiveChat from "../../../../../assets/images/newElements/ActiveChatIcon.svg";
 import ChatIcon from "../../../../../assets/images/Chat-Icon.png";
@@ -41,7 +44,11 @@ import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 import { useTranslation } from "react-i18next";
 
-const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
+const VideoCallNormalHeader = ({
+  isScreenActive,
+  screenShareButton,
+  layoutCurrentChange,
+}) => {
   const { videoFeatureReducer, VideoMainReducer, talkStateData } = useSelector(
     (state) => state
   );
@@ -72,6 +79,9 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
+
+  // Create a ref for the iframe element
+  const iframeRef = useRef(null);
 
   const [showNotification, setShowNotification] = useState(true);
 
@@ -132,6 +142,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
+      localStorage.setItem("acceptedRoomID", 0);
+      localStorage.setItem("activeRoomID", 0);
     } else if (isMeeting === true) {
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
@@ -140,6 +152,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       localStorage.setItem("isMeeting", false);
       localStorage.setItem("meetingTitle", "");
       localStorage.setItem("acceptedRecipientID", 0);
+      localStorage.setItem("acceptedRoomID", 0);
+      localStorage.setItem("activeRoomID", 0);
     }
   };
 
@@ -252,6 +266,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     setParticipantStatus([]);
     localStorage.setItem("activeCall", false);
     localStorage.setItem("isCaller", false);
+    localStorage.setItem("acceptedRoomID", 0);
+    localStorage.setItem("activeRoomID", 0);
     dispatch(normalizeVideoPanelFlag(false));
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
@@ -385,6 +401,17 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
         </Col>
         <>
           <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
+            <div className="screenShare-Toggle flipHorizontal">
+              <img
+                className={
+                  videoFeatureReducer.LeaveCallModalFlag === true
+                    ? "grayScaleImage"
+                    : "cursor-pointer"
+                }
+                onClick={layoutCurrentChange}
+                src={LayoutIconPurple}
+              />
+            </div>
             {callerID === currentUserID && currentCallType === 2 ? (
               <div
                 className="positionRelative flipHorizontal"
@@ -443,14 +470,6 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                           <p className="participant-state">Host</p>
                         </Col>
                       </Row>
-                      {/* <Button
-                        className="add-participant-button"
-                        text="Add Participants"
-                        icon={
-                          <img src={AddParticipantIcon} alt="participants" />
-                        }
-                        textClass="text-positioning"
-                      /> */}
                     </div>
                   </>
                 ) : (
@@ -479,17 +498,19 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                 src={NonActiveScreenShare}
               />
             </div>
-            <div className="screenShare-Toggle flipHorizontal">
-              <img
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "cursor-pointer"
-                }
-                onClick={onClickCloseChatHandler}
-                src={ChatIcon}
-              />
-            </div>
+            {currentCallType === 1 ? (
+              <div className="screenShare-Toggle flipHorizontal">
+                <img
+                  className={
+                    videoFeatureReducer.LeaveCallModalFlag === true
+                      ? "grayScaleImage"
+                      : "cursor-pointer"
+                  }
+                  onClick={onClickCloseChatHandler}
+                  src={ChatIcon}
+                />
+              </div>
+            ) : null}
             {videoFeatureReducer.LeaveCallModalFlag === true &&
             callerID === currentUserID ? (
               <img
