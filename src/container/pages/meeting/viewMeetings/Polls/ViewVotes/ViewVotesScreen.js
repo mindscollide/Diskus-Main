@@ -21,11 +21,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
     []
   );
   const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
-  console.log(
-    votePollDetailsOptions,
-    pollAttendiesOpptionsVise,
-    "pollAttendiesOpptionsVisepollAttendiesOpptionsVise"
-  );
+
   useEffect(() => {
     if (
       PollsReducer.viewVotes !== null &&
@@ -58,34 +54,11 @@ const ViewVotesScreen = ({ setviewVotes }) => {
           }
         }
       }
+    } else {
+      setPollAttendiesOpptionsVise([]);
+      setVotePollDetailsOptions([]);
     }
   }, [PollsReducer.viewVotes]);
-  const [messeges, setMesseges] = useState([
-    {
-      text: "In-person meetings",
-    },
-    {
-      text: "Video conferences",
-    },
-    {
-      text: "Email communication",
-    },
-  ]);
-
-  const [participant, setparticipant] = useState([
-    {
-      name: "Saif Ul Islam",
-    },
-    {
-      name: "Saif Ul Islam",
-    },
-    {
-      name: "Saif Ul Islam",
-    },
-    {
-      name: "Saif Ul Islam",
-    },
-  ]);
 
   const handleViewVotesScreen = () => {
     setviewVotes(false);
@@ -121,8 +94,8 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                                   <span
                                     className={styles["Messege_span_Class"]}
                                   >
-                                    {data.answer}
-                                    {""} <span>{data.totalVotes}</span>
+                                    {data?.answer}
+                                    {""} <span>{data?.totalVotes}</span>
                                   </span>
                                 </Col>
                               </Row>
@@ -165,43 +138,47 @@ const ViewVotesScreen = ({ setviewVotes }) => {
                       <Row className="mt-1">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Participant_Count"]}>
-                            {data.answer} <span>({data.totalVotes})</span>
+                            {data?.answer} <span>({data?.totalVotes})</span>
                           </span>
                         </Col>
                       </Row>
                       <Row>
-                        {data.pollParticipants.map((participantData, index) => {
-                          return (
-                            <>
-                              <Col lg={6} md={6} sm={6} className="mt-2">
-                                <section className={styles["Partipants_box"]}>
-                                  <Row>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className="d-flex align-items-center gap-2"
-                                    >
-                                      <img
-                                        draggable={false}
-                                        src={Profile}
-                                        height="33px"
-                                        alt=""
-                                        width="33px"
-                                        className={styles["Profile_Style"]}
-                                      />
-                                      <span
-                                        className={styles["Participants_name"]}
+                        {data?.pollParticipants?.map(
+                          (participantData, index) => {
+                            return (
+                              <>
+                                <Col lg={6} md={6} sm={6} className="mt-2">
+                                  <section className={styles["Partipants_box"]}>
+                                    <Row>
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className="d-flex align-items-center gap-2"
                                       >
-                                        {participantData.name}
-                                      </span>
-                                    </Col>
-                                  </Row>
-                                </section>
-                              </Col>
-                            </>
-                          );
-                        })}
+                                        <img
+                                          draggable={false}
+                                          src={`data:image/jpeg;base64,${participantData?.profilePicture?.displayProfilePictureName}`}
+                                          height="33px"
+                                          alt=""
+                                          width="33px"
+                                          className={styles["Profile_Style"]}
+                                        />
+                                        <span
+                                          className={
+                                            styles["Participants_name"]
+                                          }
+                                        >
+                                          {participantData?.userName}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </section>
+                                </Col>
+                              </>
+                            );
+                          }
+                        )}
                       </Row>
                     </Col>
                   );
