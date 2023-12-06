@@ -33,6 +33,7 @@ import {
   DeleteAgendaWiseMinutesDocumentsApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
+  cleareAllState,
   uploadDocumentsMeetingAgendaWiseMinutesApi,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes } from "../../../../../../store/actions/AgendaWiseAgendaAction";
@@ -100,6 +101,12 @@ const AgendaWise = ({
         advanceMeetingModalID
       )
     );
+    return () => {
+      setMessages([]);
+      setFileAttachments([]);
+      setPreviousFileIDs([]);
+      dispatch(cleareAllState());
+    };
   }, []);
 
   console.log(
