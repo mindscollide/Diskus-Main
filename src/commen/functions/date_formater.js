@@ -419,7 +419,7 @@ export const resolutionResultTable = (dateTime) => {
 
 export const createConvert = (dateTime) => {
   let convertintoISO = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
-  var utcDate = new Date(convertintoISO).toUTCString();
+  let utcDate = new Date(convertintoISO).toUTCString();
 
   // Convert ISO date string to a Date object
   const date = new Date(utcDate);

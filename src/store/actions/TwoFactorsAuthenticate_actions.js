@@ -33,7 +33,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
   let Data = {
     UserID: JSON.parse(userID),
     Device: "Browser",
-    DeviceID: id.toString(),
+    DeviceID: "1",
     OrganizationID: JSON.parse(OrganiztionID),
   };
   return (dispatch) => {
@@ -532,7 +532,11 @@ const verifyOtpFacInit = () => {
   };
 };
 const verifyOtpFacSuccess = (response, message) => {
-  console.log(response, message, "verifyOtpFacSuccessverifyOtpFacSuccessverifyOtpFacSuccess")
+  console.log(
+    response,
+    message,
+    "verifyOtpFacSuccessverifyOtpFacSuccessverifyOtpFacSuccess"
+  );
   return {
     type: actions.SENDTWOFACOTP_SUCCESS,
     response: response,
@@ -580,19 +584,34 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
               localStorage.setItem("TowApproval", true);
               console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
               if (JSON.parse(localStorage.getItem("roleID")) === 1) {
-                console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
+                console.log(
+                  "Authreducer.SendTwoFacOTPResponseMessage",
+                  response
+                );
                 navigate("/Diskus/Admin/");
               } else if (JSON.parse(localStorage.getItem("roleID")) === 2) {
-                console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
-                navigate("/Diskus/Admin/")
+                console.log(
+                  "Authreducer.SendTwoFacOTPResponseMessage",
+                  response
+                );
+                navigate("/Diskus/Admin/");
               } else if (JSON.parse(localStorage.getItem("roleID")) === 3) {
-                console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
+                console.log(
+                  "Authreducer.SendTwoFacOTPResponseMessage",
+                  response
+                );
                 if (JSON.parse(localStorage.getItem("isFirstLogin"))) {
-                  console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
-                  navigate("/onboard")
+                  console.log(
+                    "Authreducer.SendTwoFacOTPResponseMessage",
+                    response
+                  );
+                  navigate("/onboard");
                 } else {
-                  console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
-                  navigate("/DisKus/")
+                  console.log(
+                    "Authreducer.SendTwoFacOTPResponseMessage",
+                    response
+                  );
+                  navigate("/DisKus/");
                 }
               }
               // if (response.data.responseResult.token.roleID === 1) {
@@ -685,7 +704,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   "ERM_AuthService_AuthManager_Verify2FAOTP_02".toLowerCase()
                 )
             ) {
-              setOtpCode("")
+              setOtpCode("");
               dispatch(verifyOtpFacFail(t("Failed-to-verify-otp")));
               localStorage.setItem("TowApproval", false);
             } else if (
@@ -705,12 +724,22 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                 )
             ) {
               dispatch(verifyOtpFacFail(t("No-otp-exist-against-this-user")));
-              setOtpCode("")
+              setOtpCode("");
               localStorage.setItem("TowApproval", false);
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Verify2FAOTP_05".toLowerCase())) {
-              dispatch(verifyOtpFacFail(t("The-user-has-reached-the-maximum-faileda-attempts")));
-              setOtpCode("")
-              navigate("/")
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_Verify2FAOTP_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                verifyOtpFacFail(
+                  t("The-user-has-reached-the-maximum-faileda-attempts")
+                )
+              );
+              setOtpCode("");
+              navigate("/");
             }
           } else {
             dispatch(verifyOtpFacFail(t("Something-went-wrong")));

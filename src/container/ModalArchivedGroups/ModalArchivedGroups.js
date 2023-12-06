@@ -14,6 +14,7 @@ import {
   getArcheivedGroups,
   getbyGroupID,
   getGroups,
+  updateGroupStatus,
 } from "../../store/actions/Groups_actions";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
@@ -34,7 +35,7 @@ const ModalArchivedCommittee = ({
   const [groupsArheivedData, setGroupsArheivedData] = useState([]);
   const [totalRecords, setTotalrecord] = useState(0);
   let currentGroupPage = JSON.parse(localStorage.getItem("groupsArCurrent"));
-
+  const [uniqCardID, setUniqCardID] = useState(0);
   useEffect(() => {
     if (currentGroupPage !== null && currentGroupPage !== undefined) {
       dispatch(getArcheivedGroups(navigate, t, currentGroupPage));
@@ -77,12 +78,18 @@ const ModalArchivedCommittee = ({
       try {
         if (GroupsReducer.ArcheivedGroups.groups.length > 0) {
           setTotalrecord(GroupsReducer.ArcheivedGroups.totalRecords);
-          let newArr = [];
-          let filterItems = GroupsReducer.ArcheivedGroups.groups;
-          filterItems.map((data, index) => {
-            newArr.push(data);
-          });
-          setGroupsArheivedData(newArr);
+          let copyData = [...GroupsReducer.ArcheivedGroups.groups];
+          // Create a new copy of committeeMembers array for each committee
+          const updateGroups = copyData.map((groups) => ({
+            ...groups,
+            groupMembers: [...groups.groupMembers],
+          }));
+
+          //  setgroupsData(updateGroups);
+
+          setGroupsArheivedData(updateGroups);
+        } else {
+          setGroupsArheivedData([]);
         }
       } catch (error) {}
     }
@@ -118,6 +125,17 @@ const ModalArchivedCommittee = ({
       localStorage.setItem("groupsArCurrent", currentPage);
       dispatch(getArcheivedGroups(navigate, t, currentPage));
     }
+  };
+
+  const handleChangeStatus = async (e, CardID, setEditdropdown) => {
+    //Current Organization
+    let currentOrganizationId = localStorage.getItem("organizationID");
+    let Data = {
+      GroupID: Number(CardID),
+      GroupStatusId: Number(e.value),
+      OrganizationID: JSON.parse(currentOrganizationId),
+    };
+    await dispatch(updateGroupStatus(navigate, Data, t, setArchivedCommittee));
   };
 
   return (
@@ -190,8 +208,11 @@ const ModalArchivedCommittee = ({
                         return (
                           <Col sm={12} md={4} lg={4} className="mb-3">
                             <Card
+                              setUniqCardID={setUniqCardID}
+                              uniqCardID={uniqCardID}
                               CardHeading={data.groupTitle}
                               IconOnClick={updateModal}
+                              CardID={data.groupID}
                               onClickFunction={() =>
                                 ViewGroupmodal(data.groupID, data.groupStatusID)
                               }
@@ -199,11 +220,13 @@ const ModalArchivedCommittee = ({
                                 ViewGroupmodal(data.groupID, data.groupStatusID)
                               }
                               StatusID={data.groupStatusID}
+                              creatorId={data.creatorID}
                               profile={data.groupMembers}
                               Icon={
                                 <img
                                   draggable="false"
                                   src={GroupIcon}
+                                  alt=""
                                   width="32.39px"
                                   height="29.23px"
                                 />
@@ -211,6 +234,7 @@ const ModalArchivedCommittee = ({
                               BtnText={
                                 data.groupStatusID === 2 ? t("View-group") : ""
                               }
+                              changeHandleStatus={handleChangeStatus}
                             />
                           </Col>
                         );

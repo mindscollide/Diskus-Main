@@ -18,7 +18,6 @@ import {
   RetrieveGroupDocuments,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
-import { Data } from "emoji-mart";
 
 const clearMessagesGroup = () => {
   return {
@@ -1420,7 +1419,6 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
         } else {
           dispatch(saveFiles_fail(t("Something-went-wrong")));
         }
-        console.log(response);
       })
       .catch(() => {
         dispatch(saveFiles_fail(t("Something-went-wrong")));
@@ -1506,10 +1504,12 @@ const SaveGroupsDocumentsApiFunc = (
                 showSaveGroupDocsSuccess(response.data.responseResult, "")
               );
               localStorage.removeItem("groupID");
-              dispatch(getGroups(navigate, t, currentPage));
               dispatch(methodCreateUpdateDataRoadMapFailed(""));
-              setCreategrouppage(false);
-              setViewGroupPage(false);
+              dispatch(getGroups(navigate, t, currentPage));
+              try {
+                setCreategrouppage(false);
+                setViewGroupPage(false);
+              } catch (error) {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

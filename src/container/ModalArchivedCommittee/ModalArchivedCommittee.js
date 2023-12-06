@@ -3,6 +3,7 @@ import { Button, Modal } from "../../components/elements";
 import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  committeeStatusUpdate,
   getAllArcheivedCommittees,
   getCommitteesbyCommitteeId,
 } from "../../store/actions/Committee_actions";
@@ -31,7 +32,7 @@ const ModalArchivedCommittee = ({
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [totalLength, setTotalLength] = useState(0);
   let currentArPage = JSON.parse(localStorage.getItem("CoArcurrentPage"));
-
+  const [uniqCardID, setUniqCardID] = useState(0);
   useEffect(() => {
     if (currentArPage != undefined && currentArPage != null) {
       dispatch(getAllArcheivedCommittees(navigate, t, currentArPage));
@@ -97,6 +98,16 @@ const ModalArchivedCommittee = ({
       localStorage.setItem("CoArcurrentPage", currentPage);
       dispatch(getAllArcheivedCommittees(navigate, t, currentPage));
     }
+  };
+
+  const handleChangeCommitteeStatus = (e, CardID, setEditdropdown) => {
+    let OrganizationID = localStorage.getItem("organizationID");
+    let Data = {
+      CommitteeId: JSON.parse(CardID),
+      CommitteeStatusId: JSON.parse(e.value),
+      OrganizationID: JSON.parse(OrganizationID),
+    };
+    dispatch(committeeStatusUpdate(navigate, Data, t, setArchivedCommittee));
   };
 
   const viewCommitteeModal = (committeeID, CommitteeStatusID) => {
@@ -179,7 +190,11 @@ const ModalArchivedCommittee = ({
                       return (
                         <Col lg={4} md={4} sm={12} className="mb-3">
                           <Card
+                            setUniqCardID={setUniqCardID}
+                            uniqCardID={uniqCardID}
+                            CardID={data.committeeID}
                             CardHeading={data.committeesTitle}
+                            creatorId={data.creatorID}
                             onClickFunction={() =>
                               viewCommitteeModal(
                                 data.committeeID,
@@ -192,6 +207,7 @@ const ModalArchivedCommittee = ({
                                 data.committeeStatusID
                               )
                             }
+                            changeHandleStatus={handleChangeCommitteeStatus}
                             StatusID={data.committeeStatusID}
                             profile={data.committeeMembers}
                             Icon={
@@ -199,6 +215,7 @@ const ModalArchivedCommittee = ({
                                 draggable="false"
                                 src={CommitteeICon}
                                 width={30}
+                                alt=""
                               />
                             }
                             BtnText={
