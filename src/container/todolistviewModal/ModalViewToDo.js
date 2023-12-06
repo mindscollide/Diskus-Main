@@ -31,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   postAssgineeComment,
   HideNotificationTodoComment,
+  emptyCommentState,
 } from "../../store/actions/Post_AssigneeComments";
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
@@ -136,7 +137,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   }, []);
   useEffect(() => {
     todoComments.current?.scrollIntoView({ behavior: "smooth" });
-  }, [taskAssigneeComments]);
+  }, [todoComments, taskAssigneeComments]);
 
   useEffect(() => {
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
@@ -225,6 +226,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
             taskCommentID: assgineeData.pK_TCID,
             taskCommentUserName: assgineeData.userName,
             DateTime: assgineeData.dateTime,
+            CommentID: 0,
           });
         });
         setTaskAssigneeComments(assigneescommentsArr);
@@ -243,39 +245,55 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     }
   }, [toDoListReducer.ToDoDetails]);
 
+  console.log(
+    taskAssigneeComments,
+    "taskAssigneeCommentstaskAssigneeCommentstaskAssigneeComments"
+  );
   // // for comment from socket
   useEffect(() => {
-    if (Object.keys(Comments).length > 0) {
-      let findNewIndex = taskAssigneeComments.findIndex(
-        (data, index) => data.taskCommentID === 0
-      );
-      if (findNewIndex !== -1) {
-        setTaskAssigneeComments((prev) => {
-          return prev.map((commentData, index) => {
-            if (index === findNewIndex) {
-              return {
-                ...commentData,
-                taskCommentID: Number(Comments.pK_TCID),
-              };
-            }
-          });
+    if (Comments !== null) {
+      let commentIndex = taskAssigneeComments.findIndex((data, index) => {
+        return data?.CommentID === Comments.commentFrontEndID.toString();
+      });
+
+      if (commentIndex !== -1) {
+        let newArr = taskAssigneeComments.map((comment, index) => {
+          if (index === commentIndex) {
+            const newData = {
+              ...comment,
+              taskCommentID: Number(Comments.pK_TCID),
+            };
+
+            return newData;
+          }
+
+          return comment;
         });
+
+        setTaskAssigneeComments(newArr);
       } else {
+        // Comment does not exist, add it
         let newComment = {
           userID: parseInt(Comments.fK_UID),
           TaskID: parseInt(Comments.fK_TID),
+          CommentID: Comments.CommentFrontEndID,
           Comment: Comments.comment,
           taskCommentID: Number(Comments.pK_TCID),
           taskCommentUserName: Comments.userName,
           DateTime: Comments.dateTime,
         };
-        setTaskAssigneeComments([...taskAssigneeComments, newComment]);
+
+        setTaskAssigneeComments((prev) => [...prev, newComment]);
       }
     }
   }, [Comments]);
 
   // for Comment delete from MQTT Notification
   useEffect(() => {
+    console.log(
+      postAssigneeComments.DeleteCommentsId,
+      "postAssigneeCommentspostAssigneeComments"
+    );
     if (
       postAssigneeComments.DeleteCommentsId !== null &&
       postAssigneeComments.DeleteCommentsId !== undefined
@@ -285,7 +303,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         postAssigneeComments.DeleteCommentsId.commentID !== null
       ) {
         let findNewIndex = taskAssigneeComments.findIndex(
-          (data, index) => data.taskCommentID === 0
+          (data, index) =>
+            data.taskCommentID ===
+            postAssigneeComments.DeleteCommentsId.commentID
         );
         if (findNewIndex !== -1) {
           let newData = [...taskAssigneeComments];
@@ -337,7 +357,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     e.preventDefault();
     if (assgineeComments !== "" && assgineeComments.trim() !== "") {
       let commentData = {
-        PK_TCID: getRandomUniqueNumber().toString() + "A",
+        PK_TCID: 0,
+        CommentID: getRandomUniqueNumber().toString() + "A",
         Comment: assgineeComments,
         FK_TID: id,
         FK_UID: Number(TaskCreatorID),
@@ -347,8 +368,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       let newComment = {
         userID: parseInt(TaskCreatorID),
         TaskID: parseInt(id),
+        CommentID: commentData.CommentID,
         Comment: assgineeComments,
-        taskCommentID: getRandomUniqueNumber().toString() + "A",
+        taskCommentID: 0,
         taskCommentUserName: UserName,
         DateTime: convertFormation,
       };
@@ -384,6 +406,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
         <Modal
           onHide={() => {
             setViewFlagToDo(false);
+            dispatch(emptyCommentState());
           }}
           show={viewFlagToDo}
           setShow={setViewFlagToDo}
@@ -565,7 +588,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                       }
                     })
                   : null}
-                {/* <div ref={todoComments} /> */}
+                <div ref={todoComments} />
               </Row>
 
               {/* Post Comments  */}

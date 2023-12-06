@@ -2682,7 +2682,10 @@ const DataRoom = () => {
         dispatch(clearDataResponseMessage());
       }, 4000);
     }
-    if (DataRoomReducer.FolderisExistMessage !== "") {
+    if (
+      DataRoomReducer.FolderisExistMessage !== "" &&
+      DataRoomReducer.FolderisExistMessage !== t("Folder-already-exist")
+    ) {
       setOpen({
         open: true,
         message: DataRoomReducer.FolderisExistMessage,
@@ -2695,7 +2698,10 @@ const DataRoom = () => {
         dispatch(clearDataResponseMessage());
       }, 4000);
     }
-    if (DataRoomReducer.FileisExistMessage !== "") {
+    if (
+      DataRoomReducer.FileisExistMessage !== "" &&
+      DataRoomReducer.FileisExistMessage !== t("File-already-exist")
+    ) {
       setOpen({
         open: true,
         message: DataRoomReducer.FileisExistMessage,

@@ -4,7 +4,7 @@ const initialState = {
   Response: "",
   ResponseMessage: "",
   Loading: false,
-  Comments: [],
+  Comments: null,
   createCommentID: 0,
   DeleteCommentsId: null,
 };
@@ -55,6 +55,13 @@ const postAssigneeComments = (state = initialState, action) => {
         ...state,
         Loading: false,
         Comments: action.response,
+      };
+    }
+    case actions.EMPTYCOMMENTSFROMMQTT: {
+      return {
+        ...state,
+        Loading: false,
+        Comments: null,
       };
     }
     case actions.DELETE_COMMENTS: {

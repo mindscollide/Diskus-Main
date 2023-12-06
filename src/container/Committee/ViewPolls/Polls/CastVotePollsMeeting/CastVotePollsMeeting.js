@@ -203,10 +203,9 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                             }
                                             Optios={data.pollAnswerID}
                                             onChange={handleCheckBoxForOneOnly}
-
-                                            // className={
-                                            //   styles["Custom_radio_button"]
-                                            // }
+                                            className={
+                                              styles["Custom_radio_button"]
+                                            }
                                           />
                                         )}
                                         <Progress
