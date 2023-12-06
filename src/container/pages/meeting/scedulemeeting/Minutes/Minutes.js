@@ -119,6 +119,8 @@ const Minutes = ({
     value: 0,
   });
 
+  console.log(addAgendaWiseFields, "addAgendaWiseFieldsaddAgendaWiseFields");
+
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
@@ -211,14 +213,14 @@ const Minutes = ({
         },
       });
     } else {
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
+      // setAddNoteFields({
+      //   ...addNoteFields,
+      //   Description: {
+      //     value: "",
+      //     errorMessage: "",
+      //     errorStatus: false,
+      //   },
+      // });
     }
   };
 
@@ -806,8 +808,8 @@ const Minutes = ({
           editorRole={editorRole}
           agendaOptionvalue={agendaOptionvalue}
           setAgendaOptionValue={setAgendaOptionValue}
-          addNoteFields={addAgendaWiseFields}
-          setAddNoteFields={setAgendaWiseFields}
+          addAgendaWiseFields={addAgendaWiseFields}
+          setAgendaWiseFields={setAgendaWiseFields}
           fileAttachments={addAgendaWiseFiles}
           setFileAttachments={setaddAgendaWiseFiles}
         />

@@ -3928,7 +3928,6 @@ const GetAllAgendaWiseMinutesApiFunc = (
   loader
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return async (dispatch) => {
     // dispatch(showGetAllAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4716,7 +4715,7 @@ const UpdateMinutesGeneralApiFunc = (navigate, Data, t) => {
 // Upload Documents Success
 const uploadDocument_success_agenda_wise = (response, message) => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
+    type: actions.UPLOAD_DOCUMENT_SUCCESS,
     response: response,
     message: message,
   };
@@ -4725,7 +4724,7 @@ const uploadDocument_success_agenda_wise = (response, message) => {
 // Upload Documents Fail
 const uploadDocument_fail_agenda_wise = (message) => {
   return {
-    type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
+    type: actions.UPLOAD_DOCUMENT_FAILED,
     message: message,
   };
 };
@@ -4829,7 +4828,7 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
 // Save Files Success
 const saveFiles_success_agenda_wise = (response, message) => {
   return {
-    type: actions.SAVEFILES_DATAROOM_SUCCESS,
+    type: actions.SAVED_FILES_SUCCESS,
     response: response,
     message: message,
   };
@@ -4838,7 +4837,7 @@ const saveFiles_success_agenda_wise = (response, message) => {
 // Save Files Fail
 const saveFiles_fail_agenda_wise = (message) => {
   return {
-    type: actions.SAVEFILES_DATAROOM_FAIL,
+    type: actions.SAVED_FILES_FAILED,
     message: message,
   };
 };
@@ -5215,11 +5214,9 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
   Data,
   t,
   currentMeeting,
-  AgendaWiseData,
   id
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(showDeleteAgendaWiseDocumentInit());
     let form = new FormData();
@@ -5243,7 +5240,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               Data,
               t,
               currentMeeting,
-              AgendaWiseData,
+
               id
             )
           );
@@ -5265,7 +5262,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                 )
               );
               let AgendaWiseDelData = {
-                MinuteID: AgendaWiseData.minuteID,
+                MinuteID: Number(id),
               };
               dispatch(
                 DeleteAgendaWiseMinutesApiFunc(
@@ -5287,7 +5284,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                 showDeleteAgendaWiseDocumentFailed(t("No-record-deleted"))
               );
               let AgendaWiseDelData = {
-                MinuteID: AgendaWiseData.minuteID,
+                MinuteID: Number(id),
               };
               dispatch(
                 DeleteAgendaWiseMinutesApiFunc(
@@ -6538,7 +6535,6 @@ const showAllDocumentsAgendaWiseMinutesFailed = (message) => {
 
 const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return async (dispatch) => {
     dispatch(showAllDocumentsAgendaWiseMinutesInit());
     let form = new FormData();
@@ -6570,13 +6566,6 @@ const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
                 "DataRoom_DataRoomManager_GetAllAgendaWiseMinuteDocumentsForMeeting_01".toLowerCase()
               )
           ) {
-            // await dispatch(
-            //   showAllDocumentsAgendaWiseMinutesSuccess(
-            //     response.data.responseResult,
-            //     t("Data-available")
-            //   )
-            // );
-            console.log("loader check");
             await dispatch(
               showAllDocumentsAgendaWiseMinutesSuccess(
                 response.data.responseResult,
