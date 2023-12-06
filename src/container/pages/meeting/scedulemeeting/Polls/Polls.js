@@ -30,10 +30,12 @@ import CancelPolls from "./CancelPolls/CancelPolls";
 import { _justShowDateformatBilling } from "../../../../../commen/functions/date_formater";
 import {
   deleteMeetingPollApi,
+  getPollByPollIdforMeeting,
   getPollsByPollIdApi,
 } from "../../../../../store/actions/Polls_actions";
 import CustomPagination from "../../../../../commen/functions/customPagination/Paginations";
-
+import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
+import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
 const Polls = ({
   setSceduleMeeting,
   setPolls,
@@ -58,6 +60,9 @@ const Polls = ({
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
+  // Unpublished Poll
+  const [unPublished, setUnPublished] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -144,9 +149,62 @@ const Polls = ({
       }
     } catch {}
   }, [NewMeetingreducer.getPollsMeetingID]);
-
+  const handleClickTitle = (record) => {
+    if (record.pollStatus.pollStatusId === 1) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(
+        getPollByPollIdforMeeting(
+          navigate,
+          data,
+          3,
+          t,
+          setEditPolls,
+          setvotePolls,
+          setUnPublished,
+          setViewPublishedPoll
+        )
+      );
+    } else if (record.pollStatus.pollStatusId === 2) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(
+        getPollByPollIdforMeeting(
+          navigate,
+          data,
+          4,
+          t,
+          setEditPolls,
+          setvotePolls,
+          setUnPublished,
+          setViewPublishedPoll
+        )
+      );
+    }
+  };
   console.log(pollsRows, "pollsRowspollsRowspollsRows");
-
+  const voteCastModal = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(
+      getPollByPollIdforMeeting(
+        navigate,
+        data,
+        2,
+        t,
+        setEditPolls,
+        setvotePolls,
+        setUnPublished,
+        setViewPublishedPoll
+      )
+    );
+  };
   const PollsColoumn = [
     {
       title: t("Poll-title"),
@@ -157,8 +215,9 @@ const Polls = ({
         return (
           <span
             className={styles["DateClass"]}
-            onClick={() =>
-              navigate("/DisKus/polling", { state: { record, isVote: false } })
+            onClick={
+              () => handleClickTitle(record)
+              // navigate("/DisKus/polling", { state: { record, isVote: false } })
             }
           >
             {text}
@@ -225,12 +284,12 @@ const Polls = ({
       },
     },
 
-    {
-      title: t("Poll-type"),
-      dataIndex: "PollType",
-      key: "PollType",
-      width: "90px",
-    },
+    // {
+    //   title: t("Poll-type"),
+    //   dataIndex: "PollType",
+    //   key: "PollType",
+    //   width: "90px",
+    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",
@@ -259,11 +318,7 @@ const Polls = ({
                   <Button
                     className={styles["Not_Vote_Button_Polls"]}
                     text={t("Vote")}
-                    onClick={() =>
-                      navigate("/DisKus/polling", {
-                        state: { record, isVote: true },
-                      })
-                    }
+                    onClick={() => voteCastModal(record)}
                   />
                 );
               } else if (record.voteStatus === "Voted") {
@@ -477,10 +532,23 @@ const Polls = ({
                 currentMeeting={currentMeeting}
               />
             ) : votePolls ? (
-              <CastVotePollsMeeting setvotePolls={setvotePolls} />
+              <CastVotePollsMeeting
+                setvotePolls={setvotePolls}
+                currentMeeting={currentMeeting}
+              />
             ) : editPolls ? (
               <EditPollsMeeting
                 setEditPolls={setEditPolls}
+                currentMeeting={currentMeeting}
+              />
+            ) : viewPublishedPoll ? (
+              <ViewPollsPublishedScreen
+                setViewPublishedPoll={setViewPublishedPoll}
+                currentMeeting={currentMeeting}
+              />
+            ) : unPublished ? (
+              <ViewPollsUnPublished
+                setUnPublished={setUnPublished}
                 currentMeeting={currentMeeting}
               />
             ) : (

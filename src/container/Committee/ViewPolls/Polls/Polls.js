@@ -65,8 +65,24 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
     setafterViewPolls(true);
   };
 
-  const handleCastVotePollMeeting = () => {
-    setvotePolls(true);
+  const handleCastVotePollMeeting = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(
+      getPollsByPollIdforCommitteeApi(
+        navigate,
+        data,
+        2,
+        t,
+        setEditPolls,
+        setvotePolls,
+        setUnPublished,
+        setViewPublishedPoll
+      )
+    );
+    // setvotePolls(true);
   };
 
   const handleEditPollsMeeting = (record) => {
@@ -290,15 +306,15 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
       },
     },
 
-    {
-      title: t("Poll-type"),
-      dataIndex: "PollType",
-      key: "PollType",
-      width: "90px",
-      render: () => {
-        return <span className={styles["text-success"]}>{t("Meetings")}</span>;
-      },
-    },
+    // {
+    //   title: t("Poll-type"),
+    //   dataIndex: "PollType",
+    //   key: "PollType",
+    //   width: "90px",
+    //   render: () => {
+    //     return <span className={styles["text-success"]}>{t("Meetings")}</span>;
+    //   },
+    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",
@@ -323,10 +339,11 @@ const Polls = ({ setSceduleMeeting, setPolls, setAttendance }) => {
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() =>
-                    navigate("/DisKus/polling", {
-                      state: { record, isVote: true },
-                    })
+                  onClick={
+                    () => handleCastVotePollMeeting(record)
+                    // navigate("/DisKus/polling", {
+                    //   state: { record, isVote: true },
+                    // })
                   }
 
                   // onClick={onClickVoteBtn () => navigate("/DisKus/polling")}

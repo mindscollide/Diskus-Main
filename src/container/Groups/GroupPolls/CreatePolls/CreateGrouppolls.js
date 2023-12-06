@@ -532,8 +532,11 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                     lg={6}
                     md={6}
                     sm={6}
-                    className="d-flex align-items-center"
+                    className="d-flex align-items-start flex-column justify-content-start"
                   >
+                    <span className={styles["Title_heading"]}>
+                      {t("Due-date")}
+                    </span>
                     <DatePicker
                       value={meetingDate}
                       format={"DD/MM/YYYY"}

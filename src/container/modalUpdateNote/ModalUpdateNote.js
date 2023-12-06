@@ -269,7 +269,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   console.log(tasksAttachments, "tasksAttachmentstasksAttachments");
   const uploadFilesToDo = (data) => {
     let fileSizeArr;
-    if (tasksAttachments === 10) {
+    if (tasksAttachments + fileForSend === 10) {
       console.log("uploadedFile");
       setTimeout(
         setOpen({

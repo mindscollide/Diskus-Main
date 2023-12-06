@@ -10,13 +10,12 @@ body[dir="rtl"] .Groups-heading-size {
 
 .create-Group-btn {
   width: 219px !important;
-  margin-top: 8px !important;
   height: 31px !important;
   font-size: calc(14px - 20%);
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold";
+  font-family: "MontserratSemiBold" !important;
   border: none !important;
 }
 

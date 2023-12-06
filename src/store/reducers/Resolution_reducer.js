@@ -31,13 +31,13 @@ const initialState = {
 };
 const ResolutionReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.UPLOAD_DOCUMENTS_DATAROOM_INIT: {
+    case actions.UPLOAD_RESOLUTION_DOCUMENTS_INIT: {
       return {
         ...state,
         Loading: true,
       };
     }
-    case actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS: {
+    case actions.UPLOAD_RESOLUTION_DOCUMENTS_SUCCESS: {
       return {
         ...state,
         Loading: true,
@@ -45,7 +45,7 @@ const ResolutionReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-    case actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL: {
+    case actions.UPLOAD_RESOLUTION_DOCUMENTS_FAIL: {
       return {
         ...state,
         Loading: false,
@@ -53,23 +53,23 @@ const ResolutionReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-    case actions.SAVEFILES_DATAROOM_INIT: {
+    case actions.SAVE_RESOLUTION_DOCUMENTS_INIT: {
       return {
         ...state,
         Loading: true,
       };
     }
-    case actions.SAVEFILES_DATAROOM_SUCCESS: {
+    case actions.SAVE_RESOLUTION_DOCUMENTS_SUCCESS: {
       // let copyData = [...state.SaveDocumentsIDs];
       // copyData.push(action.response);
       return {
         ...state,
-        Loading: true,
+        Loading: false,
         SaveDocumentsIDs: [...state.SaveDocumentsIDs, action.response],
         ResponseMessage: action.message,
       };
     }
-    case actions.SAVEFILES_DATAROOM_FAIL: {
+    case actions.SAVE_RESOLUTION_DOCUMENTS_FAIL: {
       return {
         ...state,
         Loading: false,

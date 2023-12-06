@@ -241,7 +241,7 @@ const validationEmailAction = (email, navigate, t) => {
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
-  let data = { UserEmail: email, Device: "Browser", DeviceID: id.toString() };
+  let data = { UserEmail: email, Device: "Browser", DeviceID: "1" };
   return (dispatch) => {
     dispatch(validationEmailInit());
     let form = new FormData();
@@ -472,7 +472,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
   let data = {
     UserID: JSON.parse(userID),
     Device: "Browser",
-    DeviceID: id.toString(),
+    DeviceID: "1",
     UserPassword: value,
   };
   return (dispatch) => {

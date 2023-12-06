@@ -526,7 +526,13 @@ const EditPollsMeeting = ({ setEditPolls }) => {
             </Col>
           </Row>
           <Row className="mt-3">
-            <Col lg={6} md={6} sm={6} className="d-flex align-items-center">
+            <Col
+              lg={6}
+              md={6}
+              sm={6}
+              className="d-flex align-items-start flex-column justify-content-start"
+            >
+              <span className={styles["Title_heading"]}>{t("Due-date")}</span>
               <DatePicker
                 value={meetingDate}
                 format={"DD/MM/YYYY"}

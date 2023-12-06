@@ -23,9 +23,12 @@ import {
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
 import CancelPolls from "./CancelPolls/CancelPolls";
+import ViewPollsUnPublished from "./VIewPollsUnPublished/ViewPollsUnPublished";
+import ViewPollsPublishedScreen from "./ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 import { _justShowDateformatBilling } from "../../../commen/functions/date_formater";
 import {
   deleteGroupPollApi,
+  getPollByPollIdforGroups,
   getPollsByGroupMainApi,
   getPollsByPollIdApi,
 } from "../../../store/actions/Polls_actions";
@@ -48,6 +51,8 @@ const GroupViewPolls = ({
   const [pollsRows, setPollsRows] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(50);
+  const [viewUnnPublished, setViewUnPublished] = useState(false);
+  const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
   const [afterViewPolls, setafterViewPolls] = useState(false);
   let currentMeetingID = Number(localStorage.getItem("meetingID"));
@@ -115,7 +120,18 @@ const GroupViewPolls = ({
       PollID: record.pollID,
       UserID: parseInt(userID),
     };
-    dispatch(getPollsByPollIdApi(navigate, data, 0, t, setEditPolls));
+    dispatch(
+      getPollByPollIdforGroups(
+        navigate,
+        data,
+        1,
+        t,
+        setEditPolls,
+        setvotePolls,
+        setViewUnPublished,
+        setViewPublishedPoll
+      )
+    );
     // dispatch(showunsavedEditPollsMeetings(false));
   };
 
@@ -127,8 +143,63 @@ const GroupViewPolls = ({
     dispatch(deleteGroupPollApi(navigate, t, data));
   };
 
+  const handleClickonTitle = (record) => {
+    // getPollsByGroupMainApi;
+    if (record.pollStatus.pollStatusId === 1) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(
+        getPollByPollIdforGroups(
+          navigate,
+          data,
+          3,
+          t,
+          setEditPolls,
+          setvotePolls,
+          setViewUnPublished,
+          setViewPublishedPoll
+        )
+      );
+    } else if (record.pollStatus.pollStatusId === 2) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(
+        getPollByPollIdforGroups(
+          navigate,
+          data,
+          4,
+          t,
+          setEditPolls,
+          setvotePolls,
+          setViewUnPublished,
+          setViewPublishedPoll
+        )
+      );
+    }
+  };
   console.log(pollsRows, "pollsRowspollsRowspollsRows");
-
+  const handleClickVoteCast = (record) => {
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    dispatch(
+      getPollByPollIdforGroups(
+        navigate,
+        data,
+        2,
+        t,
+        setEditPolls,
+        setvotePolls,
+        setViewUnPublished,
+        setViewPublishedPoll
+      )
+    );
+  };
   const PollsColoumn = [
     {
       title: t("Poll-title"),
@@ -139,8 +210,9 @@ const GroupViewPolls = ({
         return (
           <span
             className={styles["DateClass"]}
-            onClick={() =>
-              navigate("/DisKus/polling", { state: { record, isVote: false } })
+            onClick={
+              () => handleClickonTitle(record)
+              // navigate("/DisKus/polling", { state: { record, isVote: false } })
             }
           >
             {text}
@@ -207,12 +279,12 @@ const GroupViewPolls = ({
       },
     },
 
-    {
-      title: t("Poll-type"),
-      dataIndex: "PollType",
-      key: "PollType",
-      width: "90px",
-    },
+    // {
+    //   title: t("Poll-type"),
+    //   dataIndex: "PollType",
+    //   key: "PollType",
+    //   width: "90px",
+    // },
     {
       title: t("Created-by"),
       dataIndex: "pollCreator",
@@ -234,10 +306,11 @@ const GroupViewPolls = ({
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
                   text={t("Vote")}
-                  onClick={() =>
-                    navigate("/DisKus/polling", {
-                      state: { record, isVote: true },
-                    })
+                  onClick={
+                    () => handleClickVoteCast(record)
+                    // navigate("/DisKus/polling", {
+                    // state: { record, isVote: true },
+                    // })
                   }
                 />
               );
@@ -414,6 +487,12 @@ const GroupViewPolls = ({
               <CastVotePollsMeeting setvotePolls={setvotePolls} />
             ) : editPolls ? (
               <EditPollsMeeting setEditPolls={setEditPolls} />
+            ) : viewUnnPublished ? (
+              <ViewPollsUnPublished setViewUnPublished={setViewUnPublished} />
+            ) : viewPublishedPoll ? (
+              <ViewPollsPublishedScreen
+                setViewPublishedPoll={setViewPublishedPoll}
+              />
             ) : (
               <>
                 <Row className="mt-4">
