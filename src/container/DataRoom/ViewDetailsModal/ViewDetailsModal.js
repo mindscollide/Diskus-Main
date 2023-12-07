@@ -360,6 +360,330 @@ const ViewDetailsModal = () => {
                       </Col>
                     </Row>
                   </>
+                ) : activityState ? (
+                  <>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Scroller"]}
+                      >
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <span className={styles["Today_heading"]}>
+                              {t("Today")}
+                            </span>
+                          </Col>
+                        </Row>
+
+                        <Row className="mt-2">
+                          <Col lg={1} md={1} sm={1}>
+                            <img
+                              src={profilepic}
+                              alt=""
+                              height="30.25px"
+                              width="30.25px"
+                              className={styles["profileClass"]}
+                            />
+                          </Col>
+                          <Col
+                            lg={11}
+                            md={11}
+                            sm={11}
+                            className="d-flex flex-column  flex-wrap"
+                          >
+                            <span className={styles["activity_heading"]}>
+                              You changed the permission on item
+                            </span>
+                            <span className={styles["date_heading"]}>
+                              26 March 2023
+                            </span>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex gap-2 align-items-center"
+                              >
+                                <img
+                                  src={PDFIcon}
+                                  alt=""
+                                  height="17px"
+                                  width="17px"
+                                />
+                                <span className={styles["Filename_heading"]}>
+                                  DairaLogo.pdf
+                                </span>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+
+                        <Row className="mt-3">
+                          <Col lg={1} md={1} sm={1}>
+                            <img
+                              src={profilepic}
+                              alt=""
+                              height="30.25px"
+                              width="30.25px"
+                              className={styles["profileClass"]}
+                            />
+                          </Col>
+                          <Col
+                            lg={11}
+                            md={11}
+                            sm={11}
+                            className="d-flex flex-column  flex-wrap"
+                          >
+                            <span className={styles["activity_heading"]}>
+                              Salman memon
+                            </span>
+                            <span className={styles["date_heading"]}>
+                              Editor
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row className="mt-3">
+                          <Col lg={1} md={1} sm={1}>
+                            <img
+                              src={profilepic}
+                              alt=""
+                              height="30.25px"
+                              width="30.25px"
+                              className={styles["profileClass"]}
+                            />
+                          </Col>
+                          <Col
+                            lg={11}
+                            md={11}
+                            sm={11}
+                            className="d-flex flex-column  flex-wrap"
+                          >
+                            <span
+                              className={styles["Removed_particpant_styles"]}
+                            >
+                              Saif Rehman
+                            </span>
+                            <span className={styles["date_heading"]}>
+                              Access Removed
+                            </span>
+                          </Col>
+                        </Row>
+                        {/* Yesterday */}
+                        <Row className="mt-2">
+                          <Col lg={12} md={12} sm={12} className="Scroller">
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span className={styles["Today_heading"]}>
+                                  {t("Yesterday")}
+                                </span>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                        <Row className="mt-2">
+                          <Col lg={1} md={1} sm={1}>
+                            <img
+                              src={profilepic}
+                              alt=""
+                              height="30.25px"
+                              width="30.25px"
+                              className={styles["profileClass"]}
+                            />
+                          </Col>
+                          <Col
+                            lg={11}
+                            md={11}
+                            sm={11}
+                            className="d-flex flex-column  flex-wrap"
+                          >
+                            <span className={styles["activity_heading"]}>
+                              You changed the permission on item
+                            </span>
+                            <span className={styles["date_heading"]}>
+                              26 March 2023
+                            </span>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex gap-2 align-items-center"
+                              >
+                                <img
+                                  src={PDFIcon}
+                                  alt=""
+                                  height="17px"
+                                  width="17px"
+                                />
+                                <span className={styles["Filename_heading"]}>
+                                  DairaLogo.pdf
+                                </span>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+
+                        <Row className="mt-3">
+                          <Col lg={1} md={1} sm={1}>
+                            <img
+                              src={profilepic}
+                              alt=""
+                              height="30.25px"
+                              width="30.25px"
+                              className={styles["profileClass"]}
+                            />
+                          </Col>
+                          <Col
+                            lg={11}
+                            md={11}
+                            sm={11}
+                            className="d-flex flex-column  flex-wrap"
+                          >
+                            <span className={styles["activity_heading"]}>
+                              Salman memon
+                            </span>
+                            <span className={styles["date_heading"]}>
+                              Editor
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row className="mt-3">
+                          <Col lg={1} md={1} sm={1}>
+                            <img
+                              src={profilepic}
+                              alt=""
+                              height="30.25px"
+                              width="30.25px"
+                              className={styles["profileClass"]}
+                            />
+                          </Col>
+                          <Col
+                            lg={11}
+                            md={11}
+                            sm={11}
+                            className="d-flex flex-column  flex-wrap"
+                          >
+                            <span
+                              className={styles["Removed_particpant_styles"]}
+                            >
+                              Saif Rehman
+                            </span>
+                            <span className={styles["date_heading"]}>
+                              Access Removed
+                            </span>
+                          </Col>
+                        </Row>
+
+                        {/* this Week */}
+                        <Row className="mt-2">
+                          <Col lg={12} md={12} sm={12} className="Scroller">
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span className={styles["Today_heading"]}>
+                                  {t("This-week")}
+                                </span>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                        <Row className="mt-2">
+                          <Col lg={1} md={1} sm={1}>
+                            <img
+                              src={profilepic}
+                              alt=""
+                              height="30.25px"
+                              width="30.25px"
+                              className={styles["profileClass"]}
+                            />
+                          </Col>
+                          <Col
+                            lg={11}
+                            md={11}
+                            sm={11}
+                            className="d-flex flex-column  flex-wrap"
+                          >
+                            <span className={styles["activity_heading"]}>
+                              You changed the permission on item
+                            </span>
+                            <span className={styles["date_heading"]}>
+                              26 March 2023
+                            </span>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex gap-2 align-items-center"
+                              >
+                                <img
+                                  src={PDFIcon}
+                                  alt=""
+                                  height="17px"
+                                  width="17px"
+                                />
+                                <span className={styles["Filename_heading"]}>
+                                  DairaLogo.pdf
+                                </span>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+
+                        <Row className="mt-3">
+                          <Col lg={1} md={1} sm={1}>
+                            <img
+                              src={profilepic}
+                              alt=""
+                              height="30.25px"
+                              width="30.25px"
+                              className={styles["profileClass"]}
+                            />
+                          </Col>
+                          <Col
+                            lg={11}
+                            md={11}
+                            sm={11}
+                            className="d-flex flex-column  flex-wrap"
+                          >
+                            <span className={styles["activity_heading"]}>
+                              Salman memon
+                            </span>
+                            <span className={styles["date_heading"]}>
+                              Editor
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row className="mt-3">
+                          <Col lg={1} md={1} sm={1}>
+                            <img
+                              src={profilepic}
+                              alt=""
+                              height="30.25px"
+                              width="30.25px"
+                              className={styles["profileClass"]}
+                            />
+                          </Col>
+                          <Col
+                            lg={11}
+                            md={11}
+                            sm={11}
+                            className="d-flex flex-column  flex-wrap"
+                          >
+                            <span
+                              className={styles["Removed_particpant_styles"]}
+                            >
+                              Saif Rehman
+                            </span>
+                            <span className={styles["date_heading"]}>
+                              Access Removed
+                            </span>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </>
                 ) : null}
               </Col>
             </Row>
