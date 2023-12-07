@@ -382,7 +382,9 @@ const ViewResolution = ({ setViewresolution }) => {
                                       taskId:
                                         resolutionData?.resolution
                                           .pK_ResolutionID,
-                                      attachmentID: data.pK_RAID,
+                                      attachmentID: Number(
+                                        data.originalAttachmentName
+                                      ),
                                       fileName: data.displayAttachmentName,
                                       commingFrom: 4,
                                     };
