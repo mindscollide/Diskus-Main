@@ -547,13 +547,13 @@ const DataRoom = () => {
     } else if (data.value === 6) {
       dispatch(deleteFileDataroom(navigate, record.id, t));
     } else if (data.value === 4) {
-      let Data = {
-        ID: record.id,
-        isFolder: false,
-      };
-      dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      // let Data = {
+      //   ID: record.id,
+      //   isFolder: false,
+      // };
+      // dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
     } else if (data.value === 7) {
-      dispatch(showFileDetailsModal(true));
+      // dispatch(showFileDetailsModal(true));
     }
   };
   // console.log(detailView, "fileOptionsSelectfileOptionsSelect");
@@ -567,14 +567,14 @@ const DataRoom = () => {
       dispatch(deleteFolder(navigate, record.id, t));
     } else if (data.value === 3) {
       // Detail View Folder
-      let Data = {
-        ID: record.id,
-        isFolder: true,
-      };
-      dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      // let Data = {
+      //   ID: record.id,
+      //   isFolder: true,
+      // };
+      // dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
       // setDetailView(true);
     } else if (data.value === 6) {
-      dispatch(showFileDetailsModal(true));
+      // dispatch(showFileDetailsModal(true));
     }
   };
 
