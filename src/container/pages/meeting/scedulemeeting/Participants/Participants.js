@@ -91,6 +91,7 @@ const Participants = ({
 
   //Opens Add more modal
   const openAddPartcipantModal = () => {
+    setEditableSave(2);
     dispatch(showAddParticipantsModal(true));
   };
 
@@ -472,7 +473,7 @@ const Participants = ({
     );
     let newarry = [];
     let copyData = [...rspvRows];
-    copyData.map((data, index) => {
+    copyData.forEach((data, index) => {
       newarry.push(data.userID);
     });
     //Upadte Meeting Organizer

@@ -6096,7 +6096,7 @@ const UpdateMeetingUserApiFunc = (
                     : 0,
                 });
               });
-              if (editableSave === 1) {
+              if (Number(editableSave) === 1) {
                 let Data = {
                   MeetingParticipants: newData,
                   MeetingID: Number(currentMeeting),
@@ -6106,7 +6106,7 @@ const UpdateMeetingUserApiFunc = (
                 dispatch(
                   SaveparticipantsApi(Data, navigate, t, currentMeeting)
                 );
-              } else {
+              } else if (Number(editableSave) === 2) {
                 let Data = {
                   MeetingParticipants: newData,
                   MeetingID: Number(currentMeeting),
