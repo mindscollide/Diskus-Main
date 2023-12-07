@@ -117,6 +117,17 @@ const NewMeeting = () => {
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
+
+  let now = new Date();
+  let year = now.getUTCFullYear();
+  let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
+  let day = now.getUTCDate().toString().padStart(2, "0");
+  let hours = now.getUTCHours().toString().padStart(2, "0");
+  let minutes = now.getUTCMinutes().toString().padStart(2, "0");
+  let seconds = now.getUTCSeconds().toString().padStart(2, "0");
+
+  let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
+
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
@@ -704,11 +715,49 @@ const NewMeeting = () => {
           MeetingID: Number(record.pK_MDID),
           StatusID: 10,
         };
+        let meetingDateTime = record.dateOfMeeting + record.meetingStartTime;
+        const currentDateObj = new Date(
+          currentUTCDateTime.substring(0, 4), // Year
+          parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
+          currentUTCDateTime.substring(6, 8), // Day
+          currentUTCDateTime.substring(8, 10), // Hours
+          currentUTCDateTime.substring(10, 12), // Minutes
+          currentUTCDateTime.substring(12, 14) // Seconds
+        );
+
+        const meetingDateObj = new Date(
+          meetingDateTime.substring(0, 4), // Year
+          parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
+          meetingDateTime.substring(6, 8), // Day
+          meetingDateTime.substring(8, 10), // Hours
+          meetingDateTime.substring(10, 12), // Minutes
+          meetingDateTime.substring(12, 14) // Seconds
+        );
+
+        // Calculate the time difference in milliseconds
+        const timeDifference = meetingDateObj - currentDateObj;
+
+        // Convert milliseconds to minutes
+        const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+
+        console.log(`The difference is ${minutesDifference} minutes.`);
+        console.log(
+          "Meeting Date Time and Current Date Time",
+          meetingDateTime,
+          typeof meetingDateTime,
+          currentUTCDateTime,
+          typeof currentUTCDateTime,
+          minutesDifference
+        );
         if (Number(record.status) === 1) {
           if (isParticipant) {
           } else if (isAgendaContributor) {
           } else {
-            if (record.isQuickMeeting === true) {
+            if (
+              record.isQuickMeeting === true &&
+              minutesDifference <= 5 &&
+              minutesDifference > 0
+            ) {
               return (
                 <Row>
                   <Col sm={12} md={12} lg={12}>
@@ -735,7 +784,11 @@ const NewMeeting = () => {
                   </Col>
                 </Row>
               );
-            } else {
+            } else if (
+              record.isQuickMeeting === false &&
+              minutesDifference <= 5 &&
+              minutesDifference > 0
+            ) {
               return (
                 <Row>
                   <Col sm={12} md={12} lg={12}>
@@ -1040,6 +1093,8 @@ const NewMeeting = () => {
     } catch {}
   }, [searchMeetings]);
 
+  console.log("Current Meeting Table Data", rows);
+
   // Empty text data
   const emptyText = () => {
     return (
@@ -1073,6 +1128,30 @@ const NewMeeting = () => {
     localStorage.setItem("MeetingPageCurrent", current);
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.meetingStatusPublishedMqttData !== null &&
+      NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
+    ) {
+      let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+      try {
+        const indexToUpdate = rows.findIndex(
+          (obj) => obj.pK_MDID === meetingData.pK_MDID
+        );
+        if (indexToUpdate !== -1) {
+          let updatedRows = [...rows];
+          updatedRows[indexToUpdate] = meetingData;
+          setRow(updatedRows);
+        } else {
+          let updatedRows = [...rows, meetingData];
+          setRow(updatedRows);
+        }
+      } catch {
+        console.log("Error");
+      }
+    }
+  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
   useEffect(() => {
     if (
@@ -1436,7 +1515,10 @@ const NewMeeting = () => {
                                 ));
                               },
                               rowExpandable: (record) =>
-                                record.meetingAgenda.length > 0 ? true : false,
+                                record.meetingAgenda !== null &&
+                                record.meetingAgenda.length > 0
+                                  ? true
+                                  : false,
                             }}
                           />
                         </>

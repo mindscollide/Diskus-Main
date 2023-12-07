@@ -61,7 +61,6 @@ const Participants = ({
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
-  const [inputValues, setInputValues] = useState({});
   const [editableSave, setEditableSave] = useState(0);
   const [flag, setFlag] = useState(4);
   const [prevFlag, setprevFlag] = useState(4);
@@ -91,6 +90,7 @@ const Participants = ({
 
   //Opens Add more modal
   const openAddPartcipantModal = () => {
+    setEditableSave(2);
     dispatch(showAddParticipantsModal(true));
   };
 
@@ -256,7 +256,7 @@ const Participants = ({
                     value={
                       record.isComingApi === true
                         ? record.Title
-                        : inputValues[record.userID] || ""
+                        : record.Title || ""
                     }
                     change={(e) =>
                       handleInputChange(record.userID, e.target.value)
@@ -434,10 +434,6 @@ const Participants = ({
 
   //state management For textfield
   const handleInputChange = (userID, newValue) => {
-    setInputValues((prevInputValues) => ({
-      ...prevInputValues,
-      [userID]: newValue,
-    }));
     setrspvRows((prevRowsData) => {
       return prevRowsData.map((row) => {
         if (row.userID === userID) {
@@ -463,6 +459,7 @@ const Participants = ({
 
   //Intiating Add Flow Particiapnt from Empty State
   const handleParticipantEmptyStateIntiate = () => {
+    setEditableSave(2);
     dispatch(showAddParticipantsModal(true));
   };
 
@@ -472,7 +469,7 @@ const Participants = ({
     );
     let newarry = [];
     let copyData = [...rspvRows];
-    copyData.map((data, index) => {
+    copyData.forEach((data, index) => {
       newarry.push(data.userID);
     });
     //Upadte Meeting Organizer

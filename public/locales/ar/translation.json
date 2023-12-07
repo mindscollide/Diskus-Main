@@ -1633,5 +1633,7 @@
   "Size": "Size",
   "Modified": "Modified",
   "Created": "Created",
-  "Add-description": "Add Description"
+  "Add-description": "Add Description",
+  "MEETING_STATUS_EDITED_PROPOSED": "The [Meeting TItle] has been Proposed",
+  "MEETING_STATUS_EDITED_PUBLISHED": "The [Meeting TItle] has been Published"
 }

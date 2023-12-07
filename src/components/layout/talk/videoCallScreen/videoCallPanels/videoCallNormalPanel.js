@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import "./videoCallNormalPanel.css";
 import VideoCallNormalHeader from "../videoCallHeader/videoCallNormalHeader";
-import VideoPanelNormalChat from "./videoCallNormalChat";
 import VideoPanelNormalAgenda from "./videoCallNormalAgenda";
 import VideoPanelNormalMinutesMeeting from "./videoCallNormalMinutesMeeting";
-import { Spin } from "antd";
 import { LoaderPanelVideoScreen } from "../../../../elements";
 import {
   agendaEnableNormalFlag,
@@ -19,15 +17,10 @@ import {
   generateURLCaller,
   generateURLParticipant,
 } from "../../../../../commen/functions/urlVideoCalls";
-import ChatNonActive from "../../../../../assets/images/newElements/ChatIconNonActive.svg";
-import NoteNonActive from "../../../../../assets/images/newElements/NoteIconNonActive.svg";
-import Note_2NonActive from "../../../../../assets/images/newElements/Note_2NonActive.svg";
-import ActiveChat from "../../../../../assets/images/newElements/ActiveChatIcon.svg";
-import ActiveNote from "../../../../../assets/images/newElements/ActiveNoteIcon.svg";
-import ActiveNote2 from "../../../../../assets/images/newElements/ActiveNote2Icon.svg";
-import Avatar2 from "../../../../../assets/images/newElements/Avatar2.png";
+import LayoutIconPurple from "../../../../../assets/images/Layout-Icon-Purple.svg";
+import LayoutIconSelected from "../../../../../assets/images/Layout-Icon-Selected-with-shape.svg";
+import LayoutIconWhite from "../../../../../assets/images/Layout-Icon-White.svg";
 import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
-import ScreenShare from "../../../../../assets/images/newElements/ScreenShareIcon.png";
 import { generateRandomGuest } from "../../../../../commen/functions/urlVideoCalls";
 
 const VideoPanelNormal = () => {
@@ -47,6 +40,7 @@ const VideoPanelNormal = () => {
   let recipentName = localStorage.getItem("recipentName");
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+  localStorage.setItem("VideoView", "Sidebar");
   let callAcceptedRecipientID = Number(
     localStorage.getItem("acceptedRecipientID")
   );
@@ -165,9 +159,27 @@ const VideoPanelNormal = () => {
   const handleScreenShareButton = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       const iframe = iframeRef.current;
+      console.log("iframeiframe", iframe);
       if (iframe) {
         iframe.contentWindow.postMessage("ScreenShare", "*");
         setIsScreenActive(!isScreenActive);
+      }
+    }
+  };
+
+  const layoutCurrentChange = () => {
+    console.log("layoutCurrentChange");
+    let videoView = localStorage.getItem("VideoView");
+    if (videoFeatureReducer.LeaveCallModalFlag === false) {
+      const iframe = iframeRef.current;
+      console.log("iframeiframe", iframe);
+      console.log("iframeiframe", iframe.contentWindow);
+      if (iframe && videoView === "Sidebar") {
+        iframe.contentWindow.postMessage("TileView", "*");
+        localStorage.setItem("VideoView", "TileView");
+      } else if (iframe && videoView === "TileView") {
+        iframe.contentWindow.postMessage("SidebarView", "*");
+        localStorage.setItem("VideoView", "Sidebar");
       }
     }
   };
@@ -203,6 +215,7 @@ const VideoPanelNormal = () => {
               <>
                 <VideoCallNormalHeader
                   screenShareButton={handleScreenShareButton}
+                  layoutCurrentChange={layoutCurrentChange}
                   isScreenActive={isScreenActive}
                 />
                 {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
