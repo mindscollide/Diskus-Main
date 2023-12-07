@@ -63,6 +63,10 @@ import {
   TodoCounter,
 } from "../../store/actions/ToDoList_action";
 import {
+  meetingStatusProposedMqtt,
+  meetingStatusPublishedMqtt,
+} from "../../store/actions/NewMeetingActions";
+import {
   deleteCommentsMQTT,
   postComments,
 } from "../../store/actions/Post_AssigneeComments";
@@ -302,6 +306,38 @@ const Dashboard = () => {
         "NEW_UPCOMING_EVENTS".toLowerCase()
       ) {
         dispatch(setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0]));
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "MEETING_STATUS_EDITED_PROPOSED".toLowerCase()
+      ) {
+        dispatch(meetingStatusProposedMqtt(data.payload.meeting));
+        if (data.viewable) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: changeMQTTJSONOne(
+              t("MEETING_STATUS_EDITED_PROPOSED"),
+              "[Meeting Title]",
+              data.payload.meetingTitle.substring(0, 100)
+            ),
+          });
+        }
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "MEETING_STATUS_EDITED_PUBLISHED".toLowerCase()
+      ) {
+        dispatch(meetingStatusPublishedMqtt(data.payload.meeting));
+        if (data.viewable) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: changeMQTTJSONOne(
+              t("MEETING_STATUS_EDITED_PUBLISHED"),
+              "[Meeting Title]",
+              data.payload.meetingTitle.substring(0, 100)
+            ),
+          });
+        }
       }
     }
     if (data.action.toLowerCase() === "TODO".toLowerCase()) {
