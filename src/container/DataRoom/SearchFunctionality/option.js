@@ -409,6 +409,7 @@ export const optionsforFolder = (t) => [
   { label: t("View-detail"), value: 3 },
   { label: t("Download"), value: 4 },
   { label: t("Remove"), value: 5 },
+  { label: t("Analytics"), value: 6, labelIcon: PDFICON },
 ];
 export const optionsforFolderViewer = (t) => [
   // { label: t("Share"), value: 1 },
@@ -424,6 +425,7 @@ export const optionsforFolderEditor = (t) => [
   { label: t("View-detail"), value: 3 },
   { label: t("Download"), value: 4 },
   // { label: t("Remove"), value: 5 },
+  { label: t("Analytics"), value: 6, labelIcon: PDFICON },
 ];
 export const optionsforFolderEditableNonShareable = (t) => [
   // { label: t("Share"), value: 1 },
@@ -431,6 +433,7 @@ export const optionsforFolderEditableNonShareable = (t) => [
   { label: t("View-detail"), value: 3 },
   { label: t("Download"), value: 4 },
   // { label: t("Remove"), value: 5 },
+  { label: t("Analytics"), value: 6, labelIcon: PDFICON },
 ];
 
 export const optionsforFile = (t) => [
@@ -440,6 +443,7 @@ export const optionsforFile = (t) => [
   { label: t("View-detail"), value: 4, labelIcon: PDFICON },
   { label: t("Download"), value: 5, labelIcon: PDFICON },
   { label: t("Remove"), value: 6, labelIcon: PDFICON },
+  { label: t("Analytics"), value: 7, labelIcon: PDFICON },
 ];
 export const optionsforFileViewer = (t) => [
   { label: t("Open"), value: 1, labelIcon: PDFICON },
@@ -448,6 +452,7 @@ export const optionsforFileViewer = (t) => [
   { label: t("View-detail"), value: 4, labelIcon: PDFICON },
   { label: t("Download"), value: 5, labelIcon: PDFICON },
   // { label: t("Remove"), value: 6, labelIcon: PDFICON },
+  { label: t("Analytics"), value: 7, labelIcon: PDFICON },
 ];
 export const optionsforFileEditor = (t) => [
   { label: t("Open"), value: 1, labelIcon: PDFICON },
@@ -455,6 +460,7 @@ export const optionsforFileEditor = (t) => [
   { label: t("Rename"), value: 3, labelIcon: PDFICON },
   { label: t("View-detail"), value: 4, labelIcon: PDFICON },
   { label: t("Download"), value: 5, labelIcon: PDFICON },
+  { label: t("Analytics"), value: 6, labelIcon: PDFICON },
   // { label: t("Remove"), value: 6, labelIcon: PDFICON },
 ];
 export const optionsforFileEditableNonShareable = (t) => [
@@ -463,6 +469,8 @@ export const optionsforFileEditableNonShareable = (t) => [
   { label: t("Rename"), value: 3, labelIcon: PDFICON },
   { label: t("View-detail"), value: 4, labelIcon: PDFICON },
   { label: t("Download"), value: 5, labelIcon: PDFICON },
+  { label: t("Analytics"), value: 7, labelIcon: PDFICON },
+
   // { label: t("Remove"), value: 6, labelIcon: PDFICON },
 ];
 export const getIconSource = (extension) => {
