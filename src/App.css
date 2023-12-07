@@ -6466,3 +6466,6 @@ textarea {
   margin: 5px !important;
   margin-top: 5px !important;
 }
+.ant-select-arrow {
+  margin-top: 0 !important;
+}
