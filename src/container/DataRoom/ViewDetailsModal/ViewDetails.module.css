@@ -171,3 +171,34 @@ body[dir="rtl"] .Activity_Buttons {
   background: #ccc;
   margin-left: -15px;
 }
+
+.Today_heading {
+  font-size: 16px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+}
+
+.activity_heading {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+.date_heading {
+  font-size: 10px !important;
+  color: #a2a2a2 !important;
+  font-family: "MontserratSemiBold";
+}
+
+.Filename_heading {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+.Removed_particpant_styles {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+  text-decoration: line-through !important;
+}

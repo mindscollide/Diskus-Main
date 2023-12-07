@@ -42,6 +42,7 @@ const initialState = {
   FileisExistMessage: "",
   Fail: false,
   FolderFail: false,
+  fileDetials: false,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -709,6 +710,13 @@ const DataRoomReducer = (state = initialState, action) => {
           action.response.responseMessage !== undefined
             ? action.response.responseMessage
             : action.response.responseResult.recordeMessage,
+      };
+    }
+
+    case actions.FILE_DETAIL_MODAL: {
+      return {
+        ...state,
+        fileDetials: action.response,
       };
     }
 

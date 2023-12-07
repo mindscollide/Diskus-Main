@@ -59,7 +59,7 @@
   "Finish": "Finish",
   "Meetings": "Meetings",
   "Meeting": "Meeting",
-  "This-week": "This-week",
+  "This-week": "This Week",
   "Up-coming-event": "Upcoming events",
   "No-upcoming-events": "No upcoming events",
   "Change-password": "Change password",
@@ -1674,5 +1674,6 @@
   "Add-description": "Add Description",
   "MEETING_STATUS_EDITED_PROPOSED": "The [Meeting TItle] has been Proposed",
   "MEETING_STATUS_EDITED_PUBLISHED": "The [Meeting TItle] has been Published",
-  "Folder-details": "Folder details"
+  "Folder-details": "Folder details",
+  "Not-allowed": "Not Allowed"
 }

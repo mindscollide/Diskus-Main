@@ -57,6 +57,7 @@ import {
   getSharedFileUsersApi,
   getSharedFolderUsersApi,
   isFolder,
+  showFileDetailsModal,
   uploadDocumentsApi,
 } from "../../store/actions/DataRoom_actions";
 import sharedIcon from "../../assets/images/shared_icon.svg";
@@ -103,6 +104,7 @@ import axios from "axios";
 import ModalFileRequest from "./ModalFileRequesting/ModalFileRequesting";
 import ViewDetailsModal from "./ViewDetailsModal/ViewDetailsModal";
 import { getFilesandFolderDetailsApi } from "../../store/actions/DataRoom2_actions";
+import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 
 const DataRoom = () => {
   // tooltip
@@ -200,7 +202,7 @@ const DataRoom = () => {
   // for anotantion opens in new tabb on doubble click
   const [clicks, setClicks] = useState(0);
   const [dataCheck, setDataCheck] = useState([]);
-
+  console.log(DataRoomReducer, "DataRoomReducerDataRoomReducerDataRoomReducer");
   let userID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   const [searchDataFields, setSearchDataFields] = useState({
@@ -550,7 +552,8 @@ const DataRoom = () => {
         isFolder: false,
       };
       dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
-      // setDetailView(true);
+    } else if (data.value === 7) {
+      dispatch(showFileDetailsModal(true));
     }
   };
   // console.log(detailView, "fileOptionsSelectfileOptionsSelect");
@@ -570,6 +573,8 @@ const DataRoom = () => {
       };
       dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
       // setDetailView(true);
+    } else if (data.value === 6) {
+      dispatch(showFileDetailsModal(true));
     }
   };
 
@@ -3477,6 +3482,7 @@ const DataRoom = () => {
           setRequestFile={setRequestFile}
         />
       )}
+      {DataRoomReducer.fileDetials && <FileDetailsModal />}
       <Notification open={open.open} message={open.message} setOpen={setOpen} />
     </>
   );
