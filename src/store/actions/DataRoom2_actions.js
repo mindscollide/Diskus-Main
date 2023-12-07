@@ -28,7 +28,7 @@ const getFileandFolderDetail_Fail = (message) => {
   };
 };
 
-const getFilesandFolderDetailsApi = (navigate, t, Data) => {
+const getFilesandFolderDetailsApi = (navigate, t, Data, setDetailView) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -47,7 +47,9 @@ const getFilesandFolderDetailsApi = (navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getFilesandFolderDetailsApi(navigate, t, Data));
+          dispatch(
+            getFilesandFolderDetailsApi(navigate, t, Data, setDetailView)
+          );
         } else if (
           response.data.responseCode === 200 &&
           response.data.responseResult.isExecuted === true
@@ -65,6 +67,7 @@ const getFilesandFolderDetailsApi = (navigate, t, Data) => {
                 t("Data-available")
               )
             );
+            setDetailView(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

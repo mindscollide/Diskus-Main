@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ViewDetails.module.css";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import profilepic from "../../../assets/images/newprofile.png";
@@ -9,10 +9,43 @@ import { Paper } from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
 import { Button, TextField } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
-const ViewDetailsModal = () => {
+import { useSelector } from "react-redux";
+import { newTimeFormaterAsPerUTCTalkDate } from "../../../commen/functions/date_formater";
+import { getFileExtension, getIconSource } from "../SearchFunctionality/option";
+import folderColor from "../../../assets/images/folder_color.svg";
+
+const ViewDetailsModal = ({ setDetailView }) => {
   const { t } = useTranslation();
+  const { DatafileandFolderDetails } = useSelector(
+    (state) => state.DataRoomFileAndFoldersDetailsReducer
+  );
   const [activityState, setActivityState] = useState(false);
-  const [detailsState, setDetailsState] = useState(false);
+  const [detailsState, setDetailsState] = useState(true);
+  const [documentDetails, setDocumentDetails] = useState({
+    sharedUsers: [],
+    ownerDetails: {
+      fileID: 0,
+      userID: 0,
+      organizationID: 0,
+      userName: "",
+      emailAddress: "",
+      orignalProfilePictureName: "",
+      base64Img: "",
+    },
+    generalAccess: 0,
+    type: "",
+    location: "",
+    modifiedDate: "",
+    modifiedByUser: "",
+    openedDate: "",
+    openedByUser: "",
+    createdDate: "",
+    downloadPermission: "",
+    size: 0,
+    sizeOnDisk: 0,
+    description: "",
+    name: "",
+  });
 
   const handleDetialsButton = () => {
     setDetailsState(true);
@@ -24,6 +57,42 @@ const ViewDetailsModal = () => {
     setDetailsState(false);
   };
 
+  const handleClose = () => {
+    setDetailView(false);
+  };
+  useEffect(() => {
+    try {
+      if (DatafileandFolderDetails !== null) {
+        setDocumentDetails({
+          sharedUsers: DatafileandFolderDetails.sharedUsers,
+          ownerDetails: {
+            fileID: DatafileandFolderDetails.ownerDetails.fileID,
+            userID: DatafileandFolderDetails.ownerDetails.userID,
+            organizationID:
+              DatafileandFolderDetails.ownerDetails.organizationID,
+            userName: DatafileandFolderDetails.ownerDetails.userName,
+            emailAddress: DatafileandFolderDetails.ownerDetails.emailAddress,
+            orignalProfilePictureName:
+              DatafileandFolderDetails.ownerDetails.orignalProfilePictureName,
+            base64Img: DatafileandFolderDetails.ownerDetails.base64Img,
+          },
+          generalAccess: DatafileandFolderDetails.generalAccess,
+          type: DatafileandFolderDetails.type,
+          location: DatafileandFolderDetails.location,
+          modifiedDate: DatafileandFolderDetails.modifiedDate,
+          modifiedByUser: DatafileandFolderDetails.modifiedByUser,
+          openedDate: DatafileandFolderDetails.openedDate,
+          openedByUser: DatafileandFolderDetails.openedByUser,
+          createdDate: DatafileandFolderDetails.createdDate,
+          downloadPermission: DatafileandFolderDetails.downloadPermission,
+          size: DatafileandFolderDetails.size,
+          sizeOnDisk: DatafileandFolderDetails.sizeOnDisk,
+          description: DatafileandFolderDetails.description,
+          name: DatafileandFolderDetails.name,
+        });
+      }
+    } catch {}
+  }, [DatafileandFolderDetails]);
   return (
     <section>
       <Row>
@@ -36,8 +105,27 @@ const ViewDetailsModal = () => {
                 sm={11}
                 className="d-flex gap-2 align-items-center"
               >
-                <img src={PDFIcon} alt="" height="28px" width="28px" />
-                <span className={styles["Title-file"]}>DairaLogo.pdf</span>
+                {documentDetails.type
+                  .toLowerCase()
+                  .includes("Folder".toLowerCase()) ? (
+                  <img src={folderColor} alt="" height="28px" width="28px" />
+                ) : (
+                  <img
+                    src={getIconSource(getFileExtension(documentDetails?.name))}
+                    alt=""
+                    height="28px"
+                    width="28px"
+                  />
+                )}
+                {/* <img
+                  src={getIconSource(getFileExtension(documentDetails?.name))}
+                  alt=""
+                  height="28px"
+                  width="28px"
+                /> */}
+                <span className={styles["Title-file"]}>
+                  {documentDetails?.name}
+                </span>
               </Col>
               <Col lg={1} md={1} sm={1}>
                 <img
@@ -46,6 +134,7 @@ const ViewDetailsModal = () => {
                   height="18.91px"
                   width="18.91px"
                   className="cursor-pointer"
+                  onClick={handleClose}
                 />
               </Col>
             </Row>
@@ -92,7 +181,7 @@ const ViewDetailsModal = () => {
                         <Row className="mt-2">
                           <Col lg={2} md={2} sm={2} className="gap-3 d-flex">
                             <img
-                              src={profilepic}
+                              src={`data:image/jpeg;base64,${documentDetails.ownerDetails.base64Img}`}
                               alt=""
                               height="30px"
                               width="30px"
@@ -103,27 +192,21 @@ const ViewDetailsModal = () => {
                             ></span>
                           </Col>
                           <Col lg={10} md={10} sm={10} className="d-flex gap-2">
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30px"
-                              width="30px"
-                              className={styles["profileClass"]}
-                            />
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30px"
-                              width="30px"
-                              className={styles["profileClass"]}
-                            />
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30px"
-                              width="30px"
-                              className={styles["profileClass"]}
-                            />
+                            {documentDetails?.sharedUsers.length > 0 &&
+                              documentDetails?.sharedUsers.map(
+                                (data, index) => {
+                                  return (
+                                    <img
+                                      src={`data:image/jpeg;base64,${data.base64Img}`}
+                                      alt=""
+                                      height="30px"
+                                      width="30px"
+                                      className={styles["profileClass"]}
+                                    />
+                                  );
+                                }
+                              )}
+
                             {/* Globe Icon */}
                             {/* <img
                               src={GlobeIcon}
@@ -162,7 +245,13 @@ const ViewDetailsModal = () => {
                         <Row className="mt-4">
                           <Col lg={12} mg={12} sm={12}>
                             <span className={styles["File_Detials_Heading"]}>
-                              {t("File-details")}
+                              {documentDetails.type
+                                .toLowerCase()
+                                .includes("Folder".toLowerCase()) ? (
+                                <>{t("Folder-details")}</>
+                              ) : (
+                                <>{t("File-details")}</>
+                              )}
                             </span>
                           </Col>
                         </Row>
@@ -183,7 +272,7 @@ const ViewDetailsModal = () => {
                                     styles["DetialsHeading_subHeading"]
                                   }
                                 >
-                                  Excel
+                                  {documentDetails?.type}
                                 </span>
                               </Col>
                             </Row>
@@ -259,7 +348,7 @@ const ViewDetailsModal = () => {
                                     styles["DetialsHeading_subHeading"]
                                   }
                                 >
-                                  Viewers can download
+                                  {documentDetails?.downloadPermission}
                                 </span>
                               </Col>
                             </Row>
@@ -280,7 +369,7 @@ const ViewDetailsModal = () => {
                                     styles["DetialsHeading_subHeading"]
                                   }
                                 >
-                                  200KB
+                                  {documentDetails?.size}
                                 </span>
                               </Col>
                             </Row>
@@ -299,7 +388,7 @@ const ViewDetailsModal = () => {
                                     styles["DetialsHeading_subHeading"]
                                   }
                                 >
-                                  My Documents
+                                  {documentDetails?.location}
                                 </span>
                               </Col>
                             </Row>
@@ -337,7 +426,9 @@ const ViewDetailsModal = () => {
                                     styles["DetialsHeading_subHeading"]
                                   }
                                 >
-                                  March 27, 2023
+                                  {newTimeFormaterAsPerUTCTalkDate(
+                                    documentDetails?.createdDate + "000000"
+                                  )}
                                 </span>
                               </Col>
                             </Row>
@@ -350,6 +441,7 @@ const ViewDetailsModal = () => {
                               type="text"
                               as={"textarea"}
                               rows="4"
+                              value={documentDetails?.description}
                               placeholder={t("Add-description")}
                               name={"Description"}
                               required={true}

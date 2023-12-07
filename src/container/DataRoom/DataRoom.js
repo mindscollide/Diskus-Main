@@ -102,6 +102,7 @@ import { allAssignessList } from "../../store/actions/Get_List_Of_Assignees";
 import axios from "axios";
 import ModalFileRequest from "./ModalFileRequesting/ModalFileRequesting";
 import ViewDetailsModal from "./ViewDetailsModal/ViewDetailsModal";
+import { getFilesandFolderDetailsApi } from "../../store/actions/DataRoom2_actions";
 
 const DataRoom = () => {
   // tooltip
@@ -544,10 +545,15 @@ const DataRoom = () => {
     } else if (data.value === 6) {
       dispatch(deleteFileDataroom(navigate, record.id, t));
     } else if (data.value === 4) {
-      setDetailView(true);
+      let Data = {
+        ID: record.id,
+        isFolder: false,
+      };
+      dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      // setDetailView(true);
     }
   };
-  console.log(detailView, "fileOptionsSelectfileOptionsSelect");
+  // console.log(detailView, "fileOptionsSelectfileOptionsSelect");
   const folderOptionsSelect = (data, record) => {
     if (data.value === 2) {
       setShowreanmemodal(true);
@@ -558,6 +564,12 @@ const DataRoom = () => {
       dispatch(deleteFolder(navigate, record.id, t));
     } else if (data.value === 3) {
       // Detail View Folder
+      let Data = {
+        ID: record.id,
+        isFolder: true,
+      };
+      dispatch(getFilesandFolderDetailsApi(navigate, t, Data, setDetailView));
+      // setDetailView(true);
     }
   };
 
@@ -3343,7 +3355,7 @@ const DataRoom = () => {
               </Col>
               {detailView && (
                 <Col lg={4} md={4} sm={4}>
-                  <ViewDetailsModal />
+                  <ViewDetailsModal setDetailView={setDetailView} />
                 </Col>
               )}
             </Row>

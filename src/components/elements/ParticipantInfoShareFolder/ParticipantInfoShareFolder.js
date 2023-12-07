@@ -11,7 +11,7 @@ const ParticipantInfoShareFolder = ({
 }) => {
   return (
     <Row className="mt-3">
-      <Col lg={3} md={3} sm={3}>
+      <Col lg={3} md={3} sm={3} className="position-relative">
         <img
           src={`data:image/jpeg;base64,${userPic}`}
           width="34px"
@@ -20,6 +20,7 @@ const ParticipantInfoShareFolder = ({
           className={styles["profile_image_shareFolder_modal"]}
           draggable="false"
         />
+        {icon}
       </Col>
       <Col lg={8} md={8} sm={8} className={styles["Space_limit"]}>
         <Row className="mt-1">
@@ -35,9 +36,9 @@ const ParticipantInfoShareFolder = ({
           </Col>
         </Row>
       </Col>
-      <Col lg={1} md={1} sm={1} className="d-flex align-items-center">
+      {/* <Col lg={1} md={1} sm={1} className="d-flex align-items-center">
         {icon}
-      </Col>
+      </Col> */}
     </Row>
   );
 };

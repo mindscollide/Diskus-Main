@@ -9,6 +9,9 @@
   font-size: 20px !important;
   color: #6172d6 !important;
   font-family: "MontserratSemiBold";
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .ViewDetials_Buttons {
