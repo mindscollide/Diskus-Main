@@ -52,6 +52,7 @@ const UnpublishedProposedMeeting = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   let currentUserId = localStorage.getItem("userID");
+  let currentView = localStorage.getItem("MeetingCurrentView");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -68,6 +69,8 @@ const UnpublishedProposedMeeting = ({
   const allMeetingsSocketData = useSelector(
     (state) => state.meetingIdReducer.allMeetingsSocketData
   );
+
+  const { NewMeetingreducer } = useSelector((state) => state);
 
   const [rows, setRow] = useState([]);
   const [publishState, setPublishState] = useState(null);
@@ -606,6 +609,43 @@ const UnpublishedProposedMeeting = ({
     }
   }, [publishState]);
 
+  useEffect(() => {
+    if (
+      NewMeetingreducer.meetingStatusProposedMqttData !== null &&
+      NewMeetingreducer.meetingStatusProposedMqttData !== undefined
+    ) {
+      let meetingData = NewMeetingreducer.meetingStatusProposedMqttData;
+      const indexToUpdate = rows.findIndex(
+        (obj) => obj.pK_MDID === meetingData.pK_MDID
+      );
+      if (indexToUpdate !== -1) {
+        let updatedRows = [...rows];
+        updatedRows[indexToUpdate] = meetingData;
+        setRow(updatedRows);
+      } else {
+        let updatedRows = [...rows, meetingData];
+        setRow(updatedRows);
+      }
+    }
+  }, [NewMeetingreducer.meetingStatusProposedMqttData]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.meetingStatusPublishedMqttData !== null &&
+      NewMeetingreducer.meetingStatusPublishedMqttData !== undefined
+    ) {
+      let meetingData = NewMeetingreducer.meetingStatusPublishedMqttData;
+      try {
+        const updatedRows = rows.filter(
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID
+        );
+        setRow(updatedRows);
+      } catch {
+        console.log("Error");
+      }
+    }
+  }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
+
   return (
     <section>
       <Row>
@@ -628,7 +668,9 @@ const UnpublishedProposedMeeting = ({
                 ));
               },
               rowExpandable: (record) =>
-                record.meetingAgenda.length > 0 ? true : false,
+                record.meetingAgenda.length > 0 && record.meetingAgenda !== null
+                  ? true
+                  : false,
             }}
           />
         </Col>

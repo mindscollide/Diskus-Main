@@ -241,7 +241,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
           </Col> */}
           <Col lg={9} md={9} sm={12}>
             <div className="minimize-screen-on-bottom">
-              {callerID === currentUserID ? (
+              {callerID === currentUserID &&
+              (callTypeID === 2 || currentCallType === 2) ? (
                 <div
                   className="positionRelative minimize-Participant-Toggle"
                   ref={participantPopupDisable}
