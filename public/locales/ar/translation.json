@@ -1622,6 +1622,18 @@
   "Notification-sent": "Notification sent",
   "No-notification-sent": "No Notification sent",
   "Meeting-published-successfully": "Meeting Published Successfully",
+  "Who-has-access": "Who has access",
+  "Manage-access": "Manage access",
+  "File-details": "File details",
+  "Type": "Type",
+  "Storage-used": "Storage Used",
+  "Owner": "Owner",
+  "Opened": "Opened",
+  "Download-permissions": "Download Permissions",
+  "Size": "Size",
+  "Modified": "Modified",
+  "Created": "Created",
+  "Add-description": "Add Description",
   "MEETING_STATUS_EDITED_PROPOSED": "The [Meeting TItle] has been Proposed",
   "MEETING_STATUS_EDITED_PUBLISHED": "The [Meeting TItle] has been Published"
 }
