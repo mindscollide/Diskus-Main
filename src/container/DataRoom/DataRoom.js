@@ -101,6 +101,7 @@ import {
 import { allAssignessList } from "../../store/actions/Get_List_Of_Assignees";
 import axios from "axios";
 import ModalFileRequest from "./ModalFileRequesting/ModalFileRequesting";
+import ViewDetailsModal from "./ViewDetailsModal/ViewDetailsModal";
 
 const DataRoom = () => {
   // tooltip
@@ -232,7 +233,8 @@ const DataRoom = () => {
     Location: null,
     People: null,
   });
-
+  //State For the Detail View Of File And Folder
+  const [detailView, setDetailView] = useState(false);
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {
@@ -541,9 +543,11 @@ const DataRoom = () => {
       showShareFileModal(record.id, record.name);
     } else if (data.value === 6) {
       dispatch(deleteFileDataroom(navigate, record.id, t));
+    } else if (data.value === 4) {
+      setDetailView(true);
     }
   };
-
+  console.log(detailView, "fileOptionsSelectfileOptionsSelect");
   const folderOptionsSelect = (data, record) => {
     if (data.value === 2) {
       setShowreanmemodal(true);
@@ -552,6 +556,8 @@ const DataRoom = () => {
       showShareFolderModal(record.id, record.name);
     } else if (data.value === 5) {
       dispatch(deleteFolder(navigate, record.id, t));
+    } else if (data.value === 3) {
+      // Detail View Folder
     }
   };
 
@@ -2720,6 +2726,8 @@ const DataRoom = () => {
     DataRoomReducer.ResponseMessage,
   ]);
 
+  //Scroller For table
+  const scrollConfig = { x: true };
   return (
     <>
       <div className={styles["DataRoom_container"]}>
@@ -2903,7 +2911,11 @@ const DataRoom = () => {
               </Col>
             </Row>
             <Row className="mt-4">
-              <Col lg={12} md={12} sm={12}>
+              <Col
+                lg={detailView ? 8 : 12}
+                md={detailView ? 8 : 12}
+                sm={detailView ? 8 : 12}
+              >
                 <Paper className={styles["Data_room_paper"]}>
                   {searchTabOpen ? (
                     <SearchComponent
@@ -3329,6 +3341,11 @@ const DataRoom = () => {
                   )}
                 </Paper>
               </Col>
+              {detailView && (
+                <Col lg={4} md={4} sm={4}>
+                  <ViewDetailsModal />
+                </Col>
+              )}
             </Row>
           </Col>
         </Row>

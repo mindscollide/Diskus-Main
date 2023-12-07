@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="57" height="57" viewBox="0 0 57 57">
+  <defs>
+    <filter id="Ellipse_140" x="0" y="0" width="57" height="57" filterUnits="userSpaceOnUse">
+      <feOffset dy="5" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Component_1_1" data-name="Component 1 – 1" transform="translate(15 10)">
+    <g transform="matrix(1, 0, 0, 1, -15, -10)" filter="url(#Ellipse_140)">
+      <circle id="Ellipse_140-2" data-name="Ellipse 140" cx="13.5" cy="13.5" r="13.5" transform="translate(15 10)" fill="#fff"/>
+    </g>
+    <path id="Icon_material-public" data-name="Icon material-public" d="M16.25,3A13.455,13.455,0,0,0,9.318,4.957,13.119,13.119,0,0,0,3,16.25,13.25,13.25,0,1,0,16.25,3ZM14.925,26.757A10.585,10.585,0,0,1,5.65,16.25a10.756,10.756,0,0,1,.278-2.372l6.347,6.347V21.55a2.658,2.658,0,0,0,2.65,2.65Zm9.143-3.365A2.629,2.629,0,0,0,21.55,21.55H20.225V17.575A1.329,1.329,0,0,0,18.9,16.25H10.95V13.6H13.6a1.329,1.329,0,0,0,1.325-1.325V9.625h2.65a2.658,2.658,0,0,0,2.65-2.65V6.432a10.576,10.576,0,0,1,3.843,16.96Z" transform="translate(-2.283 -2.5)"/>
+  </g>
+</svg>
