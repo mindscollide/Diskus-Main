@@ -3310,6 +3310,13 @@ const DataRoomDownloadFolderApiFunc = (navigate, data, t, Name) => {
   };
 };
 
+const showFileDetailsModal = (response) => {
+  return {
+    type: actions.FILE_DETAIL_MODAL,
+    response: response,
+  };
+};
+
 export {
   createFolderLink_fail,
   createFileLink_fail,
@@ -3346,4 +3353,5 @@ export {
   getRecentDocumentsApi,
   DataRoomDownloadFileApiFunc,
   DataRoomDownloadFolderApiFunc,
+  showFileDetailsModal,
 };
