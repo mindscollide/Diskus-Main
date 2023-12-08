@@ -26,6 +26,7 @@ import {
   getMeetingStatusfromSocket,
   meetingCount,
   setMQTTRequestUpcomingEvents,
+  mqttCurrentMeetingEnded,
 } from "../../store/actions/GetMeetingUserId";
 import {
   mqttInsertOtoMessage,
@@ -247,20 +248,20 @@ const Dashboard = () => {
         setNotificationID(id);
       } else if (
         data.payload.message.toLowerCase() ===
-        "MEETING_STATUS_EDITED_ENDED".toLowerCase()
+        "MEETING_STATUS_EDITED_END".toLowerCase()
       ) {
         if (data.viewable) {
           setNotification({
             ...notification,
             notificationShow: true,
             message: changeMQTTJSONOne(
-              t("MEETING_STATUS_EDITED_ENDED"),
+              t("MEETING_STATUS_EDITED_END"),
               "[Meeting Title]",
               data.payload.meetingTitle.substring(0, 100)
             ),
           });
         }
-        dispatch(getMeetingStatusfromSocket(data.payload));
+        dispatch(mqttCurrentMeetingEnded(data.payload));
         setNotificationID(id);
       } else if (
         data.payload.message.toLowerCase() ===
@@ -1629,6 +1630,28 @@ const Dashboard = () => {
     setCurrentLanguage(i18nextLng);
     console.log("Current Language UseEffect", currentLanguage);
   }, [i18nextLng]);
+
+  useEffect(() => {
+    if (
+      meetingIdReducer.MeetingStatusEnded !== null &&
+      meetingIdReducer.MeetingStatusEnded !== undefined &&
+      meetingIdReducer.MeetingStatusEnded.length !== 0
+    ) {
+      let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+      let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+      let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+      isMeetingVideo = isMeetingVideo ? JSON.parse(isMeetingVideo) : false;
+      if (
+        currentMeetingID === endMeetingData.pK_MDID &&
+        endMeetingData.status === "9"
+      ) {
+        if (isMeetingVideo === true) {
+          dispatch(normalizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(false));
+        }
+      }
+    }
+  }, [meetingIdReducer.MeetingStatusEnded]);
 
   return (
     <>

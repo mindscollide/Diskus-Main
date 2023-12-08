@@ -6,6 +6,11 @@ import { Paper } from "@material-ui/core";
 import { Button, Loader } from "../../../../components/elements";
 import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";
+import {
+  normalizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+} from "../../../../store/actions/VideoFeature_actions";
+import { searchNewUserMeeting } from "../../../../store/actions/NewMeetingActions";
 import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
 import MeetingMaterial from "./MeetingMaterial/MeetingMaterial";
@@ -17,6 +22,7 @@ import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
 import { cleareAllState } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
   setViewAdvanceMeetingModal,
@@ -26,9 +32,11 @@ const ViewMeetingModal = ({
   setEdiorRole,
   dataroomMapFolderId,
   setDataroomMapFolderId,
+  setCurrentMeetingID,
 }) => {
   console.log(editorRole, "editorRoleeditorRoleeditorRoleeditorRole");
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
@@ -40,7 +48,14 @@ const ViewMeetingModal = ({
   const [polls, setPolls] = useState(false);
   const [attendance, setAttendance] = useState(false);
 
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let userID = localStorage.getItem("userID");
+
   const dispatch = useDispatch();
+
+  const { meetingIdReducer } = useSelector((state) => state);
 
   useEffect(() => {
     return () => {
@@ -179,6 +194,49 @@ const ViewMeetingModal = ({
     setmeetingDetails(false);
     setPolls(false);
   };
+
+  useEffect(() => {
+    if (
+      meetingIdReducer.MeetingStatusEnded !== null &&
+      meetingIdReducer.MeetingStatusEnded !== undefined &&
+      meetingIdReducer.MeetingStatusEnded.length !== 0
+    ) {
+      let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+      if (
+        advanceMeetingModalID === endMeetingData.pK_MDID &&
+        endMeetingData.status === "9"
+      ) {
+        setEdiorRole({ status: null, role: null });
+        setViewAdvanceMeetingModal(false);
+        setCurrentMeetingID(0);
+        setAdvanceMeetingModalID(null);
+        setDataroomMapFolderId(0);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber:
+            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+          Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        setViewAdvanceMeetingModal(false);
+        localStorage.setItem("folderDataRoomMeeting", 0);
+      }
+      console.log(
+        "meetingIdReducer.MeetingStatusSocket",
+        advanceMeetingModalID === endMeetingData.pK_MDID &&
+          endMeetingData.status === "9",
+        advanceMeetingModalID,
+        endMeetingData.pK_MDID,
+        endMeetingData.status
+      );
+    }
+  }, [meetingIdReducer.MeetingStatusEnded]);
+
   return (
     <>
       <section className="position-relative">

@@ -135,6 +135,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
+      localStorage.setItem("isMeetingVideo", false);
     } else if (isMeeting === true) {
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
@@ -143,6 +144,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
       localStorage.setItem("isMeeting", false);
       localStorage.setItem("meetingTitle", "");
       localStorage.setItem("acceptedRecipientID", 0);
+      localStorage.setItem("isMeetingVideo", false);
     }
   };
 
@@ -168,6 +170,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(leaveCallModal(false));
     dispatch(minimizeParticipantPopup(false));
+    localStorage.setItem("isMeetingVideo", false);
   };
 
   useEffect(() => {
