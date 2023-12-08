@@ -3388,7 +3388,14 @@ const DataRoom = () => {
               </Col>
               {detailView && (
                 <Col lg={4} md={4} sm={4}>
-                  <ViewDetailsModal setDetailView={setDetailView} />
+                  <ViewDetailsModal
+                    setDetailView={setDetailView}
+                    setFolderId={setFolderId}
+                    setFolderName={setFolderName}
+                    setFileName={setFileName}
+                    setSharefoldermodal={setSharefoldermodal}
+                    setShareFileModal={setShareFileModal}
+                  />
                 </Col>
               )}
             </Row>

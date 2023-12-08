@@ -10,14 +10,27 @@ import { useSelector } from "react-redux";
 import { newTimeFormaterAsPerUTCTalkDate } from "../../../commen/functions/date_formater";
 import { getFileExtension, getIconSource } from "../SearchFunctionality/option";
 import folderColor from "../../../assets/images/folder_color.svg";
+import OrganizationIcon from "../../../assets/images/organization.svg";
+import AnyineIcon from "../../../assets/images/Globe.svg";
 import { useDispatch } from "react-redux";
 import {
   getDataAnalyticsApi,
   updateFileandFolderDetailsApi,
 } from "../../../store/actions/DataRoom2_actions";
 import { useNavigate } from "react-router-dom";
+import {
+  getSharedFileUsersApi,
+  getSharedFolderUsersApi,
+} from "../../../store/actions/DataRoom_actions";
 
-const ViewDetailsModal = ({ setDetailView }) => {
+const ViewDetailsModal = ({
+  setDetailView,
+  setFolderId,
+  setFolderName,
+  setSharefoldermodal,
+  setShareFileModal,
+  setFileName,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,7 +77,7 @@ const ViewDetailsModal = ({ setDetailView }) => {
 
   const handleActivityButton = () => {
     let Data = {
-      FileID: documentDetails?.ownerDetails?.fileID,
+      FileID: documentDetails?.ownerDetails?.id,
     };
     dispatch(
       getDataAnalyticsApi(navigate, t, Data, setActivityState, setDetailsState)
@@ -76,6 +89,7 @@ const ViewDetailsModal = ({ setDetailView }) => {
   const handleClose = () => {
     setDetailView(false);
   };
+
   const handleChandeDescription = (e) => {
     setDocumentDetails({
       ...documentDetails,
@@ -86,6 +100,7 @@ const ViewDetailsModal = ({ setDetailView }) => {
       "handleChandeDescriptionhandleChandeDescription"
     );
   };
+
   const handleBluronDescription = (event) => {
     let descriptionValue = event.target.value;
     if (descriptionValue.trim() !== "") {
@@ -103,6 +118,23 @@ const ViewDetailsModal = ({ setDetailView }) => {
     }
   };
 
+  const ManageAccessBtn = () => {
+    if (documentDetails.type.toLowerCase().includes("File".toLowerCase())) {
+      let Data = { FileID: documentDetails?.ownerDetails?.id };
+      setFolderId(documentDetails?.ownerDetails?.id);
+      setFileName(documentDetails?.name);
+      dispatch(getSharedFileUsersApi(navigate, Data, t, setShareFileModal));
+    } else if (
+      documentDetails.type.toLowerCase().includes("Folder".toLowerCase())
+    ) {
+      let Data = { FolderID: documentDetails?.ownerDetails?.id };
+
+      setFolderId(documentDetails?.ownerDetails?.id);
+      setFolderName(documentDetails?.name);
+      dispatch(getSharedFolderUsersApi(navigate, Data, t, setSharefoldermodal));
+    }
+  };
+
   useEffect(() => {
     try {
       if (getDataAnalyticsDetails !== null) {
@@ -116,7 +148,11 @@ const ViewDetailsModal = ({ setDetailView }) => {
         setDocumentDetails({
           sharedUsers: DatafileandFolderDetails.sharedUsers,
           ownerDetails: {
-            fileID: DatafileandFolderDetails.ownerDetails.fileID,
+            id:
+              DatafileandFolderDetails.type.toLowerCase() ===
+              "Folder".toLowerCase()
+                ? DatafileandFolderDetails.ownerDetails.folderID
+                : DatafileandFolderDetails.ownerDetails.fileID,
             userID: DatafileandFolderDetails.ownerDetails.userID,
             organizationID:
               DatafileandFolderDetails.ownerDetails.organizationID,
@@ -188,7 +224,7 @@ const ViewDetailsModal = ({ setDetailView }) => {
                 />
               </Col>
             </Row>
-            <Row className="mt-5">
+            <Row className="mt-3">
               <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                 <Button
                   text={t("Details")}
@@ -242,20 +278,59 @@ const ViewDetailsModal = ({ setDetailView }) => {
                             ></span>
                           </Col>
                           <Col lg={10} md={10} sm={10} className="d-flex gap-2">
-                            {documentDetails?.sharedUsers.length > 0 &&
-                              documentDetails?.sharedUsers.map(
-                                (data, index) => {
-                                  return (
-                                    <img
-                                      src={`data:image/jpeg;base64,${data.base64Img}`}
-                                      alt=""
-                                      height="30px"
-                                      width="30px"
-                                      className={styles["profileClass"]}
-                                    />
-                                  );
-                                }
-                              )}
+                            {documentDetails.generalAccess === 1 ? (
+                              <>
+                                {" "}
+                                {documentDetails?.sharedUsers.length > 0 &&
+                                  documentDetails?.sharedUsers.map(
+                                    (data, index) => {
+                                      return (
+                                        <img
+                                          src={`data:image/jpeg;base64,${data.base64Img}`}
+                                          alt=""
+                                          height="30px"
+                                          width="30px"
+                                          className={styles["profileClass"]}
+                                          title="this will be displayed as a tooltip"
+                                        />
+                                      );
+                                    }
+                                  )}
+                              </>
+                            ) : documentDetails.generalAccess === 2 ? (
+                              <>
+                                {/* <Tooltip title="Hello"> */}
+                                <span className={styles["icon_outer_circle"]}>
+                                  <img
+                                    src={OrganizationIcon}
+                                    alt=""
+                                    width={20}
+                                    height={20}
+                                    className=""
+                                    title={t(
+                                      "Anyone-in-my-organization-can-find-and-view"
+                                    )}
+                                  />
+                                </span>
+                                {/* </Tooltip> */}
+                              </>
+                            ) : documentDetails.generalAccess === 3 ? (
+                              <>
+                                <span className={styles["icon_outer_circle"]}>
+                                  {/* <Tooltip title="Hello"> */}
+                                  <img
+                                    src={AnyineIcon}
+                                    alt=""
+                                    width={17}
+                                    height={17}
+                                    title={t(
+                                      "Anyone-on-the-internet-with-link-can-view"
+                                    )}
+                                  />
+                                  {/* </Tooltip> */}
+                                </span>
+                              </>
+                            ) : null}
 
                             {/* Globe Icon */}
                             {/* <img
@@ -279,7 +354,20 @@ const ViewDetailsModal = ({ setDetailView }) => {
                         <Row className="mt-2">
                           <Col lg={12} md={12} sm={12}>
                             <span className={styles["owned_heading"]}>
-                              Owned by you, Shared with Saif and Salman
+                              {t("Owned-by-you-shared-with")}{" "}
+                              {documentDetails.sharedUsers.length > 0
+                                ? documentDetails.sharedUsers.map(
+                                    (data, index) => (
+                                      <React.Fragment key={index}>
+                                        {data.userName}
+                                        {index <
+                                          documentDetails.sharedUsers.length -
+                                            1 && "and "}{" "}
+                                        {/* Add comma if not the last user */}
+                                      </React.Fragment>
+                                    )
+                                  )
+                                : "No shared users"}
                             </span>
                           </Col>
                         </Row>
@@ -288,6 +376,7 @@ const ViewDetailsModal = ({ setDetailView }) => {
                             <Button
                               text={t("Manage-access")}
                               className={styles["Manage_access_button"]}
+                              onClick={ManageAccessBtn}
                             />
                           </Col>
                         </Row>
@@ -574,7 +663,231 @@ const ViewDetailsModal = ({ setDetailView }) => {
                                       sm={11}
                                       className="d-flex flex-column  flex-wrap px-4"
                                     >
-                                      <span
+                                      {Number(todayData.actionID) === 1 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {todayData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {todayData.createdDateTime !== "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                todayData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    todayData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {todayData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(todayData.actionID) === 2 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {todayData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {todayData.createdDateTime !== "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                todayData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    todayData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {todayData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(todayData.actionID) === 3 ? (
+                                        <>
+                                          {" "}
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {todayData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {todayData.createdDateTime !== "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                todayData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    todayData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {todayData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(todayData.actionID) === 4 ? (
+                                        <>
+                                          {" "}
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {todayData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {todayData.createdDateTime !== "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                todayData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    todayData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {todayData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : (
+                                        <>
+                                          {" "}
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {todayData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {todayData.createdDateTime !== "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                todayData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    todayData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {todayData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      )}
+                                      {/* <span
                                         className={styles["activity_heading"]}
                                       >
                                         {todayData?.description}
@@ -610,7 +923,7 @@ const ViewDetailsModal = ({ setDetailView }) => {
                                             {todayData?.displayFileName}
                                           </span>
                                         </Col>
-                                      </Row>
+                                      </Row> */}
                                     </Col>
                                   </Row>
                                 </>
@@ -650,43 +963,235 @@ const ViewDetailsModal = ({ setDetailView }) => {
                                       sm={11}
                                       className="d-flex flex-column  flex-wrap px-4"
                                     >
-                                      <span
-                                        className={styles["activity_heading"]}
-                                      >
-                                        {YesterDayData?.description}
-                                      </span>
-                                      <span className={styles["date_heading"]}>
-                                        {YesterDayData.createdDateTime !== "" &&
-                                          newTimeFormaterAsPerUTCTalkDate(
-                                            YesterDayData.createdDateTime
-                                          )}
-                                      </span>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className="d-flex gap-2 align-items-center"
-                                        >
-                                          <img
-                                            src={getIconSource(
-                                              getFileExtension(
-                                                YesterDayData?.displayFileName
-                                              )
-                                            )}
-                                            alt=""
-                                            height="17px"
-                                            width="17px"
-                                          />
+                                      {Number(YesterDayData.actionID) === 1 ? (
+                                        <>
                                           <span
                                             className={
-                                              styles["Filename_heading"]
+                                              styles["activity_heading"]
                                             }
                                           >
-                                            {YesterDayData?.displayFileName}
+                                            {YesterDayData?.description}
                                           </span>
-                                        </Col>
-                                      </Row>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {YesterDayData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                YesterDayData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    YesterDayData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {YesterDayData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(YesterDayData.actionID) ===
+                                        2 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {YesterDayData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {YesterDayData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                YesterDayData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    YesterDayData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {YesterDayData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(YesterDayData.actionID) ===
+                                        3 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {YesterDayData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {YesterDayData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                YesterDayData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    YesterDayData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {YesterDayData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(YesterDayData.actionID) ===
+                                        4 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {YesterDayData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {YesterDayData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                YesterDayData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    YesterDayData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {YesterDayData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {YesterDayData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {YesterDayData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                YesterDayData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    YesterDayData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {YesterDayData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      )}
                                     </Col>
                                   </Row>
                                 </>
@@ -726,43 +1231,238 @@ const ViewDetailsModal = ({ setDetailView }) => {
                                       sm={11}
                                       className="d-flex flex-column  flex-wrap px-4"
                                     >
-                                      <span
-                                        className={styles["activity_heading"]}
-                                      >
-                                        {thisweekData?.description}
-                                      </span>
-                                      <span className={styles["date_heading"]}>
-                                        {thisweekData.createdDateTime !== "" &&
-                                          newTimeFormaterAsPerUTCTalkDate(
-                                            thisweekData.createdDateTime
-                                          )}
-                                      </span>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className="d-flex gap-2 align-items-center"
-                                        >
-                                          <img
-                                            src={getIconSource(
-                                              getFileExtension(
-                                                thisweekData?.displayFileName
-                                              )
-                                            )}
-                                            alt=""
-                                            height="17px"
-                                            width="17px"
-                                          />
+                                      {Number(thisweekData.actionID) === 1 ? (
+                                        <>
+                                          {" "}
                                           <span
                                             className={
-                                              styles["Filename_heading"]
+                                              styles["activity_heading"]
                                             }
                                           >
-                                            {thisweekData?.displayFileName}
+                                            {thisweekData?.description}
                                           </span>
-                                        </Col>
-                                      </Row>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {thisweekData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                thisweekData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    thisweekData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {thisweekData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(thisweekData.actionID) ===
+                                        2 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {thisweekData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {thisweekData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                thisweekData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    thisweekData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {thisweekData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(thisweekData.actionID) ===
+                                        3 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {thisweekData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {thisweekData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                thisweekData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    thisweekData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {thisweekData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(thisweekData.actionID) ===
+                                        4 ? (
+                                        <>
+                                          {" "}
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {thisweekData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {thisweekData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                thisweekData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    thisweekData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {thisweekData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : (
+                                        <>
+                                          {" "}
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {thisweekData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {thisweekData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                thisweekData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    thisweekData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {thisweekData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      )}
                                     </Col>
                                   </Row>
                                 </>
@@ -800,45 +1500,237 @@ const ViewDetailsModal = ({ setDetailView }) => {
                                       lg={11}
                                       md={11}
                                       sm={11}
-                                      className="d-flex flex-column  flex-wrap px-3"
+                                      className="d-flex flex-column  flex-wrap px-4"
                                     >
-                                      <span
-                                        className={styles["activity_heading"]}
-                                      >
-                                        {thisMonthData?.description}
-                                      </span>
-                                      <span className={styles["date_heading"]}>
-                                        {thisMonthData.createdDateTime !== "" &&
-                                          newTimeFormaterAsPerUTCTalkDate(
-                                            thisMonthData.createdDateTime
-                                          )}
-                                      </span>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className="d-flex gap-2 align-items-center"
-                                        >
-                                          <img
-                                            src={getIconSource(
-                                              getFileExtension(
-                                                thisMonthData?.displayFileName
-                                              )
-                                            )}
-                                            alt=""
-                                            height="17px"
-                                            width="17px"
-                                          />
+                                      {Number(thisMonthData.actionID) === 1 ? (
+                                        <>
                                           <span
                                             className={
-                                              styles["Filename_heading"]
+                                              styles["activity_heading"]
                                             }
                                           >
-                                            {thisMonthData?.displayFileName}
+                                            {thisMonthData?.description}
                                           </span>
-                                        </Col>
-                                      </Row>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {thisMonthData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                thisMonthData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    thisMonthData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {thisMonthData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(thisMonthData.actionID) ===
+                                        2 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {thisMonthData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {thisMonthData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                thisMonthData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    thisMonthData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {thisMonthData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(thisMonthData.actionID) ===
+                                        3 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {thisMonthData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {thisMonthData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                thisMonthData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    thisMonthData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {thisMonthData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(thisMonthData.actionID) ===
+                                        4 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {thisMonthData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {thisMonthData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                thisMonthData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    thisMonthData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {thisMonthData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {thisMonthData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {thisMonthData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                thisMonthData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    thisMonthData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {thisMonthData?.displayFileName}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      )}
                                     </Col>
                                   </Row>
                                 </>
@@ -878,44 +1770,246 @@ const ViewDetailsModal = ({ setDetailView }) => {
                                       sm={11}
                                       className="d-flex flex-column  flex-wrap px-3"
                                     >
-                                      <span
-                                        className={styles["activity_heading"]}
-                                      >
-                                        {previousMonthData?.description}
-                                      </span>
-                                      <span className={styles["date_heading"]}>
-                                        {previousMonthData.createdDateTime !==
-                                          "" &&
-                                          newTimeFormaterAsPerUTCTalkDate(
-                                            previousMonthData.createdDateTime
-                                          )}
-                                      </span>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className="d-flex gap-2 align-items-center"
-                                        >
-                                          <img
-                                            src={getIconSource(
-                                              getFileExtension(
-                                                previousMonthData?.displayFileName
-                                              )
-                                            )}
-                                            alt=""
-                                            height="17px"
-                                            width="17px"
-                                          />
+                                      {Number(previousMonthData.actionID) ===
+                                      1 ? (
+                                        <>
                                           <span
                                             className={
-                                              styles["Filename_heading"]
+                                              styles["activity_heading"]
                                             }
                                           >
-                                            {previousMonthData?.displayFileName}
+                                            {previousMonthData?.description}
                                           </span>
-                                        </Col>
-                                      </Row>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {previousMonthData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                previousMonthData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    previousMonthData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {
+                                                  previousMonthData?.displayFileName
+                                                }
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(previousMonthData.actionID) ===
+                                        2 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {previousMonthData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {previousMonthData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                previousMonthData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    previousMonthData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {
+                                                  previousMonthData?.displayFileName
+                                                }
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(previousMonthData.actionID) ===
+                                        3 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {previousMonthData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {previousMonthData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                previousMonthData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    previousMonthData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {
+                                                  previousMonthData?.displayFileName
+                                                }
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : Number(previousMonthData.actionID) ===
+                                        4 ? (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {previousMonthData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {previousMonthData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                previousMonthData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    previousMonthData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {
+                                                  previousMonthData?.displayFileName
+                                                }
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <span
+                                            className={
+                                              styles["activity_heading"]
+                                            }
+                                          >
+                                            {previousMonthData?.description}
+                                          </span>
+                                          <span
+                                            className={styles["date_heading"]}
+                                          >
+                                            {previousMonthData.createdDateTime !==
+                                              "" &&
+                                              newTimeFormaterAsPerUTCTalkDate(
+                                                previousMonthData.createdDateTime
+                                              )}
+                                          </span>
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={getIconSource(
+                                                  getFileExtension(
+                                                    previousMonthData?.displayFileName
+                                                  )
+                                                )}
+                                                alt=""
+                                                height="17px"
+                                                width="17px"
+                                              />
+                                              <span
+                                                className={
+                                                  styles["Filename_heading"]
+                                                }
+                                              >
+                                                {
+                                                  previousMonthData?.displayFileName
+                                                }
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      )}
                                     </Col>
                                   </Row>
                                 </>

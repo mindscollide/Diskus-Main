@@ -85,7 +85,7 @@ const ModalShareFolder = ({
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [permissionID, setPermissionID] = useState({
     label: t("Editor"),
-    value: 1,
+    value: 2,
   });
   const [generalAccess, setGeneralAccess] = useState({
     label: t("Restricted"),
@@ -163,8 +163,8 @@ const ModalShareFolder = ({
   };
 
   const options = [
-    { value: 2, label: t("Viewer") },
-    { value: 1, label: t("Editor") },
+    { value: 1, label: t("Viewer") },
+    { value: 2, label: t("Editor") },
   ];
 
   const optionsgeneralAccess = [
@@ -336,7 +336,7 @@ const ModalShareFolder = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 1,
+            value: 2,
           });
           setGeneralAccess({
             label: t("Restricted"),
@@ -352,7 +352,7 @@ const ModalShareFolder = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 1,
+            value: 2,
           });
           setGeneralAccess({
             label: t("Restricted"),

@@ -1675,5 +1675,8 @@
   "MEETING_STATUS_EDITED_PROPOSED": "The [Meeting TItle] has been Proposed",
   "MEETING_STATUS_EDITED_PUBLISHED": "The [Meeting TItle] has been Published",
   "Folder-details": "Folder details",
-  "Not-allowed": "Not Allowed"
+  "Not-allowed": "Not Allowed",
+  "Anyone-in-my-organization-can-find-and-view": "Anyone in my organization can find and view",
+  "Anyone-on-the-internet-with-link-can-view": "Anyone on the internet with link can view",
+  "Owned-by-you-shared-with": "Owned by you, Shared with"
 }
