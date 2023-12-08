@@ -282,6 +282,7 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("recipentCalledID", userCalledID);
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(videoChatPanel(false));
+    localStorage.setItem("isMeetingVideo", false);
   };
 
   const leaveCallParticipantOto = () => {
@@ -317,6 +318,7 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("recipentCalledID", userCalledID);
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(videoChatPanel(false));
+    localStorage.setItem("isMeetingVideo", false);
   };
 
   const leaveCallHostGroup = () => {
@@ -363,6 +365,7 @@ const VideoPanelBodyRecent = () => {
     dispatch(participantPopup(false));
     dispatch(videoChatPanel(false));
     console.log("Video Called Group Request Data", Data);
+    localStorage.setItem("isMeetingVideo", false);
   };
 
   const leaveCallParticipantGroup = () => {
@@ -409,6 +412,7 @@ const VideoPanelBodyRecent = () => {
     dispatch(participantPopup(false));
     dispatch(videoChatPanel(false));
     console.log("Video Called Group Request Data", Data);
+    localStorage.setItem("isMeetingVideo", false);
   };
 
   return (

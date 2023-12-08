@@ -142,6 +142,7 @@ const VideoCallNormalHeader = ({
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
+      localStorage.setItem("isMeetingVideo", false);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
     } else if (isMeeting === true) {
@@ -260,7 +261,7 @@ const VideoCallNormalHeader = ({
     };
     dispatch(LeaveCall(Data, navigate, t));
     localStorage.setItem("isCaller", false);
-
+    localStorage.setItem("isMeetingVideo", false);
     const emptyArray = [];
     localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
     setParticipantStatus([]);

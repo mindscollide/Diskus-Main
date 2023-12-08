@@ -77,13 +77,6 @@ const Talk = () => {
       dispatch(recentVideoFlag(false));
       dispatch(videoChatSearchFlag(false));
     }
-    // setActiveVideoIcon(true)
-    // if (activeVideoIcon === false) {
-    //   setActiveChatBox(false)
-    // } else {
-    //   setActiveVideoIcon(false)
-    //   setActiveChatBox(false)
-    // }
   };
 
   const showsubTalkIcons = () => {
@@ -146,16 +139,6 @@ const Talk = () => {
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
 
   const [missedCallCount, setMissedCallCount] = useState(0);
-
-  // useEffect(() => {
-  //   dispatch(
-  //     GetAllUserChats(
-  //       parseInt(currentUserId),
-  //       parseInt(currentOrganizationId),
-  //       t,
-  //     ),
-  //   )
-  // }, [])
 
   //Setting state data of global response all chat to chatdata
   useEffect(() => {

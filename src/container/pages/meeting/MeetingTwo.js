@@ -22,6 +22,10 @@ import {
   activeChatBoxGS,
 } from "../../../store/actions/Talk_Feature_actions";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
+import {
+  normalizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+} from "../../../store/actions/VideoFeature_actions";
 import member from "../../../assets/images/member.svg";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -86,7 +90,9 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const { talkStateData, NewMeetingreducer } = useSelector((state) => state);
+  const { talkStateData, NewMeetingreducer, meetingIdReducer } = useSelector(
+    (state) => state
+  );
   const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
     (state) => state.NewMeetingreducer
   );
@@ -410,6 +416,7 @@ const NewMeeting = () => {
     } else {
       setAdvanceMeetingModalID(id);
       setViewAdvanceMeetingModal(true);
+      localStorage.setItem("currentMeetingID", id);
     }
   };
 
@@ -755,7 +762,7 @@ const NewMeeting = () => {
           } else {
             if (
               record.isQuickMeeting === true &&
-              minutesDifference <= 5 &&
+              minutesDifference <= 50000000 &&
               minutesDifference > 0
             ) {
               return (
@@ -786,7 +793,7 @@ const NewMeeting = () => {
               );
             } else if (
               record.isQuickMeeting === false &&
-              minutesDifference <= 5 &&
+              minutesDifference <= 50000000 &&
               minutesDifference > 0
             ) {
               return (
@@ -1155,6 +1162,68 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (
+      meetingIdReducer.MeetingStatusSocket !== null &&
+      meetingIdReducer.MeetingStatusSocket !== undefined &&
+      meetingIdReducer.MeetingStatusSocket.length !== 0
+    ) {
+      let startMeetingData = meetingIdReducer.MeetingStatusSocket.meeting;
+      const indexToUpdate = rows.findIndex(
+        (obj) => obj.pK_MDID === startMeetingData.pK_MDID
+      );
+      if (indexToUpdate !== -1) {
+        let updatedRows = [...rows];
+        updatedRows[indexToUpdate] = startMeetingData;
+        setRow(updatedRows);
+      } else {
+        let updatedRows = [...rows, startMeetingData];
+        setRow(updatedRows);
+      }
+    }
+  }, [meetingIdReducer.MeetingStatusSocket]);
+
+  useEffect(() => {
+    if (
+      meetingIdReducer.MeetingStatusEnded !== null &&
+      meetingIdReducer.MeetingStatusEnded !== undefined &&
+      meetingIdReducer.MeetingStatusEnded.length !== 0
+    ) {
+      let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+      const indexToUpdate = rows.findIndex(
+        (obj) => obj.pK_MDID === endMeetingData.pK_MDID
+      );
+      if (indexToUpdate !== -1) {
+        let updatedRows = [...rows];
+        updatedRows[indexToUpdate] = endMeetingData;
+        setRow(updatedRows);
+        if (
+          advanceMeetingModalID === endMeetingData.pK_MDID &&
+          endMeetingData.status === "9"
+        ) {
+          setEdiorRole({ status: null, role: null });
+          setViewAdvanceMeetingModal(false);
+          setCurrentMeetingID(0);
+          setAdvanceMeetingModalID(null);
+          setDataroomMapFolderId(0);
+          dispatch(normalizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(false));
+        }
+        console.log(
+          "meetingIdReducer.MeetingStatusSocket",
+          advanceMeetingModalID === endMeetingData.pK_MDID &&
+            endMeetingData.status === "9",
+          advanceMeetingModalID,
+          endMeetingData.pK_MDID,
+          endMeetingData.status
+        );
+      } else {
+        let updatedRows = [...rows, endMeetingData];
+        setRow(updatedRows);
+      }
+    }
+  }, [meetingIdReducer.MeetingStatusEnded]);
+
+  useEffect(() => {
+    if (
       ResponseMessages !== "" &&
       ResponseMessages !== undefined &&
       ResponseMessages !== t("Record-found") &&
@@ -1209,6 +1278,8 @@ const NewMeeting = () => {
 
   console.log("Meeting Actions", NewMeetingreducer);
 
+  console.log("meetingIdReducermeetingIdReducer", meetingIdReducer);
+
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (
@@ -1240,6 +1311,7 @@ const NewMeeting = () => {
           setEdiorRole={setEdiorRole}
           dataroomMapFolderId={dataroomMapFolderId}
           setDataroomMapFolderId={setDataroomMapFolderId}
+          setCurrentMeetingID={setCurrentMeetingID}
         />
       ) : viewAdvanceMeetingModalUnpublish ? (
         <ViewMeetingModal
