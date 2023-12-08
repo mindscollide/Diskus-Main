@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./ViewDetails.module.css";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import profilepic from "../../../assets/images/newprofile.png";
-import GlobeIcon from "../../../assets/images/Globe.svg";
-import Organization from "../../../assets/images/organization.svg";
-import PDFIcon from "../../../assets/images/pdf_icon.svg";
 import { Paper } from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
 import { Button, TextField } from "../../../components/elements";
@@ -13,14 +10,23 @@ import { useSelector } from "react-redux";
 import { newTimeFormaterAsPerUTCTalkDate } from "../../../commen/functions/date_formater";
 import { getFileExtension, getIconSource } from "../SearchFunctionality/option";
 import folderColor from "../../../assets/images/folder_color.svg";
+import { useDispatch } from "react-redux";
+import {
+  getDataAnalyticsApi,
+  updateFileandFolderDetailsApi,
+} from "../../../store/actions/DataRoom2_actions";
+import { useNavigate } from "react-router-dom";
 
 const ViewDetailsModal = ({ setDetailView }) => {
   const { t } = useTranslation();
-  const { DatafileandFolderDetails } = useSelector(
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { DatafileandFolderDetails, getDataAnalyticsDetails } = useSelector(
     (state) => state.DataRoomFileAndFoldersDetailsReducer
   );
   const [activityState, setActivityState] = useState(false);
   const [detailsState, setDetailsState] = useState(true);
+  const currentUserID = localStorage.getItem("userID");
   const [documentDetails, setDocumentDetails] = useState({
     sharedUsers: [],
     ownerDetails: {
@@ -46,20 +52,64 @@ const ViewDetailsModal = ({ setDetailView }) => {
     description: "",
     name: "",
   });
-
+  const [documentActivityDetails, setDocumentActivityDetails] = useState(null);
+  console.log(
+    documentActivityDetails,
+    "documentActivityDetailsdocumentActivityDetailsdocumentActivityDetails"
+  );
   const handleDetialsButton = () => {
     setDetailsState(true);
     setActivityState(false);
   };
 
   const handleActivityButton = () => {
-    setActivityState(true);
-    setDetailsState(false);
+    let Data = {
+      FileID: documentDetails?.ownerDetails?.fileID,
+    };
+    dispatch(
+      getDataAnalyticsApi(navigate, t, Data, setActivityState, setDetailsState)
+    );
+    // setActivityState(true);
+    // setDetailsState(false);
   };
 
   const handleClose = () => {
     setDetailView(false);
   };
+  const handleChandeDescription = (e) => {
+    setDocumentDetails({
+      ...documentDetails,
+      description: e.target.value,
+    });
+    console.log(
+      e.target.value,
+      "handleChandeDescriptionhandleChandeDescription"
+    );
+  };
+  const handleBluronDescription = (event) => {
+    let descriptionValue = event.target.value;
+    if (descriptionValue.trim() !== "") {
+      let Data = {
+        ID: documentDetails?.ownerDetails?.fileID,
+        isFolder: documentDetails.type
+          .toLowerCase()
+          .includes("Folder".toLowerCase())
+          ? true
+          : false,
+        isOpened: true,
+        Description: descriptionValue,
+      };
+      dispatch(updateFileandFolderDetailsApi(navigate, t, Data));
+    }
+  };
+
+  useEffect(() => {
+    try {
+      if (getDataAnalyticsDetails !== null) {
+        setDocumentActivityDetails(getDataAnalyticsDetails);
+      }
+    } catch {}
+  }, [getDataAnalyticsDetails]);
   useEffect(() => {
     try {
       if (DatafileandFolderDetails !== null) {
@@ -310,7 +360,11 @@ const ViewDetailsModal = ({ setDetailView }) => {
                                     styles["DetialsHeading_subHeading"]
                                   }
                                 >
-                                  Me
+                                  {Number(
+                                    documentDetails?.ownerDetails?.userID
+                                  ) === Number(currentUserID)
+                                    ? t("Me")
+                                    : documentDetails?.ownerDetails?.userName}
                                 </span>
                               </Col>
                             </Row>
@@ -329,7 +383,19 @@ const ViewDetailsModal = ({ setDetailView }) => {
                                     styles["DetialsHeading_subHeading"]
                                   }
                                 >
-                                  March 27, 2023 by Me
+                                  {`${
+                                    documentDetails?.openedDate !== ""
+                                      ? newTimeFormaterAsPerUTCTalkDate(
+                                          documentDetails?.openedDate + "000000"
+                                        )
+                                      : ""
+                                  } ${t("By")} ${
+                                    Number(
+                                      documentDetails?.ownerDetails?.userID
+                                    ) === Number(currentUserID)
+                                      ? t("Me")
+                                      : documentDetails?.openedByUser
+                                  }`}
                                 </span>
                               </Col>
                             </Row>
@@ -407,7 +473,21 @@ const ViewDetailsModal = ({ setDetailView }) => {
                                     styles["DetialsHeading_subHeading"]
                                   }
                                 >
-                                  March 27, 2023 by Me
+                                  {`${
+                                    documentDetails?.modifiedDate !== ""
+                                      ? newTimeFormaterAsPerUTCTalkDate(
+                                          documentDetails?.modifiedDate +
+                                            "000000"
+                                        )
+                                      : ""
+                                  } ${t("By")} ${
+                                    Number(
+                                      documentDetails?.ownerDetails?.userID
+                                    ) === Number(currentUserID)
+                                      ? t("Me")
+                                      : documentDetails?.modifiedByUser
+                                  }`}
+                                  {/* March 27, 2023 by Me */}
                                 </span>
                               </Col>
                             </Row>
@@ -443,6 +523,8 @@ const ViewDetailsModal = ({ setDetailView }) => {
                               rows="4"
                               value={documentDetails?.description}
                               placeholder={t("Add-description")}
+                              onBlur={handleBluronDescription}
+                              change={handleChandeDescription}
                               name={"Description"}
                               required={true}
                               maxLength={500}
@@ -461,318 +543,385 @@ const ViewDetailsModal = ({ setDetailView }) => {
                         sm={12}
                         className={styles["Scroller"]}
                       >
-                        <Row>
-                          <Col lg={12} md={12} sm={12}>
-                            <span className={styles["Today_heading"]}>
-                              {t("Today")}
-                            </span>
-                          </Col>
-                        </Row>
+                        {getDataAnalyticsDetails?.today?.length > 0 && (
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["Today_heading"]}>
+                                {t("Today")}
+                              </span>
+                            </Col>
+                          </Row>
+                        )}
 
-                        <Row className="mt-2">
-                          <Col lg={1} md={1} sm={1}>
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30.25px"
-                              width="30.25px"
-                              className={styles["profileClass"]}
-                            />
-                          </Col>
-                          <Col
-                            lg={11}
-                            md={11}
-                            sm={11}
-                            className="d-flex flex-column  flex-wrap"
-                          >
-                            <span className={styles["activity_heading"]}>
-                              You changed the permission on item
-                            </span>
-                            <span className={styles["date_heading"]}>
-                              26 March 2023
-                            </span>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex gap-2 align-items-center"
-                              >
-                                <img
-                                  src={PDFIcon}
-                                  alt=""
-                                  height="17px"
-                                  width="17px"
-                                />
-                                <span className={styles["Filename_heading"]}>
-                                  DairaLogo.pdf
-                                </span>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
+                        {getDataAnalyticsDetails?.today?.length > 0 &&
+                          getDataAnalyticsDetails?.today.map(
+                            (todayData, index) => {
+                              return (
+                                <>
+                                  <Row className="mt-2">
+                                    <Col lg={1} md={1} sm={1}>
+                                      <img
+                                        src={profilepic}
+                                        alt=""
+                                        height="30.25px"
+                                        width="30.25px"
+                                        className={styles["profileClass"]}
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={11}
+                                      md={11}
+                                      sm={11}
+                                      className="d-flex flex-column  flex-wrap px-4"
+                                    >
+                                      <span
+                                        className={styles["activity_heading"]}
+                                      >
+                                        {todayData?.description}
+                                      </span>
+                                      <span className={styles["date_heading"]}>
+                                        {todayData.createdDateTime !== "" &&
+                                          newTimeFormaterAsPerUTCTalkDate(
+                                            todayData.createdDateTime
+                                          )}
+                                      </span>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="d-flex gap-2 align-items-center"
+                                        >
+                                          <img
+                                            src={getIconSource(
+                                              getFileExtension(
+                                                todayData?.displayFileName
+                                              )
+                                            )}
+                                            alt=""
+                                            height="17px"
+                                            width="17px"
+                                          />
+                                          <span
+                                            className={
+                                              styles["Filename_heading"]
+                                            }
+                                          >
+                                            {todayData?.displayFileName}
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              );
+                            }
+                          )}
 
-                        <Row className="mt-3">
-                          <Col lg={1} md={1} sm={1}>
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30.25px"
-                              width="30.25px"
-                              className={styles["profileClass"]}
-                            />
-                          </Col>
-                          <Col
-                            lg={11}
-                            md={11}
-                            sm={11}
-                            className="d-flex flex-column  flex-wrap"
-                          >
-                            <span className={styles["activity_heading"]}>
-                              Salman memon
-                            </span>
-                            <span className={styles["date_heading"]}>
-                              Editor
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row className="mt-3">
-                          <Col lg={1} md={1} sm={1}>
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30.25px"
-                              width="30.25px"
-                              className={styles["profileClass"]}
-                            />
-                          </Col>
-                          <Col
-                            lg={11}
-                            md={11}
-                            sm={11}
-                            className="d-flex flex-column  flex-wrap"
-                          >
-                            <span
-                              className={styles["Removed_particpant_styles"]}
-                            >
-                              Saif Rehman
-                            </span>
-                            <span className={styles["date_heading"]}>
-                              Access Removed
-                            </span>
-                          </Col>
-                        </Row>
                         {/* Yesterday */}
-                        <Row className="mt-2">
-                          <Col lg={12} md={12} sm={12} className="Scroller">
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <span className={styles["Today_heading"]}>
-                                  {t("Yesterday")}
-                                </span>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col lg={1} md={1} sm={1}>
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30.25px"
-                              width="30.25px"
-                              className={styles["profileClass"]}
-                            />
-                          </Col>
-                          <Col
-                            lg={11}
-                            md={11}
-                            sm={11}
-                            className="d-flex flex-column  flex-wrap"
-                          >
-                            <span className={styles["activity_heading"]}>
-                              You changed the permission on item
-                            </span>
-                            <span className={styles["date_heading"]}>
-                              26 March 2023
-                            </span>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex gap-2 align-items-center"
-                              >
-                                <img
-                                  src={PDFIcon}
-                                  alt=""
-                                  height="17px"
-                                  width="17px"
-                                />
-                                <span className={styles["Filename_heading"]}>
-                                  DairaLogo.pdf
-                                </span>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
+                        {getDataAnalyticsDetails?.yesterday?.length > 0 && (
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["Today_heading"]}>
+                                {t("Yesterday")}
+                              </span>
+                            </Col>
+                          </Row>
+                        )}
 
-                        <Row className="mt-3">
-                          <Col lg={1} md={1} sm={1}>
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30.25px"
-                              width="30.25px"
-                              className={styles["profileClass"]}
-                            />
-                          </Col>
-                          <Col
-                            lg={11}
-                            md={11}
-                            sm={11}
-                            className="d-flex flex-column  flex-wrap"
-                          >
-                            <span className={styles["activity_heading"]}>
-                              Salman memon
-                            </span>
-                            <span className={styles["date_heading"]}>
-                              Editor
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row className="mt-3">
-                          <Col lg={1} md={1} sm={1}>
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30.25px"
-                              width="30.25px"
-                              className={styles["profileClass"]}
-                            />
-                          </Col>
-                          <Col
-                            lg={11}
-                            md={11}
-                            sm={11}
-                            className="d-flex flex-column  flex-wrap"
-                          >
-                            <span
-                              className={styles["Removed_particpant_styles"]}
-                            >
-                              Saif Rehman
-                            </span>
-                            <span className={styles["date_heading"]}>
-                              Access Removed
-                            </span>
-                          </Col>
-                        </Row>
+                        {getDataAnalyticsDetails?.yesterday?.length > 0 &&
+                          getDataAnalyticsDetails?.yesterday.map(
+                            (YesterDayData, index) => {
+                              return (
+                                <>
+                                  <Row className="mt-2">
+                                    <Col lg={1} md={1} sm={1}>
+                                      <img
+                                        src={profilepic}
+                                        alt=""
+                                        height="30.25px"
+                                        width="30.25px"
+                                        className={styles["profileClass"]}
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={11}
+                                      md={11}
+                                      sm={11}
+                                      className="d-flex flex-column  flex-wrap px-4"
+                                    >
+                                      <span
+                                        className={styles["activity_heading"]}
+                                      >
+                                        {YesterDayData?.description}
+                                      </span>
+                                      <span className={styles["date_heading"]}>
+                                        {YesterDayData.createdDateTime !== "" &&
+                                          newTimeFormaterAsPerUTCTalkDate(
+                                            YesterDayData.createdDateTime
+                                          )}
+                                      </span>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="d-flex gap-2 align-items-center"
+                                        >
+                                          <img
+                                            src={getIconSource(
+                                              getFileExtension(
+                                                YesterDayData?.displayFileName
+                                              )
+                                            )}
+                                            alt=""
+                                            height="17px"
+                                            width="17px"
+                                          />
+                                          <span
+                                            className={
+                                              styles["Filename_heading"]
+                                            }
+                                          >
+                                            {YesterDayData?.displayFileName}
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              );
+                            }
+                          )}
 
                         {/* this Week */}
-                        <Row className="mt-2">
-                          <Col lg={12} md={12} sm={12} className="Scroller">
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <span className={styles["Today_heading"]}>
-                                  {t("This-week")}
-                                </span>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col lg={1} md={1} sm={1}>
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30.25px"
-                              width="30.25px"
-                              className={styles["profileClass"]}
-                            />
-                          </Col>
-                          <Col
-                            lg={11}
-                            md={11}
-                            sm={11}
-                            className="d-flex flex-column  flex-wrap"
-                          >
-                            <span className={styles["activity_heading"]}>
-                              You changed the permission on item
-                            </span>
-                            <span className={styles["date_heading"]}>
-                              26 March 2023
-                            </span>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex gap-2 align-items-center"
-                              >
-                                <img
-                                  src={PDFIcon}
-                                  alt=""
-                                  height="17px"
-                                  width="17px"
-                                />
-                                <span className={styles["Filename_heading"]}>
-                                  DairaLogo.pdf
-                                </span>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
+                        {getDataAnalyticsDetails?.thisWeek?.length > 0 && (
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["Today_heading"]}>
+                                {t("This-week")}
+                              </span>
+                            </Col>
+                          </Row>
+                        )}
 
-                        <Row className="mt-3">
-                          <Col lg={1} md={1} sm={1}>
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30.25px"
-                              width="30.25px"
-                              className={styles["profileClass"]}
-                            />
-                          </Col>
-                          <Col
-                            lg={11}
-                            md={11}
-                            sm={11}
-                            className="d-flex flex-column  flex-wrap"
-                          >
-                            <span className={styles["activity_heading"]}>
-                              Salman memon
-                            </span>
-                            <span className={styles["date_heading"]}>
-                              Editor
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row className="mt-3">
-                          <Col lg={1} md={1} sm={1}>
-                            <img
-                              src={profilepic}
-                              alt=""
-                              height="30.25px"
-                              width="30.25px"
-                              className={styles["profileClass"]}
-                            />
-                          </Col>
-                          <Col
-                            lg={11}
-                            md={11}
-                            sm={11}
-                            className="d-flex flex-column  flex-wrap"
-                          >
-                            <span
-                              className={styles["Removed_particpant_styles"]}
-                            >
-                              Saif Rehman
-                            </span>
-                            <span className={styles["date_heading"]}>
-                              Access Removed
-                            </span>
-                          </Col>
-                        </Row>
+                        {getDataAnalyticsDetails?.thisWeek?.length > 0 &&
+                          getDataAnalyticsDetails?.thisWeek.map(
+                            (thisweekData, index) => {
+                              return (
+                                <>
+                                  <Row className="mt-2">
+                                    <Col lg={1} md={1} sm={1}>
+                                      <img
+                                        src={profilepic}
+                                        alt=""
+                                        height="30.25px"
+                                        width="30.25px"
+                                        className={styles["profileClass"]}
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={11}
+                                      md={11}
+                                      sm={11}
+                                      className="d-flex flex-column  flex-wrap px-4"
+                                    >
+                                      <span
+                                        className={styles["activity_heading"]}
+                                      >
+                                        {thisweekData?.description}
+                                      </span>
+                                      <span className={styles["date_heading"]}>
+                                        {thisweekData.createdDateTime !== "" &&
+                                          newTimeFormaterAsPerUTCTalkDate(
+                                            thisweekData.createdDateTime
+                                          )}
+                                      </span>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="d-flex gap-2 align-items-center"
+                                        >
+                                          <img
+                                            src={getIconSource(
+                                              getFileExtension(
+                                                thisweekData?.displayFileName
+                                              )
+                                            )}
+                                            alt=""
+                                            height="17px"
+                                            width="17px"
+                                          />
+                                          <span
+                                            className={
+                                              styles["Filename_heading"]
+                                            }
+                                          >
+                                            {thisweekData?.displayFileName}
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              );
+                            }
+                          )}
+
+                        {/* This Month */}
+                        {getDataAnalyticsDetails?.thisMonth?.length > 0 && (
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["Today_heading"]}>
+                                {t("This-month")}
+                              </span>
+                            </Col>
+                          </Row>
+                        )}
+
+                        {getDataAnalyticsDetails?.thisMonth?.length > 0 &&
+                          getDataAnalyticsDetails?.thisMonth.map(
+                            (thisMonthData, index) => {
+                              return (
+                                <>
+                                  <Row className="mt-2">
+                                    <Col lg={1} md={1} sm={1}>
+                                      <img
+                                        src={profilepic}
+                                        alt=""
+                                        height="30.25px"
+                                        width="30.25px"
+                                        className={styles["profileClass"]}
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={11}
+                                      md={11}
+                                      sm={11}
+                                      className="d-flex flex-column  flex-wrap px-3"
+                                    >
+                                      <span
+                                        className={styles["activity_heading"]}
+                                      >
+                                        {thisMonthData?.description}
+                                      </span>
+                                      <span className={styles["date_heading"]}>
+                                        {thisMonthData.createdDateTime !== "" &&
+                                          newTimeFormaterAsPerUTCTalkDate(
+                                            thisMonthData.createdDateTime
+                                          )}
+                                      </span>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="d-flex gap-2 align-items-center"
+                                        >
+                                          <img
+                                            src={getIconSource(
+                                              getFileExtension(
+                                                thisMonthData?.displayFileName
+                                              )
+                                            )}
+                                            alt=""
+                                            height="17px"
+                                            width="17px"
+                                          />
+                                          <span
+                                            className={
+                                              styles["Filename_heading"]
+                                            }
+                                          >
+                                            {thisMonthData?.displayFileName}
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              );
+                            }
+                          )}
+
+                        {/* Pervious Month */}
+                        {getDataAnalyticsDetails?.previousMonth?.length > 0 && (
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["Today_heading"]}>
+                                {t("This-month")}
+                              </span>
+                            </Col>
+                          </Row>
+                        )}
+
+                        {getDataAnalyticsDetails?.previousMonth?.length > 0 &&
+                          getDataAnalyticsDetails?.previousMonth.map(
+                            (previousMonthData, index) => {
+                              return (
+                                <>
+                                  <Row className="mt-2">
+                                    <Col lg={1} md={1} sm={1}>
+                                      <img
+                                        src={profilepic}
+                                        alt=""
+                                        height="30.25px"
+                                        width="30.25px"
+                                        className={styles["profileClass"]}
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={11}
+                                      md={11}
+                                      sm={11}
+                                      className="d-flex flex-column  flex-wrap px-3"
+                                    >
+                                      <span
+                                        className={styles["activity_heading"]}
+                                      >
+                                        {previousMonthData?.description}
+                                      </span>
+                                      <span className={styles["date_heading"]}>
+                                        {previousMonthData.createdDateTime !==
+                                          "" &&
+                                          newTimeFormaterAsPerUTCTalkDate(
+                                            previousMonthData.createdDateTime
+                                          )}
+                                      </span>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className="d-flex gap-2 align-items-center"
+                                        >
+                                          <img
+                                            src={getIconSource(
+                                              getFileExtension(
+                                                previousMonthData?.displayFileName
+                                              )
+                                            )}
+                                            alt=""
+                                            height="17px"
+                                            width="17px"
+                                          />
+                                          <span
+                                            className={
+                                              styles["Filename_heading"]
+                                            }
+                                          >
+                                            {previousMonthData?.displayFileName}
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              );
+                            }
+                          )}
                       </Col>
                     </Row>
                   </>

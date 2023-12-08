@@ -176,6 +176,7 @@ body[dir="rtl"] .Activity_Buttons {
   font-size: 16px !important;
   color: #6172d6 !important;
   font-family: "MontserratSemiBold";
+  margin: 10px 0;
 }
 
 .activity_heading {
@@ -194,6 +195,9 @@ body[dir="rtl"] .Activity_Buttons {
   font-size: 12px !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold";
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .Removed_particpant_styles {

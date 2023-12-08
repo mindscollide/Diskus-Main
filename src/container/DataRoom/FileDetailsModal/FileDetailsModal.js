@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./FileDetailsModal.module.css";
 import { Modal, Table } from "../../../components/elements";
 import { showFileDetailsModal } from "../../../store/actions/DataRoom_actions";
@@ -6,10 +6,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-const FileDetailsModal = () => {
+const FileDetailsModal = ({ fileDataforAnalyticsCount }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { DataRoomReducer } = useSelector((state) => state);
+  const [analyticsCountData, setAnalyticsCountData] = useState([]);
+  console.log(analyticsCountData, "analyticsCountDataanalyticsCountData");
+  const { DataRoomReducer, DataRoomFileAndFoldersDetailsReducer } = useSelector(
+    (state) => state
+  );
 
   const FileDetails = [
     {
@@ -25,6 +29,20 @@ const FileDetailsModal = () => {
       dataIndex: "Documents",
       key: "Documents",
       width: "250px",
+      render: (text, record) => {
+        return (
+          <span className={styles["sharedUserTitle"]}>
+            <img
+              src={`data:image/jpeg;base64,${record.sharedUser.base64Img}`}
+              width={30}
+              height={30}
+              className="rounded-circle"
+              alt=""
+            />
+            {record.sharedUser.userName}
+          </span>
+        );
+      },
     },
     {
       title: (
@@ -39,6 +57,10 @@ const FileDetailsModal = () => {
       dataIndex: "View",
       key: "View",
       width: "100px",
+      align: "center",
+      render: (text, record) => {
+        return <span>{record.viewedCount}</span>;
+      },
     },
     {
       title: (
@@ -53,44 +75,24 @@ const FileDetailsModal = () => {
       dataIndex: "Edit",
       key: "Edit",
       width: "150px",
+      align: "center",
+      render: (text, record) => {
+        if (record.sharedUser.permissionID === 1) {
+          return <span>{t("Not-allowed")}</span>;
+        } else {
+          return <span>{record.editedCount}</span>;
+        }
+      },
     },
   ];
 
-  //   Dummy data
-  const FileData = [
-    {
-      key: "1",
-      Documents: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Row_Details_styles"]}>Saad Fudda</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      View: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Row_Details_styles"]}>2</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Edit: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Row_Details_styles"]}>
-                {t("Not-allowed")}
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
+  useEffect(() => {
+    if (DataRoomFileAndFoldersDetailsReducer.getDataAnalyticsCountDetails) {
+      setAnalyticsCountData(
+        DataRoomFileAndFoldersDetailsReducer.getDataAnalyticsCountDetails
+      );
+    }
+  }, [DataRoomFileAndFoldersDetailsReducer.getDataAnalyticsCountDetails]);
   return (
     <section>
       <Modal
@@ -105,7 +107,9 @@ const FileDetailsModal = () => {
           <>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                <span className={styles["File_name"]}>Dairalogo.pdf</span>
+                <span className={styles["File_name"]}>
+                  {fileDataforAnalyticsCount?.name}
+                </span>
               </Col>
             </Row>
             <Row>
@@ -115,7 +119,7 @@ const FileDetailsModal = () => {
                   scroll={{ y: "30vh" }}
                   pagination={false}
                   className="NewMeeting_table"
-                  rows={FileData}
+                  rows={analyticsCountData}
                 />
               </Col>
             </Row>

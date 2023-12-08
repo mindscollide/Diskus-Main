@@ -93,12 +93,13 @@ const ModalShareFile = ({
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
+  console.log(isMembers, "isMembersisMembersisMembersisMembers");
   let organizationName = localStorage.getItem("OrganizatioName");
   let currentLanguage = localStorage.getItem("i18nextLng");
   let userID = localStorage.getItem("userID");
   const options = [
-    { value: 2, label: t("Viewer") },
-    { value: 1, label: t("Editor") },
+    { value: 1, label: t("Viewer") },
+    { value: 2, label: t("Editor") },
     // { value: 3, label: t("Add-expiration") },
   ];
 

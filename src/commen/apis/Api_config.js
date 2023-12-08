@@ -1316,7 +1316,7 @@ const updateAndOpenByAndDescriptionRM = {
 };
 
 const getDataAnalyticsRM = {
-  RequestMethod: "ServiceManager.UpdateOpenedByAndDescription",
+  RequestMethod: "ServiceManager.GetDataAnalytics",
 };
 
 const getDataAnalyticsCountRM = {

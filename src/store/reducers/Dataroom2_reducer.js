@@ -5,7 +5,7 @@ const initialState = {
   DatafileandFolderDetails: null,
   updateFileAndFolderDetails: null,
   getDataAnalyticsDetails: null,
-  getDataAnalyticsCountDetails: null,
+  getDataAnalyticsCountDetails: [],
 };
 
 const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {

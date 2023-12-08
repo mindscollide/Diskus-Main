@@ -9,3 +9,12 @@
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold";
 }
+.sharedUserTitle {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 12px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -8,6 +8,7 @@ import {
   getFileFolderDetailsRM,
   updateAndOpenByAndDescriptionRM,
 } from "../../commen/apis/Api_config";
+import { showFileDetailsModal } from "./DataRoom_actions";
 
 const getFileandFolderDetail_Init = () => {
   return {
@@ -203,7 +204,13 @@ const getDataAnalytics_Fail = (message) => {
     message,
   };
 };
-const getDataAnalyticsApi = (navigate, t, Data) => {
+const getDataAnalyticsApi = (
+  navigate,
+  t,
+  Data,
+  setActivityState,
+  setDetailsState
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -222,7 +229,15 @@ const getDataAnalyticsApi = (navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getDataAnalyticsApi(navigate, t, Data));
+          dispatch(
+            getDataAnalyticsApi(
+              navigate,
+              t,
+              Data,
+              setActivityState,
+              setDetailsState
+            )
+          );
         } else if (
           response.data.responseCode === 200 &&
           response.data.responseResult.isExecuted === true
@@ -234,12 +249,14 @@ const getDataAnalyticsApi = (navigate, t, Data) => {
                 "DataRoom_DataRoomManager_GetDataAnalytics_01".toLowerCase()
               )
           ) {
-            dispatch(
+            await dispatch(
               getDataAnalytics_Success(
                 response.data.responseResult,
                 t("Data-available")
               )
             );
+            setActivityState(true);
+            setDetailsState(false);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -287,7 +304,13 @@ const getDataAnalyticsCount_Fail = (message) => {
     message,
   };
 };
-const getDataAnalyticsCountApi = (navigate, t, Data) => {
+const getDataAnalyticsCountApi = (
+  navigate,
+  t,
+  Data,
+  record,
+  setFileDataforAnalyticsCount
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -306,7 +329,15 @@ const getDataAnalyticsCountApi = (navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getDataAnalyticsCountApi(navigate, t, Data));
+          dispatch(
+            getDataAnalyticsCountApi(
+              navigate,
+              t,
+              Data,
+              record,
+              setFileDataforAnalyticsCount
+            )
+          );
         } else if (
           response.data.responseCode === 200 &&
           response.data.responseResult.isExecuted === true
@@ -320,10 +351,12 @@ const getDataAnalyticsCountApi = (navigate, t, Data) => {
           ) {
             dispatch(
               getDataAnalyticsCount_Success(
-                response.data.responseResult,
+                response.data.responseResult.dataAnalysis,
                 t("Data-available")
               )
             );
+            setFileDataforAnalyticsCount(record);
+            dispatch(showFileDetailsModal(true));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
