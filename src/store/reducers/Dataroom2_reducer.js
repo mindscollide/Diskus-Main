@@ -98,6 +98,12 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         getDataAnalyticsCountDetails: null,
       };
     }
+    case actions.CLEAR_DATAROOM2_RESPONSE_MESSAGE: {
+      return {
+        ...state,
+        ResponseMessage: "",
+      };
+    }
     default: {
       return {
         ...state,
