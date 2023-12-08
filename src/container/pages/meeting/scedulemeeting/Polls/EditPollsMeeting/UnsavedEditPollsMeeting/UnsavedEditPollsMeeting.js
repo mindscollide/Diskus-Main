@@ -20,6 +20,7 @@ const UnsavedEditPollsMeeting = ({ setEditPolls }) => {
 
   const handleYesFunctionality = () => {
     setEditPolls(false);
+    dispatch(showunsavedEditPollsMeetings(false));
   };
 
   return (

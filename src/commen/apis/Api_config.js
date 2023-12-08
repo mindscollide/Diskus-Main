@@ -1302,11 +1302,31 @@ const getAllMeetingForAgendaImport = {
 const getAgendaWithMeetingIDForImport = {
   RequestMethod: "ServiceManager.GetAgendaWithMeetingIDForImport",
 };
+
 const inviteForCollaboration = {
   RequestMethod: "ServiceManager.InviteForMinuteCollaboration",
 };
 
+const getFileFolderDetailsRM = {
+  RequestMethod: "ServiceManager.GetFileFolderDetails",
+};
+
+const updateAndOpenByAndDescriptionRM = {
+  RequestMethod: "ServiceManager.UpdateOpenedByAndDescription",
+};
+
+const getDataAnalyticsRM = {
+  RequestMethod: "ServiceManager.GetDataAnalytics",
+};
+
+const getDataAnalyticsCountRM = {
+  RequestMethod: "ServiceManager.GetDataAnalyticsCount",
+};
 export {
+  getDataAnalyticsCountRM,
+  updateAndOpenByAndDescriptionRM,
+  getFileFolderDetailsRM,
+  getDataAnalyticsRM,
   saveTaskandAssgineesRM,
   saveTaskDocuments,
   createupdateTaskDataroom,

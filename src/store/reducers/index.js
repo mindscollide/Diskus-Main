@@ -53,3 +53,5 @@ export { default as actionMeetingReducer } from "./ActionMeeting_Reducer";
 
 export { default as AgendaWiseAgendaListReducer } from "./AgendaWiseAgendaReducer";
 export { default as downloadReducer } from "./Download_reducer";
+
+export { default as DataRoomFileAndFoldersDetailsReducer } from "./Dataroom2_reducer";

@@ -81,13 +81,20 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   });
 
   const deleteFilefromAttachments = (data, index) => {
+    console.log(data, "datadatadatadatadatadata");
     let searchIndex = tasksAttachments.TasksAttachments;
+    setFileForSend((prev) => {
+      return prev.filter((fileData, index) => {
+        return fileData.name !== data.DisplayAttachmentName;
+      });
+    });
     searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: searchIndex,
+      TasksAttachments: searchIndex,
     });
   };
+  console.log({ fileForSend, tasksAttachments }, "datadatadatadatadatadata");
 
   //for textfields validation
   const addNotesFieldHandler = (e) => {

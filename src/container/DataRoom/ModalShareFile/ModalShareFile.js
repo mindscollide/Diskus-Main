@@ -59,6 +59,7 @@ const ModalShareFile = ({
   const [inviteedit, setInviteedit] = useState(false);
   const [notifyPeople, setNotifyPeople] = useState(false);
   const [ownerInfo, setOwnerInfo] = useState(null);
+  console.log(ownerInfo, "ownerInfoownerInfoownerInfo");
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [meetingDate, setMeetingDate] = useState("");
@@ -92,12 +93,13 @@ const ModalShareFile = ({
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
+  console.log(isMembers, "isMembersisMembersisMembersisMembers");
   let organizationName = localStorage.getItem("OrganizatioName");
   let currentLanguage = localStorage.getItem("i18nextLng");
   let userID = localStorage.getItem("userID");
   const options = [
-    { value: 2, label: t("Viewer") },
-    { value: 1, label: t("Editor") },
+    { value: 1, label: t("Viewer") },
+    { value: 2, label: t("Editor") },
     // { value: 3, label: t("Add-expiration") },
   ];
 
@@ -146,15 +148,18 @@ const ModalShareFile = ({
 
   // set All Shared data with are coming from api
   useEffect(() => {
+    console.log(getSharedFileUsers, "getSharedFileUsersgetSharedFileUsers");
     try {
       if (getSharedFileUsers !== null && getSharedFileUsers !== undefined) {
+        let ownerInfo = getSharedFileUsers.owner;
+        setOwnerInfo(ownerInfo);
         if (assignees.user.length > 0) {
           if (getSharedFileUsers.listOfUsers.length > 0) {
             let newData = [];
             let newMembersData = [];
 
             let usersList = getSharedFileUsers.listOfUsers;
-            let ownerInfo = getSharedFileUsers.owner;
+
             let allMembers = assignees.user;
 
             usersList.forEach((userData, index) => {
@@ -164,10 +169,7 @@ const ModalShareFile = ({
                 FK_UserID: userData.userID,
                 ExpiryDateTime: "",
               });
-              let findOwner = allMembers.find(
-                (data, index) => data.pK_UID === ownerInfo.userID
-              );
-              setOwnerInfo(findOwner);
+
               allMembers.forEach((newData, index) => {
                 if (newData.pK_UID === userData.userID) {
                   newMembersData.push(newData);
@@ -682,9 +684,9 @@ const ModalShareFile = ({
                           {ownerInfo !== null && (
                             <Col sm={4} md={4} lg={4}>
                               <ParticipantInfoShareFolder
-                                participantname={ownerInfo?.name}
+                                participantname={ownerInfo?.userName}
                                 particiapantdesignation={ownerInfo?.designation}
-                                userPic={ownerInfo?.displayProfilePictureName}
+                                userPic={ownerInfo?.base64Img}
                               />{" "}
                             </Col>
                           )}
@@ -702,6 +704,7 @@ const ModalShareFile = ({
                                           src={crossIcon}
                                           height="14px"
                                           width="14px"
+                                          className={styles["cross_icon_modal"]}
                                           onClick={() =>
                                             handleRemoveMember(data)
                                           }

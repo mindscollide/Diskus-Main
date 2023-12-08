@@ -1026,7 +1026,9 @@ const Organizers = ({
         </>
       )}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {NewMeetingreducer.adduserModal && <ModalOrganizor />}
+      {NewMeetingreducer.adduserModal && (
+        <ModalOrganizor currentMeeting={currentMeeting} />
+      )}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.notifyOrganizors && (
         <NotifyOrganizers
