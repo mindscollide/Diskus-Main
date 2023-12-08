@@ -38,7 +38,7 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                       const first = data.displayAttachmentName.split(" ")[0];
                       const pdfData = {
                         taskId: data.fK_ResolutionID,
-                        attachmentID: data.pK_RAID,
+                        attachmentID: Number(data.originalAttachmentName),
                         fileName: data.displayAttachmentName,
                         commingFrom: 4,
                       };

@@ -2486,7 +2486,9 @@ const getSharedFileUsersApi = (navigate, data, t, setShareFileModal) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_GetUsersAgainstSharedFile_02".toLowerCase()
             ) {
-              dispatch(getSharedFileUser_fail(t("No-record-found")));
+              dispatch(
+                getSharedFileUser_success(response.data.responseResult, "")
+              );
               setShareFileModal(true);
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -2569,7 +2571,12 @@ const getSharedFolderUsersApi = (navigate, data, t, setSharefoldermodal) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_GetUsersAgainstSharedFolder_02".toLowerCase()
             ) {
-              dispatch(getSharedFolderUser_fail(t("No-record-found")));
+              dispatch(
+                getSharedFolderUser_success(
+                  response.data.responseResult,
+                  t("No-record-found")
+                )
+              );
               setSharefoldermodal(true);
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===

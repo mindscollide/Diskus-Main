@@ -667,11 +667,11 @@ const Polls = ({
                     sm={12}
                     className="d-flex justify-content-end gap-2"
                   >
-                    <Button
+                    {/* <Button
                       text={t("Clone-meeting")}
                       className={styles["Cancel_Button_Polls_meeting"]}
                       onClick={enableAfterSavedViewPolls}
-                    />
+                    /> */}
 
                     <Button
                       text={t("Cancel")}

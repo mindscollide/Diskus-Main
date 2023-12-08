@@ -1636,5 +1636,6 @@
   "Add-description": "Add Description",
   "MEETING_STATUS_EDITED_PROPOSED": "The [Meeting TItle] has been Proposed",
   "MEETING_STATUS_EDITED_PUBLISHED": "The [Meeting TItle] has been Published",
+  "Folder-details": "Folder details",
   "Not-allowed": "Not Allowed"
 }

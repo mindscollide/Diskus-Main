@@ -491,7 +491,9 @@ const ProposedMeetingDate = ({
             <Col lg={12} md={12} sm={12}>
               <span className={styles["Staff_meeting_Heading"]}>
                 {viewProposedModal?.MeetingType}{" "}
-                <span>({viewProposedModal?.Location})</span>
+                {viewProposedModal?.Location !== "" && (
+                  <span>({viewProposedModal?.Location})</span>
+                )}
               </span>
             </Col>
           </Row>

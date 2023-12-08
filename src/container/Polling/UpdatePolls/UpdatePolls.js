@@ -867,6 +867,7 @@ const UpdatePolls = () => {
                                                       src={WhiteCrossIcon}
                                                       width="31.76px"
                                                       height="31.76px"
+                                                      alt=""
                                                       onClick={() =>
                                                         HandleCancelFunction(
                                                           index

@@ -65,7 +65,11 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
 
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [members, setMembers] = useState([]);
-
+  useEffect(() => {
+    return () => {
+      dispatch(showunsavedEditPollsMeetings(false));
+    };
+  }, []);
   const [options, setOptions] = useState([
     {
       name: 1,
@@ -500,19 +504,21 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                                   maxLength={500}
                                   change={(e) => HandleOptionChange(e)}
                                   inputicon={
-                                    <img
-                                      draggable={false}
-                                      src={WhiteCrossIcon}
-                                      width="31.76px"
-                                      height="31.76px"
-                                      alt=""
-                                      onClick={() =>
-                                        HandleCancelFunction(index)
-                                      }
-                                      className={
-                                        styles["Cross-icon-Create_poll"]
-                                      }
-                                    />
+                                    checkForPollStatus ? null : (
+                                      <img
+                                        draggable={false}
+                                        src={WhiteCrossIcon}
+                                        width="31.76px"
+                                        height="31.76px"
+                                        alt=""
+                                        onClick={() =>
+                                          HandleCancelFunction(index)
+                                        }
+                                        className={
+                                          styles["Cross-icon-Create_poll"]
+                                        }
+                                      />
+                                    )
                                   }
                                   iconClassName={
                                     styles["polling_Options_backGround"]

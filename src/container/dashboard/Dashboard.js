@@ -133,6 +133,7 @@ const Dashboard = () => {
     actionMeetingReducer,
     AgendaWiseAgendaListReducer,
     DataRoomReducer,
+    DataRoomFileAndFoldersDetailsReducer,
   } = useSelector((state) => state);
   // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate();
@@ -1705,7 +1706,8 @@ const Dashboard = () => {
             ResolutionReducer.Loading ||
             RealtimeNotification.Loading ||
             OrganizationBillingReducer.Loading ||
-            DataRoomReducer.Loading ? (
+            DataRoomReducer.Loading ||
+            DataRoomFileAndFoldersDetailsReducer.Loading ? (
               <Loader />
             ) : null}
           </Layout>

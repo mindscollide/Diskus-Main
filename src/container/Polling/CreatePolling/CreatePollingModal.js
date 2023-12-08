@@ -763,6 +763,7 @@ const CreatePolling = () => {
                                                 <img
                                                   src={WhiteCrossIcon}
                                                   width="31.76px"
+                                                  alt=""
                                                   height="31.76px"
                                                   onClick={() =>
                                                     HandleCancelFunction(index)

@@ -95,6 +95,7 @@ const ModalShareFolder = ({
   const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
   const [ownerInfo, setOwnerInfo] = useState(null);
+  console.log(ownerInfo, "ownerInfoownerInfoownerInfo");
   const [flag, setFlag] = useState(1);
   const [onclickFlag, setOnclickFlag] = useState(false);
   let organizationName = localStorage.getItem("OrganizatioName");
@@ -183,15 +184,21 @@ const ModalShareFolder = ({
   }, [assignees]);
 
   useEffect(() => {
+    console.log(
+      getSharedFolderUsers,
+      "getSharedFolderUsersgetSharedFolderUsersgetSharedFolderUsers"
+    );
     try {
       if (getSharedFolderUsers !== null && getSharedFolderUsers !== undefined) {
         if (assignees.user.length > 0) {
+          let ownerInfo = getSharedFolderUsers.owner;
+
+          setOwnerInfo(ownerInfo);
           if (getSharedFolderUsers.listOfUsers.length > 0) {
             let newData = [];
             let newMembersData = [];
 
             let usersList = getSharedFolderUsers.listOfUsers;
-            let ownerInfo = getSharedFolderUsers.owner;
             let allMembers = assignees.user;
             console.log(ownerInfo, usersList, "getAllAssigneesgetAllAssignees");
             usersList.forEach((userData, index) => {
@@ -200,10 +207,7 @@ const ModalShareFolder = ({
                 FK_UserID: userData.userID,
                 ExpiryDateTime: "",
               });
-              let findOwner = allMembers.find(
-                (data, index) => data.pK_UID === ownerInfo.userID
-              );
-              setOwnerInfo(findOwner);
+
               allMembers.forEach((newData, index) => {
                 if (newData.pK_UID === userData.userID) {
                   newMembersData.push(newData);
@@ -704,9 +708,9 @@ const ModalShareFolder = ({
                         {ownerInfo !== null && (
                           <Col sm={4} md={4} lg={4}>
                             <ParticipantInfoShareFolder
-                              participantname={ownerInfo?.name}
+                              participantname={ownerInfo?.userName}
                               particiapantdesignation={ownerInfo?.designation}
-                              userPic={ownerInfo?.displayProfilePictureName}
+                              userPic={ownerInfo?.base64Img}
                             />{" "}
                           </Col>
                         )}
@@ -714,7 +718,13 @@ const ModalShareFolder = ({
                         {isMembers.length > 0
                           ? isMembers.map((data, index) => {
                               return (
-                                <Col lg={4} md={4} sm={4} key={data.pK_UID}>
+                                <Col
+                                  lg={4}
+                                  md={4}
+                                  sm={4}
+                                  key={data.pK_UID}
+                                  className="position-relative"
+                                >
                                   <ParticipantInfoShareFolder
                                     participantname={data.name}
                                     particiapantdesignation={data.designation}
@@ -725,6 +735,7 @@ const ModalShareFolder = ({
                                         src={crossIcon}
                                         height="14px"
                                         width="14px"
+                                        className={styles["cross_icon_modal"]}
                                         alt=""
                                         onClick={() => handleRemoveMember(data)}
                                       />
