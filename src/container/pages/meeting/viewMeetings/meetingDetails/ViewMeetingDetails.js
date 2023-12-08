@@ -388,8 +388,7 @@ const ViewMeetingDetails = ({
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
             {Number(editorRole.status) === 10 &&
-            editorRole.role === "Organizer" &&
-            meetingDetails.IsVideoCall === true ? (
+            editorRole.role === "Organizer" ? (
               <>
                 <Button
                   text={t("End-meeting")}

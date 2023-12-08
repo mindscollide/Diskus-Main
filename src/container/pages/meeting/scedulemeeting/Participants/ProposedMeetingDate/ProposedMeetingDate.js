@@ -347,10 +347,10 @@ const ProposedMeetingDate = ({
           8
         ),
         StartTime: createConvert(data.selectedOption + data.startDate).slice(
-          0,
-          8
+          8,
+          14
         ),
-        EndTime: createConvert(data.selectedOption + data.endDate).slice(0, 8),
+        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
         proposedDateID: data.proposedDateID,
       });
     });

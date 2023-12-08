@@ -86,7 +86,9 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
-  const { talkStateData, NewMeetingreducer } = useSelector((state) => state);
+  const { talkStateData, NewMeetingreducer, meetingIdReducer } = useSelector(
+    (state) => state
+  );
   const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
     (state) => state.NewMeetingreducer
   );
@@ -755,7 +757,7 @@ const NewMeeting = () => {
           } else {
             if (
               record.isQuickMeeting === true &&
-              minutesDifference <= 5 &&
+              minutesDifference <= 50000000 &&
               minutesDifference > 0
             ) {
               return (
@@ -786,7 +788,7 @@ const NewMeeting = () => {
               );
             } else if (
               record.isQuickMeeting === false &&
-              minutesDifference <= 5 &&
+              minutesDifference <= 50000000 &&
               minutesDifference > 0
             ) {
               return (
@@ -1155,6 +1157,27 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (
+      meetingIdReducer.MeetingStatusSocket !== null &&
+      meetingIdReducer.MeetingStatusSocket !== undefined &&
+      meetingIdReducer.MeetingStatusSocket.length !== 0
+    ) {
+      let startMeetingData = meetingIdReducer.MeetingStatusSocket.meeting;
+      const indexToUpdate = rows.findIndex(
+        (obj) => obj.pK_MDID === startMeetingData.pK_MDID
+      );
+      if (indexToUpdate !== -1) {
+        let updatedRows = [...rows];
+        updatedRows[indexToUpdate] = startMeetingData;
+        setRow(updatedRows);
+      } else {
+        let updatedRows = [...rows, startMeetingData];
+        setRow(updatedRows);
+      }
+    }
+  }, [meetingIdReducer.MeetingStatusSocket]);
+
+  useEffect(() => {
+    if (
       ResponseMessages !== "" &&
       ResponseMessages !== undefined &&
       ResponseMessages !== t("Record-found") &&
@@ -1208,6 +1231,8 @@ const NewMeeting = () => {
   }, [ResponseMessage]);
 
   console.log("Meeting Actions", NewMeetingreducer);
+
+  console.log("meetingIdReducermeetingIdReducer", meetingIdReducer);
 
   return (
     <section className={styles["NewMeeting_container"]}>
