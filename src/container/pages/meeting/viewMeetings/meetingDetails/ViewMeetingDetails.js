@@ -56,7 +56,6 @@ const ViewMeetingDetails = ({
   let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("organizationID"));
-
   const [rows, setRows] = useState([
     {
       selectedOption: "",

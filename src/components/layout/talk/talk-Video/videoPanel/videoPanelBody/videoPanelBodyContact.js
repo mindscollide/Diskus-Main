@@ -210,6 +210,7 @@ const VideoPanelBodyContact = () => {
       OrganizationID: currentOrganization,
     };
     dispatch(LeaveCall(Data, navigate, t));
+    localStorage.setItem("");
     dispatch(InitiateVideoCall(Data2, navigate, t));
     localStorage.setItem("isCaller", true);
     const emptyArray = [];
@@ -226,6 +227,7 @@ const VideoPanelBodyContact = () => {
     localStorage.setItem("recipentCalledID", userCalledID);
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(videoChatPanel(false));
+    localStorage.setItem("isMeetingVideo", false);
   };
 
   const leaveCallParticipantOto = () => {
@@ -259,6 +261,7 @@ const VideoPanelBodyContact = () => {
     // localStorage.setItem('recipentCalledID', userCalledID)
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(videoChatPanel(false));
+    localStorage.setItem("isMeetingVideo", false);
   };
 
   const leaveCallHostGroup = () => {
@@ -288,6 +291,7 @@ const VideoPanelBodyContact = () => {
     dispatch(leaveCallModal(false));
     setInitiateVideoModalGroup(false);
     console.log("Initiate Group Call Boys More", groupCallUsers);
+    localStorage.setItem("isMeetingVideo", false);
   };
 
   const leaveCallParticipantGroup = () => {
@@ -318,6 +322,7 @@ const VideoPanelBodyContact = () => {
     dispatch(leaveCallModal(false));
     setInitiateVideoModalGroup(false);
     console.log("Initiate Group Call Boys More", groupCallUsers);
+    localStorage.setItem("isMeetingVideo", false);
   };
 
   let buttonText = t("Group-call");

@@ -22,6 +22,10 @@ import {
   activeChatBoxGS,
 } from "../../../store/actions/Talk_Feature_actions";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
+import {
+  normalizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+} from "../../../store/actions/VideoFeature_actions";
 import member from "../../../assets/images/member.svg";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -412,6 +416,7 @@ const NewMeeting = () => {
     } else {
       setAdvanceMeetingModalID(id);
       setViewAdvanceMeetingModal(true);
+      localStorage.setItem("currentMeetingID", id);
     }
   };
 
@@ -1178,6 +1183,47 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (
+      meetingIdReducer.MeetingStatusEnded !== null &&
+      meetingIdReducer.MeetingStatusEnded !== undefined &&
+      meetingIdReducer.MeetingStatusEnded.length !== 0
+    ) {
+      let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+      const indexToUpdate = rows.findIndex(
+        (obj) => obj.pK_MDID === endMeetingData.pK_MDID
+      );
+      if (indexToUpdate !== -1) {
+        let updatedRows = [...rows];
+        updatedRows[indexToUpdate] = endMeetingData;
+        setRow(updatedRows);
+        if (
+          advanceMeetingModalID === endMeetingData.pK_MDID &&
+          endMeetingData.status === "9"
+        ) {
+          setEdiorRole({ status: null, role: null });
+          setViewAdvanceMeetingModal(false);
+          setCurrentMeetingID(0);
+          setAdvanceMeetingModalID(null);
+          setDataroomMapFolderId(0);
+          dispatch(normalizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(false));
+        }
+        console.log(
+          "meetingIdReducer.MeetingStatusSocket",
+          advanceMeetingModalID === endMeetingData.pK_MDID &&
+            endMeetingData.status === "9",
+          advanceMeetingModalID,
+          endMeetingData.pK_MDID,
+          endMeetingData.status
+        );
+      } else {
+        let updatedRows = [...rows, endMeetingData];
+        setRow(updatedRows);
+      }
+    }
+  }, [meetingIdReducer.MeetingStatusEnded]);
+
+  useEffect(() => {
+    if (
       ResponseMessages !== "" &&
       ResponseMessages !== undefined &&
       ResponseMessages !== t("Record-found") &&
@@ -1265,6 +1311,7 @@ const NewMeeting = () => {
           setEdiorRole={setEdiorRole}
           dataroomMapFolderId={dataroomMapFolderId}
           setDataroomMapFolderId={setDataroomMapFolderId}
+          setCurrentMeetingID={setCurrentMeetingID}
         />
       ) : viewAdvanceMeetingModalUnpublish ? (
         <ViewMeetingModal

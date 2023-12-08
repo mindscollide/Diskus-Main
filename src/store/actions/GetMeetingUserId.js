@@ -84,6 +84,15 @@ const getMeetingStatusfromSocket = (response) => {
     response: response,
   };
 };
+
+const mqttCurrentMeetingEnded = (response) => {
+  console.log("responseresponseresponse", response);
+  return {
+    type: actions.MEETING_STATUS_ENDED,
+    response: response,
+  };
+};
+
 const meetingCount = (response) => {
   return {
     type: actions.RECENT_MEETINGCOUNTER,
@@ -557,4 +566,5 @@ export {
   setMQTTRequestUpcomingEvents,
   searchUserMeeting,
   SetSpinnerTrue,
+  mqttCurrentMeetingEnded,
 };

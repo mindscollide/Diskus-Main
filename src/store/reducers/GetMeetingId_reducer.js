@@ -15,6 +15,7 @@ const initialState = {
   MeetingStatusSocket: [],
   searchRecordFound: false,
   MQTTUpcomingEvents: null,
+  MeetingStatusEnded: null,
 };
 
 //Get meetingreducer
@@ -62,6 +63,13 @@ const meetingIdReducer = (state = initialState, action) => {
       return {
         ...state,
         MeetingStatusSocket: action.response,
+      };
+    }
+
+    case actions.MEETING_STATUS_ENDED: {
+      return {
+        ...state,
+        MeetingStatusEnded: action.response,
       };
     }
 

@@ -146,6 +146,7 @@ const VideoMaxIncoming = () => {
     dispatch(VideoCallResponse(Data2, navigate, t));
     dispatch(incomingVideoCallFlag(false));
     setIsTimerRunning(false);
+    localStorage.setItem("isMeetingVideo", false);
   };
 
   const rejectCall = () => {

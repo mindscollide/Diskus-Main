@@ -30,6 +30,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
+  let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     UserID: JSON.parse(userID),
     Device: "Browser",
@@ -45,6 +46,9 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
       method: "post",
       url: authenticationApi,
       data: form,
+      headers: {
+        _token: token,
+      },
     })
       .then(async (response) => {
         if (response.data.responseCode === 200) {
