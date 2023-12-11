@@ -385,9 +385,15 @@ const getDataAnalyticsCountApi = (
       });
   };
 };
+const clearDataResponseMessageDataRoom2 = () => {
+  return {
+    type: actions.CLEAR_DATAROOM2_RESPONSE_MESSAGE,
+  };
+};
 export {
   getDataAnalyticsCountApi,
   getDataAnalyticsApi,
   updateFileandFolderDetailsApi,
   getFilesandFolderDetailsApi,
+  clearDataResponseMessageDataRoom2,
 };

@@ -104,6 +104,7 @@ import axios from "axios";
 import ModalFileRequest from "./ModalFileRequesting/ModalFileRequesting";
 import ViewDetailsModal from "./ViewDetailsModal/ViewDetailsModal";
 import {
+  clearDataResponseMessageDataRoom2,
   getDataAnalyticsCountApi,
   getFilesandFolderDetailsApi,
 } from "../../store/actions/DataRoom2_actions";
@@ -197,7 +198,9 @@ const DataRoom = () => {
   // this is for only file upload states
   const [tasksAttachments, setTasksAttachments] = useState([]);
   const [tasksAttachmentsID, setTasksAttachmentsID] = useState(0);
-
+  const DataRoomFileAndFoldersDetailsResponseMessage = useSelector(
+    (state) => state.DataRoomFileAndFoldersDetailsReducer.ResponseMessage
+  );
   const [fileDataforAnalyticsCount, setFileDataforAnalyticsCount] =
     useState(null);
   // this is for notification
@@ -2765,10 +2768,27 @@ const DataRoom = () => {
         dispatch(clearDataResponseMessage());
       }, 4000);
     }
+    if (
+      DataRoomFileAndFoldersDetailsResponseMessage !== t("Data-available") &&
+      DataRoomFileAndFoldersDetailsResponseMessage !== ""
+    ) {
+      setOpen({
+        open: true,
+        message: DataRoomFileAndFoldersDetailsResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+        dispatch(clearDataResponseMessageDataRoom2());
+      }, 4000);
+    }
   }, [
     DataRoomReducer.FileisExistMessage,
     DataRoomReducer.FolderisExistMessage,
     DataRoomReducer.ResponseMessage,
+    DataRoomFileAndFoldersDetailsResponseMessage,
   ]);
 
   //Scroller For table
@@ -3388,7 +3408,14 @@ const DataRoom = () => {
               </Col>
               {detailView && (
                 <Col lg={4} md={4} sm={4}>
-                  <ViewDetailsModal setDetailView={setDetailView} />
+                  <ViewDetailsModal
+                    setDetailView={setDetailView}
+                    setFolderId={setFolderId}
+                    setFolderName={setFolderName}
+                    setFileName={setFileName}
+                    setSharefoldermodal={setSharefoldermodal}
+                    setShareFileModal={setShareFileModal}
+                  />
                 </Col>
               )}
             </Row>

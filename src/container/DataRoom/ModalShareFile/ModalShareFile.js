@@ -328,7 +328,7 @@ const ModalShareFile = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 1,
+            value: 2,
           });
           setGeneralAccess({
             label: t("Restricted"),
@@ -340,7 +340,7 @@ const ModalShareFile = ({
           setTaskAssignedName("");
           setPermissionID({
             label: t("Editor"),
-            value: 1,
+            value: 2,
           });
           setGeneralAccess({
             label: t("Restricted"),
@@ -358,7 +358,7 @@ const ModalShareFile = ({
         });
         setPermissionID({
           label: t("Editor"),
-          value: 1,
+          value: 2,
         });
         setGeneralAccess({
           label: t("Restricted"),

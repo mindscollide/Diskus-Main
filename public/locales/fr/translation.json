@@ -1167,5 +1167,8 @@
   "Add-description": "Add Description",
   "Folder-details": "Folder details",
   "This-week": "This Week",
-  "Not-allowed": "Not Allowed"
+  "Not-allowed": "Not Allowed",
+  "Anyone-in-my-organization-can-find-and-view": "Anyone in my organization can find and view",
+  "Anyone-on-the-internet-with-link-can-view": "Anyone on the internet with link can view",
+  "Owned-by-you-shared-with": "Owned by you, Shared with"
 }
