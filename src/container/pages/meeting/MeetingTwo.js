@@ -1336,7 +1336,7 @@ const NewMeeting = () => {
           currentMeeting={currentMeetingID}
         />
       ) : proposedNewMeeting ? (
-        <ProposedNewMeeting />
+        <ProposedNewMeeting setProposedNewMeeting={setProposedNewMeeting} />
       ) : (
         <>
           <Row className="mt-2">

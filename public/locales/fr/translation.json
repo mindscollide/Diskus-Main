@@ -1171,5 +1171,8 @@
   "Anyone-in-my-organization-can-find-and-view": "Anyone in my organization can find and view",
   "Anyone-on-the-internet-with-link-can-view": "Anyone on the internet with link can view",
   "Owned-by-you-shared-with": "Owned by you, Shared with",
-  "Propose-new-meeting": "Propose New Meeting"
+  "Propose-new-meeting": "Propose New Meeting",
+  "Add-at-least-one-participant": "Add at least one participant",
+  "Add-at-least-two-proposed-dates": "Add at least two proposed dates",
+  "Please-select-send-response-by-date": "Please select send response by date"
 }
