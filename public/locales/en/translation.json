@@ -77,7 +77,7 @@
   "Attendees": "Attendees",
   "Reminder": "Reminder",
   "Location": "Location",
-  "Meeting-title": "Meeting title*",
+  "Meeting-title": "Meeting title",
   "Description": "Description",
   "Group-chat": "Group chat",
   "Agenda-title": "Agenda title",
@@ -1678,5 +1678,6 @@
   "Not-allowed": "Not Allowed",
   "Anyone-in-my-organization-can-find-and-view": "Anyone in my organization can find and view",
   "Anyone-on-the-internet-with-link-can-view": "Anyone on the internet with link can view",
-  "Owned-by-you-shared-with": "Owned by you, Shared with"
+  "Owned-by-you-shared-with": "Owned by you, Shared with",
+  "Propose-new-meeting": "Propose New Meeting"
 }

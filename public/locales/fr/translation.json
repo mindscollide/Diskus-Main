@@ -693,7 +693,7 @@
   "Not-voted": "Not Voted",
   "Are-you-sure-you-want-to-continue?": "Are you sure you want to continue?",
   "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes",
-  "Meeting-title": "Meeting Title*",
+  "Meeting-title": "Meeting Title",
   "Organizer-name": "Organizer Name",
   "Date-time": "Date/Time",
   "Join-meeting": "Join Meeting",
@@ -1170,5 +1170,6 @@
   "Not-allowed": "Not Allowed",
   "Anyone-in-my-organization-can-find-and-view": "Anyone in my organization can find and view",
   "Anyone-on-the-internet-with-link-can-view": "Anyone on the internet with link can view",
-  "Owned-by-you-shared-with": "Owned by you, Shared with"
+  "Owned-by-you-shared-with": "Owned by you, Shared with",
+  "Propose-new-meeting": "Propose New Meeting"
 }

@@ -1,0 +1,48 @@
+.ProposedMeetingHeading {
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5f78d6;
+}
+
+.ProposedNewMeetingPaper {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 78vh !important;
+  padding: 40px 50px !important;
+  margin-bottom: 20px !important;
+}
+
+.Sub_headings {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5f78d6;
+}
+
+.res_steric {
+  color: #f16b6b;
+  font-size: 12px !important;
+}
+
+.Scroller_ProposedMeeting {
+  height: 13vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_ProposedMeeting::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_ProposedMeeting::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Box_for_Assignee {
+  width: 246px !important;
+  height: 60px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
