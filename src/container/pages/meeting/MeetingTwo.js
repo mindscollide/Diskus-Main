@@ -58,6 +58,7 @@ import {
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
 } from "../../../store/actions/NewMeetingActions";
+import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
 import { useDispatch } from "react-redux";
 import NewEndLeaveMeeting from "./NewEndLeaveMeeting/NewEndLeaveMeeting";
@@ -1191,6 +1192,21 @@ const NewMeeting = () => {
       const indexToUpdate = rows.findIndex(
         (obj) => obj.pK_MDID === endMeetingData.pK_MDID
       );
+      let roomId;
+      if (
+        NewMeetingreducer.CurrentMeetingURL !== "" &&
+        NewMeetingreducer.CurrentMeetingURL !== null &&
+        NewMeetingreducer.CurrentMeetingURL !== undefined
+      ) {
+        let url = NewMeetingreducer.CurrentMeetingURL;
+        let urlObject = new URL(url);
+        let searchParams = new URLSearchParams(urlObject.search);
+        roomId = Number(searchParams.get("RoomID"));
+      } else {
+        roomId = 0;
+      }
+      let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
+
       if (indexToUpdate !== -1) {
         let updatedRows = [...rows];
         updatedRows[indexToUpdate] = endMeetingData;
@@ -1204,9 +1220,16 @@ const NewMeeting = () => {
           setCurrentMeetingID(0);
           setAdvanceMeetingModalID(null);
           setDataroomMapFolderId(0);
-          dispatch(normalizeVideoPanelFlag(false));
-          dispatch(minimizeVideoPanelFlag(false));
+          if (acceptedRoomID === roomId) {
+            dispatch(normalizeVideoPanelFlag(false));
+            dispatch(minimizeVideoPanelFlag(false));
+            localStorage.setItem("activeCall", false);
+            localStorage.setItem("activeRoomID", 0);
+            localStorage.setItem("acceptedRoomID", 0);
+            localStorage.setItem("isMeeting", false);
+          }
         }
+        dispatch(mqttCurrentMeetingEnded(null));
         console.log(
           "meetingIdReducer.MeetingStatusSocket",
           advanceMeetingModalID === endMeetingData.pK_MDID &&
@@ -1220,7 +1243,7 @@ const NewMeeting = () => {
         setRow(updatedRows);
       }
     }
-  }, [meetingIdReducer.MeetingStatusEnded]);
+  }, [meetingIdReducer.MeetingStatusEnded, NewMeetingreducer]);
 
   useEffect(() => {
     if (
