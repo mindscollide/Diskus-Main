@@ -153,3 +153,23 @@ body[dir="rtl"] .errorMessage-inLogin {
   text-overflow: ellipsis !important;
   width: 200px !important;
 }
+
+.Add_Button_Proposed_Meeting {
+  padding: 10px 25px !important;
+  font-size: 12px !important;
+  border: none !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+}
+
+.Add_Button_Proposed_Meeting:is(:hover, :active, :focus, :focus-visible) {
+  padding: 10px 27px !important;
+  font-size: 12px !important;
+  border: none !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+}

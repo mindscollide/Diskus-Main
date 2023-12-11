@@ -426,10 +426,10 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                   <Col lg={10} md={10} sm={10}>
                     <Select />
                   </Col>
-                  <Col lg={2} md={2} sm={2}>
+                  <Col lg={2} md={2} sm={2} className="m-0 p-0">
                     <Button
                       text={"Add"}
-                      className={styles["Proposed_Button_Proposed_Meeting"]}
+                      className={styles["Add_Button_Proposed_Meeting"]}
                       onClick={handleAddParitipantProposedDates}
                     />
                   </Col>
