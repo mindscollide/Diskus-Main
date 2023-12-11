@@ -142,3 +142,14 @@ body[dir="rtl"] .errorMessage-inLogin {
   background: #5f78d6 !important;
   color: #fff !important;
 }
+
+.ParticipantName {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  display: inline-block !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  width: 200px !important;
+}

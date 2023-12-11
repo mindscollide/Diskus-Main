@@ -314,6 +314,10 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
     }
   };
 
+  //for handle Add Button Adding Participants
+
+  const handleAddParitipantProposedDates = () => {};
+
   //For arabic Convertion of the Date Times
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -419,8 +423,15 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={12} md={12} sm={12}>
+                  <Col lg={10} md={10} sm={10}>
                     <Select />
+                  </Col>
+                  <Col lg={2} md={2} sm={2}>
+                    <Button
+                      text={"Add"}
+                      className={styles["Proposed_Button_Proposed_Meeting"]}
+                      onClick={handleAddParitipantProposedDates}
+                    />
                   </Col>
                 </Row>
                 <Row className="mt-2">
@@ -466,7 +477,13 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                                               height="50px"
                                               className={styles["ProfilePic"]}
                                             />
-                                            <span>{participant.name}</span>
+                                            <span
+                                              className={
+                                                styles["ParticipantName"]
+                                              }
+                                            >
+                                              {participant.name}
+                                            </span>
                                           </Col>
                                           <Col
                                             lg={2}
