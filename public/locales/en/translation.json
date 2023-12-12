@@ -1682,5 +1682,14 @@
   "Propose-new-meeting": "Propose New Meeting",
   "Add-at-least-one-participant": "Add at least one participant",
   "Add-at-least-two-proposed-dates": "Add at least two proposed dates",
-  "Please-select-send-response-by-date": "Please select send response by date"
+  "Please-select-send-response-by-date": "Please select send response by date",
+  "Thank-you": "Thank You",
+  "Your-response-has-been-duly-noted": "Your response has been duly noted",
+  "We-acknowledge-your-unavailability-for-the-meeting": "We acknowledge your unavailability for the meeting",
+  "We're-really-looking-forward-to-having-you-at-the-meeting-hopefully-you-can-make-it": "We're really looking forward to having you at the meeting.",
+  "Hopefully-you-can-make-it": "Hopefully, you can make it!",
+  "Meeting-date-and-time": "Meeting date and time",
+  "Date-of-submitting-response": "Date of submitting response",
+  "Meeting-location": "Meeting location",
+  "You-have-confirmed-your-attendance": "You have confirmed your attendance"
 }

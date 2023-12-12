@@ -7,7 +7,11 @@ import { Col, Row } from "react-bootstrap";
 import profile from "../../../../../assets/images/newprofile.png";
 import plusFaddes from "../../../../../assets/images/SVGBlackPlusIcon.svg";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
-import { Button, TextField } from "../../../../../components/elements";
+import {
+  Button,
+  TextField,
+  Notification,
+} from "../../../../../components/elements";
 import { useState } from "react";
 import DatePicker from "react-multi-date-picker";
 import arabic from "react-date-object/calendars/arabic";
@@ -277,7 +281,26 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
 
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
-    seterror(true);
+    if (
+      proposedMeetingDetails.MeetingTitle === "" ||
+      proposedMeetingDetails.Description === "" ||
+      participantsProposedMeeting.length === 0 ||
+      rows.length <= 1 ||
+      sendResponseVal === ""
+    ) {
+      seterror(true);
+    } else {
+      alert("YOu can proposed now ");
+      setProposedMeetingDetails({
+        MeetingTitle: "",
+        Description: "",
+      });
+      setParticipantsProposedMeeting([]);
+      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+      setSendResponseBy({
+        date: "",
+      });
+    }
   };
 
   //handle Change for Decription and Title Of meeting
@@ -330,6 +353,20 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
       }
     }
   }, [currentLanguage]);
+
+  useEffect(() => {
+    return () => {
+      setProposedMeetingDetails({
+        MeetingTitle: "",
+        Description: "",
+      });
+      setParticipantsProposedMeeting([]);
+      setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+      setSendResponseBy({
+        date: "",
+      });
+    };
+  }, []);
 
   return (
     <section>
@@ -841,6 +878,7 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
           </Paper>
         </Col>
       </Row>
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </section>
   );
 };
