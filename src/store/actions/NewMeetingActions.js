@@ -6722,6 +6722,29 @@ const meetingStatusPublishedMqtt = (response) => {
   };
 };
 
+//Validate Empty String User Availibility For Meeting
+
+const validateEmptyStringUserAvailibilityInit = () => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_INIT,
+  };
+};
+
+const validateEmptyStringUserAvailibilitySuccess = (response, message) => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validateEmptyStringUserAvailibilityFailed = (message) => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_FAILED,
+    message: message,
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,

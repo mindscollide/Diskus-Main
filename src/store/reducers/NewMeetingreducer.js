@@ -1900,6 +1900,31 @@ const NewMeetingreducer = (state = initialState, action) => {
       };
     }
 
+    //Validate Empty String User Availibility For Meeting
+
+    case actions.VALIDATE_EMPTY_STRING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.VALIDATE_EMPTY_STRING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.VALIDATE_EMPTY_STRING_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     default:
       return {
         ...state,

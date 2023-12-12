@@ -7,7 +7,7 @@ import RedChair from "../../../assets/images/RSVPRedChair.svg";
 import Clock from "../../../assets/images/RSVPClockIcon.svg";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { TextField } from "../../../components/elements";
+import { Button, TextField } from "../../../components/elements";
 const RSVP = () => {
   const currentUrl = window.location.href;
   const { t } = useTranslation();
@@ -170,6 +170,11 @@ const RSVP = () => {
                   />
                 </Col>
               </Row>
+            </Col>
+          </Row>
+          <Row className="mt-4">
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+              <Button text={t("Back")} className={styles["BackButtonRSVP"]} />
             </Col>
           </Row>
         </Col>
