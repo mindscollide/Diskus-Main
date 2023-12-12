@@ -1376,18 +1376,20 @@ const NewMeeting = () => {
                       >
                         {t("Quick-meeting")}
                       </Dropdown.Item>
+
                       <Dropdown.Item
                         className="dropdown-item"
                         onClick={openSceduleMeetingPage}
                       >
                         {t("Advance-meeting")}
                       </Dropdown.Item>
-                      <Dropdown.Item
+                      {/* Proposed New Meeting For the Time Being Committed */}
+                      {/* <Dropdown.Item
                         className="dropdown-item"
                         onClick={openProposedNewMeetingPage}
                       >
                         {t("Propose-new-meeting")}
-                      </Dropdown.Item>
+                      </Dropdown.Item> */}
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>

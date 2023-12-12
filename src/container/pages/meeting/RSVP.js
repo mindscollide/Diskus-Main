@@ -8,11 +8,15 @@ import Clock from "../../../assets/images/RSVPClockIcon.svg";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Button, TextField } from "../../../components/elements";
+import { useDispatch } from "react-redux";
+import { validateEncryptedStringUserAvailibilityForMeetingApi } from "../../../store/actions/NewMeetingActions";
 const RSVP = () => {
   const currentUrl = window.location.href;
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [rsvp, setRSVP] = useState("");
+
   useEffect(() => {
     if (
       currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
@@ -21,6 +25,15 @@ const RSVP = () => {
       if (remainingString) {
         setRSVP(remainingString);
         // APi call
+        let Data = { EncryptedString: remainingString };
+        console.log(Data, "EncryptedStringEncryptedString");
+        dispatch(
+          validateEncryptedStringUserAvailibilityForMeetingApi(
+            navigate,
+            Data,
+            t
+          )
+        );
       }
       // Save something in local storage if the condition is true
     } else {

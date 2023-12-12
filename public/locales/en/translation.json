@@ -1691,5 +1691,7 @@
   "Meeting-date-and-time": "Meeting date and time",
   "Date-of-submitting-response": "Date of submitting response",
   "Meeting-location": "Meeting location",
-  "You-have-confirmed-your-attendance": "You have confirmed your attendance"
+  "You-have-confirmed-your-attendance": "You have confirmed your attendance",
+  "Failed-to-update-attendee-avaliability": "Failed To update Attendee Avaliability",
+  "Validation-failed": "Validation Failed"
 }
