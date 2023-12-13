@@ -741,12 +741,26 @@ export const newTimeFormaterForImportMeetingAgenda = (dateTime) => {
   return moment(_dateTime).format("h:mm A - D MMM, YYYY");
 };
 
-export const convertDatePlusTimeIntoGMT = (responseDate, responseTime) => {
-  const dateTimeString = responseDate + responseTime;
+export const convertDateTimeRangeToGMT = (date, startTime, endTime) => {
+  const startDateTime = moment
+    .utc(
+      `${date}T${startTime.slice(0, 2)}:${startTime.slice(
+        2,
+        4
+      )}:${startTime.slice(4, 6)}Z`,
+      "YYYYMMDDTHHmmssZ"
+    )
+    .format("h:mm A, Do MMM, YYYY [GMT]");
 
-  const formattedDateTime = moment
-    .utc(dateTimeString, "YYYYMMDDHHmmss")
-    .format("h:mm A, Do MMM, YYYY");
+  const endDateTime = moment
+    .utc(
+      `${date}T${endTime.slice(0, 2)}:${endTime.slice(2, 4)}:${endTime.slice(
+        4,
+        6
+      )}Z`,
+      "YYYYMMDDTHHmmssZ"
+    )
+    .format("h:mm A, Do MMM, YYYY [GMT]");
 
-  return formattedDateTime;
+  return { startDateTime, endDateTime };
 };

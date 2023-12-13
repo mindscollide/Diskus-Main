@@ -13,8 +13,18 @@ import { validateEncryptedStringUserAvailibilityForMeetingApi } from "../../../s
 import { useSelector } from "react-redux";
 import moment from "moment";
 import {
+  convertDatePlusTimeIntoGMT,
+  convertDateTimeRangeToGMT,
+  convertDateTimetoGMTMeetingDetail,
+  convertTimetoGMT,
+  convertUtcToGmt,
+  formatDateToUTC,
   newTimeFormaterAsPerUTCFullDate,
+  newTimeFormaterAsPerUTCTalkDateTime,
+  newTimeFormaterForImportMeetingAgenda,
+  newTimeFormaterMIAsPerUTCTalkDateTime,
   resolutionResultTable,
+  utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 const RSVP = () => {
   const currentUrl = window.location.href;
@@ -126,6 +136,8 @@ const RSVP = () => {
       console.log(error, "errorerrorerrorerror");
     }
   }, [UserAvalibilityState]);
+
+  console.log(rsvpData, "rsvpDatarsvpDatarsvpData");
 
   console.log(
     rsvpData.responseDate,
@@ -246,11 +258,11 @@ const RSVP = () => {
                   <TextField
                     labelClass={"d-none"}
                     name={"MeetingDateAndTime"}
-                    value={
-                      changeDateStartHandler2(rsvpData.meetingDate)
-                      //   rsvpData.startTime,
-                      //   rsvpData.endTime
-                    }
+                    value={convertDateTimeRangeToGMT(
+                      rsvpData.meetingDate,
+                      rsvpData.startTime,
+                      rsvpData.endTime
+                    )}
                     disable={true}
                   />
                 </Col>
@@ -267,7 +279,7 @@ const RSVP = () => {
                   <TextField
                     labelClass={"d-none"}
                     name={"DateOfSubmissionResponse"}
-                    value={newTimeFormaterAsPerUTCFullDate(
+                    value={newTimeFormaterAsPerUTCTalkDateTime(
                       rsvpData.responseDate + rsvpData.responseTime
                     )}
                     disable={true}
