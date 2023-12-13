@@ -10,12 +10,21 @@ import { useTranslation } from "react-i18next";
 import { Button, TextField } from "../../../components/elements";
 import { useDispatch } from "react-redux";
 import { validateEncryptedStringUserAvailibilityForMeetingApi } from "../../../store/actions/NewMeetingActions";
+import { useSelector } from "react-redux";
 const RSVP = () => {
   const currentUrl = window.location.href;
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [rsvp, setRSVP] = useState("");
+  const [rsvpData, setrsvpData] = useState(null);
+  const { NewMeetingreducer } = useSelector((state) => state);
+
+  const UserAvalibilityState = useSelector(
+    (state) => state.NewMeetingreducer.userAvailibilityData
+  );
+
+  console.log(UserAvalibilityState, "UserAvalibilityState");
 
   useEffect(() => {
     console.log(currentUrl, "remainingStringremainingString");
@@ -48,6 +57,14 @@ const RSVP = () => {
       } else {
         navigate("/Diskus/Meeting");
       }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (UserAvalibilityState !== undefined && UserAvalibilityState !== null) {
+      setrsvpData(UserAvalibilityState);
+    } else {
+      navigate("/Diskus/Meeting");
     }
   }, []);
 

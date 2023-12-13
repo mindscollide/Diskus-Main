@@ -102,6 +102,7 @@ const initialState = {
   SaveFolderResponse: null,
   meetingStatusProposedMqttData: null,
   meetingStatusPublishedMqttData: null,
+  userAvailibilityData: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1910,9 +1911,11 @@ const NewMeetingreducer = (state = initialState, action) => {
     }
 
     case actions.VALIDATE_EMPTY_STRING_SUCCESS: {
+      console.log(action.response, "actionsactions");
       return {
         ...state,
         Loading: false,
+        userAvailibilityData: action.response,
         ResponseMessage: action.message,
       };
     }
@@ -1921,6 +1924,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        userAvailibilityData: action.response,
         ResponseMessage: action.message,
       };
     }
