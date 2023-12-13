@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ViewMeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Container } from "react-bootstrap";
 import {
   Button,
   Notification,
   Loader,
+  Modal,
 } from "../../../../../components/elements";
 import Messegeblue from "../../../../../assets/images/blue Messege.svg";
 import BlueCamera from "../../../../../assets/images/blue Camera.svg";
@@ -29,6 +30,18 @@ import {
   FetchMeetingURLApi,
   FetchMeetingURLClipboard,
 } from "../../../../../store/actions/NewMeetingActions";
+import {
+  callRequestReceivedMQTT,
+  LeaveCall,
+} from "../../../../../store/actions/VideoMain_actions";
+import {
+  normalizeVideoPanelFlag,
+  videoChatPanel,
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  leaveCallModal,
+  participantPopup,
+} from "../../../../../store/actions/VideoFeature_actions";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -56,6 +69,18 @@ const ViewMeetingDetails = ({
   let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("organizationID"));
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+
+  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+
+  let initiateRoomID = localStorage.getItem("initiateCallRoomID");
+
+  let currentCallType = Number(localStorage.getItem("CallType"));
+
+  let callTypeID = Number(localStorage.getItem("callTypeID"));
+
+  let callerID = Number(localStorage.getItem("callerID"));
+
   const [rows, setRows] = useState([
     {
       selectedOption: "",
@@ -66,6 +91,10 @@ const ViewMeetingDetails = ({
       endTime: "",
     },
   ]);
+
+  const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
+
+  const [initiateVideoModalGroup, setInitiateVideoModalGroup] = useState(false);
 
   //For Custom language datepicker
   const [open, setOpen] = useState({
@@ -318,14 +347,87 @@ const ViewMeetingDetails = ({
     } catch {}
   }, [NewMeetingreducer.getAllMeetingDetails]);
 
-  const joinMeetingCall = () => {
+  const leaveCallHost = () => {
     let Data = {
+      OrganizationID: currentOrganization,
+      RoomID: initiateRoomID,
+      IsCaller: true,
+      CallTypeID: currentCallType,
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    let Data2 = {
       MeetingID: currentMeeting,
     };
     dispatch(
-      FetchMeetingURLApi(Data, navigate, t, currentUserID, currentOrganization)
+      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
     );
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    setInitiateVideoModalOto(false);
+    dispatch(participantPopup(false));
+    localStorage.setItem("activeCall", true);
+    localStorage.setItem("callerID", 0);
+    localStorage.setItem("recipentCalledID", 0);
+    dispatch(callRequestReceivedMQTT({}, ""));
+    dispatch(videoChatPanel(false));
+    localStorage.setItem("isMeetingVideo", true);
+  };
+
+  const leaveCallParticipant = () => {
+    let roomID = localStorage.getItem("acceptedRoomID");
+    let Data = {
+      OrganizationID: currentOrganization,
+      RoomID: roomID,
+      IsCaller: false,
+      CallTypeID: callTypeID,
+    };
+    dispatch(LeaveCall(Data, navigate, t));
+    let Data2 = {
+      MeetingID: currentMeeting,
+    };
+    dispatch(
+      FetchMeetingURLApi(Data2, navigate, t, currentUserID, currentOrganization)
+    );
+    localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    dispatch(normalizeVideoPanelFlag(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(leaveCallModal(false));
+    setInitiateVideoModalOto(false);
+    dispatch(participantPopup(false));
+    localStorage.setItem("CallType", 0);
+    localStorage.setItem("activeCall", true);
+    dispatch(callRequestReceivedMQTT({}, ""));
+    dispatch(videoChatPanel(false));
+    localStorage.setItem("isMeetingVideo", true);
+  };
+
+  const joinMeetingCall = () => {
+    if (activeCall === false && isMeeting === false) {
+      let Data = {
+        MeetingID: currentMeeting,
+      };
+      dispatch(
+        FetchMeetingURLApi(
+          Data,
+          navigate,
+          t,
+          currentUserID,
+          currentOrganization
+        )
+      );
+      localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
+    } else if (activeCall === true && isMeeting === false) {
+      setInitiateVideoModalOto(true);
+      dispatch(callRequestReceivedMQTT({}, ""));
+    }
   };
 
   const copyToClipboardd = () => {
@@ -382,39 +484,50 @@ const ViewMeetingDetails = ({
   console.log("meetingDetailsmeetingDetails", meetingDetails);
 
   return (
-    <section>
-      {meetingStatus === 10 && (
-        <Row className="mt-3">
-          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
-            {Number(editorRole.status) === 10 &&
-            editorRole.role === "Organizer" ? (
-              <>
-                <Button
-                  text={t("End-meeting")}
-                  className={styles["LeaveMeetinButton"]}
-                  onClick={() =>
-                    dispatch(
-                      UpdateOrganizersMeeting(
-                        navigate,
-                        t,
-                        4,
-                        endMeetingRequest,
-                        setEdiorRole,
-                        setAdvanceMeetingModalID,
-                        setDataroomMapFolderId,
-                        setViewAdvanceMeetingModal
+    <>
+      <section>
+        {meetingStatus === 10 && (
+          <Row className="mt-3">
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+              {Number(editorRole.status) === 10 &&
+              editorRole.role === "Organizer" ? (
+                <>
+                  <Button
+                    text={t("End-meeting")}
+                    className={styles["LeaveMeetinButton"]}
+                    onClick={() =>
+                      dispatch(
+                        UpdateOrganizersMeeting(
+                          navigate,
+                          t,
+                          4,
+                          endMeetingRequest,
+                          setEdiorRole,
+                          setAdvanceMeetingModalID,
+                          setDataroomMapFolderId,
+                          setViewAdvanceMeetingModal
+                        )
                       )
-                    )
-                  }
-                />
-              </>
-            ) : meetingDetails.IsVideoCall === true ? (
-              <>
-                {/* <Button
+                    }
+                  />
+                </>
+              ) : meetingDetails.IsVideoCall === true ? (
+                <>
+                  {/* <Button
                   text={t("Join-Video-Call")}
                   className={styles["JoinMeetingButton"]}
                   onClick={joinMeetingCall}
                 /> */}
+                  <Button
+                    text={t("Leave-meeting")}
+                    className={styles["LeaveMeetinButton"]}
+                    onClick={() => {
+                      setViewAdvanceMeetingModal(false);
+                      setAdvanceMeetingModalID(null);
+                    }}
+                  />
+                </>
+              ) : (
                 <Button
                   text={t("Leave-meeting")}
                   className={styles["LeaveMeetinButton"]}
@@ -423,244 +536,295 @@ const ViewMeetingDetails = ({
                     setAdvanceMeetingModalID(null);
                   }}
                 />
-              </>
-            ) : (
-              <Button
-                text={t("Leave-meeting")}
-                className={styles["LeaveMeetinButton"]}
-                onClick={() => {
-                  setViewAdvanceMeetingModal(false);
-                  setAdvanceMeetingModalID(null);
-                }}
-              />
-            )}
-          </Col>
-        </Row>
-      )}
-
-      <Row>
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          className={styles["ScrollerMeeting_Active"]}
-        >
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Heading_Gray_meeting"]}>
-                {meetingDetails.MeetingType?.Type} | {meetingDetails.Location}
-              </span>
+              )}
             </Col>
           </Row>
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["MeetingTitle_Heading"]}>
-                {meetingDetails.MeetingTitle}
-              </span>
-            </Col>
-          </Row>
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["ParaGraph_SavedMeeting"]}>
-                {meetingDetails.Description}
-              </span>
-            </Col>
-          </Row>
-          <Row className="mt-3">
-            <Col lg={5} md={5} sm={5}>
-              <Row className="mt-1">
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["NOtes_heading"]}>{t("Notes")}</span>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["ParaGraph_SavedMeeting"]}>
-                    {meetingDetails.Notes}
-                  </span>
-                </Col>
-              </Row>
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["Scedule_OnHeading"]}>
-                    {t("Scheduled-on")}
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                {rows.map((data, index) => {
-                  console.log(data, "datadtatdtatdta");
+        )}
 
-                  const formattedStartDate = utcConvertintoGMT(
-                    data.selectedOption + data.startDate
-                  );
-                  const formattedEndDate = utcConvertintoGMT(
-                    data.selectedOption + data.endDate
-                  );
+        <Row>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className={styles["ScrollerMeeting_Active"]}
+          >
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <span className={styles["Heading_Gray_meeting"]}>
+                  {meetingDetails.MeetingType?.Type} | {meetingDetails.Location}
+                </span>
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col lg={12} md={12} sm={12}>
+                <span className={styles["MeetingTitle_Heading"]}>
+                  {meetingDetails.MeetingTitle}
+                </span>
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col lg={12} md={12} sm={12}>
+                <span className={styles["ParaGraph_SavedMeeting"]}>
+                  {meetingDetails.Description}
+                </span>
+              </Col>
+            </Row>
+            <Row className="mt-3">
+              <Col lg={5} md={5} sm={5}>
+                <Row className="mt-1">
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["NOtes_heading"]}>
+                      {t("Notes")}
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["ParaGraph_SavedMeeting"]}>
+                      {meetingDetails.Notes}
+                    </span>
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Scedule_OnHeading"]}>
+                      {t("Scheduled-on")}
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
+                  {rows.map((data, index) => {
+                    console.log(data, "datadtatdtatdta");
 
-                  console.log(
-                    { formattedStartDate, formattedEndDate },
-                    "testdatetimt"
-                  );
-                  return (
-                    <Col key={index} lg={12} md={12} sm={12}>
-                      <span className={styles["SceduledDateTime"]}>
-                        {moment(formattedStartDate).format("HH:MM a")} -{" "}
-                        {moment(formattedEndDate).format("HH:MM a")} ,{" "}
-                        {moment(formattedEndDate).format("DD MMM YYYY")}
-                        {/* {formattedStartDate} */}
-                      </span>
-                    </Col>
-                  );
-                })}
-              </Row>
-            </Col>
-            <Col lg={7} md={7} sm={7}>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex align-items-center gap-1"
-                >
-                  {meetingDetails.groupChat && (
-                    <img
-                      src={Messegeblue}
-                      height="20.44px"
-                      width="25.68px"
-                      alt=""
-                    />
-                  )}
-                  {meetingDetails.IsVideoCall && (
-                    <>
-                      {/* <img
+                    const formattedStartDate = utcConvertintoGMT(
+                      data.selectedOption + data.startDate
+                    );
+                    const formattedEndDate = utcConvertintoGMT(
+                      data.selectedOption + data.endDate
+                    );
+
+                    console.log(
+                      { formattedStartDate, formattedEndDate },
+                      "testdatetimt"
+                    );
+                    return (
+                      <Col key={index} lg={12} md={12} sm={12}>
+                        <span className={styles["SceduledDateTime"]}>
+                          {moment(formattedStartDate).format("HH:MM a")} -{" "}
+                          {moment(formattedEndDate).format("HH:MM a")} ,{" "}
+                          {moment(formattedEndDate).format("DD MMM YYYY")}
+                          {/* {formattedStartDate} */}
+                        </span>
+                      </Col>
+                    );
+                  })}
+                </Row>
+              </Col>
+              <Col lg={7} md={7} sm={7}>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex align-items-center gap-1"
+                  >
+                    {meetingDetails.groupChat && (
+                      <img
+                        src={Messegeblue}
+                        height="20.44px"
+                        width="25.68px"
+                        alt=""
+                      />
+                    )}
+                    {meetingDetails.IsVideoCall && (
+                      <>
+                        {/* <img
                         src={BlueCamera}
                         height="17.84px"
                         width="27.19px"
                         alt=""
                         className={styles["blue-icon"]}
                       /> */}
-                      <img
-                        src={ClipboardIcon}
-                        height="40px"
-                        width="40px"
-                        alt=""
-                        onClick={() => copyToClipboardd()}
-                        className={styles["clipboard-icon"]}
-                      />
-                      <Button
-                        text={t("Join-Video-Call")}
-                        className={styles["JoinMeetingButton"]}
-                        onClick={joinMeetingCall}
-                      />
-                      {/* <span className={styles["LinkClass"]}>
+                        <img
+                          src={ClipboardIcon}
+                          height="40px"
+                          width="40px"
+                          alt=""
+                          onClick={() => copyToClipboardd()}
+                          className={styles["clipboard-icon"]}
+                        />
+                        <Button
+                          text={t("Join-Video-Call")}
+                          className={styles["JoinMeetingButton"]}
+                          onClick={joinMeetingCall}
+                        />
+                        {/* <span className={styles["LinkClass"]}>
                         {meetingDetails.Link}
                       </span> */}
-                    </>
-                  )}
-                </Col>
-              </Row>
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["NOtes_heading"]}>{t("RSVP")}</span>
-                </Col>
-              </Row>
+                      </>
+                    )}
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["NOtes_heading"]}>{t("RSVP")}</span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["RspvClassDetails"]}>
+                      {meetingDetails.AllowRSPV
+                        ? t("RSVP-allowed-and-notify")
+                        : t("RSVP-not-allowed")}
+                    </span>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col lg={6} md={6} sm={6}>
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["NOtes_heading"]}>
+                          {t("Reminder-frequency ")}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      {meetingDetails.ReminderFrequency && (
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["RspvClassDetails"]}>
+                            {meetingDetails.ReminderFrequency.label}
+                          </span>
+                        </Col>
+                      )}
+
+                      {meetingDetails.ReminderFrequencyTwo && (
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["RspvClassDetails"]}>
+                            {meetingDetails.ReminderFrequencyTwo.label}
+                          </span>
+                        </Col>
+                      )}
+                      {meetingDetails.ReminderFrequencyThree && (
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["RspvClassDetails"]}>
+                            {meetingDetails.ReminderFrequencyThree.label}
+                          </span>
+                        </Col>
+                      )}
+                    </Row>
+                  </Col>
+                  <Col lg={6} md={6} sm={6}>
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["NOtes_heading"]}>
+                          {t("Recurring")}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["ParaGraph_SavedMeeting"]}>
+                          {meetingDetails.RecurringOptions.label}
+                        </span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <Row className="mt-2">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-end gap-2"
+          >
+            <Button
+              text={t("Cancel")}
+              className={styles["Cancel_Meeting_Details"]}
+              onClick={handleCancelMeetingNoPopup}
+            />
+            <Button
+              text={t("Next")}
+              className={styles["Next_Meeting_SaveMeeting"]}
+              onClick={handleUpdateNext}
+            />
+          </Col>
+        </Row>
+        {/* {NewMeetingreducer.LoadingViewModal && <Loader />} */}
+        {cancelModalView && (
+          <CancelButtonModal
+            setCancelModalView={setCancelModalView}
+            cancelModalView={cancelModalView}
+            setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
+            setMeetingDetails={setmeetingDetails}
+            setEdiorRole={setEdiorRole}
+            setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+          />
+        )}
+        <Notification
+          setOpen={setOpen}
+          open={open.flag}
+          message={open.message}
+        />
+      </section>
+
+      <Modal
+        show={initiateVideoModalOto}
+        onHide={() => {
+          setInitiateVideoModalOto(false);
+        }}
+        setShow={setInitiateVideoModalOto}
+        modalFooterClassName="d-none"
+        centered
+        size={"sm"}
+        ModalBody={
+          <>
+            <Container>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <span className={styles["RspvClassDetails"]}>
-                    {meetingDetails.AllowRSPV
-                      ? t("RSVP-allowed-and-notify")
-                      : t("RSVP-not-allowed")}
-                  </span>
+                  <p> Disconnect current call? </p>
                 </Col>
               </Row>
-              <Row className="mt-3">
-                <Col lg={6} md={6} sm={6}>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12}>
-                      <span className={styles["NOtes_heading"]}>
-                        {t("Reminder-frequency ")}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    {meetingDetails.ReminderFrequency && (
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["RspvClassDetails"]}>
-                          {meetingDetails.ReminderFrequency.label}
-                        </span>
-                      </Col>
-                    )}
+              <Row className="mt-3 mb-4">
+                <Col
+                  lg={12}
+                  sm={12}
+                  md={12}
+                  className="d-flex justify-content-center gap-2"
+                >
+                  <Button
+                    text={
+                      callerID === currentUserID || callerID === 0
+                        ? t("End Host")
+                        : callerID !== currentUserID
+                        ? t("End Participant")
+                        : null
+                    }
+                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    onClick={
+                      callerID === currentUserID || callerID === 0
+                        ? leaveCallHost
+                        : callerID !== currentUserID
+                        ? leaveCallParticipant
+                        : null
+                    }
+                  />
 
-                    {meetingDetails.ReminderFrequencyTwo && (
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["RspvClassDetails"]}>
-                          {meetingDetails.ReminderFrequencyTwo.label}
-                        </span>
-                      </Col>
-                    )}
-                    {meetingDetails.ReminderFrequencyThree && (
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["RspvClassDetails"]}>
-                          {meetingDetails.ReminderFrequencyThree.label}
-                        </span>
-                      </Col>
-                    )}
-                  </Row>
-                </Col>
-                <Col lg={6} md={6} sm={6}>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12}>
-                      <span className={styles["NOtes_heading"]}>
-                        {t("Recurring")}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <span className={styles["ParaGraph_SavedMeeting"]}>
-                        {meetingDetails.RecurringOptions.label}
-                      </span>
-                    </Col>
-                  </Row>
+                  <Button
+                    text={t("Cancel")}
+                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    onClick={() => setInitiateVideoModalOto(false)}
+                  />
                 </Col>
               </Row>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-      <Row className="mt-2">
-        <Col
-          lg={12}
-          md={12}
-          sm={12}
-          className="d-flex justify-content-end gap-2"
-        >
-          <Button
-            text={t("Cancel")}
-            className={styles["Cancel_Meeting_Details"]}
-            onClick={handleCancelMeetingNoPopup}
-          />
-          <Button
-            text={t("Next")}
-            className={styles["Next_Meeting_SaveMeeting"]}
-            onClick={handleUpdateNext}
-          />
-        </Col>
-      </Row>
-      {/* {NewMeetingreducer.LoadingViewModal && <Loader />} */}
-      {cancelModalView && (
-        <CancelButtonModal
-          setCancelModalView={setCancelModalView}
-          cancelModalView={cancelModalView}
-          setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-          setMeetingDetails={setmeetingDetails}
-          setEdiorRole={setEdiorRole}
-          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-        />
-      )}
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-    </section>
+            </Container>
+          </>
+        }
+      />
+    </>
   );
 };
 

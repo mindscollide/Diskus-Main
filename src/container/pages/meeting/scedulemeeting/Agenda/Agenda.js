@@ -1698,6 +1698,22 @@ const Agenda = ({
         }),
         3000
       );
+    } else if (MeetingAgendaReducer.ResponseMessage === "Voting-saved") {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Agenda-voting-details-saved-successfully"),
+        }),
+        3000
+      );
+    } else if (MeetingAgendaReducer.ResponseMessage === "Voting-updated") {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("Agenda-voting-details-updated-successfully"),
+        }),
+        3000
+      );
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
@@ -1710,6 +1726,25 @@ const Agenda = ({
   );
 
   console.log("dataroomMapFolderIddataroomMapFolderId", folderDataRoomMeeting);
+
+  useEffect(() => {
+    if (
+      MeetingAgendaReducer.MeetingAgendaUpdatedMqtt !== undefined &&
+      MeetingAgendaReducer.MeetingAgendaUpdatedMqtt !== null
+    ) {
+      if (
+        currentMeetingIDLS ===
+        MeetingAgendaReducer.MeetingAgendaUpdatedMqtt.meetingID
+      ) {
+        let getMeetingData = {
+          MeetingID: currentMeetingIDLS,
+        };
+        dispatch(
+          GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t)
+        );
+      }
+    }
+  }, [MeetingAgendaReducer.MeetingAgendaUpdatedMqtt]);
 
   return (
     <>
