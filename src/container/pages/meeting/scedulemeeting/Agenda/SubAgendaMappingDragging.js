@@ -350,28 +350,6 @@ const SubAgendaMappingDragging = ({
     ),
   }));
 
-  useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === "Voting-saved") {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Agenda-voting-details-saved-successfully"),
-        }),
-        3000
-      );
-      dispatch(clearResponseMessage(""));
-    } else if (MeetingAgendaReducer.ResponseMessage === "Voting-updated") {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Agenda-voting-details-updated-successfully"),
-        }),
-        3000
-      );
-      dispatch(clearResponseMessage(""));
-    }
-  }, [MeetingAgendaReducer.ResponseMessage]);
-
   return (
     <>
       {data.subAgenda.length > 0 ? (

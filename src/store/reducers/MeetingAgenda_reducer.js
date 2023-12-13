@@ -20,6 +20,9 @@ const initialState = {
   NextTabAgenda: false,
   GetAllMeetingForAgendaImportData: null,
   GetAgendaWithMeetingIDForImportData: null,
+  MeetingAgendaStartedData: null,
+  MeetingAgendaEndedData: null,
+  MeetingAgendaUpdatedMqtt: null,
 };
 
 const MeetingAgendaReducer = (state = initialState, action) => {
@@ -437,6 +440,20 @@ const MeetingAgendaReducer = (state = initialState, action) => {
         Loading: false,
         GetAgendaWithMeetingIDForImportData: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.MQTT_MEETING_AGENDA_VOTING_STARTED: {
+      return {
+        ...state,
+        MeetingAgendaStartedData: action.response,
+      };
+    }
+
+    case actions.MQTT_MEETING_AGENDA_UPDATED: {
+      return {
+        ...state,
+        MeetingAgendaUpdatedMqtt: action.response,
       };
     }
 
