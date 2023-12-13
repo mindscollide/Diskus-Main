@@ -740,3 +740,13 @@ export const newTimeFormaterForImportMeetingAgenda = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
   return moment(_dateTime).format("h:mm A - D MMM, YYYY");
 };
+
+export const convertDatePlusTimeIntoGMT = (responseDate, responseTime) => {
+  const dateTimeString = responseDate + responseTime;
+
+  const formattedDateTime = moment
+    .utc(dateTimeString, "YYYYMMDDHHmmss")
+    .format("h:mm A, Do MMM, YYYY");
+
+  return formattedDateTime;
+};

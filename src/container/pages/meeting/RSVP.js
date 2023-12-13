@@ -11,13 +11,28 @@ import { Button, TextField } from "../../../components/elements";
 import { useDispatch } from "react-redux";
 import { validateEncryptedStringUserAvailibilityForMeetingApi } from "../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
+import moment from "moment";
+import {
+  newTimeFormaterAsPerUTCFullDate,
+  resolutionResultTable,
+} from "../../../commen/functions/date_formater";
 const RSVP = () => {
   const currentUrl = window.location.href;
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [rsvp, setRSVP] = useState("");
-  const [rsvpData, setrsvpData] = useState(null);
+  const [rsvpData, setrsvpData] = useState({
+    meetingTitle: "",
+    meetingDate: "",
+    startTime: "",
+    endTime: "",
+    responseDate: "",
+    responseTime: "",
+    userResponse: "",
+    userResponseStatus: 0,
+    meetingLocation: "",
+  });
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const UserAvalibilityState = useSelector(
@@ -25,6 +40,35 @@ const RSVP = () => {
   );
 
   console.log(UserAvalibilityState, "UserAvalibilityState");
+
+  const changeDateStartHandler2 = (date) => {
+    let newDate = moment(date).format("DD MMMM YYYY");
+    return newDate;
+  };
+
+  function convertToGMT(utcDate, utcStartTime, utcEndTime) {
+    // Concatenating date and time strings to form ISO format
+    const startDateISO = `${utcDate}T${utcStartTime}Z`;
+    const endDateISO = `${utcDate}T${utcEndTime}Z`;
+
+    // Creating Date objects in UTC
+    const startDateUTC = new Date(startDateISO);
+    const endDateUTC = new Date(endDateISO);
+
+    // Getting GMT formatted strings
+    const formattedStartDate = startDateUTC.toISOString().split("T")[0];
+    const formattedStartTime = startDateUTC
+      .toISOString()
+      .split("T")[1]
+      .slice(0, 5);
+    const formattedEndTime = endDateUTC.toISOString().split("T")[1].slice(0, 5);
+
+    return {
+      formattedStartDate: formattedStartDate,
+      formattedStartTime: formattedStartTime,
+      formattedEndTime: formattedEndTime,
+    };
+  }
 
   useEffect(() => {
     console.log(currentUrl, "remainingStringremainingString");
@@ -61,12 +105,33 @@ const RSVP = () => {
   }, []);
 
   useEffect(() => {
-    if (UserAvalibilityState !== undefined && UserAvalibilityState !== null) {
-      setrsvpData(UserAvalibilityState);
-    } else {
-      navigate("/Diskus/Meeting");
+    try {
+      if (UserAvalibilityState !== undefined && UserAvalibilityState !== null) {
+        setrsvpData((prevState) => ({
+          ...prevState,
+          meetingTitle: UserAvalibilityState.meetingTitle || "",
+          meetingDate: UserAvalibilityState.meetingDate || "",
+          startTime: UserAvalibilityState.startTime || "",
+          endTime: UserAvalibilityState.endTime || "",
+          responseDate: UserAvalibilityState.responseDate || "",
+          responseTime: UserAvalibilityState.responseTime || "",
+          userResponse: UserAvalibilityState.userResponse || "",
+          userResponseStatus: UserAvalibilityState.userResponseStatus || 0,
+          meetingLocation: UserAvalibilityState.meetingLocation || "",
+        }));
+      } else {
+        // Handle the case when UserAvailabilityState is undefined or null
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerrorerror");
     }
-  }, []);
+  }, [UserAvalibilityState]);
+
+  console.log(
+    rsvpData.responseDate,
+    rsvpData.responseTime,
+    "responseDateresponseDate"
+  );
 
   useEffect(() => {
     if (rsvp !== "") {
@@ -87,37 +152,67 @@ const RSVP = () => {
               sm={12}
               className="d-flex flex-column flex-wrap align-items-center"
             >
-              {/* <img src={ThumbsUp} height="130.64px" width="113.47px" alt="" />
-              <span className={styles["ThankyouHeading"]}>
-                {t("Thank-you")}!
-              </span>
-              <span className={styles["Subheading"]}>
-                {t("Your-response-has-been-duly-noted")}.
-              </span> */}
-
-              {/* Red Chair */}
-              {/* <img src={RedChair} height="130.64px" width="113.47px" alt="" />
-              <span className={styles["RedThankyouHeading"]}>
-                {t("Thank-you")}!
-              </span>
-              <span className={styles["Subheading"]}>
-                {t("We-acknowledge-your-unavailability-for-the-meeting")}.
-              </span> */}
-
-              {/* Clock */}
-
-              <img src={Clock} height="130.64px" width="113.47px" alt="" />
-              <span className={styles["OrangeThankyouHeading"]}>
-                {t("Thank-you")}!
-              </span>
-              <span className={styles["Subheading"]}>
-                {t(
-                  "We're-really-looking-forward-to-having-you-at-the-meeting-hopefully-you-can-make-it"
-                )}
-              </span>
-              <span className={styles["Subheading"]}>
-                {t("Hopefully-you-can-make-it")}
-              </span>
+              {rsvpData && (
+                <>
+                  {rsvpData.userResponseStatus === 2 ? (
+                    // Your rendering logic for userResponseStatus 2
+                    <>
+                      <img
+                        src={ThumbsUp}
+                        height="130.64px"
+                        width="113.47px"
+                        alt=""
+                      />
+                      <span className={styles["ThankyouHeading"]}>
+                        {t("Thank-you")}!
+                      </span>
+                      <span className={styles["Subheading"]}>
+                        {t("Your-response-has-been-duly-noted")}.
+                      </span>
+                    </>
+                  ) : rsvpData.userResponseStatus === 3 ? (
+                    // Your rendering logic for userResponseStatus 3
+                    <>
+                      <img
+                        src={RedChair}
+                        height="130.64px"
+                        width="113.47px"
+                        alt=""
+                      />
+                      <span className={styles["RedThankyouHeading"]}>
+                        {t("Thank-you")}!
+                      </span>
+                      <span className={styles["Subheading"]}>
+                        {t(
+                          "We-acknowledge-your-unavailability-for-the-meeting"
+                        )}
+                        .
+                      </span>
+                    </>
+                  ) : rsvpData.userResponseStatus === 4 ? (
+                    // Your rendering logic for userResponseStatus 4
+                    <>
+                      <img
+                        src={Clock}
+                        height="130.64px"
+                        width="113.47px"
+                        alt=""
+                      />
+                      <span className={styles["OrangeThankyouHeading"]}>
+                        {t("Thank-you")}!
+                      </span>
+                      <span className={styles["Subheading"]}>
+                        {t(
+                          "We're-really-looking-forward-to-having-you-at-the-meeting-hopefully-you-can-make-it"
+                        )}
+                      </span>
+                      <span className={styles["Subheading"]}>
+                        {t("Hopefully-you-can-make-it")}
+                      </span>
+                    </>
+                  ) : null}
+                </>
+              )}
             </Col>
           </Row>
           <Row>
@@ -132,6 +227,7 @@ const RSVP = () => {
               <TextField
                 labelClass={"d-none"}
                 name={"MeetingTitle"}
+                value={rsvpData.meetingTitle}
                 disable={true}
               />
             </Col>
@@ -150,6 +246,11 @@ const RSVP = () => {
                   <TextField
                     labelClass={"d-none"}
                     name={"MeetingDateAndTime"}
+                    value={
+                      changeDateStartHandler2(rsvpData.meetingDate)
+                      //   rsvpData.startTime,
+                      //   rsvpData.endTime
+                    }
                     disable={true}
                   />
                 </Col>
@@ -166,6 +267,9 @@ const RSVP = () => {
                   <TextField
                     labelClass={"d-none"}
                     name={"DateOfSubmissionResponse"}
+                    value={newTimeFormaterAsPerUTCFullDate(
+                      rsvpData.responseDate + rsvpData.responseTime
+                    )}
                     disable={true}
                   />
                 </Col>
@@ -184,6 +288,7 @@ const RSVP = () => {
                   <TextField
                     labelClass={"d-none"}
                     name={"MeetingLocation"}
+                    value={rsvpData.meetingLocation}
                     disable={true}
                   />
                 </Col>
@@ -200,6 +305,7 @@ const RSVP = () => {
                   <TextField
                     labelClass={"d-none"}
                     name={"ConfirmedAttendance"}
+                    value={rsvpData.userResponse}
                     disable={true}
                   />
                 </Col>
