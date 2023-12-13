@@ -18,10 +18,14 @@ const RSVP = () => {
   const [rsvp, setRSVP] = useState("");
 
   useEffect(() => {
+    console.log(currentUrl, "remainingStringremainingString");
     if (
       currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
     ) {
+      console.log(currentUrl, "remainingStringremainingString");
+
       const remainingString = currentUrl.split("?action=")[1];
+      console.log(remainingString, "remainingStringremainingString");
       if (remainingString) {
         setRSVP(remainingString);
         // APi call
