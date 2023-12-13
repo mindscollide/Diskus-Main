@@ -741,6 +741,30 @@ export const newTimeFormaterForImportMeetingAgenda = (dateTime) => {
   return moment(_dateTime).format("h:mm A - D MMM, YYYY");
 };
 
+// export const convertDateTimeRangeToGMT = (date, startTime, endTime) => {
+//   const startDateTime = moment
+//     .utc(
+//       `${date}T${startTime.slice(0, 2)}:${startTime.slice(
+//         2,
+//         4
+//       )}:${startTime.slice(4, 6)}Z`,
+//       "YYYYMMDDTHHmmssZ"
+//     )
+//     .format("Do MMM, YYYY");
+
+//   const endDateTime = moment
+//     .utc(
+//       `${date}T${endTime.slice(0, 2)}:${endTime.slice(2, 4)}:${endTime.slice(
+//         4,
+//         6
+//       )}Z`,
+//       "YYYYMMDDTHHmmssZ"
+//     )
+//     .format("h:mm A, Do MMM, YYYY");
+
+//   return `${startDateTime} - ${endDateTime}`;
+// };
+
 export const convertDateTimeRangeToGMT = (date, startTime, endTime) => {
   const startDateTime = moment
     .utc(
@@ -750,7 +774,7 @@ export const convertDateTimeRangeToGMT = (date, startTime, endTime) => {
       )}:${startTime.slice(4, 6)}Z`,
       "YYYYMMDDTHHmmssZ"
     )
-    .format("h:mm A, Do MMM, YYYY [GMT]");
+    .format("Do MMM, YYYY h:mm A");
 
   const endDateTime = moment
     .utc(
@@ -760,7 +784,7 @@ export const convertDateTimeRangeToGMT = (date, startTime, endTime) => {
       )}Z`,
       "YYYYMMDDTHHmmssZ"
     )
-    .format("h:mm A, Do MMM, YYYY [GMT]");
+    .format("h:mm A");
 
-  return { startDateTime, endDateTime };
+  return `${startDateTime} - ${endDateTime}`;
 };

@@ -140,8 +140,9 @@ const RSVP = () => {
   console.log(rsvpData, "rsvpDatarsvpDatarsvpData");
 
   console.log(
-    rsvpData.responseDate,
-    rsvpData.responseTime,
+    rsvpData.meetingDate,
+    rsvpData.startTime,
+    rsvpData.endTime,
     "responseDateresponseDate"
   );
 
