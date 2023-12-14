@@ -415,7 +415,7 @@ const TodoList = () => {
       // width: "220px",
       render: (text, record) => {
         return (
-          <p className="text-nowrap text-center">
+          <p className="text-nowrap text-center m-0 p-0">
             {newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)}
           </p>
         );
