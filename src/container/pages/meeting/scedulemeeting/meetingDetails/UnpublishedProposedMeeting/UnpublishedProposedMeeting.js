@@ -252,6 +252,7 @@ const UnpublishedProposedMeeting = ({
       key: "MeetingPoll",
       width: "110px",
       render: (text, record) => {
+        console.log(record, "maxValuemaxValuemaxValue");
         let maxValue = record.meetingPoll?.totalNoOfDirectors;
         let value = +record.meetingPoll?.totalNoOfDirectorsVoted;
         if (record.meetingPoll) {
@@ -265,42 +266,43 @@ const UnpublishedProposedMeeting = ({
                   sm={12}
                   className="d-flex justify-content-center"
                 >
-                  {value === maxValue ? null : (
+                  {value === maxValue ? null : record.totalNoOfDirectors ===
+                    record.totalNoOfDirectorsVoted ? (
+                    <img
+                      src={rspvGreenIcon}
+                      height="17.06px"
+                      width="17.06px"
+                      alt=""
+                      draggable="false"
+                    />
+                  ) : (
                     <>
-                      <img
-                        src={rspvGreenIcon}
-                        height="17.06px"
-                        width="17.06px"
-                        alt=""
-                        draggable="false"
-                      />
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex flex-column flex-wrap justify-content-center align-items-center"
+                        ></Col>
+                      </Row>
                       <span className={styles["RatioClass"]}>
                         {record.meetingPoll?.totalNoOfDirectorsVoted}/
                         {record.meetingPoll?.totalNoOfDirectors}
                       </span>
-                    </>
-                  )}
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={"newMeetingProgressbar"}
-                >
-                  {value === maxValue ? null : (
-                    <>
-                      {/* // <ProgressBar
-                    //   variant=""
-                    //   className="custom-progress"
-                    //   now={100}
-                    // /> */}
-                      <ProgressBar
-                        now={value}
-                        max={maxValue}
-                        className={"newMeetingProgressbar"}
-                      />
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={"newMeetingProgressbar"}
+                        >
+                          <ProgressBar
+                            now={value}
+                            max={maxValue}
+                            className={"newMeetingProgressbar"}
+                          />
+                        </Col>
+                      </Row>
                     </>
                   )}
                 </Col>
