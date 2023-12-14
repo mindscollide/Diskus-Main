@@ -173,6 +173,7 @@ const Organization = () => {
       ShowNotificationonparticipantJoining: checked,
     });
   };
+
   const Is2FAVerificationHandle = (checked) => {
     setOrganizationStates({
       ...organizationStates,
@@ -364,16 +365,10 @@ const Organization = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
-    if (signUpCodeToken != "") {
-      if(organizationStates.UserAllowGoogleCalendarSynch){
-        await dispatch(
-          getGoogleValidToken(navigate, signUpCodeToken, organizationStates, t)
-        );
-      }else{
-        dispatch(
-          updateUserSettingFunc(navigate, organizationStates, t, true)
-        );
-      }
+    if (signUpCodeToken !== "") {
+      await dispatch(
+        getGoogleValidToken(navigate, signUpCodeToken, organizationStates, t)
+      );
       setSignUpCodeToken("");
     } else {
       await dispatch(revokeToken(navigate, organizationStates, t));
@@ -466,7 +461,6 @@ const Organization = () => {
 
   const ResetUserConfigurationSetting = () => {
     let userProfileData = settingReducer.UserProfileData;
-    console.log("userProfileDatauserProfileData", userProfileData);
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
@@ -558,7 +552,6 @@ const Organization = () => {
     }
   }, [settingReducer.UpdateUserSettingResponseMessage]);
 
-  console.log("colorPicker", organizationStates.OfficeEventColor);
   return (
     <>
       <Container>

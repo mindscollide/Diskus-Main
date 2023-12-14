@@ -33,8 +33,6 @@ const updateUserSettingFunc = (navigate, userOptionsSettings, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  console.log(userOptionsSettings, "userOptionsSettingsuserOptionsSettings");
-
   let Data2 = {
     UserSettings: {
       FK_TZID: 0,
@@ -160,7 +158,9 @@ const updateUserSettingFunc = (navigate, userOptionsSettings, t, flag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+          dispatch(
+            updateUserSettingFunc(navigate, userOptionsSettings, t, flag)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -427,11 +427,9 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
                 )
             ) {
               dispatch(revokeTokenSuccess(t("Successful")));
-              console.log(
-                "organizationStatesorganizationStates1212",
-                userOptionsSettings
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
               );
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -440,7 +438,9 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
                 )
             ) {
               dispatch(revokeTokenFail(t("UnSuccessful")));
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -448,29 +448,32 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
                   "Calender_CalenderServiceManager_RevokeToken_03".toLowerCase()
                 )
             ) {
-              console.log(
-                "updateOrganizationLevelSettings",
-                userOptionsSettings
-              );
               dispatch(revokeTokenFail(t("Something-went-wrong")));
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+              );
             } else {
               dispatch(revokeTokenFail(t("Something-went-wrong")));
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+              );
             }
           } else {
-            console.log("updateOrganizationLevelSettings", userOptionsSettings);
             dispatch(revokeTokenFail(t("Something-went-wrong")));
-            dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+            dispatch(
+              updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+            );
           }
         } else {
           dispatch(revokeTokenFail(t("Something-went-wrong")));
-          dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+          dispatch(
+            updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+          );
         }
       })
       .catch((response) => {
         dispatch(revokeTokenFail(t("Something-went-wrong")));
-        dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+        dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t, true));
       });
   };
 };
