@@ -116,7 +116,14 @@ const VerificationCodeThree = () => {
             if (RSVP !== undefined && RSVP !== null) {
               navigate("/DisKus/Meeting/Useravailabilityformeeting");
             } else {
-              navigate("/Diskus/");
+              if (
+                localStorage.getItem("RSVP") !== null &&
+                localStorage.getItem("RSVP") !== undefined
+              ) {
+                navigate("/Diskus/Meeting/Useravailabilityformeeting");
+              } else {
+                navigate("/Diskus/");
+              }
             }
           }
         }

@@ -127,6 +127,7 @@ const UpdatePolls = () => {
                         height="16.45px"
                         width="18.32px"
                         draggable="false"
+                        alt=""
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.groupName}
@@ -158,6 +159,7 @@ const UpdatePolls = () => {
                         width="21.71px"
                         height="18.61px"
                         draggable="false"
+                        alt=""
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.committeeName}

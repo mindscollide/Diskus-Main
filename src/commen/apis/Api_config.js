@@ -1322,6 +1322,12 @@ const getDataAnalyticsRM = {
 const getDataAnalyticsCountRM = {
   RequestMethod: "ServiceManager.GetDataAnalyticsCount",
 };
+
+const validateEncryptedStringUserAvailabilityForMeeting = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringUserAvailabilityForMeeting",
+};
+
 export {
   getDataAnalyticsCountRM,
   updateAndOpenByAndDescriptionRM,
@@ -1675,4 +1681,5 @@ export {
   getAllMeetingForAgendaImport,
   getAgendaWithMeetingIDForImport,
   inviteForCollaboration,
+  validateEncryptedStringUserAvailabilityForMeeting,
 };
