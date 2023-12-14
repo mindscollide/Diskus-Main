@@ -21,6 +21,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import {
   getGoogleValidToken,
   revokeToken,
+  updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
 const UserSettings = () => {
   const { t } = useTranslation();
@@ -180,7 +181,6 @@ const UserSettings = () => {
           PushNotificationWhenCommitteeIsInActive:
             settingReducer.UserProfileData
               .pushNotificationWhenCommitteeIsInActive,
-
           PushNotificationwhenCommitteeissetActive:
             settingReducer.UserProfileData
               .pushNotificationwhenCommitteeissetActive,
@@ -196,7 +196,6 @@ const UserSettings = () => {
             settingReducer.UserProfileData.pushNotificationwhenGroupissetActive,
           EmailWhenGroupIsActive:
             settingReducer.UserProfileData.emailWhenGroupIsActive,
-
           PushNotificationWhenAddedToGroup:
             settingReducer.UserProfileData.pushNotificationWhenAddedToGroup,
           PushNotificationWhenRemovedFromGroup:
@@ -741,12 +740,30 @@ const UserSettings = () => {
 
   const updateOrganizationLevelSettings = async () => {
     if (signUpCodeToken !== "") {
-      await dispatch(
-        getGoogleValidToken(navigate, signUpCodeToken, userOptionsSettings, t)
-      );
+      if (userOptionsSettings.AllowGoogleCalenderSync) {
+        await dispatch(
+          getGoogleValidToken(navigate, signUpCodeToken, userOptionsSettings, t)
+        );
+      } else {
+        await dispatch(
+          updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+        );
+      }
       setSignUpCodeToken("");
     } else {
-      await dispatch(revokeToken(navigate, userOptionsSettings, t));
+      if (settingReducer.UserProfileData.userAllowGoogleCalendarSynch) {
+        if (userOptionsSettings.AllowGoogleCalenderSync) {
+          await dispatch(
+            updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+          );
+        } else {
+          await dispatch(revokeToken(navigate, userOptionsSettings, t));
+        }
+      } else {
+        await dispatch(
+          updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+        );
+      }
     }
   };
 
@@ -757,6 +774,7 @@ const UserSettings = () => {
       EmailWhenNewTODOEdited: value,
     });
   };
+
   const onChangeEmailWhenNewTODODeleted = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -764,6 +782,7 @@ const UserSettings = () => {
       EmailWhenNewTODODeleted: value,
     });
   };
+
   const onChangeEmailWhenNewTODOAssigned = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -771,6 +790,7 @@ const UserSettings = () => {
       EmailWhenNewTODOAssigned: value,
     });
   };
+
   const onChangeEmailWhenNewCommentAdded = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -778,6 +798,7 @@ const UserSettings = () => {
       EmailWhenNewCommentAdded: value,
     });
   };
+
   const onChangeEmailWhenCommentDeleted = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -785,6 +806,7 @@ const UserSettings = () => {
       EmailWhenCommentDeleted: value,
     });
   };
+
   const onChangePushNotificationWhenCommentDeleted = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -792,6 +814,7 @@ const UserSettings = () => {
       PushNotificationWhenCommentDeleted: value,
     });
   };
+
   const onChangePushNotificationWhenNewCommentAdded = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -799,6 +822,7 @@ const UserSettings = () => {
       PushNotificationWhenNewCommentAdded: value,
     });
   };
+
   const onChangePushNotificationWhenNewTODOEdited = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -806,6 +830,7 @@ const UserSettings = () => {
       PushNotificationWhenNewTODOEdited: value,
     });
   };
+
   const onChangePushNotificationWhenNewTODODeleted = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -813,6 +838,7 @@ const UserSettings = () => {
       PushNotificationWhenNewTODODeleted: value,
     });
   };
+
   const onChangePushNotificationWhenNewTODOAssigned = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -1360,8 +1386,8 @@ const UserSettings = () => {
                 {calender ? (
                   <>
                     {userOptionsSettings.AllowGoogleCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                    roleID !== 1 &&
+                    roleID !== 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox

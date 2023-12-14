@@ -210,7 +210,6 @@ const VideoPanelBodyContact = () => {
       OrganizationID: currentOrganization,
     };
     dispatch(LeaveCall(Data, navigate, t));
-    localStorage.setItem("");
     dispatch(InitiateVideoCall(Data2, navigate, t));
     localStorage.setItem("isCaller", true);
     const emptyArray = [];

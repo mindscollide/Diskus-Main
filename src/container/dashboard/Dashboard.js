@@ -68,6 +68,11 @@ import {
   meetingStatusPublishedMqtt,
 } from "../../store/actions/NewMeetingActions";
 import {
+  meetingAgendaStartedMQTT,
+  meetingAgendaEndedMQTT,
+  meetingAgendaUpdatedMQTT,
+} from "../../store/actions/MeetingAgenda_action";
+import {
   deleteCommentsMQTT,
   postComments,
 } from "../../store/actions/Post_AssigneeComments";
@@ -338,6 +343,42 @@ const Dashboard = () => {
               "[Meeting Title]",
               data.payload.meetingTitle.substring(0, 100)
             ),
+          });
+        }
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "AGENDA_VOTING_STARTED".toLowerCase()
+      ) {
+        dispatch(meetingAgendaStartedMQTT(data.payload));
+        if (data.viewable) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: t("AGENDA_VOTING_STARTED"),
+          });
+        }
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "AGENDA_VOTING_ENDED".toLowerCase()
+      ) {
+        dispatch(meetingAgendaEndedMQTT(data.payload));
+        if (data.viewable) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: t("AGENDA_VOTING_ENDED"),
+          });
+        }
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "NEW_MEETING_AGENDA_ADDED".toLowerCase()
+      ) {
+        dispatch(meetingAgendaUpdatedMQTT(data.payload));
+        if (data.viewable) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: t("NEW_MEETING_AGENDA_ADDED"),
           });
         }
       }

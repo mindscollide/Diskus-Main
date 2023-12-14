@@ -421,28 +421,6 @@ const ParentAgenda = ({
     console.log("presenterspresenters", presenters);
   }, [presenters]);
 
-  useEffect(() => {
-    if (MeetingAgendaReducer.ResponseMessage === "Voting-saved") {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Agenda-voting-details-saved-successfully"),
-        }),
-        3000
-      );
-      dispatch(clearResponseMessage(""));
-    } else if (MeetingAgendaReducer.ResponseMessage === "Voting-updated") {
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("Agenda-voting-details-updated-successfully"),
-        }),
-        3000
-      );
-      dispatch(clearResponseMessage(""));
-    }
-  }, [MeetingAgendaReducer.ResponseMessage]);
-
   return (
     <>
       <Draggable

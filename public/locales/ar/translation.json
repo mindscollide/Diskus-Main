@@ -1655,5 +1655,6 @@
   "Meeting-location": "Meeting location",
   "You-have-confirmed-your-attendance": "You have confirmed your attendance",
   "Failed-to-update-attendee-avaliability": "Failed To update Attendee Avaliability",
-  "Validation-failed": "Validation Failed"
+  "Validation-failed": "Validation Failed",
+  "Token-updated-but-no-event-found-in-the-calendar": "Token Updated but no event found in the calendar"
 }
