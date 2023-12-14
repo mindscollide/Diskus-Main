@@ -1700,6 +1700,27 @@ const GetAgendaWithMeetingIDForImport = (Data, navigate, t) => {
   };
 };
 
+const meetingAgendaStartedMQTT = (response) => {
+  return {
+    type: actions.MQTT_MEETING_AGENDA_VOTING_STARTED,
+    response: response,
+  };
+};
+
+const meetingAgendaEndedMQTT = (response) => {
+  return {
+    type: actions.MQTT_MEETING_AGENDA_VOTING_ENDED,
+    response: response,
+  };
+};
+
+const meetingAgendaUpdatedMQTT = (response) => {
+  return {
+    type: actions.MQTT_MEETING_AGENDA_UPDATED,
+    response: response,
+  };
+};
+
 export {
   GetAgendaVotingDetails,
   GetAllVotingResultDisplay,
@@ -1731,4 +1752,7 @@ export {
   GetAgendaWithMeetingIDForImport,
   getAgendaWithMeetingIDForImport_success,
   getAllMeetingForAgendaImport_success,
+  meetingAgendaStartedMQTT,
+  meetingAgendaEndedMQTT,
+  meetingAgendaUpdatedMQTT,
 };
