@@ -470,6 +470,7 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
                         width="18.87px"
                         height="18.87px"
                         draggable="false"
+                        alt=""
                       />
                     </span>
                   </p>
@@ -504,6 +505,7 @@ const ViewUpdateGroup = ({ setViewGroupPage }) => {
                                     height="12.68px"
                                     width="12.68px"
                                     onClick={() => handleRemoveFile(data)}
+                                    alt=""
                                   />
                                 </span>
                               </>

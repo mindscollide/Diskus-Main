@@ -53,7 +53,6 @@ const allassignesslistinit = () => {
 };
 
 const allassignesslistsuccess = (response, message) => {
-  console.log("allassignesslistsuccess");
   return {
     type: actions.ASSIGNESS_LIST_SUCCESS,
     response: response,
@@ -94,7 +93,6 @@ const allAssignessList = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("RefreshToken", response.data.responseCode);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(allAssignessList(navigate, t));
@@ -163,7 +161,7 @@ const ScheduleMeetingFail = (message) => {
 };
 
 //SaveNONAPIDisputes
-const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
+const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
@@ -171,6 +169,8 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
   let meetingPageCurrent = JSON.parse(
     localStorage.getItem("MeetingPageCurrent")
   );
+  console.log("ScheduleNewMeeting", checkFlag);
+  console.log("ScheduleNewMeeting", typeof checkFlag);
   let Data = {
     Date: "",
     Title: "",
@@ -197,7 +197,7 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ScheduleNewMeeting(navigate, object, calenderFlag, t));
+          dispatch(ScheduleNewMeeting(navigate, t, checkFlag, object, value));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -207,24 +207,15 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                   "Meeting_MeetingServiceManager_ScheduleNewMeeting_01".toLowerCase()
                 )
             ) {
-              console.log({ calenderFlag, value }, "calenderFlagcalenderFlag");
               await dispatch(SetLoaderFalse(false));
               dispatch(meetingLoaderDashboard(false));
               await dispatch(
                 ShowNotification(t("The-record-has-been-saved-successfully"))
               );
 
-              if (
-                calenderFlag &&
-                calenderFlag !== undefined &&
-                calenderFlag !== null &&
-                value === undefined
-              ) {
-                await dispatch(getCalendarDataResponse(navigate, createrID, t));
-
-                console.log(calenderFlag, value, "calenderFlagcalenderFlag");
-              } else if (value === undefined && calenderFlag === undefined) {
-                console.log(calenderFlag, "calenderFlagcalenderFlag");
+              if (checkFlag === 2) {
+                await dispatch(getCalendarDataResponse(navigate, t, createrID));
+              } else if (checkFlag === 4) {
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent = parseInt(
                   localStorage.getItem("MeetingPageCurrent")
@@ -242,15 +233,7 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                     currentView && Number(currentView) === 1 ? true : false,
                 };
                 await dispatch(searchNewUserMeeting(navigate, searchData, t));
-              }
-              if (value === 1) {
-                let ViewGroupID = localStorage.getItem("ViewGroupID");
-                let Data = {
-                  MeetingID: Number(response.data.responseResult.mdid),
-                  GroupID: Number(ViewGroupID),
-                };
-                dispatch(setMeetingByGroupIDApi(navigate, t, Data));
-              } else if (value === 2) {
+              } else if (checkFlag === 6) {
                 let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 
                 let Data = {
@@ -258,7 +241,30 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t, value) => {
                   CommitteeID: Number(ViewCommitteeID),
                 };
                 dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
+              } else if (checkFlag === 7) {
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+                let Data = {
+                  MeetingID: Number(response.data.responseResult.mdid),
+                  GroupID: Number(ViewGroupID),
+                };
+                dispatch(setMeetingByGroupIDApi(navigate, t, Data));
               }
+              // if (value === 1) {
+              //   let ViewGroupID = localStorage.getItem("ViewGroupID");
+              //   let Data = {
+              //     MeetingID: Number(response.data.responseResult.mdid),
+              //     GroupID: Number(ViewGroupID),
+              //   };
+              //   dispatch(setMeetingByGroupIDApi(navigate, t, Data));
+              // } else if (value === 2) {
+              //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
+              //   let Data = {
+              //     MeetingID: Number(response.data.responseResult.mdid),
+              //     CommitteeID: Number(ViewCommitteeID),
+              //   };
+              //   dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
+              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -314,7 +320,6 @@ const UpdateMeeting = (navigate, object, t, value) => {
   };
   return async (dispatch) => {
     dispatch(ScheculeMeetingInit());
-    console.log("Update Loader start");
     let form = new FormData();
     form.append("RequestMethod", updateMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
@@ -419,7 +424,6 @@ const UpdateMeeting = (navigate, object, t, value) => {
       })
       .catch(async (response) => {
         dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
-        console.log(response);
       });
   };
 };
@@ -545,7 +549,6 @@ const ViewMeeting = (
       .catch((response) => {
         dispatch(ViewMeetingFail(t("Something-went-wrong")));
         dispatch(SetLoaderFalse());
-        console.log(response);
       });
   };
 };
@@ -695,7 +698,6 @@ const StartMeetingInit = () => {
 
 //START Meeting Success
 const StartMeetingSuccess = (response, message) => {
-  console.log("CancelMeetingSuccess", response);
   return {
     type: actions.START_MEETING_SUCCESS,
     response: response,
@@ -892,7 +894,6 @@ const EndMeeting = (navigate, object, t, searchData) => {
 };
 
 const getAllRemindersSuccess = (response, message) => {
-  console.log("allassignesslistsuccess12");
   return {
     type: actions.GET_REMINDERS_SUCCESS,
     response: response,
@@ -933,7 +934,6 @@ const GetAllReminders = (navigate, t) => {
                   "Meeting_MeetingServiceManager_GetMeetingReminders_01".toLowerCase()
                 )
             ) {
-              console.log("allassignesslistsuccess12");
               await dispatch(
                 getAllRemindersSuccess(
                   response.data.responseResult,
@@ -956,15 +956,12 @@ const GetAllReminders = (navigate, t) => {
                 )
             ) {
               await dispatch(getAllRemindersFail(t("Something-went-wrong")));
-              console.log("allassignesslistsuccess12");
             }
           } else {
             await dispatch(getAllRemindersFail(t("Something-went-wrong")));
-            console.log("allassignesslistsuccess12");
           }
         } else {
           await dispatch(getAllRemindersFail(t("Something-went-wrong")));
-          console.log("allassignesslistsuccess12");
         }
       })
       .catch((response) => {

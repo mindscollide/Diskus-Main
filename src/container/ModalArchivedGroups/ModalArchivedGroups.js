@@ -185,6 +185,7 @@ const ModalArchivedCommittee = ({
                               width="16.5px"
                               height="33px"
                               className={styles["Arrow_archiveed_icon_groups"]}
+                              alt=""
                             />
                           }
                           onClick={handleArrow}

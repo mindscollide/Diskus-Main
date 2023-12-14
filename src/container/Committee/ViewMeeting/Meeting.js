@@ -581,6 +581,8 @@ const CommitteeMeetingTab = () => {
         <CreateModal
           show={createMeetingModal}
           setShow={setCreateMeetingModal}
+          // this is check from where its called 6 is from committee create
+          checkFlag={6}
         />
       )}
       {viewMeetingModal && (

@@ -90,9 +90,11 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
+
   const { talkStateData, NewMeetingreducer, meetingIdReducer } = useSelector(
     (state) => state
   );
+
   const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
     (state) => state.NewMeetingreducer
   );
@@ -100,21 +102,20 @@ const NewMeeting = () => {
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
+
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
-  const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
+
   let currentLanguage = localStorage.getItem("i18nextLng");
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
-
   //Current Organization
   let currentOrganizationId = localStorage.getItem("organizationID");
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
-
   let now = new Date();
   let year = now.getUTCFullYear();
   let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
@@ -122,14 +123,12 @@ const NewMeeting = () => {
   let hours = now.getUTCHours().toString().padStart(2, "0");
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
-
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
-
+  const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
   const [entereventIcon, setentereventIcon] = useState(false);
@@ -143,14 +142,12 @@ const NewMeeting = () => {
   });
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
-
   const [searchFields, setSearchFeilds] = useState({
     MeetingTitle: "",
     Date: "",
     OrganizerName: "",
     DateView: "",
   });
-
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -1261,7 +1258,12 @@ const NewMeeting = () => {
       {endForAllMeeting && <NewEndLeaveMeeting />}
       {endMeetingModal && <NewEndMeetingModal />}
       {quickMeeting && (
-        <ModalMeeting setShow={setQuickMeeting} show={quickMeeting} />
+        <ModalMeeting
+          setShow={setQuickMeeting}
+          show={quickMeeting}
+          // this is check from where its called 4 is from Meeting
+          checkFlag={4}
+        />
       )}
       {viewFlag ? (
         <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
