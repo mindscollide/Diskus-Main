@@ -1269,7 +1269,12 @@ const NewMeeting = () => {
         <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
       ) : null}
       {editFlag ? (
-        <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
+        <ModalUpdate
+          editFlag={editFlag}
+          setEditFlag={setEditFlag}
+          // this is check from where its called 4 is from Meeting
+          checkFlag={4}
+        />
       ) : null}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
       {sceduleMeeting ? (

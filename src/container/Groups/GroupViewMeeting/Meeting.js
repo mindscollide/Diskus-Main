@@ -594,6 +594,8 @@ const CommitteeMeetingTab = () => {
         <EditModal
           editFlag={editMeetingModal}
           setEditFlag={setEditMeetingModal}
+          // this is check from where its called 7 is from groupe create
+          checkFlag={7}
         />
       )}
       <Row>

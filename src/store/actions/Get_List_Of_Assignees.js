@@ -249,22 +249,6 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
                 };
                 dispatch(setMeetingByGroupIDApi(navigate, t, Data));
               }
-              // if (value === 1) {
-              //   let ViewGroupID = localStorage.getItem("ViewGroupID");
-              //   let Data = {
-              //     MeetingID: Number(response.data.responseResult.mdid),
-              //     GroupID: Number(ViewGroupID),
-              //   };
-              //   dispatch(setMeetingByGroupIDApi(navigate, t, Data));
-              // } else if (value === 2) {
-              //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-
-              //   let Data = {
-              //     MeetingID: Number(response.data.responseResult.mdid),
-              //     CommitteeID: Number(ViewCommitteeID),
-              //   };
-              //   dispatch(setMeetingbyCommitteeIDApi(navigate, t, Data));
-              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -302,7 +286,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, value) => {
 };
 
 // update meeting
-const UpdateMeeting = (navigate, object, t, value) => {
+const UpdateMeeting = (navigate, t, checkFlag, object, value) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = JSON.parse(localStorage.getItem("userID"));
   // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
@@ -310,6 +294,8 @@ const UpdateMeeting = (navigate, object, t, value) => {
   let meetingPageCurrent = JSON.parse(
     localStorage.getItem("MeetingPageCurrent")
   );
+  console.log("UpdateMeeting", checkFlag);
+  console.log("UpdateMeeting", typeof checkFlag);
   let Data = {
     Date: "",
     Title: "",
@@ -334,7 +320,7 @@ const UpdateMeeting = (navigate, object, t, value) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ScheduleNewMeeting(navigate, object, t, value));
+          dispatch(ScheduleNewMeeting(navigate, t, checkFlag, object, value));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -344,33 +330,7 @@ const UpdateMeeting = (navigate, object, t, value) => {
                   "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase()
                 )
             ) {
-              if (value === 1) {
-                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
-                let Data = {
-                  CommitteeID: Number(ViewCommitteeID),
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: 1,
-                  Length: 50,
-                  PublishedMeetings: true,
-                };
-                dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
-              } else if (value === 2) {
-                let ViewGroupID = localStorage.getItem("ViewGroupID");
-                let Data = {
-                  GroupID: Number(ViewGroupID),
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(createrID),
-                  PageNumber: 1,
-                  Length: 50,
-                  PublishedMeetings: true,
-                };
-                dispatch(getMeetingbyGroupApi(navigate, t, Data));
-              } else {
+              if (checkFlag === 4) {
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent = parseInt(
                   localStorage.getItem("MeetingPageCurrent")
@@ -385,7 +345,49 @@ const UpdateMeeting = (navigate, object, t, value) => {
                   PublishedMeetings: true,
                 };
                 await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              } else if (checkFlag === 7) {
+                let ViewGroupID = localStorage.getItem("ViewGroupID");
+                let Data = {
+                  GroupID: Number(ViewGroupID),
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(createrID),
+                  PageNumber: 1,
+                  Length: 50,
+                  PublishedMeetings: true,
+                };
+                dispatch(getMeetingbyGroupApi(navigate, t, Data));
+              } else if (checkFlag === 6) {
+                let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                let Data = {
+                  CommitteeID: Number(ViewCommitteeID),
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(createrID),
+                  PageNumber: 1,
+                  Length: 50,
+                  PublishedMeetings: true,
+                };
+                dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
               }
+              // if (value === 1) {
+              //   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+              //   let Data = {
+              //     CommitteeID: Number(ViewCommitteeID),
+              //     Date: "",
+              //     Title: "",
+              //     HostName: "",
+              //     UserID: Number(createrID),
+              //     PageNumber: 1,
+              //     Length: 50,
+              //     PublishedMeetings: true,
+              //   };
+              //   dispatch(getMeetingByCommitteeIDApi(navigate, t, Data));
+              // } else if (value === 2) {
+              // } else {
+              // }
 
               await dispatch(
                 ShowNotification(t("The-record-has-been-updated-successfully"))
