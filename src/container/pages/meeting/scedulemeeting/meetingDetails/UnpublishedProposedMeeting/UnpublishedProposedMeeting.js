@@ -140,6 +140,11 @@ const UnpublishedProposedMeeting = ({
     );
   };
 
+  const changeDateStartHandler2 = (date) => {
+    let newDate = moment(date).format("DD MMMM YYYY");
+    return newDate;
+  };
+
   const MeetingColoumns = [
     {
       title: <span>{t("Title")}</span>,
@@ -318,15 +323,19 @@ const UnpublishedProposedMeeting = ({
       title: t("Send-reponse-by"),
       dataIndex: "responseDeadLine",
       key: "responseDeadLine",
-      width: "120px",
+      width: "129px",
       render: (text, record) => {
+        console.log(record, "classNameclassNameclassName");
         console.log();
         return (
-          <span className="d-flex justify-content-center">
-            {moment(
-              utcConvertintoGMT(record.dateOfMeeting + record.meetingEndTime)
-            ).format("Do-MMM-YYYY")}
-          </span>
+          <>
+            <span className="d-flex justify-content-center">
+              {changeDateStartHandler2(record.responseDeadLine)}
+              {/* {moment(
+                utcConvertintoGMT(record.dateOfMeeting + record.meetingEndTime)
+              ).format("Do-MMM-YYYY")} */}
+            </span>
+          </>
         );
       },
     },
