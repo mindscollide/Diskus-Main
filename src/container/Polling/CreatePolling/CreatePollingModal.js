@@ -161,6 +161,7 @@ const CreatePolling = () => {
                         height="16.45px"
                         width="18.32px"
                         draggable="false"
+                        alt=""
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.groupName}

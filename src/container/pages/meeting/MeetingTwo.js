@@ -85,6 +85,7 @@ import {
   UpdateOrganizersMeeting,
   clearResponseMessage,
 } from "../../../store/actions/MeetingOrganizers_action";
+import ProposedNewMeeting from "./scedulemeeting/ProposedNewMeeting/ProposedNewMeeting";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -137,6 +138,7 @@ const NewMeeting = () => {
 
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
+  const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
 
   //For Search Field Only
@@ -309,6 +311,10 @@ const NewMeeting = () => {
   const openSceduleMeetingPage = () => {
     setSceduleMeeting(true);
     setCurrentMeetingID(0);
+  };
+
+  const openProposedNewMeetingPage = () => {
+    setProposedNewMeeting(true);
   };
 
   const groupChatInitiation = (data) => {
@@ -1328,6 +1334,8 @@ const NewMeeting = () => {
           setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
           currentMeeting={currentMeetingID}
         />
+      ) : proposedNewMeeting ? (
+        <ProposedNewMeeting setProposedNewMeeting={setProposedNewMeeting} />
       ) : (
         <>
           <Row className="mt-2">
@@ -1367,12 +1375,20 @@ const NewMeeting = () => {
                       >
                         {t("Quick-meeting")}
                       </Dropdown.Item>
+
                       <Dropdown.Item
                         className="dropdown-item"
                         onClick={openSceduleMeetingPage}
                       >
                         {t("Advance-meeting")}
                       </Dropdown.Item>
+                      {/* Proposed New Meeting For the Time Being Committed */}
+                      {/* <Dropdown.Item
+                        className="dropdown-item"
+                        onClick={openProposedNewMeetingPage}
+                      >
+                        {t("Propose-new-meeting")}
+                      </Dropdown.Item> */}
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
