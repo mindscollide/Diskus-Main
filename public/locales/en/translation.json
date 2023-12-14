@@ -1678,5 +1678,6 @@
   "Not-allowed": "Not Allowed",
   "Anyone-in-my-organization-can-find-and-view": "Anyone in my organization can find and view",
   "Anyone-on-the-internet-with-link-can-view": "Anyone on the internet with link can view",
-  "Owned-by-you-shared-with": "Owned by you, Shared with"
+  "Owned-by-you-shared-with": "Owned by you, Shared with",
+  "Token-updated-but-no-event-found-in-the-calendar": "Token Updated but no event found in the calendar"
 }

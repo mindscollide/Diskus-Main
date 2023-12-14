@@ -365,10 +365,15 @@ const Organization = () => {
 
   const updateOrganizationLevelSettings = async () => {
     if (signUpCodeToken != "") {
-      console.log("organizationStatesorganizationStates", organizationStates);
-      await dispatch(
-        getGoogleValidToken(navigate, signUpCodeToken, organizationStates, t)
-      );
+      if(organizationStates.UserAllowGoogleCalendarSynch){
+        await dispatch(
+          getGoogleValidToken(navigate, signUpCodeToken, organizationStates, t)
+        );
+      }else{
+        dispatch(
+          updateUserSettingFunc(navigate, organizationStates, t, true)
+        );
+      }
       setSignUpCodeToken("");
     } else {
       await dispatch(revokeToken(navigate, organizationStates, t));
