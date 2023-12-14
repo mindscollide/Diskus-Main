@@ -13,18 +13,8 @@ import { validateEncryptedStringUserAvailibilityForMeetingApi } from "../../../s
 import { useSelector } from "react-redux";
 import moment from "moment";
 import {
-  convertDatePlusTimeIntoGMT,
   convertDateTimeRangeToGMT,
-  convertDateTimetoGMTMeetingDetail,
-  convertTimetoGMT,
-  convertUtcToGmt,
-  formatDateToUTC,
-  newTimeFormaterAsPerUTCFullDate,
   newTimeFormaterAsPerUTCTalkDateTime,
-  newTimeFormaterForImportMeetingAgenda,
-  newTimeFormaterMIAsPerUTCTalkDateTime,
-  resolutionResultTable,
-  utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 const RSVP = () => {
   const currentUrl = window.location.href;
@@ -51,49 +41,15 @@ const RSVP = () => {
 
   console.log(UserAvalibilityState, "UserAvalibilityState");
 
-  const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY");
-    return newDate;
-  };
-
-  function convertToGMT(utcDate, utcStartTime, utcEndTime) {
-    // Concatenating date and time strings to form ISO format
-    const startDateISO = `${utcDate}T${utcStartTime}Z`;
-    const endDateISO = `${utcDate}T${utcEndTime}Z`;
-
-    // Creating Date objects in UTC
-    const startDateUTC = new Date(startDateISO);
-    const endDateUTC = new Date(endDateISO);
-
-    // Getting GMT formatted strings
-    const formattedStartDate = startDateUTC.toISOString().split("T")[0];
-    const formattedStartTime = startDateUTC
-      .toISOString()
-      .split("T")[1]
-      .slice(0, 5);
-    const formattedEndTime = endDateUTC.toISOString().split("T")[1].slice(0, 5);
-
-    return {
-      formattedStartDate: formattedStartDate,
-      formattedStartTime: formattedStartTime,
-      formattedEndTime: formattedEndTime,
-    };
-  }
-
   useEffect(() => {
-    console.log(currentUrl, "remainingStringremainingString");
     if (
       currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
     ) {
-      console.log(currentUrl, "remainingStringremainingString");
-
       const remainingString = currentUrl.split("?action=")[1];
-      console.log(remainingString, "remainingStringremainingString");
       if (remainingString) {
         setRSVP(remainingString);
         // APi call
         let Data = { EncryptedString: remainingString };
-        console.log(Data, "EncryptedStringEncryptedString");
         dispatch(
           validateEncryptedStringUserAvailibilityForMeetingApi(
             navigate,
@@ -107,7 +63,14 @@ const RSVP = () => {
       let RSVP = localStorage.getItem("RSVP");
       if (RSVP !== undefined && RSVP !== null) {
         setRSVP(RSVP);
-        alert("RSVP");
+        let Data = { EncryptedString: RSVP };
+        dispatch(
+          validateEncryptedStringUserAvailibilityForMeetingApi(
+            navigate,
+            Data,
+            t
+          )
+        );
       } else {
         navigate("/Diskus/Meeting");
       }
@@ -136,15 +99,6 @@ const RSVP = () => {
       console.log(error, "errorerrorerrorerror");
     }
   }, [UserAvalibilityState]);
-
-  console.log(rsvpData, "rsvpDatarsvpDatarsvpData");
-
-  console.log(
-    rsvpData.meetingDate,
-    rsvpData.startTime,
-    rsvpData.endTime,
-    "responseDateresponseDate"
-  );
 
   useEffect(() => {
     if (rsvp !== "") {
