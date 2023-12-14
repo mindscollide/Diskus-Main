@@ -1281,6 +1281,18 @@ const NewMeeting = () => {
 
   return (
     <section className={styles["NewMeeting_container"]}>
+      {endForAllMeeting && <NewEndLeaveMeeting />}
+      {endMeetingModal && <NewEndMeetingModal />}
+      {quickMeeting && (
+        <ModalMeeting setShow={setQuickMeeting} show={quickMeeting} />
+      )}
+      {viewFlag ? (
+        <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
+      ) : null}
+      {editFlag ? (
+        <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
+      ) : null}
+      <Notification message={open.message} open={open.open} setOpen={setOpen} />
       {sceduleMeeting ? (
         <SceduleMeeting
           setSceduleMeeting={setSceduleMeeting}
@@ -1564,38 +1576,36 @@ const NewMeeting = () => {
                     setDataroomMapFolderId={setDataroomMapFolderId}
                   />
                 ) : Number(currentView) === 1 ? (
-                  <section className={styles["DefineTableFixedheight"]}>
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        <>
-                          <Table
-                            column={MeetingColoumns}
-                            scroll={{ y: "54vh", x: true }}
-                            pagination={false}
-                            className="newMeetingTable"
-                            rows={rows}
-                            locale={{
-                              emptyText: emptyText(), // Set your custom empty text here
-                            }}
-                            expandable={{
-                              expandedRowRender: (record) => {
-                                return record.meetingAgenda.map((data) => (
-                                  <p className={styles["meeting-expanded-row"]}>
-                                    {data.objMeetingAgenda.title}
-                                  </p>
-                                ));
-                              },
-                              rowExpandable: (record) =>
-                                record.meetingAgenda !== null &&
-                                record.meetingAgenda.length > 0
-                                  ? true
-                                  : false,
-                            }}
-                          />
-                        </>
-                      </Col>
-                    </Row>
-                  </section>
+                  <Row className="mt-2">
+                    <Col lg={12} md={12} sm={12}>
+                      <>
+                        <Table
+                          column={MeetingColoumns}
+                          scroll={{ y: "54vh", x: true }}
+                          pagination={false}
+                          className="newMeetingTable"
+                          rows={rows}
+                          locale={{
+                            emptyText: emptyText(), // Set your custom empty text here
+                          }}
+                          expandable={{
+                            expandedRowRender: (record) => {
+                              return record.meetingAgenda.map((data) => (
+                                <p className={styles["meeting-expanded-row"]}>
+                                  {data.objMeetingAgenda.title}
+                                </p>
+                              ));
+                            },
+                            rowExpandable: (record) =>
+                              record.meetingAgenda !== null &&
+                              record.meetingAgenda.length > 0
+                                ? true
+                                : false,
+                          }}
+                        />
+                      </>
+                    </Col>
+                  </Row>
                 ) : null}
                 {rows.length > 0 ? (
                   <>
@@ -1642,18 +1652,6 @@ const NewMeeting = () => {
           </Row>
         </>
       )}
-      {endForAllMeeting && <NewEndLeaveMeeting />}
-      {endMeetingModal && <NewEndMeetingModal />}
-      {quickMeeting && (
-        <ModalMeeting setShow={setQuickMeeting} show={quickMeeting} />
-      )}
-      {viewFlag ? (
-        <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
-      ) : null}
-      {editFlag ? (
-        <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
-      ) : null}
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </section>
   );
 };
