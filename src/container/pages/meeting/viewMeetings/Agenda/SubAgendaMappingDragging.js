@@ -469,6 +469,23 @@ const SubAgendaMappingDragging = ({
                                                   }
                                                 />
                                               </>
+                                            ) : editorRole.role ===
+                                                "Organizer" &&
+                                              subAgendaData.voteOwner
+                                                ?.currentVotingClosed ? (
+                                              <>
+                                                <Button
+                                                  text={t("View-votes")}
+                                                  className={
+                                                    styles["ViewVoteButton"]
+                                                  }
+                                                  onClick={() =>
+                                                    EnableViewVoteModal(
+                                                      subAgendaData
+                                                    )
+                                                  }
+                                                />
+                                              </>
                                             ) : null}
 
                                             {Number(

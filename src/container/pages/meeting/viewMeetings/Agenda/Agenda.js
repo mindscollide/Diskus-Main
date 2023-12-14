@@ -194,6 +194,58 @@ const Agenda = ({
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
 
+  // useEffect(() => {
+  //   if (
+  //     MeetingAgendaReducer.MeetingAgendaStartedData !== undefined &&
+  //     MeetingAgendaReducer.MeetingAgendaStartedData !== null
+  //   ) {
+  //     setRows((prevState) => {
+  //       const updatedState = prevState.map((item) => {
+  //         if (
+  //           item.id ===
+  //             MeetingAgendaReducer.MeetingAgendaStartedData.agendaID ||
+  //           item.subAgenda.some(
+  //             (subItem) =>
+  //               subItem.subAgendaID ===
+  //               MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
+  //           )
+  //         ) {
+  //           console.log("Updating item:", item);
+  //           const updatedItem = {
+  //             ...item,
+  //             voteOwner: {
+  //               ...item.voteOwner,
+  //               currentVotingClosed: true,
+  //             },
+  //             subAgenda: item.subAgenda.map((subItem) => {
+  //               if (
+  //                 subItem.subAgendaID ===
+  //                 MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
+  //               ) {
+  //                 console.log("Updating subItem:", subItem);
+  //                 return {
+  //                   ...subItem,
+  //                   voteOwner: {
+  //                     ...subItem.voteOwner,
+  //                     currentVotingClosed: true,
+  //                   },
+  //                 };
+  //               }
+  //               return subItem;
+  //             }),
+  //           };
+  //           console.log("Updated item:", updatedItem);
+  //           return updatedItem;
+  //         }
+  //         return item;
+  //       });
+
+  //       console.log("Updated state:", updatedState);
+  //       return updatedState;
+  //     });
+  //   }
+  // }, [MeetingAgendaReducer.MeetingAgendaStartedData]);
+
   useEffect(() => {
     if (
       MeetingAgendaReducer.MeetingAgendaStartedData !== undefined &&
@@ -202,21 +254,26 @@ const Agenda = ({
       setRows((prevState) => {
         const updatedState = prevState.map((item) => {
           if (
-            item.id ===
-              MeetingAgendaReducer.MeetingAgendaStartedData.agendaID ||
+            item.id === MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
+          ) {
+            console.log("Updating main item:", item);
+            return {
+              ...item,
+              voteOwner: {
+                ...item.voteOwner,
+                currentVotingClosed: true,
+              },
+            };
+          } else if (
             item.subAgenda.some(
               (subItem) =>
                 subItem.subAgendaID ===
                 MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
             )
           ) {
-            console.log("Updating item:", item);
-            const updatedItem = {
+            console.log("Updating subItem:", item);
+            return {
               ...item,
-              voteOwner: {
-                ...item.voteOwner,
-                currentVotingClosed: true,
-              },
               subAgenda: item.subAgenda.map((subItem) => {
                 if (
                   subItem.subAgendaID ===
@@ -234,8 +291,6 @@ const Agenda = ({
                 return subItem;
               }),
             };
-            console.log("Updated item:", updatedItem);
-            return updatedItem;
           }
           return item;
         });
@@ -256,7 +311,6 @@ const Agenda = ({
           if (
             item.id === MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
           ) {
-            // Only update the main agenda
             console.log("Updating main item:", item);
             return {
               ...item,
@@ -273,7 +327,6 @@ const Agenda = ({
             )
           ) {
             console.log("Updating subItem:", item);
-            // Update only the matching sub-agenda
             return {
               ...item,
               subAgenda: item.subAgenda.map((subItem) => {
