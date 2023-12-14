@@ -731,11 +731,11 @@ const MeetingDetails = ({
     let name = e.target.name;
     let value = e.target.value;
     if (name === "Meetingtitle") {
-      let valueCheck = containsStringandNumericCharacters(value);
-      if (valueCheck !== "") {
+      // let valueCheck = containsStringandNumericCharacters(value);
+      if (value.trimStart() !== "") {
         setMeetingDetails({
           ...meetingDetails,
-          MeetingTitle: valueCheck.trimStart(),
+          MeetingTitle: value,
         });
       } else {
         setMeetingDetails({
