@@ -287,6 +287,15 @@ const ParentAgenda = ({
                                   onClick={() => EnableViewVoteModal(data)}
                                 />
                               </>
+                            ) : editorRole.role === "Organizer" &&
+                              data.voteOwner?.currentVotingClosed ? (
+                              <>
+                                <Button
+                                  text={t("View-votes")}
+                                  className={styles["ViewVoteButton"]}
+                                  onClick={() => EnableViewVoteModal(data)}
+                                />
+                              </>
                             ) : null}
 
                             {Number(data.agendaVotingID) === 0 ? null : Number(

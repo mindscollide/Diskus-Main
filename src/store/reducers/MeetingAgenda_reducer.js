@@ -450,6 +450,13 @@ const MeetingAgendaReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.MQTT_MEETING_AGENDA_VOTING_ENDED: {
+      return {
+        ...state,
+        MeetingAgendaEndedData: action.response,
+      };
+    }
+
     case actions.MQTT_MEETING_AGENDA_UPDATED: {
       return {
         ...state,
