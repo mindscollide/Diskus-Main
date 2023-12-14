@@ -6,6 +6,7 @@ import {
   sendTwoFacOTP,
   verifyTwoFacOTP,
 } from "../../commen/apis/Api_config";
+import { RefreshToken } from "./Auth_action";
 
 const TwoFaAuthenticateInit = () => {
   return {
@@ -51,7 +52,10 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
       },
     })
       .then(async (response) => {
-        if (response.data.responseCode === 200) {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(TwoFaAuthenticate(t, OrganiztionID, userID, navigate));
+        } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
@@ -161,14 +165,16 @@ const sendTwoFacOtpSuccess = (response, message) => {
     message: message,
   };
 };
+
 const sendTwoFacOtpFail = (message) => {
   return {
     type: actions.SENDTWOFACOTP_FAIL,
     message: message,
   };
 };
+
 const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
-  // let Data = {Data }
+  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(sendTwoFacOtpInit());
     let form = new FormData();
@@ -178,10 +184,15 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
       method: "post",
       url: authenticationApi,
       data: form,
+      headers: {
+        _token: token,
+      },
     })
-      .then((response) => {
-        console.log(response);
-        if (response.data.responseCode === 200) {
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(sendTwoFacAction(t, navigate, Data, selectDevice));
+        } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
@@ -355,8 +366,10 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
       });
   };
 };
+
 const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
   // let Data = {Data }
+  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(sendTwoFacOtpInit());
     let form = new FormData();
@@ -366,10 +379,17 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
       method: "post",
       url: authenticationApi,
       data: form,
+      headers: {
+        _token: token,
+      },
     })
-      .then((response) => {
-        console.log(response);
-        if (response.data.responseCode === 200) {
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes)
+          );
+        } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
@@ -530,17 +550,14 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
       });
   };
 };
+
 const verifyOtpFacInit = () => {
   return {
     type: actions.SENDTWOFACOTP_INIT,
   };
 };
+
 const verifyOtpFacSuccess = (response, message) => {
-  console.log(
-    response,
-    message,
-    "verifyOtpFacSuccessverifyOtpFacSuccessverifyOtpFacSuccess"
-  );
   return {
     type: actions.SENDTWOFACOTP_SUCCESS,
     response: response,
@@ -555,6 +572,7 @@ const verifyOtpFacFail = (message) => {
 };
 
 const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
+  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(verifyOtpFacInit());
     let form = new FormData();
@@ -564,13 +582,16 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
       method: "post",
       url: authenticationApi,
       data: form,
+      headers: {
+        _token: token,
+      },
     })
-      .then((response) => {
-        console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
-        if (response.data.responseCode === 200) {
-          console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(verificationTwoFacOtp(Data, t, navigate, setOtpCode));
+        } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -578,7 +599,6 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                   "ERM_AuthService_AuthManager_Verify2FAOTP_01".toLowerCase()
                 )
             ) {
-              console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
               dispatch(
                 verifyOtpFacSuccess(
                   response.data.responseResult,
@@ -586,121 +606,17 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
                 )
               );
               localStorage.setItem("TowApproval", true);
-              console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
               if (JSON.parse(localStorage.getItem("roleID")) === 1) {
-                console.log(
-                  "Authreducer.SendTwoFacOTPResponseMessage",
-                  response
-                );
                 navigate("/Diskus/Admin/");
               } else if (JSON.parse(localStorage.getItem("roleID")) === 2) {
-                console.log(
-                  "Authreducer.SendTwoFacOTPResponseMessage",
-                  response
-                );
                 navigate("/Diskus/Admin/");
               } else if (JSON.parse(localStorage.getItem("roleID")) === 3) {
-                console.log(
-                  "Authreducer.SendTwoFacOTPResponseMessage",
-                  response
-                );
                 if (JSON.parse(localStorage.getItem("isFirstLogin"))) {
-                  console.log(
-                    "Authreducer.SendTwoFacOTPResponseMessage",
-                    response
-                  );
                   navigate("/onboard");
                 } else {
-                  console.log(
-                    "Authreducer.SendTwoFacOTPResponseMessage",
-                    response
-                  );
                   navigate("/DisKus/");
                 }
               }
-              // if (response.data.responseResult.token.roleID === 1) {
-              //   localStorage.setItem(
-              //     "name",
-              //     response.data.responseResult.token.userName
-              //   );
-              //   localStorage.setItem(
-              //     "token",
-              //     JSON.stringify(response.data.responseResult.token.token)
-              //   );
-              //   localStorage.setItem(
-              //     "refreshToken",
-              //     JSON.stringify(
-              //       response.data.responseResult.token.refreshToken
-              //     )
-              //   );
-              //   localStorage.setItem(
-              //     "roleID",
-              //     response.data.responseResult.token.roleID
-              //   );
-              //   navigate("/Diskus/Admin/");
-              // } else if (response.data.responseResult.token.roleID === 2) {
-              //   localStorage.setItem(
-              //     "name",
-              //     response.data.responseResult.token.userName
-              //   );
-              //   localStorage.setItem(
-              //     "token",
-              //     JSON.stringify(response.data.responseResult.token.token)
-              //   );
-              //   localStorage.setItem(
-              //     "refreshToken",
-              //     JSON.stringify(
-              //       response.data.responseResult.token.refreshToken
-              //     )
-              //   );
-              //   localStorage.setItem(
-              //     "roleID",
-              //     response.data.responseResult.token.roleID
-              //   );
-              //   navigate("/Diskus/Admin/");
-              // } else if (response.data.responseResult.token.roleID === 3) {
-              //   localStorage.setItem(
-              //     "name",
-              //     response.data.responseResult.token.userName
-              //   );
-              //   localStorage.setItem(
-              //     "token",
-              //     JSON.stringify(response.data.responseResult.token.token)
-              //   );
-              //   localStorage.setItem(
-              //     "refreshToken",
-              //     JSON.stringify(
-              //       response.data.responseResult.token.refreshToken
-              //     )
-              //   );
-              //   localStorage.setItem(
-              //     "roleID",
-              //     response.data.responseResult.token.roleID
-              //   );
-              //   if (response.data.responseResult.token.isFirstLogIn === true) {
-              //     navigate("/onboard");
-              //   } else {
-              //     navigate("/DisKus/");
-              //   }
-              //   localStorage.setItem(
-              //     "name",
-              //     response.data.responseResult.token.userName
-              //   );
-              //   localStorage.setItem(
-              //     "token",
-              //     JSON.stringify(response.data.responseResult.token.token)
-              //   );
-              //   localStorage.setItem(
-              //     "refreshToken",
-              //     JSON.stringify(
-              //       response.data.responseResult.token.refreshToken
-              //     )
-              //   );
-              //   localStorage.setItem(
-              //     "roleID",
-              //     response.data.responseResult.token.roleID
-              //   );
-              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
