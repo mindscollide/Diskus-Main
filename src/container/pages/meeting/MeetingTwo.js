@@ -39,14 +39,12 @@ import {
   TextField,
   ResultMessage,
   Notification,
-  Loader,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
 
 import { Col, Dropdown, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import SceduleMeeting from "./scedulemeeting/SceduleMeeting";
@@ -99,15 +97,6 @@ const NewMeeting = () => {
     (state) => state.NewMeetingreducer
   );
 
-  // const searchMeetings = useSelector(
-  //   (state) => state.NewMeetingreducer.searchMeetings
-  // );
-  // const endForAllMeeting = useSelector(
-  //   (state) => state.NewMeetingreducer.endForAllMeeting
-  // );
-  // const endMeetingModal = useSelector(
-  //   (state) => state.NewMeetingreducer.endMeetingModal
-  // );
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
@@ -218,9 +207,7 @@ const NewMeeting = () => {
       dispatch(allAssignessList(navigate, t));
       localStorage.setItem("MeetingCurrentView", 1);
     }
-    return () => {
-      // dispatch(clearMeetingState());
-    };
+    return () => {};
   }, []);
 
   const HandleShowSearch = () => {
@@ -622,8 +609,6 @@ const NewMeeting = () => {
                       <img
                         src={ClipIcon}
                         className="cursor-pointer"
-                        // width="14.02px"
-                        // height="16.03px"
                         alt=""
                         draggable="false"
                       />
@@ -869,21 +854,7 @@ const NewMeeting = () => {
           }
         } else if (Number(record.status) === 2) {
           if (isOrganiser) {
-            // return (
-            //   <Button
-            //     text={t("End-Meeting")}
-            //     className={styles["End-Meeting"]}
-            //     onClick={EndMeetingModal}
-            //   />
-            // );
           } else if (isParticipant) {
-            // return (
-            //   <Button
-            //     text={t("Leave-meeting")}
-            //     className={styles["End-Meeting"]}
-            //     onClick={EndMeetingModal}
-            //   />
-            // );
           }
         } else {
         }
