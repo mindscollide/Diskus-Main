@@ -29,12 +29,10 @@ const updateUserSettingFail = (message) => {
   };
 };
 
-const updateUserSettingFunc = (navigate, userOptionsSettings, t) => {
+const updateUserSettingFunc = (navigate, userOptionsSettings, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  console.log(userOptionsSettings, "userOptionsSettingsuserOptionsSettings");
-
   let Data2 = {
     UserSettings: {
       FK_TZID: 0,
@@ -98,7 +96,8 @@ const updateUserSettingFunc = (navigate, userOptionsSettings, t) => {
         userOptionsSettings.PushNotificationWhenResolutionISClosed,
       PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
         userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
-      UserAllowGoogleCalendarSynch: userOptionsSettings.AllowGoogleCalenderSync,
+      UserAllowGoogleCalendarSynch:
+        flag === undefined || flag === null ? false : flag,
       UserAllowMicrosoftCalendarSynch:
         userOptionsSettings.AllowMicrosoftCalenderSync,
       GoogleEventColor: userOptionsSettings.GoogleCalenderColor,
@@ -159,7 +158,9 @@ const updateUserSettingFunc = (navigate, userOptionsSettings, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+          dispatch(
+            updateUserSettingFunc(navigate, userOptionsSettings, t, flag)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -270,7 +271,9 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
                   t("Token-updated-and-calender-list-saved-successful")
                 )
               );
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -283,7 +286,9 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
                   t("Token-updated-but-failed-to-save-calender")
                 )
               );
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -293,10 +298,12 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
             ) {
               dispatch(
                 googleValidTokenSuccess(
-                  t("Token-updated-but-failed-to-save-calender")
+                  t("Token-updated-but-no-event-found-in-the-calendar")
                 )
               );
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -305,7 +312,9 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
                 )
             ) {
               dispatch(googleValidTokenFail(t("No-email-exist")));
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -316,7 +325,9 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
               dispatch(
                 googleValidTokenFail(t("Failed-to-insert-configuration"))
               );
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -325,7 +336,9 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
                 )
             ) {
               dispatch(googleValidTokenFail(t("Code-is-invalid")));
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -334,20 +347,28 @@ const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
                 )
             ) {
               dispatch(googleValidTokenFail(t("Something-went-wrong")));
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+              );
             }
           } else {
             dispatch(googleValidTokenFail(t("Something-went-wrong")));
-            dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+            dispatch(
+              updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+            );
           }
         } else {
           dispatch(googleValidTokenFail(t("Something-went-wrong")));
-          dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+          dispatch(
+            updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+          );
         }
       })
       .catch((response) => {
         dispatch(googleValidTokenFail(t("Something-went-wrong")));
-        dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+        dispatch(
+          updateUserSettingFunc(navigate, userOptionsSettings, t, false)
+        );
       });
   };
 };
@@ -406,11 +427,9 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
                 )
             ) {
               dispatch(revokeTokenSuccess(t("Successful")));
-              console.log(
-                "organizationStatesorganizationStates1212",
-                userOptionsSettings
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, false)
               );
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -419,7 +438,9 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
                 )
             ) {
               dispatch(revokeTokenFail(t("UnSuccessful")));
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -427,29 +448,32 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
                   "Calender_CalenderServiceManager_RevokeToken_03".toLowerCase()
                 )
             ) {
-              console.log(
-                "updateOrganizationLevelSettings",
-                userOptionsSettings
-              );
               dispatch(revokeTokenFail(t("Something-went-wrong")));
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+              );
             } else {
               dispatch(revokeTokenFail(t("Something-went-wrong")));
-              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+              dispatch(
+                updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+              );
             }
           } else {
-            console.log("updateOrganizationLevelSettings", userOptionsSettings);
             dispatch(revokeTokenFail(t("Something-went-wrong")));
-            dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+            dispatch(
+              updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+            );
           }
         } else {
           dispatch(revokeTokenFail(t("Something-went-wrong")));
-          dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+          dispatch(
+            updateUserSettingFunc(navigate, userOptionsSettings, t, true)
+          );
         }
       })
       .catch((response) => {
         dispatch(revokeTokenFail(t("Something-went-wrong")));
-        dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
+        dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t, true));
       });
   };
 };
