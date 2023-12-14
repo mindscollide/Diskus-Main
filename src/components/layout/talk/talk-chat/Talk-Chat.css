@@ -186,13 +186,13 @@ body[dir="rtl"] .chat-inner-content .ant-select-selection-item {
 .chat-inner-content span.ant-select-arrow {
   color: #fff !important;
   right: 32px;
-  top: 19px;
+  top: 14px;
 }
 
 body[dir="rtl"] .chat-inner-content span.ant-select-arrow {
   color: #fff !important;
   right: auto;
-  top: 18px;
+  top: 14px;
   left: 30px;
 }
 

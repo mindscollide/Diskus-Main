@@ -1285,6 +1285,8 @@ const NewMeeting = () => {
     }
   }, [ResponseMessage]);
 
+  console.log("Meeting Table Data", rows);
+
   return (
     <section className={styles["NewMeeting_container"]}>
       {sceduleMeeting ? (

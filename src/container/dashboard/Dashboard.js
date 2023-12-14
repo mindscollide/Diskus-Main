@@ -1694,6 +1694,22 @@ const Dashboard = () => {
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 
+  useEffect(() => {
+    let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+
+    if (window.performance) {
+      const navigationEntries = performance.getEntriesByType("navigation");
+      if (navigationEntries.length > 0) {
+        const navigationType = navigationEntries[0].type;
+        if (navigationType === "reload" && activeCall === true) {
+          dispatch(normalizeVideoPanelFlag(true));
+        } else {
+          console.log("This page is not reloaded");
+        }
+      }
+    }
+  }, []);
+
   return (
     <>
       <ConfigProvider
