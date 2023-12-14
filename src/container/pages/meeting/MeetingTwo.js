@@ -748,15 +748,6 @@ const NewMeeting = () => {
         // Convert milliseconds to minutes
         const minutesDifference = Math.floor(timeDifference / (1000 * 60));
 
-        console.log(`The difference is ${minutesDifference} minutes.`);
-        console.log(
-          "Meeting Date Time and Current Date Time",
-          meetingDateTime,
-          typeof meetingDateTime,
-          currentUTCDateTime,
-          typeof currentUTCDateTime,
-          minutesDifference
-        );
         if (Number(record.status) === 1) {
           if (isParticipant) {
           } else if (isAgendaContributor) {
@@ -1101,8 +1092,6 @@ const NewMeeting = () => {
     } catch {}
   }, [searchMeetings]);
 
-  console.log("Current Meeting Table Data", rows);
-
   // Empty text data
   const emptyText = () => {
     return (
@@ -1230,14 +1219,6 @@ const NewMeeting = () => {
           }
         }
         dispatch(mqttCurrentMeetingEnded(null));
-        console.log(
-          "meetingIdReducer.MeetingStatusSocket",
-          advanceMeetingModalID === endMeetingData.pK_MDID &&
-            endMeetingData.status === "9",
-          advanceMeetingModalID,
-          endMeetingData.pK_MDID,
-          endMeetingData.status
-        );
       } else {
         let updatedRows = [...rows, endMeetingData];
         setRow(updatedRows);
@@ -1276,7 +1257,6 @@ const NewMeeting = () => {
       ResponseMessage !== t("Record-found") &&
       ResponseMessage !== t("List-updated-successfully")
     ) {
-      console.log("ResponseMessageResponseMessage", ResponseMessage);
       setOpen({
         message: ResponseMessage,
         open: true,
@@ -1298,10 +1278,6 @@ const NewMeeting = () => {
       }, 4000);
     }
   }, [ResponseMessage]);
-
-  console.log("Meeting Actions", NewMeetingreducer);
-
-  console.log("meetingIdReducermeetingIdReducer", meetingIdReducer);
 
   return (
     <section className={styles["NewMeeting_container"]}>
