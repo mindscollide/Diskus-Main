@@ -33,7 +33,7 @@ export const urlPatternValidation = (URL) => {
 
 export const containsStringandNumericCharacters = (value) => {
   // Use the replace method with the regular expression to remove non-alphanumeric characters
-  let cleanedValue = value.replace(/[^a-zA-Z0-9 ]/g, "");
+  let cleanedValue = value.replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, "");
 
   // Return the cleaned value
   return cleanedValue;
