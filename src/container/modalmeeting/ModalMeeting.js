@@ -10,7 +10,6 @@ import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import MeetingVideoChatIcon from "../../assets/images/newElements/Icon feather-video1.png";
@@ -44,13 +43,13 @@ import {
   getStartTimeWithCeilFunction,
 } from "../../commen/functions/time_formatter";
 
-const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
+const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { assignees, uploadReducer } = useSelector((state) => state);
+  const { assignees } = useSelector((state) => state);
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
   const [isAgenda, setIsAgenda] = useState(false);
@@ -551,11 +550,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     }
     setAttachments(filesData);
     setForUpdateAttachent(filesData);
-    console.log(filesData, "filesDatafilesData");
-    // setMeetingAgendaAttachments({
-    //   ...meetingAgendaAttachments,
-    //   ["MeetingAgendaAttachments"]: datarecord.MeetingAgendaAttachments,
-    // });
   };
 
   const deleteGrid = (datarecord, dataindex) => {
@@ -579,7 +573,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
               let fileforSend = [
                 ...meetingAgendaAttachments.MeetingAgendaAttachments,
               ];
-              console.log(fileforSend, "fileforSendfileforSend");
               let newfile = [];
               const uploadPromises = fileForSend.map((newData) => {
                 // Return the promise from FileUploadToDo
@@ -587,7 +580,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
               });
               // Wait for all uploadPromises to resolve
               await Promise.all(uploadPromises);
-              console.log(newfile, "fileforSendfileforSend");
               newfile.forEach((fileData, index) => {
                 fileforSend.push({
                   PK_MAAID: 0,
@@ -602,7 +594,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                 MeetingAgendaAttachments: fileforSend,
               };
               previousAdendas[editRecordIndex] = newData;
-              console.log(newData, "fileforSendfileforSend");
               setCreateMeeting({
                 ...createMeeting,
                 ["MeetingAgendas"]: previousAdendas,
@@ -626,7 +617,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                 MeetingAgendaAttachments:
                   meetingAgendaAttachments.MeetingAgendaAttachments,
               };
-              console.log(newData, "fileforSendfileforSend");
               previousAdendas[editRecordIndex] = newData;
               setCreateMeeting({
                 ...createMeeting,
@@ -656,7 +646,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           if (fileForSend.length > 0) {
             setModalField(false);
             let fileforSend = [...forUpdateAttachments];
-            console.log(fileforSend, "update agenda attachment");
             let newfile = [];
             const uploadPromises = fileForSend.map((newData) => {
               // Return the promise from FileUploadToDo
@@ -674,12 +663,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                 FK_MAID: 0,
               });
             });
-            console.log(newfile, "update agenda attachment");
             let newData = {
               ObjMeetingAgenda: objMeetingAgenda,
               MeetingAgendaAttachments: fileforSend,
             };
-            console.log(newData, "update agenda attachment");
             previousAdendas[editRecordIndex] = newData;
             setCreateMeeting({
               ...createMeeting,
@@ -826,7 +813,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                 FK_MAID: 0,
               });
             });
-            console.log(fileforSend, "fileforSendfileforSendfileforSend");
             let previousAdendas = [...createMeeting.MeetingAgendas];
             let newData = {
               ObjMeetingAgenda: objMeetingAgenda,
@@ -1059,7 +1045,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
-    console.log("Input Value", allAssignees);
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
@@ -1069,13 +1054,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
-
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
+          return searchTerm && assigneesName.startsWith(searchTerm);
         })
         .slice(0, 10)
         .map((item) => (
@@ -1084,7 +1063,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
             <img
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
@@ -1094,7 +1072,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
   // for add Attendees handler
@@ -1162,8 +1139,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       }
     } else {
       if (found === undefined) {
-        console.log(taskAssignedTo, "taskAssignedTo");
-        console.log(found, "taskAssignedTo");
         setOpen({
           message: t("Please-add-valid-user"),
           flag: true,
@@ -1185,7 +1160,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
-    let uploadMeetingAttachments = [...createMeeting.MeetingAgendas];
     let finalDateTime = createConvert(
       createMeeting.MeetingDate + createMeeting.MeetingStartTime
     );
@@ -1218,7 +1192,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setIsAgenda(false);
     setIsAttendees(false);
     setIsPublishMeeting(false);
-    dispatch(ScheduleNewMeeting(navigate, newData, calenderFlag, t));
+    dispatch(ScheduleNewMeeting(navigate, t, checkFlag, newData));
     setObjMeetingAgenda({
       Title: "",
       PresenterName: "",
@@ -1263,54 +1237,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setIsDetails(false);
     setIsAgenda(false);
     setIsAttendees(false);
-  };
-
-  const handleCancel = () => {
-    setModalField(false);
-    setShow(false);
-    setIsDetails(true);
-    setIsAgenda(false);
-    setIsAttendees(false);
-    setIsPublishMeeting(false);
-    setObjMeetingAgenda({
-      Title: "",
-      PresenterName: "",
-      URLs: "",
-      FK_MDID: 0,
-    });
-    setMeetingAgendaAttachments({
-      MeetingAgendaAttachments: [],
-    });
-    setParticipantRoleName("");
-    setCreateMeeting({
-      MeetingTitle: "",
-      MeetingDescription: "",
-      MeetingTypeID: 0,
-      OrganizationId: parseInt(OrganizationId),
-      MeetingDate: "",
-      MeetingStartTime: "",
-      MeetingEndTime: "",
-      MeetingLocation: "",
-      IsVideoCall: false,
-      IsChat: false,
-      MeetingReminderID: [],
-      MeetingAgendas: [],
-      MeetingAttendees: [],
-      ExternalMeetingAttendees: [],
-    });
-    setMeetingDate("");
-    setMeetingAttendees({
-      User: {
-        PK_UID: 0,
-      },
-      MeetingAttendeeRole: {
-        PK_MARID: 0,
-      },
-      AttendeeAvailability: {
-        PK_AAID: 1,
-      },
-    });
-    setAddedParticipantNameList([]);
   };
 
   const deleteFilefromAttachments = (data, index) => {
@@ -1746,7 +1672,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     <Row>
                       {attachments.length > 0
                         ? attachments.map((data, index) => {
-                            console.log(data, "datadatadatadata");
                             let ext =
                               data.DisplayAttachmentName !== undefined &&
                               data.DisplayAttachmentName.split(".").pop();
@@ -1825,6 +1750,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                     src={deleteButtonCreateMeeting}
                                     width={15}
                                     height={15}
+                                    alt=""
                                     onClick={() =>
                                       deleteFilefromAttachments(data, index)
                                     }
@@ -2111,10 +2037,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       <Col lg={12} md={12} sm={12} xs={12}>
                         {addedParticipantNameList ? (
                           <>
-                            {console.log(addedParticipantNameList, "Asdasd")}
                             <span>
                               {addedParticipantNameList.map((atList, index) => {
-                                console.log(atList, "atListatListatListatList");
                                 if (atList.role === 1) {
                                   return (
                                     <EmployeeCard

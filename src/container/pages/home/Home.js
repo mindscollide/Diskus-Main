@@ -284,8 +284,7 @@ const Home = () => {
       setStartDataUpdate(newDateFormaterAsPerUTC(startDates));
       setEndDataUpdate(newDateFormaterAsPerUTC(endDates));
       if (startDates !== null && endDates !== null) {
-        console.log("getCalendarDataResponse");
-        dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
+        dispatch(getCalendarDataResponse(navigate, t, calendarData, true));
       }
     } else {
       dispatch(getCalendarDataInit(false));
@@ -873,7 +872,7 @@ const Home = () => {
         EndDate: newDateFormaterAsPerUTC(newStartDataUpdate) + "000000",
       };
       setStartDataUpdate(newDateFormaterAsPerUTC(updateStartDate));
-      dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+      dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
     } else if (newEndDataUpdate < formattedDate) {
       let updateEndDate = new Date(
         date.getFullYear(),
@@ -892,7 +891,7 @@ const Home = () => {
         EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
       };
       setEndDataUpdate(newDateFormaterAsPerUTC(updateEndDate));
-      dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+      dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
     }
   };
 
@@ -1629,6 +1628,8 @@ const Home = () => {
           setShow={setShow}
           editFlag={editFlag}
           setEditFlag={setEditFlag}
+          // this is check from where its called 3 is from Home
+          checkFlag={3}
         />
       ) : activateBlur ? (
         <Modal

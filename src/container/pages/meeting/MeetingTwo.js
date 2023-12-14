@@ -39,14 +39,12 @@ import {
   TextField,
   ResultMessage,
   Notification,
-  Loader,
 } from "../../../components/elements";
 import { Paper } from "@material-ui/core";
 
 import { Col, Dropdown, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import SceduleMeeting from "./scedulemeeting/SceduleMeeting";
@@ -92,40 +90,32 @@ const NewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
+
   const { talkStateData, NewMeetingreducer, meetingIdReducer } = useSelector(
     (state) => state
   );
+
   const { searchMeetings, endForAllMeeting, endMeetingModal } = useSelector(
     (state) => state.NewMeetingreducer
   );
 
-  // const searchMeetings = useSelector(
-  //   (state) => state.NewMeetingreducer.searchMeetings
-  // );
-  // const endForAllMeeting = useSelector(
-  //   (state) => state.NewMeetingreducer.endForAllMeeting
-  // );
-  // const endMeetingModal = useSelector(
-  //   (state) => state.NewMeetingreducer.endMeetingModal
-  // );
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
+
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
-  const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
+
   let currentLanguage = localStorage.getItem("i18nextLng");
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
-
   //Current Organization
   let currentOrganizationId = localStorage.getItem("organizationID");
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
   let userID = localStorage.getItem("userID");
-
   let now = new Date();
   let year = now.getUTCFullYear();
   let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
@@ -133,14 +123,12 @@ const NewMeeting = () => {
   let hours = now.getUTCHours().toString().padStart(2, "0");
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
-
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
-
+  const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
   const [entereventIcon, setentereventIcon] = useState(false);
@@ -154,14 +142,12 @@ const NewMeeting = () => {
   });
   const [rows, setRow] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
-
   const [searchFields, setSearchFeilds] = useState({
     MeetingTitle: "",
     Date: "",
     OrganizerName: "",
     DateView: "",
   });
-
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -218,9 +204,7 @@ const NewMeeting = () => {
       dispatch(allAssignessList(navigate, t));
       localStorage.setItem("MeetingCurrentView", 1);
     }
-    return () => {
-      // dispatch(clearMeetingState());
-    };
+    return () => {};
   }, []);
 
   const HandleShowSearch = () => {
@@ -622,8 +606,6 @@ const NewMeeting = () => {
                       <img
                         src={ClipIcon}
                         className="cursor-pointer"
-                        // width="14.02px"
-                        // height="16.03px"
                         alt=""
                         draggable="false"
                       />
@@ -869,21 +851,7 @@ const NewMeeting = () => {
           }
         } else if (Number(record.status) === 2) {
           if (isOrganiser) {
-            // return (
-            //   <Button
-            //     text={t("End-Meeting")}
-            //     className={styles["End-Meeting"]}
-            //     onClick={EndMeetingModal}
-            //   />
-            // );
           } else if (isParticipant) {
-            // return (
-            //   <Button
-            //     text={t("Leave-meeting")}
-            //     className={styles["End-Meeting"]}
-            //     onClick={EndMeetingModal}
-            //   />
-            // );
           }
         } else {
         }
@@ -1289,6 +1257,28 @@ const NewMeeting = () => {
 
   return (
     <section className={styles["NewMeeting_container"]}>
+      {endForAllMeeting && <NewEndLeaveMeeting />}
+      {endMeetingModal && <NewEndMeetingModal />}
+      {quickMeeting && (
+        <ModalMeeting
+          setShow={setQuickMeeting}
+          show={quickMeeting}
+          // this is check from where its called 4 is from Meeting
+          checkFlag={4}
+        />
+      )}
+      {viewFlag ? (
+        <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
+      ) : null}
+      {editFlag ? (
+        <ModalUpdate
+          editFlag={editFlag}
+          setEditFlag={setEditFlag}
+          // this is check from where its called 4 is from Meeting
+          checkFlag={4}
+        />
+      ) : null}
+      <Notification message={open.message} open={open.open} setOpen={setOpen} />
       {sceduleMeeting ? (
         <SceduleMeeting
           setSceduleMeeting={setSceduleMeeting}
@@ -1582,38 +1572,36 @@ const NewMeeting = () => {
                     setDataroomMapFolderId={setDataroomMapFolderId}
                   />
                 ) : Number(currentView) === 1 ? (
-                  <section className={styles["DefineTableFixedheight"]}>
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        <>
-                          <Table
-                            column={MeetingColoumns}
-                            scroll={{ y: "54vh", x: true }}
-                            pagination={false}
-                            className="newMeetingTable"
-                            rows={rows}
-                            locale={{
-                              emptyText: emptyText(), // Set your custom empty text here
-                            }}
-                            expandable={{
-                              expandedRowRender: (record) => {
-                                return record.meetingAgenda.map((data) => (
-                                  <p className={styles["meeting-expanded-row"]}>
-                                    {data.objMeetingAgenda.title}
-                                  </p>
-                                ));
-                              },
-                              rowExpandable: (record) =>
-                                record.meetingAgenda !== null &&
-                                record.meetingAgenda.length > 0
-                                  ? true
-                                  : false,
-                            }}
-                          />
-                        </>
-                      </Col>
-                    </Row>
-                  </section>
+                  <Row className="mt-2">
+                    <Col lg={12} md={12} sm={12}>
+                      <>
+                        <Table
+                          column={MeetingColoumns}
+                          scroll={{ y: "54vh", x: true }}
+                          pagination={false}
+                          className="newMeetingTable"
+                          rows={rows}
+                          locale={{
+                            emptyText: emptyText(), // Set your custom empty text here
+                          }}
+                          expandable={{
+                            expandedRowRender: (record) => {
+                              return record.meetingAgenda.map((data) => (
+                                <p className={styles["meeting-expanded-row"]}>
+                                  {data.objMeetingAgenda.title}
+                                </p>
+                              ));
+                            },
+                            rowExpandable: (record) =>
+                              record.meetingAgenda !== null &&
+                              record.meetingAgenda.length > 0
+                                ? true
+                                : false,
+                          }}
+                        />
+                      </>
+                    </Col>
+                  </Row>
                 ) : null}
                 {rows.length > 0 ? (
                   <>
@@ -1660,18 +1648,6 @@ const NewMeeting = () => {
           </Row>
         </>
       )}
-      {endForAllMeeting && <NewEndLeaveMeeting />}
-      {endMeetingModal && <NewEndMeetingModal />}
-      {quickMeeting && (
-        <ModalMeeting setShow={setQuickMeeting} show={quickMeeting} />
-      )}
-      {viewFlag ? (
-        <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
-      ) : null}
-      {editFlag ? (
-        <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
-      ) : null}
-      <Notification message={open.message} open={open.open} setOpen={setOpen} />
     </section>
   );
 };

@@ -125,7 +125,7 @@ const CalendarPage = () => {
     console.log("DateDate calendarData", calendarData);
     setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
     setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
-    dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
+    dispatch(getCalendarDataResponse(navigate, t, calendarData, true));
     dispatch(getEventsTypes(navigate, t));
     window.addEventListener("click", function (e) {
       var clsname = e.target.className;
@@ -200,7 +200,7 @@ const CalendarPage = () => {
         EndDate: newDateFormaterAsPerUTC(startDataUpdate) + "000000",
       };
       setStartDataUpdate(updateStartDate);
-      dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+      dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
     } else if (endDataUpdate < value._d) {
       console.log("navigate", value._d);
       const date = new Date(value._d);
@@ -221,7 +221,7 @@ const CalendarPage = () => {
         EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
       };
       setEndDataUpdate(updateEndDate);
-      dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+      dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
     }
     setDefaultValue(newDAte);
     setOpen(false);
@@ -678,7 +678,8 @@ const CalendarPage = () => {
         data={meetingData}
       />
       <ModalMeeting
-        calenderFlag={true}
+        // this is check from where its called 2 is from Calendar
+        checkFlag={2}
         show={meetingModalShow}
         setShow={setMeetingModalShow}
       />

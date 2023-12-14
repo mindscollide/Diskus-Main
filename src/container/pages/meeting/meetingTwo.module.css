@@ -239,8 +239,8 @@ body[dir="rtl"] .PaginationStyle-Committee {
 
 .PaperStylesMeetingTwoPage {
   width: 100% !important;
-  min-height: 78vh !important;
-  height: auto !important;
+  /* min-height: 78vh !important;*/
+  height: auto !important; 
   position: relative;
   padding: 20px 20px !important;
 }
