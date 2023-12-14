@@ -597,6 +597,8 @@ const Header2 = () => {
         <ModalMeeting
           show={createMeetingModal}
           setShow={setCreateMeetingModal}
+          // this is check from where its called 1 is from header
+          checkFlag={1}
         />
       )}
     </>

@@ -31,10 +31,8 @@ const getCalendarDataFail = (message) => {
   };
 };
 
-const getCalendarDataResponse = (navigate, data, flag, t) => {
+const getCalendarDataResponse = (navigate, t, data, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-
   return (dispatch) => {
     dispatch(getCalendarDataInit(flag));
     let form = new FormData();
@@ -49,10 +47,9 @@ const getCalendarDataResponse = (navigate, data, flag, t) => {
       },
     })
       .then(async (response) => {
-        console.log("calendar Data Response", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getCalendarDataResponse(navigate, data, flag, t));
+          dispatch(getCalendarDataResponse(navigate, t, data, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -98,7 +95,6 @@ const getCalendarDataResponse = (navigate, data, flag, t) => {
         }
       })
       .catch((response) => {
-        console.log("err", response);
         dispatch(getCalendarDataFail(t("Something-went-wrong")));
       });
   };

@@ -263,7 +263,6 @@ const Committee = () => {
 
   const discussionGroupChat = (data) => {
     if (data.talkGroupID !== 0) {
-      console.log("discussionGroupChat", data);
       dispatch(createShoutAllScreen(false));
       dispatch(addNewChatScreen(false));
       dispatch(footerActionStatus(false));

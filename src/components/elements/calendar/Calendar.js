@@ -259,7 +259,7 @@ function CustomCalendar({
           EndDate: newDateFormaterAsPerUTC(startDataUpdate) + "000000",
         };
         setStartDataUpdate(newDateFormaterAsPerUTC(updateStartDate));
-        dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+        dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
       } else {
         setPrevCheck(false);
       }
@@ -290,7 +290,7 @@ function CustomCalendar({
           EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
         };
         setEndDataUpdate(newDateFormaterAsPerUTC(updateEndDate));
-        dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+        dispatch(getCalendarDataResponse(navigate, t, calendarData, false));
       } else {
         setNextCheck(false);
       }

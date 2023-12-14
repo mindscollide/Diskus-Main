@@ -60,7 +60,6 @@ const checkOraganisation = (
   t,
   setCompanyNameUnique
 ) => {
-  console.log("isCompanyNameUnique");
   let newData = { OrganizationName: signUpDetails.CompanyName.value };
   return (dispatch) => {
     dispatch(organizationInit());
@@ -75,9 +74,7 @@ const checkOraganisation = (
       data: form,
     })
       .then(async (response) => {
-        console.log("ValidateData", response);
         if (response.data.responseResult.isExecuted === true) {
-          console.log("ValidateData", response);
           if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsOrganizationExsists_01"
@@ -120,9 +117,7 @@ const checkOraganisation = (
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
               await setCompanyNameUnique(false);
-            } catch {
-              console.log("isCompanyNameUnique error");
-            }
+            } catch {}
             dispatch(organizationSuccess(false, newError));
           } else {
             let newError = t("This-organization-doesnt-exists");
@@ -166,9 +161,7 @@ const checkEmailExsist = (
       data: form,
     })
       .then(async (response) => {
-        console.log("ValidateData", response);
         if (response.data.responseResult.isExecuted === true) {
-          console.log("ValidateData", response);
           if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_01"

@@ -764,15 +764,15 @@ const Signup = () => {
                     >
                       <TextField
                         onBlur={() => {
-                          dispatch(
-                            checkOraganisation(
-                              setCompanyNameValidate,
-                              setCompanyNameValidateError,
-                              signUpDetails,
-                              t,
-                              setCompanyNameUnique
-                            )
-                          );
+                            dispatch(
+                              checkOraganisation(
+                                setCompanyNameValidate,
+                                setCompanyNameValidateError,
+                                signUpDetails,
+                                t,
+                                setCompanyNameUnique
+                              )
+                            );
                         }}
                         autofill
                         labelClass="d-none"

@@ -44,7 +44,7 @@ import {
   getStartTimeWithCeilFunction,
 } from "../../../../commen/functions/time_formatter";
 
-const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
+const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -1218,7 +1218,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setIsAgenda(false);
     setIsAttendees(false);
     setIsPublishMeeting(false);
-    dispatch(ScheduleNewMeeting(navigate, newData, calenderFlag, t));
+    dispatch(ScheduleNewMeeting(navigate, t, checkFlag, newData));
     setObjMeetingAgenda({
       Title: "",
       PresenterName: "",

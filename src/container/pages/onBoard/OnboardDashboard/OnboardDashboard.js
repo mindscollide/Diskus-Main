@@ -171,7 +171,7 @@ const OnboardDashboard = () => {
   // calling Api for getting data for calendar
   useEffect(() => {
     const userID = localStorage.getItem("userID");
-    dispatch(getCalendarDataResponse(navigate, userID, t));
+    dispatch(getCalendarDataResponse(navigate, t, userID, true));
   }, []);
 
   //ToDo Table Data
@@ -1172,6 +1172,8 @@ const OnboardDashboard = () => {
         setShow={setShow}
         editFlag={editFlag}
         setEditFlag={setEditFlag}
+        // this is check from where its called 5 is from OnboardDashboard
+        checkFlag={5}
       />
       <Modal
         show={activateBlur}

@@ -13,28 +13,18 @@ import {
   TextField,
   Button,
   Modal,
-  TimePickers,
-  CustomDatePicker,
   SelectBox,
   Accordian,
   EmployeeCard,
   InputSearchFilter,
   Notification,
   Checkbox,
-  Loader,
-  MultiDatePicker,
 } from "../../../../components/elements";
 import { FileUploadToDo } from "../../../../store/actions/Upload_action";
-import {
-  addMinutesofMeetings,
-  HideMinuteMeetingMessage,
-} from "../../../../store/actions/AddMinutesofMeeting_action";
 import ErrorBar from "../../../../container/authentication/sign_up/errorbar/ErrorBar";
-import userImage from "../../../../assets/images/user.png";
 import { Row, Col, Container } from "react-bootstrap";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import CustomUpload from "../../../../components/elements/upload/Upload";
@@ -42,11 +32,9 @@ import { CameraVideo } from "react-bootstrap-icons";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  allAssignessList,
   UpdateMeeting,
   cleareAssigneesState,
   CancelMeeting,
-  GetAllReminders,
 } from "../../../../store/actions/Get_List_Of_Assignees";
 import { DownloadFile } from "../../../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
@@ -54,15 +42,16 @@ import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 
-const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
+const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   //For Localization
   const { t } = useTranslation();
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { assignees, uploadReducer, minuteofMeetingReducer, CommitteeReducer } =
-    useSelector((state) => state);
+  const { assignees, uploadReducer, CommitteeReducer } = useSelector(
+    (state) => state
+  );
   let OrganizationId = localStorage.getItem("organizationID");
   const [isMinutes, setIsMinutes] = useState(false);
   const [isDetails, setIsDetails] = useState(true);
@@ -76,7 +65,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
   const [endMeetingStatusForMinutes, setEndMeetingStatusForMinutes] =
     useState(false);
   const [isCancelMeetingModal, setCancelMeetingModal] = useState(false);
-  const [externalMeetingAttendees, setExternalMeetingAttendees] = useState([]);
   const [editRecordFlag, seteditRecordFlag] = useState(false);
   const [editRecordIndex, seteditRecordIndex] = useState(null);
 
@@ -411,7 +399,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-    await dispatch(UpdateMeeting(navigate, newData, t, 1));
+    await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
     await setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
@@ -1498,7 +1486,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-    await dispatch(UpdateMeeting(navigate, newData, t, 1));
+    await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
     await setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
