@@ -262,10 +262,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
-      createMeeting.MeetingDate !== "" &&
+      createMeeting.MeetingDate !== ""
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription !== "" &&
-      createMeeting.MeetingLocation !== ""
+      // createMeeting.MeetingLocation !== ""
       // &&
       // createMeeting.MeetingTitle !== ""
     ) {
@@ -1572,10 +1572,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         value={createMeeting.MeetingLocation}
                         required={true}
                       />
-                      {modalField === true &&
+                      {/* {modalField === true &&
                       createMeeting.MeetingLocation === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
-                      ) : null}
+                      ) : null} */}
                     </Col>
                     <Col
                       lg={4}

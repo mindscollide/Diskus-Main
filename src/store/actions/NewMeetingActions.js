@@ -58,6 +58,7 @@ import {
   getAdvanceMeetingAgendabyMeetingID,
   getAllagendaWiseDocumentsApi,
   inviteForCollaboration,
+  validateEncryptedStringUserAvailabilityForMeeting,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -6722,6 +6723,138 @@ const meetingStatusPublishedMqtt = (response) => {
   };
 };
 
+//Validate Empty String User Availibility For Meeting
+
+const validateEmptyStringUserAvailibilityInit = () => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_INIT,
+  };
+};
+
+const validateEmptyStringUserAvailibilitySuccess = (response, message) => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validateEmptyStringUserAvailibilityFailed = (message) => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_FAILED,
+    message: message,
+  };
+};
+
+const validateEncryptedStringUserAvailibilityForMeetingApi = (
+  navigate,
+  Data,
+  t
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(validateEmptyStringUserAvailibilityInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      validateEncryptedStringUserAvailabilityForMeeting.RequestMethod
+    );
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: meetingApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API request
+        await dispatch(
+          validateEncryptedStringUserAvailibilityForMeetingApi(
+            navigate,
+            Data,
+            t
+          )
+        );
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_ValidateEncryptedStringUserAvailabilityForMeeting_01".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              validateEmptyStringUserAvailibilitySuccess(
+                response.data.responseResult,
+                t("Successfully-updated")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_ValidateEncryptedStringUserAvailabilityForMeeting_02".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateEmptyStringUserAvailibilityFailed(t("Validation-failed"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_ValidateEncryptedStringUserAvailabilityForMeeting_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateEmptyStringUserAvailibilityFailed(
+                t("Something-went-wrong")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_ValidateEncryptedStringUserAvailabilityForMeeting_04".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateEmptyStringUserAvailibilityFailed(
+                t("Failed-to-update-attendee-avaliability")
+              )
+            );
+          } else {
+            dispatch(
+              validateEmptyStringUserAvailibilityFailed(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          dispatch(
+            validateEmptyStringUserAvailibilityFailed(t("Something-went-wrong"))
+          );
+        }
+      } else {
+        dispatch(
+          validateEmptyStringUserAvailibilityFailed(t("Something-went-wrong"))
+        );
+      }
+    } catch (error) {
+      dispatch(
+        validateEmptyStringUserAvailibilityFailed(t("Something-went-wrong"))
+      );
+    }
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -6841,4 +6974,5 @@ export {
   InviteToCollaborateMinutesApiFunc,
   meetingStatusProposedMqtt,
   meetingStatusPublishedMqtt,
+  validateEncryptedStringUserAvailibilityForMeetingApi,
 };

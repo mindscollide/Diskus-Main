@@ -741,3 +741,28 @@ export const newTimeFormaterForImportMeetingAgenda = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
   return moment(_dateTime).format("h:mm A - D MMM, YYYY");
 };
+
+//Converting to GMT Having Date Plus StartTime And End Time
+export const convertDateTimeRangeToGMT = (date, startTime, endTime) => {
+  const startDateTime = moment
+    .utc(
+      `${date}T${startTime.slice(0, 2)}:${startTime.slice(
+        2,
+        4
+      )}:${startTime.slice(4, 6)}Z`,
+      "YYYYMMDDTHHmmssZ"
+    )
+    .format("Do MMM, YYYY h:mm A");
+
+  const endDateTime = moment
+    .utc(
+      `${date}T${endTime.slice(0, 2)}:${endTime.slice(2, 4)}:${endTime.slice(
+        4,
+        6
+      )}Z`,
+      "YYYYMMDDTHHmmssZ"
+    )
+    .format("h:mm A");
+
+  return `${startDateTime} - ${endDateTime}`;
+};

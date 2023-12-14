@@ -1,0 +1,49 @@
+.ThankyouHeading {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 30px !important;
+}
+
+.Subheading {
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+}
+
+.RedThankyouHeading {
+  color: #f16b6b !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 30px !important;
+}
+
+.OrangeThankyouHeading {
+  color: #f68732 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 30px !important;
+}
+
+.MeetingTitle {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+}
+
+.BackButtonRSVP {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.BackButtonRSVP:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
