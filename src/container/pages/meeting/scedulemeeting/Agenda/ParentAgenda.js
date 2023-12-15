@@ -601,7 +601,7 @@ const ParentAgenda = ({
                                 lg={2}
                                 md={2}
                                 sm={2}
-                                className="d-flex justify-content-center align-items-center"
+                                className="d-flex justify-content-center align-items-center marginTop20"
                               >
                                 <img
                                   alt=""
