@@ -998,7 +998,7 @@ const Signup = () => {
                           handeEmailvlidate();
                         }}
                         labelClass="d-none"
-                        placeholder={t("Email")}
+                        placeholder={t("Email-address")}
                         name="Email"
                         type="email"
                         maxLength={160}
@@ -1134,6 +1134,7 @@ const Signup = () => {
               draggable="false"
               src={DiskusnewRoundIconSignUp}
               width="600px"
+              alt=""
               className={styles["rightsection_roundLogo"]}
             />
           </Col>

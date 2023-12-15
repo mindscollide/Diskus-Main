@@ -5,7 +5,10 @@ import "./../../../../i18n";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
 import { useTranslation } from "react-i18next";
 import EditIcon2 from "../../../../assets/images/Edit-Icon-blck.png";
-import { validationEmail } from "../../../../commen/functions/validations";
+import {
+  validateEmailEnglishAndArabicFormat,
+  validationEmail,
+} from "../../../../commen/functions/validations";
 import {
   countryName,
   countryNameforPhoneNumber,
@@ -174,12 +177,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     let value = e.target.value.trimStart();
 
     if (name === "Name" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
-        if (valueCheck.length <= 100) {
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
+        if (value.length <= 100) {
           setEditUserSection({
             ...editUserSection,
-            Name: valueCheck,
+            Name: value,
           });
         } else {
           setEditUserSection({
@@ -195,12 +198,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       });
     }
     if (name === "Designation" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
-        if (valueCheck.length <= 100) {
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
+        if (value.length <= 100) {
           setEditUserSection({
             ...editUserSection,
-            Designation: valueCheck,
+            Designation: value,
           });
         } else {
           setEditUserSection({
@@ -233,12 +236,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     //for Filter section
     if (name === "Names" && value !== "") {
       setErrorBar(false);
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
-        if (valueCheck.length <= 100) {
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
+        if (value.length <= 100) {
           setFilterFieldSection({
             ...filterFieldSection,
-            Names: valueCheck,
+            Names: value,
           });
         } else {
           setFilterFieldSection({
@@ -258,7 +261,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     let newValue = value2.trim();
     if (name === "Emails" && newValue !== "") {
       if (newValue.length <= 100) {
-        if (validationEmail(newValue)) {
+        if (validateEmailEnglishAndArabicFormat(newValue)) {
           setFilterFieldSection({
             ...filterFieldSection,
             Emails: {
@@ -278,7 +281,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           });
         }
       } else {
-        if (validationEmail(filterFieldSection.Emails.value)) {
+        if (
+          validateEmailEnglishAndArabicFormat(filterFieldSection.Emails.value)
+        ) {
           setFilterFieldSection({
             ...filterFieldSection,
             Emails: {
