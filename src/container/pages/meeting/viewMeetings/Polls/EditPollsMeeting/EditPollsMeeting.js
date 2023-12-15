@@ -98,10 +98,10 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-    let valueCheck = regexOnlyForNumberNCharacters(newValue);
+    // let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
-        return item.name === name ? { ...item, value: valueCheck } : item;
+        return item.name === name ? { ...item, value: newValue } : item;
       })
     );
   };

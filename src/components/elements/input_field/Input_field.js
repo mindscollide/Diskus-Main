@@ -84,7 +84,6 @@ const TextField = ({
           onDoubleClick={onDoubleClick}
           onClick={onClick}
           onKeyDown={onKeyDown}
-          dir="auto"
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
           {/* <span

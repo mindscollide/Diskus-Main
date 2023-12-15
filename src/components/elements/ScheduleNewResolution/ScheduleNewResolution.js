@@ -790,11 +790,11 @@ const ScheduleNewResolution = () => {
       }
     }
     if (name === "ResolutionDescription") {
-      let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*() ]/g, "");
-      if (valueCheck !== "") {
+      // let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*() ]/g, "");
+      if (value !== "") {
         setCreateResolutionData({
           ...createResolutionData,
-          NotesToVoter: valueCheck.trimStart(),
+          NotesToVoter: value.trimStart(),
         });
       } else {
         setCreateResolutionData({
