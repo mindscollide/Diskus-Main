@@ -1166,7 +1166,7 @@ const MeetingDetails = ({
                     applyClass={"meetinInnerSearch"}
                     name={"Meetingtitle"}
                     labelClass="d-none"
-                    maxLength={250}
+                    maxLength={220}
                     change={HandleChange}
                     value={meetingDetails.MeetingTitle}
                     disable={
@@ -1278,6 +1278,7 @@ const MeetingDetails = ({
                             ? true
                             : false
                         }
+                        maxLength={220}
                       />
                       {/* <Row>
                         <Col>
@@ -1308,7 +1309,7 @@ const MeetingDetails = ({
                     name={"Description"}
                     change={HandleChange}
                     value={meetingDetails.Description}
-                    maxLength={300}
+                    // maxLength={300}
                     disable={
                       (Number(editorRole.status) === 9 ||
                         Number(editorRole.status) === 8 ||
@@ -1844,7 +1845,7 @@ const MeetingDetails = ({
                     change={HandleChange}
                     placeholder={t("Note-for-this-meeting")}
                     required={true}
-                    maxLength={300}
+                    maxLength={145}
                     value={meetingDetails.Notes}
                     disable={
                       (Number(editorRole.status) === 9 ||
