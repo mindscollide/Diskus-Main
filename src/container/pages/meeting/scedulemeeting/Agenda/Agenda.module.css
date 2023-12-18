@@ -41,6 +41,7 @@
   padding: 10px 15px !important;
   margin-left: 10px !important;
   position: relative;
+  z-index: 0 !important;
 }
 
 .SubajendaBox_Inactive {

@@ -6809,6 +6809,7 @@ const validateEncryptedStringUserAvailibilityForMeetingApi = (
                 "Meeting_MeetingServiceManager_ValidateEncryptedStringUserAvailabilityForMeeting_02".toLowerCase()
               )
           ) {
+            navigate("/Diskus/Meeting");
             dispatch(
               validateEmptyStringUserAvailibilityFailed(t("Validation-failed"))
             );
