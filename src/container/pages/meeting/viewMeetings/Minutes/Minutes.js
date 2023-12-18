@@ -128,23 +128,34 @@ const Minutes = ({
   const modules = {
     toolbar: {
       container: [
-        {
-          size: ["14px", "16px", "18px"],
-        },
-        { font: ["impact", "courier", "comic", "Montserrat"] },
-        { bold: {} },
-        { italic: {} },
-        { underline: {} },
-
-        { color: [] },
-        { background: [] },
-        { align: [] },
-        { list: "ordered" },
-        { list: "bullet" },
+        [
+          { size: ["14px", "16px", "18px"] },
+          { font: ["impact", "courier", "comic", "Montserrat"] },
+          { bold: "bold" }, // Set 'bold' directly as a string
+          { italic: "italic" }, // Set 'italic' directly as a string
+          { underline: "underline" }, // Set 'underline' directly as a string
+          { color: [] },
+          { background: [] },
+          { align: [] },
+          { list: "ordered" },
+          { list: "bullet" },
+        ],
       ],
       handlers: {},
     },
   };
+
+  const formats = [
+    "size",
+    "font",
+    "bold", // Include 'bold' in formats
+    "italic", // Include 'italic' in formats
+    "underline", // Include 'underline' in formats
+    "color",
+    "background",
+    "align",
+    "list",
+  ];
 
   useEffect(() => {
     let Data = {
