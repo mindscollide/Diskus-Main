@@ -641,7 +641,8 @@ const Organizers = ({
           rowsData,
           currentMeeting,
           isEditValue,
-          notificationMessage
+          notificationMessage,
+          setIsEdit
         )
       );
       setIsEdit(false);

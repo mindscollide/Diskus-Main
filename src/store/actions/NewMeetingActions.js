@@ -6341,7 +6341,8 @@ const UpdateMeetingUserForOrganizers = (
   rowsData,
   currentMeeting,
   editFlag,
-  notificationMessage
+  notificationMessage,
+  setIsEdit
 ) => {
   console.log(notificationMessage, "notificationMessagenotificationMessage");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -6373,7 +6374,8 @@ const UpdateMeetingUserForOrganizers = (
               rowsData,
               currentMeeting,
               editFlag,
-              notificationMessage
+              notificationMessage,
+              setIsEdit
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -6450,23 +6452,27 @@ const UpdateMeetingUserForOrganizers = (
               dispatch(
                 UpdateMeetingUserOrganizersFailed(t("Something-went-wrong"))
               );
+              setIsEdit(true);
             }
           } else {
             console.log(response, "response");
             dispatch(
               UpdateMeetingUserOrganizersFailed(t("Something-went-wrong"))
             );
+            setIsEdit(true);
           }
         } else {
           console.log(response, "response");
           dispatch(
             UpdateMeetingUserOrganizersFailed(t("Something-went-wrong"))
           );
+          setIsEdit(true);
         }
       })
       .catch((response) => {
         console.log(response, "response");
         dispatch(UpdateMeetingUserOrganizersFailed(t("Something-went-wrong")));
+        setIsEdit(true);
       });
   };
 };
