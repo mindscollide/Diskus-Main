@@ -283,6 +283,15 @@ const Groups = () => {
   const discussionGroupChat = (data) => {
     if (data.talkGroupID !== 0) {
       console.log("discussionGroupChat", data);
+      let allChatMessages =
+        talkStateData.AllUserChats.AllUserChatsData.allMessages;
+      const foundRecord = allChatMessages.find(
+        (item) => item.id === data.talkGroupID
+      );
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+      }
+      localStorage.setItem("activeOtoChatID", data.talkGroupID);
       dispatch(createShoutAllScreen(false));
       dispatch(addNewChatScreen(false));
       dispatch(footerActionStatus(false));
@@ -317,15 +326,6 @@ const Groups = () => {
           t
         )
       );
-      let allChatMessages =
-        talkStateData.AllUserChats.AllUserChatsData.allMessages;
-      const foundRecord = allChatMessages.find(
-        (item) => item.id === data.talkGroupID
-      );
-      if (foundRecord) {
-        dispatch(activeChat(foundRecord));
-      }
-      localStorage.setItem("activeOtoChatID", data.talkGroupID);
     } else {
       setOpen({
         ...open,
@@ -414,6 +414,36 @@ const Groups = () => {
   console.log("Groups talkReducer", talkStateData);
 
   console.log("Groups talkFeatures", talkFeatureStates);
+
+  console.log("Groups Data", groupsData);
+
+  const isCurrentUserCreator = (data) => {
+    return (
+      data.creatorID === Number(currentUserId) && isCurrentUserMember(data)
+    );
+  };
+
+  // Define a function to check if the current user is a member
+  const isCurrentUserMember = (data) => {
+    return data.groupMembers.some(
+      (member) => member.pK_UID === Number(currentUserId)
+    );
+  };
+
+  const openNotification = () => {
+    setOpen({
+      ...open,
+      flag: true,
+      message: t("Not-a-member-of-talk-group"),
+    });
+    setTimeout(() => {
+      setOpen({
+        ...open,
+        flag: false,
+        message: "",
+      });
+    }, 3000);
+  };
 
   return (
     <>
@@ -515,12 +545,19 @@ const Groups = () => {
                                 }
                                 handleClickDiscussion={
                                   data.talkGroupID !== 0
-                                    ? () => discussionGroupChat(data)
+                                    ? isCurrentUserCreator(data)
+                                      ? () => discussionGroupChat(data)
+                                      : isCurrentUserMember(data)
+                                      ? () => discussionGroupChat(data)
+                                      : () => openNotification()
                                     : null
                                 }
                                 discussionMenuClass={
                                   data.talkGroupID !== 0
-                                    ? "discussion-menu"
+                                    ? isCurrentUserCreator(data) ||
+                                      isCurrentUserMember(data)
+                                      ? "discussion-menu"
+                                      : "discussion-menu disabled"
                                     : "discussion-menu disabled"
                                 }
                                 titleOnCLick={() => viewTitleModal(data)}

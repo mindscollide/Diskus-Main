@@ -3,7 +3,6 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import moment from "moment";
 import "./Talk-Chat.css";
-import { Triangle } from "react-bootstrap-icons";
 import enUS from "antd/es/date-picker/locale/en_US";
 import {
   GetAllUserChats,
@@ -34,7 +33,6 @@ import {
   DeleteShout,
   UpdateShoutAll,
   OtoMessageRetryFlag,
-  InsertBulkMessages,
   DownloadChat,
 } from "../../../../store/actions/Talk_action";
 import {
@@ -51,20 +49,13 @@ import {
 } from "../../../../commen/functions/date_formater";
 import {
   TextField,
-  ChatModal,
   InputDatePicker,
   Button,
   NotificationBar,
-  UploadProgressBar,
 } from "../../../elements";
-// import Highlighter from 'react-highlight-words'
-import CustomUploadChat from "../../../elements/chat_upload/Chat-Upload";
-import CustomUploadImageChat from "../../../elements/chat_upload/Chat-Upload-Image";
 import Keywords from "react-keywords";
 import { Spin } from "antd";
-import SearchIcon from "../../../../assets/images/Search-Icon.png";
 import SecurityIcon from "../../../../assets/images/Security-Icon.png";
-import FullScreenIcon from "../../../../assets/images/Fullscreen-Icon.png";
 import DoubleTickIcon from "../../../../assets/images/DoubleTick-Icon.png";
 import DoubleTickDeliveredIcon from "../../../../assets/images/DoubleTickDelivered-Icon.png";
 import SingleTickIcon from "../../../../assets/images/SingleTick-Icon.png";
@@ -75,10 +66,8 @@ import MenuIcon from "../../../../assets/images/Menu-Chat-Icon.png";
 import VideoCallIcon from "../../../../assets/images/VideoCall-Icon.png";
 import CloseChatIcon from "../../../../assets/images/Cross-Chat-Icon.png";
 import SearchChatIcon from "../../../../assets/images/Search-Chat-Icon.png";
-import AddChatIcon from "../../../../assets/images/Add-Plus-Icon.png";
 import EmojiIcon from "../../../../assets/images/Emoji-Select-Icon.png";
 import UploadChatIcon from "../../../../assets/images/Upload-Chat-Icon.png";
-import MicIcon from "../../../../assets/images/Mic-Icon.png";
 import DeleteUploadIcon from "../../../../assets/images/Delete-Upload-Icon.png";
 import DeleteChatFeature from "../../../../assets/images/Delete-ChatFeature-Icon.png";
 import ChatSendIcon from "../../../../assets/images/Chat-Send-Icon.png";
@@ -104,11 +93,9 @@ import {
   markStarUnstarFunction,
   groupUpdationFunction,
 } from "./functions/oneToOneMessage";
-import { sendChatFunction } from "./sendChat";
 import { useNavigate } from "react-router-dom";
 import { filesUrlTalk } from "../../../../commen/apis/Api_ends_points";
 import PrintPage from "./printScript";
-import talkHeader from "./talkMain/talkHeader";
 import MainWindow from "./talkMain/mainChatWindow";
 
 const TalkChat = () => {
@@ -189,9 +176,6 @@ const TalkChat = () => {
   const [activeChat, setActiveChat] = useState([]);
   const [chatOpen, setChatOpen] = useState(false);
 
-  //Generate Unique ID
-  const [guID, setGUID] = useState("");
-
   //Scroll down state
   const chatMessages = useRef();
 
@@ -213,9 +197,6 @@ const TalkChat = () => {
   //Input Chat Autofocus state
   const [inputChat, setInputChat] = useState(true);
 
-  //Search Users State
-  const [searchChatUserValue, setSearchChatUserValue] = useState("");
-
   //search group user states
   const [searchGroupUserValue, setSearchGroupUserValue] = useState("");
 
@@ -224,9 +205,6 @@ const TalkChat = () => {
 
   //Loading State
   const [isLoading, setIsLoading] = useState(true);
-
-  //Opening Encryption Message
-  const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false);
 
   //File Upload
   const [tasksAttachments, setTasksAttachments] = useState({
@@ -530,11 +508,6 @@ const TalkChat = () => {
         t
       )
     );
-    // let Data = {
-    //   GroupID: activeChat.id,
-    //   ChannelID: currentOrganizationId,
-    // }
-    // dispatch(GetAllPrivateGroupMembers(Data, t))
   }, []);
 
   //Single Message Entire Data
@@ -662,7 +635,6 @@ const TalkChat = () => {
   ]);
 
   //Auto store in state
-  // Broadcast EDIT IDHAR HOGA
   useEffect(() => {
     let shoutMembersData =
       talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData
@@ -707,19 +679,6 @@ const TalkChat = () => {
       ?.userInformation,
   ]);
 
-  //Storing all users in a variable
-  // const allChatsList = talkStateData.AllUserChats.AllUserChatsData.allMessages
-
-  //Clicking on Security Icon
-  const securityDialogue = () => {
-    setOpenEncryptionDialogue(true);
-  };
-
-  //Clicking on Close Security Icon
-  const closeSecurityDialogue = () => {
-    setOpenEncryptionDialogue(false);
-  };
-
   //Emoji on click function
   const emojiClick = () => {
     if (emojiActive === false) {
@@ -730,11 +689,6 @@ const TalkChat = () => {
   };
 
   const [uploadFileTalk, setUploadFileTalk] = useState({});
-
-  //File Upload click Function
-  // const fileUploadTalkImage = (data) => {
-
-  // }
 
   console.log("Task Attachments", tasksAttachments);
 
@@ -854,12 +808,6 @@ const TalkChat = () => {
     }
   };
 
-  //Delete uploaded File
-  // const deleteFilefromAttachments = (data, index) => {
-  //   let searchIndex = uploadFileTalk
-  //   searchIndex.splice(index, 1)
-  //   setUploadFileTalk(searchIndex)
-  // }
   const deleteFilefromAttachments = (data, index) => {
     let searchIndex = tasksAttachments.TasksAttachments;
     searchIndex.splice(index, 1);
@@ -1004,178 +952,6 @@ const TalkChat = () => {
     }
   };
 
-  //Clicking on Chat Function
-  const chatClick = (record) => {
-    dispatch(
-      GetAllUserChats(
-        navigate,
-        parseInt(currentUserId),
-        parseInt(currentOrganizationId),
-        t
-      )
-    );
-
-    let chatOTOData = {
-      UserID: currentUserId,
-      ChannelID: currentOrganizationId,
-      OpponentUserId: record.id,
-      NumberOfMessages: 50,
-      OffsetMessage: 0,
-    };
-
-    let chatGroupData = {
-      UserID: parseInt(currentUserId),
-      ChannelID: currentOrganizationId,
-      GroupID: record.id,
-      NumberOfMessages: 50,
-      OffsetMessage: 0,
-    };
-
-    let broadcastMessagesData = {
-      UserID: currentUserId,
-      BroadcastID: record.id,
-      NumberOfMessages: 10,
-      OffsetMessage: 0,
-    };
-
-    if (record.messageType === "O") {
-      setAllGroupMessages([]);
-      setAllBroadcastMessages([]);
-      dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
-    } else if (record.messageType === "G") {
-      setAllOtoMessages([]);
-      setAllBroadcastMessages([]);
-      dispatch(GetGroupMessages(navigate, chatGroupData, t));
-    } else if (record.messageType === "B") {
-      setAllOtoMessages([]);
-      setAllGroupMessages([]);
-      dispatch(GetBroadcastMessages(navigate, broadcastMessagesData, t));
-    }
-    try {
-      if (
-        record.messageType != "" &&
-        record.messageType &&
-        record.id &&
-        record.id != 0
-      ) {
-        let newData = {
-          messageType: record.messageType,
-          id: record.id,
-        };
-        dispatch(activeChatID(newData));
-      }
-    } catch {}
-
-    setMessageSendData({
-      ...messageSendData,
-      ReceiverID: record.id.toString(),
-    });
-
-    setChatClickData({
-      ...chatClickData,
-      id: record.id,
-      fullName: record.fullName,
-      imgURL: record.imgURL,
-      messageBody: record.messageBody,
-      messageDate: record.messageDate,
-      notiCount: record.notiCount,
-      messageType: record.messageType,
-      isOnline: record.isOnline,
-      companyName: record.companyName,
-      sentDate: record.sentDate,
-      receivedDate: record.receivedDate,
-      seenDate: record.seenDate,
-      attachmentLocation: record.attachmentLocation,
-      senderID: record.senderID,
-      admin: record.admin,
-      isBlock: record.isBlock,
-    });
-
-    setActiveChat(record);
-    setChatOpen(true);
-    setAddNewChat(false);
-    setActiveCreateGroup(false);
-    setActiveCreateShoutAll(false);
-    setGlobalSearchFilter(false);
-    setSearchChatValue("");
-    if (
-      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
-      talkStateData.AllUserChats.AllUserChatsData !== null &&
-      talkStateData.AllUserChats.AllUserChatsData.length !== 0
-    ) {
-      setAllChatData(
-        talkStateData?.AllUserChats?.AllUserChatsData?.allMessages
-      );
-    } else {
-      setAllChatData([]);
-    }
-    setShoutAllData([]);
-    setPrivateMessageData([]);
-    setPrivateGroupsData([]);
-    setStarredMessagesData([]);
-    setBlockedUsersData([]);
-    localStorage.setItem("activeChatID", record.id);
-  };
-
-  const chatClickNewChat = (record) => {
-    setAllOtoMessages([]);
-    let newChatData = {
-      admin: 0,
-      attachmentLocation: "",
-      companyName: record.companyName,
-      fullName: record.fullName,
-      id: record.id,
-      imgURL: record.imgURL,
-      isOnline: false,
-      messageBody: "",
-      messageDate: "",
-      messageType: "O",
-      notiCount: 0,
-      receivedDate: "",
-      seenDate: "",
-      senderID: 0,
-      sentDate: "",
-    };
-    setMessageSendData({
-      ...messageSendData,
-      ReceiverID: record.id.toString(),
-    });
-    setActiveChat(newChatData);
-    setChatClickData({
-      ...chatClickData,
-      messageType: "O",
-    });
-    let chatOTOData = {
-      UserID: currentUserId,
-      ChannelID: currentOrganizationId,
-      OpponentUserId: record.id,
-      NumberOfMessages: 50,
-      OffsetMessage: 0,
-    };
-    dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
-
-    setChatOpen(true);
-    setAddNewChat(false);
-    setActiveCreateGroup(false);
-    setActiveCreateShoutAll(false);
-    setGlobalSearchFilter(false);
-    setSearchChatValue("");
-    if (
-      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
-      talkStateData.AllUserChats.AllUserChatsData !== null &&
-      talkStateData.AllUserChats.AllUserChatsData.length !== 0
-    ) {
-      setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages);
-    } else {
-      setAllChatData([]);
-    }
-    setShoutAllData([]);
-    setPrivateMessageData([]);
-    setPrivateGroupsData([]);
-    setStarredMessagesData([]);
-    setBlockedUsersData([]);
-  };
-
   const closeChat = () => {
     setChatOpen(false);
     setSave(false);
@@ -1236,108 +1012,6 @@ const TalkChat = () => {
     localStorage.setItem("activeChatID", null);
   };
 
-  //Add Click Function
-  const addChat = () => {
-    dispatch(
-      GetAllUsers(
-        navigate,
-        parseInt(currentUserId),
-        parseInt(currentOrganizationId),
-        t
-      )
-    );
-    setAddNewChat(true);
-    setActiveCreateGroup(false);
-    setActiveCreateShoutAll(false);
-  };
-
-  //Create Group Screen
-  const createGroupScreen = () => {
-    setActiveCreateGroup(true);
-    setActiveCreateShoutAll(false);
-    setAddNewChat(false);
-    setPrivateGroupsData([]);
-  };
-
-  //Create Shout All Screen
-  const createShoutAllScreen = () => {
-    setActiveCreateShoutAll(true);
-    setActiveCreateGroup(false);
-    setAddNewChat(false);
-    setShoutAllData([]);
-  };
-
-  //Close Add Chat
-  const closeAddChat = () => {
-    setAddNewChat(false);
-  };
-
-  const closeAddGroupScreen = () => {
-    if (
-      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
-      talkStateData.AllUserChats.AllUserChatsData !== null &&
-      talkStateData.AllUserChats.AllUserChatsData.length !== 0
-    ) {
-      let privateGroupsMessages =
-        talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
-          (data, index) => data.messageType === "G"
-        );
-      setPrivateGroupsData(privateGroupsMessages);
-    } else {
-      setPrivateGroupsData([]);
-    }
-
-    setActiveCreateGroup(false);
-    setGroupNameValue("");
-    setSearchGroupUserValue("");
-    setGroupUsersChecked([]);
-  };
-
-  const closeAddShoutAllScreen = () => {
-    if (
-      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
-      talkStateData.AllUserChats.AllUserChatsData !== null &&
-      talkStateData.AllUserChats.AllUserChatsData.length !== 0
-    ) {
-      let shoutAllMessages =
-        talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
-          (data, index) => data.messageType === "B"
-        );
-      setShoutAllData(shoutAllMessages);
-    } else {
-      setShoutAllData([]);
-    }
-
-    setActiveCreateShoutAll(false);
-  };
-
-  const searchChatUsers = (e) => {
-    setSearchChatUserValue(e);
-    try {
-      if (
-        talkStateData.AllUsers.AllUsersData !== undefined &&
-        talkStateData.AllUsers.AllUsersData !== null &&
-        talkStateData.AllUsers.AllUsersData.length !== 0
-      ) {
-        if (e !== "") {
-          let filteredData =
-            talkStateData.AllUsers.AllUsersData.allUsers.filter((value) => {
-              return value.fullName.toLowerCase().includes(e.toLowerCase());
-            });
-          if (filteredData.length === 0) {
-            setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
-          } else {
-            setAllUsers(filteredData);
-          }
-        } else if (e === "" || e === null) {
-          let data = talkStateData.AllUsers.AllUsersData.allUsers;
-          setSearchChatUserValue("");
-          setAllUsers(data);
-        }
-      }
-    } catch {}
-  };
-
   //Search Chats
   const searchChat = (e) => {
     setSearchChatValue(e);
@@ -1371,91 +1045,9 @@ const TalkChat = () => {
     } catch {}
   };
 
-  //Search Group Chat
-  const searchGroupUser = (e) => {
-    if (e !== "") {
-      setSearchGroupUserValue(e);
-      let filteredData = talkStateData.AllUsers.AllUsersData.allUsers.filter(
-        (value) => {
-          return value.fullName
-            .toLowerCase()
-            .includes(searchGroupUserValue.toLowerCase());
-        }
-      );
-      if (filteredData.length === 0) {
-        setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
-      } else {
-        setAllUsers(filteredData);
-      }
-    } else if (e === "" || e === null) {
-      let data = talkStateData.AllUsers.AllUsersData.allUsers;
-      setSearchGroupUserValue("");
-      setAllUsers(data);
-    }
-  };
-
-  //Search Shout All User
-  const searchShoutAllUserUser = (e) => {
-    if (e !== "") {
-      setSearchShoutAllUserValue(e);
-      let filteredData = talkStateData.AllUsers.AllUsersData.allUsers.filter(
-        (value) => {
-          return value.fullName
-            .toLowerCase()
-            .includes(searchShoutAllUserValue.toLowerCase());
-        }
-      );
-      if (filteredData.length === 0) {
-        setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
-      } else {
-        setAllUsers(filteredData);
-      }
-    } else if (e === "" || e === null) {
-      let data = talkStateData.AllUsers.AllUsersData.allUsers;
-      setSearchShoutAllUserValue("");
-      setAllUsers(data);
-    }
-  };
-
-  //search filter global chat
-  const searchFilterChat = () => {
-    if (globalSearchFilter === false) {
-      setGlobalSearchFilter(true);
-    } else {
-      setGlobalSearchFilter(false);
-    }
-  };
-
   //Managing that state, if show or hide
   const activateChatMenu = () => {
     setChatMenuActive(!chatMenuActive);
-  };
-
-  //Managing that state of chat head, if show or hide
-  const activateChatHeadMenu = (id) => {
-    if (chatHeadMenuActive === false) {
-      setChatHeadMenuActive(id);
-    } else {
-      setChatHeadMenuActive(false);
-    }
-  };
-
-  //Delete Chat Function
-  const deleteChatHandler = () => {
-    if (deleteChat === false) {
-      setDeleteChat(true);
-    } else {
-      setDeleteChat(false);
-    }
-  };
-
-  //Managing that state of chat head, if show or hide
-  const activateChatFeatures = () => {
-    if (chatFeatures === false) {
-      setChatFeatures(true);
-    } else {
-      setChatFeatures(false);
-    }
   };
 
   // for save chat
@@ -1875,38 +1467,6 @@ const TalkChat = () => {
     }
   };
 
-  //on change groups users
-  const groupUsersCheckedHandler = (data, id, index) => {
-    if (groupUsersChecked.includes(id)) {
-      let groupUserIndex = groupUsersChecked.findIndex(
-        (data2, index) => data2 === id
-      );
-      if (groupUserIndex !== -1) {
-        groupUsersChecked.splice(groupUserIndex, 1);
-        setGroupUsersChecked([...groupUsersChecked]);
-      }
-    } else {
-      groupUsersChecked.push(id);
-      setGroupUsersChecked([...groupUsersChecked]);
-    }
-  };
-
-  //On Change Shout All Users
-  const shoutAllUsersCheckedHandler = (data, id, index) => {
-    if (shoutAllUsersChecked.includes(id)) {
-      let groupUserIndex = shoutAllUsersChecked.findIndex(
-        (data2, index) => data2 === id
-      );
-      if (groupUserIndex !== -1) {
-        shoutAllUsersChecked.splice(groupUserIndex, 1);
-        setShoutAllUsersChecked([...shoutAllUsersChecked]);
-      }
-    } else {
-      shoutAllUsersChecked.push(id);
-      setShoutAllUsersChecked([...shoutAllUsersChecked]);
-    }
-  };
-
   // on change forward users list
   const forwardUsersCheckedHandler = (data, id, index) => {
     if (forwardUsersChecked.includes(data)) {
@@ -1965,26 +1525,6 @@ const TalkChat = () => {
     } else {
       setEditShoutUsersChecked([...editShoutUsersChecked, id]);
     }
-  };
-
-  const blockContactHandler = (record) => {
-    let Data = {
-      senderID: currentUserId,
-      channelID: currentOrganizationId,
-      opponentUserId: record.id,
-    };
-    dispatch(BlockUnblockUser(navigate, Data, t));
-    setChatHeadMenuActive(false);
-  };
-
-  const unblockblockContactHandler = (record) => {
-    let Data = {
-      senderID: currentUserId,
-      channelID: currentOrganizationId,
-      opponentUserId: record.id,
-    };
-    setUnblockUserId(record.id);
-    dispatch(BlockUnblockUser(navigate, Data, t));
   };
 
   const deleteSingleMessage = (record) => {
@@ -2069,73 +1609,6 @@ const TalkChat = () => {
       }
     });
     setForwardUsersChecked([]);
-  };
-
-  const createPrivateGroup = () => {
-    if (groupUsersChecked.length === 0) {
-      setNoParticipant(true);
-    } else {
-      setNoParticipant(false);
-      let Data = {
-        TalkRequest: {
-          UserID: parseInt(currentUserId),
-          ChannelID: parseInt(currentOrganizationId),
-          Group: {
-            GroupName: groupNameValue,
-            Users: groupUsersChecked.toString(),
-            IsPublic: false,
-          },
-        },
-      };
-      dispatch(CreatePrivateGroup(navigate, Data, t));
-      setChatFilter({
-        ...chatFilter,
-        value: chatFilterOptions[0].value,
-        label: chatFilterOptions[0].label,
-      });
-      setChatFilterName(chatFilterOptions[0]);
-      setActiveCreateGroup(false);
-      setBlockedUsersData([]);
-      setShoutAllData([]);
-      setPrivateMessageData([]);
-      setPrivateGroupsData([]);
-      setStarredMessagesData([]);
-      setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages);
-      setGroupUsersChecked([]);
-    }
-  };
-
-  const createShoutAllList = () => {
-    if (shoutAllUsersChecked.length === 0) {
-      setNoParticipant(true);
-    } else {
-      setNoParticipant(false);
-      let Data = {
-        TalkRequest: {
-          UserID: parseInt(currentUserId),
-          ChannelID: parseInt(currentOrganizationId),
-          Group: {
-            GroupName: shoutNameValue,
-            Users: shoutAllUsersChecked.toString(),
-          },
-        },
-      };
-      dispatch(CreateShoutAll(navigate, Data, t));
-      setChatFilter({
-        ...chatFilter,
-        value: chatFilterOptions[0].value,
-        label: chatFilterOptions[0].label,
-      });
-      setChatFilterName(chatFilterOptions[0]);
-      setActiveCreateShoutAll(false);
-      setBlockedUsersData([]);
-      setShoutAllData([]);
-      setPrivateMessageData([]);
-      setPrivateGroupsData([]);
-      setStarredMessagesData([]);
-      setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages);
-      setShoutAllUsersChecked([]);
-    }
   };
 
   const modalHandlerGroupInfo = () => {
@@ -2681,13 +2154,6 @@ const TalkChat = () => {
                   ...allOtoMessages,
                   insertMqttOtoMessageData,
                 ]);
-                // setAllOtoMessages((prevState) => {
-                //   const updatedMessages = [...prevState]
-                //   updatedMessages[
-                //     updatedMessages.length - 1
-                //   ] = insertMqttOtoMessageData
-                //   return updatedMessages
-                // })
                 let updatedArray = [...allChatData];
                 if (
                   updatedArray.length > 0 &&
@@ -2822,13 +2288,6 @@ const TalkChat = () => {
                   ...allOtoMessages,
                   insertMqttOtoMessageData,
                 ]);
-                // setAllOtoMessages((prevState) => {
-                //   const updatedMessages = [...prevState]
-                //   updatedMessages[
-                //     updatedMessages.length - 1
-                //   ] = insertMqttOtoMessageData
-                //   return updatedMessages
-                // })
                 let updatedArray = [...allChatData];
                 if (
                   updatedArray.length > 0 &&
@@ -3109,9 +2568,6 @@ const TalkChat = () => {
                     updatedArray[0] = newGroupMessageChat;
                   }
                   setAllChatData(updatedArray);
-
-                  // allGroupMessages.push(insertMqttGroupMessageData)
-                  // setAllGroupMessages([...allGroupMessages])
                 }
               } else if (
                 insertMqttGroupMessageData !== undefined &&
@@ -3255,9 +2711,6 @@ const TalkChat = () => {
                     updatedArray[0] = newGroupMessageChat;
                   }
                   setAllChatData(updatedArray);
-
-                  // allGroupMessages.push(insertMqttGroupMessageData)
-                  // setAllGroupMessages([...allGroupMessages])
                 }
               } else if (
                 insertMqttGroupMessageData !== undefined &&
@@ -4582,15 +4035,6 @@ const TalkChat = () => {
     dispatch(ResetGroupModify());
   }, []);
 
-  const leaveGroupHandler = (record) => {
-    let data = {
-      UserID: parseInt(currentUserId),
-      GroupID: record.id,
-    };
-    dispatch(LeaveGroup(navigate, data, t));
-    setChatHeadMenuActive(false);
-  };
-
   const leaveGroupHandlerChat = (record) => {
     let data = {
       UserID: parseInt(currentUserId),
@@ -4714,10 +4158,6 @@ const TalkChat = () => {
     };
   };
 
-  const deleteAttempt = () => {
-    // localStorage.setItem('messageArray', [])
-  };
-
   const removeFileFunction = () => {
     setFile("");
     chatMessages.current?.scrollIntoView({ behavior: "auto" });
@@ -4738,19 +4178,6 @@ const TalkChat = () => {
       window.open(fileDownloadURL, "_blank");
     }
   }, [talkStateData?.DownloadChatData?.DownloadChatResponse]);
-
-  // useEffect(() => {
-  //   if (
-  //     talkStateData.DownloadChatData.DownloadChatResponse !== null &&
-  //     talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
-  //     talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
-  //   ) {
-  //     const newTab = window.open('/print.html', '_blank')
-  //     newTab.onload = function () {
-  //       newTab.print()
-  //     }
-  //   }
-  // }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
 
   return (
     <>

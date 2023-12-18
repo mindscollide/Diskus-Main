@@ -742,7 +742,7 @@ const NewMeeting = () => {
           } else {
             if (
               record.isQuickMeeting === true &&
-              minutesDifference <= 50000000 &&
+              minutesDifference <= 5 &&
               minutesDifference > 0
             ) {
               return (
@@ -773,7 +773,7 @@ const NewMeeting = () => {
               );
             } else if (
               record.isQuickMeeting === false &&
-              minutesDifference <= 50000000 &&
+              minutesDifference <= 5 &&
               minutesDifference > 0
             ) {
               return (
