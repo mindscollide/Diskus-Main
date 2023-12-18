@@ -215,8 +215,8 @@
   "Customer-Information": "Informations client",
   "Company": "Compagnie",
   "Country": "De campagne",
-  "Address-1": "Adresse 1",
-  "Address-2": "Adresse 2",
+  "Address-1": "Adresse 1*",
+  "Address-2": "Adresse 2*",
   "State": "État",
   "Postal-/-ZipCode": "Code postal",
   "Contact-Name": "Nom du contact",
@@ -1186,5 +1186,12 @@
   "You-have-confirmed-your-attendance": "You have confirmed your attendance",
   "Failed-to-update-attendee-avaliability": "Failed To update Attendee Avaliability",
   "Validation-failed": "Validation Failed",
-  "Token-updated-but-no-event-found-in-the-calendar": "Token Updated but no event found in the calendar"
+  "Token-updated-but-no-event-found-in-the-calendar": "Token Updated but no event found in the calendar",
+  "Company-name": "Company Name*",
+  "State-province": "State/Province*",
+  "City": "City*",
+  "Postal-zipcode": "Postal/Zip Code*",
+  "Full-name": "Full Name*",
+  "Email-address": "Email Address*",
+  "Enter-phone-number": "Enter Phone Number*"
 }

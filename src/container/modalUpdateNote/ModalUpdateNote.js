@@ -186,16 +186,17 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           errorStatus: false,
         },
       });
-    } else {
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: true,
-        },
-      });
     }
+    // } else {
+    //   setAddNoteFields({
+    //     ...addNoteFields,
+    //     Description: {
+    //       value: "",
+    //       errorMessage: "",
+    //       errorStatus: true,
+    //     },
+    //   });
+    // }
   };
 
   useEffect(() => {
@@ -204,6 +205,10 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         NotesReducer.GetNotesByNotesId !== null &&
         NotesReducer.GetNotesByNotesId !== undefined
       ) {
+        console.log(
+          NotesReducer.GetNotesByNotesId,
+          "NotesReducerNotesReducerNotesReducer"
+        );
         setAddNoteFields({
           ...addNoteFields,
           Title: {
@@ -265,6 +270,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       }
     } catch (error) {}
   }, [NotesReducer.GetNotesByNotesId]);
+
+  // console.log(first);
 
   console.log(tasksAttachments, "tasksAttachmentstasksAttachments");
   const uploadFilesToDo = (data) => {
@@ -559,6 +566,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                           draggable="false"
                           src={hollowstar}
                           className={styles["star-updatenote"]}
+                          alt=""
                           onClick={() => setIsStarrted(!isStarred)}
                         />
                       ) : (
@@ -566,6 +574,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                           draggable="false"
                           className={styles["star-updatenote"]}
                           src={StarIcon}
+                          alt=""
                           onClick={() => setIsStarrted(!isStarred)}
                         />
                       )}

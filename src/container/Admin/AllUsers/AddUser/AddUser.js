@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { countryName, countryNameforPhoneNumber } from "./CountryJson";
 import {
   validateEmail,
+  validateEmailEnglishAndArabicFormat,
   validationEmail,
 } from "../../../../commen/functions/validations";
 import ReactFlagsSelect, { Ro } from "react-flags-select";
@@ -190,8 +191,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     let value = e.target.value;
     if (name === "Name" && value !== "") {
       console.log("AddUserHandler");
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      let newValue = valueCheck.trimStart();
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      let newValue = value.trimStart();
       if (newValue !== "") {
         console.log("AddUserHandler", newValue.length <= 100);
 
@@ -239,12 +240,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
     if (name === "Designation" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
         setAddUserSection({
           ...addUserSection,
           Designation: {
-            value: valueCheck.trimStart(),
+            value: value.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -317,7 +318,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   //  For Email Validation
   const handeEmailvlidate = () => {
     if (addUserSection.Email.value !== "") {
-      if (validateEmail(addUserSection.Email.value)) {
+      if (validateEmailEnglishAndArabicFormat(addUserSection.Email.value)) {
         dispatch(
           checkEmailExsist(
             setCompanyEmailValidate,
@@ -469,7 +470,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     ) {
       console.log("checkLoader");
 
-      if (validationEmail(addUserSection.Email.value)) {
+      if (validateEmailEnglishAndArabicFormat(addUserSection.Email.value)) {
         console.log("checkLoader");
 
         if (adminReducer.EmailCheck !== false) {

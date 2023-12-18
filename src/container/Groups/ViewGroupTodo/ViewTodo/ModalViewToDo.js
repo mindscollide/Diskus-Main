@@ -223,7 +223,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   // for comment from socket
   useEffect(() => {
-    if (Object.keys(Comments).length > 0) {
+    if (Comments !== null) {
       let findNewIndex = taskAssigneeComments.findIndex(
         (data, index) => data.taskCommentID === 0
       );

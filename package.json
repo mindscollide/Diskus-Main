@@ -94,7 +94,8 @@
     "redux-devtools-extension": "^2.13.9",
     "rsuite": "^5.33.1",
     "timeago-react": "^3.0.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xregexp": "^5.1.1"
   },
   "scripts": {
     "start": "react-scripts --max_old_space_size=8192 start",

@@ -193,6 +193,7 @@ const CreatePolling = () => {
                         width="21.71px"
                         height="18.61px"
                         draggable="false"
+                        alt=""
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.committeeName}
@@ -477,10 +478,10 @@ const CreatePolling = () => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-    let valueCheck = regexOnlyForNumberNCharacters(newValue);
+    // let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
-        return item.name === name ? { ...item, value: valueCheck } : item;
+        return item.name === name ? { ...item, value: newValue } : item;
       })
     );
   };
@@ -662,6 +663,7 @@ const CreatePolling = () => {
                         }
                         width="16px"
                         height="16px"
+                        alt=""
                         onClick={() => {
                           setDefineUnsaveModal(true);
                         }}
