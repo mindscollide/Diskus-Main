@@ -509,6 +509,7 @@ const ParentAgenda = ({
                               name={"title"}
                               labelClass={"d-none"}
                               placeholder={t("Agenda-title")}
+                              maxLength={290}
                               value={data.title}
                               change={(e) => handleAgendaItemChange(index, e)}
                               disable={
@@ -699,7 +700,6 @@ const ParentAgenda = ({
                                   rows="4"
                                   placeholder={t("Enter-description")}
                                   required={true}
-                                  maxLength={500}
                                   disable={
                                     data.isLocked
                                       ? data.isLocked

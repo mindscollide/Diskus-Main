@@ -253,6 +253,7 @@ const Participants = ({
                     placeholder={t("Participant-title")}
                     labelClass={"d-none"}
                     applyClass={"Organizer_table"}
+                    maxLength={140}
                     value={
                       record.isComingApi === true
                         ? record.Title
