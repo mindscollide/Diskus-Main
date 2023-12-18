@@ -12,6 +12,7 @@ import {
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/Diskus_newRoundIcon_SignUp.svg";
 import {
   validateEmail,
+  validateEmailEnglishAndArabicFormat,
   validationEmail,
   validEmailAddress,
 } from "../../../../commen/functions/validations";
@@ -190,7 +191,7 @@ const Signup = () => {
 
   const handeEmailvlidate = () => {
     if (signUpDetails.Email.value !== "") {
-      if (validateEmail(signUpDetails.Email.value)) {
+      if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
         dispatch(
           checkEmailExsist(
             setCompanyEmailValidate,
@@ -291,12 +292,12 @@ const Signup = () => {
       });
     }
     if (name === "State" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
         setSignUpDetails({
           ...signUpDetails,
           State: {
-            value: valueCheck.trimStart(),
+            value: value.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -313,12 +314,12 @@ const Signup = () => {
       });
     }
     if (name === "City" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
         setSignUpDetails({
           ...signUpDetails,
           City: {
-            value: valueCheck.trimStart(),
+            value: value.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -357,12 +358,12 @@ const Signup = () => {
       });
     }
     if (name === "FullName" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      // let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
         setSignUpDetails({
           ...signUpDetails,
           FullName: {
-            value: valueCheck.trimStart(),
+            value: value.trimStart(),
             errorMessage: "Full Name is required",
             errorStatus: false,
           },
@@ -437,7 +438,7 @@ const Signup = () => {
       signUpDetails.PhoneNumber.value !== "" &&
       signUpDetails.FullName.value !== ""
     ) {
-      if (validationEmail(signUpDetails.Email.value)) {
+      if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
         if (
           adminReducer.OrganisationCheck !== false &&
           adminReducer.EmailCheck !== false
@@ -764,15 +765,15 @@ const Signup = () => {
                     >
                       <TextField
                         onBlur={() => {
-                            dispatch(
-                              checkOraganisation(
-                                setCompanyNameValidate,
-                                setCompanyNameValidateError,
-                                signUpDetails,
-                                t,
-                                setCompanyNameUnique
-                              )
-                            );
+                          dispatch(
+                            checkOraganisation(
+                              setCompanyNameValidate,
+                              setCompanyNameValidateError,
+                              signUpDetails,
+                              t,
+                              setCompanyNameUnique
+                            )
+                          );
                         }}
                         autofill
                         labelClass="d-none"
@@ -997,7 +998,7 @@ const Signup = () => {
                           handeEmailvlidate();
                         }}
                         labelClass="d-none"
-                        placeholder={t("Email")}
+                        placeholder={t("Email-address")}
                         name="Email"
                         type="email"
                         maxLength={160}
@@ -1133,6 +1134,7 @@ const Signup = () => {
               draggable="false"
               src={DiskusnewRoundIconSignUp}
               width="600px"
+              alt=""
               className={styles["rightsection_roundLogo"]}
             />
           </Col>

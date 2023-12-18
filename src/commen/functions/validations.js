@@ -1,3 +1,5 @@
+import XRegExp from "xregexp";
+
 export const checkEmptyField = (data) => {
   let dataToStr = String(data);
   return dataToStr.length > 0 ? false : true;
@@ -62,3 +64,13 @@ export function removePropertiesFromObject(obj) {
   }
   return obj;
 }
+
+//Email supports arabic and english langugae both emails formats
+
+export const validateEmailEnglishAndArabicFormat = (email) => {
+  const re = XRegExp(
+    "^([\\p{L}0-9_\\-]+)@([\\p{L}0-9_\\-]+)\\.([\\p{L}.]{2,})$",
+    "u"
+  );
+  return re.test(email);
+};

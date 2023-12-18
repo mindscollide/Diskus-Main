@@ -640,6 +640,39 @@ const UnpublishedProposedMeeting = ({
     }
   }, [NewMeetingreducer.meetingStatusProposedMqttData]);
 
+  // useEffect(() => {
+  //   if (
+  //     NewMeetingreducer.meetingStatusProposedMqttData !== null &&
+  //     NewMeetingreducer.meetingStatusProposedMqttData !== undefined
+  //   ) {
+  //     let meetingData = NewMeetingreducer.meetingStatusProposedMqttData;
+  //     const indexToUpdate = rows.findIndex(
+  //       (obj) => obj.pK_MDID === meetingData.pK_MDID
+  //     );
+
+  //     let updatedRows;
+  //     if (indexToUpdate !== -1) {
+  //       updatedRows = [...rows];
+  //       updatedRows[indexToUpdate] = meetingData;
+  //     } else {
+  //       updatedRows = [...rows, meetingData];
+  //     }
+
+  //     // Sort the updated rows based on date and time
+  //     updatedRows.sort((a, b) => {
+  //       const dateA = new Date(
+  //         newTimeFormaterAsPerUTCFullDate(a.dateOfMeeting + a.meetingStartTime)
+  //       );
+  //       const dateB = new Date(
+  //         newTimeFormaterAsPerUTCFullDate(b.dateOfMeeting + b.meetingStartTime)
+  //       );
+  //       return dateA - dateB;
+  //     });
+
+  //     setRow(updatedRows);
+  //   }
+  // }, [NewMeetingreducer.meetingStatusProposedMqttData]);
+
   useEffect(() => {
     if (
       NewMeetingreducer.meetingStatusPublishedMqttData !== null &&

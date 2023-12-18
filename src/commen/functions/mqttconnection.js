@@ -27,7 +27,7 @@ export const mqttConnection = (subscribeID) => {
     8228,
     parseInt(subscribeID) + "-" + id
   );
-  
+
   var options = {
     onSuccess: () => {
       console.log("Connected to MQTT broker");

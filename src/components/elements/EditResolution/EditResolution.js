@@ -900,11 +900,11 @@ const EditResolution = ({ setCancelresolution }) => {
       }
     }
     if (name === "ResolutionDescription") {
-      let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*() ]/g, "");
-      if (valueCheck !== "") {
+      // let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*() ]/g, "");
+      if (value !== "") {
         setEditResolutionData({
           ...editResolutionData,
-          NotesToVoter: valueCheck,
+          NotesToVoter: value,
         });
       } else {
         setEditResolutionData({
