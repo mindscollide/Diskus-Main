@@ -1166,7 +1166,7 @@ const MeetingDetails = ({
                     applyClass={"meetinInnerSearch"}
                     name={"Meetingtitle"}
                     labelClass="d-none"
-                    maxLength={220}
+                    maxLength={245}
                     change={HandleChange}
                     value={meetingDetails.MeetingTitle}
                     disable={
@@ -1278,7 +1278,7 @@ const MeetingDetails = ({
                             ? true
                             : false
                         }
-                        maxLength={220}
+                        maxLength={245}
                       />
                       {/* <Row>
                         <Col>

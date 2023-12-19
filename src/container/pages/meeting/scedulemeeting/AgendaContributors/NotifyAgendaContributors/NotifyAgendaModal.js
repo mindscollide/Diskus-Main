@@ -29,14 +29,6 @@ const NotifyAgendaModal = ({
   specificUser,
   setSpecifiUser,
 }) => {
-  console.log(
-    { notifiedMembersData },
-    "NotifyAgendaModalNotifyAgendaModalNotifyAgendaModal"
-  );
-  console.log(
-    notifyMessageField,
-    "notifyMessageFieldnotifyMessageFieldnotifyMessageField"
-  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -162,7 +154,6 @@ const NotifyAgendaModal = ({
                   value={notifyMessageField}
                   change={HandleChange}
                   required={true}
-                  maxLength={500}
                 />
                 {/* {NotifyMessageError && notifyMessageField === "" ? (
                   <span

@@ -30,7 +30,16 @@ const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
   };
   const handleAddFolder = () => {
     if (FolderName.content !== "") {
-      dispatch(FolderisExist(navigate, FolderName.content, t, setAddfolder, 0, setIsExistFolder));
+      dispatch(
+        FolderisExist(
+          navigate,
+          FolderName.content,
+          t,
+          setAddfolder,
+          0,
+          setIsExistFolder
+        )
+      );
     } else {
       setFolderName({
         content: "",
@@ -87,6 +96,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
                       width="455px"
                       name="FolderName"
                       value={FolderName.content}
+                      maxLength={290}
                       placeholder={t("Folder-name")}
                       labelClass="textFieldSearch d-none"
                       change={handleChangeFolderName}

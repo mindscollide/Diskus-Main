@@ -245,6 +245,7 @@ const Organizers = ({
                   placeholder={t("Content-title")}
                   labelClass={"d-none"}
                   applyClass={"Organizer_table"}
+                  maxLength={140}
                   value={text} // Use the controlled value
                   change={(e) =>
                     handleInputChange(record.userID, e.target.value)

@@ -696,6 +696,7 @@ const UpdatePolls = () => {
                         }
                         width="16px"
                         height="16px"
+                        alt=""
                         onClick={() => {
                           setDefineUnsaveModal(true);
                         }}
@@ -744,10 +745,11 @@ const UpdatePolls = () => {
                         <Row className="mt-2">
                           <Col lg={12} md={12} sm={12}>
                             <TextField
-                              placeholder={t("Tile")}
+                              placeholder={t("Title")}
                               applyClass={"PollingCreateModal"}
                               labelClass="d-none"
                               name={"TypingTitle"}
+                              maxLength={490}
                               value={UpdatePolls.TypingTitle}
                               change={HandleChangeUpdatePolls}
                             />
@@ -833,6 +835,7 @@ const UpdatePolls = () => {
                                                     "PollingCreateModal"
                                                   }
                                                   labelClass="d-none"
+                                                  maxLength={490}
                                                   name={data.name}
                                                   value={data.value}
                                                   change={(e) =>
@@ -858,6 +861,7 @@ const UpdatePolls = () => {
                                                     "PollingCreateModal"
                                                   }
                                                   labelClass="d-none"
+                                                  maxLength={490}
                                                   name={data.name}
                                                   value={data.value}
                                                   change={(e) =>
