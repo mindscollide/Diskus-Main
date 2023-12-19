@@ -273,7 +273,7 @@ const DataRoom = () => {
       // Save something in local storage if the condition is true
     } else {
       let DataRoomString = localStorage.getItem("DataRoomEmail");
-      if (dataRoomString !== undefined && dataRoomString !== null) {
+      if (DataRoomString !== undefined && DataRoomString !== null) {
         setDataRoomString(DataRoomString);
         let Data = { Link: DataRoomString };
         dispatch(
