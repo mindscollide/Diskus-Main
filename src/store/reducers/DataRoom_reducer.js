@@ -43,6 +43,7 @@ const initialState = {
   Fail: false,
   FolderFail: false,
   fileDetials: false,
+  userAvailabilityDataRoom: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -717,6 +718,33 @@ const DataRoomReducer = (state = initialState, action) => {
       return {
         ...state,
         fileDetials: action.response,
+      };
+    }
+
+    //user Availibility For Data Room
+
+    case actions.VALIDATE_EMPTY_STRING_DATAROOM_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.VALIDATE_EMPTY_STRING_DATAROOM_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        userAvailabilityDataRoom: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.VALIDATE_EMPTY_STRING_DATAROOM_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        userAvailabilityDataRoom: null,
+        ResponseMessage: action.message,
       };
     }
 

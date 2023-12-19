@@ -27,6 +27,7 @@ import {
   updateFolderGeneralAccessRM,
   dataRoomFileDownloadService,
   dataRoomFolderDownloadService,
+  validateEncyptedStringUserDataRoom,
 } from "../../commen/apis/Api_config";
 import {
   DataRoomAllFilesDownloads,
@@ -3324,6 +3325,160 @@ const showFileDetailsModal = (response) => {
   };
 };
 
+//Validate User For Data Room
+
+const validateUserDataRoomInit = () => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_DATAROOM_INIT,
+  };
+};
+
+const validateUserDataRoomSuccess = (response, message) => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validateUserDataRoomFailed = (message) => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_DATAROOM_FAILED,
+    message: message,
+  };
+};
+
+const validateUserAvailibilityEncryptedStringDataRoomApi = (
+  navigate,
+  Data,
+  t
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(validateUserDataRoomInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      validateEncyptedStringUserDataRoom.RequestMethod
+    );
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: dataRoomApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API request
+        await dispatch(
+          validateUserAvailibilityEncryptedStringDataRoomApi(navigate, Data, t)
+        );
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_01".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              validateUserDataRoomSuccess(
+                response.data.responseResult,
+                t("No-restrictions")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_02".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateUserDataRoomFailed(
+                t(
+                  "Only-allowed-to-my-organization-and-user-part-of-organization"
+                )
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateUserDataRoomFailed(
+                t(
+                  "Only-allowed-to-my-organization-and-user-not-part-of-organization"
+                )
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_04".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateUserDataRoomFailed(
+                t("File-restricted-but-this-user-has-assigned-rights")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_05".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateUserDataRoomFailed(
+                t("File-restricted-request-is-to-ask-for-request-access")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_06".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateUserDataRoomFailed(t("No-file-exists-in-the-system"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_07".toLowerCase()
+              )
+          ) {
+            dispatch(validateUserDataRoomFailed(t("Link-expired")));
+          } else {
+            dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+        }
+      } else {
+        dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+      }
+    } catch (error) {
+      dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+    }
+  };
+};
+
 export {
   createFolderLink_fail,
   createFileLink_fail,
@@ -3361,4 +3516,5 @@ export {
   DataRoomDownloadFileApiFunc,
   DataRoomDownloadFolderApiFunc,
   showFileDetailsModal,
+  validateUserAvailibilityEncryptedStringDataRoomApi,
 };

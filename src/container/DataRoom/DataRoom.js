@@ -59,6 +59,7 @@ import {
   isFolder,
   showFileDetailsModal,
   uploadDocumentsApi,
+  validateUserAvailibilityEncryptedStringDataRoomApi,
 } from "../../store/actions/DataRoom_actions";
 import sharedIcon from "../../assets/images/shared_icon.svg";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
@@ -111,6 +112,7 @@ import {
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 
 const DataRoom = () => {
+  const currentUrl = window.location.href;
   // tooltip
   const dispatch = useDispatch();
   const location = useLocation();
@@ -123,6 +125,7 @@ const DataRoom = () => {
   const [inviteModal, setInviteModal] = useState(false);
   const [optionsFileisShown, setOptionsFileisShown] = useState(false);
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
+  const [dataRoomString, setDataRoomString] = useState("");
   const { uploadReducer, DataRoomReducer, LanguageReducer } = useSelector(
     (state) => state
   );
@@ -247,6 +250,35 @@ const DataRoom = () => {
   });
   //State For the Detail View Of File And Folder
   const [detailView, setDetailView] = useState(false);
+
+  //validate User Encrypted String Api
+
+  useEffect(() => {
+    if (currentUrl.includes("DisKus/ Dataroom/Sharing?action=")) {
+      const remainingString = currentUrl.split("?action=")[1];
+      if (remainingString) {
+        setDataRoomString(remainingString);
+        // APi call
+        let Data = { Link: remainingString };
+        dispatch(
+          validateUserAvailibilityEncryptedStringDataRoomApi(navigate, Data, t)
+        );
+      }
+      // Save something in local storage if the condition is true
+    } else {
+      let RSVP = localStorage.getItem("RSVP");
+      if (RSVP !== undefined && RSVP !== null) {
+        setDataRoomString(RSVP);
+        let Data = { Link: RSVP };
+        dispatch(
+          validateUserAvailibilityEncryptedStringDataRoomApi(navigate, Data, t)
+        );
+      } else {
+        navigate("/DisKus/dataroom");
+      }
+    }
+  }, []);
+
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {

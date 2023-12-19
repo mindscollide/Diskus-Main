@@ -1193,5 +1193,12 @@
   "Postal-zipcode": "Postal/Zip Code*",
   "Full-name": "Full Name*",
   "Email-address": "Email Address*",
-  "Enter-phone-number": "Enter Phone Number*"
+  "Enter-phone-number": "Enter Phone Number*",
+  "No-restrictions": "No Restrictions",
+  "Only-allowed-to-my-organization-and-user-part-of-organization": "Only allowed to My Organization and user part of Organization",
+  "Only-allowed-to-my-organization-and-user-not-part-of-organization": "Only allowed to My Organization and user not part of Organization",
+  "File-restricted-but-this-user-has-assigned-rights": "File Restricted but this user has assigned rights",
+  "File-restricted-request-is-to-ask-for-request-access": "File Restricted. Request is to Ask for request access.",
+  "No-file-exists-in-the-system": "No file exists in the system.",
+  "Link-expired": "Link expired"
 }
