@@ -325,20 +325,20 @@ const UnpublishedProposedMeeting = ({
       key: "responseDeadLine",
       width: "129px",
       render: (text, record) => {
-        console.log(record, "classNameclassNameclassName");
-        console.log();
         return (
           <>
-            <span className="d-flex justify-content-center">
-              {changeDateStartHandler2(record.responseDeadLine)}
-              {/* {moment(
-                utcConvertintoGMT(record.dateOfMeeting + record.meetingEndTime)
-              ).format("Do-MMM-YYYY")} */}
-            </span>
+            {record.status === "12" ? (
+              <span className="d-flex justify-content-center">
+                {changeDateStartHandler2(record.responseDeadLine)}
+              </span>
+            ) : (
+              ""
+            )}
           </>
         );
       },
     },
+
     {
       dataIndex: "Edit",
       key: "Edit",
