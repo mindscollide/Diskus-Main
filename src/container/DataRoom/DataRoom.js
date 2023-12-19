@@ -113,6 +113,7 @@ import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
+  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
   // tooltip
   const dispatch = useDispatch();
   const location = useLocation();
@@ -252,9 +253,8 @@ const DataRoom = () => {
   const [detailView, setDetailView] = useState(false);
 
   //validate User Encrypted String Api
-
   useEffect(() => {
-    if (currentUrl.includes("DisKus/ Dataroom/Sharing?action=")) {
+    if (currentUrl.includes("DisKus/Dataroom/Sharing?action=")) {
       const remainingString = currentUrl.split("?action=")[1];
       if (remainingString) {
         setDataRoomString(remainingString);
