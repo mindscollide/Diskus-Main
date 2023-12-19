@@ -254,8 +254,9 @@ const DataRoom = () => {
 
   //validate User Encrypted String Api
   useEffect(() => {
-    if (currentUrl.includes("DisKus/Dataroom/Sharing?action=")) {
+    if (currentUrl.includes("DisKus/dataroom?action=")) {
       const remainingString = currentUrl.split("?action=")[1];
+      console.log(remainingString, "remainingStringremainingString");
       if (remainingString) {
         setDataRoomString(remainingString);
         // APi call
@@ -266,10 +267,10 @@ const DataRoom = () => {
       }
       // Save something in local storage if the condition is true
     } else {
-      let RSVP = localStorage.getItem("RSVP");
-      if (RSVP !== undefined && RSVP !== null) {
-        setDataRoomString(RSVP);
-        let Data = { Link: RSVP };
+      let DataRoomString = localStorage.getItem("DataRoomEmail");
+      if (dataRoomString !== undefined && dataRoomString !== null) {
+        setDataRoomString(DataRoomString);
+        let Data = { Link: DataRoomString };
         dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(navigate, Data, t)
         );
@@ -277,7 +278,7 @@ const DataRoom = () => {
         navigate("/DisKus/dataroom");
       }
     }
-  }, []);
+  }, [currentUrl]);
 
   useEffect(() => {
     try {

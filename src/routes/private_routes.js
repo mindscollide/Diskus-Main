@@ -16,7 +16,7 @@ const PrivateRoutes = () => {
       } else {
         localStorage.clear("RSVP");
       }
-    } else if (currentUrl.includes("DisKus/Dataroom/Sharing?action=")) {
+    } else if (currentUrl.includes("DisKus/dataroom?action=")) {
       const parts = currentUrl.split("?action=");
       // Save something in local storage if the condition is true
       if (parts.length === 2) {
@@ -61,8 +61,7 @@ const PrivateRoutes = () => {
           currentUrl.includes(
             "DisKus/Meeting/Useravailabilityformeeting?action="
           )) ||
-        (currentUrl !== "" &&
-          currentUrl.includes("DisKus/Dataroom/Sharing?action="))
+        (currentUrl !== "" && currentUrl.includes("DisKus/dataroom?action="))
           ? "/"
           : "*"
       }
