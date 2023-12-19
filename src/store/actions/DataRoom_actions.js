@@ -3351,7 +3351,8 @@ const validateUserDataRoomFailed = (message) => {
 const validateUserAvailibilityEncryptedStringDataRoomApi = (
   navigate,
   Data,
-  t
+  t,
+  setShareFileModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -3377,7 +3378,12 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
         await dispatch(RefreshToken(navigate, t));
         // Retry the API request
         await dispatch(
-          validateUserAvailibilityEncryptedStringDataRoomApi(navigate, Data, t)
+          validateUserAvailibilityEncryptedStringDataRoomApi(
+            navigate,
+            Data,
+            t,
+            setShareFileModal
+          )
         );
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
@@ -3394,6 +3400,11 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 t("No-restrictions")
               )
             );
+            window.open(
+              `/#/DisKus/documentViewer?pdfData=${encodeURIComponent()}`,
+              "_blank",
+              "noopener noreferrer"
+            );
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3408,6 +3419,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 )
               )
             );
+            setShareFileModal(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3422,6 +3434,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 )
               )
             );
+            setShareFileModal(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3434,6 +3447,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 t("File-restricted-but-this-user-has-assigned-rights")
               )
             );
+            setShareFileModal(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3446,6 +3460,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 t("File-restricted-request-is-to-ask-for-request-access")
               )
             );
+            setShareFileModal(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3456,6 +3471,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
             dispatch(
               validateUserDataRoomFailed(t("No-file-exists-in-the-system"))
             );
+            setShareFileModal(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3464,17 +3480,22 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(validateUserDataRoomFailed(t("Link-expired")));
+            setShareFileModal(true);
           } else {
             dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+            setShareFileModal(true);
           }
         } else {
           dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+          setShareFileModal(true);
         }
       } else {
         dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+        setShareFileModal(true);
       }
     } catch (error) {
       dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+      setShareFileModal(true);
     }
   };
 };

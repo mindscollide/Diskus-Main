@@ -262,7 +262,12 @@ const DataRoom = () => {
         // APi call
         let Data = { Link: remainingString };
         dispatch(
-          validateUserAvailibilityEncryptedStringDataRoomApi(navigate, Data, t)
+          validateUserAvailibilityEncryptedStringDataRoomApi(
+            navigate,
+            Data,
+            t,
+            setShareFileModal
+          )
         );
       }
       // Save something in local storage if the condition is true
@@ -272,7 +277,12 @@ const DataRoom = () => {
         setDataRoomString(DataRoomString);
         let Data = { Link: DataRoomString };
         dispatch(
-          validateUserAvailibilityEncryptedStringDataRoomApi(navigate, Data, t)
+          validateUserAvailibilityEncryptedStringDataRoomApi(
+            navigate,
+            Data,
+            t,
+            setShareFileModal
+          )
         );
       } else {
         navigate("/DisKus/dataroom");
