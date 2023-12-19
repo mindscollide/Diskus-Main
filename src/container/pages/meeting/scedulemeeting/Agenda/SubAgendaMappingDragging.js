@@ -470,6 +470,7 @@ const SubAgendaMappingDragging = ({
                                               applyClass={"AgendaTextField"}
                                               labelClass={"d-none"}
                                               name={"subTitle"}
+                                              maxLength={290}
                                               disable={
                                                 parentIslockedCheck ||
                                                 subAgendaData.isLocked
@@ -749,7 +750,6 @@ const SubAgendaMappingDragging = ({
                                                       "Enter-description"
                                                     )}
                                                     required={true}
-                                                    maxLength={500}
                                                   />
                                                 </Col>
                                               </Row>

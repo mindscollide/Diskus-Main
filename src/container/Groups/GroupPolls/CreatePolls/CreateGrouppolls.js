@@ -412,6 +412,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                     <TextField
                       labelClass={"d-none"}
                       name={"TitlePolls"}
+                      maxLength={490}
                       value={pollsData.Title}
                       change={HandleChange}
                     />
@@ -446,7 +447,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                                         applyClass={"PollingCreateModal"}
                                         labelClass="d-none"
                                         name={data.name}
-                                        maxLength={500}
+                                        maxLength={490}
                                         value={data.value}
                                         change={(e) => HandleOptionChange(e)}
                                       />
@@ -465,7 +466,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                                         labelClass="d-none"
                                         name={data.name}
                                         value={data.value}
-                                        maxLength={500}
+                                        maxLength={490}
                                         change={(e) => HandleOptionChange(e)}
                                         inputicon={
                                           <img
