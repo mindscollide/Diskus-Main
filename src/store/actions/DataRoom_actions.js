@@ -3549,19 +3549,15 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
             setShareFileModal(true);
           } else {
             dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
-            setShareFileModal(true);
           }
         } else {
           dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
-          setShareFileModal(true);
         }
       } else {
         dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
-        setShareFileModal(true);
       }
     } catch (error) {
       dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
-      setShareFileModal(true);
     }
   };
 };
