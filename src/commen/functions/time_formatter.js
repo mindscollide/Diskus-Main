@@ -52,3 +52,22 @@ export const getCurrentDate = () => {
 
   return { DateGMT: newDate, dateFormat: DateDate };
 };
+
+//Newly Time Added For Converting Time into GMT Format
+
+export function convertTimeToGMT(dateString, timeString) {
+  const year = dateString.substring(0, 4);
+  const month = dateString.substring(4, 6);
+  const day = dateString.substring(6, 8);
+
+  const hours = timeString.substring(0, 2);
+  const minutes = timeString.substring(2, 4);
+  const seconds = timeString.substring(4, 6);
+
+  const combinedDateTimeString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  const localDateTime = new Date(combinedDateTimeString);
+
+  const GMTTimeString = localDateTime.toISOString(); // Convert to GMT string
+
+  return GMTTimeString;
+}

@@ -42,6 +42,7 @@ import {
   leaveCallModal,
   participantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
+import { convertTimeToGMT } from "../../../../../commen/functions/time_formatter";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -594,26 +595,21 @@ const ViewMeetingDetails = ({
                 </Row>
                 <Row>
                   {rows.map((data, index) => {
-                    console.log(data, "datadtatdtatdta");
+                    const formattedStartDate = convertTimeToGMT(
+                      data.selectedOption,
+                      data.startDate
+                    );
+                    const formattedEndDate = convertTimeToGMT(
+                      data.selectedOption,
+                      data.endDate
+                    );
 
-                    const formattedStartDate = utcConvertintoGMT(
-                      data.selectedOption + data.startDate
-                    );
-                    const formattedEndDate = utcConvertintoGMT(
-                      data.selectedOption + data.endDate
-                    );
-
-                    console.log(
-                      { formattedStartDate, formattedEndDate },
-                      "testdatetimt"
-                    );
                     return (
                       <Col key={index} lg={12} md={12} sm={12}>
                         <span className={styles["SceduledDateTime"]}>
-                          {moment(formattedStartDate).format("HH:MM a")} -{" "}
-                          {moment(formattedEndDate).format("HH:MM a")} ,{" "}
+                          {moment(formattedStartDate).format("HH:mm a")} -{" "}
+                          {moment(formattedEndDate).format("HH:mm a")},{" "}
                           {moment(formattedEndDate).format("DD MMM YYYY")}
-                          {/* {formattedStartDate} */}
                         </span>
                       </Col>
                     );
