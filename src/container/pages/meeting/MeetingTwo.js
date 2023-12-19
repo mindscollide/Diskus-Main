@@ -53,6 +53,7 @@ import NewEndMeetingModal from "./NewEndMeetingModal/NewEndMeetingModal";
 import { useSelector } from "react-redux";
 import {
   clearResponseNewMeetingReducerMessage,
+  dashboardCalendarEvent,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
 } from "../../../store/actions/NewMeetingActions";
@@ -161,6 +162,8 @@ const NewMeeting = () => {
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
   ] = useState(false);
+
+  const [dashboardEventData, setDashboardEventData] = useState(null);
 
   useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
@@ -741,9 +744,10 @@ const NewMeeting = () => {
           } else if (isAgendaContributor) {
           } else {
             if (
-              record.isQuickMeeting === true &&
-              minutesDifference <= 5 &&
-              minutesDifference > 0
+              record.isQuickMeeting === true
+              // &&
+              // minutesDifference <= 99999999 &&
+              // minutesDifference > 0
             ) {
               return (
                 <Row>
@@ -772,9 +776,10 @@ const NewMeeting = () => {
                 </Row>
               );
             } else if (
-              record.isQuickMeeting === false &&
-              minutesDifference <= 5 &&
-              minutesDifference > 0
+              record.isQuickMeeting === false
+              // &&
+              // minutesDifference <= 99999999 &&
+              // minutesDifference > 0
             ) {
               return (
                 <Row>
@@ -1023,6 +1028,15 @@ const NewMeeting = () => {
   };
 
   useEffect(() => {
+    if (
+      NewMeetingreducer.CalendarDashboardEventData !== null &&
+      NewMeetingreducer.CalendarDashboardEventData !== undefined
+    ) {
+      setDashboardEventData(NewMeetingreducer.CalendarDashboardEventData);
+    }
+  }, [NewMeetingreducer.CalendarDashboardEventData]);
+
+  useEffect(() => {
     try {
       if (searchMeetings !== null && searchMeetings !== undefined) {
         setTotalRecords(searchMeetings.totalRecords);
@@ -1253,7 +1267,86 @@ const NewMeeting = () => {
     }
   }, [ResponseMessage]);
 
+  useEffect(() => {
+    if (dashboardEventData !== null && dashboardEventData !== undefined) {
+      let startMeetingRequest = {
+        MeetingID: Number(dashboardEventData.pK_MDID),
+        StatusID: 10,
+      };
+      console.log("USE EFFECT DASHBOARD ROUTE");
+      for (const meeting of rows) {
+        if (Number(meeting.pK_MDID) === dashboardEventData.pK_MDID) {
+          if (
+            meeting.status === "10" &&
+            dashboardEventData.participantRoleID === 2
+          ) {
+            handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
+            setEdiorRole({
+              status: meeting.status,
+              role: "Participant",
+            });
+          } else if (
+            meeting.status === "10" &&
+            dashboardEventData.participantRoleID === 4
+          ) {
+            handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
+            setEdiorRole({
+              status: meeting.status,
+              role: "Agenda Contributor",
+            });
+          } else if (
+            meeting.status === "10" &&
+            dashboardEventData.participantRoleID === 1
+          ) {
+            handleViewMeeting(meeting.pK_MDID, meeting.isQuickMeeting);
+            // setIsOrganisers(isOrganiser);
+            setEdiorRole({
+              status: meeting.status,
+              role: "Organizer",
+            });
+          } else if (meeting.status === "1") {
+            if (meeting.isQuickMeeting === true) {
+              dispatch(
+                UpdateOrganizersMeeting(
+                  navigate,
+                  t,
+                  4,
+                  startMeetingRequest,
+                  setEdiorRole,
+                  setAdvanceMeetingModalID,
+                  setDataroomMapFolderId,
+                  setSceduleMeeting,
+                  setViewFlag,
+                  setEditFlag
+                )
+              );
+            } else if (meeting.isQuickMeeting === false) {
+              dispatch(
+                UpdateOrganizersMeeting(
+                  navigate,
+                  t,
+                  3,
+                  startMeetingRequest,
+                  setEdiorRole,
+                  setAdvanceMeetingModalID,
+                  setDataroomMapFolderId,
+                  setViewAdvanceMeetingModal
+                )
+              );
+            }
+          }
+          break;
+        }
+      }
+      dispatch(dashboardCalendarEvent(null));
+    }
+  }, [dashboardEventData, rows]);
+
   console.log("Meeting Table Data", rows);
+
+  console.log("dashboardEventDatadashboardEventData", dashboardEventData);
+
+  console.log("NewMeetingreducerNewMeetingreducer", NewMeetingreducer);
 
   return (
     <section className={styles["NewMeeting_container"]}>

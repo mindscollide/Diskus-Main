@@ -103,6 +103,7 @@ const initialState = {
   meetingStatusProposedMqttData: null,
   meetingStatusPublishedMqttData: null,
   userAvailibilityData: null,
+  CalendarDashboardEventData: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1926,6 +1927,13 @@ const NewMeetingreducer = (state = initialState, action) => {
         Loading: false,
         userAvailibilityData: action.response,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DASHBOARD_CALENDAR_DATA: {
+      return {
+        ...state,
+        CalendarDashboardEventData: action.response,
       };
     }
 
