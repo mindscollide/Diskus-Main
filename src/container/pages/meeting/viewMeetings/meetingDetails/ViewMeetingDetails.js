@@ -606,7 +606,6 @@ const ViewMeetingDetails = ({
                     );
 
                     if (!formattedStartDate || !formattedEndDate) {
-                      // Handle invalid inputs or conversion issues here
                       return null;
                     }
 
