@@ -153,8 +153,9 @@ const ModalShareFolder = ({
   const NotificationForlinkCopied = () => {
     console.log("Hello NotificationForlinkCopied");
     let Data = {
-      FolderID: Number(folderId),
+      ID: Number(folderId),
       PermissionID: Number(permissionID.value),
+      isFolder: true,
     };
     console.log("Hello NotificationForlinkCopied", Data);
 

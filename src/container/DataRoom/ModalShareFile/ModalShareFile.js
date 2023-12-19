@@ -30,6 +30,7 @@ import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import {
   createFileLinkApi,
   createFileLink_fail,
+  createFolderLinkApi,
   shareFilesApi,
   updateGeneralAccessApi,
 } from "../../../store/actions/DataRoom_actions";
@@ -206,10 +207,13 @@ const ModalShareFile = ({
   // copy link api calling
   const NotificationForlinkCopied = () => {
     let Data = {
-      FileID: Number(folderId),
+      ID: Number(folderId),
       PermissionID: Number(permissionID.value),
+      isFolder: false,
     };
-    dispatch(createFileLinkApi(navigate, t, Data, setLinkedcopied));
+    console.log("Hello NotificationForlinkCopied", Data);
+
+    dispatch(createFolderLinkApi(navigate, t, Data, setLinkedcopied));
   };
 
   const onSearch = (name, id) => {

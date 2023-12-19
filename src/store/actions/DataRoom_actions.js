@@ -2621,6 +2621,69 @@ const createFolderLink_fail = (message) => {
   };
 };
 
+// const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+
+//   return (dispatch) => {
+//     dispatch(createFolderLink_init());
+//     let form = new FormData();
+//     form.append("RequestMethod", createFolderLinkRM.RequestMethod);
+//     form.append("RequestData", JSON.stringify(data));
+//     axios({
+//       method: "post",
+//       url: dataRoomApi,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(createFolderLinkApi(navigate, t, data));
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage.toLowerCase() ===
+//               "DataRoom_DataRoomManager_CreateFolderLink_01".toLowerCase()
+//             ) {
+//               dispatch(
+//                 createFolderLink_success(
+//                   response.data.responseResult.link,
+//                   t("Data-available")
+//                 )
+//               );
+//               setLinkedcopied(true);
+//             } else if (
+//               response.data.responseResult.responseMessage.toLowerCase() ===
+//               "DataRoom_DataRoomManager_CreateFolderLink_02".toLowerCase()
+//             ) {
+//               dispatch(
+//                 createFolderLink_fail(t("Folder-not-shared-against-any-users"))
+//               );
+//             } else if (
+//               response.data.responseResult.responseMessage.toLowerCase() ===
+//               "DataRoom_DataRoomManager_CreateFolderLink_03".toLowerCase()
+//             ) {
+//               dispatch(createFolderLink_fail(t("Something-went-wrong")));
+//             } else {
+//               dispatch(createFolderLink_fail(t("Something-went-wrong")));
+//             }
+//           } else {
+//             dispatch(createFolderLink_fail(t("Something-went-wrong")));
+//           }
+//         } else {
+//           dispatch(createFolderLink_fail(t("Something-went-wrong")));
+//         }
+//       })
+//       .catch((error) => {
+//         dispatch(createFolderLink_fail(t("Something-went-wrong")));
+//       });
+//   };
+// };
+
+//Same Api Newly Implemented
+
 const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -2645,25 +2708,28 @@ const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_CreateFolderLink_01".toLowerCase()
+              "DataRoom_DataRoomManager_CreateFolderFileLink_01".toLowerCase()
             ) {
               dispatch(
                 createFolderLink_success(
                   response.data.responseResult.link,
-                  t("Data-available")
+                  t("Link-created")
                 )
               );
               setLinkedcopied(true);
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_CreateFolderLink_02".toLowerCase()
+              "DataRoom_DataRoomManager_CreateFolderFileLink_02".toLowerCase()
             ) {
-              dispatch(
-                createFolderLink_fail(t("Folder-not-shared-against-any-users"))
-              );
+              dispatch(createFolderLink_fail(t("No-file-exist-in-system")));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_CreateFolderLink_03".toLowerCase()
+              "DataRoom_DataRoomManager_CreateFolderFileLink_03".toLowerCase()
+            ) {
+              dispatch(createFolderLink_fail(t("No-folder-exist-in-system")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CreateFolderFileLink_04".toLowerCase()
             ) {
               dispatch(createFolderLink_fail(t("Something-went-wrong")));
             } else {

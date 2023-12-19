@@ -951,7 +951,7 @@ const createFileLinkRM = {
 };
 
 const createFolderLinkRM = {
-  RequestMethod: "ServiceManager.CreateFolderLink",
+  RequestMethod: "ServiceManager.CreateFolderFileLink",
 };
 
 const updateGeneralAccessRM = {

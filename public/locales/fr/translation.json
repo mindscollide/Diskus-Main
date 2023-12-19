@@ -1200,5 +1200,8 @@
   "File-restricted-but-this-user-has-assigned-rights": "File Restricted but this user has assigned rights",
   "File-restricted-request-is-to-ask-for-request-access": "File Restricted. Request is to Ask for request access.",
   "No-file-exists-in-the-system": "No file exists in the system.",
-  "Link-expired": "Link expired"
+  "Link-expired": "Link expired",
+  "Link-created": "Link Created",
+  "No-file-exist-in-system": "No file exist in system",
+  "No-folder-exist-in-system": "No folder exist in system."
 }
