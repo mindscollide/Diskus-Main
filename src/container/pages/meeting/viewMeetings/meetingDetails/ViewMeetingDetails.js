@@ -483,6 +483,15 @@ const ViewMeetingDetails = ({
   console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
   console.log("meetingDetailsmeetingDetails", meetingDetails);
 
+  console.log(
+    "setDataroomMapFolderIdsetDataroomMapFolderId",
+    setDataroomMapFolderId
+  );
+
+  console.log("setEdiorRolesetEdiorRole", setEdiorRole);
+
+  console.log("setAdvanceMeetingModalID", setAdvanceMeetingModalID);
+
   return (
     <>
       <section>

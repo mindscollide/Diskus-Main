@@ -6862,6 +6862,13 @@ const validateEncryptedStringUserAvailibilityForMeetingApi = (
   };
 };
 
+const dashboardCalendarEvent = (response) => {
+  return {
+    type: actions.DASHBOARD_CALENDAR_DATA,
+    response: response,
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -6982,4 +6989,5 @@ export {
   meetingStatusProposedMqtt,
   meetingStatusPublishedMqtt,
   validateEncryptedStringUserAvailibilityForMeetingApi,
+  dashboardCalendarEvent,
 };
