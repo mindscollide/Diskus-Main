@@ -54,20 +54,23 @@ export const getCurrentDate = () => {
 };
 
 //Newly Time Added For Converting Time into GMT Format
+export function convertToGMT(dateString, timeString) {
+  // Combine date and time strings into a single string
+  const combinedDateTimeString = `${dateString}T${timeString}`;
 
-export function convertTimeToGMT(dateString, timeString) {
-  const year = dateString.substring(0, 4);
-  const month = dateString.substring(4, 6);
-  const day = dateString.substring(6, 8);
-
-  const hours = timeString.substring(0, 2);
-  const minutes = timeString.substring(2, 4);
-  const seconds = timeString.substring(4, 6);
-
-  const combinedDateTimeString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  // Create a Date object using the combined date and time
   const localDateTime = new Date(combinedDateTimeString);
 
-  const GMTTimeString = localDateTime.toISOString(); // Convert to GMT string
+  // Get the UTC versions of the year, month, day, hours, minutes, seconds
+  const year = localDateTime.getUTCFullYear();
+  const month = `0${localDateTime.getUTCMonth() + 1}`.slice(-2); // Months are 0-indexed, so adding 1
+  const day = `0${localDateTime.getUTCDate()}`.slice(-2);
+  const hours = `0${localDateTime.getUTCHours()}`.slice(-2);
+  const minutes = `0${localDateTime.getUTCMinutes()}`.slice(-2);
+  const seconds = `0${localDateTime.getUTCSeconds()}`.slice(-2);
+
+  // Create a string representing the time in GMT format
+  const GMTTimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds} GMT`;
 
   return GMTTimeString;
 }

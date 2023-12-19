@@ -42,7 +42,7 @@ import {
   leaveCallModal,
   participantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
-import { convertTimeToGMT } from "../../../../../commen/functions/time_formatter";
+import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -595,21 +595,27 @@ const ViewMeetingDetails = ({
                 </Row>
                 <Row>
                   {rows.map((data, index) => {
-                    const formattedStartDate = convertTimeToGMT(
-                      data.selectedOption,
-                      data.startDate
+                    console.log(data, "formattedStartDateformattedStartDate");
+                    const formattedStartDate = convertToGMT(
+                      data.meetingDate,
+                      data.startTime
                     );
-                    const formattedEndDate = convertTimeToGMT(
-                      data.selectedOption,
-                      data.endDate
+                    const formattedEndDate = convertToGMT(
+                      data.meetingDate,
+                      data.endTime
                     );
+
+                    if (!formattedStartDate || !formattedEndDate) {
+                      // Handle invalid inputs or conversion issues here
+                      return null;
+                    }
 
                     return (
                       <Col key={index} lg={12} md={12} sm={12}>
-                        <span className={styles["SceduledDateTime"]}>
-                          {moment(formattedStartDate).format("HH:mm a")} -{" "}
-                          {moment(formattedEndDate).format("HH:mm a")},{" "}
-                          {moment(formattedEndDate).format("DD MMM YYYY")}
+                        <span className={styles["ScheduledDateTime"]}>
+                          {moment.utc(formattedStartDate).format("HH:mm a")} -{" "}
+                          {moment.utc(formattedEndDate).format("HH:mm a")} ,{" "}
+                          {moment.utc(formattedEndDate).format("DD MMM YYYY")}
                         </span>
                       </Col>
                     );
