@@ -951,7 +951,7 @@ const createFileLinkRM = {
 };
 
 const createFolderLinkRM = {
-  RequestMethod: "ServiceManager.CreateFolderLink",
+  RequestMethod: "ServiceManager.CreateFolderFileLink",
 };
 
 const updateGeneralAccessRM = {
@@ -1328,6 +1328,11 @@ const validateEncryptedStringUserAvailabilityForMeeting = {
     "ServiceManager.ValidateEncryptedStringUserAvailabilityForMeeting",
 };
 
+const validateEncyptedStringUserDataRoom = {
+  RequestMethod:
+    "ServiceManager.ValidateEncryptedStringUserAvailabilityForDataRoom",
+};
+
 export {
   getDataAnalyticsCountRM,
   updateAndOpenByAndDescriptionRM,
@@ -1682,4 +1687,6 @@ export {
   getAgendaWithMeetingIDForImport,
   inviteForCollaboration,
   validateEncryptedStringUserAvailabilityForMeeting,
+  //Validate userAvailibility Encrypted String
+  validateEncyptedStringUserDataRoom,
 };

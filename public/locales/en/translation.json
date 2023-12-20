@@ -1695,5 +1695,15 @@
   "Failed-to-update-attendee-avaliability": "Failed To update Attendee Avaliability",
   "Validation-failed": "Validation Failed",
   "Token-updated-but-no-event-found-in-the-calendar": "Token Updated but no event found in the calendar",
-  "Not-a-member-of-talk-group": "You are not a member of talk group"
+  "Not-a-member-of-talk-group": "You are not a member of talk group",
+  "No-restrictions": "No Restrictions",
+  "Only-allowed-to-my-organization-and-user-part-of-organization": "Only allowed to My Organization and user part of Organization",
+  "Only-allowed-to-my-organization-and-user-not-part-of-organization": "Only allowed to My Organization and user not part of Organization",
+  "File-restricted-but-this-user-has-assigned-rights": "File Restricted but this user has assigned rights",
+  "File-restricted-request-is-to-ask-for-request-access": "File Restricted. Request is to Ask for request access.",
+  "No-file-exists-in-the-system": "No file exists in the system.",
+  "Link-expired": "Link expired",
+  "Link-created": "Link Created",
+  "No-file-exist-in-system": "No file exist in system",
+  "No-folder-exist-in-system": "No folder exist in system."
 }

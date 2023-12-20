@@ -59,6 +59,7 @@ import {
   isFolder,
   showFileDetailsModal,
   uploadDocumentsApi,
+  validateUserAvailibilityEncryptedStringDataRoomApi,
 } from "../../store/actions/DataRoom_actions";
 import sharedIcon from "../../assets/images/shared_icon.svg";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
@@ -111,6 +112,8 @@ import {
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
 
 const DataRoom = () => {
+  const currentUrl = window.location.href;
+  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
   // tooltip
   const dispatch = useDispatch();
   const location = useLocation();
@@ -123,6 +126,7 @@ const DataRoom = () => {
   const [inviteModal, setInviteModal] = useState(false);
   const [optionsFileisShown, setOptionsFileisShown] = useState(false);
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
+  const [dataRoomString, setDataRoomString] = useState("");
   const { uploadReducer, DataRoomReducer, LanguageReducer } = useSelector(
     (state) => state
   );
@@ -247,6 +251,45 @@ const DataRoom = () => {
   });
   //State For the Detail View Of File And Folder
   const [detailView, setDetailView] = useState(false);
+
+  //validate User Encrypted String Api
+  useEffect(() => {
+    if (currentUrl.includes("DisKus/dataroom?action=")) {
+      const remainingString = currentUrl.split("?action=")[1];
+      console.log(remainingString, "remainingStringremainingString");
+      if (remainingString) {
+        setDataRoomString(remainingString);
+        // APi call
+        let Data = { Link: remainingString };
+        dispatch(
+          validateUserAvailibilityEncryptedStringDataRoomApi(
+            navigate,
+            Data,
+            t,
+            setShareFileModal
+          )
+        );
+      }
+      // Save something in local storage if the condition is true
+    } else {
+      let DataRoomString = localStorage.getItem("DataRoomEmail");
+      if (DataRoomString !== undefined && DataRoomString !== null) {
+        setDataRoomString(DataRoomString);
+        let Data = { Link: DataRoomString };
+        dispatch(
+          validateUserAvailibilityEncryptedStringDataRoomApi(
+            navigate,
+            Data,
+            t,
+            setShareFileModal
+          )
+        );
+      } else {
+        navigate("/DisKus/dataroom");
+      }
+    }
+  }, [currentUrl]);
+
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {
