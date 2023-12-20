@@ -265,7 +265,8 @@ const UpdateOrganizersMeeting = (
   // THIS IS FOR QUICK MEETINGS CHECK
   setViewFlag,
   setEditFlag,
-  setCalendarViewModal
+  setCalendarViewModal,
+  dashboardFlag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -298,7 +299,8 @@ const UpdateOrganizersMeeting = (
               // THIS IS FOR QUICK MEETINGS CHECK
               setViewFlag,
               setEditFlag,
-              setCalendarViewModal
+              setCalendarViewModal,
+              dashboardFlag
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -358,11 +360,13 @@ const UpdateOrganizersMeeting = (
                     )
                   );
                   setAdvanceMeetingModalID(Data.MeetingID);
-                  // setPublishState(false);
                   setEdiorRole({
                     status: "10",
                     role: "Organizer",
                   });
+                  if (dashboardFlag) {
+                    navigate("/Diskus/Meeting");
+                  }
                 } else if (route === 5) {
                   let currentView = localStorage.getItem("MeetingCurrentView");
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
