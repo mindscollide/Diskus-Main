@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import {
   searchNewUserMeeting,
   showAttendanceConfirmationModal,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
@@ -39,6 +41,9 @@ const ModalCancelAttendance = ({
       } else {
         setAttendance(false);
         setViewAdvanceMeetingModal(false);
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
         let searchData = {
           Date: "",
           Title: "",

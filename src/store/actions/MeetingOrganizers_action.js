@@ -12,6 +12,7 @@ import { setLoaderFalse } from "./MeetingAgenda_action";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import {
   GetAllMeetingDetailsApiFunc,
+  scheduleMeetingPageFlag,
   searchNewUserMeeting,
 } from "./NewMeetingActions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
@@ -390,6 +391,7 @@ const UpdateOrganizersMeeting = (
                   };
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                   setSceduleMeeting(false);
+                  dispatch(scheduleMeetingPageFlag(false));
                 } else {
                   // setPublishState(Data.MeetingID);
                 }

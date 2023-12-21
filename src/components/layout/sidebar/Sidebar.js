@@ -1,29 +1,34 @@
 import React, { useState, useEffect, useRef } from "react";
-
-import { Row, Col, Nav, Container, Navbar, NavDropdown } from "react-bootstrap";
-import Tooltip from "../../elements/tooltip/Tooltip";
-import Logo from "../../../assets/images/sidebar-menu-icon.png";
-import CalendarIcon from "../../../assets/images/newElements/newCalenderIcon.svg";
-import LockIcon from "../../../assets/images/newElements/newlockIcon.svg";
-import MeetingIcon from "../../../assets/images/newElements/newmeetingIcon.svg";
-import TodoIcon from "../../../assets/images/newElements/newTodoIcon.svg";
+import { Row, Col, Nav } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import MeetingIconSvg from "../../../assets/images/newElements/MeetingIcon.svg";
-
 import "./sidebar.css";
-import { getDocumentsAndFolderApi } from "../../../store/actions/DataRoom_actions";
-import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import ExpandedMenu from "./ExpandedMenu/ExpandedMenu";
+import {
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
+  searchNewUserMeeting,
+} from "../../../store/actions/NewMeetingActions";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 
 const Sidebar = () => {
   const location = useLocation();
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { NewMeetingreducer } = useSelector((state) => state);
   const [activateBlur, setActivateBlur] = useState(false);
   const [showMore, setShowMore] = useState(false);
   let Blur = localStorage.getItem("blur");
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
+  let userID = localStorage.getItem("userID");
 
   const sidebarshow = useRef();
 
@@ -59,6 +64,53 @@ const Sidebar = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
+
+  const handleMeetingSidebarClick = () => {
+    dispatch(scheduleMeetingPageFlag(false));
+    dispatch(viewProposeDateMeetingPageFlag(false));
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    dispatch(viewProposeOrganizerMeetingPageFlag(false));
+    dispatch(proposeNewMeetingPageFlag(false));
+    if (
+      NewMeetingreducer.scheduleMeetingPageFlag === true ||
+      NewMeetingreducer.viewProposeDateMeetingPageFlag === true ||
+      NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ||
+      NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ||
+      NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ||
+      NewMeetingreducer.proposeNewMeetingPageFlag === true
+    ) {
+      if (meetingpageRow !== null && meetingPageCurrent !== null) {
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: Number(meetingPageCurrent),
+          Length: Number(meetingpageRow),
+          PublishedMeetings: Number(currentView) === 1 ? true : false,
+        };
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        dispatch(allAssignessList(navigate, t));
+        // localStorage.setItem("MeetingCurrentView", 1);
+      } else {
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 50,
+          PublishedMeetings: Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 50);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        dispatch(searchNewUserMeeting(navigate, searchData, t));
+        dispatch(allAssignessList(navigate, t));
+        // localStorage.setItem("MeetingCurrentView", 1);
+      }
+    }
+  };
 
   return (
     <>
@@ -131,8 +183,6 @@ const Sidebar = () => {
                       />
                     </g>
                   </svg>
-
-                  {/* <i className="iconSidebar-meeting" /> */}
                 </Nav.Link>
                 {/* Todo Menu */}
                 <Nav.Link
@@ -515,6 +565,7 @@ const Sidebar = () => {
                       ? "m-0 p-0 iconSidebar-active-sidebar"
                       : "m-0 p-0 iconSidebar"
                   }
+                  onClick={handleMeetingSidebarClick}
                 >
                   <div className="d-flex flex-column justify-content-center align-items-center">
                     <svg

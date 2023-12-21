@@ -56,6 +56,12 @@ import {
   dashboardCalendarEvent,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -207,7 +213,14 @@ const NewMeeting = () => {
       dispatch(allAssignessList(navigate, t));
       localStorage.setItem("MeetingCurrentView", 1);
     }
-    return () => {};
+    setEditFlag(false);
+    setViewFlag(false);
+    dispatch(scheduleMeetingPageFlag(false));
+    dispatch(viewProposeDateMeetingPageFlag(false));
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+    dispatch(viewProposeOrganizerMeetingPageFlag(false));
+    dispatch(proposeNewMeetingPageFlag(false));
   }, []);
 
   const HandleShowSearch = () => {
@@ -297,6 +310,7 @@ const NewMeeting = () => {
 
   const openSceduleMeetingPage = () => {
     setSceduleMeeting(true);
+    dispatch(scheduleMeetingPageFlag(true));
     setCurrentMeetingID(0);
   };
 
@@ -410,6 +424,8 @@ const NewMeeting = () => {
     } else {
       setAdvanceMeetingModalID(id);
       setViewAdvanceMeetingModal(true);
+      dispatch(viewAdvanceMeetingPublishPageFlag(true));
+      dispatch(scheduleMeetingPageFlag(false));
       localStorage.setItem("currentMeetingID", id);
     }
   };
@@ -451,6 +467,7 @@ const NewMeeting = () => {
           1
         )
       );
+      dispatch(scheduleMeetingPageFlag(true));
     } else {
     }
   };
@@ -744,10 +761,9 @@ const NewMeeting = () => {
           } else if (isAgendaContributor) {
           } else {
             if (
-              record.isQuickMeeting === true
-              // &&
-              // minutesDifference <= 99999999 &&
-              // minutesDifference > 0
+              record.isQuickMeeting === true &&
+              minutesDifference <= 5 &&
+              minutesDifference > 0
             ) {
               return (
                 <Row>
@@ -776,10 +792,9 @@ const NewMeeting = () => {
                 </Row>
               );
             } else if (
-              record.isQuickMeeting === false
-              // &&
-              // minutesDifference <= 99999999 &&
-              // minutesDifference > 0
+              record.isQuickMeeting === false &&
+              minutesDifference <= 5 &&
+              minutesDifference > 0
             ) {
               return (
                 <Row>
@@ -1194,6 +1209,8 @@ const NewMeeting = () => {
         ) {
           setEdiorRole({ status: null, role: null });
           setViewAdvanceMeetingModal(false);
+          dispatch(viewAdvanceMeetingPublishPageFlag(false));
+          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
           setCurrentMeetingID(0);
           setAdvanceMeetingModalID(null);
           setDataroomMapFolderId(0);
@@ -1339,6 +1356,7 @@ const NewMeeting = () => {
         }
       }
       dispatch(dashboardCalendarEvent(null));
+      setDashboardEventData(null);
     }
   }, [dashboardEventData, rows]);
 
@@ -1372,7 +1390,7 @@ const NewMeeting = () => {
         />
       ) : null}
       <Notification message={open.message} open={open.open} setOpen={setOpen} />
-      {sceduleMeeting ? (
+      {sceduleMeeting && NewMeetingreducer.scheduleMeetingPageFlag === true ? (
         <SceduleMeeting
           setSceduleMeeting={setSceduleMeeting}
           setCurrentMeetingID={setCurrentMeetingID}
@@ -1384,14 +1402,16 @@ const NewMeeting = () => {
           setDataroomMapFolderId={setDataroomMapFolderId}
           dataroomMapFolderId={dataroomMapFolderId}
         />
-      ) : viewProposeDatePoll ? (
+      ) : viewProposeDatePoll &&
+        NewMeetingreducer.viewProposeDateMeetingPageFlag === true ? (
         <ViewParticipantsDates
           setViewProposeDatePoll={setViewProposeDatePoll}
           setCurrentMeetingID={setCurrentMeetingID}
           setSceduleMeeting={setViewProposeDatePoll}
           setDataroomMapFolderId={setDataroomMapFolderId}
         />
-      ) : viewAdvanceMeetingModal ? (
+      ) : viewAdvanceMeetingModal &&
+        NewMeetingreducer.viewAdvanceMeetingPublishPageFlag === true ? (
         <ViewMeetingModal
           advanceMeetingModalID={advanceMeetingModalID}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
@@ -1403,7 +1423,8 @@ const NewMeeting = () => {
           setDataroomMapFolderId={setDataroomMapFolderId}
           setCurrentMeetingID={setCurrentMeetingID}
         />
-      ) : viewAdvanceMeetingModalUnpublish ? (
+      ) : viewAdvanceMeetingModalUnpublish &&
+        NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag === true ? (
         <ViewMeetingModal
           advanceMeetingModalID={advanceMeetingModalID}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModalUnpublish}
@@ -1414,12 +1435,14 @@ const NewMeeting = () => {
           dataroomMapFolderId={dataroomMapFolderId}
           setDataroomMapFolderId={setDataroomMapFolderId}
         />
-      ) : viewProposeOrganizerPoll ? (
+      ) : viewProposeOrganizerPoll &&
+        NewMeetingreducer.viewProposeOrganizerMeetingPageFlag === true ? (
         <OrganizerViewModal
           setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
           currentMeeting={currentMeetingID}
         />
-      ) : proposedNewMeeting ? (
+      ) : proposedNewMeeting &&
+        NewMeetingreducer.proposeNewMeetingPageFlag === true ? (
         <ProposedNewMeeting setProposedNewMeeting={setProposedNewMeeting} />
       ) : (
         <>

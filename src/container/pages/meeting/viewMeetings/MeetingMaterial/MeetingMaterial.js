@@ -12,6 +12,8 @@ import {
   searchNewUserMeeting,
   getMeetingMaterialAPI,
   cleareAllState,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getFileExtension,
@@ -160,6 +162,8 @@ const MeetingMaterial = ({
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     setactionsPage(false);
   };
 

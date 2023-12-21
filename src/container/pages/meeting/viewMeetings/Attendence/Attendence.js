@@ -23,6 +23,8 @@ import ModalCancelAttendance from "./ModalCancelAttendence/ModalCancelAttendance
 import {
   searchNewUserMeeting,
   showAttendanceConfirmationModal,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { deepEqual } from "../../../../../commen/functions/CompareArrayObjectValues";
 const Attendence = ({
@@ -331,6 +333,9 @@ const Attendence = ({
     );
     if (ReducerAttendeceData) {
       setViewAdvanceMeetingModal(false);
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
       setAttendance(false);
       let searchData = {
         Date: "",

@@ -1060,7 +1060,7 @@
   "Are-you-sure-you-want-to-continue?": "هل أنت متأكد أنك تريد الاستمرار؟",
   "Payment-procced": "تمت عملية الدفع",
   "Maximum-meeting-duration-in-minutes": "الحد الأقصى لمدة الاجتماع بالدقائق",
-  "Meeting-title": "عنوان اللقاء",
+  "Meeting-title": "*عنوان اللقاء",
   "Organizer-name": "اسم المنظم",
   "Date-time": "التاريخ/الوقت",
   "Join-meeting": "أنضم إلى اجتماع",

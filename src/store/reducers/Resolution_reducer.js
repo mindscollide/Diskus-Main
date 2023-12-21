@@ -28,6 +28,9 @@ const initialState = {
   SaveDocumentsIDs: [],
   updateResolutionDataroom: 0,
   saveResolutionDocuments: null,
+  resultResolutionFlag: false,
+  voteResolutionFlag: false,
+  viewAttachmentFlag: false,
 };
 const ResolutionReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -445,6 +448,26 @@ const ResolutionReducer = (state = initialState, action) => {
         viewResolutionModal: action.payload,
       };
     }
+
+    case actions.RESULT_RESOLUTION_FLAG: {
+      return {
+        ...state,
+        resultResolutionFlag: action.payload,
+      };
+    }
+    case actions.VOTE_RESOLUTION_FLAG: {
+      return {
+        ...state,
+        voteResolutionFlag: action.payload,
+      };
+    }
+    case actions.VIEW_ATTACHMENT_FLAG: {
+      return {
+        ...state,
+        viewAttachmentFlag: action.payload,
+      };
+    }
+
     default: {
       return { ...state };
     }

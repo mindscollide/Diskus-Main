@@ -20,6 +20,7 @@ import {
   setMeetingbyCommitteeIDApi,
   getMeetingByCommitteeIDApi,
   getMeetingbyGroupApi,
+  scheduleMeetingPageFlag,
 } from "./NewMeetingActions";
 
 const ShowNotification = (message) => {
@@ -510,6 +511,7 @@ const ViewMeeting = (
               );
               if (no === 1) {
                 setViewFlag(true);
+                dispatch(scheduleMeetingPageFlag(false));
               } else if (no === 2) {
                 dispatch(GetAllReminders(navigate, t));
                 setEditFlag(true);
@@ -517,6 +519,7 @@ const ViewMeeting = (
                 setCalendarViewModal(true);
               } else if (no === 4) {
                 setViewMeetingModal(true);
+                dispatch(scheduleMeetingPageFlag(false));
               } else if (no === 5) {
                 setEditMeetingModal(true);
               }

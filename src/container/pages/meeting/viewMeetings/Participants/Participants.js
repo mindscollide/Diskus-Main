@@ -18,6 +18,8 @@ import {
   cleareAllState,
   searchNewUserMeeting,
   showAllMeetingParticipantsFailed,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
@@ -125,6 +127,8 @@ const Participants = ({
     setEdiorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
   };
 
   const ParticipantsViewColoumn = [
