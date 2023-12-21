@@ -1,6 +1,11 @@
 import React from "react";
 import styles from "./CancelMeetingmaterial.module.css";
-import { cleareAllState, showCancelMeetingMaterial } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  cleareAllState,
+  showCancelMeetingMaterial,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -8,7 +13,11 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 
-const CancelMeetingMaterial = ({ setViewAdvanceMeetingModal,setEdiorRole,setAdvanceMeetingModalID }) => {
+const CancelMeetingMaterial = ({
+  setViewAdvanceMeetingModal,
+  setEdiorRole,
+  setAdvanceMeetingModalID,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,6 +30,8 @@ const CancelMeetingMaterial = ({ setViewAdvanceMeetingModal,setEdiorRole,setAdva
   const handleYesFunctionality = () => {
     dispatch(showCancelMeetingMaterial(false));
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     dispatch(cleareAllState());
     setEdiorRole({ status: null, role: null });
     setAdvanceMeetingModalID(null);

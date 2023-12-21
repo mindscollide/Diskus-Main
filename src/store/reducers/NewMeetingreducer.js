@@ -104,6 +104,13 @@ const initialState = {
   meetingStatusPublishedMqttData: null,
   userAvailibilityData: null,
   CalendarDashboardEventData: null,
+
+  scheduleMeetingPageFlag: false,
+  viewProposeDateMeetingPageFlag: false,
+  viewAdvanceMeetingPublishPageFlag: false,
+  viewAdvanceMeetingUnpublishPageFlag: false,
+  viewProposeOrganizerMeetingPageFlag: false,
+  proposeNewMeetingPageFlag: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -1934,6 +1941,48 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         CalendarDashboardEventData: action.response,
+      };
+    }
+
+    case actions.SCHEDULE_NEW_MEETING_PAGE_FLAG: {
+      return {
+        ...state,
+        scheduleMeetingPageFlag: action.response,
+      };
+    }
+
+    case actions.VIEW_PROPOSED_DATE_MEETING_PAGE_FLAG: {
+      return {
+        ...state,
+        viewProposeDateMeetingPageFlag: action.response,
+      };
+    }
+
+    case actions.VIEW_ADVANCE_MEETING_PUBLISH_PAGE_FLAG: {
+      return {
+        ...state,
+        viewAdvanceMeetingPublishPageFlag: action.response,
+      };
+    }
+
+    case actions.VIEW_ADVANCE_MEETING_UNPUBLISH_PAGE_FLAG: {
+      return {
+        ...state,
+        viewAdvanceMeetingUnpublishPageFlag: action.response,
+      };
+    }
+
+    case actions.VIEW_PROPOSE_PRGANIZER_MEETING_PAGE_FLAG: {
+      return {
+        ...state,
+        viewProposeOrganizerMeetingPageFlag: action.response,
+      };
+    }
+
+    case actions.PROPOSE_NEW_MEETING_PAGE_FLAG: {
+      return {
+        ...state,
+        proposeNewMeetingPageFlag: action.response,
       };
     }
 

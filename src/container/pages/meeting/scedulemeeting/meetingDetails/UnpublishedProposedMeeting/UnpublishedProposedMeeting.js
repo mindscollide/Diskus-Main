@@ -20,6 +20,12 @@ import {
   GetAllMeetingDetailsApiFunc,
   showDeleteMeetingModal,
   showSceduleProposedMeeting,
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -110,15 +116,18 @@ const UnpublishedProposedMeeting = ({
     localStorage.setItem("viewProposeDatePollMeetingID", id);
     if (isParticipant) {
       setViewProposeDatePoll(true);
+      dispatch(viewProposeDateMeetingPageFlag(true));
     } else if (isAgendaContributor) {
     } else if (isOrganiser) {
       setViewProposeOrganizerPoll(true);
+      dispatch(viewProposeOrganizerMeetingPageFlag(true));
     }
   };
 
   const handleOpenViewModal = async (data) => {
     setAdvanceMeetingModalID(data.pK_MDID);
     setViewAdvanceMeetingModalUnpublish(true);
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
   };
 
   const handleEditMeeting = async (id, record) => {
@@ -138,6 +147,7 @@ const UnpublishedProposedMeeting = ({
         1
       )
     );
+    dispatch(scheduleMeetingPageFlag(true));
   };
 
   const changeDateStartHandler2 = (date) => {
@@ -398,15 +408,6 @@ const UnpublishedProposedMeeting = ({
                   />
                 ) : isOrganiser ? (
                   <>
-                    {/* this function will add later */}
-                    {/* <img
-                      src={deleteIcon}
-                      className="cursor-pointer"
-                      width="17.03px"
-                      height="17.03px"
-                      alt=""
-                      draggable="false"
-                    /> */}
                     <img
                       src={EditIcon}
                       className="cursor-pointer"

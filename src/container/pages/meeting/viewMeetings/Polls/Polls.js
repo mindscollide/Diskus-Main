@@ -26,6 +26,8 @@ import {
   searchNewUserMeeting,
   showCancelPolls,
   showUnsavedPollsMeeting,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 import AfterViewPolls from "./AfterViewPolls/AfterViewPolls";
@@ -487,6 +489,8 @@ const Polls = ({
 
   const handleCancelPolls = () => {
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     let searchData = {
       Date: "",
       Title: "",

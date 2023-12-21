@@ -17,6 +17,9 @@ import {
   getallcommitteebyuserid_clear,
   getCommitteesbyCommitteeId,
   realtimeCommitteeStatusResponse,
+  createCommitteePageFlag,
+  updateCommitteePageFlag,
+  viewCommitteePageFlag,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import {
@@ -180,6 +183,7 @@ const Committee = () => {
 
   const groupModal = async (e) => {
     setCreategrouppage(true);
+    dispatch(createCommitteePageFlag(true));
   };
 
   const showMarketingModal = (id) => {
@@ -198,21 +202,7 @@ const Committee = () => {
     setViewCommitteeViewTab(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewGroupPage(true);
-    // let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    // let Data = {
-    //   CommitteeID: JSON.parse(data.committeeID),
-    //   OrganizationId: OrganizationID,
-    // };
-    // dispatch(
-    //   getCommitteesbyCommitteeId(
-    //     navigate,
-    //     Data,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     1
-    //   )
-    // );
+    dispatch(viewCommitteePageFlag(true));
   };
 
   // Click on title
@@ -220,21 +210,7 @@ const Committee = () => {
     setViewCommitteeViewTab(1);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewGroupPage(true);
-    // let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    // let Data = {
-    //   CommitteeID: JSON.parse(data.committeeID),
-    //   OrganizationId: OrganizationID,
-    // };
-    // dispatch(
-    //   getCommitteesbyCommitteeId(
-    //     navigate,
-    //     Data,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     1
-    //   )
-    // );
+    dispatch(viewCommitteePageFlag(true));
   };
 
   const viewUpdateModal = (committeeID, CommitteeStatusID) => {
@@ -242,6 +218,7 @@ const Committee = () => {
       setViewCommitteeViewTab(1);
       localStorage.setItem("ViewCommitteeID", CommitteeStatusID);
       setViewGroupPage(true);
+      dispatch(viewCommitteePageFlag(true));
     } else {
       let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
       let Data = {
@@ -342,53 +319,19 @@ const Committee = () => {
     setViewCommitteeViewTab(4);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewGroupPage(true);
-    // dispatch(viewDetailsCommitteeID(data.committeeID));
-    // setViewCommitteeID(data.committeeID);
-    // dispatch(
-    //   getCommitteesbyCommitteeId(
-    //     navigate,
-    //     Data,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     CommitteeStatusID
-    //   )
-    // );
+    dispatch(viewCommitteePageFlag(true));
   };
   const handlePollsClickTab = (data) => {
-    // setViewCommitteeID(data.committeeID);
     localStorage.setItem("ViewCommitteeID", data.committeeID);
     setViewCommitteeViewTab(3);
     setViewGroupPage(true);
-    // dispatch(viewDetailsCommitteeID(data.committeeID));
-    // dispatch(
-    //   getCommitteesbyCommitteeId(
-    //     navigate,
-    //     Data,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     CommitteeStatusID
-    //   )
-    // );
+    dispatch(viewCommitteePageFlag(true));
   };
   const handleTasksClickTab = (data) => {
     setViewCommitteeViewTab(2);
     setViewGroupPage(true);
+    dispatch(viewCommitteePageFlag(true));
     localStorage.setItem("ViewCommitteeID", data.committeeID);
-    // dispatch(viewDetailsCommitteeID(data.committeeID));
-    // setViewCommitteeID(data.committeeID);
-
-    // dispatch(
-    //   getCommitteesbyCommitteeId(
-    //     navigate,
-    //     Data,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     CommitteeStatusID
-    //   )
-    // );
   };
   useEffect(() => {
     if (
@@ -447,15 +390,17 @@ const Committee = () => {
   return (
     <>
       <div className={styles["CommitteeContainer"]}>
-        {creategrouppage ? (
+        {creategrouppage &&
+        CommitteeReducer.createCommitteePageFlag === true ? (
           <>
             <CreateCommittee setCreategrouppage={setCreategrouppage} />
           </>
-        ) : updateComponentpage ? (
+        ) : updateComponentpage &&
+          CommitteeReducer.updateCommitteePageFlag === true ? (
           <>
             <UpdateCommittee setUpdateComponentpage={setUpdateComponentpage} />
           </>
-        ) : ViewGroupPage ? (
+        ) : ViewGroupPage && CommitteeReducer.viewCommitteePageFlag === true ? (
           <>
             <ViewUpdateCommittee
               setViewGroupPage={setViewGroupPage}

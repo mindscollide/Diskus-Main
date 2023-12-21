@@ -15,6 +15,8 @@ import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
 import {
   searchNewUserMeeting,
   showUnsavedActionsModal,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   getMeetingTaskMainApi,
@@ -213,6 +215,9 @@ const Actions = ({
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
     setactionsPage(false);
   };
 

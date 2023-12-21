@@ -18,6 +18,12 @@ import {
   CleareMessegeNewMeeting,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
 import { useSelector } from "react-redux";
@@ -242,6 +248,9 @@ const ViewMeetingDetails = ({
     setAdvanceMeetingModalID(null);
     // setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
     // setAgenda(false);
     // setCancelModalView(false);
     // setPolls(false);
@@ -533,6 +542,9 @@ const ViewMeetingDetails = ({
                     className={styles["LeaveMeetinButton"]}
                     onClick={() => {
                       setViewAdvanceMeetingModal(false);
+                      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
                       setAdvanceMeetingModalID(null);
                     }}
                   />
@@ -543,6 +555,8 @@ const ViewMeetingDetails = ({
                   className={styles["LeaveMeetinButton"]}
                   onClick={() => {
                     setViewAdvanceMeetingModal(false);
+                    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
                     setAdvanceMeetingModalID(null);
                   }}
                 />
