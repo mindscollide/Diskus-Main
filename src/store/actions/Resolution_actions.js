@@ -1253,6 +1253,7 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
                 )
               );
               setResultresolution(true);
+              dispatch(resultResolutionFlag(true));
               localStorage.setItem("ResolutionID", id);
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -1333,6 +1334,7 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
                 )
               );
               setVoteresolution(true);
+              dispatch(voteResolutionFlag(true));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetVoteDetailsByID_02".toLowerCase()
@@ -1794,6 +1796,30 @@ const resolutionMQTTClosed = (response) => {
   };
 };
 
+//Create Group Page
+const resultResolutionFlag = (response) => {
+  return {
+    type: actions.RESULT_RESOLUTION_FLAG,
+    response: response,
+  };
+};
+
+//Update Group Page
+const voteResolutionFlag = (response) => {
+  return {
+    type: actions.VOTE_RESOLUTION_FLAG,
+    response: response,
+  };
+};
+
+//View Group Page
+const viewAttachmentFlag = (response) => {
+  return {
+    type: actions.VIEW_ATTACHMENT_FLAG,
+    response: response,
+  };
+};
+
 export {
   viewResolutionModal,
   saveFilesResolutionApi,
@@ -1818,4 +1844,7 @@ export {
   resolutionMQTTCreate,
   resolutionMQTTClosed,
   resolutionMQTTCancelled,
+  resultResolutionFlag,
+  voteResolutionFlag,
+  viewAttachmentFlag,
 };

@@ -506,6 +506,7 @@ const SaveMeetingDetialsNewApiFunction = (
               } else if (viewValue === 2) {
                 if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
                   setSceduleMeeting(false);
+                  dispatch(scheduleMeetingPageFlag(false));
                   dispatch(
                     handleSaveMeetingSuccess(
                       response.data.responseResult,
@@ -2020,6 +2021,7 @@ const GetAllMeetingDetailsApiFunc = (
               );
               try {
                 setSceduleMeeting(true);
+                // dispatch(scheduleMeetingPageFlag(true));
                 setCurrentMeetingID(Data.MeetingID);
               } catch {}
             } else if (
@@ -6869,6 +6871,48 @@ const dashboardCalendarEvent = (response) => {
   };
 };
 
+const scheduleMeetingPageFlag = (response) => {
+  return {
+    type: actions.SCHEDULE_NEW_MEETING_PAGE_FLAG,
+    response: response,
+  };
+};
+
+const viewProposeDateMeetingPageFlag = (response) => {
+  return {
+    type: actions.VIEW_PROPOSED_DATE_MEETING_PAGE_FLAG,
+    response: response,
+  };
+};
+
+const viewAdvanceMeetingPublishPageFlag = (response) => {
+  return {
+    type: actions.VIEW_ADVANCE_MEETING_PUBLISH_PAGE_FLAG,
+    response: response,
+  };
+};
+
+const viewAdvanceMeetingUnpublishPageFlag = (response) => {
+  return {
+    type: actions.VIEW_ADVANCE_MEETING_UNPUBLISH_PAGE_FLAG,
+    response: response,
+  };
+};
+
+const viewProposeOrganizerMeetingPageFlag = (response) => {
+  return {
+    type: actions.VIEW_PROPOSE_PRGANIZER_MEETING_PAGE_FLAG,
+    response: response,
+  };
+};
+
+const proposeNewMeetingPageFlag = (response) => {
+  return {
+    type: actions.PROPOSE_NEW_MEETING_PAGE_FLAG,
+    response: response,
+  };
+};
+
 export {
   clearResponseNewMeetingReducerMessage,
   getAllAgendaContributorApi,
@@ -6990,4 +7034,10 @@ export {
   meetingStatusPublishedMqtt,
   validateEncryptedStringUserAvailibilityForMeetingApi,
   dashboardCalendarEvent,
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
 };

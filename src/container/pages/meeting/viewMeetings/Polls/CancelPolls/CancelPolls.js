@@ -3,6 +3,8 @@ import styles from "./CancelPolls.module.css";
 import {
   searchNewUserMeeting,
   showCancelPolls,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -28,6 +30,8 @@ const CancelPolls = ({ setViewAdvanceMeetingModal }) => {
   const handleYesFunctionality = () => {
     dispatch(showCancelPolls(false));
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
     let searchData = {
       Date: "",
       Title: "",

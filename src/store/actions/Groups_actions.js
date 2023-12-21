@@ -1639,6 +1639,30 @@ const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
   };
 };
 
+//Create Group Page
+const createGroupPageFlag = (response) => {
+  return {
+    type: actions.CREATE_GROUP_PAGE_FLAG,
+    response: response,
+  };
+};
+
+//Update Group Page
+const updateGroupPageFlag = (response) => {
+  return {
+    type: actions.UPDATE_GROUP_PAGE_FLAG,
+    response: response,
+  };
+};
+
+//View Group Page
+const viewGroupPageFlag = (response) => {
+  return {
+    type: actions.VIEW_GROUP_PAGE_FLAG,
+    response: response,
+  };
+};
+
 export {
   getGroups,
   getAllGroups,
@@ -1658,4 +1682,7 @@ export {
   saveFilesGroupsApi,
   SaveGroupsDocumentsApiFunc,
   RetriveDocumentsGroupsApiFunc,
+  createGroupPageFlag,
+  updateGroupPageFlag,
+  viewGroupPageFlag,
 };

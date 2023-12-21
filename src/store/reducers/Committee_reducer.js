@@ -19,6 +19,9 @@ const initialState = {
   committeeID: 0,
   uploadCommitteeDocuments: null,
   saveUploadCommitteeDocuments: null,
+  createCommitteePageFlag: false,
+  updateCommitteePageFlag: false,
+  viewCommitteePageFlag: false,
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
@@ -377,6 +380,27 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         saveUploadCommitteeDocuments: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CREATE_COMMITTEE_PAGE_FLAG: {
+      return {
+        ...state,
+        createCommitteePageFlag: action.response,
+      };
+    }
+
+    case actions.UPDATE_COMMITTEE_PAGE_FLAG: {
+      return {
+        ...state,
+        updateCommitteePageFlag: action.response,
+      };
+    }
+
+    case actions.VIEW_COMMITTEE_PAGE_FLAG: {
+      return {
+        ...state,
+        viewCommitteePageFlag: action.response,
       };
     }
 

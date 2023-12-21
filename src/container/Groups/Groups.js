@@ -21,6 +21,9 @@ import {
   groupLoader,
   realtimeGroupStatusResponse,
   updateGroupStatus,
+  createGroupPageFlag,
+  updateGroupPageFlag,
+  viewGroupPageFlag,
 } from "../../store/actions/Groups_actions";
 import {
   GetAllUsers,
@@ -45,13 +48,9 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 
 const Groups = () => {
   const { t } = useTranslation();
-  const {
-    GroupsReducer,
-    LanguageReducer,
-    DataRoomReducer,
-    talkStateData,
-    talkFeatureStates,
-  } = useSelector((state) => state);
+  const { GroupsReducer, talkStateData, talkFeatureStates } = useSelector(
+    (state) => state
+  );
   const [modalStatusChange, setModalStatusChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
@@ -89,12 +88,14 @@ const Groups = () => {
     setShowModal(false);
     setUpdateComponentpage(false);
     setViewGroupPage(false);
+    dispatch(createGroupPageFlag(false));
+    dispatch(updateGroupPageFlag(false));
+    dispatch(viewGroupPageFlag(false));
     localStorage.removeItem("groupsArCurrent");
     localStorage.removeItem("ViewGroupID");
 
     localStorage.setItem("groupsCurrent", 1);
     dispatch(getGroups(navigate, t, 1));
-    // dispatch(GetAllUserChats(navigate, currentUserId, currentOrganizationId, t))
   }, []);
 
   useEffect(() => {
@@ -137,50 +138,20 @@ const Groups = () => {
     setViewGroupTab(4);
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
-    // dispatch(getbyGroupID(data.groupID));
-    // dispatch(
-    //   getCommitteesbyCommitteeId(
-    //     navigate,
-    //     Data,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     CommitteeStatusID
-    //   )
-    // );
+    dispatch(viewGroupPageFlag(true));
   };
 
   const handlePollsClickTab = (data) => {
     setViewGroupTab(3);
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
-    // dispatch(getbyGroupID(data.groupID));
-    // dispatch(
-    //   getCommitteesbyCommitteeId(
-    //     navigate,
-    //     Data,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     CommitteeStatusID
-    //   )
-    // );
+    dispatch(viewGroupPageFlag(true));
   };
   const handleTasksClickTab = (data) => {
     setViewGroupTab(2);
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupPage(true);
-    // dispatch(getbyGroupID(data.groupID));
-    // dispatch(
-    //   getCommitteesbyCommitteeId(
-    //     navigate,
-    //     Data,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     CommitteeStatusID
-    //   )
-    // );
+    dispatch(viewGroupPageFlag(true));
   };
 
   useEffect(() => {
@@ -190,7 +161,6 @@ const Groups = () => {
         ...MQttgroupData,
         groupMembers: [...MQttgroupData.groupMembers],
       };
-      // let copyData = [...]
       setgroupsData([newData, ...groupsData]);
     }
   }, [GroupsReducer.realtimeGroupCreateResponse]);
@@ -230,6 +200,7 @@ const Groups = () => {
   };
 
   const groupModal = async (e) => {
+    dispatch(createGroupPageFlag(true));
     setCreategrouppage(true);
   };
 
@@ -237,34 +208,14 @@ const Groups = () => {
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupTab(1);
     setViewGroupPage(true);
-
-    // dispatch(
-    //   getbyGroupID(
-    //     navigate,
-    //     data.groupID,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     1
-    //   )
-    // );
+    dispatch(viewGroupPageFlag(true));
   };
   const viewmodal = (groupID, statusID) => {
     if (statusID === 1) {
       localStorage.setItem("ViewGroupID", groupID);
       setViewGroupTab(1);
+      dispatch(viewGroupPageFlag(true));
       setViewGroupPage(true);
-
-      // dispatch(
-      //   getbyGroupID(
-      //     navigate,
-      //     groupID,
-      //     t,
-      //     setViewGroupPage,
-      //     setUpdateComponentpage,
-      //     statusID
-      //   )
-      // );
     } else if (statusID === 2) {
     } else if (statusID === 3) {
       dispatch(
@@ -350,16 +301,7 @@ const Groups = () => {
     localStorage.setItem("ViewGroupID", data.groupID);
     setViewGroupTab(1);
     setViewGroupPage(true);
-    // dispatch(
-    //   getbyGroupID(
-    //     navigate,
-    //     data.groupID,
-    //     t,
-    //     setViewGroupPage,
-    //     setUpdateComponentpage,
-    //     1
-    //   )
-    // );
+    dispatch(viewGroupPageFlag(true));
   };
 
   const changeHandleStatus = (e, CardID, setEditdropdown) => {
@@ -448,15 +390,16 @@ const Groups = () => {
   return (
     <>
       <div className={styles["Groupscontainer"]}>
-        {creategrouppage ? (
+        {creategrouppage && GroupsReducer.createGroupPageFlag === true ? (
           <>
             <CreateGroup setCreategrouppage={setCreategrouppage} />
           </>
-        ) : updateComponentpage ? (
+        ) : updateComponentpage &&
+          GroupsReducer.updateGroupPageFlag === true ? (
           <>
             <UpdateGroupPage setUpdateComponentpage={setUpdateComponentpage} />
           </>
-        ) : ViewGroupPage ? (
+        ) : ViewGroupPage && GroupsReducer.viewGroupPageFlag === true ? (
           <>
             <ViewGrouppage
               setViewGroupPage={setViewGroupPage}

@@ -18,6 +18,8 @@ import {
   getAllAgendaContributorApi,
   getAllAgendaContributor_fail,
   searchNewUserMeeting,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import redMailIcon from "../../../../../assets/images/redmail.svg";
 import NORSVP from "../../../../../assets/images/No-RSVP.png";
@@ -114,6 +116,9 @@ const AgendaContributers = ({
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
     setAgendaContributors(false);
     localStorage.removeItem("folderDataRoomMeeting");
     setEdiorRole({ status: null, role: null });

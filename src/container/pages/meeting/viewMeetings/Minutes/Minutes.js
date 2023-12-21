@@ -31,6 +31,8 @@ import {
   searchNewUserMeeting,
   cleareAllState,
   InviteToCollaborateMinutesApiFunc,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -645,6 +647,9 @@ const Minutes = ({
         setFileAttachments([]);
         setMinutes(false);
         setViewAdvanceMeetingModal(false);
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
         dispatch(showUnsaveMinutesFileUpload(false));
         let searchData = {
           Date: "",
@@ -670,6 +675,9 @@ const Minutes = ({
         setFileAttachments([]);
         setMinutes(false);
         setViewAdvanceMeetingModal(false);
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
         dispatch(showUnsaveMinutesFileUpload(false));
         let searchData = {
           Date: "",

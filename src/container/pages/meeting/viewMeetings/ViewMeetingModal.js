@@ -10,7 +10,15 @@ import {
   normalizeVideoPanelFlag,
   minimizeVideoPanelFlag,
 } from "../../../../store/actions/VideoFeature_actions";
-import { searchNewUserMeeting } from "../../../../store/actions/NewMeetingActions";
+import {
+  searchNewUserMeeting,
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
+} from "../../../../store/actions/NewMeetingActions";
 import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
 import MeetingMaterial from "./MeetingMaterial/MeetingMaterial";
@@ -208,6 +216,9 @@ const ViewMeetingModal = ({
       ) {
         setEdiorRole({ status: null, role: null });
         setViewAdvanceMeetingModal(false);
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
         setCurrentMeetingID(0);
         setAdvanceMeetingModalID(null);
         setDataroomMapFolderId(0);
@@ -223,7 +234,7 @@ const ViewMeetingModal = ({
             currentView && Number(currentView) === 1 ? true : false,
         };
         dispatch(searchNewUserMeeting(navigate, searchData, t));
-        setViewAdvanceMeetingModal(false);
+
         localStorage.setItem("folderDataRoomMeeting", 0);
       }
       console.log(

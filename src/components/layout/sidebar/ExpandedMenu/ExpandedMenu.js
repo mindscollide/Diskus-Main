@@ -7,11 +7,50 @@ import { useTranslation } from "react-i18next";
 import { getDocumentsAndFolderApi } from "../../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
+import {
+  createGroupPageFlag,
+  updateGroupPageFlag,
+  viewGroupPageFlag,
+} from "../../../../store/actions/Groups_actions";
+import {
+  createCommitteePageFlag,
+  updateCommitteePageFlag,
+  viewCommitteePageFlag,
+} from "../../../../store/actions/Committee_actions";
+import {
+  resultResolutionFlag,
+  voteResolutionFlag,
+  viewAttachmentFlag,
+  createResolutionModal,
+  viewResolutionModal,
+} from "../../../../store/actions/Resolution_actions";
+
 const ExpandedMenu = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const handleGroupLinkClick = () => {
+    dispatch(createGroupPageFlag(false));
+    dispatch(updateGroupPageFlag(false));
+    dispatch(viewGroupPageFlag(false));
+  };
+
+  const handleCommitteeLinkClick = () => {
+    dispatch(createCommitteePageFlag(false));
+    dispatch(updateCommitteePageFlag(false));
+    dispatch(viewCommitteePageFlag(false));
+  };
+
+  const handleResolutionLinkClick = () => {
+    dispatch(resultResolutionFlag(false));
+    dispatch(voteResolutionFlag(false));
+    dispatch(viewAttachmentFlag(false));
+    dispatch(createResolutionModal(false));
+    dispatch(viewResolutionModal(false));
+  };
+
   return (
     <section>
       <Row className="m-2">
@@ -310,6 +349,7 @@ const ExpandedMenu = () => {
                 ? "m-0 p-0 icon-active-sidebar_expand"
                 : "m-0 p-0 icon_expand"
             }
+            onClick={handleGroupLinkClick}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -351,6 +391,7 @@ const ExpandedMenu = () => {
                 ? "m-0 p-0  icon-active-sidebar_expand"
                 : "m-0 p-0 icon_expand"
             }
+            onClick={handleCommitteeLinkClick}
           >
             <div>
               <svg
@@ -409,6 +450,7 @@ const ExpandedMenu = () => {
                 ? "m-0 p-0 icon-active-sidebar_expand"
                 : "m-0 p-0 icon_expand"
             }
+            onClick={handleResolutionLinkClick}
           >
             <div>
               <svg
