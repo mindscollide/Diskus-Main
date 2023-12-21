@@ -10,12 +10,13 @@ const UploadLoaderStart = () => {
   };
 };
 
-const uploadDocumentSuccess = (response, message) => {
+const uploadDocumentSuccess = (response, message, loading) => {
   console.log(response, message, "uploadDocumentSuccess");
   return {
     type: actions.UPLOAD_DOCUMNET_FILE_SUCCESS,
     response: response,
     message: message,
+    loading: loading,
   };
 };
 
@@ -40,7 +41,7 @@ const ResetAllFilesUpload = () => {
 };
 
 //File Upload
-const FileUploadToDo = (navigate, data, t, newfile) => {
+const FileUploadToDo = (navigate, data, t, newfile, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log("uploadedFile:", data);
   let form = new FormData();
@@ -61,11 +62,8 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(FileUploadToDo(navigate, data, t));
+          dispatch(FileUploadToDo(navigate, data, t, newfile, flag));
         } else if (response.data.responseCode === 200) {
-          console.log(
-            "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
-          );
           if (response.data.responseResult.isExecuted === true) {
             console.log(
               "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
@@ -81,12 +79,31 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
                 "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList",
                 response.data.responseResult
               );
-              dispatch(
-                uploadDocumentSuccess(
-                  response.data.responseResult,
-                  t("valid-data")
-                )
-              );
+              if (flag === null && flag === undefined) {
+                dispatch(
+                  uploadDocumentSuccess(
+                    response.data.responseResult,
+                    t("valid-data"),
+                    false
+                  )
+                );
+              } else if (flag) {
+                dispatch(
+                  uploadDocumentSuccess(
+                    response.data.responseResult,
+                    t("valid-data"),
+                    true
+                  )
+                );
+              } else {
+                dispatch(
+                  uploadDocumentSuccess(
+                    response.data.responseResult,
+                    t("valid-data"),
+                    false
+                  )
+                );
+              }
               if (newfile) {
                 let dataResultdisplayFileName =
                   response.data.responseResult.displayFileName;
@@ -186,9 +203,6 @@ const FileUploadToDo2 = (navigate, data, t) => {
                   "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
                 )
             ) {
-              console.log(
-                "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
-              );
               dispatch(
                 uploadDocumentSuccess(
                   response.data.responseResult,
