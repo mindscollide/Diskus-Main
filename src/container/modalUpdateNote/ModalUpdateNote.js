@@ -431,9 +431,12 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         if (Object.keys(fileForSend).length > 0) {
           let newfiles = [...tasksAttachments.TasksAttachments];
           console.log(newfiles, "newfilesnewfiles");
-          const uploadPromises = fileForSend.map((newData) => {
+          const uploadPromises = fileForSend.map((newData, index) => {
+            let flag = fileForSend.length !== index + 1;
             // Return the promise from FileUploadToDo
-            return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
+            return dispatch(
+              FileUploadToDo(navigate, newData, t, newfiles, flag)
+            );
           });
 
           // Wait for all uploadPromises to resolve
