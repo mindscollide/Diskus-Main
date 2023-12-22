@@ -26,12 +26,10 @@ const RefreshToken = (navigate, t) => {
   // const navigate = useNavigate();
   let Token = JSON.parse(localStorage.getItem("token"));
   let RefreshToken = JSON.parse(localStorage.getItem("refreshToken"));
-  console.log("RefreshToken", Token, RefreshToken);
   let Data = {
     Token: Token,
     RefreshToken: RefreshToken,
   };
-  console.log("RefreshToken", Data);
   return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", authenticationRefreshToken.RequestMethod);
@@ -43,7 +41,7 @@ const RefreshToken = (navigate, t) => {
       headers: { "Access-Control-Allow-Origin": "*" },
     })
       .then(async (response) => {
-        console.log("RefreshToken", response);
+        // console.log("RefreshToken", response);
         if (response.data.responseCode === 200) {
           await dispatch(
             refreshtokenSuccess(
@@ -52,9 +50,8 @@ const RefreshToken = (navigate, t) => {
             )
           );
         } else {
-          console.log("RefreshToken", response);
           let message2 = t("Your-session-has-expired-please-login-again");
-          await dispatch(signOut(navigate, message2));
+          // await dispatch(signOut(navigate, message2));
           await dispatch(refreshtokenFail(message2));
         }
       })
