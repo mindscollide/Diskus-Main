@@ -8,7 +8,7 @@ export const StatusValue = (t, statusValue) => {
     case "3":
       return <span className={"meeting-status-value"}>{t("Completed")}</span>;
     case "4":
-      return <span className={"meeting-status-value"}>{t("Cancel")}</span>;
+      return <span className={"meeting-status-value"}>{t("Cancelled")}</span>;
     case "5":
       return <span className={"meeting-status-value"}>{t("Reschedule")}</span>;
     case "6":
@@ -17,7 +17,7 @@ export const StatusValue = (t, statusValue) => {
       return <span className={"meeting-status-value"}>{t("Delete")}</span>;
     case "8":
       return (
-        <span className={"meeting-status-value"}>{t("NotConducted")}</span>
+        <span className={"meeting-status-value"}>{t("Not Conducted")}</span>
       );
     case "9":
       return <span className={"meeting-status-value"}>{t("End")}</span>;
