@@ -172,6 +172,7 @@ const AgendaContributers = ({
                   placeholder={t("Organization-title")}
                   labelClass={"d-none"}
                   width={"100%"}
+                  maxLength={140}
                   applyClass={"Organizer_table"}
                   value={
                     record.isEdit === true

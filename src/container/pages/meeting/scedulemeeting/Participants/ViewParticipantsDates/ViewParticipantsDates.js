@@ -1,9 +1,6 @@
 import React from "react";
 import styles from "./ViewParticipantsDates.module.css";
-import {
-  Button,
-  Checkbox,
-} from "../../../../../../components/elements";
+import { Button, Checkbox } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -14,12 +11,11 @@ import {
   GetAllMeetingDetailsApiFunc,
   SetMeetingResponseApiFunc,
   getUserProposedWiseApi,
+  viewProposeDateMeetingPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import { useState } from "react";
-import {
-  resolutionResultTable,
-} from "../../../../../../commen/functions/date_formater";
+import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
 import moment from "moment";
 
 const ViewParticipantsDates = ({
@@ -70,7 +66,7 @@ const ViewParticipantsDates = ({
       MeetingID: Number(currentMeetingID),
     };
     // await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
-    await dispatch(getUserProposedWiseApi(navigate, t, Data,true));
+    await dispatch(getUserProposedWiseApi(navigate, t, Data, true));
     await dispatch(
       GetAllMeetingDetailsApiFunc(
         navigate,
@@ -82,15 +78,14 @@ const ViewParticipantsDates = ({
         setDataroomMapFolderId
       )
     );
-  
   };
 
   useEffect(() => {
     callApis();
     return () => {
       localStorage.removeItem("viewProposeDatePollMeetingID");
-      setCurrentMeetingID(null)
-      setDataroomMapFolderId(null)
+      setCurrentMeetingID(null);
+      setDataroomMapFolderId(null);
     };
   }, []);
 
@@ -288,6 +283,11 @@ const ViewParticipantsDates = ({
     }
   };
 
+  const handleCancel = () => {
+    setViewProposeDatePoll(false);
+    dispatch(viewProposeDateMeetingPageFlag(false));
+  };
+
   return (
     <section>
       <Row className="mt-2">
@@ -463,7 +463,7 @@ const ViewParticipantsDates = ({
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Button_ProposedMeeting"]}
-                  onClick={() => setViewProposeDatePoll(false)}
+                  onClick={handleCancel}
                 />
               </Col>
             </Row>

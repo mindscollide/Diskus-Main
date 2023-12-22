@@ -31,6 +31,8 @@ import {
   searchNewUserMeeting,
   cleareAllState,
   InviteToCollaborateMinutesApiFunc,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
@@ -52,6 +54,7 @@ const Minutes = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const Delta = Quill.import("delta");
   let userID = localStorage.getItem("userID");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -128,23 +131,34 @@ const Minutes = ({
   const modules = {
     toolbar: {
       container: [
-        {
-          size: ["14px", "16px", "18px"],
-        },
-        { font: ["impact", "courier", "comic", "Montserrat"] },
-        { bold: {} },
-        { italic: {} },
-        { underline: {} },
-
-        { color: [] },
-        { background: [] },
-        { align: [] },
-        { list: "ordered" },
-        { list: "bullet" },
+        [
+          { size: ["14px", "16px", "18px"] },
+          { font: ["impact", "courier", "comic", "Montserrat"] },
+          { bold: "bold" }, // Set 'bold' directly as a string
+          { italic: "italic" }, // Set 'italic' directly as a string
+          { underline: "underline" }, // Set 'underline' directly as a string
+          { color: [] },
+          { background: [] },
+          { align: [] },
+          { list: "ordered" },
+          { list: "bullet" },
+        ],
       ],
       handlers: {},
     },
   };
+
+  const formats = [
+    "size",
+    "font",
+    "bold", // Include 'bold' in formats
+    "italic", // Include 'italic' in formats
+    "underline", // Include 'underline' in formats
+    "color",
+    "background",
+    "align",
+    "list",
+  ];
 
   useEffect(() => {
     let Data = {
@@ -634,6 +648,9 @@ const Minutes = ({
         setFileAttachments([]);
         setMinutes(false);
         setViewAdvanceMeetingModal(false);
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
         dispatch(showUnsaveMinutesFileUpload(false));
         let searchData = {
           Date: "",
@@ -659,6 +676,9 @@ const Minutes = ({
         setFileAttachments([]);
         setMinutes(false);
         setViewAdvanceMeetingModal(false);
+        dispatch(viewAdvanceMeetingPublishPageFlag(false));
+        dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
         dispatch(showUnsaveMinutesFileUpload(false));
         let searchData = {
           Date: "",
@@ -770,6 +790,26 @@ const Minutes = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [ResponseMessage]);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = editorRef.current.getEditor();
+
+      if (editor) {
+        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+          const plaintext = node.innerText || node.textContent || "";
+          const isImage = node.nodeName === "IMG";
+
+          if (isImage) {
+            // Block image paste by returning an empty delta
+            return new Delta();
+          }
+
+          return delta.compose(new Delta().insert(plaintext));
+        });
+      }
+    }
+  }, []);
 
   return (
     <section>

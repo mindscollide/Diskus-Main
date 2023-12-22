@@ -9,6 +9,8 @@ import { useNavigate } from "react-router";
 import {
   cleareAllState,
   searchNewUserMeeting,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
 const CancelButtonModal = ({
   setCancelModalView,
@@ -52,6 +54,9 @@ const CancelButtonModal = ({
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     // setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
     setAgenda(false);
     setCancelModalView(false);
     setPolls(false);

@@ -688,10 +688,10 @@ const CreatePolling = () => {
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <TextField
-                            placeholder={t("Tile")}
+                            placeholder={t("Title")}
                             applyClass={"PollingCreateModal"}
                             labelClass="d-none"
-                            maxLength={500}
+                            maxLength={490}
                             name={"TypingTitle"}
                             value={createPollData.TypingTitle}
                             change={HandleChange}
@@ -735,7 +735,7 @@ const CreatePolling = () => {
                                               applyClass={"PollingCreateModal"}
                                               labelClass="d-none"
                                               name={data.name}
-                                              maxLength={500}
+                                              maxLength={490}
                                               value={data.value}
                                               change={(e) =>
                                                 HandleOptionChange(e)
@@ -758,7 +758,7 @@ const CreatePolling = () => {
                                               labelClass="d-none"
                                               name={data.name}
                                               value={data.value}
-                                              maxLength={500}
+                                              maxLength={490}
                                               change={(e) =>
                                                 HandleOptionChange(e)
                                               }

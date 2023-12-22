@@ -12,6 +12,7 @@ import { setLoaderFalse } from "./MeetingAgenda_action";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import {
   GetAllMeetingDetailsApiFunc,
+  scheduleMeetingPageFlag,
   searchNewUserMeeting,
 } from "./NewMeetingActions";
 import { ViewMeeting } from "./Get_List_Of_Assignees";
@@ -265,7 +266,8 @@ const UpdateOrganizersMeeting = (
   // THIS IS FOR QUICK MEETINGS CHECK
   setViewFlag,
   setEditFlag,
-  setCalendarViewModal
+  setCalendarViewModal,
+  dashboardFlag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -298,7 +300,8 @@ const UpdateOrganizersMeeting = (
               // THIS IS FOR QUICK MEETINGS CHECK
               setViewFlag,
               setEditFlag,
-              setCalendarViewModal
+              setCalendarViewModal,
+              dashboardFlag
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -358,11 +361,13 @@ const UpdateOrganizersMeeting = (
                     )
                   );
                   setAdvanceMeetingModalID(Data.MeetingID);
-                  // setPublishState(false);
                   setEdiorRole({
                     status: "10",
                     role: "Organizer",
                   });
+                  if (dashboardFlag) {
+                    navigate("/Diskus/Meeting");
+                  }
                 } else if (route === 5) {
                   let currentView = localStorage.getItem("MeetingCurrentView");
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -386,6 +391,7 @@ const UpdateOrganizersMeeting = (
                   };
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                   setSceduleMeeting(false);
+                  dispatch(scheduleMeetingPageFlag(false));
                 } else {
                   // setPublishState(Data.MeetingID);
                 }

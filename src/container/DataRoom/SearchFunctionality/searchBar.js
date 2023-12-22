@@ -1173,7 +1173,7 @@ const SearchBarComponent = ({
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
-      StatusID: searchDataFields.StatusID,
+      StatusID: Number(searchDataFields.StatusID),
       Title: searchDataFields.Title,
       isDocument: searchDataFields.isDocument,
       isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1211,6 +1211,42 @@ const SearchBarComponent = ({
     setIsStartOpen(false);
     setIsEndOpen(false);
     setCustomRangeVisible(false);
+    //Back To intial State of Search As Defined
+    setSearchDataFields({
+      UserID: userID ? parseInt(userID) : 0,
+      OrganizationID: organizationID
+        ? parseInt(organizationID)
+        : organizationID,
+      StatusID: 3,
+      Title: "",
+      isDocument: false,
+      isSpreadSheet: false,
+      isPresentation: false,
+      isForms: false,
+      isPDF: false,
+      isFolders: false,
+      isVideos: false,
+      isImages: false,
+      isAudios: false,
+      isSites: false,
+      LastModifiedStartDate: "",
+      LastModifiedEndDate: "",
+      UserIDToSearch: 0,
+      isOwnedByMe: 2,
+      // isNotOwnedByMe: false,
+      isSpecificUser: false,
+      sRow: 0,
+      Length: 10,
+
+      SortBy: 0,
+      isDescending: false,
+    });
+    setSearchResultFields({
+      Date: null,
+      Type: null,
+      Location: null,
+      People: null,
+    });
   };
 
   const handleOutsideClick = (event) => {

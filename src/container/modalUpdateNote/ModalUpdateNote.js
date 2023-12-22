@@ -175,8 +175,29 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   };
 
   //State management of the Quill Editor
-  const onTextChange = (content, delta, source) => {
+  const onTextChange = (content, delta, source, editor) => {
+    const maxLength = 2800; // Maximum allowed characters
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
+    const textLength = plainText.length;
+
+    if (textLength > maxLength && source === "user") {
+      // If the text length exceeds the limit and the change is from user input
+      const diff = textLength - maxLength;
+      const truncatedContent = plainText.substring(0, plainText.length - diff);
+
+      const currentSelection = editor.getSelection(true);
+      const truncatedSelection = Math.max(currentSelection.index - diff, 0);
+
+      editor.setText(truncatedContent); // Set the text to the truncated version
+      editor.setSelection(truncatedSelection); // Set cursor to the correct position after truncation
+      editor.formatText(truncatedSelection, diff, "color", "transparent"); // Hide extra characters
+
+      // Show an alert indicating the character limit
+      alert(
+        `Character limit (${maxLength}) reached. Excess characters will be removed.`
+      );
+    }
+
     if (source === "user" && plainText !== "") {
       setAddNoteFields({
         ...addNoteFields,
@@ -410,9 +431,12 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         if (Object.keys(fileForSend).length > 0) {
           let newfiles = [...tasksAttachments.TasksAttachments];
           console.log(newfiles, "newfilesnewfiles");
-          const uploadPromises = fileForSend.map((newData) => {
+          const uploadPromises = fileForSend.map((newData, index) => {
+            let flag = fileForSend.length !== index + 1;
             // Return the promise from FileUploadToDo
-            return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
+            return dispatch(
+              FileUploadToDo(navigate, newData, t, newfiles, flag)
+            );
           });
 
           // Wait for all uploadPromises to resolve
@@ -631,7 +655,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         placeholder={t("Meeting-with")}
                         applyClass="updateNotes_titleInput"
                         name="Title"
-                        maxLength={100}
+                        maxLength={290}
                         value={addNoteFields.Title.value || ""}
                         onChange={addNotesFieldHandler}
                       />

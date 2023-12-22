@@ -581,13 +581,19 @@ const getCommitteesbyCommitteeId = (
               if (CommitteeStatusID === 1) {
                 setViewGroupPage(true);
                 setUpdateComponentpage(false);
+                dispatch(viewCommitteePageFlag(true));
+                dispatch(updateCommitteePageFlag(false));
               } else if (CommitteeStatusID === 2) {
                 setUpdateComponentpage(false);
                 setArchivedCommittee(false);
                 setViewGroupPage(true);
+                dispatch(viewCommitteePageFlag(true));
+                dispatch(updateCommitteePageFlag(false));
               } else if (CommitteeStatusID === 3) {
                 setUpdateComponentpage(true);
                 setViewGroupPage(false);
+                dispatch(viewCommitteePageFlag(false));
+                dispatch(updateCommitteePageFlag(true));
               }
               console.log("checking");
             } else if (
@@ -1572,6 +1578,30 @@ const viewDetailsCommitteeID = (id) => {
   };
 };
 
+//Create Committee Page
+const createCommitteePageFlag = (response) => {
+  return {
+    type: actions.CREATE_COMMITTEE_PAGE_FLAG,
+    response: response,
+  };
+};
+
+//Update Committee Page
+const updateCommitteePageFlag = (response) => {
+  return {
+    type: actions.UPDATE_COMMITTEE_PAGE_FLAG,
+    response: response,
+  };
+};
+
+//View Committee Page
+const viewCommitteePageFlag = (response) => {
+  return {
+    type: actions.VIEW_COMMITTEE_PAGE_FLAG,
+    response: response,
+  };
+};
+
 export {
   viewDetailsCommitteeID,
   saveCommitteeDocumentsApi,
@@ -1591,4 +1621,7 @@ export {
   realtimeCommitteeStatusResponse,
   assignGroups,
   getAllArcheivedCommittees,
+  createCommitteePageFlag,
+  updateCommitteePageFlag,
+  viewCommitteePageFlag,
 };

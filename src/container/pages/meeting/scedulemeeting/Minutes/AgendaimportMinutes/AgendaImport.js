@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./AgendaImport.module.css";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,7 @@ const AgendaImport = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const Delta = Quill.import("delta");
   const { NewMeetingreducer } = useSelector((state) => state);
   const [expanded, setExpanded] = useState(false);
   const [subExpand, setSubExpand] = useState(false);
@@ -176,6 +177,26 @@ const AgendaImport = () => {
   const handlecreateanotherMinutesSubagenda = () => {
     setCreateAnotherMinutesSubAgenda(true);
   };
+
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = editorRef.current.getEditor();
+
+      if (editor) {
+        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+          const plaintext = node.innerText || node.textContent || "";
+          const isImage = node.nodeName === "IMG";
+
+          if (isImage) {
+            // Block image paste by returning an empty delta
+            return new Delta();
+          }
+
+          return delta.compose(new Delta().insert(plaintext));
+        });
+      }
+    }
+  }, []);
 
   return (
     <section>

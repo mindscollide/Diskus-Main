@@ -1497,6 +1497,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         placeholder={t("Location") + "*"}
                         value={createMeeting.MeetingLocation}
                         required={true}
+                        maxLength={245}
                       />
                       {/* {modalField === true &&
                       createMeeting.MeetingLocation === "" ? (
@@ -1537,7 +1538,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         size="small"
                         placeholder={t("Meeting-title") + "*"}
                         required={true}
-                        maxLength={200}
+                        maxLength={245}
                       />
                       {modalField === true &&
                       createMeeting.MeetingTitle === "" ? (
@@ -1563,7 +1564,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
-                        maxLength={500}
                       />
                       {/* {modalField === true &&
                       createMeeting.MeetingDescription === "" ? (

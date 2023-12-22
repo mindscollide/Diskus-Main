@@ -16,6 +16,12 @@ import { useNavigate } from "react-router-dom";
 import {
   cleareAllState,
   searchNewUserMeeting,
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   clearResponseMessage,
@@ -250,6 +256,9 @@ const Organizers = ({
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
     setorganizers(false);
     localStorage.removeItem("folderDataRoomMeeting");
     setEdiorRole({ status: null, role: null });

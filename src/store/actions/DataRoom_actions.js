@@ -27,6 +27,7 @@ import {
   updateFolderGeneralAccessRM,
   dataRoomFileDownloadService,
   dataRoomFolderDownloadService,
+  validateEncyptedStringUserDataRoom,
 } from "../../commen/apis/Api_config";
 import {
   DataRoomAllFilesDownloads,
@@ -2620,6 +2621,69 @@ const createFolderLink_fail = (message) => {
   };
 };
 
+// const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
+//   let token = JSON.parse(localStorage.getItem("token"));
+
+//   return (dispatch) => {
+//     dispatch(createFolderLink_init());
+//     let form = new FormData();
+//     form.append("RequestMethod", createFolderLinkRM.RequestMethod);
+//     form.append("RequestData", JSON.stringify(data));
+//     axios({
+//       method: "post",
+//       url: dataRoomApi,
+//       data: form,
+//       headers: {
+//         _token: token,
+//       },
+//     })
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(createFolderLinkApi(navigate, t, data));
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage.toLowerCase() ===
+//               "DataRoom_DataRoomManager_CreateFolderLink_01".toLowerCase()
+//             ) {
+//               dispatch(
+//                 createFolderLink_success(
+//                   response.data.responseResult.link,
+//                   t("Data-available")
+//                 )
+//               );
+//               setLinkedcopied(true);
+//             } else if (
+//               response.data.responseResult.responseMessage.toLowerCase() ===
+//               "DataRoom_DataRoomManager_CreateFolderLink_02".toLowerCase()
+//             ) {
+//               dispatch(
+//                 createFolderLink_fail(t("Folder-not-shared-against-any-users"))
+//               );
+//             } else if (
+//               response.data.responseResult.responseMessage.toLowerCase() ===
+//               "DataRoom_DataRoomManager_CreateFolderLink_03".toLowerCase()
+//             ) {
+//               dispatch(createFolderLink_fail(t("Something-went-wrong")));
+//             } else {
+//               dispatch(createFolderLink_fail(t("Something-went-wrong")));
+//             }
+//           } else {
+//             dispatch(createFolderLink_fail(t("Something-went-wrong")));
+//           }
+//         } else {
+//           dispatch(createFolderLink_fail(t("Something-went-wrong")));
+//         }
+//       })
+//       .catch((error) => {
+//         dispatch(createFolderLink_fail(t("Something-went-wrong")));
+//       });
+//   };
+// };
+
+//Same Api Newly Implemented
+
 const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -2644,25 +2708,28 @@ const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_CreateFolderLink_01".toLowerCase()
+              "DataRoom_DataRoomManager_CreateFolderFileLink_01".toLowerCase()
             ) {
               dispatch(
                 createFolderLink_success(
                   response.data.responseResult.link,
-                  t("Data-available")
+                  t("Link-created")
                 )
               );
               setLinkedcopied(true);
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_CreateFolderLink_02".toLowerCase()
+              "DataRoom_DataRoomManager_CreateFolderFileLink_02".toLowerCase()
             ) {
-              dispatch(
-                createFolderLink_fail(t("Folder-not-shared-against-any-users"))
-              );
+              dispatch(createFolderLink_fail(t("No-file-exist-in-system")));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
-              "DataRoom_DataRoomManager_CreateFolderLink_03".toLowerCase()
+              "DataRoom_DataRoomManager_CreateFolderFileLink_03".toLowerCase()
+            ) {
+              dispatch(createFolderLink_fail(t("No-folder-exist-in-system")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CreateFolderFileLink_04".toLowerCase()
             ) {
               dispatch(createFolderLink_fail(t("Something-went-wrong")));
             } else {
@@ -3324,6 +3391,177 @@ const showFileDetailsModal = (response) => {
   };
 };
 
+//Validate User For Data Room
+
+const validateUserDataRoomInit = () => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_DATAROOM_INIT,
+  };
+};
+
+const validateUserDataRoomSuccess = (response, message) => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const validateUserDataRoomFailed = (message) => {
+  return {
+    type: actions.VALIDATE_EMPTY_STRING_DATAROOM_FAILED,
+    message: message,
+  };
+};
+
+const validateUserAvailibilityEncryptedStringDataRoomApi = (
+  navigate,
+  Data,
+  t,
+  setShareFileModal
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(validateUserDataRoomInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      validateEncyptedStringUserDataRoom.RequestMethod
+    );
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: dataRoomApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      });
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API request
+        await dispatch(
+          validateUserAvailibilityEncryptedStringDataRoomApi(
+            navigate,
+            Data,
+            t,
+            setShareFileModal
+          )
+        );
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_01".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              validateUserDataRoomSuccess(
+                response.data.responseResult,
+                t("No-restrictions")
+              )
+            );
+            window.open(
+              `/#/DisKus/documentViewer?pdfData=${encodeURIComponent()}`,
+              "_blank",
+              "noopener noreferrer"
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_02".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateUserDataRoomFailed(
+                t(
+                  "Only-allowed-to-my-organization-and-user-part-of-organization"
+                )
+              )
+            );
+            setShareFileModal(true);
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_03".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateUserDataRoomFailed(
+                t(
+                  "Only-allowed-to-my-organization-and-user-not-part-of-organization"
+                )
+              )
+            );
+            setShareFileModal(true);
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_04".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateUserDataRoomFailed(
+                t("File-restricted-but-this-user-has-assigned-rights")
+              )
+            );
+            setShareFileModal(true);
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_05".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateUserDataRoomFailed(
+                t("File-restricted-request-is-to-ask-for-request-access")
+              )
+            );
+            setShareFileModal(true);
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_06".toLowerCase()
+              )
+          ) {
+            dispatch(
+              validateUserDataRoomFailed(t("No-file-exists-in-the-system"))
+            );
+            setShareFileModal(true);
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_07".toLowerCase()
+              )
+          ) {
+            dispatch(validateUserDataRoomFailed(t("Link-expired")));
+            setShareFileModal(true);
+          } else {
+            dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+        }
+      } else {
+        dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+      }
+    } catch (error) {
+      dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+    }
+  };
+};
+
 export {
   createFolderLink_fail,
   createFileLink_fail,
@@ -3361,4 +3599,5 @@ export {
   DataRoomDownloadFileApiFunc,
   DataRoomDownloadFolderApiFunc,
   showFileDetailsModal,
+  validateUserAvailibilityEncryptedStringDataRoomApi,
 };

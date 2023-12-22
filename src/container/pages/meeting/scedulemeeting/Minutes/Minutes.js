@@ -53,6 +53,7 @@ const Minutes = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const Delta = Quill.import("delta");
   let userID = localStorage.getItem("userID");
   let folderID = localStorage.getItem("folderDataRoomMeeting");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -139,7 +140,6 @@ const Minutes = ({
         { bold: {} },
         { italic: {} },
         { underline: {} },
-
         { color: [] },
         { background: [] },
         { align: [] },
@@ -148,8 +148,10 @@ const Minutes = ({
       ],
       handlers: {},
     },
+    clipboard: {
+      matchVisual: false,
+    },
   };
-
   useEffect(() => {
     let Data = {
       MeetingID: Number(currentMeeting),
@@ -774,8 +776,25 @@ const Minutes = ({
     }
   }, [ResponseMessage]);
 
-  console.log(organizerID, "userIDuserIDuserIDuserID");
-  console.log(userID, "userIDuserIDuserIDuserID");
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = editorRef.current.getEditor();
+
+      if (editor) {
+        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+          const plaintext = node.innerText || node.textContent || "";
+          const isImage = node.nodeName === "IMG";
+
+          if (isImage) {
+            // Block image paste by returning an empty delta
+            return new Delta();
+          }
+
+          return delta.compose(new Delta().insert(plaintext));
+        });
+      }
+    }
+  }, []);
 
   return (
     <section>

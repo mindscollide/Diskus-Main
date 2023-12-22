@@ -575,11 +575,11 @@ const Polling = () => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "SearchVal") {
-      let UpdateValue = regexOnlyForNumberNCharacters(value);
-      if (UpdateValue !== "") {
+      // let UpdateValue = regexOnlyForNumberNCharacters(value);
+      if (value !== "") {
         setPollsState({
           ...pollsState,
-          searchValue: UpdateValue,
+          searchValue: value,
         });
       } else {
         setPollsState({

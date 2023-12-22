@@ -127,9 +127,30 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     }
   };
 
-  const onTextChange = (content, delta, source) => {
+  const onTextChange = (content, delta, source, editor) => {
+    const maxLength = 2800; // Maximum allowed characters
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText != "") {
+    const textLength = plainText.length;
+
+    if (textLength > maxLength && source === "user") {
+      // If the text length exceeds the limit and the change is from user input
+      const diff = textLength - maxLength;
+      const truncatedContent = plainText.substring(0, plainText.length - diff);
+
+      const currentSelection = editor.getSelection(true);
+      const truncatedSelection = Math.max(currentSelection.index - diff, 0);
+
+      editor.setText(truncatedContent); // Set the text to the truncated version
+      editor.setSelection(truncatedSelection); // Set cursor to the correct position after truncation
+      editor.formatText(truncatedSelection, diff, "color", "transparent"); // Hide extra characters
+
+      // Show an alert indicating the character limit
+      alert(
+        `Character limit (${maxLength}) reached. Excess characters will be removed.`
+      );
+    }
+
+    if (source === "user" && plainText !== "") {
       console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
 
       setAddNoteFields({
@@ -380,8 +401,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       if (Object.keys(fileForSend).length > 0) {
         let newfile = [];
         let newData = [];
-        const uploadPromises = fileForSend.map((newData) => {
-          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+        const uploadPromises = fileForSend.map((newData, index) => {
+          let flag = fileForSend.length !== index + 1;
+          return dispatch(FileUploadToDo(navigate, newData, t, newfile, flag));
         });
         await Promise.all(uploadPromises);
         newfile.map((attachmentData, index) => {
@@ -542,7 +564,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         name="Title"
                         ref={NoteTitle}
                         onKeyDown={(event) => enterKeyHandler(event, editorRef)}
-                        maxLength={100}
+                        maxLength={290}
                         value={addNoteFields.Title.value || ""}
                         onChange={addNotesFieldHandler}
                       />

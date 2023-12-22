@@ -32,6 +32,9 @@ import {
   getVotesDetails,
   getVoterResolution,
   createResolutionModal,
+  resultResolutionFlag,
+  voteResolutionFlag,
+  viewAttachmentFlag,
 } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin } from "antd";
@@ -125,6 +128,9 @@ const Resolution = () => {
       dispatch(createResolutionModal(false));
       dispatch(updateResolutionModal(false));
       dispatch(viewResolutionModal(false));
+      dispatch(resultResolutionFlag(false));
+      dispatch(voteResolutionFlag(false));
+      dispatch(viewAttachmentFlag(false));
     };
   }, []);
 
@@ -374,6 +380,7 @@ const Resolution = () => {
 
   const viewAttachmentHandle = (data) => {
     setViewattachmentpage(true);
+    dispatch(viewAttachmentFlag(true));
     setResolutionAttachments(data);
   };
 
@@ -1194,14 +1201,15 @@ const Resolution = () => {
           <>
             <ViewResolution />
           </>
-        ) : resultresolution ? (
+        ) : resultresolution &&
+          ResolutionReducer.resultResolutionFlag === true ? (
           <>
             <ResultResolution
               setResultresolution={setResultresolution}
               resultresolution={resultresolution}
             />
           </>
-        ) : voteresolution ? (
+        ) : voteresolution && ResolutionReducer.voteResolutionFlag === true ? (
           <>
             <VotingPage
               setVoteresolution={setVoteresolution}
@@ -1209,7 +1217,8 @@ const Resolution = () => {
               voterID={voterID}
             />
           </>
-        ) : viewattachmentpage ? (
+        ) : viewattachmentpage &&
+          ResolutionReducer.viewAttachmentFlag === true ? (
           <>
             <ViewAttachments
               setViewattachmentpage={setViewattachmentpage}

@@ -19,6 +19,9 @@ const initialState = {
   groupDocuments: null,
   uploadGroupDocuments: null,
   saveUploadGroupDocuments: null,
+  createGroupPageFlag: false,
+  updateGroupPageFlag: false,
+  viewGroupPageFlag: false,
 };
 
 const GroupsReducer = (state = initialState, action) => {
@@ -373,6 +376,27 @@ const GroupsReducer = (state = initialState, action) => {
         Loading: false,
         saveUploadGroupDocuments: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CREATE_GROUP_PAGE_FLAG: {
+      return {
+        ...state,
+        createGroupPageFlag: action.response,
+      };
+    }
+
+    case actions.UPDATE_GROUP_PAGE_FLAG: {
+      return {
+        ...state,
+        updateGroupPageFlag: action.response,
+      };
+    }
+
+    case actions.VIEW_GROUP_PAGE_FLAG: {
+      return {
+        ...state,
+        viewGroupPageFlag: action.response,
       };
     }
 

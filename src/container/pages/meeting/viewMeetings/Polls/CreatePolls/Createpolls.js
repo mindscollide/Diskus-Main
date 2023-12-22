@@ -583,6 +583,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                     <TextField
                       labelClass={"d-none"}
                       name={"TitlePolls"}
+                      maxLength={490}
                       value={pollsData.Title}
                       change={HandleChange}
                     />
@@ -617,7 +618,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                         applyClass={"PollingCreateModal"}
                                         labelClass="d-none"
                                         name={data.name}
-                                        maxLength={500}
+                                        maxLength={490}
                                         value={data.value}
                                         change={(e) => HandleOptionChange(e)}
                                       />
@@ -636,7 +637,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                         labelClass="d-none"
                                         name={data.name}
                                         value={data.value}
-                                        maxLength={500}
+                                        maxLength={490}
                                         change={(e) => HandleOptionChange(e)}
                                         inputicon={
                                           <img
@@ -644,6 +645,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                             src={WhiteCrossIcon}
                                             width="31.76px"
                                             height="31.76px"
+                                            alt=""
                                             onClick={() =>
                                               HandleCancelFunction(index)
                                             }
@@ -683,6 +685,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                                 src={plusFaddes}
                                 width="15.87px"
                                 height="15.87px"
+                                alt=""
                               />
                               <span className={styles["Add_Button_Heading"]}>
                                 {t("Add-another-field")}

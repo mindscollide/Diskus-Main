@@ -18,6 +18,12 @@ import {
   CleareMessegeNewMeeting,
   GetAllMeetingDetailsApiFunc,
   searchNewUserMeeting,
+  scheduleMeetingPageFlag,
+  viewProposeDateMeetingPageFlag,
+  viewAdvanceMeetingPublishPageFlag,
+  viewAdvanceMeetingUnpublishPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
+  proposeNewMeetingPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { utcConvertintoGMT } from "../../../../../commen/functions/date_formater";
 import { useSelector } from "react-redux";
@@ -42,6 +48,7 @@ import {
   leaveCallModal,
   participantPopup,
 } from "../../../../../store/actions/VideoFeature_actions";
+import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 
 const ViewMeetingDetails = ({
   setorganizers,
@@ -241,6 +248,9 @@ const ViewMeetingDetails = ({
     setAdvanceMeetingModalID(null);
     // setMeetingDetails(false);
     setViewAdvanceMeetingModal(false);
+    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
     // setAgenda(false);
     // setCancelModalView(false);
     // setPolls(false);
@@ -483,6 +493,15 @@ const ViewMeetingDetails = ({
   console.log("NewMeetingReducerNewMeetingReducer", NewMeetingreducer);
   console.log("meetingDetailsmeetingDetails", meetingDetails);
 
+  console.log(
+    "setDataroomMapFolderIdsetDataroomMapFolderId",
+    setDataroomMapFolderId
+  );
+
+  console.log("setEdiorRolesetEdiorRole", setEdiorRole);
+
+  console.log("setAdvanceMeetingModalID", setAdvanceMeetingModalID);
+
   return (
     <>
       <section>
@@ -523,6 +542,9 @@ const ViewMeetingDetails = ({
                     className={styles["LeaveMeetinButton"]}
                     onClick={() => {
                       setViewAdvanceMeetingModal(false);
+                      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                      dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+
                       setAdvanceMeetingModalID(null);
                     }}
                   />
@@ -533,6 +555,8 @@ const ViewMeetingDetails = ({
                   className={styles["LeaveMeetinButton"]}
                   onClick={() => {
                     setViewAdvanceMeetingModal(false);
+                    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
                     setAdvanceMeetingModalID(null);
                   }}
                 />
@@ -594,26 +618,26 @@ const ViewMeetingDetails = ({
                 </Row>
                 <Row>
                   {rows.map((data, index) => {
-                    console.log(data, "datadtatdtatdta");
+                    console.log(data, "formattedStartDateformattedStartDate");
+                    const formattedStartDate = convertToGMT(
+                      data.meetingDate,
+                      data.startTime
+                    );
+                    const formattedEndDate = convertToGMT(
+                      data.meetingDate,
+                      data.endTime
+                    );
 
-                    const formattedStartDate = utcConvertintoGMT(
-                      data.selectedOption + data.startDate
-                    );
-                    const formattedEndDate = utcConvertintoGMT(
-                      data.selectedOption + data.endDate
-                    );
+                    if (!formattedStartDate || !formattedEndDate) {
+                      return null;
+                    }
 
-                    console.log(
-                      { formattedStartDate, formattedEndDate },
-                      "testdatetimt"
-                    );
                     return (
                       <Col key={index} lg={12} md={12} sm={12}>
-                        <span className={styles["SceduledDateTime"]}>
-                          {moment(formattedStartDate).format("HH:MM a")} -{" "}
-                          {moment(formattedEndDate).format("HH:MM a")} ,{" "}
-                          {moment(formattedEndDate).format("DD MMM YYYY")}
-                          {/* {formattedStartDate} */}
+                        <span className={styles["ScheduledDateTime"]}>
+                          {moment.utc(formattedStartDate).format("HH:mm a")} -{" "}
+                          {moment.utc(formattedEndDate).format("HH:mm a")} ,{" "}
+                          {moment.utc(formattedEndDate).format("DD MMM YYYY")}
                         </span>
                       </Col>
                     );
