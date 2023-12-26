@@ -44,19 +44,19 @@ const RefreshToken = (navigate, t) => {
     })
       .then(async (response) => {
         console.log("RefreshToken", response);
-        if (response.data.responseCode === 200) {
-          await dispatch(
-            refreshtokenSuccess(
-              response.data.responseResult,
-              t("Refresh-token-update-successfully")
-            )
-          );
-        } else {
-          console.log("RefreshToken", response);
-          let message2 = t("Your-session-has-expired-please-login-again");
-          await dispatch(signOut(navigate, message2));
-          await dispatch(refreshtokenFail(message2));
-        }
+        // if (response.data.responseCode === 200) {
+        await dispatch(
+          refreshtokenSuccess(
+            response.data.responseResult,
+            t("Refresh-token-update-successfully")
+          )
+        );
+        // } else {
+        //   console.log("RefreshToken", response);
+        //   let message2 = t("Your-session-has-expired-please-login-again");
+        //   await dispatch(signOut(navigate, message2));
+        //   await dispatch(refreshtokenFail(message2));
+        // }
       })
       .catch((response) => {
         dispatch(refreshtokenFail(t("Something-went-wrong")));
