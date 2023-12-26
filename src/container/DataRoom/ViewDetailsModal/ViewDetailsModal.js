@@ -43,7 +43,7 @@ const ViewDetailsModal = ({
   const [documentDetails, setDocumentDetails] = useState({
     sharedUsers: [],
     ownerDetails: {
-      fileID: 0,
+      id: 0,
       userID: 0,
       organizationID: 0,
       userName: "",
@@ -105,7 +105,7 @@ const ViewDetailsModal = ({
     let descriptionValue = event.target.value;
     if (descriptionValue.trim() !== "") {
       let Data = {
-        ID: documentDetails?.ownerDetails?.fileID,
+        ID: documentDetails?.ownerDetails?.id,
         isFolder: documentDetails.type
           .toLowerCase()
           .includes("Folder".toLowerCase())

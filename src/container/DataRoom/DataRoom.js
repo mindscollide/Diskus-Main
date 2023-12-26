@@ -257,7 +257,7 @@ const DataRoom = () => {
     if (currentUrl.includes("DisKus/dataroom?action=")) {
       const remainingString = currentUrl.split("?action=")[1];
       console.log(remainingString, "remainingStringremainingString");
-      if (remainingString) {
+      if (remainingString !== "") {
         setDataRoomString(remainingString);
         // APi call
         let Data = { Link: remainingString };
@@ -266,7 +266,8 @@ const DataRoom = () => {
             navigate,
             Data,
             t,
-            setShareFileModal
+            setShareFileModal,
+            setRequestFile
           )
         );
       }
@@ -276,13 +277,14 @@ const DataRoom = () => {
       if (DataRoomString !== undefined && DataRoomString !== null) {
         setRequestingAccess(true);
         setDataRoomString(DataRoomString);
-        let Data = { Link: DataRoomString };
+        let Data = { Link: currentUrl };
         dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(
             navigate,
             Data,
             t,
-            setShareFileModal
+            setShareFileModal,
+            setRequestFile
           )
         );
       } else {
