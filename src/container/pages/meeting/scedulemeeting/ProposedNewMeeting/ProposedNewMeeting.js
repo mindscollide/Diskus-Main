@@ -695,6 +695,11 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                   <Col lg={10} md={10} sm={10}>
                     <Select
                       onChange={handleSelectValue}
+                      isDisabled={
+                        PollsReducer.gellAllCommittesandGroups === null
+                          ? true
+                          : false
+                      }
                       value={selectedsearch}
                       classNamePrefix={"selectMember"}
                       closeMenuOnSelect={false}
