@@ -28,6 +28,7 @@ console.log(initialState);
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.REFRESH_TOKEN_SUCCESS:
+      console.log(action, "authReducerauthReducerauthReducer");
       localStorage.setItem("token", JSON.stringify(action.response.token));
       localStorage.setItem(
         "RefreshToken",

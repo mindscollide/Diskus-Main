@@ -68,9 +68,12 @@ export function removePropertiesFromObject(obj) {
 //Email supports arabic and english langugae both emails formats
 
 export const validateEmailEnglishAndArabicFormat = (email) => {
-  const re = XRegExp(
-    "^([\\p{L}0-9_\\-]+)@([\\p{L}0-9_\\-]+)\\.([\\p{L}.]{2,})$",
-    "u"
+  const emailRegex = XRegExp(
+    `
+  ^
+  [\\p{L}0-9._%+-]+@[\\p{L}0-9.-]+\\.[\\p{L}]{2,}$
+`,
+    "xi"
   );
-  return re.test(email);
+  return emailRegex.test(email);
 };
