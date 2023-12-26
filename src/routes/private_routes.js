@@ -32,7 +32,11 @@ const PrivateRoutes = () => {
   let Blur = localStorage.getItem("blur");
   let currentUserID = localStorage.getItem("userID");
   let RoleID = localStorage.getItem("roleID");
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token =
+    localStorage.getItem("token") !== undefined &&
+    localStorage.getItem("token") !== null
+      ? JSON.parse(localStorage.getItem("token"))
+      : "";
   let TwoFA = JSON.parse(localStorage.getItem("2fa"));
   let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));
   const [twoFaAproval, setTwoFaAproval] = useState(
