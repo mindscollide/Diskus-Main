@@ -313,9 +313,9 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
 
   //Removing the Added Participants
   const hanleRemovingParticipants = (index) => {
-    let removeParticipant = [...participantsProposedMeeting];
+    let removeParticipant = [...members];
     removeParticipant.splice(index, 1);
-    setParticipantsProposedMeeting(removeParticipant);
+    setMembers(removeParticipant);
   };
 
   //Adding the Dates Rows
@@ -719,75 +719,74 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                     className={styles["Scroller_ProposedMeeting"]}
                   >
                     <Row className="mt-2">
-                      {participantsProposedMeeting.length > 0
-                        ? participantsProposedMeeting.map(
-                            (participant, index) => {
-                              return (
-                                <>
-                                  <Col
-                                    lg={6}
-                                    md={6}
-                                    sm={12}
-                                    className="mt-2"
-                                    key={index}
-                                  >
-                                    <Row className="m-0 p-0">
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className={styles["Box_for_Assignee"]}
-                                      >
-                                        <Row className="mt-1">
-                                          <Col
-                                            lg={10}
-                                            md={10}
-                                            sm={12}
-                                            className="d-flex gap-2 align-items-center"
+                      {members.length > 0
+                        ? members.map((participant, index) => {
+                            console.log(participant, "participantparticipant");
+                            return (
+                              <>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={12}
+                                  className="mt-2"
+                                  key={index}
+                                >
+                                  <Row className="m-0 p-0">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={styles["Box_for_Assignee"]}
+                                    >
+                                      <Row className="mt-1">
+                                        <Col
+                                          lg={10}
+                                          md={10}
+                                          sm={12}
+                                          className="d-flex gap-2 align-items-center"
+                                        >
+                                          <img
+                                            draggable={false}
+                                            src={profile}
+                                            //   src={`data:image/jpeg;base64,${data.displayPicture}`}
+                                            width="50px"
+                                            alt=""
+                                            height="50px"
+                                            className={styles["ProfilePic"]}
+                                          />
+                                          <span
+                                            className={
+                                              styles["ParticipantName"]
+                                            }
                                           >
-                                            <img
-                                              draggable={false}
-                                              src={profile}
-                                              //   src={`data:image/jpeg;base64,${data.displayPicture}`}
-                                              width="50px"
-                                              alt=""
-                                              height="50px"
-                                              className={styles["ProfilePic"]}
-                                            />
-                                            <span
-                                              className={
-                                                styles["ParticipantName"]
-                                              }
-                                            >
-                                              {participant.name}
-                                            </span>
-                                          </Col>
-                                          <Col
-                                            lg={2}
-                                            md={2}
-                                            sm={2}
-                                            className="d-flex  align-items-center"
-                                          >
-                                            <img
-                                              src={CrossIcon}
-                                              width="14px"
-                                              height="14px"
-                                              draggable="false"
-                                              style={{ cursor: "pointer" }}
-                                              alt=""
-                                              onClick={() =>
-                                                hanleRemovingParticipants(index)
-                                              }
-                                            />
-                                          </Col>
-                                        </Row>
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </>
-                              );
-                            }
-                          )
+                                            {participant.userName}
+                                          </span>
+                                        </Col>
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={2}
+                                          className="d-flex  align-items-center"
+                                        >
+                                          <img
+                                            src={CrossIcon}
+                                            width="14px"
+                                            height="14px"
+                                            draggable="false"
+                                            style={{ cursor: "pointer" }}
+                                            alt=""
+                                            onClick={() =>
+                                              hanleRemovingParticipants(index)
+                                            }
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </>
+                            );
+                          })
                         : null}
                       <Row>
                         <Col>
