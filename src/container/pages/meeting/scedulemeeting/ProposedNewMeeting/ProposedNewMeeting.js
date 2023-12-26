@@ -557,7 +557,7 @@ const ProposedNewMeeting = ({
         MeetingDetails: {
           MeetingID: 0,
           MeetingTitle: proposedMeetingDetails.MeetingTitle,
-          MeetingType: { PK_MTID: 27, Type: "Board Meetings" },
+          MeetingType: { PK_MTID: 27, Type: "BoardMeetings" },
           Location: "",
           Description: proposedMeetingDetails.Description,
           IsVideoChat: true,

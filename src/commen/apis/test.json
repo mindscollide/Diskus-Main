@@ -1,19 +1,18 @@
 {
   "MeetingDetails": {
     "MeetingID": 0,
-    "MeetingTitle": "saif testing ",
-    "MeetingType": { "PK_MTID": 27, "Type": "Board Meetings" },
-    "Location": "",
-    "Description": "hello description ",
+    "MeetingTitle": "asdasdasdasd",
+    "MeetingType": { "PK_MTID": 1, "Type": "Board-meeting" },
+    "Location": "asdasdasd",
+    "Description": "asdasdasd",
     "IsVideoChat": true,
     "IsTalkGroup": false,
-    "OrganizationId": 411,
+    "OrganizationId": 417,
     "MeetingDates": [
-      { "MeetingDate": "20231226", "StartTime": "130000", "EndTime": "140000" },
-      { "MeetingDate": "20231227", "StartTime": "121700", "EndTime": "141700" }
+      { "MeetingDate": "20231226", "StartTime": "130000", "EndTime": "140000" }
     ],
     "MeetingReminders": [4],
-    "Notes": "",
+    "Notes": "asdasdasd",
     "AllowRSVP": true,
     "NotifyOrganizerOnRSVP": true,
     "ReucurringMeetingID": 1,
