@@ -59,6 +59,7 @@ import {
   getAllagendaWiseDocumentsApi,
   inviteForCollaboration,
   validateEncryptedStringUserAvailabilityForMeeting,
+  getAllCommittesandGroupsforPolls,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -5360,7 +5361,8 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
   navigate,
   Data,
   t,
-  setDataroomMapFolderId
+  setDataroomMapFolderId,
+  members
 ) => {
   console.log(
     { Data },
@@ -5387,7 +5389,9 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
         console.log(response, "headers");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(CreateUpdateMeetingDataRoomMapeedApiFunc(navigate, Data, t));
+          dispatch(
+            CreateUpdateMeetingDataRoomMapeedApiFunc(navigate, Data, t, members)
+          );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -5410,6 +5414,17 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                 response.data.responseResult.folderID
               );
               setDataroomMapFolderId(response.data.responseResult.folderID);
+              let newarry = [];
+              members.map((data, index) => {
+                console.log(data.userID, "newarrynewarry");
+                newarry.push(data.userID);
+              });
+              let Data = {
+                MeetingID: 2033,
+                MeetingAttendeRoleID: 2,
+                UpdatedUsers: newarry,
+              };
+              dispatch(UpdateMeetingUserApiFunc(navigate, Data, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

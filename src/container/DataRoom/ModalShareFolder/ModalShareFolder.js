@@ -109,6 +109,11 @@ const ModalShareFolder = ({
     // setExpirationheader(false);
   };
 
+  console.log(
+    getCreateFolderLink,
+    "getCreateFolderLinkgetCreateFolderLinkgetCreateFolderLink"
+  );
+
   useEffect(() => {
     if (getCreateFolderLink !== "") {
       copyToClipboard(getCreateFolderLink);
