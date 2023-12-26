@@ -3418,7 +3418,8 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
   navigate,
   Data,
   t,
-  setShareFileModal
+  setShareFileModal,
+  setRequestFile
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -3448,7 +3449,8 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
             navigate,
             Data,
             t,
-            setShareFileModal
+            setShareFileModal,
+            setRequestFile
           )
         );
       } else if (response.data.responseCode === 200) {
@@ -3485,7 +3487,9 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 )
               )
             );
-            setShareFileModal(true);
+            if (typeof setRequestFile === "function") {
+              setRequestFile(true);
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3526,7 +3530,10 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 t("File-restricted-request-is-to-ask-for-request-access")
               )
             );
-            setShareFileModal(true);
+            if (typeof setRequestFile === "function") {
+              setRequestFile(true);
+            }
+            // setShareFileModal(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3547,11 +3554,17 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
           ) {
             dispatch(validateUserDataRoomFailed(t("Link-expired")));
             setShareFileModal(true);
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "DataRoom_DataRoomManager_ValidateEncryptedStringUserAvailabilityForDataRoom_08".toLowerCase()
+              )
+          ) {
+            dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
           } else {
             dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
           }
-        } else {
-          dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
         }
       } else {
         dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
