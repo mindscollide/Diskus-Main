@@ -44,13 +44,31 @@ const RefreshToken = (navigate, t) => {
     })
       .then(async (response) => {
         console.log("RefreshToken", response);
+        if (response.data.responseCode === 200) {
+          await dispatch(
+            refreshtokenSuccess(
+              response.data.responseResult,
+              t("Refresh-token-update-successfully")
+            )
+          );
+          localStorage.setItem(
+            "token",
+            JSON.stringify(response.data.responseResult.token)
+          );
+          localStorage.setItem(
+            "refreshToken",
+            JSON.stringify(response.data.responseResult.refreshToken)
+          );
+        } else {
+          let message2 = t("Your-session-has-expired-please-login-again");
+          await dispatch(signOut(navigate, message2));
+          await dispatch(refreshtokenFail(message2));
+        }
+        // if (response.data.responseResult.responseCode === 205) {
+        // } else if (response.data.responseResult.responseMessage === null) {
+        // }
         // if (response.data.responseCode === 200) {
-        await dispatch(
-          refreshtokenSuccess(
-            response.data.responseResult,
-            t("Refresh-token-update-successfully")
-          )
-        );
+
         // } else {
         //   console.log("RefreshToken", response);
         //   let message2 = t("Your-session-has-expired-please-login-again");
