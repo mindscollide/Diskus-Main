@@ -32,6 +32,11 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import makeAnimated from "react-select/animated";
 import { getAllCommitteesandGroups } from "../../../../../store/actions/Polls_actions";
+import {
+  getCurrentDate,
+  getEndTimeWitlCeilFunction,
+  getStartTimeWithCeilFunction,
+} from "../../../../../commen/functions/time_formatter";
 
 const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
   const { t } = useTranslation();
@@ -47,6 +52,9 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
   const [members, setMembers] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
+  const startTime = getStartTimeWithCeilFunction();
+  const getEndTime = getEndTimeWitlCeilFunction();
+  const getCurrentDateforMeeting = getCurrentDate();
   const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
@@ -83,13 +91,25 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
   const [rows, setRows] = useState([
     {
       selectedOption: "",
+      dateForView: "",
       startDate: "",
+      startTime: "",
       endDate: "",
-      selectedOptionView: "",
-      endDateView: "",
-      startDateView: "",
+      endTime: "",
     },
   ]);
+
+  //Setting the Dates And Time Default
+  useEffect(() => {
+    const updatedRows = [...rows];
+    updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
+    updatedRows[0].dateForView = getCurrentDateforMeeting.DateGMT;
+    updatedRows[0].startDate = startTime?.formattedTime;
+    updatedRows[0].startTime = startTime?.newFormatTime;
+    updatedRows[0].endDate = getEndTime?.formattedTime;
+    updatedRows[0].endTime = getEndTime?.newFormatTime;
+    setRows(updatedRows);
+  }, []);
 
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
@@ -320,16 +340,19 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
 
   //Adding the Dates Rows
   const addRow = () => {
-    if (rows.length < 5) {
-      const lastRow = rows[rows.length - 1];
-      if (isValidRow(lastRow)) {
-        setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
-      }
-    } else {
-      setOpen({
-        flag: true,
-        message: t("You-cant-enter-more-then-five-dates"),
-      });
+    const lastRow = rows[rows.length - 1];
+    if (isValidRow(lastRow)) {
+      setRows([
+        ...rows,
+        {
+          selectedOption: "",
+          dateForView: "",
+          startDate: "",
+          startTime: "",
+          endDate: "",
+          endTime: "",
+        },
+      ]);
     }
   };
 
@@ -342,19 +365,25 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
 
   //OnChange Function For Select Options
   const changeDateStartHandler = (date, index) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new DateObject(date).format("YYYYMMDD");
-    const updatedRows = [...rows];
-    if (index > 0 && DateDate < updatedRows[index - 1].selectedOption) {
-      return;
-    } else {
-      updatedRows[index].selectedOption = DateDate.slice(0, 8);
-      updatedRows[index].selectedOptionView = meetingDateValueFormat;
-      updatedRows[index].isComing = false;
-      updatedRows[index].proposedDateID = 0;
-
-      setRows(updatedRows);
-    }
+    try {
+      let newDate = new Date(date);
+      let DateDate = new DateObject(date).format("YYYYMMDD");
+      const updatedRows = [...rows];
+      if (
+        index > 0 &&
+        Number(DateDate) < Number(updatedRows[index - 1].selectedOption)
+      ) {
+        setOpen({
+          flag: true,
+          message: t("Selected-date-should-not-be-less-than-the-previous-one"),
+        });
+        return;
+      } else {
+        updatedRows[index].selectedOption = DateDate;
+        updatedRows[index].dateForView = newDate;
+        setRows(updatedRows);
+      }
+    } catch {}
   };
 
   //OnChange Function For Start Time
@@ -362,14 +391,11 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
     let newDate = new Date(date);
     console.log(newDate, "handleStartDateChangehandleStartDateChange");
     if (newDate instanceof Date && !isNaN(newDate)) {
-      // Round up to the next hour
-      const nextHour = Math.ceil(
-        newDate.getHours() + newDate.getMinutes() / 60
-      );
-      newDate.setHours(nextHour, 0, 0, 0);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+      const formattedTime = `${hours}${minutes}${"00"}`;
 
       const updatedRows = [...rows];
 
@@ -391,7 +417,6 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
             updatedRows[index].endDate !== "" &&
             formattedTime >= updatedRows[index].endDate
           ) {
-            console.log("handleStartDateChange");
             setOpen({
               flag: true,
               message: t(
@@ -401,10 +426,7 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
             return;
           } else {
             updatedRows[index].startDate = formattedTime;
-            updatedRows[index].startDateView = newDate;
-            updatedRows[index].isComing = false;
-            updatedRows[index].proposedDateID = 0;
-
+            updatedRows[index].startTime = newDate;
             setRows(updatedRows);
           }
         }
@@ -422,10 +444,7 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
           return;
         } else {
           updatedRows[index].startDate = formattedTime;
-          updatedRows[index].startDateView = newDate;
-          updatedRows[index].isComing = false;
-          updatedRows[index].proposedDateID = 0;
-
+          updatedRows[index].startTime = newDate;
           setRows(updatedRows);
         }
       }
@@ -437,14 +456,13 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
   //OnChange Function For End Time
   const handleEndTimeChange = (index, date) => {
     let newDate = new Date(date);
+
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const nextHour = Math.ceil(
-        newDate.getHours() + newDate.getMinutes() / 60
-      );
-      newDate.setHours(nextHour, 0, 0, 0);
+      const hours = ("0" + newDate.getHours()).slice(-2);
+      const minutes = ("0" + newDate.getMinutes()).slice(-2);
 
       // Format the time as HH:mm:ss
-      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+      const formattedTime = `${hours}${minutes}${"00"}`;
 
       const updatedRows = [...rows];
 
@@ -463,30 +481,23 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
           return;
         } else {
           updatedRows[index].endDate = formattedTime;
-          updatedRows[index].endDateView = newDate;
-          updatedRows[index].isComing = false;
-          updatedRows[index].proposedDateID = 0;
-
+          updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       } else {
         if (formattedTime <= updatedRows[index].startDate) {
           setOpen({
             flag: true,
-            message: t(
-              "Selected end time should be greater than the start time."
-            ),
+            message: t("Selected-end-time-should-not-be-less-than-start-time"),
           });
           return;
         } else {
           updatedRows[index].endDate = formattedTime;
-          updatedRows[index].endDateView = newDate;
-          updatedRows[index].isComing = false;
-          updatedRows[index].proposedDateID = 0;
-
+          updatedRows[index].endTime = newDate;
           setRows(updatedRows);
         }
       }
+      // }
     } else {
       console.error("Invalid date and time object:", date);
     }
@@ -843,9 +854,8 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                                   <Row className="mt-2">
                                     <Col lg={4} md={4} sm={12}>
                                       <DatePicker
-                                        disabled={data.isComing ? true : false}
-                                        value={data.selectedOptionView}
                                         selected={data.selectedOption}
+                                        value={data.dateForView}
                                         format={"DD/MM/YYYY"}
                                         minDate={
                                           index > 0
@@ -895,14 +905,15 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                                         arrowClassName="arrowClass"
                                         containerClassName="containerClassTimePicker"
                                         className="timePicker"
-                                        disabled={data.isComing ? true : false}
                                         disableDayPicker
                                         inputClass="inputTImeMeeting"
                                         calendar={calendarValue}
                                         locale={localValue}
                                         format="hh:mm A"
-                                        value={data.startDateView}
                                         selected={data.startDate}
+                                        // onOpen={() => handleOpenStartTime(index)}
+                                        value={data.startTime}
+                                        editable={false}
                                         plugins={[<TimePicker hideSeconds />]}
                                         onChange={(date) =>
                                           handleStartTimeChange(index, date)
@@ -929,18 +940,18 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                                       // className="d-flex justify-content-end"
                                     >
                                       <DatePicker
-                                        value={data.endDateView}
                                         arrowClassName="arrowClass"
                                         containerClassName="containerClassTimePicker"
                                         className="timePicker"
                                         disableDayPicker
-                                        disabled={data.isComing ? true : false}
                                         inputClass="inputTImeMeeting"
                                         calendar={calendarValue}
                                         locale={localValue}
+                                        value={data.endTime}
                                         format="hh:mm A"
-                                        selected={data.startDate}
+                                        selected={data.endDate}
                                         plugins={[<TimePicker hideSeconds />]}
+                                        editable={false}
                                         onChange={(date) =>
                                           handleEndTimeChange(index, date)
                                         }
