@@ -586,6 +586,7 @@ const ProposedNewMeeting = ({
           currentMeeting,
           proposedMeetingDetails, //state in which title and description is present
           setDataroomMapFolderId
+          // members
         )
       );
       alert("YOu can proposed now ");
@@ -1097,7 +1098,7 @@ const ProposedNewMeeting = ({
                           //   rows.selectedOption === "" &&
                           //   rows.startDate === "" &&
                           //   rows.endDate === "" &&
-                          rows.length <= 1
+                          rows.length === 1
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
                         }

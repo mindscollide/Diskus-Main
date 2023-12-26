@@ -1,15 +1,16 @@
 {
   "MeetingDetails": {
     "MeetingID": 0,
-    "MeetingTitle": "Test Proposed Meeting",
+    "MeetingTitle": "saif testing ",
     "MeetingType": { "PK_MTID": 27, "Type": "Board Meetings" },
     "Location": "",
-    "Description": "",
+    "Description": "hello description ",
     "IsVideoChat": true,
     "IsTalkGroup": false,
     "OrganizationId": 411,
     "MeetingDates": [
-      { "MeetingDate": "20231226", "StartTime": "050000", "EndTime": "060000" }
+      { "MeetingDate": "20231226", "StartTime": "130000", "EndTime": "140000" },
+      { "MeetingDate": "20231227", "StartTime": "121700", "EndTime": "141700" }
     ],
     "MeetingReminders": [4],
     "Notes": "",
