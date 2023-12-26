@@ -937,6 +937,7 @@ const CreatePolling = () => {
                                             width="14px"
                                             height="14px"
                                             onClick={cancellAnyUser}
+                                            alt=""
                                             draggable="false"
                                             style={{ cursor: "pointer" }}
                                           />
