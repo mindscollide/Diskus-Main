@@ -581,12 +581,12 @@ const ProposedNewMeeting = ({
           setSceduleMeeting,
           setorganizers,
           setmeetingDetails,
-          2,
+          1,
           setCurrentMeetingID,
           currentMeeting,
           proposedMeetingDetails, //state in which title and description is present
-          setDataroomMapFolderId
-          // members
+          setDataroomMapFolderId,
+          members
         )
       );
       alert("YOu can proposed now ");

@@ -1,18 +1,19 @@
 {
   "MeetingDetails": {
     "MeetingID": 0,
-    "MeetingTitle": "asdasdasdasd",
-    "MeetingType": { "PK_MTID": 1, "Type": "Board-meeting" },
-    "Location": "asdasdasd",
-    "Description": "asdasdasd",
+    "MeetingTitle": "asdasdasdas",
+    "MeetingType": { "PK_MTID": 27, "Type": "BoardMeetings" },
+    "Location": "",
+    "Description": "dasdasdasds",
     "IsVideoChat": true,
     "IsTalkGroup": false,
-    "OrganizationId": 417,
+    "OrganizationId": 411,
     "MeetingDates": [
-      { "MeetingDate": "20231226", "StartTime": "130000", "EndTime": "140000" }
+      { "MeetingDate": "20231226", "StartTime": "140000", "EndTime": "150000" },
+      { "MeetingDate": "20231229", "StartTime": "131000", "EndTime": "161000" }
     ],
     "MeetingReminders": [4],
-    "Notes": "asdasdasd",
+    "Notes": "",
     "AllowRSVP": true,
     "NotifyOrganizerOnRSVP": true,
     "ReucurringMeetingID": 1,

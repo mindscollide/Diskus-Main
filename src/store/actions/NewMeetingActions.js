@@ -432,7 +432,8 @@ const SaveMeetingDetialsNewApiFunction = (
   setCurrentMeetingID,
   currentMeeting,
   meetingDetails,
-  setDataroomMapFolderId
+  setDataroomMapFolderId,
+  members
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -463,7 +464,8 @@ const SaveMeetingDetialsNewApiFunction = (
               setCurrentMeetingID,
               currentMeeting,
               meetingDetails,
-              setDataroomMapFolderId
+              setDataroomMapFolderId,
+              members
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -500,7 +502,8 @@ const SaveMeetingDetialsNewApiFunction = (
                     navigate,
                     MappedData,
                     t,
-                    setDataroomMapFolderId
+                    setDataroomMapFolderId,
+                    members
                   )
                 );
                 // setSceduleMeeting(false);
