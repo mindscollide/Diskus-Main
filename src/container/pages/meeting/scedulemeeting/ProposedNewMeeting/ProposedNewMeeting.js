@@ -7,6 +7,8 @@ import { Col, Row } from "react-bootstrap";
 import profile from "../../../../../assets/images/newprofile.png";
 import plusFaddes from "../../../../../assets/images/SVGBlackPlusIcon.svg";
 import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
+import GroupIcon from "../../../../../assets/images/groupdropdown.svg";
+import committeeicon from "../../../../../assets/images/committeedropdown.svg";
 import {
   Button,
   TextField,
@@ -25,21 +27,26 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
 import { convertGMTDateintoUTC } from "../../../../../commen/functions/date_formater";
 import { containsStringandNumericCharacters } from "../../../../../commen/functions/regex";
-import { GetAllCommitteesUsersandGroups } from "../../../../../store/actions/MeetingOrganizers_action";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import makeAnimated from "react-select/animated";
+import { getAllCommitteesandGroups } from "../../../../../store/actions/Polls_actions";
 
 const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const animatedComponents = makeAnimated();
   const calendRef = useRef();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  let OrganizationID = localStorage.getItem("organizationID");
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
   const [sendResponseVal, setSendResponseVal] = useState("");
+  const [members, setMembers] = useState([]);
+  const [selectedsearch, setSelectedsearch] = useState([]);
+  const [dropdowndata, setDropdowndata] = useState([]);
   const [proposedMeetingDetails, setProposedMeetingDetails] = useState({
     MeetingTitle: "",
     Description: "",
@@ -64,6 +71,9 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
     message: "",
   });
 
+  //Getting Data from States
+  const { PollsReducer } = useSelector((state) => state);
+
   //Send Response By Date
   const [sendResponseBy, setSendResponseBy] = useState({
     date: "",
@@ -83,11 +93,223 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
 
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
-    let Data = {
-      OrganizationID: Number(OrganizationID),
-    };
-    dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
+    dispatch(getAllCommitteesandGroups(navigate, t));
   }, []);
+
+  useEffect(() => {
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    if (pollsData !== null && pollsData !== undefined) {
+      let temp = [];
+      if (Object.keys(pollsData).length > 0) {
+        if (Object.keys(pollsData.groups).length > 0) {
+          pollsData.groups.map((a, index) => {
+            let newData = {
+              value: a.groupID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={GroupIcon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.groupName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 1,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(pollsData.committees).length > 0) {
+          pollsData.committees.map((a, index) => {
+            let newData = {
+              value: a.committeeID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={committeeicon}
+                        width="21.71px"
+                        height="18.61px"
+                        draggable="false"
+                        alt=""
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 2,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(pollsData.organizationUsers).length > 0) {
+          console.log(
+            pollsData.organizationUsers,
+            "organizationUsersorganizationUsersorganizationUsers"
+          );
+          pollsData.organizationUsers.map((a, index) => {
+            let newData = {
+              value: a.userID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
+                        // src={}
+                        alt=""
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                        draggable="false"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 3,
+            };
+            temp.push(newData);
+          });
+        }
+        setDropdowndata(temp);
+      } else {
+        setDropdowndata([]);
+      }
+    }
+  }, [PollsReducer.gellAllCommittesandGroups]);
+
+  //handle Add Users
+  const handleAddUsers = () => {
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let tem = [...members];
+    if (Object.keys(selectedsearch).length > 0) {
+      try {
+        selectedsearch.map((seledtedData, index) => {
+          console.log(
+            seledtedData,
+            "seledtedDataseledtedDataseledtedDataseledtedData"
+          );
+          if (seledtedData.type === 1) {
+            let check1 = pollsData.groups.find(
+              (data, index) => data.groupID === seledtedData.value
+            );
+            if (check1 !== undefined) {
+              let groupUsers = check1.groupUsers;
+              if (Object.keys(groupUsers).length > 0) {
+                groupUsers.map((gUser, index) => {
+                  let check2 = members.find(
+                    (data, index) => data.UserID === gUser.userID
+                  );
+                  if (check2 !== undefined) {
+                  } else {
+                    let newUser = {
+                      userName: gUser.userName,
+                      userID: gUser.userID,
+                      displayPicture: "",
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 2) {
+            console.log("members check");
+            let check1 = pollsData.committees.find(
+              (data, index) => data.committeeID === seledtedData.value
+            );
+            if (check1 != undefined) {
+              let committeesUsers = check1.committeeUsers;
+              if (Object.keys(committeesUsers).length > 0) {
+                committeesUsers.map((cUser, index) => {
+                  let check2 = members.find(
+                    (data, index) => data.UserID === cUser.userID
+                  );
+                  if (check2 != undefined) {
+                  } else {
+                    let newUser = {
+                      userName: cUser.userName,
+                      userID: cUser.userID,
+                      displayPicture: "",
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 3) {
+            let check1 = members.find(
+              (data, index) => data.UserID === seledtedData.value
+            );
+            if (check1 != undefined) {
+            } else {
+              let check2 = pollsData.organizationUsers.find(
+                (data, index) => data.userID === seledtedData.value
+              );
+              console.log(check2, "check2check2check2");
+              if (check2 !== undefined) {
+                let newUser = {
+                  userName: check2.userName,
+                  userID: check2.userID,
+                  displayPicture:
+                    check2.profilePicture.displayProfilePictureName,
+                };
+                tem.push(newUser);
+              }
+            }
+          } else {
+          }
+        });
+      } catch {
+        console.log("error in add");
+      }
+      console.log("members check", tem);
+      const uniqueData = new Set(tem.map(JSON.stringify));
+
+      // Convert the Set back to an array of objects
+      const result = Array.from(uniqueData).map(JSON.parse);
+      setMembers(result);
+      setSelectedsearch([]);
+    } else {
+      // setopen notionation work here
+    }
+  };
+
+  // for selection of data
+  const handleSelectValue = (value) => {
+    setSelectedsearch(value);
+  };
 
   //Removing the Added Participants
   const hanleRemovingParticipants = (index) => {
@@ -351,10 +573,6 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
     }
   };
 
-  //for handle Add Button Adding Participants
-
-  const handleAddParitipantProposedDates = () => {};
-
   //For arabic Convertion of the Date Times
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -475,13 +693,21 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                 </Row>
                 <Row>
                   <Col lg={10} md={10} sm={10}>
-                    <Select />
+                    <Select
+                      onChange={handleSelectValue}
+                      value={selectedsearch}
+                      classNamePrefix={"selectMember"}
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      isMulti
+                      options={dropdowndata}
+                    />
                   </Col>
                   <Col lg={2} md={2} sm={2} className="m-0 p-0">
                     <Button
                       text={"Add"}
                       className={styles["Add_Button_Proposed_Meeting"]}
-                      onClick={handleAddParitipantProposedDates}
+                      onClick={handleAddUsers}
                     />
                   </Col>
                 </Row>
