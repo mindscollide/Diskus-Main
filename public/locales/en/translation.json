@@ -77,7 +77,6 @@
   "Attendees": "Attendees",
   "Reminder": "Reminder",
   "Location": "Location",
-  "Meeting-title": "Meeting title*",
   "Description": "Description",
   "Group-chat": "Group chat",
   "Agenda-title": "Agenda title",
@@ -1705,5 +1704,6 @@
   "Link-expired": "Link expired",
   "Link-created": "Link Created",
   "No-file-exist-in-system": "No file exist in system",
-  "No-folder-exist-in-system": "No folder exist in system."
+  "No-folder-exist-in-system": "No folder exist in system.",
+  "Please-atleast-add-one-organizer": "Please atleast add one organizer"
 }

@@ -538,15 +538,15 @@ const VideoCallNormalHeader = ({
                 onClick={endCallParticipant}
               />
             ) : null}
-            <div onClick={minimizeVideoPanel}>
-              <img
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? "grayScaleImage"
-                    : "cursor-pointer"
-                }
-                src={MinimizeIcon}
-              />
+            <div
+              onClick={minimizeVideoPanel}
+              className={
+                videoFeatureReducer.LeaveCallModalFlag === true
+                  ? "grayScaleImage"
+                  : "cursor-pointer"
+              }
+            >
+              <img src={MinimizeIcon} />
             </div>
             {videoFeatureReducer.NormalizeVideoFlag === true &&
             videoFeatureReducer.MinimizeVideoFlag === false &&
