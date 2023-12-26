@@ -195,16 +195,43 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
         <Row className="mt-2 mb-4">
           {(currentCallType === 2 || callTypeID === 2) &&
           meetingTitle === "" ? (
-            <Col lg={3} md={3} sm={12} className="mt-1">
+            <Col
+              lg={8}
+              md={8}
+              sm={12}
+              className="mt-1 cursor-pointer"
+              onClick={() => {
+                dispatch(normalizeVideoPanelFlag(true));
+                dispatch(minimizeVideoPanelFlag(false));
+              }}
+            >
               <p className="title-heading">{t("Group-call")}</p>
             </Col>
           ) : (currentCallType === 2 || callTypeID === 2) &&
             meetingTitle !== "" ? (
-            <Col lg={3} md={3} sm={12} className="mt-1">
+            <Col
+              lg={8}
+              md={8}
+              sm={12}
+              className="mt-1 cursor-pointer"
+              onClick={() => {
+                dispatch(normalizeVideoPanelFlag(true));
+                dispatch(minimizeVideoPanelFlag(false));
+              }}
+            >
               <p className="title-heading">{meetingTitle}</p>
             </Col>
           ) : (
-            <Col lg={3} md={3} sm={12} className="mt-1">
+            <Col
+              lg={8}
+              md={8}
+              sm={12}
+              className="mt-1 cursor-pointer"
+              onClick={() => {
+                dispatch(normalizeVideoPanelFlag(true));
+                dispatch(minimizeVideoPanelFlag(false));
+              }}
+            >
               <p className="title-heading">
                 {currentUserName !==
                   VideoMainReducer.VideoRecipentData.userName &&
@@ -242,7 +269,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton }) => {
                 : null}
             </p>
           </Col> */}
-          <Col lg={9} md={9} sm={12}>
+          <Col lg={4} md={4} sm={12}>
             <div className="minimize-screen-on-bottom">
               {callerID === currentUserID &&
               (callTypeID === 2 || currentCallType === 2) ? (

@@ -483,6 +483,7 @@ export const getIconSource = (extension) => {
       return documentIcon;
     case "xls":
     case "xlsx":
+    case "csv":
       return spreadsheet;
     case "html":
     case "htm":

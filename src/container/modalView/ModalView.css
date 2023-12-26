@@ -481,7 +481,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
 
 .textAreaDivView textarea {
   border: none !important;
-  height: 200px;
+  height: 150px !important;
   overflow: auto;
   font-size: 16px !important;
 }
@@ -511,10 +511,12 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   height: 93px !important;
   margin: 0 10px !important;
 }
+
 .MeetingViewDateTimeTextField {
   font-family: "Montserrat" !important;
   font-size: 14px !important;
 }
+
 .MeetingViewLocationText_Field {
   color: #505050;
   font-size: 16px !important;

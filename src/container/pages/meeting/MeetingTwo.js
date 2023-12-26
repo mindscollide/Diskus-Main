@@ -901,101 +901,105 @@ const NewMeeting = () => {
         );
 
         const isQuickMeeting = record.isQuickMeeting;
-        if (isQuickMeeting) {
-          if (isOrganiser) {
-            return (
-              <>
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Tooltip placement="topRight" title={t("Edit")}>
-                      <img
-                        src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.11px"
-                        height="17.11px"
-                        alt=""
-                        draggable="false"
-                        onClick={() =>
-                          handleEditMeeting(
-                            record.pK_MDID,
-                            record.isQuickMeeting,
-                            isAgendaContributor,
-                            record
-                          )
-                        }
-                      />
-                    </Tooltip>
-                  </Col>
-                </Row>
-              </>
-            );
-          }
+        if (record.status === "8") {
+          return null;
         } else {
-          if (isParticipant) {
-          } else if (isOrganiser) {
-            return (
-              <>
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Tooltip placement="topRight" title={t("Edit")}>
-                      <img
-                        src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.11px"
-                        height="17.11px"
-                        alt=""
-                        draggable="false"
-                        onClick={() => {
-                          handleEditMeeting(
-                            record.pK_MDID,
-                            record.isQuickMeeting,
-                            isAgendaContributor,
-                            record
-                          );
-                          setEdiorRole({
-                            status: record.status,
-                            role: "Organizer",
-                          });
-                          setEditMeeting(true);
-                        }}
-                      />
-                    </Tooltip>
-                  </Col>
-                </Row>
-              </>
-            );
-          } else if (isAgendaContributor) {
-            return (
-              <>
-                <Row>
-                  <Col sm={12} md={12} lg={12}>
-                    <Tooltip placement="topRight" title={t("Edit")}>
-                      <img
-                        src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.11px"
-                        height="17.11px"
-                        alt=""
-                        draggable="false"
-                        onClick={() => {
-                          handleEditMeeting(
-                            record.pK_MDID,
-                            record.isQuickMeeting,
-                            isAgendaContributor,
-                            record
-                          );
-                          setEdiorRole({
-                            status: record.status,
-                            role: "Agenda Contributor",
-                          });
-                          setEditMeeting(true);
-                        }}
-                      />
-                    </Tooltip>
-                  </Col>
-                </Row>
-              </>
-            );
+          if (isQuickMeeting) {
+            if (isOrganiser) {
+              return (
+                <>
+                  <Row>
+                    <Col sm={12} md={12} lg={12}>
+                      <Tooltip placement="topRight" title={t("Edit")}>
+                        <img
+                          src={EditIcon}
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
+                          onClick={() =>
+                            handleEditMeeting(
+                              record.pK_MDID,
+                              record.isQuickMeeting,
+                              isAgendaContributor,
+                              record
+                            )
+                          }
+                        />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                </>
+              );
+            }
+          } else {
+            if (isParticipant) {
+            } else if (isOrganiser) {
+              return (
+                <>
+                  <Row>
+                    <Col sm={12} md={12} lg={12}>
+                      <Tooltip placement="topRight" title={t("Edit")}>
+                        <img
+                          src={EditIcon}
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
+                          onClick={() => {
+                            handleEditMeeting(
+                              record.pK_MDID,
+                              record.isQuickMeeting,
+                              isAgendaContributor,
+                              record
+                            );
+                            setEdiorRole({
+                              status: record.status,
+                              role: "Organizer",
+                            });
+                            setEditMeeting(true);
+                          }}
+                        />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                </>
+              );
+            } else if (isAgendaContributor) {
+              return (
+                <>
+                  <Row>
+                    <Col sm={12} md={12} lg={12}>
+                      <Tooltip placement="topRight" title={t("Edit")}>
+                        <img
+                          src={EditIcon}
+                          className="cursor-pointer"
+                          width="17.11px"
+                          height="17.11px"
+                          alt=""
+                          draggable="false"
+                          onClick={() => {
+                            handleEditMeeting(
+                              record.pK_MDID,
+                              record.isQuickMeeting,
+                              isAgendaContributor,
+                              record
+                            );
+                            setEdiorRole({
+                              status: record.status,
+                              role: "Agenda Contributor",
+                            });
+                            setEditMeeting(true);
+                          }}
+                        />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                </>
+              );
+            }
           }
         }
       },

@@ -1667,5 +1667,6 @@
   "Link-expired": "Link expired",
   "Link-created": "Link Created",
   "No-file-exist-in-system": "No file exist in system",
-  "No-folder-exist-in-system": "No folder exist in system."
+  "No-folder-exist-in-system": "No folder exist in system.",
+  "Please-atleast-add-one-organizer": "Please atleast add one organizer"
 }
