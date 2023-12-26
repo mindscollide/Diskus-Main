@@ -1442,7 +1442,17 @@ const NewMeeting = () => {
           currentMeeting={currentMeetingID}
         />
       ) : proposedNewMeeting ? (
-        <ProposedNewMeeting setProposedNewMeeting={setProposedNewMeeting} />
+        <ProposedNewMeeting
+          setProposedNewMeeting={setProposedNewMeeting}
+          setCurrentMeetingID={setCurrentMeetingID}
+          currentMeeting={currentMeetingID}
+          editorRole={editorRole}
+          setEdiorRole={setEdiorRole}
+          setEditMeeting={setEditMeeting}
+          isEditMeeting={isEditMeeting}
+          setDataroomMapFolderId={setDataroomMapFolderId}
+          dataroomMapFolderId={dataroomMapFolderId}
+        />
       ) : (
         <>
           <Row className="mt-2">

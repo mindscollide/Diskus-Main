@@ -1,0 +1,22 @@
+{
+  "MeetingDetails": {
+    "MeetingID": 0,
+    "MeetingTitle": "Test Proposed Meeting",
+    "MeetingType": { "PK_MTID": 27, "Type": "Board Meetings" },
+    "Location": "",
+    "Description": "",
+    "IsVideoChat": true,
+    "IsTalkGroup": false,
+    "OrganizationId": 411,
+    "MeetingDates": [
+      { "MeetingDate": "20231226", "StartTime": "050000", "EndTime": "060000" }
+    ],
+    "MeetingReminders": [4],
+    "Notes": "",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "",
+    "MeetingStatusID": 11
+  }
+}

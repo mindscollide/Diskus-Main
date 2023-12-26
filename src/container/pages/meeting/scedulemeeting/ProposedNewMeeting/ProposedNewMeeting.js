@@ -25,7 +25,10 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
-import { convertGMTDateintoUTC } from "../../../../../commen/functions/date_formater";
+import {
+  convertGMTDateintoUTC,
+  createConvert,
+} from "../../../../../commen/functions/date_formater";
 import { containsStringandNumericCharacters } from "../../../../../commen/functions/regex";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -37,8 +40,21 @@ import {
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
 } from "../../../../../commen/functions/time_formatter";
+import { SaveMeetingDetialsNewApiFunction } from "../../../../../store/actions/NewMeetingActions";
 
-const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
+const ProposedNewMeeting = ({
+  setProposedNewMeeting,
+  setorganizers,
+  setmeetingDetails,
+  setSceduleMeeting,
+  setCurrentMeetingID,
+  currentMeeting,
+  editorRole,
+  setEditMeeting,
+  isEditMeeting,
+  setDataroomMapFolderId,
+  setEdiorRole,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -59,21 +75,7 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
     MeetingTitle: "",
     Description: "",
   });
-  const [participantsProposedMeeting, setParticipantsProposedMeeting] =
-    useState([
-      {
-        name: "Saif ul Islam",
-      },
-      {
-        name: "Aun Naqvi",
-      },
-      {
-        name: "Ali Mamdani",
-      },
-      {
-        name: "Owais Wajid khan",
-      },
-    ]);
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -528,21 +530,70 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
 
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
+    let newArr = [];
+    rows.forEach((data, index) => {
+      newArr.push({
+        MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
+          0,
+          8
+        ),
+        StartTime: createConvert(data.selectedOption + data.startDate).slice(
+          8,
+          14
+        ),
+        EndTime: createConvert(data.selectedOption + data.endDate).slice(8, 14),
+      });
+    });
     if (
       proposedMeetingDetails.MeetingTitle === "" ||
       proposedMeetingDetails.Description === "" ||
-      participantsProposedMeeting.length === 0 ||
+      members.length === 0 ||
       rows.length <= 1 ||
       sendResponseVal === ""
     ) {
       seterror(true);
     } else {
+      let data = {
+        MeetingDetails: {
+          MeetingID: 0,
+          MeetingTitle: proposedMeetingDetails.MeetingTitle,
+          MeetingType: { PK_MTID: 27, Type: "Board Meetings" },
+          Location: "",
+          Description: proposedMeetingDetails.Description,
+          IsVideoChat: true,
+          IsTalkGroup: false,
+          OrganizationId: 411,
+          MeetingDates: newArr,
+          MeetingReminders: [4],
+          Notes: "",
+          AllowRSVP: true,
+          NotifyOrganizerOnRSVP: true,
+          ReucurringMeetingID: 1,
+          VideoURL: "",
+          MeetingStatusID: 11,
+        },
+      };
+      dispatch(
+        SaveMeetingDetialsNewApiFunction(
+          navigate,
+          t,
+          data,
+          setSceduleMeeting,
+          setorganizers,
+          setmeetingDetails,
+          2,
+          setCurrentMeetingID,
+          currentMeeting,
+          proposedMeetingDetails, //state in which title and description is present
+          setDataroomMapFolderId
+        )
+      );
       alert("YOu can proposed now ");
       setProposedMeetingDetails({
         MeetingTitle: "",
         Description: "",
       });
-      setParticipantsProposedMeeting([]);
+      setMembers([]);
       setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
       setSendResponseBy({
         date: "",
@@ -603,7 +654,7 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
         MeetingTitle: "",
         Description: "",
       });
-      setParticipantsProposedMeeting([]);
+      setMembers([]);
       setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
       setSendResponseBy({
         date: "",
@@ -808,7 +859,7 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
                         <Col>
                           <p
                             className={
-                              error && participantsProposedMeeting.length === 0
+                              error && members.length === 0
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
                             }
