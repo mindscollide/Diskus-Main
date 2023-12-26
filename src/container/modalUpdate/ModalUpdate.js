@@ -210,10 +210,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime != "" &&
       createMeeting.MeetingEndTime != "" &&
-      createMeeting.MeetingDate != "" &&
+      createMeeting.MeetingDate != ""
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation != ""
+      // createMeeting.MeetingLocation != ""
       //  &&
       // createMeeting.MeetingTitle != ""
     ) {
@@ -238,10 +238,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
-      createMeeting.MeetingDate !== "" &&
+      createMeeting.MeetingDate !== ""
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation !== ""
+      // createMeeting.MeetingLocation !== ""
       // &&
       // createMeeting.MeetingTitle !== ""
     ) {
@@ -267,9 +267,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
-      createMeeting.MeetingDate !== "" &&
+      createMeeting.MeetingDate !== ""
       // createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation !== ""
+      // createMeeting.MeetingLocation !== ""
       // &&
       // createMeeting.MeetingTitle != ""
     ) {
@@ -296,7 +296,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== "" &&
       // createMeeting.MeetingDescription !== "" &&
-      createMeeting.MeetingLocation !== "" &&
+      // createMeeting.MeetingLocation !== "" &&
       // createMeeting.MeetingTitle !== "" &&
       createMeetingTime !== "" &&
       meetingDate !== ""
@@ -353,8 +353,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     let finalDateTime = createConvert(
       createMeeting.MeetingDate + createMeeting.MeetingStartTime
     );
-    let newDate = finalDateTime.slice(0, 8);
-    let newTime = finalDateTime.slice(8, 14);
+    let finalDateTimeWithoutUTC =
+      createMeeting.MeetingDate + createMeeting.MeetingStartTime;
+    let newDate = finalDateTimeWithoutUTC.slice(0, 8);
+    let newTime = finalDateTimeWithoutUTC.slice(8, 14);
     let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
     let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
 
@@ -584,73 +586,83 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     const uploadedFile = data.target.files[0];
     var ext = uploadedFile.name.split(".").pop();
     let file = meetingAgendaAttachments.MeetingAgendaAttachments;
-    if (
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xls" ||
-      ext === "xlsx" ||
-      ext === "pdf" ||
-      ext === "png" ||
-      ext === "txt" ||
-      ext === "jpg" ||
-      ext === "jpeg" ||
-      ext === "gif" ||
-      ext === "csv"
-    ) {
-      let data;
-      let sizezero;
-      let size;
-      if (file.length > 0) {
-        file.map((filename, index) => {
-          if (filename.DisplayFileName === uploadedFile.name) {
-            data = false;
-          }
-        });
-        if (uploadedFile.size > 10485760) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
-        }
-        if (data === false) {
-          console.log("uploadFile ReducerData");
-        } else if (size === false) {
-          console.log("uploadFile ReducerData");
-        } else if (sizezero === false) {
-          console.log("uploadFile ReducerData");
-        } else {
-          console.log("uploadFile ReducerData");
-          dispatch(FileUploadToDo(navigate, uploadedFile, t));
-        }
-      } else {
-        let size;
+    if (file.length <= 9) {
+      if (
+        ext === "doc" ||
+        ext === "docx" ||
+        ext === "xls" ||
+        ext === "xlsx" ||
+        ext === "pdf" ||
+        ext === "png" ||
+        ext === "txt" ||
+        ext === "jpg" ||
+        ext === "jpeg" ||
+        ext === "gif" ||
+        ext === "csv"
+      ) {
+        let data;
         let sizezero;
-        // if (uploadedFile.size > 10000000) {
-        //   setOpen({
-        //     ...open,
-        //     flag: true,
-        //     message: "File Size is larger than 10MB",
-        //   });
-        //   console.log("uploadFile ReducerData");
-        //   size = false;
-        // }
-        if (uploadedFile.size === 0) {
-          setOpen({
-            ...open,
-            flag: true,
-            message: t("File-size-is-0mb"),
+        let size;
+        if (file.length > 0) {
+          file.map((filename, index) => {
+            if (filename.DisplayFileName === uploadedFile.name) {
+              data = false;
+            }
           });
-          sizezero = false;
-        }
-        if (size === false) {
-          console.log("uploadFile ReducerData");
-        } else if (sizezero === false) {
-          console.log("uploadFile ReducerData");
+          if (uploadedFile.size > 10485760) {
+            size = false;
+          } else if (uploadedFile.size === 0) {
+            sizezero = false;
+          }
+          if (data === false) {
+            console.log("uploadFile ReducerData");
+          } else if (size === false) {
+            console.log("uploadFile ReducerData");
+          } else if (sizezero === false) {
+            console.log("uploadFile ReducerData");
+          } else {
+            console.log("uploadFile ReducerData");
+            dispatch(FileUploadToDo(navigate, uploadedFile, t));
+          }
         } else {
-          console.log("uploadFile ReducerData");
+          let size;
+          let sizezero;
+          // if (uploadedFile.size > 10000000) {
+          //   setOpen({
+          //     ...open,
+          //     flag: true,
+          //     message: "File Size is larger than 10MB",
+          //   });
+          //   console.log("uploadFile ReducerData");
+          //   size = false;
+          // }
+          if (uploadedFile.size === 0) {
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("File-size-is-0mb"),
+            });
+            sizezero = false;
+          }
+          if (size === false) {
+            console.log("uploadFile ReducerData");
+          } else if (sizezero === false) {
+            console.log("uploadFile ReducerData");
+          } else {
+            console.log("uploadFile ReducerData");
 
-          dispatch(FileUploadToDo(navigate, uploadedFile, t));
+            dispatch(FileUploadToDo(navigate, uploadedFile, t));
+          }
         }
       }
+    } else {
+      setTimeout(
+        setOpen({
+          flag: true,
+          message: t("You-can-not-upload-more-then-10-files"),
+        }),
+        3000
+      );
     }
   };
   const downloadClick = (e, record) => {
@@ -1010,7 +1022,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     setMeetingDate(meetingDateValueFormat);
     setCreateMeeting({
       ...createMeeting,
-      MeetingDate: meetingDateConvertUTC,
+      MeetingDate: meetingDateSaveFormat,
     });
   };
 
@@ -1240,39 +1252,34 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let getUserDetails =
-      CommitteeReducer?.getCommitteeByCommitteeID?.committeMembers;
+    let allAssignees = assignees.user;
     if (
-      getUserDetails !== undefined &&
-      getUserDetails !== null &&
-      getUserDetails.length > 0
+      allAssignees !== undefined &&
+      allAssignees !== null &&
+      allAssignees !== []
     ) {
-      return getUserDetails
+      return allAssignees
         .filter((item) => {
           const searchTerm = value.toLowerCase();
-          const assigneesName = item.userName.toLowerCase();
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
+          const assigneesName = item.name.toLowerCase();
+          return searchTerm && assigneesName.startsWith(searchTerm);
         })
         .slice(0, 10)
         .map((item) => (
           <div
-            onClick={() => onSearch(item.userName, item.pK_UID)}
+            onClick={() => onSearch(item.name, item.pK_UID)}
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
             <img
-              src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
+              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
             />
-            <p className="p-0 m-0">{item.userName}</p>
+            <p className="p-0 m-0">{item.name}</p>
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
 
@@ -1362,91 +1369,104 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
-    await setEditFlag(false);
-    await seteditRecordIndex(null);
-    await seteditRecordFlag(false);
-    // await
-    await setIsDetails(true);
-    await setIsMinutes(false);
-    await setIsAgenda(false);
-    await setIsAttendees(false);
-    let finalDateTime = createConvert(
-      createMeeting.MeetingDate + createMeeting.MeetingStartTime
+    let hasOrganizer = createMeeting.MeetingAttendees.some(
+      (attendee) => attendee.MeetingAttendeeRole.PK_MARID === 1
     );
-    let newDate = finalDateTime.slice(0, 8);
-    let newTime = finalDateTime.slice(8, 14);
-    let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
-    let Data = {
-      MeetingID: meetingID,
-    };
-    let newData = {
-      MeetingID: createMeeting.MeetingID,
-      MeetingTitle: createMeeting.MeetingTitle,
-      MeetingDescription: createMeeting.MeetingDescription,
-      MeetingTypeID: 0,
-      MeetingDate: newDate,
-      OrganizationId: parseInt(OrganizationId),
-      MeetingStartTime: newTime,
-      MeetingEndTime: newTime,
-      MeetingLocation: createMeeting.MeetingLocation,
-      IsVideoCall: createMeeting.IsVideoCall,
-      IsChat: createMeeting.IsChat,
-      MeetingReminderID: createMeeting.MeetingReminderID,
-      MeetingAgendas: createMeeting.MeetingAgendas,
-      MeetingAttendees: createMeeting.MeetingAttendees,
-      ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
-    };
-    await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
-    await setObjMeetingAgenda({
-      PK_MAID: 0,
-      Title: "",
-      PresenterName: "",
-      URLs: "",
-      FK_MDID: 0,
-    });
-    await setMeetingAgendaAttachments({
-      MeetingAgendaAttachments: [],
-    });
-    await setParticipantRoleName("");
-    await setSelectedAttendeesName("");
-    await setCreateMeeting({
-      MeetingTitle: "",
-      MeetingDescription: "",
-      MeetingTypeID: 0,
-      MeetingDate: "",
-      MeetingStartTime: "",
-      MeetingEndTime: "",
-      MeetingLocation: "",
-      IsVideoCall: false,
-      IsChat: false,
-      MeetingReminderID: [],
-      MeetingAgendas: [],
-      MeetingAttendees: [],
-      ExternalMeetingAttendees: [],
-    });
-    await setMeetingAttendees({
-      User: {
-        PK_UID: 0,
-      },
-      MeetingAttendeeRole: {
-        PK_MARID: 0,
-      },
-      AttendeeAvailability: {
-        PK_AAID: 1,
-      },
-    });
-    await setRecordMinutesOfTheMeeting({
-      PK_MOMID: 0,
-      Description: "",
-      CreationDate: "",
-      CreationTime: "",
-      FK_MDID: 0,
-    });
-    // await setMeetingReminderValue("");
-    // await setMeetingReminderID([]);
-    setReminder("");
-    setReminderValue("");
-    setTaskAssignedToInput("");
+
+    if (hasOrganizer) {
+      await setEditFlag(false);
+      await seteditRecordIndex(null);
+      await seteditRecordFlag(false);
+      // await
+      await setIsDetails(true);
+      await setIsMinutes(false);
+      await setIsAgenda(false);
+      await setIsAttendees(false);
+      let finalDateTime = createConvert(
+        createMeeting.MeetingDate + createMeeting.MeetingStartTime
+      );
+      let newDate = finalDateTime.slice(0, 8);
+      let newTime = finalDateTime.slice(8, 14);
+      let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
+      let Data = {
+        MeetingID: meetingID,
+      };
+      let newData = {
+        MeetingID: createMeeting.MeetingID,
+        MeetingTitle: createMeeting.MeetingTitle,
+        MeetingDescription: createMeeting.MeetingDescription,
+        MeetingTypeID: 0,
+        MeetingDate: newDate,
+        OrganizationId: parseInt(OrganizationId),
+        MeetingStartTime: newTime,
+        MeetingEndTime: newTime,
+        MeetingLocation: createMeeting.MeetingLocation,
+        IsVideoCall: createMeeting.IsVideoCall,
+        IsChat: createMeeting.IsChat,
+        MeetingReminderID: createMeeting.MeetingReminderID,
+        MeetingAgendas: createMeeting.MeetingAgendas,
+        MeetingAttendees: createMeeting.MeetingAttendees,
+        ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
+      };
+      // if (hasOrganizer) {
+      await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
+      await setObjMeetingAgenda({
+        PK_MAID: 0,
+        Title: "",
+        PresenterName: "",
+        URLs: "",
+        FK_MDID: 0,
+      });
+      await setMeetingAgendaAttachments({
+        MeetingAgendaAttachments: [],
+      });
+      await setParticipantRoleName("");
+      await setSelectedAttendeesName("");
+      await setCreateMeeting({
+        MeetingTitle: "",
+        MeetingDescription: "",
+        MeetingTypeID: 0,
+        MeetingDate: "",
+        MeetingStartTime: "",
+        MeetingEndTime: "",
+        MeetingLocation: "",
+        IsVideoCall: false,
+        IsChat: false,
+        MeetingReminderID: [],
+        MeetingAgendas: [],
+        MeetingAttendees: [],
+        ExternalMeetingAttendees: [],
+      });
+      await setMeetingAttendees({
+        User: {
+          PK_UID: 0,
+        },
+        MeetingAttendeeRole: {
+          PK_MARID: 0,
+        },
+        AttendeeAvailability: {
+          PK_AAID: 1,
+        },
+      });
+      await setRecordMinutesOfTheMeeting({
+        PK_MOMID: 0,
+        Description: "",
+        CreationDate: "",
+        CreationTime: "",
+        FK_MDID: 0,
+      });
+      // await setMeetingReminderValue("");
+      // await setMeetingReminderID([]);
+      setReminder("");
+      setReminderValue("");
+      setTaskAssignedToInput("");
+    } else {
+      setOpen({
+        ...open,
+        flag: true,
+        message: t("Please-atleast-add-one-organizer"),
+      });
+    }
   };
 
   // For Cancelling Meeting
@@ -1784,6 +1804,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     );
   }
 
+  console.log(
+    "MeetingAttendeesMeetingAttendees",
+    createMeeting.MeetingAttendees
+  );
+
   return (
     <>
       <Container>
@@ -2014,7 +2039,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         name="MeetingLocation"
                         applyClass="form-control2"
                         type="text"
-                        placeholder={t("Location") + "*"}
+                        placeholder={t("Location")}
                         value={createMeeting.MeetingLocation}
                         required={true}
                       />
@@ -2058,7 +2083,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         applyClass={"form-control2"}
                         type="text"
                         size="small"
-                        placeholder={t("Meeting-title") + "*"}
+                        placeholder={t("Meeting-title")}
                         required={true}
                         maxLength={200}
                       />
