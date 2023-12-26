@@ -575,7 +575,7 @@ const MeetingDetails = ({
         MeetingDetails: {
           MeetingID: 0,
           MeetingTitle: meetingDetails.MeetingTitle,
-          MeetingType: meetingDetails.MeetingType,
+          MeetingTypeID: meetingDetails.MeetingType.PK_MTID,
           Location: meetingDetails.Location,
           Description: meetingDetails.Description,
           IsVideoChat: meetingDetails.IsVideoCall,
