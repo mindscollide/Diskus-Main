@@ -1441,8 +1441,7 @@ const NewMeeting = () => {
           setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
           currentMeeting={currentMeetingID}
         />
-      ) : proposedNewMeeting &&
-        NewMeetingreducer.proposeNewMeetingPageFlag === true ? (
+      ) : proposedNewMeeting ? (
         <ProposedNewMeeting setProposedNewMeeting={setProposedNewMeeting} />
       ) : (
         <>
@@ -1490,13 +1489,12 @@ const NewMeeting = () => {
                       >
                         {t("Advance-meeting")}
                       </Dropdown.Item>
-                      {/* Proposed New Meeting For the Time Being Committed */}
-                      {/* <Dropdown.Item
+                      <Dropdown.Item
                         className="dropdown-item"
                         onClick={openProposedNewMeetingPage}
                       >
                         {t("Propose-new-meeting")}
-                      </Dropdown.Item> */}
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>

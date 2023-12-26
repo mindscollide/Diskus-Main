@@ -25,11 +25,17 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
 import { convertGMTDateintoUTC } from "../../../../../commen/functions/date_formater";
 import { containsStringandNumericCharacters } from "../../../../../commen/functions/regex";
+import { GetAllCommitteesUsersandGroups } from "../../../../../store/actions/MeetingOrganizers_action";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const calendRef = useRef();
   let currentLanguage = localStorage.getItem("i18nextLng");
+  let OrganizationID = localStorage.getItem("organizationID");
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
@@ -74,6 +80,14 @@ const ProposedNewMeeting = ({ setProposedNewMeeting }) => {
       startDateView: "",
     },
   ]);
+
+  //Getting All Groups And Committies By Organization ID
+  useEffect(() => {
+    let Data = {
+      OrganizationID: Number(OrganizationID),
+    };
+    dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
+  }, []);
 
   //Removing the Added Participants
   const hanleRemovingParticipants = (index) => {
