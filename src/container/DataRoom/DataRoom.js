@@ -280,7 +280,7 @@ const DataRoom = () => {
       if (DataRoomString !== undefined && DataRoomString !== null) {
         setRequestingAccess(true);
         setDataRoomString(DataRoomString);
-        let Data = { Link: currentUrl };
+        let Data = { Link: DataRoomString };
 
         dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(
