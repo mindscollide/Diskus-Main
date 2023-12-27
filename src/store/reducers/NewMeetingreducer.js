@@ -1474,7 +1474,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       console.log("loader check");
       return {
         ...state,
-        Loading: true,
+        Loading: action.loader,
         ResponseMessage: action.message,
       };
     }

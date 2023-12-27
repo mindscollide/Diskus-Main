@@ -5487,7 +5487,8 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                   3,
                   MeetID,
                   Dates,
-                  ResponseDate
+                  ResponseDate,
+                  true
                 )
               );
             } else if (
@@ -6103,11 +6104,12 @@ const UpdateMeetingUserInit = () => {
   };
 };
 
-const UpdateMeetingUserSuccess = (response, message) => {
+const UpdateMeetingUserSuccess = (response, message, loader) => {
   return {
     type: actions.UPDATE_MEETING_USERS_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -6126,7 +6128,8 @@ const UpdateMeetingUserApiFunc = (
   editableSave,
   currentMeeting,
   Dates,
-  ResponseDate
+  ResponseDate,
+  loader
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -6156,7 +6159,8 @@ const UpdateMeetingUserApiFunc = (
                 editableSave,
                 currentMeeting,
                 Dates,
-                ResponseDate
+                ResponseDate,
+                loader
               )
             );
           } else if (response.data.responseCode === 200) {
@@ -6171,24 +6175,13 @@ const UpdateMeetingUserApiFunc = (
                   )
               ) {
                 dispatch(
-                  UpdateMeetingUserSuccess(response.data.responseResult, "")
+                  UpdateMeetingUserSuccess(
+                    response.data.responseResult,
+                    "",
+                    loader
+                  )
                 );
 
-                // let newData = [];
-                // let copyData = [...rspvRows];
-                // copyData.forEach((data, index) => {
-                //   newData.push({
-                //     UserID: data.userID,
-                //     Title: data.Title,
-                //     ParticipantRoleID: data.participantRole.participantRoleID
-                //       ? data.participantRole.participantRoleID
-                //       : 0,
-                //   });
-                // });
-                // console.log(
-                //   editableSave,
-                //   "editableSaveeditableSaveeditableSave"
-                // );
                 if (Number(editableSave) === 1) {
                   let newData = [];
                   let copyData = [...rspvRows];
