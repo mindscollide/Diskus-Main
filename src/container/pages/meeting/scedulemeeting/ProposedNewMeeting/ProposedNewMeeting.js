@@ -116,6 +116,16 @@ const ProposedNewMeeting = ({
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
     dispatch(getAllCommitteesandGroups(navigate, t));
+    return () => {
+      setMembers([]);
+      setProposedMeetingDetails({
+        MeetingTitle: "",
+        Description: "",
+      });
+      setSendResponseBy({
+        date: "",
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -238,7 +248,7 @@ const ProposedNewMeeting = ({
     let tem = [...members];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData, index) => {
+        selectedsearch.forEach((seledtedData, index) => {
           console.log(
             seledtedData,
             "seledtedDataseledtedDataseledtedDataseledtedData"
@@ -250,7 +260,7 @@ const ProposedNewMeeting = ({
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser, index) => {
+                groupUsers.forEach((gUser, index) => {
                   let check2 = members.find(
                     (data, index) => data.UserID === gUser.userID
                   );
@@ -260,6 +270,8 @@ const ProposedNewMeeting = ({
                       userName: gUser.userName,
                       userID: gUser.userID,
                       displayPicture: "",
+                      Title: "",
+                      ParticipantRoleID: 2,
                     };
                     tem.push(newUser);
                   }
@@ -271,19 +283,21 @@ const ProposedNewMeeting = ({
             let check1 = pollsData.committees.find(
               (data, index) => data.committeeID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser, index) => {
+                committeesUsers.forEach((cUser, index) => {
                   let check2 = members.find(
                     (data, index) => data.UserID === cUser.userID
                   );
-                  if (check2 != undefined) {
+                  if (check2 !== undefined) {
                   } else {
                     let newUser = {
                       userName: cUser.userName,
                       userID: cUser.userID,
                       displayPicture: "",
+                      Title: "",
+                      ParticipantRoleID: 2,
                     };
                     tem.push(newUser);
                   }
@@ -294,7 +308,7 @@ const ProposedNewMeeting = ({
             let check1 = members.find(
               (data, index) => data.UserID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
                 (data, index) => data.userID === seledtedData.value
@@ -306,7 +320,10 @@ const ProposedNewMeeting = ({
                   userID: check2.userID,
                   displayPicture:
                     check2.profilePicture.displayProfilePictureName,
+                  Title: "",
+                  ParticipantRoleID: 2,
                 };
+
                 tem.push(newUser);
               }
             }
@@ -530,9 +547,9 @@ const ProposedNewMeeting = ({
 
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
-    let newArr = [];
+    let Dates = [];
     rows.forEach((data, index) => {
-      newArr.push({
+      Dates.push({
         MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
           0,
           8
@@ -563,7 +580,7 @@ const ProposedNewMeeting = ({
           IsVideoChat: true,
           IsTalkGroup: false,
           OrganizationId: 411,
-          MeetingDates: newArr,
+          MeetingDates: Dates,
           MeetingReminders: [4],
           Notes: "",
           AllowRSVP: true,
@@ -581,15 +598,18 @@ const ProposedNewMeeting = ({
           setSceduleMeeting,
           setorganizers,
           setmeetingDetails,
-          2,
+          1,
           setCurrentMeetingID,
           currentMeeting,
           proposedMeetingDetails, //state in which title and description is present
-          setDataroomMapFolderId
-          // members
+          setDataroomMapFolderId,
+          members,
+          rows,
+          sendResponseBy.date,
+          setProposedNewMeeting
         )
       );
-      alert("YOu can proposed now ");
+
       setProposedMeetingDetails({
         MeetingTitle: "",
         Description: "",

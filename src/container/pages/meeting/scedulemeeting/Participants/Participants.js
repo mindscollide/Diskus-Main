@@ -488,7 +488,10 @@ const Participants = ({
           t,
           rspvRows,
           editableSave,
-          currentMeeting
+          currentMeeting,
+          true,
+          true,
+          false
         )
       );
     } else {
