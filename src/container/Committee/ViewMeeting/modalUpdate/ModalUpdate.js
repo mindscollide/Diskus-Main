@@ -218,10 +218,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime != "" &&
       createMeeting.MeetingEndTime != "" &&
-      createMeeting.MeetingDate != "" &&
+      createMeeting.MeetingDate != ""
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation != ""
+      // createMeeting.MeetingLocation != ""
       //  &&
       // createMeeting.MeetingTitle != ""
     ) {
@@ -246,10 +246,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
-      createMeeting.MeetingDate !== "" &&
+      createMeeting.MeetingDate !== ""
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation !== ""
+      // createMeeting.MeetingLocation !== ""
       // &&
       // createMeeting.MeetingTitle !== ""
     ) {
@@ -275,9 +275,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime != "" &&
       createMeeting.MeetingEndTime != "" &&
-      createMeeting.MeetingDate != "" &&
+      createMeeting.MeetingDate != ""
       // createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation != ""
+      // createMeeting.MeetingLocation != ""
       // &&
       // createMeeting.MeetingTitle != ""
     ) {
@@ -304,7 +304,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== "" &&
       // createMeeting.MeetingDescription !== "" &&
-      createMeeting.MeetingLocation !== "" &&
+      // createMeeting.MeetingLocation !== "" &&
       // createMeeting.MeetingTitle !== "" &&
       createMeetingTime !== "" &&
       meetingDate !== ""
@@ -1022,7 +1022,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     setMeetingDate(meetingDateValueFormat);
     setCreateMeeting({
       ...createMeeting,
-      MeetingDate: meetingDateConvertUTC,
+      MeetingDate: meetingDateSaveFormat,
     });
   };
 
@@ -1374,91 +1374,104 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
-    await setEditFlag(false);
-    await seteditRecordIndex(null);
-    await seteditRecordFlag(false);
-    // await
-    await setIsDetails(true);
-    await setIsMinutes(false);
-    await setIsAgenda(false);
-    await setIsAttendees(false);
-    let finalDateTime = createConvert(
-      createMeeting.MeetingDate + createMeeting.MeetingStartTime
+    let hasOrganizer = createMeeting.MeetingAttendees.some(
+      (attendee) => attendee.MeetingAttendeeRole.PK_MARID === 1
     );
-    let newDate = finalDateTime.slice(0, 8);
-    let newTime = finalDateTime.slice(8, 14);
-    let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
-    let Data = {
-      MeetingID: meetingID,
-    };
-    let newData = {
-      MeetingID: createMeeting.MeetingID,
-      MeetingTitle: createMeeting.MeetingTitle,
-      MeetingDescription: createMeeting.MeetingDescription,
-      MeetingTypeID: 0,
-      MeetingDate: newDate,
-      OrganizationId: parseInt(OrganizationId),
-      MeetingStartTime: newTime,
-      MeetingEndTime: newTime,
-      MeetingLocation: createMeeting.MeetingLocation,
-      IsVideoCall: createMeeting.IsVideoCall,
-      IsChat: createMeeting.IsChat,
-      MeetingReminderID: createMeeting.MeetingReminderID,
-      MeetingAgendas: createMeeting.MeetingAgendas,
-      MeetingAttendees: createMeeting.MeetingAttendees,
-      ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
-    };
-    await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
-    await setObjMeetingAgenda({
-      PK_MAID: 0,
-      Title: "",
-      PresenterName: "",
-      URLs: "",
-      FK_MDID: 0,
-    });
-    await setMeetingAgendaAttachments({
-      MeetingAgendaAttachments: [],
-    });
-    await setParticipantRoleName("");
-    await setSelectedAttendeesName("");
-    await setCreateMeeting({
-      MeetingTitle: "",
-      MeetingDescription: "",
-      MeetingTypeID: 0,
-      MeetingDate: "",
-      MeetingStartTime: "",
-      MeetingEndTime: "",
-      MeetingLocation: "",
-      IsVideoCall: false,
-      IsChat: false,
-      MeetingReminderID: [],
-      MeetingAgendas: [],
-      MeetingAttendees: [],
-      ExternalMeetingAttendees: [],
-    });
-    await setMeetingAttendees({
-      User: {
-        PK_UID: 0,
-      },
-      MeetingAttendeeRole: {
-        PK_MARID: 0,
-      },
-      AttendeeAvailability: {
-        PK_AAID: 1,
-      },
-    });
-    await setRecordMinutesOfTheMeeting({
-      PK_MOMID: 0,
-      Description: "",
-      CreationDate: "",
-      CreationTime: "",
-      FK_MDID: 0,
-    });
-    // await setMeetingReminderValue("");
-    // await setMeetingReminderID([]);
-    setReminder("");
-    setReminderValue("");
-    setTaskAssignedToInput("");
+
+    if (hasOrganizer) {
+      await setEditFlag(false);
+      await seteditRecordIndex(null);
+      await seteditRecordFlag(false);
+      // await
+      await setIsDetails(true);
+      await setIsMinutes(false);
+      await setIsAgenda(false);
+      await setIsAttendees(false);
+      let finalDateTime = createConvert(
+        createMeeting.MeetingDate + createMeeting.MeetingStartTime
+      );
+      let newDate = finalDateTime.slice(0, 8);
+      let newTime = finalDateTime.slice(8, 14);
+      let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
+      let Data = {
+        MeetingID: meetingID,
+      };
+      let newData = {
+        MeetingID: createMeeting.MeetingID,
+        MeetingTitle: createMeeting.MeetingTitle,
+        MeetingDescription: createMeeting.MeetingDescription,
+        MeetingTypeID: 0,
+        MeetingDate: finalDateTime.slice(0, 8),
+        OrganizationId: parseInt(OrganizationId),
+        MeetingStartTime: finalDateTime.slice(8, 14),
+        MeetingEndTime: finalDateTime.slice(8, 14),
+        MeetingLocation: createMeeting.MeetingLocation,
+        IsVideoCall: createMeeting.IsVideoCall,
+        IsChat: createMeeting.IsChat,
+        MeetingReminderID: createMeeting.MeetingReminderID,
+        MeetingAgendas: createMeeting.MeetingAgendas,
+        MeetingAttendees: createMeeting.MeetingAttendees,
+        ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
+      };
+      // if (hasOrganizer) {
+      await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
+      await setObjMeetingAgenda({
+        PK_MAID: 0,
+        Title: "",
+        PresenterName: "",
+        URLs: "",
+        FK_MDID: 0,
+      });
+      await setMeetingAgendaAttachments({
+        MeetingAgendaAttachments: [],
+      });
+      await setParticipantRoleName("");
+      await setSelectedAttendeesName("");
+      await setCreateMeeting({
+        MeetingTitle: "",
+        MeetingDescription: "",
+        MeetingTypeID: 0,
+        MeetingDate: "",
+        MeetingStartTime: "",
+        MeetingEndTime: "",
+        MeetingLocation: "",
+        IsVideoCall: false,
+        IsChat: false,
+        MeetingReminderID: [],
+        MeetingAgendas: [],
+        MeetingAttendees: [],
+        ExternalMeetingAttendees: [],
+      });
+      await setMeetingAttendees({
+        User: {
+          PK_UID: 0,
+        },
+        MeetingAttendeeRole: {
+          PK_MARID: 0,
+        },
+        AttendeeAvailability: {
+          PK_AAID: 1,
+        },
+      });
+      await setRecordMinutesOfTheMeeting({
+        PK_MOMID: 0,
+        Description: "",
+        CreationDate: "",
+        CreationTime: "",
+        FK_MDID: 0,
+      });
+      // await setMeetingReminderValue("");
+      // await setMeetingReminderID([]);
+      setReminder("");
+      setReminderValue("");
+      setTaskAssignedToInput("");
+    } else {
+      setOpen({
+        ...open,
+        flag: true,
+        message: t("Please-atleast-add-one-organizer"),
+      });
+    }
   };
 
   // For Cancelling Meeting
@@ -2069,7 +2082,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         applyClass={"form-control2"}
                         type="text"
                         size="small"
-                        placeholder={t("Meeting-title") + "*"}
+                        placeholder={t("Meeting-title")}
                         required={true}
                         maxLength={200}
                       />
