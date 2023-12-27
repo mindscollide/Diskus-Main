@@ -1203,5 +1203,7 @@
   "Link-expired": "Link expired",
   "Link-created": "Link Created",
   "No-file-exist-in-system": "No file exist in system",
-  "No-folder-exist-in-system": "No folder exist in system."
+  "No-folder-exist-in-system": "No folder exist in system.",
+  "Access-requested": "Access requested",
+  "Failed-to-request-access": "Failed to request access"
 }

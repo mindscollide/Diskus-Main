@@ -950,7 +950,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   /* gap: 5px; */
   display: flex;
   align-items: center;
-  overflow: hidden !important;
+  /* overflow: hidden !important; */
   width: 100% !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
