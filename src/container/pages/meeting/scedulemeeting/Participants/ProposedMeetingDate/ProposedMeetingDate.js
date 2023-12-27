@@ -28,6 +28,11 @@ import {
   createConvert,
   resolutionResultTable,
 } from "../../../../../../commen/functions/date_formater";
+import {
+  getCurrentDate,
+  getEndTimeWitlCeilFunction,
+  getStartTimeWithCeilFunction,
+} from "../../../../../../commen/functions/time_formatter";
 const ProposedMeetingDate = ({
   setProposedMeetingDates,
   setParticipants,
@@ -41,6 +46,9 @@ const ProposedMeetingDate = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const calendRef = useRef();
+  const startTime = getStartTimeWithCeilFunction();
+  const getEndTime = getEndTimeWitlCeilFunction();
+  const getCurrentDateforMeeting = getCurrentDate();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -133,6 +141,18 @@ const ProposedMeetingDate = ({
       }
     }
   }, [currentLanguage]);
+
+  //Setting the Dates And Time Default
+  useEffect(() => {
+    const updatedRows = [...rows];
+    updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
+    updatedRows[0].selectedOptionView = getCurrentDateforMeeting.DateGMT;
+    updatedRows[0].startDate = startTime?.formattedTime;
+    updatedRows[0].startDateView = startTime?.newFormatTime;
+    updatedRows[0].endDate = getEndTime?.formattedTime;
+    updatedRows[0].endDateView = getEndTime?.newFormatTime;
+    setRows(updatedRows);
+  }, []);
 
   useEffect(() => {
     try {
