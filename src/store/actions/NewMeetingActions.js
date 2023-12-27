@@ -73,6 +73,7 @@ import {
 } from "./VideoFeature_actions";
 
 import { SaveMeetingOrganizers } from "./MeetingOrganizers_action";
+import { createConvert } from "../../commen/functions/date_formater";
 
 const ClearMessegeMeetingdetails = () => {
   return {
@@ -434,7 +435,7 @@ const SaveMeetingDetialsNewApiFunction = (
   meetingDetails,
   setDataroomMapFolderId,
   members,
-  Dates,
+  rows,
   ResponseDate
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -468,7 +469,7 @@ const SaveMeetingDetialsNewApiFunction = (
               meetingDetails,
               setDataroomMapFolderId,
               members,
-              Dates,
+              rows,
               ResponseDate
             )
           );
@@ -510,7 +511,7 @@ const SaveMeetingDetialsNewApiFunction = (
                     setDataroomMapFolderId,
                     members,
                     MeetID,
-                    Dates,
+                    rows,
                     ResponseDate
                   )
                 );
@@ -1481,7 +1482,7 @@ const SaveparticipantsApi = (
   t,
   currentMeeting,
   flag,
-  Dates,
+  rows,
   ResponseDate,
   loader
 ) => {
@@ -1509,7 +1510,7 @@ const SaveparticipantsApi = (
               t,
               currentMeeting,
               flag,
-              Dates,
+              rows,
               ResponseDate,
               loader
             )
@@ -1531,13 +1532,29 @@ const SaveparticipantsApi = (
                 )
               );
               if (flag === true) {
+                let NewDates = [];
+                rows.forEach((data, index) => {
+                  NewDates.push({
+                    ProposedDate: createConvert(
+                      data.selectedOption + data.startDate
+                    ).slice(0, 8),
+                    StartTime: createConvert(
+                      data.selectedOption + data.startDate
+                    ).slice(8, 14),
+                    EndTime: createConvert(
+                      data.selectedOption + data.endDate
+                    ).slice(8, 14),
+                    proposedDateID: 0,
+                  });
+                });
                 let Data = {
                   MeetingID: currentMeeting,
                   SendResponsebyDate: ResponseDate,
-                  ProposedDates: Dates,
+                  ProposedDates: NewDates,
                 };
-                console.log(Data, "setProposedMeetingDateApiFunc");
-                dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
+                dispatch(
+                  setProposedMeetingDateApiFunc(Data, navigate, t, true)
+                );
               } else {
                 let Data = {
                   MeetingID: Number(currentMeeting),
@@ -2498,7 +2515,7 @@ const showPrposedMeetingDateFailed = (message) => {
   };
 };
 
-const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
+const setProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
   return (dispatch) => {
     dispatch(showPrposedMeetingDateInit());
     let token = JSON.parse(localStorage.getItem("token"));
@@ -2517,7 +2534,7 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(setProposedMeetingDateApiFunc(Data, navigate, t));
+          dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2533,12 +2550,35 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t) => {
                   t("Record-saved")
                 )
               );
-              let NewData = {
-                MeetingID: Data.MeetingID,
-              };
-              dispatch(
-                GetAllProposedMeetingDateApiFunc(NewData, navigate, t, false)
-              );
+              if (flag === true) {
+                let userID = localStorage.getItem("userID");
+                let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                let meetingPageCurrent = parseInt(
+                  localStorage.getItem("MeetingPageCurrent")
+                );
+                let currentView = localStorage.getItem("MeetingCurrentView");
+                let searchData = {
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(userID),
+                  PageNumber:
+                    meetingPageCurrent !== null
+                      ? Number(meetingPageCurrent)
+                      : 1,
+                  Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
+                  PublishedMeetings:
+                    currentView && Number(currentView) === 1 ? true : false,
+                };
+                dispatch(searchNewUserMeeting(navigate, searchData, t));
+              } else {
+                let NewData = {
+                  MeetingID: Data.MeetingID,
+                };
+                dispatch(
+                  GetAllProposedMeetingDateApiFunc(NewData, navigate, t, false)
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -5407,7 +5447,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
   setDataroomMapFolderId,
   members,
   MeetID,
-  Dates,
+  rows,
   ResponseDate
 ) => {
   console.log(
@@ -5442,7 +5482,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               t,
               members,
               MeetID,
-              Dates,
+              rows,
               ResponseDate
             )
           );
@@ -5486,7 +5526,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                   members,
                   3,
                   MeetID,
-                  Dates,
+                  rows,
                   ResponseDate,
                   true
                 )
@@ -6127,7 +6167,7 @@ const UpdateMeetingUserApiFunc = (
   rspvRows,
   editableSave,
   currentMeeting,
-  Dates,
+  rows,
   ResponseDate,
   loader
 ) => {
@@ -6158,7 +6198,7 @@ const UpdateMeetingUserApiFunc = (
                 rspvRows,
                 editableSave,
                 currentMeeting,
-                Dates,
+                rows,
                 ResponseDate,
                 loader
               )
@@ -6248,7 +6288,7 @@ const UpdateMeetingUserApiFunc = (
                       t,
                       currentMeeting,
                       true,
-                      Dates,
+                      rows,
                       ResponseDate,
                       true
                     )

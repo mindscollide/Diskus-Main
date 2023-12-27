@@ -604,7 +604,7 @@ const ProposedNewMeeting = ({
           proposedMeetingDetails, //state in which title and description is present
           setDataroomMapFolderId,
           members,
-          Dates,
+          rows,
           sendResponseBy.date
         )
       );
