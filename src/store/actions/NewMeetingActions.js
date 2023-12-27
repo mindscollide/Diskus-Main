@@ -436,7 +436,8 @@ const SaveMeetingDetialsNewApiFunction = (
   setDataroomMapFolderId,
   members,
   rows,
-  ResponseDate
+  ResponseDate,
+  setProposedNewMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -470,7 +471,8 @@ const SaveMeetingDetialsNewApiFunction = (
               setDataroomMapFolderId,
               members,
               rows,
-              ResponseDate
+              ResponseDate,
+              setProposedNewMeeting
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -512,7 +514,8 @@ const SaveMeetingDetialsNewApiFunction = (
                     members,
                     MeetID,
                     rows,
-                    ResponseDate
+                    ResponseDate,
+                    setProposedNewMeeting
                   )
                 );
                 // setSceduleMeeting(false);
@@ -1484,7 +1487,8 @@ const SaveparticipantsApi = (
   flag,
   rows,
   ResponseDate,
-  loader
+  loader,
+  setProposedNewMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -1512,7 +1516,8 @@ const SaveparticipantsApi = (
               flag,
               rows,
               ResponseDate,
-              loader
+              loader,
+              setProposedNewMeeting
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1553,7 +1558,13 @@ const SaveparticipantsApi = (
                   ProposedDates: NewDates,
                 };
                 dispatch(
-                  setProposedMeetingDateApiFunc(Data, navigate, t, true)
+                  setProposedMeetingDateApiFunc(
+                    Data,
+                    navigate,
+                    t,
+                    true,
+                    setProposedNewMeeting
+                  )
                 );
               } else {
                 let Data = {
@@ -2515,7 +2526,13 @@ const showPrposedMeetingDateFailed = (message) => {
   };
 };
 
-const setProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
+const setProposedMeetingDateApiFunc = (
+  Data,
+  navigate,
+  t,
+  flag,
+  setProposedNewMeeting
+) => {
   return (dispatch) => {
     dispatch(showPrposedMeetingDateInit());
     let token = JSON.parse(localStorage.getItem("token"));
@@ -2534,7 +2551,15 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(setProposedMeetingDateApiFunc(Data, navigate, t, flag));
+          dispatch(
+            setProposedMeetingDateApiFunc(
+              Data,
+              navigate,
+              t,
+              flag,
+              setProposedNewMeeting
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2551,12 +2576,15 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
                 )
               );
               if (flag === true) {
+                setProposedNewMeeting(false);
                 let userID = localStorage.getItem("userID");
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent = parseInt(
                   localStorage.getItem("MeetingPageCurrent")
                 );
                 let currentView = localStorage.getItem("MeetingCurrentView");
+                localStorage.setItem("MeetingCurrentView", 2);
+
                 let searchData = {
                   Date: "",
                   Title: "",
@@ -2567,8 +2595,7 @@ const setProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
                       ? Number(meetingPageCurrent)
                       : 1,
                   Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-                  PublishedMeetings:
-                    currentView && Number(currentView) === 1 ? true : false,
+                  PublishedMeetings: false,
                 };
                 dispatch(searchNewUserMeeting(navigate, searchData, t));
               } else {
@@ -5448,7 +5475,8 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
   members,
   MeetID,
   rows,
-  ResponseDate
+  ResponseDate,
+  setProposedNewMeeting
 ) => {
   console.log(
     { Data },
@@ -5483,7 +5511,8 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               members,
               MeetID,
               rows,
-              ResponseDate
+              ResponseDate,
+              setProposedNewMeeting
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -5528,7 +5557,8 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                   MeetID,
                   rows,
                   ResponseDate,
-                  true
+                  true,
+                  setProposedNewMeeting
                 )
               );
             } else if (
@@ -6169,7 +6199,8 @@ const UpdateMeetingUserApiFunc = (
   currentMeeting,
   rows,
   ResponseDate,
-  loader
+  loader,
+  setProposedNewMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -6200,7 +6231,8 @@ const UpdateMeetingUserApiFunc = (
                 currentMeeting,
                 rows,
                 ResponseDate,
-                loader
+                loader,
+                setProposedNewMeeting
               )
             );
           } else if (response.data.responseCode === 200) {
@@ -6290,7 +6322,8 @@ const UpdateMeetingUserApiFunc = (
                       true,
                       rows,
                       ResponseDate,
-                      true
+                      true,
+                      setProposedNewMeeting
                     )
                   );
                 }

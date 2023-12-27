@@ -605,7 +605,8 @@ const ProposedNewMeeting = ({
           setDataroomMapFolderId,
           members,
           rows,
-          sendResponseBy.date
+          sendResponseBy.date,
+          setProposedNewMeeting
         )
       );
       alert("YOu can proposed now ");
