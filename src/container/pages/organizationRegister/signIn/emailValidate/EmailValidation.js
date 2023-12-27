@@ -30,6 +30,9 @@ import LanguageChangeIcon from "../../../../../assets/images/newElements/Languag
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const EmailValidation = () => {
+  const currentUrl = window.location.href;
+  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
+
   const navigate = useNavigate();
   const { t, i18n } = useTranslation(); //ya
   const dispatch = useDispatch();
@@ -117,17 +120,14 @@ const EmailValidation = () => {
       let RememberPasswordLocalValue = localStorage.getItem(
         "rememberPasswordValue"
       );
-      let RSVP = localStorage.getItem(
-        "RSVP"
-      );
-      
+      let RSVP = localStorage.getItem("RSVP");
+
       localStorage.clear();
       if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
-      if(RSVP){
-      localStorage.setItem("RSVP", RSVP);
-
+      if (RSVP) {
+        localStorage.setItem("RSVP", RSVP);
       }
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
       localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);

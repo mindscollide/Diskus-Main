@@ -111,7 +111,7 @@ const ViewDetailsModal = ({
           .includes("Folder".toLowerCase())
           ? true
           : false,
-        isOpened: true,
+        isOpened: false,
         Description: descriptionValue,
       };
       dispatch(updateFileandFolderDetailsApi(navigate, t, Data));

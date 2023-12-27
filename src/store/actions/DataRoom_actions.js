@@ -2933,6 +2933,11 @@ const checkFileLinkApi = (navigate, t, data) => {
               "DataRoom_DataRoomManager_CheckLink_07".toLowerCase()
             ) {
               dispatch(checkFileLink_fail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_CheckLink_08".toLowerCase()
+            ) {
+              dispatch(checkFileLink_fail(t("Something-went-wrong")));
             } else {
               dispatch(checkFileLink_fail(t("Something-went-wrong")));
             }
@@ -2969,7 +2974,7 @@ const requestAccess_fail = (message) => {
   };
 };
 
-const requestAccessApi = (navigate, t, data) => {
+const requestAccessApi = (navigate, t, data, setRequestAccept) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -2996,6 +3001,7 @@ const requestAccessApi = (navigate, t, data) => {
               "DataRoom_DataRoomManager_RequestAccess_01".toLowerCase()
             ) {
               dispatch(requestAccess_success(t("Access-requested")));
+              setRequestAccept(true);
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_RequestAccess_02".toLowerCase()
@@ -3468,11 +3474,23 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 t("No-restrictions")
               )
             );
-            window.open(
-              `/#/DisKus/documentViewer?pdfData=${encodeURIComponent()}`,
-              "_blank",
-              "noopener noreferrer"
-            );
+            let ext = response.data.responseResult.data.name.split(".").pop();
+            if (ext === "pdf") {
+              const pdfData = {
+                taskId: response.data.responseResult.data.id,
+                commingFrom: 4,
+                fileName: response.data.responseResult.data.name,
+                attachmentID: response.data.responseResult.data.id,
+                isPermission: response.data.responseResult.permissionID,
+              };
+              window.open(
+                `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                  JSON.stringify(pdfData)
+                )}`,
+                "_blank",
+                "noopener noreferrer"
+              );
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3481,15 +3499,37 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(
-              validateUserDataRoomFailed(
+              validateUserDataRoomSuccess(
+                response.data.responseResult,
                 t(
                   "Only-allowed-to-my-organization-and-user-part-of-organization"
                 )
               )
             );
-            if (typeof setRequestFile === "function") {
+            if (response.data.responseResult.isAccess) {
+              let ext = response.data.responseResult.data.name.split(".").pop();
+              if (ext === "pdf") {
+                const pdfData = {
+                  taskId: response.data.responseResult.data.id,
+                  commingFrom: 4,
+                  fileName: response.data.responseResult.data.name,
+                  attachmentID: response.data.responseResult.data.id,
+                  isPermission: response.data.responseResult.permissionID,
+                };
+                window.open(
+                  `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    JSON.stringify(pdfData)
+                  )}`,
+                  "_blank",
+                  "noopener noreferrer"
+                );
+              }
+            } else {
               setRequestFile(true);
             }
+            // if (typeof setRequestFile === "function") {
+            //   setRequestFile(true);
+            // }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3504,7 +3544,28 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 )
               )
             );
-            setShareFileModal(true);
+            if (response.data.responseResult.isAccess) {
+              let ext = response.data.responseResult.data.name.split(".").pop();
+              if (ext === "pdf") {
+                const pdfData = {
+                  taskId: response.data.responseResult.data.id,
+                  commingFrom: 4,
+                  fileName: response.data.responseResult.data.name,
+                  attachmentID: response.data.responseResult.data.id,
+                  isPermission: response.data.responseResult.permissionID,
+                };
+                window.open(
+                  `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    JSON.stringify(pdfData)
+                  )}`,
+                  "_blank",
+                  "noopener noreferrer"
+                );
+              }
+            } else {
+              setRequestFile(true);
+            }
+            // setShareFileModal(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3513,11 +3574,33 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(
-              validateUserDataRoomFailed(
+              validateUserDataRoomSuccess(
+                response.data.responseResult,
                 t("File-restricted-but-this-user-has-assigned-rights")
               )
             );
-            setShareFileModal(true);
+            // setShareFileModal(true);
+            if (response.data.responseResult.isAccess) {
+              let ext = response.data.responseResult.data.name.split(".").pop();
+              if (ext === "pdf") {
+                const pdfData = {
+                  taskId: response.data.responseResult.data.id,
+                  commingFrom: 4,
+                  fileName: response.data.responseResult.data.name,
+                  attachmentID: response.data.responseResult.data.id,
+                  isPermission: response.data.responseResult.permissionID,
+                };
+                window.open(
+                  `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    JSON.stringify(pdfData)
+                  )}`,
+                  "_blank",
+                  "noopener noreferrer"
+                );
+              }
+            } else {
+              setRequestFile(true);
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3526,11 +3609,30 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(
-              validateUserDataRoomFailed(
+              validateUserDataRoomSuccess(
+                response.data.responseResult,
                 t("File-restricted-request-is-to-ask-for-request-access")
               )
             );
-            if (typeof setRequestFile === "function") {
+            if (response.data.responseResult.isAccess) {
+              let ext = response.data.responseResult.data.name.split(".").pop();
+              if (ext === "pdf") {
+                const pdfData = {
+                  taskId: response.data.responseResult.data.id,
+                  commingFrom: 4,
+                  fileName: response.data.responseResult.data.name,
+                  attachmentID: response.data.responseResult.data.id,
+                  isPermission: response.data.responseResult.permissionID,
+                };
+                window.open(
+                  `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    JSON.stringify(pdfData)
+                  )}`,
+                  "_blank",
+                  "noopener noreferrer"
+                );
+              }
+            } else {
               setRequestFile(true);
             }
             // setShareFileModal(true);
@@ -3544,7 +3646,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
             dispatch(
               validateUserDataRoomFailed(t("No-file-exists-in-the-system"))
             );
-            setShareFileModal(true);
+            // setShareFileModal(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3553,7 +3655,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(validateUserDataRoomFailed(t("Link-expired")));
-            setShareFileModal(true);
+            // setShareFileModal(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

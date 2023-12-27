@@ -110,6 +110,7 @@ import {
   getFilesandFolderDetailsApi,
 } from "../../store/actions/DataRoom2_actions";
 import FileDetailsModal from "./FileDetailsModal/FileDetailsModal";
+import copyToClipboard from "../../hooks/useClipBoard";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
@@ -130,7 +131,10 @@ const DataRoom = () => {
   const { uploadReducer, DataRoomReducer, LanguageReducer } = useSelector(
     (state) => state
   );
-  console.log("uploadReducer", uploadReducer);
+  console.log(
+    "DataRoomReducerDataRoomReducerDataRoomReducer",
+    DataRoomReducer.getCreateFolderLink
+  );
 
   const searchBarRef = useRef();
   const threedotFile = useRef();
@@ -251,16 +255,15 @@ const DataRoom = () => {
   });
   //State For the Detail View Of File And Folder
   const [detailView, setDetailView] = useState(false);
-
+  console.log({ currentUrl }, "currentUrlcurrentUrlcurrentUrlcurrentUrl");
   //validate User Encrypted String Api
   useEffect(() => {
     if (currentUrl.includes("DisKus/dataroom?action=")) {
       const remainingString = currentUrl.split("?action=")[1];
-      console.log(remainingString, "remainingStringremainingString");
       if (remainingString !== "") {
         setDataRoomString(remainingString);
         // APi call
-        let Data = { Link: remainingString };
+        let Data = { Link: currentUrl };
         dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(
             navigate,
@@ -278,6 +281,7 @@ const DataRoom = () => {
         setRequestingAccess(true);
         setDataRoomString(DataRoomString);
         let Data = { Link: currentUrl };
+
         dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(
             navigate,
@@ -458,6 +462,14 @@ const DataRoom = () => {
     } catch {}
   }, [DataRoomReducer.RecentDocuments]);
 
+  useEffect(() => {
+    if (
+      DataRoomReducer.getCreateFolderLink !== null &&
+      DataRoomReducer.getCreateFolderLink !== ""
+    ) {
+      copyToClipboard(DataRoomReducer.getCreateFolderLink);
+    }
+  }, [DataRoomReducer.getCreateFolderLink]);
   useEffect(() => {
     if (!isOnline) {
       // CanceUpload();

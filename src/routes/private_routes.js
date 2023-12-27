@@ -6,6 +6,8 @@ const PrivateRoutes = () => {
     if (
       currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
     ) {
+      console.log(currentUrl, "currentUrlcurrentUrlcurrentUrlcurrentUrl");
+
       const parts = currentUrl.split("?action=");
       // Save something in local storage if the condition is true
       if (parts.length === 2) {
@@ -16,17 +18,21 @@ const PrivateRoutes = () => {
       } else {
         localStorage.clear("RSVP");
       }
-    } else if (currentUrl.includes("DisKus/dataroom?action=")) {
-      const parts = currentUrl.split("?action=");
-      // Save something in local storage if the condition is true
-      if (parts.length === 2) {
-        const remainingString = parts[1];
-        console.log("Remaining String:", remainingString);
-        // Save it to state or local storage as needed
-        localStorage.setItem("DataRoomEmail", remainingString);
-      } else {
-        localStorage.clear("DataRoomEmail");
-      }
+    }
+    if (currentUrl.includes("DisKus/dataroom?action=")) {
+      console.log(currentUrl, "currentUrlcurrentUrlcurrentUrlcurrentUrl");
+      localStorage.setItem("DataRoomEmail", currentUrl);
+
+      // const parts = currentUrl.split("?action=");
+      // // Save something in local storage if the condition is true
+      // if (parts.length === 2) {
+      //   const remainingString = parts[1];
+      //   console.log("Remaining String:", remainingString);
+      //   // Save it to state or local storage as needed
+      //   localStorage.setItem("DataRoomEmail", currentUrl);
+      // } else {
+      //   localStorage.clear("DataRoomEmail");
+      // }
     }
   }, [currentUrl]);
   let Blur = localStorage.getItem("blur");
@@ -39,17 +45,17 @@ const PrivateRoutes = () => {
       : "";
   let TwoFA = JSON.parse(localStorage.getItem("2fa"));
   let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));
-  const [twoFaAproval, setTwoFaAproval] = useState(
-    TwoFA === true &&
-      TowApproval != undefined &&
-      TowApproval != null &&
-      TowApproval === true
-      ? true
-      : (TwoFA === undefined || TwoFA === null) &&
-        (TowApproval === undefined || TowApproval === null)
-      ? true
-      : false
-  );
+  // const [twoFaAproval, setTwoFaAproval] = useState(
+  //   TwoFA === true &&
+  //     TowApproval !== undefined &&
+  //     TowApproval !== null &&
+  //     TowApproval === true
+  //     ? true
+  //     : (TwoFA === undefined || TwoFA === null) &&
+  //       (TowApproval === undefined || TowApproval === null)
+  //     ? true
+  //     : false
+  // );
   const [currentUser, setCurrentUser] = useState(
     RoleID === "3" && (Blur === undefined || Blur === null) ? true : null
   );
@@ -61,11 +67,11 @@ const PrivateRoutes = () => {
   ) : (
     <Navigate
       to={
-        (currentUrl !== "" &&
-          currentUrl.includes(
-            "DisKus/Meeting/Useravailabilityformeeting?action="
-          )) ||
-        (currentUrl !== "" && currentUrl.includes("DisKus/dataroom?action="))
+        currentUrl !== "" &&
+        (currentUrl.includes(
+          "DisKus/Meeting/Useravailabilityformeeting?action="
+        ) ||
+          currentUrl.includes("DisKus/dataroom?action="))
           ? "/"
           : "*"
       }
