@@ -609,7 +609,7 @@ const ProposedNewMeeting = ({
           setProposedNewMeeting
         )
       );
-      alert("YOu can proposed now ");
+
       setProposedMeetingDetails({
         MeetingTitle: "",
         Description: "",
