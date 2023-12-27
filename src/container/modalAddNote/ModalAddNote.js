@@ -403,8 +403,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         let newfile = [];
         let newData = [];
         const uploadPromises = fileForSend.map((newData, index) => {
-          let flag = fileForSend.length !== index + 1;
-          return dispatch(FileUploadToDo(navigate, newData, t, newfile, flag));
+          // let flag = fileForSend.length !== index + 1;
+          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
         });
         await Promise.all(uploadPromises);
         newfile.map((attachmentData, index) => {
