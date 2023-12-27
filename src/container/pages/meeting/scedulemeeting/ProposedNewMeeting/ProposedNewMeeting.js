@@ -65,7 +65,12 @@ const ProposedNewMeeting = ({
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
   const [sendResponseVal, setSendResponseVal] = useState("");
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState([
+    {
+      Title: "",
+      ParticipantRoleID: 2,
+    },
+  ]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const startTime = getStartTimeWithCeilFunction();

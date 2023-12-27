@@ -487,6 +487,7 @@ const SaveMeetingDetialsNewApiFunction = (
                 "currentMeetingLS",
                 response.data.responseResult.meetingID
               );
+              let MeetID = response.data.responseResult.meetingID;
               setCurrentMeetingID(response.data.responseResult.meetingID);
               dispatch(
                 handleSaveMeetingSuccess(response.data.responseResult, "")
@@ -503,7 +504,8 @@ const SaveMeetingDetialsNewApiFunction = (
                     MappedData,
                     t,
                     setDataroomMapFolderId,
-                    members
+                    members,
+                    MeetID
                   )
                 );
                 // setSceduleMeeting(false);
@@ -5365,7 +5367,8 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
   Data,
   t,
   setDataroomMapFolderId,
-  members
+  members,
+  MeetID
 ) => {
   console.log(
     { Data },
@@ -5393,7 +5396,13 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            CreateUpdateMeetingDataRoomMapeedApiFunc(navigate, Data, t, members)
+            CreateUpdateMeetingDataRoomMapeedApiFunc(
+              navigate,
+              Data,
+              t,
+              members,
+              MeetID
+            )
           );
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
@@ -5423,11 +5432,13 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                 newarry.push(data.userID);
               });
               let Data = {
-                MeetingID: 2033,
+                MeetingID: MeetID,
                 MeetingAttendeRoleID: 2,
                 UpdatedUsers: newarry,
               };
-              dispatch(UpdateMeetingUserApiFunc(navigate, Data, t));
+              dispatch(
+                UpdateMeetingUserApiFunc(navigate, Data, t, members, 3, MeetID)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -6065,7 +6076,6 @@ const UpdateMeetingUserApiFunc = (
   currentMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   return (dispatch) => {
     dispatch(UpdateMeetingUserInit());
     let form = new FormData();
@@ -6107,6 +6117,29 @@ const UpdateMeetingUserApiFunc = (
               await dispatch(
                 UpdateMeetingUserSuccess(response.data.responseResult, "")
               );
+              let newMembers = [];
+              let DublicateData = [...rspvRows];
+              DublicateData.forEach((data, index) => {
+                newMembers.push({
+                  UserID: data.userID,
+                  Title: "",
+                  ParticipantRoleID: 2,
+                });
+              });
+              let saveParticipant = {
+                MeetingParticipants: newMembers,
+                MeetingID: currentMeeting,
+                IsParticipantsAddFlow: true,
+                NotificationMessage: "",
+              };
+              dispatch(
+                SaveparticipantsApi(
+                  saveParticipant,
+                  navigate,
+                  t,
+                  currentMeeting
+                )
+              );
               let newData = [];
               let copyData = [...rspvRows];
               copyData.forEach((data, index) => {
@@ -6118,6 +6151,7 @@ const UpdateMeetingUserApiFunc = (
                     : 0,
                 });
               });
+
               if (Number(editableSave) === 1) {
                 let Data = {
                   MeetingParticipants: newData,
