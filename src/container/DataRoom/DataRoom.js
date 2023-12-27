@@ -114,6 +114,8 @@ import copyToClipboard from "../../hooks/useClipBoard";
 
 const DataRoom = () => {
   const currentUrl = window.location.href;
+  let DataRoomString = localStorage.getItem("DataRoomEmail");
+
   console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
   // tooltip
   const dispatch = useDispatch();
@@ -275,27 +277,26 @@ const DataRoom = () => {
         );
       }
       // Save something in local storage if the condition is true
-    } else {
-      let DataRoomString = localStorage.getItem("DataRoomEmail");
-      if (DataRoomString !== undefined && DataRoomString !== null) {
-        setRequestingAccess(true);
-        setDataRoomString(DataRoomString);
-        let Data = { Link: DataRoomString };
-
-        dispatch(
-          validateUserAvailibilityEncryptedStringDataRoomApi(
-            navigate,
-            Data,
-            t,
-            setShareFileModal,
-            setRequestFile
-          )
-        );
-      } else {
-        navigate("/DisKus/dataroom");
-      }
     }
-  }, [currentUrl]);
+
+    if (DataRoomString !== undefined && DataRoomString !== null) {
+      setRequestingAccess(true);
+      setDataRoomString(DataRoomString);
+      let Data = { Link: DataRoomString };
+
+      dispatch(
+        validateUserAvailibilityEncryptedStringDataRoomApi(
+          navigate,
+          Data,
+          t,
+          setShareFileModal,
+          setRequestFile
+        )
+      );
+    } else {
+      navigate("/DisKus/dataroom");
+    }
+  }, [currentUrl, DataRoomString]);
 
   useEffect(() => {
     try {
