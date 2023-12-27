@@ -804,8 +804,8 @@ const ProposedNewMeeting = ({
                     className={styles["Scroller_ProposedMeeting"]}
                   >
                     <Row className="mt-2">
-                      {members.length > 0
-                        ? members.map((participant, index) => {
+                      {members.length > 1
+                        ? members.slice(1).map((participant, index) => {
                             console.log(participant, "participantparticipant");
                             return (
                               <>
