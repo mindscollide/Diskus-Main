@@ -187,10 +187,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
-      createMeeting.MeetingDate !== "" &&
+      createMeeting.MeetingDate !== ""
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription !== "" &&
-      createMeeting.MeetingLocation !== ""
+      // createMeeting.MeetingLocation !== ""
       //  &&
       // createMeeting.MeetingTitle !== ""
     ) {
@@ -214,7 +214,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== "" &&
       // createMeeting.MeetingReminderID.length > 0 &&
-      createMeeting.MeetingLocation !== "" &&
+      // createMeeting.MeetingLocation !== "" &&
       // createMeeting.MeetingTitle !== "" &&
       createMeeting.MeetingAgendas.length > 0
     ) {
@@ -226,9 +226,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     } else if (
       createMeeting.MeetingStartTime === "" ||
       createMeeting.MeetingEndTime === "" ||
-      createMeeting.MeetingDate === "" ||
+      createMeeting.MeetingDate === ""
       // createMeeting.MeetingReminderID.length === 0 ||
-      createMeeting.MeetingLocation === ""
+      // createMeeting.MeetingLocation === ""
       // createMeeting.MeetingTitle === ""
     ) {
       setModalField(true);
@@ -262,10 +262,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     if (
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
-      createMeeting.MeetingDate !== "" &&
+      createMeeting.MeetingDate !== ""
       // createMeeting.MeetingReminderID.length != 0 &&
       // createMeeting.MeetingDescription !== "" &&
-      createMeeting.MeetingLocation !== ""
+      // createMeeting.MeetingLocation !== ""
       // &&
       // createMeeting.MeetingTitle !== ""
     ) {
@@ -1063,7 +1063,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
-      allAssignees !== []
+      allAssignees.length !== 0
     ) {
       return allAssignees
         .filter((item) => {
@@ -1185,12 +1185,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
-    let uploadMeetingAttachments = [...createMeeting.MeetingAgendas];
     let finalDateTime = createConvert(
       createMeeting.MeetingDate + createMeeting.MeetingStartTime
     );
-    let newDate = finalDateTime.slice(0, 8);
-    let newTime = finalDateTime.slice(8, 14);
+    let finalDateTimeWithoutUTC =
+      createMeeting.MeetingDate + createMeeting.MeetingStartTime;
+    let newDate = finalDateTimeWithoutUTC.slice(0, 8);
+    let newTime = finalDateTimeWithoutUTC.slice(8, 14);
     let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
     let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
 
@@ -1201,10 +1202,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           : `Untitled @ ${ifemptyDate} ${ifemptyTime}`,
       MeetingDescription: createMeeting.MeetingDescription,
       MeetingTypeID: 0,
-      MeetingDate: newDate,
+      MeetingDate: finalDateTime.slice(0, 8),
       OrganizationId: parseInt(OrganizationId),
-      MeetingStartTime: newTime,
-      MeetingEndTime: newTime,
+      MeetingStartTime: finalDateTime.slice(8, 14),
+      MeetingEndTime: finalDateTime.slice(8, 14),
       MeetingLocation: createMeeting.MeetingLocation,
       IsVideoCall: createMeeting.IsVideoCall,
       IsChat: createMeeting.IsChat,
@@ -1568,7 +1569,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         name="MeetingLocation"
                         applyClass="form-control2"
                         type="text"
-                        placeholder={t("Location") + "*"}
+                        placeholder={t("Location")}
                         value={createMeeting.MeetingLocation}
                         required={true}
                       />

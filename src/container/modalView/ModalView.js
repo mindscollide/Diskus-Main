@@ -815,132 +815,134 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                     type="text"
                                     placeholder={"Agenda Title"}
                                   /> */}
-                                    {data.MeetingAgendaAttachments.length > 0
-                                      ? data.MeetingAgendaAttachments.map(
-                                          (
-                                            MeetingAgendaAttachmentsData,
-                                            index
-                                          ) => {
-                                            var ext =
-                                              MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                "."
-                                              ).pop();
-                                            const first =
-                                              MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                " "
-                                              )[0];
-                                            return (
-                                              <Col
-                                                sm={12}
-                                                lg={3}
-                                                md={3}
-                                                className="meeting-view-file-icon"
-                                                onClick={(e) =>
-                                                  downloadClick(
-                                                    e,
-                                                    MeetingAgendaAttachmentsData
-                                                  )
-                                                }
-                                              >
-                                                {ext === "doc" ? (
-                                                  <FileIcon
-                                                    extension={"docx"}
-                                                    size={78}
-                                                    type={"document"}
-                                                    labelColor={
-                                                      "rgba(44, 88, 152)"
-                                                    }
-                                                  />
-                                                ) : ext === "docx" ? (
-                                                  <FileIcon
-                                                    extension={"docx"}
-                                                    size={78}
-                                                    type={"font"}
-                                                    labelColor={
-                                                      "rgba(44, 88, 152)"
-                                                    }
-                                                  />
-                                                ) : ext === "xls" ? (
-                                                  <FileIcon
-                                                    extension={"xls"}
-                                                    type={"spreadsheet"}
-                                                    size={78}
-                                                    labelColor={
-                                                      "rgba(16, 121, 63)"
-                                                    }
-                                                  />
-                                                ) : ext === "xlsx" ? (
-                                                  <FileIcon
-                                                    extension={"xls"}
-                                                    type={"spreadsheet"}
-                                                    size={78}
-                                                    labelColor={
-                                                      "rgba(16, 121, 63)"
-                                                    }
-                                                  />
-                                                ) : ext === "pdf" ? (
-                                                  <FileIcon
-                                                    extension={"pdf"}
-                                                    size={78}
-                                                    {...defaultStyles.pdf}
-                                                  />
-                                                ) : ext === "png" ? (
-                                                  <FileIcon
-                                                    extension={"png"}
-                                                    size={78}
-                                                    type={"image"}
-                                                    labelColor={
-                                                      "rgba(102, 102, 224)"
-                                                    }
-                                                  />
-                                                ) : ext === "txt" ? (
-                                                  <FileIcon
-                                                    extension={"txt"}
-                                                    size={78}
-                                                    type={"document"}
-                                                    labelColor={
-                                                      "rgba(52, 120, 199)"
-                                                    }
-                                                  />
-                                                ) : ext === "jpg" ? (
-                                                  <FileIcon
-                                                    extension={"jpg"}
-                                                    size={78}
-                                                    type={"image"}
-                                                    labelColor={
-                                                      "rgba(102, 102, 224)"
-                                                    }
-                                                  />
-                                                ) : ext === "jpeg" ? (
-                                                  <FileIcon
-                                                    extension={"jpeg"}
-                                                    size={78}
-                                                    type={"image"}
-                                                    labelColor={
-                                                      "rgba(102, 102, 224)"
-                                                    }
-                                                  />
-                                                ) : ext === "gif" ? (
-                                                  <FileIcon
-                                                    extension={"gif"}
-                                                    size={78}
-                                                    {...defaultStyles.gif}
-                                                  />
-                                                ) : (
-                                                  <FileIcon
-                                                    extension={ext}
-                                                    size={78}
-                                                    {...defaultStyles.ext}
-                                                  />
-                                                )}
-                                                <p className="fileUploadLabel">
-                                                  {first}
-                                                </p>
-                                              </Col>
-                                            );
-                                          }
-                                        )
-                                      : null}
+                                    <div className="file-uploaded-section">
+                                      {data.MeetingAgendaAttachments.length > 0
+                                        ? data.MeetingAgendaAttachments.map(
+                                            (
+                                              MeetingAgendaAttachmentsData,
+                                              index
+                                            ) => {
+                                              var ext =
+                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
+                                                  "."
+                                                ).pop();
+                                              const first =
+                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
+                                                  " "
+                                                )[0];
+                                              return (
+                                                <Col
+                                                  sm={12}
+                                                  lg={3}
+                                                  md={3}
+                                                  className="meeting-view-file-icon"
+                                                  onClick={(e) =>
+                                                    downloadClick(
+                                                      e,
+                                                      MeetingAgendaAttachmentsData
+                                                    )
+                                                  }
+                                                >
+                                                  {ext === "doc" ? (
+                                                    <FileIcon
+                                                      extension={"docx"}
+                                                      size={78}
+                                                      type={"document"}
+                                                      labelColor={
+                                                        "rgba(44, 88, 152)"
+                                                      }
+                                                    />
+                                                  ) : ext === "docx" ? (
+                                                    <FileIcon
+                                                      extension={"docx"}
+                                                      size={78}
+                                                      type={"font"}
+                                                      labelColor={
+                                                        "rgba(44, 88, 152)"
+                                                      }
+                                                    />
+                                                  ) : ext === "xls" ? (
+                                                    <FileIcon
+                                                      extension={"xls"}
+                                                      type={"spreadsheet"}
+                                                      size={78}
+                                                      labelColor={
+                                                        "rgba(16, 121, 63)"
+                                                      }
+                                                    />
+                                                  ) : ext === "xlsx" ? (
+                                                    <FileIcon
+                                                      extension={"xls"}
+                                                      type={"spreadsheet"}
+                                                      size={78}
+                                                      labelColor={
+                                                        "rgba(16, 121, 63)"
+                                                      }
+                                                    />
+                                                  ) : ext === "pdf" ? (
+                                                    <FileIcon
+                                                      extension={"pdf"}
+                                                      size={78}
+                                                      {...defaultStyles.pdf}
+                                                    />
+                                                  ) : ext === "png" ? (
+                                                    <FileIcon
+                                                      extension={"png"}
+                                                      size={78}
+                                                      type={"image"}
+                                                      labelColor={
+                                                        "rgba(102, 102, 224)"
+                                                      }
+                                                    />
+                                                  ) : ext === "txt" ? (
+                                                    <FileIcon
+                                                      extension={"txt"}
+                                                      size={78}
+                                                      type={"document"}
+                                                      labelColor={
+                                                        "rgba(52, 120, 199)"
+                                                      }
+                                                    />
+                                                  ) : ext === "jpg" ? (
+                                                    <FileIcon
+                                                      extension={"jpg"}
+                                                      size={78}
+                                                      type={"image"}
+                                                      labelColor={
+                                                        "rgba(102, 102, 224)"
+                                                      }
+                                                    />
+                                                  ) : ext === "jpeg" ? (
+                                                    <FileIcon
+                                                      extension={"jpeg"}
+                                                      size={78}
+                                                      type={"image"}
+                                                      labelColor={
+                                                        "rgba(102, 102, 224)"
+                                                      }
+                                                    />
+                                                  ) : ext === "gif" ? (
+                                                    <FileIcon
+                                                      extension={"gif"}
+                                                      size={78}
+                                                      {...defaultStyles.gif}
+                                                    />
+                                                  ) : (
+                                                    <FileIcon
+                                                      extension={ext}
+                                                      size={78}
+                                                      {...defaultStyles.ext}
+                                                    />
+                                                  )}
+                                                  <p className="fileUploadLabel">
+                                                    {first}
+                                                  </p>
+                                                </Col>
+                                              );
+                                            }
+                                          )
+                                        : null}
+                                    </div>
                                   </Col>
                                   <Col
                                     lg={4}
@@ -1106,7 +1108,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 </>
               ) : isAttachments ? (
                 <>
-                  <Row className="mt-4">
+                  <Row className="data-room-file-upload-section mt-4">
+                    {/* <div className="data-room-file-upload-section"> */}
                     {/* <Col lg={12} md={12} sm={12}> */}
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
@@ -1130,6 +1133,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                           );
                         })
                       : null}
+                    {/* </div> */}
                   </Row>
                 </>
               ) : null}
