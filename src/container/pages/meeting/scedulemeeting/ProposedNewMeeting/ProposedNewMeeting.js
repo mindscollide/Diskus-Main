@@ -535,9 +535,9 @@ const ProposedNewMeeting = ({
 
   //For handling  Proposed button ProposedMeeting Page
   const handleProposedButtonProposedMeeting = () => {
-    let newArr = [];
+    let Dates = [];
     rows.forEach((data, index) => {
-      newArr.push({
+      Dates.push({
         MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
           0,
           8
@@ -568,7 +568,7 @@ const ProposedNewMeeting = ({
           IsVideoChat: true,
           IsTalkGroup: false,
           OrganizationId: 411,
-          MeetingDates: newArr,
+          MeetingDates: Dates,
           MeetingReminders: [4],
           Notes: "",
           AllowRSVP: true,
@@ -591,7 +591,9 @@ const ProposedNewMeeting = ({
           currentMeeting,
           proposedMeetingDetails, //state in which title and description is present
           setDataroomMapFolderId,
-          members
+          members,
+          Dates,
+          sendResponseBy.date
         )
       );
       alert("YOu can proposed now ");
