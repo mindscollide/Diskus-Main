@@ -1256,7 +1256,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
-      allAssignees !== []
+      allAssignees.length !== 0
     ) {
       return allAssignees
         .filter((item) => {
@@ -1396,10 +1396,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         MeetingTitle: createMeeting.MeetingTitle,
         MeetingDescription: createMeeting.MeetingDescription,
         MeetingTypeID: 0,
-        MeetingDate: newDate,
+        MeetingDate: finalDateTime.slice(0, 8),
         OrganizationId: parseInt(OrganizationId),
-        MeetingStartTime: newTime,
-        MeetingEndTime: newTime,
+        MeetingStartTime: finalDateTime.slice(8, 14),
+        MeetingEndTime: finalDateTime.slice(8, 14),
         MeetingLocation: createMeeting.MeetingLocation,
         IsVideoCall: createMeeting.IsVideoCall,
         IsChat: createMeeting.IsChat,
@@ -2801,22 +2801,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                       </p>
                     </Col>
                   </Row>
-                  {/* <Row className="updatemeeting-publishMeeting-btn">
-                    <Col lg={6} md={6} xs={12} className="text-end">
-                      <Button
-                        className={"btn btn-primary meeting next cancel"}
-                        text={t("Cancel")}
-                        onClick={discardMeeting}
-                      />
-                    </Col>
-                    <Col lg={6} md={6} xs={12} className="text-start">
-                      <Button
-                        className={"btn btn-primary meeting next submit"}
-                        text={t("Update")}
-                        onClick={handleSubmit}
-                      />
-                    </Col>
-                  </Row> */}
                 </>
               ) : isCancelMeetingModal ? (
                 <>

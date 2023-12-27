@@ -1048,7 +1048,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
-      allAssignees !== []
+      allAssignees.length !== 0
     ) {
       return allAssignees
         .filter((item) => {
@@ -1177,10 +1177,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           : `Untitled @ ${ifemptyDate} ${ifemptyTime}`,
       MeetingDescription: createMeeting.MeetingDescription,
       MeetingTypeID: 0,
-      MeetingDate: newDate,
+      MeetingDate: finalDateTime.slice(0, 8),
       OrganizationId: parseInt(OrganizationId),
-      MeetingStartTime: newTime,
-      MeetingEndTime: newTime,
+      MeetingStartTime: finalDateTime.slice(8, 14),
+      MeetingEndTime: finalDateTime.slice(8, 14),
       MeetingLocation: createMeeting.MeetingLocation,
       IsVideoCall: createMeeting.IsVideoCall,
       IsChat: createMeeting.IsChat,
