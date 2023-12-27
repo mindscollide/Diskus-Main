@@ -121,6 +121,16 @@ const ProposedNewMeeting = ({
   //Getting All Groups And Committies By Organization ID
   useEffect(() => {
     dispatch(getAllCommitteesandGroups(navigate, t));
+    return () => {
+      setMembers([]);
+      setProposedMeetingDetails({
+        MeetingTitle: "",
+        Description: "",
+      });
+      setSendResponseBy({
+        date: "",
+      });
+    };
   }, []);
 
   useEffect(() => {
