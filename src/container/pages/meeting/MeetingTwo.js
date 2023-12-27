@@ -1445,9 +1445,18 @@ const NewMeeting = () => {
           setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
           currentMeeting={currentMeetingID}
         />
-      ) : proposedNewMeeting &&
-        NewMeetingreducer.proposeNewMeetingPageFlag === true ? (
-        <ProposedNewMeeting setProposedNewMeeting={setProposedNewMeeting} />
+      ) : proposedNewMeeting ? (
+        <ProposedNewMeeting
+          setProposedNewMeeting={setProposedNewMeeting}
+          setCurrentMeetingID={setCurrentMeetingID}
+          currentMeeting={currentMeetingID}
+          editorRole={editorRole}
+          setEdiorRole={setEdiorRole}
+          setEditMeeting={setEditMeeting}
+          isEditMeeting={isEditMeeting}
+          setDataroomMapFolderId={setDataroomMapFolderId}
+          dataroomMapFolderId={dataroomMapFolderId}
+        />
       ) : (
         <>
           <Row className="mt-2">
@@ -1494,13 +1503,12 @@ const NewMeeting = () => {
                       >
                         {t("Advance-meeting")}
                       </Dropdown.Item>
-                      {/* Proposed New Meeting For the Time Being Committed */}
-                      {/* <Dropdown.Item
+                      <Dropdown.Item
                         className="dropdown-item"
                         onClick={openProposedNewMeetingPage}
                       >
                         {t("Propose-new-meeting")}
-                      </Dropdown.Item> */}
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>

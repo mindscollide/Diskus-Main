@@ -1,114 +1,23 @@
 {
-  "pK_MDID": 2442,
-  "title": "Meeting MQTT Date Time Sorted Push",
-  "status": "12",
-  "host": "Talha two three",
-  "dateOfMeeting": "20231214",
-  "meetingStartTime": "20231214",
-  "meetingEndTime": "20231214",
-  "meetingURL": "",
-  "orignalProfilePictureName": "",
-  "meetingAttendees": [
-    {
-      "pK_MDID": 0,
-      "isPrimaryOrganizer": false,
-      "agendaListRightsAll": false,
-      "isContributorNotified": false,
-      "fK_ParticipantRoleID": 0,
-      "title": null,
-      "user": {
-        "pK_UID": 1038,
-        "name": "talha three",
-        "designation": "",
-        "orignalProfilePictureName": "logo.png",
-        "displayProfilePictureName": "",
-        "organization": "",
-        "emailAddress": "c@yopmail.com",
-        "mobileNumber": "156448948498498",
-        "creationDate": "20231122",
-        "creationTime": "051848"
-      },
-      "meetingAttendeeRole": {
-        "pK_MARID": 2,
-        "role": "Participant",
-        "creationDate": "20231122",
-        "creationTime": "051848"
-      },
-      "attendeeAvailability": {
-        "pK_AAID": 1,
-        "description": "Awaiting Response",
-        "creationDate": "20231122",
-        "creationTime": "051848"
-      }
-    },
-    {
-      "pK_MDID": 0,
-      "isPrimaryOrganizer": false,
-      "agendaListRightsAll": false,
-      "isContributorNotified": false,
-      "fK_ParticipantRoleID": 0,
-      "title": null,
-      "user": {
-        "pK_UID": 1039,
-        "name": "Talha Four",
-        "designation": "",
-        "orignalProfilePictureName": "logo.png",
-        "displayProfilePictureName": "",
-        "organization": "",
-        "emailAddress": "d@yopmail.com",
-        "mobileNumber": "45848484848",
-        "creationDate": "20231122",
-        "creationTime": "052238"
-      },
-      "meetingAttendeeRole": {
-        "pK_MARID": 2,
-        "role": "Participant",
-        "creationDate": "20231122",
-        "creationTime": "052238"
-      },
-      "attendeeAvailability": {
-        "pK_AAID": 1,
-        "description": "Awaiting Response",
-        "creationDate": "20231122",
-        "creationTime": "052238"
-      }
-    },
-    {
-      "pK_MDID": 0,
-      "isPrimaryOrganizer": false,
-      "agendaListRightsAll": false,
-      "isContributorNotified": false,
-      "fK_ParticipantRoleID": 0,
-      "title": null,
-      "user": {
-        "pK_UID": 1037,
-        "name": "Talha two three",
-        "designation": "",
-        "orignalProfilePictureName": "20231128102945480.png",
-        "displayProfilePictureName": "",
-        "organization": "",
-        "emailAddress": "b@yopmail.com",
-        "mobileNumber": "3362566485",
-        "creationDate": "20231122",
-        "creationTime": "051745"
-      },
-      "meetingAttendeeRole": {
-        "pK_MARID": 1,
-        "role": "Organizer",
-        "creationDate": "20231122",
-        "creationTime": "051745"
-      },
-      "attendeeAvailability": {
-        "pK_AAID": 2,
-        "description": "Accepted",
-        "creationDate": "20231122",
-        "creationTime": "051745"
-      }
-    }
-  ],
-  "isVideoCall": true,
-  "isChat": false,
-  "isQuickMeeting": false,
-  "isAttachment": false,
-  "meetingAgenda": []
+  "MeetingDetails": {
+    "MeetingID": 0,
+    "MeetingTitle": "test proposed meeting ",
+    "MeetingType": { "PK_MTID": 27, "Type": "BoardMeetings" },
+    "Location": "",
+    "Description": "helo there ",
+    "IsVideoChat": true,
+    "IsTalkGroup": false,
+    "OrganizationId": 411,
+    "MeetingDates": [
+      { "MeetingDate": "20231227", "StartTime": "130000", "EndTime": "140000" },
+      { "MeetingDate": "20231230", "StartTime": "120600", "EndTime": "150600" }
+    ],
+    "MeetingReminders": [4],
+    "Notes": "",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "",
+    "MeetingStatusID": 11
+  }
 }

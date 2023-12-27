@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Notification } from "../../components/elements";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import CustomUpload from "./../../components/elements/upload/Upload";
@@ -29,6 +29,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
   const { NotesReducer, uploadReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
+  const Delta = Quill.import("delta");
+  const editorRef = useRef(null);
   const [updateConfirmation, setUpdateConfirmation] = useState(false);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isDeleteNote, setIsDeleteNote] = useState(false);
@@ -536,6 +538,26 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes));
   };
 
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = editorRef.current.getEditor();
+
+      if (editor) {
+        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+          const plaintext = node.innerText || node.textContent || "";
+          const isImage = node.nodeName === "IMG";
+
+          if (isImage) {
+            // Block image paste by returning an empty delta
+            return new Delta();
+          }
+
+          return delta.compose(new Delta().insert(plaintext));
+        });
+      }
+    }
+  }, []);
+
   return (
     <>
       <Container>
@@ -679,6 +701,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                   <Row className={styles["QuillRow"]}>
                     <Col lg={12} md={12} sm={12} xs={12} className="mt-1">
                       <ReactQuill
+                        ref={editorRef}
                         theme="snow"
                         value={addNoteFields.Description.value || ""}
                         // defaultValue={addNoteFields.Description.value}

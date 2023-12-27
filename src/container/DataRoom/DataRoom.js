@@ -275,6 +275,7 @@ const DataRoom = () => {
     } else {
       let DataRoomString = localStorage.getItem("DataRoomEmail");
       if (DataRoomString !== undefined && DataRoomString !== null) {
+        setRequestingAccess(true);
         setDataRoomString(DataRoomString);
         let Data = { Link: currentUrl };
         dispatch(
@@ -468,7 +469,6 @@ const DataRoom = () => {
   };
 
   const showRequestingAccessModal = (record) => {
-    // setRequestingAccess(true);
     if (record.isFolder === true) {
       let data = {
         FolderID: Number(record.id),
