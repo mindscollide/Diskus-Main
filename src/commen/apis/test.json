@@ -1,9 +1,8 @@
 {
-  "MeetingParticipants": [
-    { "UserID": 985, "Title": "", "ParticipantRoleID": 2 },
-    { "UserID": 984, "Title": "", "ParticipantRoleID": 2 }
-  ],
-  "MeetingID": 2493,
-  "IsParticipantsAddFlow": true,
-  "NotificationMessage": ""
+  "MeetingID": 2494,
+  "SendResponsebyDate": "20231229",
+  "ProposedDates": [
+    { "MeetingDate": "20231227", "StartTime": "070000", "EndTime": "080000" },
+    { "MeetingDate": "20231230", "StartTime": "065500", "EndTime": "085500" }
+  ]
 }

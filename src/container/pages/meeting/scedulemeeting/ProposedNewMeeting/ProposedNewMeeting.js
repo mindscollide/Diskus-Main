@@ -65,12 +65,7 @@ const ProposedNewMeeting = ({
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [error, seterror] = useState(false);
   const [sendResponseVal, setSendResponseVal] = useState("");
-  const [members, setMembers] = useState([
-    {
-      Title: "",
-      ParticipantRoleID: 2,
-    },
-  ]);
+  const [members, setMembers] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const startTime = getStartTimeWithCeilFunction();
@@ -253,7 +248,7 @@ const ProposedNewMeeting = ({
     let tem = [...members];
     if (Object.keys(selectedsearch).length > 0) {
       try {
-        selectedsearch.map((seledtedData, index) => {
+        selectedsearch.forEach((seledtedData, index) => {
           console.log(
             seledtedData,
             "seledtedDataseledtedDataseledtedDataseledtedData"
@@ -265,7 +260,7 @@ const ProposedNewMeeting = ({
             if (check1 !== undefined) {
               let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
-                groupUsers.map((gUser, index) => {
+                groupUsers.forEach((gUser, index) => {
                   let check2 = members.find(
                     (data, index) => data.UserID === gUser.userID
                   );
@@ -275,6 +270,8 @@ const ProposedNewMeeting = ({
                       userName: gUser.userName,
                       userID: gUser.userID,
                       displayPicture: "",
+                      Title: "",
+                      ParticipantRoleID: 2,
                     };
                     tem.push(newUser);
                   }
@@ -286,19 +283,21 @@ const ProposedNewMeeting = ({
             let check1 = pollsData.committees.find(
               (data, index) => data.committeeID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
               let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
-                committeesUsers.map((cUser, index) => {
+                committeesUsers.forEach((cUser, index) => {
                   let check2 = members.find(
                     (data, index) => data.UserID === cUser.userID
                   );
-                  if (check2 != undefined) {
+                  if (check2 !== undefined) {
                   } else {
                     let newUser = {
                       userName: cUser.userName,
                       userID: cUser.userID,
                       displayPicture: "",
+                      Title: "",
+                      ParticipantRoleID: 2,
                     };
                     tem.push(newUser);
                   }
@@ -309,7 +308,7 @@ const ProposedNewMeeting = ({
             let check1 = members.find(
               (data, index) => data.UserID === seledtedData.value
             );
-            if (check1 != undefined) {
+            if (check1 !== undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
                 (data, index) => data.userID === seledtedData.value
@@ -321,7 +320,10 @@ const ProposedNewMeeting = ({
                   userID: check2.userID,
                   displayPicture:
                     check2.profilePicture.displayProfilePictureName,
+                  Title: "",
+                  ParticipantRoleID: 2,
                 };
+
                 tem.push(newUser);
               }
             }
@@ -804,8 +806,8 @@ const ProposedNewMeeting = ({
                     className={styles["Scroller_ProposedMeeting"]}
                   >
                     <Row className="mt-2">
-                      {members.length > 1
-                        ? members.slice(1).map((participant, index) => {
+                      {members.length > 0
+                        ? members.map((participant, index) => {
                             console.log(participant, "participantparticipant");
                             return (
                               <>

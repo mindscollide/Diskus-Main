@@ -1458,11 +1458,12 @@ const showSavedParticipantsInit = () => {
   };
 };
 
-const showSaveParticipantsSuccess = (response, message) => {
+const showSaveParticipantsSuccess = (response, message, loader) => {
   return {
     type: actions.SAVE_MEETING_PARTICIPANTS_SUCCESS,
     response: response,
     message: message,
+    loader: loader,
   };
 };
 
@@ -1481,7 +1482,8 @@ const SaveparticipantsApi = (
   currentMeeting,
   flag,
   Dates,
-  ResponseDate
+  ResponseDate,
+  loader
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -1508,7 +1510,8 @@ const SaveparticipantsApi = (
               currentMeeting,
               flag,
               Dates,
-              ResponseDate
+              ResponseDate,
+              loader
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1523,7 +1526,8 @@ const SaveparticipantsApi = (
               dispatch(
                 showSaveParticipantsSuccess(
                   response.data.responseResult,
-                  t("Participants-details-updated-successfully")
+                  t("Participants-details-updated-successfully"),
+                  loader
                 )
               );
               if (flag === true) {
@@ -6140,110 +6144,142 @@ const UpdateMeetingUserApiFunc = (
     })
       .then(async (response) => {
         console.log(response, "response");
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            UpdateMeetingUserApiFunc(
-              navigate,
-              Data,
-              t,
-              rspvRows,
-              editableSave,
-              currentMeeting,
-              Dates,
-              ResponseDate
-            )
-          );
-        } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
-          if (response.data.responseResult.isExecuted === true) {
+        try {
+          if (response.data.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t));
+            dispatch(
+              UpdateMeetingUserApiFunc(
+                navigate,
+                Data,
+                t,
+                rspvRows,
+                editableSave,
+                currentMeeting,
+                Dates,
+                ResponseDate
+              )
+            );
+          } else if (response.data.responseCode === 200) {
             console.log(response, "response");
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_UpdateMeetingUsers_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                UpdateMeetingUserSuccess(response.data.responseResult, "")
-              );
-              let newMembers = [];
-              let DublicateData = [...rspvRows];
-              DublicateData.forEach((data, index) => {
-                newMembers.push({
-                  UserID: data.userID,
-                  Title: "",
-                  ParticipantRoleID: 2,
-                });
-              });
-              let saveParticipant = {
-                MeetingParticipants: newMembers,
-                MeetingID: currentMeeting,
-                IsParticipantsAddFlow: true,
-                NotificationMessage: "",
-              };
-              dispatch(
-                SaveparticipantsApi(
-                  saveParticipant,
-                  navigate,
-                  t,
-                  currentMeeting,
-                  true,
-                  Dates,
-                  ResponseDate
-                )
-              );
-              let newData = [];
-              let copyData = [...rspvRows];
-              copyData.forEach((data, index) => {
-                newData.push({
-                  UserID: data.userID,
-                  Title: data.Title,
-                  ParticipantRoleID: data.participantRole.participantRoleID
-                    ? data.participantRole.participantRoleID
-                    : 0,
-                });
-              });
+            if (response.data.responseResult.isExecuted === true) {
+              console.log(response, "response");
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomManager_UpdateMeetingUsers_01".toLowerCase()
+                  )
+              ) {
+                dispatch(
+                  UpdateMeetingUserSuccess(response.data.responseResult, "")
+                );
 
-              if (Number(editableSave) === 1) {
-                let Data = {
-                  MeetingParticipants: newData,
-                  MeetingID: Number(currentMeeting),
-                  IsParticipantsAddFlow: false,
-                  NotificationMessage: "",
-                };
-                dispatch(
-                  SaveparticipantsApi(Data, navigate, t, currentMeeting)
-                );
-              } else if (Number(editableSave) === 2) {
-                let Data = {
-                  MeetingParticipants: newData,
-                  MeetingID: Number(currentMeeting),
-                  IsParticipantsAddFlow: true,
-                  NotificationMessage: "",
-                };
-                console.log(Data, "SaveparticipantsApi");
-                dispatch(
-                  SaveparticipantsApi(Data, navigate, t, currentMeeting)
-                );
+                // let newData = [];
+                // let copyData = [...rspvRows];
+                // copyData.forEach((data, index) => {
+                //   newData.push({
+                //     UserID: data.userID,
+                //     Title: data.Title,
+                //     ParticipantRoleID: data.participantRole.participantRoleID
+                //       ? data.participantRole.participantRoleID
+                //       : 0,
+                //   });
+                // });
+                // console.log(
+                //   editableSave,
+                //   "editableSaveeditableSaveeditableSave"
+                // );
+                if (Number(editableSave) === 1) {
+                  let newData = [];
+                  let copyData = [...rspvRows];
+                  copyData.forEach((data, index) => {
+                    newData.push({
+                      UserID: data.userID,
+                      Title: data.Title,
+                      ParticipantRoleID: data.participantRole.participantRoleID
+                        ? data.participantRole.participantRoleID
+                        : 0,
+                    });
+                  });
+                  let Data = {
+                    MeetingParticipants: newData,
+                    MeetingID: Number(currentMeeting),
+                    IsParticipantsAddFlow: false,
+                    NotificationMessage: "",
+                  };
+                  dispatch(
+                    SaveparticipantsApi(Data, navigate, t, currentMeeting)
+                  );
+                } else if (Number(editableSave) === 2) {
+                  let newData = [];
+                  let copyData = [...rspvRows];
+                  copyData.forEach((data, index) => {
+                    newData.push({
+                      UserID: data.userID,
+                      Title: data.Title,
+                      ParticipantRoleID: data.participantRole.participantRoleID
+                        ? data.participantRole.participantRoleID
+                        : 0,
+                    });
+                  });
+                  let Data = {
+                    MeetingParticipants: newData,
+                    MeetingID: Number(currentMeeting),
+                    IsParticipantsAddFlow: true,
+                    NotificationMessage: "",
+                  };
+                  console.log(Data, "SaveparticipantsApi");
+                  dispatch(
+                    SaveparticipantsApi(Data, navigate, t, currentMeeting)
+                  );
+                } else if (Number(editableSave) === 3) {
+                  let newMembers = [];
+                  let DublicateData = [...rspvRows];
+                  DublicateData.forEach((data, index) => {
+                    newMembers.push({
+                      UserID: data.userID,
+                      Title: "",
+                      ParticipantRoleID: 2,
+                    });
+                  });
+                  let saveParticipant = {
+                    MeetingParticipants: newMembers,
+                    MeetingID: currentMeeting,
+                    IsParticipantsAddFlow: true,
+                    NotificationMessage: "",
+                  };
+                  await dispatch(
+                    SaveparticipantsApi(
+                      saveParticipant,
+                      navigate,
+                      t,
+                      currentMeeting,
+                      true,
+                      Dates,
+                      ResponseDate,
+                      true
+                    )
+                  );
+                }
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomManager_UpdateMeetingUsers_02".toLowerCase()
+                  )
+              ) {
+                dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
               }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomManager_UpdateMeetingUsers_02".toLowerCase()
-                )
-            ) {
+            } else {
+              console.log(response, "response");
               dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
             }
           } else {
             console.log(response, "response");
             dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
           }
-        } else {
-          console.log(response, "response");
-          dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
+        } catch (error) {
+          console.log(error, "checksaveparticipant");
         }
       })
       .catch((response) => {
