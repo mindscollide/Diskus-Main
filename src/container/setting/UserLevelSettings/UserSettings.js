@@ -23,6 +23,13 @@ import {
   revokeToken,
   updateUserSettingFunc,
 } from "../../../store/actions/UpdateUserGeneralSetting";
+import {
+  AuthenticatedTemplate,
+  UnauthenticatedTemplate,
+  useMsal,
+} from "@azure/msal-react";
+import { loginRequest } from "../../../auth-config";
+
 const UserSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -434,13 +441,35 @@ const UserSettings = () => {
       });
     }
   };
+  const { instance } = useMsal();
+  const activeAccount = instance.getActiveAccount();
+  const [authCode, setAuthCode] = useState("");
 
-  const onChangeAllowMicrosoftCalenderSync = (e) => {
-    let value = e.target.checked;
+  const signInMicrowSoft = async (value) => {
+    // instance.loginRedirect({
+    //   ...loginRequest,
+    //   prompt: "create",
+    // });
+    const response = await instance.loginPopup(loginRequest);
+    console.log("signInMicrowSoft", response);
+
     setUserOptionsSettings({
       ...userOptionsSettings,
       AllowMicrosoftCalenderSync: value,
     });
+  };
+
+  const onChangeAllowMicrosoftCalenderSync = (e) => {
+    const value = e.target.checked;
+    if (value) {
+      signInMicrowSoft(value);
+    } else {
+      instance.logoutPopup();
+      setUserOptionsSettings({
+        ...userOptionsSettings,
+        AllowMicrosoftCalenderSync: value,
+      });
+    }
   };
 
   const onChangeEmailWhenAddedToCommittee = (e) => {
@@ -1408,7 +1437,31 @@ const UserSettings = () => {
                     roleID != 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
-                          <Checkbox
+                          <AuthenticatedTemplate>
+                            <Checkbox
+                              onChange={onChangeAllowMicrosoftCalenderSync}
+                              checked={
+                                userOptionsSettings.AllowMicrosoftCalenderSync
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Allow-microsoft-calender-sync")}
+                              </span>
+                            </Checkbox>
+                          </AuthenticatedTemplate>
+                          <UnauthenticatedTemplate>
+                            <Checkbox
+                              onChange={onChangeAllowMicrosoftCalenderSync}
+                              checked={
+                                userOptionsSettings.AllowMicrosoftCalenderSync
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Allow-microsoft-calender-sync")}
+                              </span>
+                            </Checkbox>
+                          </UnauthenticatedTemplate>
+                          {/* <Checkbox
                             onChange={onChangeAllowMicrosoftCalenderSync}
                             checked={
                               userOptionsSettings.AllowMicrosoftCalenderSync
@@ -1417,7 +1470,7 @@ const UserSettings = () => {
                             <span className={styles["Class_CheckBox"]}>
                               {t("Allow-microsoft-calender-sync")}
                             </span>
-                          </Checkbox>
+                          </Checkbox> */}
                         </Col>
                       </Row>
                     ) : null}
