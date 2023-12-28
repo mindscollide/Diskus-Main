@@ -87,6 +87,18 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   // for   List Of Attachments
   const [attachmentsList, setattachmentsList] = useState([]);
 
+  //all Meeting details
+  const [allMeetingDetails, setAllMeetingDetails] = useState([]);
+  const [meetingDifference, setMeetingDifference] = useState(0);
+  let now = new Date();
+  let year = now.getUTCFullYear();
+  let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
+  let day = now.getUTCDate().toString().padStart(2, "0");
+  let hours = now.getUTCHours().toString().padStart(2, "0");
+  let minutes = now.getUTCMinutes().toString().padStart(2, "0");
+  let seconds = now.getUTCSeconds().toString().padStart(2, "0");
+  let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
+
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   // for   added participant  Name list
@@ -458,11 +470,48 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           MinutesOfMeeting: minutesOfMeeting,
         });
         console.log("data filter from api responce error", List);
+        setAllMeetingDetails(assignees.ViewMeetingDetails);
       }
     } catch (error) {
       console.log("data filter from api responce error");
     }
   }, [assignees.ViewMeetingDetails]);
+  console.log("meetingDifferencemeetingDifference", meetingDifference);
+
+  useEffect(() => {
+    if (
+      allMeetingDetails !== null &&
+      allMeetingDetails !== undefined &&
+      allMeetingDetails.length !== 0
+    ) {
+      let meetingDateTime =
+        allMeetingDetails.meetingEvent.meetingDate +
+        allMeetingDetails.meetingEvent.startTime;
+      const currentDateObj = new Date(
+        currentUTCDateTime.substring(0, 4), // Year
+        parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
+        currentUTCDateTime.substring(6, 8), // Day
+        currentUTCDateTime.substring(8, 10), // Hours
+        currentUTCDateTime.substring(10, 12), // Minutes
+        currentUTCDateTime.substring(12, 14) // Seconds
+      );
+
+      const meetingDateObj = new Date(
+        meetingDateTime.substring(0, 4), // Year
+        parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
+        meetingDateTime.substring(6, 8), // Day
+        meetingDateTime.substring(8, 10), // Hours
+        meetingDateTime.substring(10, 12), // Minutes
+        meetingDateTime.substring(12, 14) // Seconds
+      );
+      // Calculate the time difference in milliseconds
+      const timeDifference = meetingDateObj - currentDateObj;
+
+      // Convert milliseconds to minutes
+      const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+      setMeetingDifference(minutesDifference);
+    }
+  }, [allMeetingDetails]);
 
   // for list of all assignees
   useEffect(() => {
@@ -572,7 +621,16 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       UserID: parseInt(createrID),
     };
-    await dispatch(StartMeeting(navigate, Data, t));
+    let Data2 = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: parseInt(createrID),
+      PageNumber: 1,
+      Length: 50,
+      PublishedMeetings: true,
+    };
+    await dispatch(StartMeeting(navigate, Data, t, Data2));
   };
 
   const endMeeting = async () => {
@@ -582,7 +640,16 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       UserID: parseInt(createrID),
     };
-    await dispatch(EndMeeting(navigate, Data, t));
+    let Data2 = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: parseInt(createrID),
+      PageNumber: 1,
+      Length: 50,
+      PublishedMeetings: true,
+    };
+    await dispatch(EndMeeting(navigate, Data, t, Data2));
   };
 
   const downloadClick = (e, record) => {
@@ -1151,26 +1218,33 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         xs={12}
                         className="d-flex justify-content-end"
                       >
-                        <Button
-                          onClick={startMeeting}
-                          className={
-                            "MontserratSemiBold-600 btn btn-primary start-meeting-button" +
-                            " " +
-                            currentLanguage
-                          }
-                          text={t("Start-meeting")}
-                          disableBtn={startMeetingStatus}
-                        />
-                        <Button
-                          onClick={endMeeting}
-                          className={
-                            "MontserratSemiBold-600 btn btn-primary end-meeting-btn" +
-                            " " +
-                            currentLanguage
-                          }
-                          text={t("End-meeting")}
-                          disableBtn={endMeetingStatus}
-                        />
+                        {meetingDifference <= 5 &&
+                        meetingDifference > 0 &&
+                        allMeetingDetails.meetingStatus.status === "1" ? (
+                          <Button
+                            onClick={startMeeting}
+                            className={
+                              "MontserratSemiBold-600 btn btn-primary start-meeting-button" +
+                              " " +
+                              currentLanguage
+                            }
+                            text={t("Start-meeting")}
+                            disableBtn={startMeetingStatus}
+                          />
+                        ) : null}
+
+                        {allMeetingDetails.meetingStatus.status === "10" ? (
+                          <Button
+                            onClick={endMeeting}
+                            className={
+                              "MontserratSemiBold-600 btn btn-primary end-meeting-btn" +
+                              " " +
+                              currentLanguage
+                            }
+                            text={t("End-meeting")}
+                            disableBtn={endMeetingStatus}
+                          />
+                        ) : null}
                       </Col>
                     </Row>
                   ) : null}
