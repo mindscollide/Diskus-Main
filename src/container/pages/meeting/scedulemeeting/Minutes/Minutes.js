@@ -120,11 +120,10 @@ const Minutes = ({
     value: 0,
   });
 
-  console.log(addAgendaWiseFields, "addAgendaWiseFieldsaddAgendaWiseFields");
-
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
+  console.log("fileSizefileSize", fileSize);
   var FontAttributor = Quill.import("formats/font");
   var fonts = ["impact", "courier", "comic"];
   FontAttributor.whitelist = fonts;
@@ -136,7 +135,7 @@ const Minutes = ({
         {
           size: ["14px", "16px", "18px"],
         },
-        { font: ["impact", "courier", "comic", "Montserrat"] },
+        { font: ["impact", "courier", "comic"] },
         { bold: {} },
         { italic: {} },
         { underline: {} },
@@ -147,11 +146,30 @@ const Minutes = ({
         { list: "bullet" },
       ],
       handlers: {},
-    },
-    clipboard: {
-      matchVisual: false,
+      clipboard: { matchVisual: false },
     },
   };
+
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = editorRef.current.getEditor();
+
+      if (editor) {
+        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+          const plaintext = node.innerText || node.textContent || "";
+          const isImage = node.nodeName === "IMG";
+
+          if (isImage) {
+            // Block image paste by returning an empty delta
+            return new Delta();
+          }
+
+          return delta.compose(new Delta().insert(plaintext));
+        });
+      }
+    }
+  }, []);
+
   useEffect(() => {
     let Data = {
       MeetingID: Number(currentMeeting),
@@ -206,8 +224,8 @@ const Minutes = ({
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText) {
-      setAddNoteFields({
-        ...addNoteFields,
+      setAgendaWiseFields({
+        ...addAgendaWiseFields,
         Description: {
           value: content,
           errorMessage: "",
@@ -215,8 +233,8 @@ const Minutes = ({
         },
       });
     } else {
-      // setAddNoteFields({
-      //   ...addNoteFields,
+      // setAgendaWiseFields({
+      //   ...addAgendaWiseFields,
       //   Description: {
       //     value: "",
       //     errorMessage: "",
@@ -225,7 +243,6 @@ const Minutes = ({
       // });
     }
   };
-
   //Props for File Dragger
   const props = {
     name: "file",
@@ -775,26 +792,6 @@ const Minutes = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [ResponseMessage]);
-
-  useEffect(() => {
-    if (editorRef.current) {
-      const editor = editorRef.current.getEditor();
-
-      if (editor) {
-        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-          const plaintext = node.innerText || node.textContent || "";
-          const isImage = node.nodeName === "IMG";
-
-          if (isImage) {
-            // Block image paste by returning an empty delta
-            return new Delta();
-          }
-
-          return delta.compose(new Delta().insert(plaintext));
-        });
-      }
-    }
-  }, []);
 
   return (
     <section>

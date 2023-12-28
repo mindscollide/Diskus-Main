@@ -252,6 +252,7 @@ const AgendaWise = ({
         { list: "bullet" },
       ],
       handlers: {},
+      clipboard: { matchVisual: false },
     },
   };
 

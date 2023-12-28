@@ -145,20 +145,29 @@ const Minutes = ({
         ],
       ],
       handlers: {},
+      clipboard: { matchVisual: false },
     },
   };
 
-  const formats = [
-    "size",
-    "font",
-    "bold", // Include 'bold' in formats
-    "italic", // Include 'italic' in formats
-    "underline", // Include 'underline' in formats
-    "color",
-    "background",
-    "align",
-    "list",
-  ];
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = editorRef.current.getEditor();
+
+      if (editor) {
+        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+          const plaintext = node.innerText || node.textContent || "";
+          const isImage = node.nodeName === "IMG";
+
+          if (isImage) {
+            // Block image paste by returning an empty delta
+            return new Delta();
+          }
+
+          return delta.compose(new Delta().insert(plaintext));
+        });
+      }
+    }
+  }, []);
 
   useEffect(() => {
     let Data = {
@@ -790,26 +799,6 @@ const Minutes = ({
       dispatch(CleareMessegeNewMeeting());
     }
   }, [ResponseMessage]);
-
-  useEffect(() => {
-    if (editorRef.current) {
-      const editor = editorRef.current.getEditor();
-
-      if (editor) {
-        editor.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-          const plaintext = node.innerText || node.textContent || "";
-          const isImage = node.nodeName === "IMG";
-
-          if (isImage) {
-            // Block image paste by returning an empty delta
-            return new Delta();
-          }
-
-          return delta.compose(new Delta().insert(plaintext));
-        });
-      }
-    }
-  }, []);
 
   return (
     <section>
