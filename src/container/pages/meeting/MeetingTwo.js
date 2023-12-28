@@ -1503,12 +1503,14 @@ const NewMeeting = () => {
                       >
                         {t("Advance-meeting")}
                       </Dropdown.Item>
-                      <Dropdown.Item
+                      {/* Proposed New Meeting */}
+
+                      {/* <Dropdown.Item
                         className="dropdown-item"
                         onClick={openProposedNewMeetingPage}
                       >
                         {t("Propose-new-meeting")}
-                      </Dropdown.Item>
+                      </Dropdown.Item> */}
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
