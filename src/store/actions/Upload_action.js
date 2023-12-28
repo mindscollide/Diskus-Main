@@ -79,31 +79,14 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
                 "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList",
                 response.data.responseResult
               );
-              // if (flag === null && flag === undefined) {
-              dispatch(
+
+              await dispatch(
                 uploadDocumentSuccess(
                   response.data.responseResult,
                   t("valid-data"),
                   false
                 )
               );
-              // } else if (flag) {
-              // dispatch(
-              //   uploadDocumentSuccess(
-              //     response.data.responseResult,
-              //     t("valid-data"),
-              //     true
-              //   )
-              // );
-              // } else {
-              //   dispatch(
-              //     uploadDocumentSuccess(
-              //       response.data.responseResult,
-              //       t("valid-data"),
-              //       false
-              //     )
-              //   );
-              // }
               if (newfile) {
                 let dataResultdisplayFileName =
                   response.data.responseResult.displayFileName;
