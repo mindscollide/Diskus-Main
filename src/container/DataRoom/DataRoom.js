@@ -252,7 +252,6 @@ const DataRoom = () => {
   });
   //State For the Detail View Of File And Folder
   const [detailView, setDetailView] = useState(false);
-  console.log({ currentUrl }, "currentUrlcurrentUrlcurrentUrlcurrentUrl");
   //validate User Encrypted String Api
   useEffect(() => {
     if (currentUrl.includes("DisKus/dataroom?action=")) {
@@ -273,7 +272,9 @@ const DataRoom = () => {
       }
       // Save something in local storage if the condition is true
     }
-
+    return () => {};
+  }, []);
+  useEffect(() => {
     if (DataRoomString !== undefined && DataRoomString !== null) {
       // setRequestingAccess(true);
       setDataRoomString(DataRoomString);
@@ -291,8 +292,10 @@ const DataRoom = () => {
     } else {
       navigate("/DisKus/dataroom");
     }
-  }, [currentUrl, DataRoomString]);
-
+    return () => {
+      localStorage.removeItem("DataRoomEmail");
+    };
+  }, [DataRoomString]);
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {

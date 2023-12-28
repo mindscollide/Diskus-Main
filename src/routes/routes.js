@@ -73,6 +73,7 @@ import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateAdminRouteNonActive from "./privateadminNonactive_routes";
 import PrivateParAdminRouteNonActive from "./PrivateParAdminRouteNonActive";
 import PrivateRoutes from "./private_routes";
+import PrivateRouteDataroom from "./private_route_dataroom";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -107,6 +108,7 @@ export const router = createHashRouter(
       <Route path="/SigninDenied" element={<SigninDenied />} />
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
+
       <Route element={<PrivateRoutes />}>
         <Route exact path="/Diskus/" element={<Dashboard />}>
           <Route path="maximizePanel" element={<VideoPanelMaximize />} />
@@ -117,10 +119,7 @@ export const router = createHashRouter(
           <Route path="forgotpassword" element={<ForgotPassword />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="Meeting" element={<NewMeeting />} />
-          <Route
-            path="Meeting/Useravailabilityformeeting"
-            element={<RSVP />}
-          />
+          <Route path="Meeting/Useravailabilityformeeting" element={<RSVP />} />
           <Route path="videochat" element={<VideoChat />} />
           <Route path="setting" element={<UserSettings />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
