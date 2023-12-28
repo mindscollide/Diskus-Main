@@ -1163,17 +1163,21 @@ const NewMeeting = () => {
       meetingIdReducer.MeetingStatusSocket !== undefined &&
       meetingIdReducer.MeetingStatusSocket.length !== 0
     ) {
-      let startMeetingData = meetingIdReducer.MeetingStatusSocket.meeting;
-      const indexToUpdate = rows.findIndex(
-        (obj) => obj.pK_MDID === startMeetingData.pK_MDID
-      );
-      if (indexToUpdate !== -1) {
-        let updatedRows = [...rows];
-        updatedRows[indexToUpdate] = startMeetingData;
-        setRow(updatedRows);
-      } else {
-        let updatedRows = [...rows, startMeetingData];
-        setRow(updatedRows);
+      try {
+        let startMeetingData = meetingIdReducer.MeetingStatusSocket.meeting;
+        const indexToUpdate = rows.findIndex(
+          (obj) => obj.pK_MDID === startMeetingData.pK_MDID
+        );
+        if (indexToUpdate !== -1) {
+          let updatedRows = [...rows];
+          updatedRows[indexToUpdate] = startMeetingData;
+          setRow(updatedRows);
+        } else {
+          let updatedRows = [...rows, startMeetingData];
+          setRow(updatedRows);
+        }
+      } catch {
+        console.log("Error");
       }
     }
   }, [meetingIdReducer.MeetingStatusSocket]);

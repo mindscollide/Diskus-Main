@@ -133,11 +133,6 @@ const DataRoom = () => {
   const { uploadReducer, DataRoomReducer, LanguageReducer } = useSelector(
     (state) => state
   );
-  console.log(
-    "DataRoomReducerDataRoomReducerDataRoomReducer",
-    DataRoomReducer.getCreateFolderLink
-  );
-
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -280,7 +275,7 @@ const DataRoom = () => {
     }
 
     if (DataRoomString !== undefined && DataRoomString !== null) {
-      setRequestingAccess(true);
+      // setRequestingAccess(true);
       setDataRoomString(DataRoomString);
       let Data = { Link: DataRoomString };
 

@@ -41,7 +41,7 @@ const ResetAllFilesUpload = () => {
 };
 
 //File Upload
-const FileUploadToDo = (navigate, data, t, newfile, flag) => {
+const FileUploadToDo = (navigate, data, t, newfile) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log("uploadedFile:", data);
   let form = new FormData();
@@ -62,7 +62,7 @@ const FileUploadToDo = (navigate, data, t, newfile, flag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(FileUploadToDo(navigate, data, t, newfile, flag));
+          dispatch(FileUploadToDo(navigate, data, t, newfile));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(
@@ -79,31 +79,31 @@ const FileUploadToDo = (navigate, data, t, newfile, flag) => {
                 "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList",
                 response.data.responseResult
               );
-              if (flag === null && flag === undefined) {
-                dispatch(
-                  uploadDocumentSuccess(
-                    response.data.responseResult,
-                    t("valid-data"),
-                    false
-                  )
-                );
-              } else if (flag) {
-                dispatch(
-                  uploadDocumentSuccess(
-                    response.data.responseResult,
-                    t("valid-data"),
-                    true
-                  )
-                );
-              } else {
-                dispatch(
-                  uploadDocumentSuccess(
-                    response.data.responseResult,
-                    t("valid-data"),
-                    false
-                  )
-                );
-              }
+              // if (flag === null && flag === undefined) {
+              dispatch(
+                uploadDocumentSuccess(
+                  response.data.responseResult,
+                  t("valid-data"),
+                  false
+                )
+              );
+              // } else if (flag) {
+              // dispatch(
+              //   uploadDocumentSuccess(
+              //     response.data.responseResult,
+              //     t("valid-data"),
+              //     true
+              //   )
+              // );
+              // } else {
+              //   dispatch(
+              //     uploadDocumentSuccess(
+              //       response.data.responseResult,
+              //       t("valid-data"),
+              //       false
+              //     )
+              //   );
+              // }
               if (newfile) {
                 let dataResultdisplayFileName =
                   response.data.responseResult.displayFileName;

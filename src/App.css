@@ -4113,6 +4113,7 @@ svg.MuiSvgIcon-root .ant-notification-hook-holder:before {
   border-radius: 4px !important;
   width: 550px !important;
   height: 81px !important;
+  z-index: 999999999999 !important;
 }
 
 .ant-notification-notice-icon {
@@ -6388,4 +6389,8 @@ textarea {
 .data-room-file-upload-section.mt-4.row {
   height: 100%;
   overflow: hidden auto !important;
+}
+
+.ant-notification {
+  z-index: 99999999 !important;
 }
