@@ -167,7 +167,7 @@ const Minutes = ({
         });
       }
     }
-  }, []);
+  }, [editorRef.current]);
 
   useEffect(() => {
     let Data = {
