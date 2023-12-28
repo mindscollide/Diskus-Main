@@ -647,7 +647,7 @@ const CommitteeMeetingTab = () => {
         <Col sm={12} md={12} lg={12}>
           <Table
             column={MeetingColoumns}
-            scroll={{ y: "52vh", x: true }}
+            scroll={{ y: "39vh", x: true }}
             rows={rows}
             pagination={false}
             size="small"
@@ -673,7 +673,9 @@ const CommitteeMeetingTab = () => {
             sm={12}
             md={12}
             lg={12}
-            className={"pagination-groups-table d-flex justify-content-center"}
+            className={
+              "pagination-groups-table position-absolute bottom-20  d-flex justify-content-center"
+            }
           >
             <span className="PaginationStyle-TodoList">
               <CustomPagination
