@@ -766,3 +766,14 @@ export const convertDateTimeRangeToGMT = (date, startTime, endTime) => {
 
   return `${startDateTime} - ${endDateTime}`;
 };
+
+export const convertDateTimeObject = (date) => {
+  const year = parseInt(date.substring(0, 4), 10);
+  const month = parseInt(date.substring(4, 6), 10) - 1; // Months are zero-based
+  const day = parseInt(date.substring(6, 8), 10);
+  const hour = parseInt(date.substring(8, 10), 10);
+  const minute = parseInt(date.substring(10, 12), 10);
+  const second = parseInt(date.substring(12, 14), 10);
+
+  return new Date(year, month, day, hour, minute, second);
+};

@@ -12,6 +12,8 @@ import { setLoaderFalse } from "./MeetingAgenda_action";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
 import {
   GetAllMeetingDetailsApiFunc,
+  getMeetingByCommitteeIDApi,
+  getMeetingbyGroupApi,
   scheduleMeetingPageFlag,
   searchNewUserMeeting,
 } from "./NewMeetingActions";
@@ -319,7 +321,7 @@ const UpdateOrganizersMeeting = (
                     response.data.responseResult,
                     route === 5
                       ? t("Meeting-published-successfully")
-                      : route === 4
+                      : route === 4 || route === 6 || route === 7
                       ? t("Meeting-started-successfully")
                       : ""
                   )
@@ -392,8 +394,36 @@ const UpdateOrganizersMeeting = (
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                   setSceduleMeeting(false);
                   dispatch(scheduleMeetingPageFlag(false));
-                } else {
+                } else if (route === 6) {
+                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                  let userID = localStorage.getItem("userID");
+
+                  let searchData = {
+                    CommitteeID: Number(ViewCommitteeID),
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(userID),
+                    PageNumber: 1,
+                    Length: 50,
+                    PublishedMeetings: true,
+                  };
+                  dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
                   // setPublishState(Data.MeetingID);
+                } else if (route === 7) {
+                  let ViewGroupID = localStorage.getItem("ViewGroupID");
+                  let userID = localStorage.getItem("userID");
+                  let searchData = {
+                    GroupID: Number(ViewGroupID),
+                    Date: "",
+                    Title: "",
+                    HostName: "",
+                    UserID: Number(userID),
+                    PageNumber: 1,
+                    Length: 50,
+                    PublishedMeetings: true,
+                  };
+                  dispatch(getMeetingbyGroupApi(navigate, t, searchData));
                 }
               } catch {}
             } else if (

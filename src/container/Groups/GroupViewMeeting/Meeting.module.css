@@ -3,6 +3,11 @@
   color: #6172d6;
   font-size: 12px !important;
   cursor: pointer;
+  overflow: hidden !important;
+  width: 180px !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  display: block !important;
 }
 .Start-Meeting {
   width: 118px;

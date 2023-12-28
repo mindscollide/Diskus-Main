@@ -47,7 +47,6 @@ const ViewCommitteeDetails = ({ setViewGroupPage }) => {
     committeeID: 0,
     committeeMembers: [],
   });
-  console.log("committeeDatacommitteeData", committeeData);
 
   const closebtn = async () => {
     setViewGroupPage(false);
@@ -237,7 +236,6 @@ const ViewCommitteeDetails = ({ setViewGroupPage }) => {
     customRequest() {},
   };
 
-  console.log(CommitteeReducer, "fileAttachmentsfileAttachments");
   useEffect(() => {
     try {
       if (
@@ -757,9 +755,8 @@ const ViewCommitteeDetails = ({ setViewGroupPage }) => {
               >
                 {fileAttachments.length > 0
                   ? fileAttachments.map((data, index) => {
-                      console.log(data, "datadatadata");
                       let fileExt = data.DisplayAttachmentName.split(".")[1];
-                      console.log("fileExt", fileExt);
+
                       return (
                         <>
                           <Col lg={4} md={4} sm={4}>
