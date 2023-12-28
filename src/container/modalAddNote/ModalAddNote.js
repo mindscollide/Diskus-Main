@@ -33,6 +33,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
   const { uploadReducer } = useSelector((state) => state);
   let createrID = localStorage.getItem("userID");
+  const maxCharacters = 2500;
   const navigate = useNavigate();
   const Delta = Quill.import("delta");
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
@@ -128,32 +129,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     }
   };
 
-  const onTextChange = (content, delta, source, editor) => {
-    const maxLength = 2800; // Maximum allowed characters
+  const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    const textLength = plainText.length;
-
-    if (textLength > maxLength && source === "user") {
-      // If the text length exceeds the limit and the change is from user input
-      const diff = textLength - maxLength;
-      const truncatedContent = plainText.substring(0, plainText.length - diff);
-
-      const currentSelection = editor.getSelection(true);
-      const truncatedSelection = Math.max(currentSelection.index - diff, 0);
-
-      editor.setText(truncatedContent); // Set the text to the truncated version
-      editor.setSelection(truncatedSelection); // Set cursor to the correct position after truncation
-      editor.formatText(truncatedSelection, diff, "color", "transparent"); // Hide extra characters
-
-      // Show an alert indicating the character limit
-      alert(
-        `Character limit (${maxLength}) reached. Excess characters will be removed.`
-      );
-    }
-
-    if (source === "user" && plainText !== "") {
-      console.log(content, "addNoteFieldsaddNoteFieldsaddNoteFields");
-
+    if (source === "user" && plainText) {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -162,19 +140,46 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           errorStatus: false,
         },
       });
-    } else {
-      setAddNoteFields({
-        ...addNoteFields,
-        Description: {
-          value: "",
-          errorMessage: "",
-          errorStatus: true,
-        },
-      });
     }
   };
 
+  useEffect(() => {
+    const editor = editorRef.current.getEditor();
+
+    const limitCharacters = (event) => {
+      const text = editor.getText();
+      if (text.length >= maxCharacters && event.key !== "Backspace") {
+        event.preventDefault();
+
+        const truncatedText = text.substring(0, maxCharacters - 1); // Remove the last character
+        editor.setText(truncatedText);
+      }
+    };
+
+    const handlePaste = (event) => {
+      const clipboardData = event.clipboardData || window.clipboardData;
+      const pastedText = clipboardData.getData("Text");
+      const text = editor.getText();
+      const remainingSpace = maxCharacters - text.length;
+
+      if (pastedText.length > remainingSpace) {
+        const truncatedText = pastedText.substring(0, remainingSpace);
+        document.execCommand("insertText", false, truncatedText);
+        event.preventDefault();
+      }
+    };
+
+    editor.root.addEventListener("keydown", limitCharacters);
+    editor.root.addEventListener("paste", handlePaste);
+
+    return () => {
+      editor.root.removeEventListener("keydown", limitCharacters);
+      editor.root.removeEventListener("paste", handlePaste);
+    };
+  }, [maxCharacters]);
+
   // for save button hit
+
   const notesSaveHandler = async () => {
     try {
       if (addNoteFields.Title.value !== "") {
