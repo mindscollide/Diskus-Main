@@ -31,6 +31,7 @@ import {
 import {
   getCurrentDate,
   getEndTimeWitlCeilFunction,
+  getHoursMinutesSec,
   getStartTimeWithCeilFunction,
 } from "../../../../../../commen/functions/time_formatter";
 const ProposedMeetingDate = ({
@@ -142,19 +143,16 @@ const ProposedMeetingDate = ({
     }
   }, [currentLanguage]);
 
-  //Setting the Dates And Time Default
+  // Setting the Dates And Time Default
   useEffect(() => {
     const updatedRows = [...rows];
-    if (updatedRows[0]) {
-      updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
-      updatedRows[0].selectedOptionView = getCurrentDateforMeeting.DateGMT;
-      updatedRows[0].startDate = startTime?.formattedTime;
-      updatedRows[0].startDateView = startTime?.newFormatTime;
-      updatedRows[0].endDate = getEndTime?.formattedTime;
-      updatedRows[0].endDateView = getEndTime?.newFormatTime;
-      setRows(updatedRows);
-    } else {
-    }
+    updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
+    updatedRows[0].selectedOptionView = getCurrentDateforMeeting.DateGMT;
+    updatedRows[0].startDate = startTime?.formattedTime;
+    updatedRows[0].startDateView = startTime?.newFormatTime;
+    updatedRows[0].endDate = getEndTime?.formattedTime;
+    updatedRows[0].endDateView = getEndTime?.newFormatTime;
+    setRows(updatedRows);
   }, []);
 
   useEffect(() => {
@@ -193,14 +191,16 @@ const ProposedMeetingDate = ({
     let newDate = new Date(date);
     console.log(newDate, "handleStartDateChangehandleStartDateChange");
     if (newDate instanceof Date && !isNaN(newDate)) {
-      // Round up to the next hour
-      const nextHour = Math.ceil(
-        newDate.getHours() + newDate.getMinutes() / 60
-      );
-      newDate.setHours(nextHour, 0, 0, 0);
+      const getFormattedTime = getHoursMinutesSec(newDate);
 
-      // Format the time as HH:mm:ss
-      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+      // // Round up to the next hour
+      // const nextHour = Math.ceil(
+      //   newDate.getHours() + newDate.getMinutes() / 60
+      // );
+      // newDate.setHours(nextHour, 0, 0, 0);
+
+      // // Format the time as HH:mm:ss
+      // const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
 
       const updatedRows = [...rows];
 
@@ -209,7 +209,7 @@ const ProposedMeetingDate = ({
         updatedRows[index - 1].selectedOption ===
           updatedRows[index].selectedOption
       ) {
-        if (formattedTime <= updatedRows[index - 1].endDate) {
+        if (getFormattedTime <= updatedRows[index - 1].endDate) {
           setOpen({
             flag: true,
             message: t(
@@ -220,7 +220,7 @@ const ProposedMeetingDate = ({
         } else {
           if (
             updatedRows[index].endDate !== "" &&
-            formattedTime >= updatedRows[index].endDate
+            getFormattedTime >= updatedRows[index].endDate
           ) {
             console.log("handleStartDateChange");
             setOpen({
@@ -231,7 +231,7 @@ const ProposedMeetingDate = ({
             });
             return;
           } else {
-            updatedRows[index].startDate = formattedTime;
+            updatedRows[index].startDate = getFormattedTime;
             updatedRows[index].startDateView = newDate;
             updatedRows[index].isComing = false;
             updatedRows[index].proposedDateID = 0;
@@ -242,7 +242,7 @@ const ProposedMeetingDate = ({
       } else {
         if (
           updatedRows[index].endDate !== "" &&
-          formattedTime >= updatedRows[index].endDate
+          getFormattedTime >= updatedRows[index].endDate
         ) {
           setOpen({
             flag: true,
@@ -252,7 +252,7 @@ const ProposedMeetingDate = ({
           });
           return;
         } else {
-          updatedRows[index].startDate = formattedTime;
+          updatedRows[index].startDate = getFormattedTime;
           updatedRows[index].startDateView = newDate;
           updatedRows[index].isComing = false;
           updatedRows[index].proposedDateID = 0;
@@ -268,13 +268,15 @@ const ProposedMeetingDate = ({
   const handleEndTimeChange = (index, date) => {
     let newDate = new Date(date);
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const nextHour = Math.ceil(
-        newDate.getHours() + newDate.getMinutes() / 60
-      );
-      newDate.setHours(nextHour, 0, 0, 0);
+      const getFormattedTime = getHoursMinutesSec(newDate);
 
-      // Format the time as HH:mm:ss
-      const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
+      // const nextHour = Math.ceil(
+      //   newDate.getHours() + newDate.getMinutes() / 60
+      // );
+      // newDate.setHours(nextHour, 0, 0, 0);
+
+      // // Format the time as HH:mm:ss
+      // const formattedTime = `${String(nextHour).padStart(2, "0")}0000`;
 
       const updatedRows = [...rows];
 
@@ -283,7 +285,7 @@ const ProposedMeetingDate = ({
         updatedRows[index - 1].selectedOption ===
           updatedRows[index].selectedOption
       ) {
-        if (formattedTime <= updatedRows[index].startDate) {
+        if (getFormattedTime <= updatedRows[index].startDate) {
           setOpen({
             flag: true,
             message: t(
@@ -292,7 +294,7 @@ const ProposedMeetingDate = ({
           });
           return;
         } else {
-          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endDate = getFormattedTime;
           updatedRows[index].endDateView = newDate;
           updatedRows[index].isComing = false;
           updatedRows[index].proposedDateID = 0;
@@ -300,7 +302,7 @@ const ProposedMeetingDate = ({
           setRows(updatedRows);
         }
       } else {
-        if (formattedTime <= updatedRows[index].startDate) {
+        if (getFormattedTime <= updatedRows[index].startDate) {
           setOpen({
             flag: true,
             message: t(
@@ -309,7 +311,7 @@ const ProposedMeetingDate = ({
           });
           return;
         } else {
-          updatedRows[index].endDate = formattedTime;
+          updatedRows[index].endDate = getFormattedTime;
           updatedRows[index].endDateView = newDate;
           updatedRows[index].isComing = false;
           updatedRows[index].proposedDateID = 0;
