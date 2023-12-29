@@ -145,13 +145,16 @@ const ProposedMeetingDate = ({
   //Setting the Dates And Time Default
   useEffect(() => {
     const updatedRows = [...rows];
-    updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
-    updatedRows[0].selectedOptionView = getCurrentDateforMeeting.DateGMT;
-    updatedRows[0].startDate = startTime?.formattedTime;
-    updatedRows[0].startDateView = startTime?.newFormatTime;
-    updatedRows[0].endDate = getEndTime?.formattedTime;
-    updatedRows[0].endDateView = getEndTime?.newFormatTime;
-    setRows(updatedRows);
+    if (updatedRows[0]) {
+      updatedRows[0].selectedOption = getCurrentDateforMeeting.dateFormat;
+      updatedRows[0].selectedOptionView = getCurrentDateforMeeting.DateGMT;
+      updatedRows[0].startDate = startTime?.formattedTime;
+      updatedRows[0].startDateView = startTime?.newFormatTime;
+      updatedRows[0].endDate = getEndTime?.formattedTime;
+      updatedRows[0].endDateView = getEndTime?.newFormatTime;
+      setRows(updatedRows);
+    } else {
+    }
   }, []);
 
   useEffect(() => {
