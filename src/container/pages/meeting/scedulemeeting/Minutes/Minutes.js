@@ -224,23 +224,14 @@ const Minutes = ({
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText) {
-      setAgendaWiseFields({
-        ...addAgendaWiseFields,
+      setAddNoteFields({
+        ...addNoteFields,
         Description: {
           value: content,
           errorMessage: "",
           errorStatus: false,
         },
       });
-    } else {
-      // setAgendaWiseFields({
-      //   ...addAgendaWiseFields,
-      //   Description: {
-      //     value: "",
-      //     errorMessage: "",
-      //     errorStatus: false,
-      //   },
-      // });
     }
   };
   //Props for File Dragger
