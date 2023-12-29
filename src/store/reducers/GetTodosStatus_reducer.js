@@ -9,7 +9,6 @@ const initialState = {
 };
 
 const getTodosStatus = (state = initialState, action) => {
-  console.log("todolistreducerstate", state);
   switch (action.type) {
     case actions.GET_TODOSSTATUS_INIT: {
       return {
@@ -61,7 +60,7 @@ const getTodosStatus = (state = initialState, action) => {
     //   };
     // }
     // case actions.POST_ASSIGNEEECOMMENTS_SUCCESS: {
-    //   console.log(action, "POST_ASSIGNEEECOMMENTS ")
+    //
     //   return {
     //     ...state,
     //     Loading: false,

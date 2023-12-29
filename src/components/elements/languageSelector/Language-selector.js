@@ -24,8 +24,6 @@ import moment from "moment";
 const LanguageSelector = () => {
   const { LanguageReducer } = useSelector((state) => state);
 
-  console.log("LanguageReducer", LanguageReducer);
-
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -39,7 +37,7 @@ const LanguageSelector = () => {
   const { t, i18n } = useTranslation();
 
   const [languages, setLanguages] = useState([]);
-  console.log(languages, "languageslanguageslanguages");
+
   const [selectedLanguage, setSelectedLanguage] = useState({
     systemSupportedLanguageID: 1,
     languageTitle: "English",

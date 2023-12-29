@@ -29,7 +29,6 @@ import {
 import { updateTodoStatusFunc } from "./GetTodos";
 
 const ShowNotification = (message) => {
-  console.log("message", message);
   return {
     type: actions.SHOW,
     message: message,
@@ -177,7 +176,6 @@ const GetTodoListByUser = (navigate, data, t) => {
       })
 
       .catch((response) => {
-        console.log(response.message);
         dispatch(getTodoListFail(t("Something-went-wrong")));
         dispatch(SetLoaderFalse());
         dispatch(SetLoaderFalse());
@@ -187,7 +185,6 @@ const GetTodoListByUser = (navigate, data, t) => {
 
 // get TodoList Data from Socket
 const setTodoListActivityData = (response) => {
-  console.log("todoData", response);
   return {
     type: actions.SETTODO_RECENT_ACTIVITY_DATA,
     response: response,
@@ -195,7 +192,6 @@ const setTodoListActivityData = (response) => {
 };
 // get TodoStatusData from Socket
 const setTodoStatusDataFormSocket = (response) => {
-  console.log("responseresponse", response);
   return {
     type: actions.SET_TODO_STATUS_DATA,
     response: response,
@@ -204,7 +200,6 @@ const setTodoStatusDataFormSocket = (response) => {
 //Creating A ToDoList
 
 const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
-  console.log(value, "valuevaluevaluevalue");
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
@@ -278,7 +273,7 @@ const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
               //     ),
               //   };
               //   dispatch(createUpdateTaskDataRoomApi(navigate, Data, t));
-              //   console.log("DataDataDataDataData", { Data });
+              //
               //   // await dispatch(
               //   //   SearchTodoListApi(
               //   //     navigate,
@@ -363,8 +358,6 @@ const GetAllAssigneesToDoList = (navigate, object, t, check) => {
       },
     })
       .then(async (response) => {
-        console.log("RefreshToken", response.data.responseCode);
-
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(GetAllAssigneesToDoList(navigate, object, t, check));
@@ -530,12 +523,10 @@ const UpdateToDoList = (navigate, object, t) => {
       },
     })
       .then(async (response) => {
-        console.log("UpdateToDoList", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(UpdateToDoList(navigate, object, t));
         } else if (response.data.responseCode === 200) {
-          console.log("UpdateToDoList TrueResponse", response);
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
@@ -1333,7 +1324,6 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
         } else {
           dispatch(saveFiles_fail(t("Something-went-wrong")));
         }
-        console.log(response);
       })
       .catch(() => {
         dispatch(saveFiles_fail(t("Something-went-wrong")));

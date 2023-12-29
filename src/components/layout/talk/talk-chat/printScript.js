@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect } from "react";
 
 const PrintPage = ({ filesUrlTalk, talkStateData }) => {
   useEffect(() => {
@@ -10,24 +10,23 @@ const PrintPage = ({ filesUrlTalk, talkStateData }) => {
     ) {
       let fileDownloadURL =
         filesUrlTalk +
-        talkStateData.DownloadChatData.DownloadChatResponse.filePath
-      console.log('fileDownloadURLfileDownloadURL', fileDownloadURL)
+        talkStateData.DownloadChatData.DownloadChatResponse.filePath;
 
-      const iframe = document.createElement('iframe')
-      iframe.style.display = 'none'
-      iframe.src = fileDownloadURL
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = fileDownloadURL;
 
       iframe.onload = function () {
         setTimeout(() => {
-          iframe.contentWindow.print()
-        }, 1000) // Adjust the delay (in milliseconds) as needed
-      }
+          iframe.contentWindow.print();
+        }, 1000); // Adjust the delay (in milliseconds) as needed
+      };
 
-      document.body.appendChild(iframe)
+      document.body.appendChild(iframe);
     }
-  }, [filesUrlTalk, talkStateData?.DownloadChatData?.DownloadChatResponse])
+  }, [filesUrlTalk, talkStateData?.DownloadChatData?.DownloadChatResponse]);
 
-  return null
-}
+  return null;
+};
 
-export default PrintPage
+export default PrintPage;

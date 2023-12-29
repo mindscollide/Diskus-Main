@@ -56,7 +56,6 @@ const RecentChats = () => {
   );
   let currentUtcDate = currentDateTimeUtc.slice(0, 8);
 
-  console.log("Current UTC Data", currentDateTimeUtc);
   //YESTERDAY'S DATE
   let yesterdayDate = new Date();
   yesterdayDate.setDate(yesterdayDate.getDate() - 1); // Subtract 1 day
@@ -135,7 +134,7 @@ const RecentChats = () => {
     if (!talkFeatureStates.ChatBoxActiveFlag) {
       dispatch(chatBoxActiveFlag(true));
     }
-    console.log("chatClick Record", record);
+
     let chatOTOData = {
       UserID: currentUserId,
       ChannelID: currentOrganizationId,
@@ -168,7 +167,7 @@ const RecentChats = () => {
       }
       dispatch(activeChat(record));
     } catch (error) {
-      // console.log('error in call api')
+      //
     }
     localStorage.setItem("activeOtoChatID", record.id);
   };
@@ -292,7 +291,7 @@ const RecentChats = () => {
             senderID: mqttInsertOtoMessageData.senderID,
             admin: 0,
           };
-          console.log("Dispatch First Condition");
+
           dispatch(pushChatData(allChatNewMessageOtoData));
         } else if (
           talkStateData.ActiveChatData.id ===
@@ -329,7 +328,7 @@ const RecentChats = () => {
             senderID: mqttInsertOtoMessageData.senderID,
             admin: 0,
           };
-          console.log("Dispatch Second Condition");
+
           dispatch(pushChatData(allChatNewMessageOtoData));
         } else if (
           parseInt(currentUserId) ===
@@ -370,7 +369,6 @@ const RecentChats = () => {
             admin: 0,
           };
           dispatch(pushChatData(allChatNewMessageOtoData));
-          console.log("Dispatch Third Condition");
         } else if (
           talkStateData.ActiveChatData.id !==
             mqttInsertOtoMessageData.senderID &&
@@ -408,7 +406,6 @@ const RecentChats = () => {
             admin: 0,
           };
           dispatch(pushChatData(allChatNewMessageOtoData));
-          console.log("Dispatch Fourth Condition");
         }
       } catch {}
     }
@@ -443,7 +440,6 @@ const RecentChats = () => {
             admin: mqttInsertGroupMessageData.admin,
           };
           dispatch(pushChatData(newGroupMessageChat));
-          console.log("Dispatch Condition 1");
         } else if (
           talkStateData.ActiveChatData.messageType === "" &&
           talkStateData.ActiveChatData.id === 0
@@ -466,7 +462,6 @@ const RecentChats = () => {
             admin: mqttInsertGroupMessageData.admin,
           };
           dispatch(pushChatData(newGroupMessageChat));
-          console.log("Dispatch Condition 2");
         } else if (
           mqttInsertGroupMessageData.senderID != undefined &&
           mqttInsertGroupMessageData.senderID != null &&
@@ -494,7 +489,6 @@ const RecentChats = () => {
             admin: mqttInsertGroupMessageData.admin,
           };
           dispatch(pushChatData(newGroupMessageChat));
-          console.log("Dispatch Condition 3");
         }
         if (
           mqttInsertGroupMessageData.senderID != undefined &&
@@ -523,7 +517,6 @@ const RecentChats = () => {
             admin: mqttInsertGroupMessageData.admin,
           };
           dispatch(pushChatData(newGroupMessageChat));
-          console.log("Dispatch Condition 4");
         } else if (
           mqttInsertGroupMessageData.senderID != undefined &&
           mqttInsertGroupMessageData.senderID != null &&
@@ -550,11 +543,8 @@ const RecentChats = () => {
             admin: mqttInsertGroupMessageData.admin,
           };
           dispatch(pushChatData(newGroupMessageChat));
-          console.log("Dispatch Condition 5");
         }
-      } catch (error) {
-        console.log("Dispatch Catch", error);
-      }
+      } catch (error) {}
     }
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData]);
 
@@ -653,7 +643,7 @@ const RecentChats = () => {
         newGroup,
         ...updatedArray.filter((obj) => obj.id !== newGroup.id),
       ];
-      console.log("reciver check resent chat ", updatedArray);
+
       setAllChatData(updatedArray);
       dispatch(mqttGroupCreated([]));
     }
@@ -718,13 +708,11 @@ const RecentChats = () => {
     ) {
       let mqttUnblockedResponse =
         talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser.data[0];
-      console.log("mqttUnblockedResponse", mqttUnblockedResponse);
+
       const updatedAllChatData = allChatData.map((chatItem) => {
-        console.log("mqttUnblockedResponse chatItem", chatItem);
-        console.log("mqttUnblockedResponse", mqttUnblockedResponse);
         if (chatItem.id === mqttUnblockedResponse.blockUserID) {
           // If there's a match, update the isBlock property
-          console.log("Going in Block Check");
+
           return { ...chatItem, isBlock: mqttUnblockedResponse.isBlock };
         }
         return chatItem; // Keep other chat items unchanged
@@ -748,10 +736,7 @@ const RecentChats = () => {
         talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.data[0];
 
       const updatedAllChatData = allChatData.map((chatItem) => {
-        console.log("mqttUnblockedResponse chatItem", chatItem);
-        console.log("mqttUnblockedResponse", mqttUnblockedResponse);
         if (chatItem.id === mqttUnblockedResponse.blockUserID) {
-          console.log("Going in Unblock Check");
           // If there's a match, update the isBlock property
           return { ...chatItem, isBlock: mqttUnblockedResponse.isBlock };
         }
@@ -773,16 +758,11 @@ const RecentChats = () => {
         talkStateData.LastMessageDeletionObject.data[0].messageBody === "" &&
         talkStateData.LastMessageDeletionObject.data[0].chatID !== undefined
       ) {
-        console.log(
-          "Last Message Deletion",
-          talkStateData.LastMessageDeletionObject.data[0].messageBody,
-          talkStateData.LastMessageDeletionObject.data[0].chatID
-        );
         // const updatedAllChatData = allChatData.filter(
         //   (item) =>
         //     item.id !== talkStateData.LastMessageDeletionObject.data[0].chatID,
         // )
-        // console.log('Last Message Deletion', updatedAllChatData)
+        //
         // setAllChatData(updatedAllChatData)
         // Find the index of the object in the stateWithMultipleObjects array that matches chatID
         const indexToRemove = allChatData.findIndex(
@@ -833,10 +813,6 @@ const RecentChats = () => {
       }
     }
   }, [talkStateData.LastMessageDeletionObject]);
-
-  console.log("RecentChat TalkStates", talkStateData);
-
-  console.log("All Chat Data", allChatData);
 
   return (
     <>

@@ -95,13 +95,13 @@ import { dashboardCalendarEvent } from "../../../store/actions/NewMeetingActions
 
 const Home = () => {
   const dCheck = useLoaderData();
-  // console.log("dCheck", dCheck);
+  //
   //For Localization
   const { t } = useTranslation();
   const [updateNotesModalHomePage, setUpdateNotesModalHomePage] =
     useState(false);
   const [totalRecordTodo, setTotalRecordTodo] = useState(0);
-  console.log(totalRecordTodo, "totalRecordTodototalRecordTodo");
+
   // const [viewFlag, setViewFlag] = useState(false);
   const state = useSelector((state) => state);
   const {
@@ -145,13 +145,12 @@ const Home = () => {
   const calendarRef = useRef();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
-  console.log(calenderData, "calenderDatacalenderDatacalenderDatacalenderData");
+
   const [recentActivityData, setRecentActivityData] = useState([]);
   // get new date
   let date = new Date();
   let currentDateObject = new DateObject(date);
   let getCurrentDate = moment(date).format("DD");
-  console.log(getCurrentDate, "getCurrentDategetCurrentDategetCurrentDate");
 
   let format = "YYYYMMDD";
 
@@ -167,7 +166,7 @@ const Home = () => {
   const [todoListAssignedThisWeek, setTodoListAssignedThisWeek] = useState(0);
   //ToDo Table Data
   const [rowsToDo, setRowToDo] = useState([]);
-  // console.log(rowsToDo, "rowsToDorowsToDorowsToDo");
+  //
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   //For Custom language datepicker
@@ -179,7 +178,7 @@ const Home = () => {
   const [getNoteID, setGetNoteID] = useState(0);
   const [getTodoID, setTodoID] = useState(0);
   const [todolistLoader, setTodoListLoader] = useState(false);
-  console.log(todolistLoader, todoViewModal, "todolistLoadertodolistLoader");
+
   let valueMeeting = meetingCountThisWeek - upcomingMeetingCountThisWeek;
   let toDoValue = todoListThisWeek - todoListAssignedThisWeek;
   const [show, setShow] = useState(false);
@@ -187,7 +186,7 @@ const Home = () => {
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
   const [events, setEvents] = useState([]);
-  console.log({ events }, "eventseventseventsevents");
+
   const userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let CalenderMonthsSpan =
@@ -238,7 +237,7 @@ const Home = () => {
     dispatch(getusernotificationinit());
     // dispatch(getCalendarDataInit(true));
     dispatch(getNotes_Init());
-    // console.log("getUserSettinggetUserSetting")
+    //
     // await dispatch(getUserSetting(navigate, t));
     let Data = {
       UserID: parseInt(createrID),
@@ -259,8 +258,8 @@ const Home = () => {
   };
   useEffect(() => {
     // let CalenderMonthsSpans = localStorage.getItem("calenderMonthsSpan");
-    // console.log(CalenderMonthsSpans, "CalenderMonthsSpansCalenderMonthsSpans");
-    console.log({ CalenderMonthsSpan }, "CalenderMonthsSpanCalenderMonthsSpan");
+    //
+
     if (CalenderMonthsSpan !== null && CalenderMonthsSpan !== undefined) {
       dispatch(getCalendarDataInit(true));
 
@@ -413,18 +412,12 @@ const Home = () => {
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
-    console.log(
-      toDoListReducer.SocketTodoActivityData,
-      { rowsToDo },
-      "SocketTodoActivityDataSocketTodoActivityDataSocketTodoActivityData"
-    );
-
     let dataToSort =
       toDoListReducer.SocketTodoActivityData !== null &&
       toDoListReducer.SocketTodoActivityData !== undefined
         ? [toDoListReducer.SocketTodoActivityData, ...rowsToDo]
         : [...rowsToDo];
-    console.log({ dataToSort }, "dataToSortdataToSortdataToSort");
+
     const sortedTasks = dataToSort.sort((taskA, taskB) => {
       const deadlineA = taskA?.deadlineDateTime;
       const deadlineB = taskB?.deadlineDateTime;
@@ -432,7 +425,7 @@ const Home = () => {
       // Compare the deadlineDateTime values as numbers for sorting
       return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
     });
-    console.log({ sortedTasks }, "dataToSortdataToSortdataToSort");
+
     setTotalRecordTodo(sortedTasks.length);
     setRowToDo(sortedTasks.slice(0, 15));
   }, [toDoListReducer.SocketTodoActivityData]);
@@ -501,7 +494,7 @@ const Home = () => {
       width: "25%",
       className: "statusDashboard",
       render: (text, record) => {
-        // console.log("texttexttexttext", text);
+        //
         return toDoListReducer.AllTodolistData.map((data, index) => {
           if (index === 0) {
             if (text.pK_TSID === 1) {
@@ -713,8 +706,7 @@ const Home = () => {
   ]);
 
   const calendarClickFunction = async (value) => {
-    console.log("valuevaluevaluevalue", value);
-    // console.log("Calendar Clicked");
+    //
     if (!dates.includes(value)) {
       setDates([...dates, value]);
     }
@@ -754,11 +746,6 @@ const Home = () => {
     let flag = false;
     let indexforUndeline = null;
     meetingIdReducer.UpcomingEventsData.map((upcomingEventsData, index) => {
-      console.log(
-        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8),
-        getCurrentDate,
-        "upcomingEventsDataupcomingEventsDataupcomingEventsData"
-      );
       if (
         upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
         getCurrentDate
@@ -767,10 +754,6 @@ const Home = () => {
           // if (index - 1 >= 0) {
           flag = true;
           indexforUndeline = index;
-          console.log(
-            "upcomingEventsDataupcomingEventsDataupcomingEventsData",
-            index
-          );
           // }
         }
       }
@@ -1442,10 +1425,6 @@ const Home = () => {
                 ) : recentActivityData !== null &&
                   recentActivityData !== undefined ? (
                   recentActivityData.map((recentActivityData, index) => {
-                    console.log(
-                      recentActivityData,
-                      "recentActivityDatarecentActivityDatarecentActivityData"
-                    );
                     return (
                       <>
                         <Row>
