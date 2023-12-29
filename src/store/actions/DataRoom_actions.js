@@ -3449,7 +3449,6 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
-        // Retry the API request
         await dispatch(
           validateUserAvailibilityEncryptedStringDataRoomApi(
             navigate,
@@ -3474,23 +3473,41 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 t("No-restrictions")
               )
             );
-            let ext = response.data.responseResult.data.name.split(".").pop();
-            if (ext === "pdf") {
-              const pdfData = {
-                taskId: response.data.responseResult.data.id,
-                commingFrom: 4,
-                fileName: response.data.responseResult.data.name,
-                attachmentID: response.data.responseResult.data.id,
-                isPermission: response.data.responseResult.permissionID,
-              };
-              window.open(
-                `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                  JSON.stringify(pdfData)
-                )}`,
-                "_blank",
-                "noopener noreferrer"
-              );
+            if (response.data.responseResult.isAccess) {
+              if (response.data.responseResult.data.isFolder === true) {
+                dispatch(
+                  getFolderDocumentsApi(
+                    navigate,
+                    Number(response.data.responseResult.data.id),
+                    t,
+                    1
+                  )
+                );
+              } else {
+                let ext = response.data.responseResult.data.name
+                  .split(".")
+                  .pop();
+                if (ext === "pdf") {
+                  const pdfData = {
+                    taskId: response.data.responseResult.data.id,
+                    commingFrom: 4,
+                    fileName: response.data.responseResult.data.name,
+                    attachmentID: response.data.responseResult.data.id,
+                    isPermission: response.data.responseResult.permissionID,
+                  };
+                  window.open(
+                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                      JSON.stringify(pdfData)
+                    )}`,
+                    "_blank",
+                    "noopener noreferrer"
+                  );
+                }
+              }
+            } else {
+              setRequestFile(true);
             }
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3507,29 +3524,40 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
             );
             if (response.data.responseResult.isAccess) {
-              let ext = response.data.responseResult.data.name.split(".").pop();
-              if (ext === "pdf") {
-                const pdfData = {
-                  taskId: response.data.responseResult.data.id,
-                  commingFrom: 4,
-                  fileName: response.data.responseResult.data.name,
-                  attachmentID: response.data.responseResult.data.id,
-                  isPermission: response.data.responseResult.permissionID,
-                };
-                window.open(
-                  `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                    JSON.stringify(pdfData)
-                  )}`,
-                  "_blank",
-                  "noopener noreferrer"
+              if (response.data.responseResult.data.isFolder === true) {
+                dispatch(
+                  getFolderDocumentsApi(
+                    navigate,
+                    Number(response.data.responseResult.data.id),
+                    t,
+                    1
+                  )
                 );
+              } else {
+                let ext = response.data.responseResult.data.name
+                  .split(".")
+                  .pop();
+                if (ext === "pdf") {
+                  const pdfData = {
+                    taskId: response.data.responseResult.data.id,
+                    commingFrom: 4,
+                    fileName: response.data.responseResult.data.name,
+                    attachmentID: response.data.responseResult.data.id,
+                    isPermission: response.data.responseResult.permissionID,
+                  };
+                  window.open(
+                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                      JSON.stringify(pdfData)
+                    )}`,
+                    "_blank",
+                    "noopener noreferrer"
+                  );
+                }
               }
             } else {
               setRequestFile(true);
             }
-            // if (typeof setRequestFile === "function") {
-            //   setRequestFile(true);
-            // }
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3538,34 +3566,49 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(
-              validateUserDataRoomFailed(
+              validateUserDataRoomSuccess(
+                response.data.responseResult,
                 t(
                   "Only-allowed-to-my-organization-and-user-not-part-of-organization"
                 )
               )
             );
             if (response.data.responseResult.isAccess) {
-              let ext = response.data.responseResult.data.name.split(".").pop();
-              if (ext === "pdf") {
-                const pdfData = {
-                  taskId: response.data.responseResult.data.id,
-                  commingFrom: 4,
-                  fileName: response.data.responseResult.data.name,
-                  attachmentID: response.data.responseResult.data.id,
-                  isPermission: response.data.responseResult.permissionID,
-                };
-                window.open(
-                  `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                    JSON.stringify(pdfData)
-                  )}`,
-                  "_blank",
-                  "noopener noreferrer"
+              localStorage.removeItem("DataRoomEmail");
+              if (response.data.responseResult.data.isFolder === true) {
+                dispatch(
+                  getFolderDocumentsApi(
+                    navigate,
+                    Number(response.data.responseResult.data.id),
+                    t,
+                    1
+                  )
                 );
+              } else {
+                let ext = response.data.responseResult.data.name
+                  .split(".")
+                  .pop();
+                if (ext === "pdf") {
+                  const pdfData = {
+                    taskId: response.data.responseResult.data.id,
+                    commingFrom: 4,
+                    fileName: response.data.responseResult.data.name,
+                    attachmentID: response.data.responseResult.data.id,
+                    isPermission: response.data.responseResult.permissionID,
+                  };
+                  window.open(
+                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                      JSON.stringify(pdfData)
+                    )}`,
+                    "_blank",
+                    "noopener noreferrer"
+                  );
+                }
               }
             } else {
               setRequestFile(true);
             }
-            // setShareFileModal(true);
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3581,26 +3624,40 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
             );
             // setShareFileModal(true);
             if (response.data.responseResult.isAccess) {
-              let ext = response.data.responseResult.data.name.split(".").pop();
-              if (ext === "pdf") {
-                const pdfData = {
-                  taskId: response.data.responseResult.data.id,
-                  commingFrom: 4,
-                  fileName: response.data.responseResult.data.name,
-                  attachmentID: response.data.responseResult.data.id,
-                  isPermission: response.data.responseResult.permissionID,
-                };
-                window.open(
-                  `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                    JSON.stringify(pdfData)
-                  )}`,
-                  "_blank",
-                  "noopener noreferrer"
+              if (response.data.responseResult.data.isFolder === true) {
+                dispatch(
+                  getFolderDocumentsApi(
+                    navigate,
+                    Number(response.data.responseResult.data.id),
+                    t,
+                    1
+                  )
                 );
+              } else {
+                let ext = response.data.responseResult.data.name
+                  .split(".")
+                  .pop();
+                if (ext === "pdf") {
+                  const pdfData = {
+                    taskId: response.data.responseResult.data.id,
+                    commingFrom: 4,
+                    fileName: response.data.responseResult.data.name,
+                    attachmentID: response.data.responseResult.data.id,
+                    isPermission: response.data.responseResult.permissionID,
+                  };
+                  window.open(
+                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                      JSON.stringify(pdfData)
+                    )}`,
+                    "_blank",
+                    "noopener noreferrer"
+                  );
+                }
               }
             } else {
               setRequestFile(true);
             }
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3614,28 +3671,8 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                 t("File-restricted-request-is-to-ask-for-request-access")
               )
             );
-            if (response.data.responseResult.isAccess) {
-              let ext = response.data.responseResult.data.name.split(".").pop();
-              if (ext === "pdf") {
-                const pdfData = {
-                  taskId: response.data.responseResult.data.id,
-                  commingFrom: 4,
-                  fileName: response.data.responseResult.data.name,
-                  attachmentID: response.data.responseResult.data.id,
-                  isPermission: response.data.responseResult.permissionID,
-                };
-                window.open(
-                  `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
-                    JSON.stringify(pdfData)
-                  )}`,
-                  "_blank",
-                  "noopener noreferrer"
-                );
-              }
-            } else {
-              setRequestFile(true);
-            }
-            // setShareFileModal(true);
+            setRequestFile(true);
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3646,7 +3683,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
             dispatch(
               validateUserDataRoomFailed(t("No-file-exists-in-the-system"))
             );
-            // setShareFileModal(true);
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3655,7 +3692,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(validateUserDataRoomFailed(t("Link-expired")));
-            // setShareFileModal(true);
+            localStorage.removeItem("DataRoomEmail");
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -3664,15 +3701,19 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
               )
           ) {
             dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+            localStorage.removeItem("DataRoomEmail");
           } else {
             dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+            localStorage.removeItem("DataRoomEmail");
           }
         }
       } else {
         dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+        localStorage.removeItem("DataRoomEmail");
       }
     } catch (error) {
       dispatch(validateUserDataRoomFailed(t("Something-went-wrong")));
+      localStorage.removeItem("DataRoomEmail");
     }
   };
 };

@@ -3,8 +3,10 @@ import "./ModalMeeting.css";
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import {
+  convertDateTimeObject,
   createConvert,
   RemoveTimeDashes,
+  resolutionResultTable,
 } from "../../commen/functions/date_formater";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -40,16 +42,24 @@ import { useNavigate } from "react-router-dom";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
   getCurrentDate,
+  getCurrentDateTime,
+  getCurrentTimmeGMTHHMMss,
+  getHoursMinutesSec,
   getStartTimeWithCeilFunction,
 } from "../../commen/functions/time_formatter";
 
 const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
+  // checkFlag 6 is for Committee
+  // checkFlag 7 is for Group
+
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { assignees } = useSelector((state) => state);
+  const { assignees, CommitteeReducer, GroupsReducer } = useSelector(
+    (state) => state
+  );
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
   const [isAgenda, setIsAgenda] = useState(false);
@@ -338,20 +348,50 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   }
 
   const handleTimeChange = (newTime) => {
-    let newDate = new Date(newTime);
-    if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
-      const formattedTime = `${hours.padStart(2, "0")}${minutes.padStart(
-        2,
-        "0"
-      )}${"00"}`;
-      setCreateMeeting({
-        ...createMeeting,
-        MeetingStartTime: formattedTime,
-        MeetingEndTime: formattedTime,
-      });
-      setCreateMeetingTime(newTime);
+    if (createMeeting.MeetingDate !== "") {
+      let newDate = new Date(newTime);
+      if (newDate instanceof Date && !isNaN(newDate)) {
+        const getFormattedTime = getHoursMinutesSec(newDate);
+        const getformattedDateTIme = getCurrentDateTime(new Date());
+        const dateTimeFormat = convertDateTimeObject(
+          `${createMeeting.MeetingDate}${getFormattedTime}`
+        );
+        const currentDateTime = convertDateTimeObject(getformattedDateTIme);
+
+        if (dateTimeFormat < currentDateTime) {
+          setOpen({
+            flag: true,
+            message: t("Time-should-be-greater-then-system-time"),
+          });
+          setTimeout(() => {
+            setCreateMeeting({
+              ...createMeeting,
+              MeetingStartTime: getStartTime.formattedTime,
+              MeetingEndTime: getStartTime.formattedTime,
+            });
+            setCreateMeetingTime(getStartTime.newFormatTime);
+          }, 1000);
+        } else {
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingStartTime: getFormattedTime,
+            MeetingEndTime: getFormattedTime,
+          });
+          setCreateMeetingTime(newTime);
+        }
+        // if (getCurrentTimmeGMTHHMMss())
+      }
+    } else {
+      let newDate = new Date(newTime);
+      if (newDate instanceof Date && !isNaN(newDate)) {
+        const getFormattedTime = getHoursMinutesSec(newDate);
+        setCreateMeeting({
+          ...createMeeting,
+          MeetingStartTime: getFormattedTime,
+          MeetingEndTime: getFormattedTime,
+        });
+        setCreateMeetingTime(newTime);
+      }
     }
   };
 
@@ -396,13 +436,44 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   };
 
   const meetingDateHandler = (date, format = "YYYYMMDD") => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
-    setMeetingDate(meetingDateValueFormat);
-    setCreateMeeting({
-      ...createMeeting,
-      MeetingDate: meetingDateSaveFormat,
-    });
+    if (createMeeting.MeetingStartTime !== "") {
+      let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+      let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+      const getformattedDateTIme = getCurrentDateTime(new Date());
+      const dateTimeFormat = convertDateTimeObject(
+        `${meetingDateSaveFormat}${createMeeting.MeetingStartTime}`
+      );
+      const currentDateTime = convertDateTimeObject(getformattedDateTIme);
+      if (dateTimeFormat < currentDateTime) {
+        setOpen({
+          flag: true,
+          message: t(
+            "Date-and-time-should-be-greater-than-current-system-time"
+          ),
+        });
+        setTimeout(() => {
+          setMeetingDate(getCurrentDateforMeeting.DateGMT);
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingDate: getCurrentDateforMeeting.dateFormat,
+          });
+        }, 1000);
+      } else {
+        setMeetingDate(meetingDateValueFormat);
+        setCreateMeeting({
+          ...createMeeting,
+          MeetingDate: meetingDateSaveFormat,
+        });
+      }
+    } else {
+      let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+      let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+      setMeetingDate(meetingDateValueFormat);
+      setCreateMeeting({
+        ...createMeeting,
+        MeetingDate: meetingDateSaveFormat,
+      });
+    }
   };
 
   // for agenda main inputs handler
@@ -895,9 +966,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           });
         }
       });
-    } catch (error) {
-      console.log("RemindersData error");
-    }
+    } catch (error) {}
   }, [assignees.RemindersData]);
 
   // for attendies Role handler
@@ -981,9 +1050,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         setMeetingDate("");
         setCreateMeetingTime("");
       }
-    } catch (error) {
-      console.log("allAssignessList error");
-    }
+    } catch (error) {}
   }, [show]);
 
   useEffect(() => {
@@ -1024,9 +1091,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) {
-      console.log("setMeetingAttendeesList error");
-    }
+    } catch (error) {}
   }, [assignees.user]);
 
   //On Click Of Dropdown Value
@@ -1044,34 +1109,93 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   };
 
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-    if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees.length !== 0
-    ) {
-      return allAssignees
-        .filter((item) => {
+    // let allAssignees;
+    if (Number(checkFlag) === 6) {
+      let CommitteeMembers =
+        CommitteeReducer?.getCommitteeByCommitteeID?.committeMembers;
+      if (
+        CommitteeMembers !== undefined &&
+        CommitteeMembers !== null &&
+        CommitteeMembers.length !== 0
+      ) {
+        return CommitteeMembers.filter((item) => {
           const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
+          const assigneesName = item.userName.toLowerCase();
           return searchTerm && assigneesName.startsWith(searchTerm);
         })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            <img
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
+          .slice(0, 10)
+          .map((item) => (
+            <div
+              onClick={() => onSearch(item.userName, item.pK_UID)}
+              className="dropdown-row-assignee d-flex align-items-center flex-row"
+              key={item.pK_UID}
+            >
+              <img
+                src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
+                alt=""
+                className="user-img"
+              />
+              <p className="p-0 m-0">{item.userName}</p>
+            </div>
+          ));
+      }
+    } else if (Number(checkFlag) === 7) {
+      let GroupMembers = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
+      if (
+        GroupMembers !== undefined &&
+        GroupMembers !== null &&
+        GroupMembers.length !== 0
+      ) {
+        return GroupMembers.filter((item) => {
+          const searchTerm = value.toLowerCase();
+          const assigneesName = item.userName.toLowerCase();
+          return searchTerm && assigneesName.startsWith(searchTerm);
+        })
+          .slice(0, 10)
+          .map((item) => (
+            <div
+              onClick={() => onSearch(item.userName, item.pK_UID)}
+              className="dropdown-row-assignee d-flex align-items-center flex-row"
+              key={item.pK_UID}
+            >
+              <img
+                src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
+                alt=""
+                className="user-img"
+              />
+              <p className="p-0 m-0">{item.userName}</p>
+            </div>
+          ));
+      }
     } else {
+      let allAssignees = assignees.user;
+      if (
+        allAssignees !== undefined &&
+        allAssignees !== null &&
+        allAssignees.length !== 0
+      ) {
+        return allAssignees
+          .filter((item) => {
+            const searchTerm = value.toLowerCase();
+            const assigneesName = item.name.toLowerCase();
+            return searchTerm && assigneesName.startsWith(searchTerm);
+          })
+          .slice(0, 10)
+          .map((item) => (
+            <div
+              onClick={() => onSearch(item.name, item.pK_UID)}
+              className="dropdown-row-assignee d-flex align-items-center flex-row"
+              key={item.pK_UID}
+            >
+              <img
+                src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
+                alt=""
+                className="user-img"
+              />
+              <p className="p-0 m-0">{item.name}</p>
+            </div>
+          ));
+      }
     }
   };
   // for add Attendees handler
@@ -1566,6 +1690,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
+                        maxLength={500}
                       />
                       {/* {modalField === true &&
                       createMeeting.MeetingDescription === "" ? (

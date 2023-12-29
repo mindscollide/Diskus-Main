@@ -1161,7 +1161,9 @@ const updatePollsApi = (
                   t("Polls-due-date-update-successFully")
                 )
               );
-              setEditPolls(false);
+              if (typeof setEditPolls === "function") {
+                setEditPolls(false);
+              }
               if (value === 2) {
                 let OrganizationID = localStorage.getItem("organizationID");
                 let Data1 = {
@@ -1235,7 +1237,9 @@ const updatePollsApi = (
                   t("Poll-details-updated")
                 )
               );
-              setEditPolls(false);
+              if (typeof setEditPolls === "function") {
+                setEditPolls(false);
+              }
               dispatch(setEditpollModal(false));
 
               if (value === 2) {

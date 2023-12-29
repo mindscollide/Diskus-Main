@@ -392,6 +392,8 @@ const getbyGroupID = (
                 setViewGroupPage(true);
                 setUpdateComponentpage(false);
               } else if (no === 3) {
+                dispatch(updateGroupPageFlag(true));
+
                 setUpdateComponentpage(true);
                 setViewGroupPage(false);
               }
