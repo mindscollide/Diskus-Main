@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ModalUpdate.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import {
+  convertDateTimeObject,
   convertTimetoGMT,
   createConvert,
   EditmeetingDateFormat,
@@ -54,15 +55,23 @@ import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import TextFieldTime from "../../components/elements/input_field_time/Input_field";
+import {
+  getCurrentDate,
+  getCurrentDateTime,
+  getHoursMinutesSec,
+  getStartTimeWithCeilFunction,
+} from "../../commen/functions/time_formatter";
 
 const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   //For Localization
   const { t } = useTranslation();
+  const getStartTime = getStartTimeWithCeilFunction();
+  const getCurrentDateforMeeting = getCurrentDate();
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { assignees, uploadReducer, minuteofMeetingReducer, CommitteeReducer } =
+  const { assignees, uploadReducer, CommitteeReducer, GroupsReducer } =
     useSelector((state) => state);
   let OrganizationId = localStorage.getItem("organizationID");
   const [isMinutes, setIsMinutes] = useState(false);
@@ -456,9 +465,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
         }
       });
-    } catch (error) {
-      console.log("ReminderNameHandler error");
-    }
+    } catch (error) {}
   };
 
   // for all details handler
@@ -476,7 +483,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       setCreateMeetingTime(value);
     }
     // else if (name === "MeetingDate") {
-    //   console.log("MeetingDate", name, value);
+    //
     //   setCreateMeeting({
     //     ...createMeeting,
     //     [name]: value,
@@ -576,7 +583,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         ["FK_MDID"]: assignees.ViewMeetingDetails.meetingDetails.pK_MDID,
       });
     } else {
-      console.log("agendaHandler not complete");
     }
   };
 
@@ -615,13 +621,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             sizezero = false;
           }
           if (data === false) {
-            console.log("uploadFile ReducerData");
           } else if (size === false) {
-            console.log("uploadFile ReducerData");
           } else if (sizezero === false) {
-            console.log("uploadFile ReducerData");
           } else {
-            console.log("uploadFile ReducerData");
             dispatch(FileUploadToDo(navigate, uploadedFile, t));
           }
         } else {
@@ -633,7 +635,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           //     flag: true,
           //     message: "File Size is larger than 10MB",
           //   });
-          //   console.log("uploadFile ReducerData");
+          //
           //   size = false;
           // }
           if (uploadedFile.size === 0) {
@@ -645,12 +647,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             sizezero = false;
           }
           if (size === false) {
-            console.log("uploadFile ReducerData");
           } else if (sizezero === false) {
-            console.log("uploadFile ReducerData");
           } else {
-            console.log("uploadFile ReducerData");
-
             dispatch(FileUploadToDo(navigate, uploadedFile, t));
           }
         }
@@ -1014,16 +1012,45 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   // for fetch data for edit from grid
 
   const meetingDateHandler = (date, format = "YYYYMMDD") => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
-    let meetingDateConvertUTC = moment(meetingDateSaveFormat, "YYYYMMDD")
-      .utc()
-      .format("YYYYMMDD");
-    setMeetingDate(meetingDateValueFormat);
-    setCreateMeeting({
-      ...createMeeting,
-      MeetingDate: meetingDateSaveFormat,
-    });
+    if (createMeeting.MeetingStartTime !== "") {
+      let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+      let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+      const getformattedDateTIme = getCurrentDateTime(new Date());
+      const dateTimeFormat = convertDateTimeObject(
+        `${meetingDateSaveFormat}${createMeeting.MeetingStartTime}`
+      );
+      const currentDateTime = convertDateTimeObject(getformattedDateTIme);
+      if (dateTimeFormat < currentDateTime) {
+        setOpen({
+          flag: true,
+          message: t(
+            "Date-and-time-should-be-greater-than-current-system-time"
+          ),
+        });
+        setTimeout(() => {
+          setMeetingDate(getCurrentDateforMeeting.DateGMT);
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingDate: getCurrentDateforMeeting.dateFormat,
+          });
+        }, 1000);
+      } else {
+        setMeetingDate(meetingDateValueFormat);
+        setCreateMeeting({
+          ...createMeeting,
+          MeetingDate: meetingDateSaveFormat,
+        });
+      }
+    } else {
+      let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+      let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+
+      setMeetingDate(meetingDateValueFormat);
+      setCreateMeeting({
+        ...createMeeting,
+        MeetingDate: meetingDateSaveFormat,
+      });
+    }
   };
 
   // for view data
@@ -1114,9 +1141,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
             }
           }
           setAddedParticipantNameList(List);
-        } catch (error) {
-          console.log("error");
-        }
+        } catch (error) {}
         try {
           viewData.meetingAgendas.map((atchmenData, index) => {
             let opData = {
@@ -1146,9 +1171,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
               MeetingAgendaAttachments: file,
             });
           });
-        } catch (error) {
-          console.log("error", error);
-        }
+        } catch (error) {}
         try {
           viewData.minutesOfMeeting.map((minutesOfMeetingData, index) => {
             minutesOfMeetings.push({
@@ -1161,7 +1184,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           });
         } catch (error) {
           //  Block of code to handle errors
-          console.log("error");
         }
         try {
           viewData.externalMeetingAttendees.map(
@@ -1175,7 +1197,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
           );
         } catch (error) {
           //  Block of code to handle errors
-          console.log("error");
         }
         // setMeetingDate(
         //   moment(viewData.meetingEvent.meetingDate, "YYYYMMDD").format("DD/MM/YYYY").toString()
@@ -1216,9 +1237,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         });
         setMinutesOfMeeting(minutesOfMeetings);
       }
-    } catch (error) {
-      console.log("error in responce in api");
-    }
+    } catch (error) {}
   }, [assignees.ViewMeetingDetails]);
 
   const editGrid = (datarecord, dataindex) => {
@@ -1252,34 +1271,92 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-    if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees.length !== 0
-    ) {
-      return allAssignees
-        .filter((item) => {
+    if (Number(checkFlag) === 6) {
+      let CommitteeMembers =
+        CommitteeReducer?.getCommitteeByCommitteeID?.committeMembers;
+      if (
+        CommitteeMembers !== undefined &&
+        CommitteeMembers !== null &&
+        CommitteeMembers.length !== 0
+      ) {
+        return CommitteeMembers.filter((item) => {
           const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
+          const assigneesName = item.userName.toLowerCase();
           return searchTerm && assigneesName.startsWith(searchTerm);
         })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            <img
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
+          .slice(0, 10)
+          .map((item) => (
+            <div
+              onClick={() => onSearch(item.userName, item.pK_UID)}
+              className="dropdown-row-assignee d-flex align-items-center flex-row"
+              key={item.pK_UID}
+            >
+              <img
+                src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
+                alt=""
+                className="user-img"
+              />
+              <p className="p-0 m-0">{item.userName}</p>
+            </div>
+          ));
+      }
+    } else if (Number(checkFlag) === 7) {
+      let GroupMembers = GroupsReducer?.getGroupByGroupIdResponse?.groupMembers;
+      if (
+        GroupMembers !== undefined &&
+        GroupMembers !== null &&
+        GroupMembers.length !== 0
+      ) {
+        return GroupMembers.filter((item) => {
+          const searchTerm = value.toLowerCase();
+          const assigneesName = item.userName.toLowerCase();
+          return searchTerm && assigneesName.startsWith(searchTerm);
+        })
+          .slice(0, 10)
+          .map((item) => (
+            <div
+              onClick={() => onSearch(item.userName, item.pK_UID)}
+              className="dropdown-row-assignee d-flex align-items-center flex-row"
+              key={item.pK_UID}
+            >
+              <img
+                src={`data:image/jpeg;base64,${item.userProfilePicture.displayProfilePictureName}`}
+                alt=""
+                className="user-img"
+              />
+              <p className="p-0 m-0">{item.userName}</p>
+            </div>
+          ));
+      }
     } else {
+      let allAssignees = assignees.user;
+      if (
+        allAssignees !== undefined &&
+        allAssignees !== null &&
+        allAssignees.length !== 0
+      ) {
+        return allAssignees
+          .filter((item) => {
+            const searchTerm = value.toLowerCase();
+            const assigneesName = item.name.toLowerCase();
+            return searchTerm && assigneesName.startsWith(searchTerm);
+          })
+          .slice(0, 10)
+          .map((item) => (
+            <div
+              onClick={() => onSearch(item.name, item.pK_UID)}
+              className="dropdown-row-assignee d-flex align-items-center flex-row"
+              key={item.pK_UID}
+            >
+              <img
+                src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
+                alt=""
+                className="user-img"
+              />
+              <p className="p-0 m-0">{item.name}</p>
+            </div>
+          ));
+      }
     }
   };
 
@@ -1776,21 +1853,46 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
   };
 
   const handleTimeChange = (newTime) => {
-    let newDate = new Date(newTime);
-    if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
-      const formattedTime = `${hours.toString().padStart(2, "0")}${minutes
-        .toString()
-        .padStart(2, "0")}${"00"}`;
-      setCreateMeeting({
-        ...createMeeting,
-        ["MeetingStartTime"]: formattedTime,
-        ["MeetingEndTime"]: formattedTime,
-      });
-      setCreateMeetingTime(newTime);
+    if (createMeeting.MeetingDate !== "") {
+      let newDate = new Date(newTime);
+      if (newDate instanceof Date && !isNaN(newDate)) {
+        const getFormattedTime = getHoursMinutesSec(newDate);
+        const getformattedDateTIme = getCurrentDateTime(new Date());
+        const dateTimeFormat = convertDateTimeObject(
+          `${createMeeting.MeetingDate}${getFormattedTime}`
+        );
+        const currentDateTime = convertDateTimeObject(getformattedDateTIme);
+
+        if (dateTimeFormat < currentDateTime) {
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingStartTime: getStartTime.formattedTime,
+            MeetingEndTime: getStartTime.formattedTime,
+          });
+          setCreateMeetingTime(getStartTime.newFormatTime);
+        } else {
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingStartTime: getFormattedTime,
+            MeetingEndTime: getFormattedTime,
+          });
+          setCreateMeetingTime(newTime);
+        }
+      }
+      setSelectedTime(newTime);
+    } else {
+      let newDate = new Date(newTime);
+      if (newDate instanceof Date && !isNaN(newDate)) {
+        const getFormattedTime = getHoursMinutesSec(newDate);
+        setCreateMeeting({
+          ...createMeeting,
+          MeetingStartTime: getFormattedTime,
+          MeetingEndTime: getFormattedTime,
+        });
+        setCreateMeetingTime(newTime);
+      }
+      setSelectedTime(newTime);
     }
-    setSelectedTime(newTime);
   };
 
   function CustomInput({ onFocus, value, onChange }) {
@@ -1803,11 +1905,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       />
     );
   }
-
-  console.log(
-    "MeetingAttendeesMeetingAttendees",
-    createMeeting.MeetingAttendees
-  );
 
   return (
     <>
@@ -2042,6 +2139,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         placeholder={t("Location")}
                         value={createMeeting.MeetingLocation}
                         required={true}
+                        maxLength={245}
                       />
                       {modalField === true &&
                       createMeeting.MeetingLocation === "" ? (
@@ -2085,7 +2183,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         size="small"
                         placeholder={t("Meeting-title")}
                         required={true}
-                        maxLength={200}
+                        maxLength={245}
                       />
                       {modalField === true &&
                       createMeeting.MeetingTitle === "" ? (
@@ -2113,6 +2211,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
+                        maxLength={500}
                       />
                       {/* {modalField === true &&
                       createMeeting.MeetingDescription === "" ? (
