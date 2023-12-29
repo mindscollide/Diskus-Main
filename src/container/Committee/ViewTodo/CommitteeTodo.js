@@ -39,7 +39,7 @@ import {
 import "antd/dist/antd.css";
 
 import ModalToDoList from "./CreateTodo/ModalToDoList";
-import ModalViewToDo from "./ViewTodo/ModalViewToDo";
+import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
 import {
   cleareMessage,
