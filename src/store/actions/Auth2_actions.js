@@ -745,8 +745,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   navigate("/onboard");
                 } else {
                   let RSVP = localStorage.getItem("RSVP");
+                  let dataroomValue = localStorage.getItem("DataRoomEmail");
+
                   if (RSVP !== undefined && RSVP !== null) {
                     navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                  } else if (
+                    dataroomValue !== null &&
+                    dataroomValue !== undefined
+                  ) {
+                    navigate("/Diskus/dataroom");
                   } else {
                     navigate("/Diskus/");
                   }
@@ -931,8 +938,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   navigate("/onboard");
                 } else {
                   let RSVP = localStorage.getItem("RSVP");
+                  let dataroomValue = localStorage.getItem("DataRoomEmail");
+
                   if (RSVP !== undefined && RSVP !== null) {
                     navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                  } else if (
+                    dataroomValue !== null &&
+                    dataroomValue !== undefined
+                  ) {
+                    navigate("/Diskus/dataroom");
                   } else {
                     navigate("/Diskus/");
                   }
@@ -1828,8 +1842,15 @@ const createPasswordAction = (value, navigate, t) => {
                   navigate("/onboard");
                 } else {
                   let RSVP = localStorage.getItem("RSVP");
+                  let dataroomValue = localStorage.getItem("DataRoomEmail");
+
                   if (RSVP !== undefined && RSVP !== null) {
                     navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                  } else if (
+                    dataroomValue !== null &&
+                    dataroomValue !== undefined
+                  ) {
+                    navigate("/Diskus/dataroom");
                   } else {
                     navigate("/Diskus/");
                   }
@@ -2064,8 +2085,15 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 let RSVP = localStorage.getItem("RSVP");
+                let dataroomValue = localStorage.getItem("DataRoomEmail");
+
                 if (RSVP !== undefined && RSVP !== null) {
                   navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  navigate("/Diskus/dataroom");
                 } else {
                   navigate("/Diskus/");
                 }
@@ -2367,8 +2395,15 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 let RSVP = localStorage.getItem("RSVP");
+                let dataroomValue = localStorage.getItem("DataRoomEmail");
+
                 if (RSVP !== undefined && RSVP !== null) {
                   navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  navigate("/Diskus/dataroom");
                 } else {
                   navigate("/Diskus/");
                 }
@@ -2513,8 +2548,15 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 let RSVP = localStorage.getItem("RSVP");
+                let dataroomValue = localStorage.getItem("DataRoomEmail");
+
                 if (RSVP !== undefined && RSVP !== null) {
                   navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  navigate("/Diskus/dataroom");
                 } else {
                   navigate("/Diskus/");
                 }
@@ -2659,8 +2701,15 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 let RSVP = localStorage.getItem("RSVP");
+                let dataroomValue = localStorage.getItem("DataRoomEmail");
+
                 if (RSVP !== undefined && RSVP !== null) {
                   navigate("/DisKus/Meeting/Useravailabilityformeeting");
+                } else if (
+                  dataroomValue !== null &&
+                  dataroomValue !== undefined
+                ) {
+                  navigate("/Diskus/dataroom");
                 } else {
                   navigate("/Diskus/");
                 }

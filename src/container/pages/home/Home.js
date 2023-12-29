@@ -75,7 +75,7 @@ import {
   cleareAssigneesState,
   HideNotification,
 } from "../../../store/actions/Get_List_Of_Assignees";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
 import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
 import VerificationFailedIcon from "./../../../assets/images/failed.png";
 import {
@@ -195,6 +195,7 @@ const Home = () => {
       ? localStorage.getItem("calenderMonthsSpan")
       : 1;
   let currentDate = new Date(); // Get the current date
+
   useEffect(() => {
     if (todoViewModal) {
       setTodoID(0);

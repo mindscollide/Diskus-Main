@@ -74,3 +74,30 @@ export function convertToGMT(dateString, timeString) {
 
   return GMTTimeString;
 }
+
+export const getCurrentDateTime = (date) => {
+  // const currentDate = new Date();
+  if (date instanceof Date && !isNaN(date)) {
+    const year = date.getFullYear();
+    const month = `0${date.getMonth() + 1}`.slice(-2); // Months are 0-indexed, so adding 1
+    const day = `0${date.getDate()}`.slice(-2);
+    const hours = `0${date.getHours()}`.slice(-2);
+    const minutes = `0${date.getMinutes()}`.slice(-2);
+    const seconds = `00`;
+
+    const dateTimeFormat = `${year}${month}${day}${hours}${minutes}${seconds}`;
+    return dateTimeFormat;
+  }
+};
+
+export const getHoursMinutesSec = (date) => {
+  if (date instanceof Date && !isNaN(date)) {
+    const hours = ("0" + date.getHours()).slice(-2);
+    const minutes = ("0" + date.getMinutes()).slice(-2);
+    const formattedTime = `${hours.padStart(2, "0")}${minutes.padStart(
+      2,
+      "0"
+    )}${"00"}`;
+    return formattedTime;
+  }
+};

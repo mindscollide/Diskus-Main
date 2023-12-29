@@ -386,7 +386,10 @@ const Groups = () => {
       });
     }, 3000);
   };
-
+  console.log(
+    GroupsReducer.updateGroupPageFlag,
+    "GroupsReducer.updateGroupPageFlag"
+  );
   return (
     <>
       <div className={styles["Groupscontainer"]}>
