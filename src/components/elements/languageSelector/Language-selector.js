@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
 import LanguageIcon from "../../../assets/images/Language.svg";
 import LanguageArrowDown from "../../../assets/images/New folder/LanguaugeSelector_Down.svg";
 import LanguageArrowUp from "../../../assets/images/New folder/LanguaugeSelector_Up.svg";
@@ -11,9 +10,7 @@ import LanguageBlack from "../../../assets/images/Language_Black.svg";
 import styles from "./Language-selector.module.css";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Loader } from "./../../elements";
-import Cookies from "js-cookie";
-import numeral from "numeral";
+
 import {
   getAllLanguages,
   getSelectedLanguage,
@@ -23,8 +20,6 @@ import moment from "moment";
 
 const LanguageSelector = () => {
   const { LanguageReducer } = useSelector((state) => state);
-
-  console.log("LanguageReducer", LanguageReducer);
 
   const navigate = useNavigate();
 
@@ -39,7 +34,7 @@ const LanguageSelector = () => {
   const { t, i18n } = useTranslation();
 
   const [languages, setLanguages] = useState([]);
-  console.log(languages, "languageslanguageslanguages");
+
   const [selectedLanguage, setSelectedLanguage] = useState({
     systemSupportedLanguageID: 1,
     languageTitle: "English",
@@ -68,7 +63,7 @@ const LanguageSelector = () => {
       LanguageReducer.AllLanguagesData.length !== 0
     ) {
       let newValues = [];
-      LanguageReducer.AllLanguagesData.map((langValues, index) => {
+      LanguageReducer.AllLanguagesData.forEach((langValues, index) => {
         newValues.push({
           languageTitle:
             langValues.systemSupportedLanguageID === 1
@@ -171,27 +166,6 @@ const LanguageSelector = () => {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, [languageDropdown]);
-
-  // useEffect(() => {
-  //   let currentLanguage = localStorage.getItem("i18nextLng");
-  //   const currentLangObj = languages.find(
-  //     (lang) => lang.systemSupportedLanguageID === Number(currentLanguage)
-  //   );
-  //   let currentLanguageforDiskus =
-  //     currentLangObj?.systemSupportedLanguageID === 1
-  //       ? "en"
-  //       : currentLangObj?.systemSupportedLanguageID === 2
-  //       ? "ar"
-  //       : currentLangObj?.systemSupportedLanguageID === 3
-  //       ? "fr"
-  //       : "";
-  //   // if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-  //   //   setTimeout(() => {
-  //   //     i18n.changeLanguage(currentLanguageforDiskus)
-  //   //     document.body.dir = currentLanguageforDiskus.dir || 'ltr'
-  //   //   }, 1000)
-  //   // }
-  // }, [i18n]);
 
   useEffect(() => {
     if (currentLanguage === "ar") {

@@ -53,7 +53,6 @@ const GetAllOrganizationRoles = (navigate, t) => {
           await dispatch(RefreshToken(navigate, t));
           dispatch(GetAllOrganizationRoles(navigate, t));
         } else if (response.data.responseResult.isExecuted === true) {
-          console.log("asd", response);
           if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllOrganizationRoles_01"
@@ -130,7 +129,6 @@ const GetAllUserRoles = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("ValidateData", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(GetAllUserRoles(navigate, t));
@@ -215,7 +213,6 @@ const GetOrganizationByID = (navigate, object, t) => {
           await dispatch(RefreshToken(navigate, t));
           dispatch(GetOrganizationByID(navigate, object, t));
         } else if (response.data.responseResult.isExecuted === true) {
-          console.log("GetOrganizationByID", response.data.responseResult);
           if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetOrganizationByID_01"
@@ -227,10 +224,8 @@ const GetOrganizationByID = (navigate, object, t) => {
                 newError
               )
             );
-            console.log("GetOrganizationByID", response.data.responseResult);
 
             await dispatch(GetAllUserRoles(navigate, t));
-            console.log("GetOrganizationByID", response.data.responseResult);
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetOrganizationByID_02"
@@ -295,7 +290,6 @@ const GetAllUserStatus = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetAllUserStatus", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(GetAllUserStatus(navigate, t));

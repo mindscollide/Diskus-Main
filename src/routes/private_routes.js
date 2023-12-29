@@ -6,13 +6,11 @@ const PrivateRoutes = () => {
     if (
       currentUrl.includes("DisKus/Meeting/Useravailabilityformeeting?action=")
     ) {
-      console.log(currentUrl, "currentUrlcurrentUrlcurrentUrlcurrentUrl");
-
       const parts = currentUrl.split("?action=");
       // Save something in local storage if the condition is true
       if (parts.length === 2) {
         const remainingString = parts[1];
-        console.log("Remaining String:", remainingString);
+
         // Save it to state or local storage as needed
         localStorage.setItem("RSVP", remainingString);
       } else {
@@ -20,14 +18,13 @@ const PrivateRoutes = () => {
       }
     }
     if (currentUrl.includes("DisKus/dataroom?action=")) {
-      console.log(currentUrl, "currentUrlcurrentUrlcurrentUrlcurrentUrl");
       // localStorage.setItem("DataRoomEmail", currentUrl);
 
       const parts = currentUrl.split("?action=");
       // Save something in local storage if the condition is true
       if (parts.length === 2) {
         const remainingString = parts[1];
-        console.log("Remaining String:", remainingString);
+
         // Save it to state or local storage as needed
         localStorage.setItem("DataRoomEmail", currentUrl);
       } else {
@@ -59,8 +56,6 @@ const PrivateRoutes = () => {
   const [currentUser, setCurrentUser] = useState(
     RoleID === "3" && (Blur === undefined || Blur === null) ? true : null
   );
-
-  console.log("PrivateAdmin", TwoFA, TowApproval);
 
   return currentUser && token ? (
     <Outlet />

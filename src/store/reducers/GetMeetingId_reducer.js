@@ -51,7 +51,6 @@ const meetingIdReducer = (state = initialState, action) => {
       };
 
     case actions.ALL_MEETINGS_SOCKET: {
-      console.log("allMeetingsSocket", action.response);
       return {
         ...state,
         allMeetingsSocketData: action.response,
@@ -137,13 +136,11 @@ const meetingIdReducer = (state = initialState, action) => {
       };
 
     case actions.GET_UPCOMINGEVENTS_SUCCESS:
-      console.log("GET_UPCOMINGEVENTS_SUCCESS", action);
       let GetUpcomingEventsArray = action.response.upcomingEvents.map(
         (item, index) => {
           return { ...item, key: index };
         }
       );
-      console.log("GET_UPCOMINGEVENTS_SUCCESS", GetUpcomingEventsArray);
 
       return {
         ...state,
@@ -178,14 +175,12 @@ const meetingIdReducer = (state = initialState, action) => {
       };
     }
     case actions.UPCOMINGEVENTS_MQTT: {
-      console.log("NEW_UPCOMING123", action.response);
       let newEvent = [...state.UpcomingEventsData];
       if (Object.keys(state.UpcomingEventsData).length > 0) {
         if (Object.keys(action.response).length > 0) {
           newEvent.unshift(action.response);
         }
       }
-      console.log("NEW_UPCOMING123", newEvent);
 
       return {
         ...state,

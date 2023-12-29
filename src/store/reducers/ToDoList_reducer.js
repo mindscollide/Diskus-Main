@@ -155,7 +155,6 @@ const toDoListReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_TODO_FAIL:
-      console.log("action", action);
       return {
         ...state,
         Loading: false,
@@ -205,12 +204,10 @@ const toDoListReducer = (state = initialState, action) => {
       };
 
     case actions.GET_ALL_ASSIGNEES_SUCCESS:
-      console.log("GET_ALL_ASSIGNEES_SUCCESS", action);
       let GetAllAssigneesArray = action.response.map((item, index) => {
         return { ...item, key: index };
       });
 
-      console.log("GET_ALL_ASSIGNEES_SUCCESS", GetAllAssigneesArray);
       return {
         ...state,
         // Loading: false,
@@ -242,11 +239,10 @@ const toDoListReducer = (state = initialState, action) => {
       };
 
     case actions.GET_TODOLIST_SUCCESS:
-      console.log("GET_TODO_SUCCESS", action);
       let GetAllTodolistArray = action.response.toDoLists.map((item, index) => {
         return { ...item, key: index };
       });
-      console.log("GET_TODO_SUCCESS", GetAllTodolistArray);
+
       return {
         ...state,
         Loading: false,
@@ -256,7 +252,6 @@ const toDoListReducer = (state = initialState, action) => {
         ShowNotification: true,
       };
     case actions.SETTODO_RECENT_ACTIVITY_DATA: {
-      console.log("TodosActivityData", action.response);
       return {
         ...state,
         Loading: false,
@@ -265,7 +260,6 @@ const toDoListReducer = (state = initialState, action) => {
       };
     }
     case actions.SET_TODO_STATUS_DATA: {
-      console.log(action, "SET_TODO_STATUS_DATA");
       return {
         ...state,
         socketTodoStatusData: action.response,
@@ -309,7 +303,6 @@ const toDoListReducer = (state = initialState, action) => {
       };
 
     case actions.GET_TODOCOUNT_SUCCESS:
-      console.log("GET_TODOCOUNT_SUCCESS", action);
       return {
         ...state,
         // Loading: false,
@@ -349,10 +342,6 @@ const toDoListReducer = (state = initialState, action) => {
       };
     }
     case actions.SEARCH_TODOLIST_SUCCESS: {
-      console.log(
-        action.response,
-        "SEARCH_TODOLIST_SUCCESSSEARCH_TODOLIST_SUCCESS"
-      );
       return {
         ...state,
         Loading: false,
@@ -361,7 +350,6 @@ const toDoListReducer = (state = initialState, action) => {
       };
     }
     case actions.SEARCH_TODOLIST_FAIL: {
-      console.log(action, "SEARCH_TODOLIST_SUCCESSSEARCH_TODOLIST_SUCCESS");
       return {
         ...state,
         Loading: false,

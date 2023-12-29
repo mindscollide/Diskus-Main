@@ -33,17 +33,12 @@ const GroupsReducer = (state = initialState, action) => {
       };
     }
     case actions.GROUP_LOADER_STATE: {
-      console.log(
-        action.response,
-        "GET_GROUPS_BYUSERID_INITGET_GROUPS_BYUSERID_INIT"
-      );
       return {
         ...state,
         getAllLoading: action.response,
       };
     }
     case actions.GET_GROUPS_BYUSERID_SUCCESS: {
-      console.log(action, "GET_GROUPS_BYUSERID_SUCCESS");
       return {
         ...state,
         Loading: false,
@@ -204,7 +199,6 @@ const GroupsReducer = (state = initialState, action) => {
       };
     }
     case actions.REALTIME_GROUPS_STATUS_RESPONSE: {
-      console.log("realtimeGroupStatusResponse", action);
       return {
         ...state,
         realtimeGroupStatus: action.response,
@@ -217,7 +211,6 @@ const GroupsReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_ALL_ORGANIZATION_GROUPS_SUCCESS: {
-      console.log(action, "GET_ALL_ORGANIZATION_GROUPS_SUCCESS");
       return {
         ...state,
         Loading: false,

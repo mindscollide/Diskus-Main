@@ -42,8 +42,6 @@ const assigneesReducer = (state = initialState, action) => {
       };
     }
     case actions.ASSIGNESS_LIST_SUCCESS: {
-      console.log("allassignesslistsuccess");
-
       return {
         ...state,
         user: action.response,
@@ -66,7 +64,6 @@ const assigneesReducer = (state = initialState, action) => {
     }
 
     case actions.SCHEDULE_NEW_MEETING_INIT:
-      console.log("Update Loader start");
       return { ...state, Loading: true };
 
     case actions.SCHEDULE_NEW_MEETING_FAIL:
@@ -180,7 +177,6 @@ const assigneesReducer = (state = initialState, action) => {
       };
 
     case actions.END_MEETING_SUCCESS:
-      console.log("END Meeting ", action);
       return {
         ...state,
         // Loading: false,
@@ -197,7 +193,6 @@ const assigneesReducer = (state = initialState, action) => {
       };
 
     case actions.GET_REMINDERS_SUCCESS: {
-      console.log("allassignesslistsuccess12");
       return {
         ...state,
         RemindersData: action.response.meetingReminders,

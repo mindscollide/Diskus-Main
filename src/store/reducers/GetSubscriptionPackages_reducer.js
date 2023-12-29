@@ -23,7 +23,6 @@ const getPackageDetailReducer = (state = initialState, action) => {
         Loading: true,
       };
     case actions.GETSUBSCRIPTIONPACAKGES_SUCCESS:
-      console.log(action, "GETSUBSCRIPTIONPACAKGES_FAIL");
       return {
         ...state,
         Loading: false,
@@ -31,7 +30,6 @@ const getPackageDetailReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     case actions.GETSUBSCRIPTIONPACAKGES_FAIL:
-      console.log(action, "GETSUBSCRIPTIONPACAKGES_FAIL");
       return {
         ...state,
         Loading: false,
@@ -67,7 +65,6 @@ const getPackageDetailReducer = (state = initialState, action) => {
       };
     }
     case actions.GETUPGRADABLESUBSCRIPTIONPACAKGE_SUCCESS: {
-      console.log(action.response, "getSubscriptionPackageforUpgradeResponse");
       return {
         ...state,
         Loading: false,
@@ -134,8 +131,6 @@ const getPackageDetailReducer = (state = initialState, action) => {
       };
     }
     case actions.GETPACKAGEEXPIRYDETAILS_SUCCESS: {
-  console.log("isExpiry color",action.response)
-
       return {
         ...state,
         Loading: false,
