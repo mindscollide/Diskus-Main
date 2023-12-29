@@ -104,7 +104,6 @@ const AuthReducer = (state = initialState, action) => {
     }
 
     case actions.EMAILVALIDATION_INIT: {
-      console.log(state, "action");
       return {
         ...state,
         Loading: true,
@@ -138,7 +137,6 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.EMAILVALIDATION_SUCCESS: {
-      console.log(action, "action");
       localStorage.setItem("userID", action.response.userID);
       return {
         ...state,
@@ -148,7 +146,6 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.EMAILVALIDATION_FAIL: {
-      console.log(action, "action");
       return {
         ...state,
         Loading: false,
@@ -156,14 +153,12 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.PASSWORDVALIDATION_INIT: {
-      console.log(action, "action");
       return {
         ...state,
         Loading: true,
       };
     }
     case actions.PASSWORDVALIDATION_SUCCESS: {
-      console.log(action, "action");
       return {
         ...state,
         Loading: false,
@@ -172,7 +167,6 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.PASSWORDVALIDATION_FAIL: {
-      console.log(action, "action");
       return {
         ...state,
         Loading:
@@ -186,14 +180,12 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.VERIFYOTPFOREMAIL_INIT: {
-      console.log(action, "action");
       return {
         ...state,
         Loading: true,
       };
     }
     case actions.VERIFYOTPFOREMAIL_SUCCESS: {
-      console.log(action, "action");
       return {
         ...state,
         Loading: false,
@@ -202,7 +194,6 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.VERIFYOTPFOREMAIL_FAIL: {
-      console.log(action, "action");
       return {
         ...state,
         Loading: false,
@@ -257,7 +248,6 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.GETSELECTEDPACAKGEANDORGANIZATIONDETAILS_SUCCESS: {
-      console.log(action, "action");
       return {
         ...state,
         Loading: false,
@@ -280,7 +270,6 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.CHANGEPASSWORD_SUCCESS: {
-      console.log("CHANGEPASSWORD_SUCCESS", action);
       return {
         ...state,
         Loading: false,
@@ -317,14 +306,12 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.CHECKINGAUTHENTICATEAFA_INIT: {
-      console.log("CHECKINGAUTHENTICATEAFA_SUCCESS", action);
       return {
         ...state,
         Loading: true,
       };
     }
     case actions.CHECKINGAUTHENTICATEAFA_SUCCESS: {
-      console.log("CHECKINGAUTHENTICATEAFA_SUCCESS", action);
       return {
         Loading: false,
         AuthenticateAFAResponse: action.response,
@@ -332,7 +319,6 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.CHECKINGAUTHENTICATEAFA_FAIL: {
-      console.log("CHECKINGAUTHENTICATEAFA_SUCCESS", action);
       return {
         ...state,
         Loading: false,
