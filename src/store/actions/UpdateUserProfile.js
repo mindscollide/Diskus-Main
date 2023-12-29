@@ -1,41 +1,41 @@
-import * as actions from "../action_types"
+import * as actions from "../action_types";
 import {
   settingApi,
   authenticationApi,
-} from "../../commen/apis/Api_ends_points"
+} from "../../commen/apis/Api_ends_points";
 
 import {
   updateUserProfileSetting,
   updateProfilePictureRM,
-} from "../../commen/apis/Api_config"
-import { RefreshToken } from "../actions/Auth_action"
-import axios from "axios"
-import { getUserDetails, getUserSetting } from "../actions/GetUserSetting"
+} from "../../commen/apis/Api_config";
+import { RefreshToken } from "../actions/Auth_action";
+import axios from "axios";
+import { getUserDetails, getUserSetting } from "../actions/GetUserSetting";
 
 const updateuserprofileinit = () => {
   return {
     type: actions.UPDATEUSERPROFILE_INIT,
-  }
-}
+  };
+};
 const updateuserprofilesuccess = (message, response) => {
   return {
     type: actions.UPDATEUSERPROFILE_SUCCESS,
     response: response,
     message: message,
-  }
-}
+  };
+};
 const updateuserprofilefail = (message, response) => {
   return {
     type: actions.UPDATEUSERPROFILE_FAIL,
     message: message,
     response: response,
-  }
-}
+  };
+};
 
 const updateUserProfile = (navigate, userProfileData, t) => {
-  let currentUserID = localStorage.getItem("userID")
-  console.log(userProfileData)
-  let token = JSON.parse(localStorage.getItem("token"))
+  let currentUserID = localStorage.getItem("userID");
+
+  let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     UserProfile: {
       PK_UID: userProfileData.PK_UID,
@@ -48,14 +48,14 @@ const updateUserProfile = (navigate, userProfileData, t) => {
       Password: userProfileData.Password,
       MobileNumber: userProfileData.MobileNumber,
     },
-  }
+  };
 
   return (dispatch) => {
-    dispatch(updateuserprofileinit())
-    let form = new FormData()
-    form.append("RequestMethod", updateUserProfileSetting.RequestMethod)
-    form.append("RequestData", JSON.stringify(Data))
-    console.log("UserProfile", Data)
+    dispatch(updateuserprofileinit());
+    let form = new FormData();
+    form.append("RequestMethod", updateUserProfileSetting.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
     axios({
       method: "post",
       url: settingApi,
@@ -65,13 +65,9 @@ const updateUserProfile = (navigate, userProfileData, t) => {
       },
     })
       .then(async (response) => {
-        console.log(
-          "update user profile setting",
-          response.data.responseResult.responseMessage
-        )
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(updateUserProfile(navigate, userProfileData, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateUserProfile(navigate, userProfileData, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             await dispatch(
@@ -79,57 +75,56 @@ const updateUserProfile = (navigate, userProfileData, t) => {
                 response.data.responseResult.responseMessage,
                 response.data.responseResult
               )
-            )
-            await dispatch(getUserSetting(navigate, JSON.parse(currentUserID)))
+            );
+            await dispatch(getUserSetting(navigate, JSON.parse(currentUserID)));
           } else {
-            dispatch(updateuserprofilefail())
+            dispatch(updateuserprofilefail());
           }
         } else {
-          dispatch(updateuserprofilefail(response.data.responseMessage))
+          dispatch(updateuserprofilefail(response.data.responseMessage));
         }
       })
       .catch((response) => {
-        dispatch(updateuserprofilefail(response.data.responseMessage))
-        console.log("catch response", response)
-      })
-  }
-}
+        dispatch(updateuserprofilefail(response.data.responseMessage));
+      });
+  };
+};
 
 const updateUserPicture_init = () => {
   return {
     type: actions.UPDATE_PROFILE_PICTURE_INIT,
-  }
-}
+  };
+};
 const updateUserPicture_success = (response, message) => {
   return {
     type: actions.UPDATE_PROFILE_PICTURE_SUCCESS,
     response: response,
     message: message,
-  }
-}
+  };
+};
 const updateUserPicture_fail = (message) => {
   return {
     type: actions.UPDATE_PROFILE_PICTURE_FAIL,
     message: message,
-  }
-}
+  };
+};
 
 const updateUserProfilePicture = (navigate, t, fileName, base64) => {
-  let currentUserID = localStorage.getItem("userID")
-  let token = JSON.parse(localStorage.getItem("token"))
-  let OrganizationID = localStorage.getItem("organizationID")
+  let currentUserID = localStorage.getItem("userID");
+  let token = JSON.parse(localStorage.getItem("token"));
+  let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     FK_UserID: Number(currentUserID),
     FK_OrganizationID: Number(OrganizationID),
     Base64Img: base64,
     FileName: fileName,
-  }
+  };
 
   return (dispatch) => {
-    dispatch(updateUserPicture_init())
-    let form = new FormData()
-    form.append("RequestMethod", updateProfilePictureRM.RequestMethod)
-    form.append("RequestData", JSON.stringify(Data))
+    dispatch(updateUserPicture_init());
+    let form = new FormData();
+    form.append("RequestMethod", updateProfilePictureRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
       url: authenticationApi,
@@ -140,8 +135,8 @@ const updateUserProfilePicture = (navigate, t, fileName, base64) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t))
-          dispatch(updateUserProfilePicture(navigate, t, fileName, base64))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateUserProfilePicture(navigate, t, fileName, base64));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -156,11 +151,11 @@ const updateUserProfilePicture = (navigate, t, fileName, base64) => {
                   response.data.responseResult,
                   t("Profile-picture-updated")
                 )
-              )
+              );
               dispatch(
                 getUserDetails(navigate, currentUserID, t, OrganizationID)
-              )
-              dispatch(getUserSetting(navigate, t))
+              );
+              dispatch(getUserSetting(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -170,7 +165,7 @@ const updateUserProfilePicture = (navigate, t, fileName, base64) => {
             ) {
               dispatch(
                 updateUserPicture_fail(t("Failed-to-update-profile-picture"))
-              )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -178,7 +173,7 @@ const updateUserProfilePicture = (navigate, t, fileName, base64) => {
                   "ERM_AuthService_SignUpManager_UpdateProfilePicture_03".toLowerCase()
                 )
             ) {
-              dispatch(updateUserPicture_fail(t("Base64-string-is-required")))
+              dispatch(updateUserPicture_fail(t("Base64-string-is-required")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -186,16 +181,16 @@ const updateUserProfilePicture = (navigate, t, fileName, base64) => {
                   "ERM_AuthService_SignUpManager_UpdateProfilePicture_04".toLowerCase()
                 )
             ) {
-              dispatch(updateUserPicture_fail(t("Something-went-wrong")))
+              dispatch(updateUserPicture_fail(t("Something-went-wrong")));
             } else {
-              dispatch(updateUserPicture_fail(t("Something-went-wrong")))
+              dispatch(updateUserPicture_fail(t("Something-went-wrong")));
             }
           }
         }
       })
       .catch(() => {
-        dispatch(updateUserPicture_fail(t("Something-went-wrong")))
-      })
-  }
-}
-export { updateUserProfile, updateUserProfilePicture }
+        dispatch(updateUserPicture_fail(t("Something-went-wrong")));
+      });
+  };
+};
+export { updateUserProfile, updateUserProfilePicture };

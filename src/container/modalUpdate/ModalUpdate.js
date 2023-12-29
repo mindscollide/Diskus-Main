@@ -1462,15 +1462,21 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
       let finalDateTime = createConvert(
         createMeeting.MeetingDate + createMeeting.MeetingStartTime
       );
-      let newDate = finalDateTime.slice(0, 8);
-      let newTime = finalDateTime.slice(8, 14);
-      let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
-      let Data = {
-        MeetingID: meetingID,
-      };
+      let finalDateTimeWithoutUTC =
+        createMeeting.MeetingDate + createMeeting.MeetingStartTime;
+      let newDate = finalDateTimeWithoutUTC.slice(0, 8);
+      let newTime = finalDateTimeWithoutUTC.slice(8, 14);
+      let ifemptyTime = moment(newTime, "HHmmss").format("hh-mm-ss");
+      let ifemptyDate = moment(newDate, "YYYYMMDD").format("MMM DD, YYYY");
+      // let newDate = finalDateTime.slice(0, 8);
+      // let newTime = finalDateTime.slice(8, 14);
+      // let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
       let newData = {
         MeetingID: createMeeting.MeetingID,
-        MeetingTitle: createMeeting.MeetingTitle,
+        MeetingTitle:
+          createMeeting.MeetingTitle !== ""
+            ? createMeeting.MeetingTitle
+            : `Untitled @ ${ifemptyDate} ${ifemptyTime}`,
         MeetingDescription: createMeeting.MeetingDescription,
         MeetingTypeID: 0,
         MeetingDate: finalDateTime.slice(0, 8),

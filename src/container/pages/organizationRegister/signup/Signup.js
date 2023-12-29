@@ -6,29 +6,17 @@ import {
   Button,
   Notification,
   TextField,
-  Checkbox,
   Loader,
 } from "../../../../components/elements";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/Diskus_newRoundIcon_SignUp.svg";
-import {
-  validateEmail,
-  validateEmailEnglishAndArabicFormat,
-  validationEmail,
-  validEmailAddress,
-} from "../../../../commen/functions/validations";
-import { Link, useNavigate } from "react-router-dom";
-import PhoneInput from "react-phone-input-2";
+import { validateEmailEnglishAndArabicFormat } from "../../../../commen/functions/validations";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../../../i18n";
-import {
-  countryName,
-  countryNameforPhoneNumber,
-} from "../../../Admin/AllUsers/AddUser/CountryJson";
+import { countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
-import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 import "react-phone-input-2/lib/style.css";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useDispatch, useSelector } from "react-redux";
-import getSubscriptionDetailsAction from "../../../../store/actions/GetSubscriptionPackages";
 import {
   createOrganization,
   setLoader,
@@ -39,19 +27,13 @@ import {
   checkEmailExsist,
   checkOraganisation,
 } from "../../../../store/actions/Admin_Organization";
-import { adminReducer } from "../../../../store/reducers";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 
 const Signup = () => {
-  const { t, i18n } = useTranslation();
-  const {
-    countryNamesReducer,
-    GetSubscriptionPackage,
-    Authreducer,
-    adminReducer,
-    LanguageReducer,
-  } = useSelector((state) => state);
-
+  const { t } = useTranslation();
+  const { countryNamesReducer, Authreducer, adminReducer, LanguageReducer } =
+    useSelector((state) => state);
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isCompanyNameUnique, setCompanyNameUnique] = useState(false);
@@ -110,14 +92,10 @@ const Signup = () => {
     FK_CCID: 230,
     PhoneNumberCountryID: 212,
   });
-
+  const [isFreeTrail, setIsFreeTrail] = useState(false);
   const [open, setOpen] = useState({
     open: false,
     message: "",
-  });
-  const [countryValue, setCountryValue] = useState({
-    label: "",
-    value: "",
   });
 
   const [countryNames, setCountryNames] = useState([]);
@@ -126,11 +104,9 @@ const Signup = () => {
   const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
-  const [onClickFun, setOnClickFunc] = useState(false);
   const [againCall, setAgainCall] = useState(false);
 
   const [selected, setSelected] = useState("US");
-  const [selectedCountry, setSelectedCountry] = useState({});
 
   // onselect for reactflagselect country dropdown
   const [select, setSelect] = useState("");
@@ -144,12 +120,18 @@ const Signup = () => {
 
   const currentLocale = Cookies.get("i18next") || "en";
 
-  const [language, setLanguage] = useState(currentLocale);
-
+  useEffect(() => {
+    console.log(location.state, "locationlocationlocation");
+    if (location.state !== null) {
+      if (location.state.freeTrail) {
+        setIsFreeTrail(true);
+      }
+    }
+  }, [location.state]);
   const countryOnSelect = (code) => {
     setSelect(code);
     let a = Object.values(countryNames).find((obj) => {
-      return obj.shortCode == code;
+      return obj.shortCode === code;
     });
     setSignUpDetails({
       ...signUpDetails,
@@ -163,7 +145,6 @@ const Signup = () => {
 
   const handleSelect = (country) => {
     setSelected(country);
-    setSelectedCountry(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
@@ -172,13 +153,6 @@ const Signup = () => {
       FK_CCID: a.id,
       PhoneNumberCountryID: a.id,
     });
-  };
-
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    i18n.changeLanguage(lang);
   };
 
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
@@ -430,10 +404,10 @@ const Signup = () => {
       signUpDetails.CountryName.value !== "" &&
       signUpDetails.Address1.value !== "" &&
       signUpDetails.Address2.value !== "" &&
-      signUpDetails.State.value !== "" &&
-      signUpDetails.City.value !== "" &&
-      signUpDetails.PostalCode.value !== "" &&
-      signUpDetails.FullName.value !== "" &&
+      // signUpDetails.State.value !== "" &&
+      // signUpDetails.City.value !== "" &&
+      // signUpDetails.PostalCode.value !== "" &&
+      // signUpDetails.FullName.value !== "" &&
       signUpDetails.Email.value !== "" &&
       signUpDetails.PhoneNumber.value !== "" &&
       signUpDetails.FullName.value !== ""
@@ -541,36 +515,15 @@ const Signup = () => {
         },
         State: {
           value: signUpDetails.State.value,
-          errorMessage:
-            signUpDetails.State.value === ""
-              ? t("State-name-is-required")
-              : signUpDetails.State.errorMessage,
-          errorStatus:
-            signUpDetails.State.value === ""
-              ? true
-              : signUpDetails.State.errorStatus,
+          errorMessage: "",
         },
         City: {
           value: signUpDetails.City.value,
-          errorMessage:
-            signUpDetails.City.value === ""
-              ? t("City-name-is-required")
-              : signUpDetails.City.errorMessage,
-          errorStatus:
-            signUpDetails.City.value === ""
-              ? true
-              : signUpDetails.City.errorStatus,
+          errorMessage: "",
         },
         PostalCode: {
           value: signUpDetails.PostalCode.value,
-          errorMessage:
-            signUpDetails.PostalCode.value === ""
-              ? t("Postal-code-is-required")
-              : signUpDetails.PostalCode.errorMessage,
-          errorStatus:
-            signUpDetails.PostalCode.value === ""
-              ? true
-              : signUpDetails.PostalCode.errorStatus,
+          errorMessage: "",
         },
         FullName: {
           value: signUpDetails.FullName.value,
@@ -893,15 +846,8 @@ const Signup = () => {
                       />
                       <Row>
                         <Col>
-                          <p
-                            className={
-                              signUpDetails.State.errorStatus &&
-                              signUpDetails.State.value === ""
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {signUpDetails.State.errorMessage}
+                          <p className={styles["errorMessage_hidden"]}>
+                            {/* {signUpDetails.State.errorMessage} */}
                           </p>
                         </Col>
                       </Row>
@@ -918,15 +864,8 @@ const Signup = () => {
                       />
                       <Row>
                         <Col>
-                          <p
-                            className={
-                              signUpDetails.City.errorStatus &&
-                              signUpDetails.City.value === ""
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {signUpDetails.City.errorMessage}
+                          <p className={styles["errorMessage_hidden"]}>
+                            {/* {signUpDetails.City.errorMessage} */}
                           </p>
                         </Col>
                       </Row>
@@ -943,15 +882,8 @@ const Signup = () => {
                       />
                       <Row>
                         <Col>
-                          <p
-                            className={
-                              signUpDetails.PostalCode.errorStatus &&
-                              signUpDetails.PostalCode.value === ""
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {signUpDetails.PostalCode.errorMessage}
+                          <p className={styles["errorMessage_hidden"]}>
+                            {/* {signUpDetails.PostalCode.errorMessage} */}
                           </p>
                         </Col>
                       </Row>
@@ -1109,7 +1041,10 @@ const Signup = () => {
                     className="d-flex justify-content-start align-items-center"
                   >
                     <span className={styles["signUp_goBack"]} />
-                    <Link to="/packageSelection" color="black">
+                    <Link
+                      to={isFreeTrail ? "/" : "/packageSelection"}
+                      color="black"
+                    >
                       {t("Go-back")}
                     </Link>
                   </Col>

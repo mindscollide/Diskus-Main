@@ -30,7 +30,6 @@ const initialState = {
 };
 
 const settingReducer = (state = initialState, action) => {
-  console.log("setting reducer 2", state);
   switch (action.type) {
     case actions.GETSETTING_INIT: {
       return {
@@ -47,7 +46,6 @@ const settingReducer = (state = initialState, action) => {
       };
     }
     case actions.GETSETTING_FAIL: {
-      console.log("settingFail", action);
       return {
         ...state,
         Loading: false,
@@ -62,7 +60,6 @@ const settingReducer = (state = initialState, action) => {
       };
     }
     case actions.UPDATEUSERPROFILE_SUCCESS: {
-      console.log("update user profile success action", action);
       return {
         ...state,
         // Loading: false,
@@ -87,8 +84,6 @@ const settingReducer = (state = initialState, action) => {
       };
     }
     case actions.UPDATEUSERNOTIFICATION_SUCCESS: {
-      console.log("update user notification success state", state);
-      console.log("update user notification success action", action);
       return {
         ...state,
         // Loading: false,
@@ -112,8 +107,6 @@ const settingReducer = (state = initialState, action) => {
       };
     }
     case actions.UPDATEUSERGENERALSETTING_SUCCESS: {
-      console.log("update user General Setting success action", action);
-      console.log("update user General Setting success state", state);
       return {
         ...state,
         // Loading: false,
@@ -145,14 +138,13 @@ const settingReducer = (state = initialState, action) => {
       let newRNotificationData =
         newNotificationData !== null &&
         newNotificationData.map((notification, index) => {
-          console.log("newNotificationDataas", notification);
           let newrdata = {
             creationDateTime: notification.creationDateTime,
             notificationTypes: notification.notificationTypes,
           };
           return { ...newrdata, key: index };
         });
-      console.log("newNotificationData", newRNotificationData);
+
       return {
         ...state,
         Spinner: false,
@@ -205,7 +197,6 @@ const settingReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_COUNTRYCODE_SUCCESS: {
-      console.log("country code success", action);
       return {
         ...state,
         // Loading: false,
@@ -304,7 +295,6 @@ const settingReducer = (state = initialState, action) => {
     }
 
     case actions.GET_USERS_DETAILS_SUCCESS: {
-      console.log("GET_USERS_DETAILS_SUCCESS", action);
       return {
         ...state,
         Loading: false,
@@ -359,8 +349,6 @@ const settingReducer = (state = initialState, action) => {
       };
     }
     case actions.RECENT_ACTIVITYDATA_MQTT: {
-      console.log(action, "recentActivityDataFromMQTT");
-
       return {
         ...state,
         recentActivityDataFromMQTT: [],

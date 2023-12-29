@@ -63,7 +63,6 @@ const NotesReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_NOTES_BY_NOTESID_SUCCESS: {
-      console.log(action, "responseresponse");
       return {
         ...state,
         Loading: false,

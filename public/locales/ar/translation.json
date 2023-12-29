@@ -302,7 +302,7 @@
   "Remember-password": "تذكر كلمة المرور",
   "Address-1": "*العنوان 1",
   "Address-2": "العنوان *2",
-  "City": "*مدينة",
+  "City": "مدينة",
   "Allowed-users": "المستخدمون المسموح لهم",
   "Executives": "المديرين",
   "Other-users": "مستخدمون آخرون",
@@ -314,7 +314,7 @@
   "Company": "شركة",
   "Country": "دولة",
   "State": "ولاية",
-  "Postal-zipcode": "*الرمز البريدي",
+  "Postal-zipcode": "الرمز البريدي",
   "Contact-name": "اسم جهة الاتصال",
   "Contact-email": "تواصل بالبريد الاكتروني",
   "Number": "رقم",
@@ -554,7 +554,7 @@
   "Havent-subscribed-yet": "لم تشترك بعد؟",
   "Subscribe-now": "إشترك الآن",
   "Organization-details": "تفاصيل المنظمة",
-  "State-province": "*الولاية / المقاطعة",
+  "State-province": "الولاية / المقاطعة",
   "Postalcode-zipcode": "الرمز البريدي / الرمز البريدي",
   "Admin-details": "تفاصيل المسؤول",
   "Full-name": "*الاسم الكامل",
@@ -1671,5 +1671,6 @@
   "Please-atleast-add-one-organizer": "Please atleast add one organizer",
   "Access-requested": "Access requested",
   "Failed-to-request-access": "Failed to request access",
-  "Date-and-time-should-be-greater-than-current-system-time": "Date and time should be greater than current system time"
+  "Date-and-time-should-be-greater-than-current-system-time": "Date and time should be greater than current system time",
+  "Free-trail": "Free trail"
 }

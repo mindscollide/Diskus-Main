@@ -23,12 +23,10 @@ const initialState = {
   VerifyOTPSignupData: [],
   ConfirmPasswordData: [],
 };
-console.log(initialState);
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.REFRESH_TOKEN_SUCCESS:
-      console.log(action, "authReducerauthReducerauthReducer");
       // localStorage.setItem("token", JSON.stringify(action.response.token));
       // localStorage.setItem(
       //   "RefreshToken",
@@ -42,7 +40,6 @@ const authReducer = (state = initialState, action) => {
       };
 
     case actions.REFRESH_TOKEN_FAIL:
-      console.log("RefreshToken", action);
       return {
         ...state,
         isLoggedIn: false,
@@ -55,7 +52,6 @@ const authReducer = (state = initialState, action) => {
     case actions.SIGN_UP_INIT:
       return { ...state, Loading: true };
     case actions.SIGN_UP_SUCCESS:
-      console.log("signupAction", action);
       localStorage.setItem("Email", JSON.stringify(action.response.email));
       localStorage.setItem("userID", action.response.userID);
       return {
@@ -65,7 +61,6 @@ const authReducer = (state = initialState, action) => {
         pendingError: false,
       };
     case actions.SIGN_UP_FAIL:
-      console.log("signup fail", action);
       return {
         ...state,
         isLoggedIn: false,
@@ -78,8 +73,6 @@ const authReducer = (state = initialState, action) => {
       return { ...state, Loading: true };
 
     case actions.SIGN_IN_SUCCESS:
-      console.log("state1", state);
-      console.log("signIn", action.response);
       localStorage.setItem("token", JSON.stringify(action.response.token));
       localStorage.setItem(
         "RefreshToken",
@@ -98,8 +91,6 @@ const authReducer = (state = initialState, action) => {
       };
 
     case actions.SIGN_IN_FAIL:
-      console.log("state2", state);
-      console.log("signin fail", action.response);
       return {
         ...state,
         isLoggedIn: false,
@@ -115,7 +106,6 @@ const authReducer = (state = initialState, action) => {
       };
     }
     case actions.FORGOT_PASSWORD_SUCCESS: {
-      console.log("ForgotPassword Success", action);
       return {
         ...state,
         isLoggedIn: true,
@@ -136,7 +126,6 @@ const authReducer = (state = initialState, action) => {
       return { ...state, Loading: true };
     }
     case actions.VERIFY_OPT_SUCCESS: {
-      console.log("action", action);
       return {
         ...state,
         Loading: false,
@@ -145,8 +134,6 @@ const authReducer = (state = initialState, action) => {
       };
     }
     case actions.VERIFY_OPT_FAIL: {
-      console.log("action", action);
-
       return {
         ...state,
         Loading: false,
@@ -155,7 +142,6 @@ const authReducer = (state = initialState, action) => {
       };
     }
     case actions.VERIFY_OTPSIGNUP_SUCCESS: {
-      console.log("action", action);
       return {
         ...state,
         Loading: false,
@@ -164,8 +150,6 @@ const authReducer = (state = initialState, action) => {
       };
     }
     case actions.VERIFY_OTPSIGNUP_FAIL: {
-      console.log("action", action);
-
       return {
         ...state,
         Loading: false,
@@ -191,7 +175,6 @@ const authReducer = (state = initialState, action) => {
     }
 
     case actions.SIGN_OUT:
-      console.log("Logging Out", action);
       return {
         ...state,
         UserDetails: null,
@@ -205,7 +188,6 @@ const authReducer = (state = initialState, action) => {
       return { ...state, Loading: true };
     }
     case actions.CHANGE_PASSWORD_SUCCESS: {
-      console.log("action", action);
       return {
         ...state,
         Loading: false,
@@ -214,7 +196,6 @@ const authReducer = (state = initialState, action) => {
       };
     }
     case actions.CHANGE_PASSWORD_FAIL: {
-      console.log("action", action);
       return {
         ...state,
         Loading: false,

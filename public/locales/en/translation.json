@@ -151,7 +151,7 @@
   "Company-name": "Company Name*",
   "Address-1": "Address # 1*",
   "Address-2": "Address # 2*",
-  "City": "City*",
+  "City": "City",
   "Monthly": "Monthly",
   "Annually": "Annually",
   "Month": "Month",
@@ -174,7 +174,7 @@
   "Company": "Company",
   "Country": "Country",
   "State": "State",
-  "Postal-zipcode": "Postal/Zip Code*",
+  "Postal-zipcode": "Postal/Zip Code",
   "Contact-name": "Contact name",
   "Contact-email": "Contact email",
   "Number": "Number",
@@ -491,7 +491,7 @@
   "Havent-subscribed-yet": "Haven't subscribed yet?",
   "Subscribe-now": "Subscribe now",
   "Organization-details": "Organization Details",
-  "State-province": "State/Province*",
+  "State-province": "State/Province",
   "Postalcode-zipcode": "Postal code/zip code",
   "Admin-details": "Admin Details",
   "Full-name": "Full Name*",
@@ -1708,5 +1708,6 @@
   "Please-atleast-add-one-organizer": "Please atleast add one organizer",
   "Access-requested": "Access requested",
   "Failed-to-request-access": "Failed to request access",
-  "Date-and-time-should-be-greater-than-current-system-time": "Date and time should be greater than current system time"
+  "Date-and-time-should-be-greater-than-current-system-time": "Date and time should be greater than current system time",
+  "Free-trail": "Free trail"
 }

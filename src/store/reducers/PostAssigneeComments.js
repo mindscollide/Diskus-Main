@@ -29,7 +29,6 @@ const postAssigneeComments = (state = initialState, action) => {
     }
 
     case actions.POST_ASSIGNEEECOMMENTS_SUCCESS: {
-      console.log("POST_ASSIGNEEECOMMENTS_SUCCESS", action);
       return {
         ...state,
         Loading: false,
@@ -39,7 +38,6 @@ const postAssigneeComments = (state = initialState, action) => {
     }
 
     case actions.POST_ASSIGNEEECOMMENTS_FAIL: {
-      console.log("POST_ASSIGNEEECOMMENTS_FAIL", action);
       return {
         ...state,
         Loading: false,
@@ -65,10 +63,6 @@ const postAssigneeComments = (state = initialState, action) => {
       };
     }
     case actions.DELETE_COMMENTS: {
-      console.log(
-        action,
-        "postAssigneeCommentspostAssigneeCommentspostAssigneeComments"
-      );
       return {
         ...state,
         DeleteCommentsId: action.response,

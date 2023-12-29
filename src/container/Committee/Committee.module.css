@@ -12,6 +12,7 @@ body[dir="rtl"] .Committee-heading-size {
   width: 219px !important;
   height: 31px !important;
   display: flex;
+  white-space: nowrap;
   justify-content: center;
   margin-top: 8px !important;
   align-items: center;
@@ -21,7 +22,6 @@ body[dir="rtl"] .Committee-heading-size {
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
   border: none !important;
-
 }
 
 body[dir="rtl"] .create-Committee-btn {
@@ -117,8 +117,6 @@ body[dir="rtl"] .Archived-Group-btn-Committee-section {
   padding: 4px !important;
   font-size: 15px !important;
   /* margin-left: 10px !important; */
-
-
 
 .CommitteeContainer {
   height: 91vh;
