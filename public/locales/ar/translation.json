@@ -1672,5 +1672,6 @@
   "Access-requested": "Access requested",
   "Failed-to-request-access": "Failed to request access",
   "Date-and-time-should-be-greater-than-current-system-time": "Date and time should be greater than current system time",
-  "Free-trail": "Free trail"
+  "Free-trail": "Free trail",
+  "Meeting-ended-successfully": "Meeting ended successfully"
 }

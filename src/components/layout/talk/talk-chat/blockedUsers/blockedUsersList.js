@@ -1,45 +1,53 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
-import { Button, ResultMessage, LoaderPanel } from '../../../../elements'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  ResultMessage,
+  LoaderPanel,
+  TextField,
+} from "../../../../elements";
 import {
   GetBlockedUsers,
   BlockUnblockUser,
-} from '../../../../../store/actions/Talk_action'
-import { Spin } from 'antd'
-import SingleIcon from '../../../../../assets/images/Single-Icon.png'
-import BlockedContactsIcon from '../../../../../assets/images/Blocked-Contacts.png'
-import { useTranslation } from 'react-i18next'
+} from "../../../../../store/actions/Talk_action";
+import { Spin } from "antd";
+import SingleIcon from "../../../../../assets/images/Single-Icon.png";
+import BlockedContactsIcon from "../../../../../assets/images/Blocked-Contacts.png";
+import { useTranslation } from "react-i18next";
 
 const BlockedUsersList = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const { talkFeatureStates, talkStateData } = useSelector((state) => state)
+  const { talkFeatureStates, talkStateData } = useSelector((state) => state);
 
-  let currentUserId = localStorage.getItem('userID')
-  let currentOrganizationId = localStorage.getItem('organizationID')
+  let currentUserId = localStorage.getItem("userID");
+  let currentOrganizationId = localStorage.getItem("organizationID");
 
   //Blocked Users State
-  const [blockedUsersData, setBlockedUsersData] = useState([])
+  const [blockedUsersData, setBlockedUsersData] = useState([]);
+  const [searchChatValue, setSearchChatValue] = useState("");
 
   //Calling API
   useEffect(() => {
-    dispatch(GetBlockedUsers(navigate, currentUserId, currentOrganizationId, t))
-  }, [])
+    dispatch(
+      GetBlockedUsers(navigate, currentUserId, currentOrganizationId, t)
+    );
+  }, []);
 
   const unblockblockContactHandler = (record) => {
     let Data = {
       senderID: currentUserId,
       channelID: currentOrganizationId,
       opponentUserId: record.id,
-    }
-    dispatch(BlockUnblockUser(navigate, Data, t))
-  }
+    };
+    dispatch(BlockUnblockUser(navigate, Data, t));
+  };
 
   useEffect(() => {
     if (
@@ -48,14 +56,47 @@ const BlockedUsersList = () => {
       talkStateData.BlockedUsers.BlockedUsersData.length !== 0
     ) {
       setBlockedUsersData(
-        talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
-      )
+        talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers
+      );
     } else {
-      setBlockedUsersData([])
+      setBlockedUsersData([]);
     }
-  }, [talkStateData?.BlockedUsers?.BlockedUsersData])
+  }, [talkStateData?.BlockedUsers?.BlockedUsersData]);
 
-  console.log('Get Blocked Users', blockedUsersData)
+  //Search Chats
+  const searchChat = (e) => {
+    setSearchChatValue(e);
+    try {
+      if (
+        talkStateData.BlockedUsers.BlockedUsersData !== undefined &&
+        talkStateData.BlockedUsers.BlockedUsersData !== null &&
+        talkStateData.BlockedUsers.BlockedUsersData.length !== 0
+      ) {
+        if (e !== "") {
+          let filteredData =
+            talkStateData.BlockedUsers.BlockedUsersData.blockedUsers.filter(
+              (value) => {
+                return value.fullName.toLowerCase().includes(e.toLowerCase());
+              }
+            );
+
+          if (filteredData.length === 0) {
+            setBlockedUsersData(
+              talkStateData.BlockedUsers.BlockedUsersData.blockedUsers
+            );
+          } else {
+            setBlockedUsersData(filteredData);
+          }
+        } else if (e === "" || e === null) {
+          let data = talkStateData.BlockedUsers.BlockedUsersData.blockedUsers;
+          setSearchChatValue("");
+          setBlockedUsersData(data);
+        }
+      }
+    } catch {}
+  };
+
+  console.log("Get Blocked Users", blockedUsersData);
 
   useEffect(() => {
     // Check if the userID in mqttUnblockedResponse matches any id in allChatData
@@ -67,23 +108,40 @@ const BlockedUsersList = () => {
         0
     ) {
       let mqttUnblockedResponse =
-        talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.data[0]
+        talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.data[0];
 
       const updatedBlockedUsersData = blockedUsersData.filter(
-        (user) => user.id !== mqttUnblockedResponse.blockUserID,
-      )
-      setBlockedUsersData(updatedBlockedUsersData)
+        (user) => user.id !== mqttUnblockedResponse.blockUserID
+      );
+      setBlockedUsersData(updatedBlockedUsersData);
     }
-  }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser])
+  }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser]);
 
   return (
     <>
+      {talkFeatureStates.GlobalChatsSearchFlag === true ? (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <TextField
+              maxLength={200}
+              applyClass="form-control2"
+              name="Name"
+              change={(e) => {
+                searchChat(e.target.value);
+              }}
+              value={searchChatValue}
+              placeholder={t("Search-Chat")}
+              labelClass={"d-none"}
+            />
+          </Col>
+        </Row>
+      ) : null}
       {talkStateData.BlockedUsers.Loading === true &&
       blockedUsersData.length === 0 ? (
         <>
           {/* <Spin className="talk-overallchat-spinner" /> */}
           <LoaderPanel
-            message={'Safeguarding your data to enhance the experience'}
+            message={"Safeguarding your data to enhance the experience"}
           />
         </>
       ) : talkStateData.BlockedUsers.Loading === false &&
@@ -102,7 +160,7 @@ const BlockedUsersList = () => {
                 <Col lg={10} md={10} sm={10} className="bottom-border">
                   <div className="chat-block blocked-users">
                     <p className="chat-username blocked-users m-0">
-                      {' '}
+                      {" "}
                       {dataItem.fullName}
                     </p>
                     <Button
@@ -114,18 +172,18 @@ const BlockedUsersList = () => {
                 </Col>
               </Row>
             </>
-          )
+          );
         })
       ) : talkStateData.BlockedUsers.Loading === false &&
         blockedUsersData.length === 0 ? (
         <ResultMessage
           icon={<img src={BlockedContactsIcon} width={250} />}
-          title={'Your blocked list is empty'}
+          title={"Your blocked list is empty"}
           className="emptyRecentChats"
         />
       ) : null}
     </>
-  )
-}
+  );
+};
 
-export default BlockedUsersList
+export default BlockedUsersList;

@@ -916,25 +916,26 @@ const MeetingDetails = ({
       ResponseMessage !== t("Record-found") &&
       ResponseMessage !== t("No-record-found") &&
       ResponseMessage !== t("No-records-found") &&
-      ResponseMessage !== undefined
+      ResponseMessage !== undefined &&
+      ResponseMessage !== null
     ) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: ResponseMessage,
-      });
+      // setOpen({
+      //   ...open,
+      //   flag: true,
+      //   message: ResponseMessage,
+      // });
       setTimeout(() => {
         setOpen({
           ...open,
-          flag: false,
-          message: "",
+          flag: true,
+          message: ResponseMessage,
         });
       }, 3000);
       dispatch(clearResponseNewMeetingReducerMessage());
-    } else {
-      dispatch(clearResponseNewMeetingReducerMessage());
     }
   }, [ResponseMessage]);
+
+  console.log("ResponseMessageResponseMessageResponseMessage", ResponseMessage);
 
   //Fetching All Saved Data
   useEffect(() => {
@@ -1162,7 +1163,7 @@ const MeetingDetails = ({
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
-                    placeholder={t("Meeting-title")}
+                    placeholder={t("Meeting-title") + "*"}
                     applyClass={"meetinInnerSearch"}
                     name={"Meetingtitle"}
                     labelClass="d-none"

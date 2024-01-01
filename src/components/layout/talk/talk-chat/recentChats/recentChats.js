@@ -832,7 +832,7 @@ const RecentChats = () => {
             />
           </Col>
         </Row>
-      ) : null}{" "}
+      ) : null}
       {talkStateData.AllUserChats.Loading === true ||
       allChatData.length === 0 ? (
         <>
