@@ -2714,6 +2714,15 @@ const createPasswordAction = (value, navigate, t) => {
                   navigate("/Diskus/");
                 }
               }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_16".toLowerCase()
+                )
+            ) {
+              dispatch(createPasswordSuccess(response.data.responseResult, ""));
+              navigate("/");
             } else {
               dispatch(createPasswordFail(t("Something-went-wrong")));
             }

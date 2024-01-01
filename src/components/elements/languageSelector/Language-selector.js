@@ -221,8 +221,11 @@ const LanguageSelector = () => {
         {languageDropdown ? (
           <img
             src={
-              location.pathname.includes("/DisKus") ||
-              location.pathname.includes("/Diskus")
+              location.pathname.includes("/DisKus/") ||
+              location.pathname.includes("/Diskus/") ||
+              location.pathname.includes("/paymentForm") ||
+              location.pathname.includes("/signuporganization") ||
+              location.pathname.includes("/Diskus/Admin")
                 ? LanguageArrowUp
                 : LanguageArrowUpBlack
             }
@@ -233,8 +236,11 @@ const LanguageSelector = () => {
         ) : (
           <img
             src={
-              location.pathname.includes("/DisKus") ||
-              location.pathname.includes("/Diskus")
+              location.pathname.includes("/DisKus/") ||
+              location.pathname.includes("/Diskus/") ||
+              location.pathname.includes("/paymentForm") ||
+              location.pathname.includes("/signuporganization") ||
+              location.pathname.includes("/Diskus/Admin")
                 ? LanguageArrowDown
                 : LanguageArrowDownBlack
             }
