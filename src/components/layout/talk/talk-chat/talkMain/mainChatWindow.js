@@ -1,31 +1,29 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import TalkHeader from './talkHeader'
-import { Triangle } from 'react-bootstrap-icons'
-import { Container } from 'react-bootstrap'
-import TalkFooter from './talkFooter'
-import AddNewChat from '../recentChats/addNewChats'
-import CreateNewGroup from '../privateGroups/createNewGroup'
-import CreateNewShoutAll from '../shoutAll/createShoutAll'
-import RecentChats from '../recentChats/recentChats'
-import PrivateChats from '../privateChats/privateChats'
-import PrivateGroups from '../privateGroups/privateGroups'
-import StarredMessagesList from '../starredMessages/starredMessagesList'
-import ShoutAll from '../shoutAll/shoutAll'
-import BlockedUsersList from '../blockedUsers/blockedUsersList'
+import React from "react";
+import { useSelector } from "react-redux";
+import TalkHeader from "./talkHeader";
+import { Triangle } from "react-bootstrap-icons";
+import { Container } from "react-bootstrap";
+import TalkFooter from "./talkFooter";
+import AddNewChat from "../recentChats/addNewChats";
+import CreateNewGroup from "../privateGroups/createNewGroup";
+import CreateNewShoutAll from "../shoutAll/createShoutAll";
+import RecentChats from "../recentChats/recentChats";
+import PrivateChats from "../privateChats/privateChats";
+import PrivateGroups from "../privateGroups/privateGroups";
+import StarredMessagesList from "../starredMessages/starredMessagesList";
+import ShoutAll from "../shoutAll/shoutAll";
+import BlockedUsersList from "../blockedUsers/blockedUsersList";
 
 const MainChatWindow = () => {
-  const { talkFeatureStates } = useSelector((state) => state)
-
-  console.log('Talk Feature States', talkFeatureStates)
+  const { talkFeatureStates } = useSelector((state) => state);
 
   return (
     <>
       <div
         className={
           talkFeatureStates.ChatBoxActiveFlag === true
-            ? 'chatBox height'
-            : 'chatBox'
+            ? "chatBox height"
+            : "chatBox"
         }
       >
         <Container>
@@ -69,7 +67,7 @@ const MainChatWindow = () => {
         </Container>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default MainChatWindow
+export default MainChatWindow;

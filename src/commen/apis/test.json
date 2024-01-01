@@ -1,13 +1,24 @@
 {
-  "MeetingID": 2087,
-  "SendResponsebyDate": "",
-  "ProposedDates": [
-    { "ProposedDate": "20231228", "StartTime": "130000", "EndTime": "140000" },
-    {
-      "ProposedDate": "20231229",
-      "StartTime": "130000",
-      "EndTime": "140000",
-      "proposedDateID": 0
-    }
-  ]
+  "ChannelID": 1,
+  "UID": "oto10",
+  "ChatType": 1,
+  "ChatID": "2",
+  "SenderID": "1",
+  "FileName": "",
+  "FileGeneratedName": "",
+  "FileExtension": "",
+  "AttachmentLocation": "",
+  "FRMessages": "Direct Message",
+  "MessageBody": "Hello OTO 10",
+  "MessageDate": "2023-06-16T11:50:29.393Z",
+  "MessageType": "Direct Message",
+  "MessageStatus": 1,
+  "BroadcastID": "0",
+  "HasTagUser": false,
+  "TagUserEmails": "",
+  "TagUserIds": "",
+  "isForThisWindowOnly": true,
+  "SenderName": "Muhammad Ovais",
+  "isAttempedFail": false,
+  "retyCount": 3
 }

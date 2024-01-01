@@ -49,7 +49,10 @@ import {
   groupCallRecipients,
   callRequestReceivedMQTT,
 } from "../../../../../../store/actions/VideoMain_actions";
-import { resetCloseChatFlags } from "../../../../../../store/actions/Talk_Feature_actions";
+import {
+  resetCloseChatFlags,
+  retryFlagState,
+} from "../../../../../../store/actions/Talk_Feature_actions";
 import {
   newTimeFormaterAsPerUTCTalkTime,
   newTimeFormaterAsPerUTCTalkDate,
@@ -119,7 +122,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   const dispatch = useDispatch();
 
-  const { talkStateData } = useSelector((state) => state);
+  const { talkStateData, talkFeatureStates } = useSelector((state) => state);
   var currentDateToday = moment().format("YYYYMMDD");
 
   let currentDateTime = new Date();
@@ -315,7 +318,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       };
       dispatch(GetAllPrivateGroupMembers(navigate, Data, t));
     }
-    console.log("useEffect SingleAPICALL OnFirstRender");
   }, []);
 
   useEffect(() => {
@@ -325,7 +327,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         ReceiverID: talkStateData.ActiveChatData.id.toString(),
       });
     } catch {}
-    console.log("useEffect talkStateData.ActiveChatData");
   }, [talkStateData.ActiveChatData]);
 
   useEffect(() => {
@@ -338,9 +339,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         talkStateData?.AllUserChats?.AllUserChatsData?.allMessages
       );
     }
-    console.log(
-      "useEffect talkStateData?.AllUserChats?.AllUserChatsData?.allMessages"
-    );
   }, [talkStateData?.AllUserChats?.AllUserChatsData?.allMessages]);
 
   useEffect(() => {
@@ -364,9 +362,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         setGroupName(firstGroupUser.name);
       }
     }
-    console.log(
-      "useEffect talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse?.groupUsers"
-    );
   }, [
     talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
       ?.groupUsers,
@@ -393,9 +388,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         setShoutName(firstShoutUser.name);
       }
     }
-    console.log(
-      "useEffect talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData?.broadcastUsers"
-    );
   }, [
     talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
       ?.broadcastUsers,
@@ -417,7 +409,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
     }
-    console.log("useEffect talkStateData?.AllUsers?.AllUsersData?.allUsers");
   }, [talkStateData?.AllUsers?.AllUsersData?.allUsers]);
 
   useEffect(() => {
@@ -439,9 +430,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
       setEditGroupUsersChecked(groupMembersArray);
     }
-    console.log(
-      "useEffect talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse.groupUsers"
-    );
   }, [
     talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
       .groupUsers,
@@ -466,9 +454,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
       setEditShoutUsersChecked(groupMembersArray);
     }
-    console.log(
-      "useEffect talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData.broadcastUsers"
-    );
   }, [
     talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData
       .broadcastUsers,
@@ -488,9 +473,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
           .userInformation
       );
     }
-    console.log(
-      "useEffect talkStateData?.AllUsersGroupsRoomsList?.AllUsersGroupsRoomsListData?.userInformation"
-    );
   }, [
     talkStateData?.AllUsersGroupsRoomsList?.AllUsersGroupsRoomsListData
       ?.userInformation,
@@ -1531,7 +1513,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       }
       setAllMessages([...allBroadcastMessagesArr]);
     }
-    console.log("useEffect talkStateData.AllMessagesData");
   }, [talkStateData.AllMessagesData]);
 
   const chatSearchChange = (e) => {
@@ -1666,14 +1647,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
         dispatch(activeChat(activeChatData));
       }
     }
-    console.log(
-      "useEffect talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser"
-    );
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser]);
 
-  useEffect(() => {
-    console.log("useEffect talkStateData.ActiveChatData");
-  }, [talkStateData.ActiveChatData]);
+  useEffect(() => {}, [talkStateData.ActiveChatData]);
 
   useEffect(() => {
     if (
@@ -1709,9 +1685,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         dispatch(activeChat(activeChatData));
       }
     }
-    console.log(
-      "useEffect talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser"
-    );
   }, [talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser]);
 
   useEffect(() => {
@@ -1762,9 +1735,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         }
       }
     }
-    console.log(
-      "useEffect talkStateData?.talkSocketDataStarUnstar?.socketStarMessage"
-    );
   }, [talkStateData?.talkSocketDataStarUnstar?.socketStarMessage]);
 
   useEffect(() => {
@@ -1783,9 +1753,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         setAllMessages
       );
     }
-    console.log(
-      "useEffect talkStateData?.talkSocketDataStarUnstar?.socketUnstarMessage"
-    );
   }, [talkStateData?.talkSocketDataStarUnstar?.socketUnstarMessage]);
 
   useEffect(() => {
@@ -1796,9 +1763,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       groupCreationFunction(talkStateData, setAllChatData, allChatData);
     }
-    console.log(
-      "useEffect talkStateData?.talkSocketGroupCreation?.groupCreatedData"
-    );
   }, [talkStateData?.talkSocketGroupCreation?.groupCreatedData]);
 
   useEffect(() => {
@@ -1809,9 +1773,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       groupUpdationFunction(talkStateData, setAllChatData, allChatData);
     }
-    console.log(
-      "useEffect talkStateData?.talkSocketGroupUpdation?.groupUpdatedData"
-    );
   }, [talkStateData?.talkSocketGroupUpdation?.groupUpdatedData]);
 
   useEffect(() => {
@@ -1823,9 +1784,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
     ) {
       unreadMessageCountFunction(talkStateData, allChatData, setAllChatData);
     }
-    console.log(
-      "useEffect talkStateData?.talkSocketData?.socketInsertOTOMessageData, talkStateData?.talkSocketUnreadMessageCount?.unreadMessageData"
-    );
   }, [
     talkStateData?.talkSocketData?.socketInsertOTOMessageData,
     talkStateData?.talkSocketUnreadMessageCount?.unreadMessageData,
@@ -1865,9 +1823,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         setAllMessages(updatedAllOtoMessages);
       }
     }
-    console.log(
-      "useEffect talkStateData?.MessageStatusUpdateData?.MessageStatusUpdateResponse"
-    );
   }, [talkStateData?.MessageStatusUpdateData?.MessageStatusUpdateResponse]);
 
   useEffect(() => {
@@ -1878,7 +1833,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       });
       setNotificationID(id);
     }
-    console.log("useEffect talkStateData.MessageSendOTO");
   }, [talkStateData.MessageSendOTO]);
 
   const uniqueId = generateGUID();
@@ -1892,29 +1846,13 @@ const ChatMainBody = ({ chatMessageClass }) => {
       let otoMessageLocal =
         JSON.parse(localStorage.getItem("singleMessageObject")) || [];
 
+      let chatMessagesLocal =
+        JSON.parse(localStorage.getItem("chatMessagesLocal")) || [];
+
       if (talkStateData.ActiveChatData.messageType === "O") {
         let Message = [];
 
-        let Data = {
-          TalkRequest: {
-            ChannelID: parseInt(currentOrganizationId),
-            Message: {
-              ...messageSendData,
-              UID: uniqueId,
-            },
-          },
-        };
-
-        if (otoMessageLocal) {
-          Message = [...otoMessageLocal];
-          Message.push(Data);
-        } else {
-          Message.push(Data);
-        }
-
-        localStorage.setItem("singleMessageObject", JSON.stringify(Message));
-
-        dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t));
+        let chatMessage = [];
 
         let newMessageOto = {
           messageID: 0,
@@ -1943,6 +1881,33 @@ const ChatMainBody = ({ chatMessageClass }) => {
           isRetry: false,
         };
 
+        let newMessageOtoLocal = {
+          messageID: 0,
+          senderID: parseInt(currentUserId),
+          receiverID: parseInt(messageSendData.ReceiverID),
+          messageBody: messageSendData.Body,
+          senderName: currentUserName,
+          receiverName: talkStateData.ActiveChatData.fullName,
+          shoutAll: 0,
+          frMessages: "Direct Message",
+          broadcastName: "",
+          isFlag: 0,
+          sentDate: "",
+          receivedDate: "",
+          seenDate: "",
+          currDate: currentDateTimeUtc,
+          messageStatus: "Undelivered",
+          fileGeneratedName: "",
+          fileName: "",
+          messageCount: 0,
+          attachmentLocation: "",
+          uid: uniqueId,
+          blockCount: 0,
+          sourceMessageBody: "Direct Message",
+          sourceMessageId: 0,
+          isRetry: true,
+        };
+
         let newChat = {
           id: parseInt(messageSendData.ReceiverID),
           fullName: talkStateData.ActiveChatData.fullName,
@@ -1961,6 +1926,36 @@ const ChatMainBody = ({ chatMessageClass }) => {
           senderID: parseInt(messageSendData.SenderID),
           admin: talkStateData.ActiveChatData.admin,
         };
+
+        let Data = {
+          TalkRequest: {
+            ChannelID: parseInt(currentOrganizationId),
+            Message: {
+              ...messageSendData,
+              UID: uniqueId,
+            },
+          },
+        };
+
+        if (otoMessageLocal) {
+          Message = [...otoMessageLocal];
+          Message.push(Data);
+        } else {
+          Message.push(Data);
+        }
+
+        if (chatMessagesLocal) {
+          chatMessage = [...chatMessagesLocal];
+          chatMessage.push(newMessageOtoLocal);
+        } else {
+          chatMessage.push(newMessageOtoLocal);
+        }
+
+        localStorage.setItem("singleMessageObject", JSON.stringify(Message));
+
+        localStorage.setItem("chatMessagesLocal", JSON.stringify(chatMessage));
+
+        dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t));
 
         dispatch(pushChatData(newChat));
 
@@ -2000,8 +1995,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         } else {
           Message.push(Data);
         }
-
-        localStorage.setItem("singleMessageObject", JSON.stringify(Message));
 
         dispatch(InsertPrivateGroupMessages(navigate, Data, uploadFileTalk, t));
 
@@ -2079,8 +2072,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         } else {
           Message.push(Data);
         }
-
-        localStorage.setItem("singleMessageObject", JSON.stringify(Message));
 
         dispatch(InsertBroadcastMessages(navigate, Data, uploadFileTalk, t));
 
@@ -2169,10 +2160,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     if (Object.keys(unsentMessageObject).length > 0) {
       if (checkunsentMessageObject !== unsentMessageObject) {
         checkunsentMessageObject = unsentMessageObject;
-        console.log("unsentMessageObject", unsentMessageObject);
       }
     }
-    console.log("useEffect unsentMessageObject");
   }, [unsentMessageObject]);
 
   useEffect(() => {
@@ -2189,13 +2178,25 @@ const ChatMainBody = ({ chatMessageClass }) => {
       const existingMessages =
         JSON.parse(localStorage.getItem("singleMessageObject")) || [];
 
+      const existingChatMessages =
+        JSON.parse(localStorage.getItem("chatMessagesLocal")) || [];
+
       const updatedMessages = existingMessages.filter((message) => {
         return message.TalkRequest.Message.UID !== uidToMatch;
+      });
+
+      const updatedChatMessages = existingChatMessages.filter((message) => {
+        return message.uid !== uidToMatch;
       });
 
       localStorage.setItem(
         "singleMessageObject",
         JSON.stringify(updatedMessages)
+      );
+
+      localStorage.setItem(
+        "chatMessagesLocal",
+        JSON.stringify(updatedChatMessages)
       );
 
       if (
@@ -2302,9 +2303,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         });
       }
     }
-    console.log(
-      "useEffect talkStateData.talkSocketData.socketInsertOTOMessageData"
-    );
   }, [talkStateData.talkSocketData.socketInsertOTOMessageData]);
 
   useEffect(() => {
@@ -2501,9 +2499,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         }
       }
     }
-    console.log(
-      "useEffect talkStateData.talkSocketData.socketInsertGroupMessageData"
-    );
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData]);
 
   useEffect(() => {
@@ -2520,9 +2515,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
         }
       } catch {}
     }
-    console.log(
-      "useEffect talkStateData.talkSocketInsertBroadcastMessage.MessageSendBroadcastResponseData"
-    );
   }, [
     talkStateData.talkSocketInsertBroadcastMessage
       .MessageSendBroadcastResponseData,
@@ -2560,14 +2552,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-    console.log("useEffect chatMenuActive, emojiActive, uploadOptions");
   }, [chatMenuActive, emojiActive, uploadOptions]);
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-    console.log("useEffect inputChat");
   }, [inputChat]);
 
   useEffect(() => {
@@ -2575,7 +2565,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       inputRef.current.focus();
       setEmojiSelected(false);
     }
-    console.log("useEffect emojiSelected");
   }, [emojiSelected]);
 
   const editGroup = () => {
@@ -2625,7 +2614,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setNotificationID(id);
     }
     dispatch(ResetGroupModify());
-    console.log("useEffect Group Modification");
   }, []);
 
   const leaveGroupHandlerChat = (record) => {
@@ -2690,7 +2678,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setNotificationID(id);
     }
     dispatch(ResetLeaveGroupMessage());
-    console.log("useEffect talkStateData.LeaveGroup.LeaveGroupResponseMessage");
   }, [talkStateData.LeaveGroup.LeaveGroupResponseMessage]);
 
   useEffect(() => {
@@ -2706,9 +2693,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setNotificationID(id);
     }
     dispatch(ResetShoutAllCreated());
-    console.log(
-      "useEffect talkStateData.CreateShoutAllList.CreateShoutAllListResponseMessage"
-    );
   }, [talkStateData.CreateShoutAllList.CreateShoutAllListResponseMessage]);
 
   const removeFileFunction = () => {
@@ -2728,9 +2712,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
       window.open(fileDownloadURL, "_blank");
       dispatch(downloadChatEmptyObject([]));
     }
-    console.log(
-      "useEffect talkStateData?.DownloadChatData?.DownloadChatResponse"
-    );
   }, [talkStateData?.DownloadChatData?.DownloadChatResponse]);
 
   useEffect(() => {
@@ -2764,12 +2745,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
         setAllMessages(updatedMessages);
       }
     }
-    console.log("useEffect talkStateData?.MqttMessageDeleteData");
   }, [talkStateData?.MqttMessageDeleteData]);
 
-  useEffect(() => {
-    console.log("useEffect activeCall");
-  }, [activeCall]);
+  useEffect(() => {}, [activeCall]);
 
   const initiateOtoCall = () => {
     let recipientData = {
@@ -2949,28 +2927,30 @@ const ChatMainBody = ({ chatMessageClass }) => {
     localStorage.setItem("activeOtoChatID", 0);
   };
 
-  console.log("talkStateData", talkStateData);
-
   const retrySendingMessage = (data) => {
-    console.log("Function Clicked", data);
-
     let otoMessageLocal = JSON.parse(
       localStorage.getItem("singleMessageObject")
     );
     let objectRemoved = false;
+    let currentConnection = JSON.parse(
+      localStorage.getItem("MqttConnectionState")
+    );
 
     if (Array.isArray(otoMessageLocal)) {
       for (let i = 0; i < otoMessageLocal.length; i++) {
         if (otoMessageLocal[i].TalkRequest.Message.UID === data.uid) {
-          console.log("otoMessageLocal", otoMessageLocal[i]);
-          dispatch(
-            InsertOTOMessages(navigate, otoMessageLocal[i], uploadFileTalk, t)
-          );
+          data.isRetry = false;
+          if (currentConnection === true) {
+            dispatch(
+              InsertOTOMessages(navigate, otoMessageLocal[i], uploadFileTalk, t)
+            );
+          } else {
+            data.isRetry = true;
+          }
           objectRemoved = true; // Set the flag to true if the object is removed
           break; // Exit the loop once the object is found
         }
       }
-      console.log("Function Clicked", data);
     }
   };
 
@@ -2978,7 +2958,34 @@ const ChatMainBody = ({ chatMessageClass }) => {
     let otoMessageLocal = JSON.parse(
       localStorage.getItem("singleMessageObject")
     );
+
+    let chatMessageLocal = JSON.parse(
+      localStorage.getItem("chatMessagesLocal")
+    );
+
     let objectRemoved = false;
+
+    if (Array.isArray(chatMessageLocal)) {
+      for (let i = 0; i < chatMessageLocal.length; i++) {
+        if (chatMessageLocal[i].uid === data.uid) {
+          chatMessageLocal.splice(i, 1);
+          objectRemoved = true; // Set the flag to true if the object is removed
+          break; // Exit the loop once the object is found
+        }
+      }
+
+      if (objectRemoved) {
+        const updatedState = allMessages.filter(
+          (item) => item.uid !== data.uid
+        );
+        setAllMessages(updatedState);
+        localStorage.setItem(
+          "chatMessagesLocal",
+          JSON.stringify(chatMessageLocal)
+        );
+      }
+    } else {
+    }
 
     if (Array.isArray(otoMessageLocal)) {
       for (let i = 0; i < otoMessageLocal.length; i++) {
@@ -2999,34 +3006,12 @@ const ChatMainBody = ({ chatMessageClass }) => {
           JSON.stringify(otoMessageLocal)
         );
       }
-
-      console.log("Function Clicked", data);
     } else {
-      console.error("localStorage is not an array or is null.");
     }
   };
 
-  // useEffect(() => {
-  //   let singleMessageObject = JSON.parse(
-  //     localStorage.getItem('singleMessageObject'),
-  //   )
-
-  //   if (singleMessageObject.length > 0) {
-  //     const updatedAllMessages = { ...allMessages }
-
-  //     singleMessageObject.forEach((localStorageItem) => {
-  //       const uid = localStorageItem.TalkRequest.Message.UID
-  //       if (updatedAllMessages[uid]) {
-  //         updatedAllMessages[uid].isRetry = true
-  //       }
-  //     })
-
-  //     setAllMessages(updatedAllMessages)
-  //   }
-  // }, [singleMessageObject])
-
   useEffect(() => {
-    if (isRetryFlag === true) {
+    if (talkFeatureStates.RetryFlagState === true) {
       const storedSingleMessageObject =
         JSON.parse(localStorage.getItem("singleMessageObject")) || [];
       const uidSet = new Set(
@@ -3044,43 +3029,73 @@ const ChatMainBody = ({ chatMessageClass }) => {
       setAllMessages(updatedAllMessages);
       console.log("Messages updated");
     }
-  }, [isRetryFlag]);
+  }, [talkFeatureStates.RetryFlagState]);
 
   useEffect(() => {
+    let singleMessageObject = JSON.parse(
+      localStorage.getItem("singleMessageObject")
+    );
+
+    let interval;
+
     if (currentConnection === false) {
-      const timer = setTimeout(() => {
-        // Check if the localStorage item is not an empty array
-        const storedData = JSON.parse(
-          localStorage.getItem("singleMessageObject")
-        );
-        if (Array.isArray(storedData) && storedData.length > 0) {
-          setIsRetryFlag(true);
+      interval = setInterval(() => {
+        console.log("Checking every 5 seconds");
+        if (singleMessageObject.length !== 0) {
+          let otoMessageLocal = JSON.parse(
+            localStorage.getItem("singleMessageObject")
+          );
+
+          if (Array.isArray(otoMessageLocal)) {
+            for (let i = 0; i < otoMessageLocal.length; i++) {
+              // Dispatch each object separately
+              dispatch(
+                InsertOTOMessages(
+                  navigate,
+                  otoMessageLocal[i],
+                  uploadFileTalk,
+                  t
+                )
+              );
+            }
+          }
         }
-      }, 20000); // 20 seconds
+      }, 5000);
 
-      // Clear the timer if the component unmounts
-      return () => clearTimeout(timer);
+      setTimeout(() => {
+        dispatch(retryFlagState(true));
+        clearInterval(interval);
+        console.log("Checking stopped after 20 seconds");
+      }, 20000);
     } else {
-      setIsRetryFlag(false);
-    }
-  }, [currentConnection]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log("Logging every 5 seconds");
-    }, 5000);
-
-    // Stop logging after 20 seconds
-    setTimeout(() => {
       clearInterval(interval);
-      console.log("Logging stopped after 20 seconds");
-    }, 20000);
+      console.log("Checking stopped after true connection");
+    }
 
-    // Clean up the interval when the component unmounts
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [currentConnection, allMessages]);
+
+  useEffect(() => {
+    // Check if all objects have isRetry: false
+    const allObjectsHaveIsRetryFalse = allMessages.every(
+      (message) => !message.isRetry
+    );
+
+    if (allObjectsHaveIsRetryFalse) {
+      console.log("All objects have isRetry set to false");
+      dispatch(retryFlagState(false));
+    } else {
+      // Do something else when at least one object has isRetry: true
+      console.log("At least one object has isRetry set to true");
+      // Your code here...
+    }
+  }, [allMessages]);
+
+  console.log("Talk Feature Reducer", talkFeatureStates);
+
+  console.log("All The Messages", allMessages);
 
   return (
     <>
@@ -3727,7 +3742,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) : messageData.messageStatus ===
                                                     "Undelivered" &&
                                                   talkStateData.ActiveChatData
-                                                    .messageType === "O" ? (
+                                                    .messageType === "O" &&
+                                                  messageData.isRetry ===
+                                                    false ? (
                                                   <img
                                                     draggable="false"
                                                     src={TimerIcon}
@@ -4276,7 +4293,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                               ) : messageData.messageStatus ===
                                                   "Undelivered" &&
                                                 talkStateData.ActiveChatData
-                                                  .messageType === "O" ? (
+                                                  .messageType === "O" &&
+                                                messageData.isRetry ===
+                                                  false ? (
                                                 <img
                                                   draggable="false"
                                                   src={TimerIcon}
@@ -4492,10 +4511,6 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 "B" &&
                               talkStateData.ChatSpinner === false ? (
                               allMessages.map((messageData, index) => {
-                                console.log(
-                                  "All Broadcast Messages",
-                                  messageData
-                                );
                                 var ext = messageData.attachmentLocation
                                   .split(".")
                                   .pop();
@@ -4747,7 +4762,9 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                 ) : messageData.messageStatus ===
                                                     "Undelivered" &&
                                                   talkStateData.ActiveChatData
-                                                    .messageType === "O" ? (
+                                                    .messageType === "O" &&
+                                                  messageData.isRetry ===
+                                                    false ? (
                                                   <img
                                                     draggable="false"
                                                     src={TimerIcon}

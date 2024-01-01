@@ -47,6 +47,7 @@ import { talkApi } from "../../commen/apis/Api_ends_points";
 import { signOut } from "./Auth_Sign_Out";
 import { RefreshToken } from "./Auth_action";
 import { useNavigate } from "react-router-dom";
+import { retryFlagState } from "./Talk_Feature_actions";
 
 // Refresh Token Talk Success
 const refreshtokenTalkSuccess = (response, message) => {
@@ -69,15 +70,15 @@ const refreshtokenTalkFail = (response, message) => {
 //Refresh Tokenm
 const RefreshTokenTalk = (props) => {
   const navigate = useNavigate();
-  console.log("RefreshTokenTalk", props);
+
   let Token = JSON.parse(localStorage.getItem("token"));
   let RefreshTokenTalk = JSON.parse(localStorage.getItem("RefreshTokenTalk"));
-  console.log("RefreshTokenTalk", Token, RefreshTokenTalk);
+
   let Data = {
     Token: Token,
     RefreshTokenTalk: RefreshTokenTalk,
   };
-  console.log("RefreshTokenTalk", Data);
+
   return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", refreshTokenTalk.RequestMethod);
@@ -88,7 +89,6 @@ const RefreshTokenTalk = (props) => {
       data: form,
     })
       .then(async (response) => {
-        console.log("RefreshTokenTalk", response);
         if (response.data.responseCode === 200) {
           await dispatch(
             refreshtokenTalkSuccess(
@@ -97,7 +97,6 @@ const RefreshTokenTalk = (props) => {
             )
           );
         } else {
-          console.log("RefreshTokenTalk", response);
           let message2 = "Your Session has expired. Please login again";
           // dispatch(signOut(navigate, message2));
           await dispatch(
@@ -138,7 +137,6 @@ const activeChat = (response) => {
 
 //insert oto talk mqtt
 const mqttInsertOtoMessage = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_INSERT_OTO_MESSAGE,
     response: response,
@@ -147,7 +145,6 @@ const mqttInsertOtoMessage = (response) => {
 
 //insert private group talk mqtt
 const mqttInsertPrivateGroupMessage = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE,
     response: response,
@@ -156,7 +153,6 @@ const mqttInsertPrivateGroupMessage = (response) => {
 
 //insert broadcast talk mqtt
 const mqttInsertBroadcastMessage = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_INSERT_BROADCAST_MESSAGE,
     response: response,
@@ -165,7 +161,6 @@ const mqttInsertBroadcastMessage = (response) => {
 
 //Mqtt Block a User
 const mqttBlockUser = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_BLOCK_USER,
     response: response,
@@ -174,7 +169,6 @@ const mqttBlockUser = (response) => {
 
 //Mqtt Unblock a User
 const mqttUnblockUser = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_UNBLOCK_USER,
     response: response,
@@ -183,7 +177,6 @@ const mqttUnblockUser = (response) => {
 
 //Mqtt Star A message
 const mqttStarMessage = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_STAR_MESSAGE,
     response: response,
@@ -192,7 +185,6 @@ const mqttStarMessage = (response) => {
 
 //Mqtt UnStar A message
 const mqttUnstarMessage = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_UNSTAR_MESSAGE,
     response: response,
@@ -201,8 +193,6 @@ const mqttUnstarMessage = (response) => {
 
 //Group is created MQTT Response
 const mqttGroupCreated = (response) => {
-  console.log("reciver check action", response);
-
   return {
     type: actions.MQTT_GROUP_CREATED,
     response: response,
@@ -211,7 +201,6 @@ const mqttGroupCreated = (response) => {
 
 //Group is updated MQTT Response
 const mqttGroupUpdated = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_GROUP_UPDATED,
     response: response,
@@ -220,7 +209,6 @@ const mqttGroupUpdated = (response) => {
 
 //Unread Message Count
 const mqttUnreadMessageCount = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_UNREAD_MESSAGE_COUNT,
     response: response,
@@ -237,7 +225,6 @@ const mqttMessageDeleted = (response) => {
 
 //Message Status Update
 const mqttMessageStatusUpdate = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_MESSAGE_STATUS_UPDATE,
     response: response,
@@ -294,7 +281,6 @@ const GetAllUserChats = (navigate, currentUserId, currentOrganizationId, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetAllUserChats", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(
@@ -390,8 +376,6 @@ const getOTOUserMessagesFail = (response, message) => {
 
 //Get OTO all user chats
 const GetOTOUserMessages = (navigate, chatOTOData, t) => {
-  console.log("check cehckc ekchkehc");
-
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
@@ -418,7 +402,6 @@ const GetOTOUserMessages = (navigate, chatOTOData, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetOTOUserMessages", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(GetOTOUserMessages(navigate, chatOTOData, t));
@@ -462,7 +445,6 @@ const GetOTOUserMessages = (navigate, chatOTOData, t) => {
         }
       })
       .catch((response) => {
-        console.log("Catch of the api call", response);
         let newError = t("Something-went-wrong");
         dispatch(getOTOUserMessagesFail(false, newError));
         dispatch(getAllMessagesGlobalFail([], newError));
@@ -524,7 +506,6 @@ const GetOTOUserUndeliveredMessages = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetOTOUserMessages", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetOTOUserUndeliveredMessages(t));
@@ -620,7 +601,6 @@ const GetGroupMessages = (navigate, chatGroupData, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetOTOUserMessages", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(GetGroupMessages(navigate, chatGroupData, t));
@@ -724,7 +704,6 @@ const GetBroadcastMessages = (navigate, broadcastMessagesData, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetBroadcastMessages", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(GetBroadcastMessages(navigate, broadcastMessagesData, t));
@@ -825,7 +804,6 @@ const GetArchivedDataByUserID = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetBroadcastMessages", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetArchivedDataByUserID(t));
@@ -916,7 +894,6 @@ const GetFlagMessages = (navigate, currentUserId, currentOrganizationId, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetFlagMessages", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(
@@ -1009,7 +986,6 @@ const GetFollowMessages = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetFollowMessages", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetFollowMessages(t));
@@ -1100,7 +1076,6 @@ const GetRecentTags = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetRecentTags", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetRecentTags(t));
@@ -1193,7 +1168,6 @@ const GetTagsMessages = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetTagsMessages", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetTagsMessages(t));
@@ -1285,7 +1259,6 @@ const GetMessageSentReceiveTime = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetMessageSentReceiveTime", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetMessageSentReceiveTime(t));
@@ -1376,7 +1349,6 @@ const GetRecentFlagCount = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetRecentFlagCount", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetRecentFlagCount(t));
@@ -1470,7 +1442,6 @@ const GetRecentFollowDataCount = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetRecentFollowDataCount", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetRecentFollowDataCount(t));
@@ -1561,7 +1532,6 @@ const GetAllRecentTagsCount = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetAllRecentTagsCount", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetAllRecentTagsCount(t));
@@ -1655,7 +1625,6 @@ const GetRecentDataArchiveCount = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetRecentDataArchiveCount", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetRecentDataArchiveCount(t));
@@ -1745,7 +1714,6 @@ const GetBlockedUsersCount = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetBlockedUsersCount", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetBlockedUsersCount(t));
@@ -1834,7 +1802,6 @@ const GetBlockedUsers = (navigate, currentUserId, currentOrganizationId, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetBlockedUsers", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(
@@ -1926,7 +1893,6 @@ const GetAllUsers = (navigate, currentUserId, currentOrganizationId, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetAllUsers", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(
@@ -2023,7 +1989,6 @@ const GetAllUsersGroupsRoomsList = (
       },
     })
       .then(async (response) => {
-        console.log("GetAllUsersGroupsRoomsList", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(
@@ -2120,7 +2085,6 @@ const GetActiveUsersByGroupID = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetActiveUsersByGroupID", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetActiveUsersByGroupID(t));
@@ -2210,7 +2174,6 @@ const GetActiveUsersByRoomID = (t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetActiveUsersByRoomID", response);
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
           dispatch(GetActiveUsersByRoomID(t));
@@ -2294,7 +2257,6 @@ const GetActiveUsersByBroadcastID = (navigate, Data, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetActiveUsersByBroadcastID", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate));
           dispatch(GetActiveUsersByBroadcastID(navigate, Data, t));
@@ -2366,11 +2328,10 @@ const OtoMessageRetryFlag = (response) => {
 //Insert OTO Messages
 const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("InsertOTOMessages RequestData", object, fileUploadData);
 
-  let unsentMessageObject =
-    JSON.parse(localStorage.getItem("unsentMessage")) || [];
-  let messageUnsent = [];
+  // let unsentMessageObject =
+  //   JSON.parse(localStorage.getItem("unsentMessage")) || [];
+  // let messageUnsent = [];
 
   return async (dispatch) => {
     dispatch(OTOMessageSendInit());
@@ -2387,15 +2348,12 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
       },
     })
       .then(async (response) => {
-        console.log("InsertOTOMessages ThenResponse", response);
         if (response.data.responseCode === 417) {
-          console.log("InsertOTOMessages 417Response", response);
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             InsertOTOMessages(navigate, object, fileUploadData, t, flag)
           );
         } else if (response.data.responseCode === 200) {
-          console.log("InsertOTOMessages 200Response", response);
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
@@ -2404,13 +2362,13 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                   "Talk_TalkServiceManager_InsertOTOMessages_01".toLowerCase()
                 )
             ) {
-              console.log("InsertOTOMessages 01Response", response);
               await dispatch(
                 OTOMessageSendSuccess(
                   t("OTO-message-inserted"),
                   response.data.responseResult.talkResponse
                 )
               );
+              dispatch(retryFlagState(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2424,18 +2382,17 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                   response.data.responseResult.talkResponse
                 )
               );
-              if (unsentMessageObject) {
-                messageUnsent = [...unsentMessageObject];
-                messageUnsent.push(object.TalkRequest.Message.UID);
-              } else {
-                messageUnsent = object.TalkRequest.Message.UID;
-              }
+              // if (unsentMessageObject) {
+              //   messageUnsent = [...unsentMessageObject];
+              //   messageUnsent.push(object.TalkRequest.Message.UID);
+              // } else {
+              //   messageUnsent = object.TalkRequest.Message.UID;
+              // }
 
-              localStorage.setItem(
-                "unsentMessage",
-                JSON.stringify(messageUnsent)
-              );
-              console.log("InsertOTOMessages 02Response", response);
+              // localStorage.setItem(
+              //   "unsentMessage",
+              //   JSON.stringify(messageUnsent)
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2449,18 +2406,17 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                   response.data.responseResult.talkResponse
                 )
               );
-              if (unsentMessageObject) {
-                messageUnsent = [...unsentMessageObject];
-                messageUnsent.push(object.TalkRequest.Message.UID);
-              } else {
-                messageUnsent = object.TalkRequest.Message.UID;
-              }
+              // if (unsentMessageObject) {
+              //   messageUnsent = [...unsentMessageObject];
+              //   messageUnsent.push(object.TalkRequest.Message.UID);
+              // } else {
+              //   messageUnsent = object.TalkRequest.Message.UID;
+              // }
 
-              localStorage.setItem(
-                "unsentMessage",
-                JSON.stringify(messageUnsent)
-              );
-              console.log("InsertOTOMessages 03Response", response);
+              // localStorage.setItem(
+              //   "unsentMessage",
+              //   JSON.stringify(messageUnsent)
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2474,18 +2430,17 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                   response.data.responseResult.talkResponse
                 )
               );
-              if (unsentMessageObject) {
-                messageUnsent = [...unsentMessageObject];
-                messageUnsent.push(object.TalkRequest.Message.UID);
-              } else {
-                messageUnsent = object.TalkRequest.Message.UID;
-              }
+              // if (unsentMessageObject) {
+              //   messageUnsent = [...unsentMessageObject];
+              //   messageUnsent.push(object.TalkRequest.Message.UID);
+              // } else {
+              //   messageUnsent = object.TalkRequest.Message.UID;
+              // }
 
-              localStorage.setItem(
-                "unsentMessage",
-                JSON.stringify(messageUnsent)
-              );
-              console.log("InsertOTOMessages 04Response", response);
+              // localStorage.setItem(
+              //   "unsentMessage",
+              //   JSON.stringify(messageUnsent)
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2494,58 +2449,60 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                 )
             ) {
               await dispatch(OTOMessageSendFail(t("Something-went-wrong")));
-              if (unsentMessageObject) {
-                messageUnsent = [...unsentMessageObject];
-                messageUnsent.push(object.TalkRequest.Message.UID);
-              } else {
-                messageUnsent = object.TalkRequest.Message.UID;
-              }
+              console.log("Checking Error During no connection");
+              // if (unsentMessageObject) {
+              //   messageUnsent = [...unsentMessageObject];
+              //   messageUnsent.push(object.TalkRequest.Message.UID);
+              // } else {
+              //   messageUnsent = object.TalkRequest.Message.UID;
+              // }
 
-              localStorage.setItem(
-                "unsentMessage",
-                JSON.stringify(messageUnsent)
-              );
-              console.log("InsertOTOMessages 05Response", response);
+              // localStorage.setItem(
+              //   "unsentMessage",
+              //   JSON.stringify(messageUnsent)
+              // );
             }
           } else {
             await dispatch(OTOMessageSendFail(t("Something-went-wrong")));
-            console.log("InsertOTOMessages ElseChecks", response);
-            if (unsentMessageObject) {
-              messageUnsent = [...unsentMessageObject];
-              messageUnsent.push(object.TalkRequest.Message.UID);
-            } else {
-              messageUnsent = object.TalkRequest.Message.UID;
-            }
+            console.log("Checking Error During no connection");
 
-            localStorage.setItem(
-              "unsentMessage",
-              JSON.stringify(messageUnsent)
-            );
+            // if (unsentMessageObject) {
+            //   messageUnsent = [...unsentMessageObject];
+            //   messageUnsent.push(object.TalkRequest.Message.UID);
+            // } else {
+            //   messageUnsent = object.TalkRequest.Message.UID;
+            // }
+
+            // localStorage.setItem(
+            //   "unsentMessage",
+            //   JSON.stringify(messageUnsent)
+            // );
           }
         } else {
           await dispatch(OTOMessageSendFail(t("Something-went-wrong")));
-          console.log("InsertOTOMessages ElseChecks", response);
-          if (unsentMessageObject) {
-            messageUnsent = [...unsentMessageObject];
-            messageUnsent.push(object.TalkRequest.Message.UID);
-          } else {
-            messageUnsent = object.TalkRequest.Message.UID;
-          }
+          console.log("Checking Error During no connection");
 
-          localStorage.setItem("unsentMessage", JSON.stringify(messageUnsent));
+          // if (unsentMessageObject) {
+          //   messageUnsent = [...unsentMessageObject];
+          //   messageUnsent.push(object.TalkRequest.Message.UID);
+          // } else {
+          //   messageUnsent = object.TalkRequest.Message.UID;
+          // }
+
+          // localStorage.setItem("unsentMessage", JSON.stringify(messageUnsent));
         }
       })
       .catch((response) => {
         dispatch(OTOMessageSendFail(t("Something-went-wrong")));
-        if (unsentMessageObject) {
-          messageUnsent = [...unsentMessageObject];
-          messageUnsent.push(object.TalkRequest.Message.UID);
-        } else {
-          messageUnsent = object.TalkRequest.Message.UID;
-        }
+        console.log("Checking Error During no connection");
+        // if (unsentMessageObject) {
+        //   messageUnsent = [...unsentMessageObject];
+        //   messageUnsent.push(object.TalkRequest.Message.UID);
+        // } else {
+        //   messageUnsent = object.TalkRequest.Message.UID;
+        // }
 
-        localStorage.setItem("unsentMessage", JSON.stringify(messageUnsent));
-        console.log("InsertOTOMessages CatchResponse", response);
+        // localStorage.setItem("unsentMessage", JSON.stringify(messageUnsent));
       });
   };
 };
@@ -2704,7 +2661,7 @@ const BlockUnblockUserNotification = (message) => {
 //Block Unblock a user
 const BlockUnblockUser = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("Blocked User", object);
+
   let Data = {
     TalkRequest: {
       UserID: parseInt(object.senderID),
@@ -2804,7 +2761,7 @@ const deleteSingleMessageFail = (message) => {
 
 const DeleteSingleMessage = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("DeleteSingleMessage", object);
+
   let data = {
     TalkRequest: {
       UserID: object.UserID,
@@ -2829,7 +2786,6 @@ const DeleteSingleMessage = (navigate, object, t) => {
       },
     })
       .then(async (response) => {
-        console.log("DeleteSingleMessage", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(DeleteSingleMessage(navigate, object, t));
@@ -3168,14 +3124,14 @@ const getPrivateGroupMembersFail = (response, message) => {
 //Get all private group members
 const GetAllPrivateGroupMembers = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("GetAllPrivateGroupMembers", object);
+
   let Data = {
     TalkRequest: {
       GroupID: object.GroupID,
       ChannelID: parseInt(object.ChannelID),
     },
   };
-  console.log("GetAllPrivateGroupMembers", Data);
+
   return (dispatch) => {
     dispatch(getPrivateGroupMembersInit());
     let form = new FormData();
@@ -3191,7 +3147,6 @@ const GetAllPrivateGroupMembers = (navigate, object, t) => {
       },
     })
       .then(async (response) => {
-        console.log("GetAllPrivateGroupMembers", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(GetAllPrivateGroupMembers(navigate, object, t));
@@ -3342,7 +3297,7 @@ const MarkStarredMessageNotification = (message) => {
 //Star Unstar A message
 const MarkStarredUnstarredMessage = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("Mark Starred Message", object);
+
   let Data = {
     TalkRequest: {
       UserID: object.UserID,
@@ -3441,7 +3396,7 @@ const LeaveGroupNotification = (response, message) => {
 //Star Unstar A message
 const LeaveGroup = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("Leave Group Object", object);
+
   let Data = {
     TalkRequest: {
       UserID: object.UserID,
@@ -3567,7 +3522,6 @@ const DeleteShout = (navigate, object, t) => {
       },
     })
       .then(async (response) => {
-        console.log("DeleteShout", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
           dispatch(DeleteShout(navigate, object, t));
@@ -3838,7 +3792,6 @@ const DownloadChat = (object, t, navigate) => {
           dispatch(DownloadChat(object, t, navigate));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log("Download Chat", response);
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3852,7 +3805,6 @@ const DownloadChat = (object, t, navigate) => {
                   t("Chat-downloaded-successfully")
                 )
               );
-              console.log("DownloadChat", response);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3941,7 +3893,6 @@ const EmailChat = (object, t, navigate) => {
           dispatch(EmailChat(object, t, navigate));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log("Email Chat", response);
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3953,7 +3904,6 @@ const EmailChat = (object, t, navigate) => {
                   t("Chat-emailed-successfully")
                 )
               );
-              console.log("EmailChat", response);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4209,7 +4159,6 @@ const downloadChatEmptyObject = (response) => {
 
 //insert oto talk mqtt
 const mqttGroupLeft = (response) => {
-  console.log("responseresponseresponse", response);
   return {
     type: actions.MQTT_GROUP_LEFT,
     response: response,

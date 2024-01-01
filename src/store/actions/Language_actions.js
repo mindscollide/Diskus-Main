@@ -44,7 +44,6 @@ const getAllLanguages = (navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("getAllLanguages", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getAllLanguages(navigate, t));
@@ -129,7 +128,6 @@ const changeNewLanguage = (data, navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("changeNewLanguage", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(changeNewLanguage(data, navigate, t));
@@ -229,7 +227,6 @@ const getSelectedLanguage = (data, navigate, t) => {
       },
     })
       .then(async (response) => {
-        console.log("getSelectedLanguage", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getSelectedLanguage(data, navigate, t));

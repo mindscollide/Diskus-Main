@@ -210,15 +210,7 @@ const Talk = () => {
     }
   }, [VideoMainReducer.MissedCallCountMqttData.missedCallCount]);
 
-  console.log(
-    "MQTT Condition",
-    Object.keys(VideoMainReducer.MissedCallCountMqttData).length !== 0,
-    missedCallCount
-  );
-
   let totalValue = Number(missedCallCount) + Number(unreadMessageCount);
-
-  console.log("Video Feature Reducer", videoFeatureReducer);
 
   useEffect(() => {
     if (videoFeatureReducer.VideoChatPanel === false) {

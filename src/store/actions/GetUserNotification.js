@@ -47,7 +47,6 @@ const getNotifications = (navigate, userID, t) => {
       },
     })
       .then(async (response) => {
-        console.log("notifications response", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getNotifications(navigate, userID, t));
@@ -104,4 +103,8 @@ const HideNotificationUserNotificationData = () => {
   };
 };
 
-export { getNotifications, HideNotificationUserNotificationData,getusernotificationinit };
+export {
+  getNotifications,
+  HideNotificationUserNotificationData,
+  getusernotificationinit,
+};
