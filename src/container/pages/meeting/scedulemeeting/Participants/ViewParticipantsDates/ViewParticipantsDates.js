@@ -66,7 +66,7 @@ const ViewParticipantsDates = ({
       MeetingID: Number(currentMeetingID),
     };
     // await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t));
-    await dispatch(getUserProposedWiseApi(navigate, t, Data, true));
+    await dispatch(getUserProposedWiseApi(navigate, t, Data, false));
     await dispatch(
       GetAllMeetingDetailsApiFunc(
         navigate,
@@ -90,6 +90,11 @@ const ViewParticipantsDates = ({
   }, []);
 
   //Previous API for Dates that have to be Inserted new
+
+  console.log(
+    userWiseMeetingProposed,
+    "userWiseMeetingProposeduserWiseMeetingProposed"
+  );
   useEffect(() => {
     try {
       if (
@@ -97,33 +102,37 @@ const ViewParticipantsDates = ({
         userWiseMeetingProposed !== undefined &&
         userWiseMeetingProposed.length > 0
       ) {
+        let uniqueDates = new Set();
         let datesarry = [];
         userWiseMeetingProposed.forEach((datesData, index) => {
           setApiUserID(datesData.userID);
-          datesData.selectedProposedDates.map((data, index) => {
+          datesData.selectedProposedDates.forEach((data) => {
             if (
-              data.proposedDate === "10000101" &&
-              data.endTime === "000000" &&
-              data.startTime === "000000"
+              data.proposedDate !== "10000101" ||
+              data.endTime !== "000000" ||
+              data.startTime !== "000000"
             ) {
-            } else {
-              datesarry.push({
-                endTime: resolutionResultTable(
-                  data.proposedDate + data.endTime
-                ),
-                proposedDate: resolutionResultTable(
-                  data.proposedDate + data.startTime
-                ),
-                proposedDateID: data.proposedDateID,
-                startTime: resolutionResultTable(
-                  data.proposedDate + data.startTime
-                ),
-                EndtimeSend: data.endTime,
-                ProposedDateSend: data.proposedDate,
-                proposedDateIDSend: data.proposedDateID,
-                StartTimeSend: data.startTime,
-                isSelected: data.isSelected,
-              });
+              const uniqueID = data.proposedDateID;
+              if (!uniqueDates.has(uniqueID)) {
+                uniqueDates.add(uniqueID);
+                datesarry.push({
+                  endTime: resolutionResultTable(
+                    data.proposedDate + data.endTime
+                  ),
+                  proposedDate: resolutionResultTable(
+                    data.proposedDate + data.startTime
+                  ),
+                  proposedDateID: data.proposedDateID,
+                  startTime: resolutionResultTable(
+                    data.proposedDate + data.startTime
+                  ),
+                  EndtimeSend: data.endTime,
+                  ProposedDateSend: data.proposedDate,
+                  proposedDateIDSend: data.proposedDateID,
+                  StartTimeSend: data.startTime,
+                  isSelected: data.isSelected,
+                });
+              }
             }
           });
 
