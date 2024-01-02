@@ -902,7 +902,7 @@ const Polling = () => {
                 column={PollTableColumns}
                 scroll={{ y: "53vh" }}
                 pagination={false}
-                className="Polling_table"
+                className={"Polling_main_table"}
                 rows={rows}
               />
             ) : (
