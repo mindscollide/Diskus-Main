@@ -165,6 +165,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
 
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
+  console.log(
+    addedParticipantNameList,
+    "addedParticipantNameListaddedParticipantNameList"
+  );
   //Attendees States
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
@@ -1145,12 +1149,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
         });
         // for meeting attendies
         let List = [];
-        let user = meetingAttendeesList;
         let emptyList = [];
         try {
           if (viewData.meetingAttendees !== undefined) {
             if (viewData.meetingAttendees.length > 0) {
-              viewData.meetingAttendees.map((meetingdata, index) => {
+              viewData.meetingAttendees.forEach((meetingdata, index) => {
                 List.push({
                   name: meetingdata.user.name,
                   designation: meetingdata.user.designation,
@@ -1158,6 +1161,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                   organization: meetingdata.user.organization,
                   role: meetingdata.meetingAttendeeRole.pK_MARID,
                   displayProfilePic: meetingdata.user.displayProfilePictureName,
+                  isPrimaryOrganizer: meetingdata.isPrimaryOrganizer,
                 });
                 emptyList.push({
                   User: {
@@ -2787,7 +2791,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                         <label>{t("Organizer")}</label>
                       </Col>
                       <Col lg={12} md={12} xs={12}>
-                        {addedParticipantNameList ? (
+                        {addedParticipantNameList.length > 0 ? (
                           <>
                             <span>
                               {addedParticipantNameList.map((atList, index) => {
@@ -2798,9 +2802,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle, checkFlag }) => {
                                       employeeDesignation={atList.designation}
                                       UserProfilePic={atList.displayProfilePic}
                                       organizer={
-                                        atList.role === 1 && !endMeetingStatus
-                                          ? true
-                                          : false
+                                        atList.isPrimaryOrganizer &&
+                                        !endMeetingStatus
+                                          ? false
+                                          : true
                                       }
                                       IconOnClick={() =>
                                         handleDeleteAttendee(atList, index)

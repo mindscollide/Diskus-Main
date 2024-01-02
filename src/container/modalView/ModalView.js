@@ -309,6 +309,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           setMinutesOftheMeatingStatus(true);
           setEndMeetingStatus(true);
           setStartMeetingStatus(true);
+        } else if (meetingStatus === "8") {
+          setMinutesOftheMeatingStatus(true);
+          setEndMeetingStatus(false);
+          setStartMeetingStatus(false);
         } else {
           setEndMeetingStatus(false);
           setStartMeetingStatus(false);
@@ -1165,7 +1169,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                               xs={12}
                               className="d-flex justify-content-center align-items-center"
                             >
-                              <h3>{t("There-is-no-minutes-of-meeting")}</h3>
+                              <h3>{t("There-are-no-minutes-available")}</h3>
                             </Col>
                           </Row>
                         )}

@@ -50,6 +50,7 @@ import {
   getHoursMinutesSec,
   getStartTimeWithCeilFunction,
 } from "../../commen/functions/time_formatter";
+import { ConvertFileSizeInMB } from "../../commen/functions/convertFileSizeInMB";
 
 const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // checkFlag 6 is for Committee
@@ -506,6 +507,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
     let fileSizeArr;
+    const uploadedFile = data.target.files[0];
+
+    let mergeFileSizes = ConvertFileSizeInMB(fileSize);
+    let fileSizeinMB = ConvertFileSizeInMB(uploadedFile.size);
+
     if (Object.keys(fileForSend).length === 10) {
       setTimeout(
         setOpen({
@@ -514,7 +520,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         }),
         3000
       );
-    } else if (fileSize >= 104857600) {
+    } else if (mergeFileSizes === 10) {
       setTimeout(
         setOpen({
           flag: true,
@@ -523,8 +529,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         3000
       );
     } else {
-      const uploadedFile = data.target.files[0];
-      var ext = uploadedFile.name.split(".").pop();
+      let ext = uploadedFile.name.split(".").pop();
       let file = attachments;
 
       if (
@@ -544,14 +549,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         let sizezero;
         let size;
         if (file.length > 0) {
-          file.map((filename, index) => {
+          file.forEach((filename, index) => {
             if (filename.DisplayAttachmentName === uploadedFile.name) {
               data = false;
             }
           });
-          if (uploadedFile.size > 10485760) {
+          if (fileSizeinMB > 10) {
             size = false;
-          } else if (uploadedFile.size === 0) {
+          } else if (fileSizeinMB === 0) {
             sizezero = false;
           }
           if (data === false) {
@@ -561,7 +566,19 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
               flag: true,
             });
           } else if (size === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("You-can-not-upload-more-then-10MB-file"),
+              }),
+              3000
+            );
           } else if (sizezero === false) {
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("File-size-is-0mb"),
+            });
           } else {
             let fileData = {
               PK_MAAID: 0,
@@ -578,16 +595,25 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
         } else {
           let size;
           let sizezero;
-          if (uploadedFile.size === 0) {
+          if (fileSizeinMB > 10) {
+            size = false;
+          } else if (fileSizeinMB === 0) {
+            sizezero = false;
+          }
+          if (size === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("You-can-not-upload-more-then-10MB-file"),
+              }),
+              3000
+            );
+          } else if (sizezero === false) {
             setOpen({
               ...open,
               flag: true,
               message: t("File-size-is-0mb"),
             });
-            sizezero = false;
-          }
-          if (size === false) {
-          } else if (sizezero === false) {
           } else {
             let fileData = {
               PK_MAAID: 0,
