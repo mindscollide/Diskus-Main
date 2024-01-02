@@ -383,7 +383,7 @@ const Dashboard = () => {
         }
       } else if (
         data.payload.message.toLowerCase() ===
-        "MEETING_STATUS_EDITED_NOTCONDUCTED".toLowerCase()
+        "MeetingNotConductedNotification".toLowerCase()
       ) {
         dispatch(meetingNotConductedMQTT(data.payload.meeting));
         if (data.viewable) {
