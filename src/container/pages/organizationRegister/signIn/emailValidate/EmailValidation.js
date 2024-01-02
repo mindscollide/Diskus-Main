@@ -194,7 +194,7 @@ const EmailValidation = () => {
   };
 
   const handleClickFreeTrail = () => {
-    localStorage.setItem("PackageID", 1);
+    localStorage.setItem("PackageID", 4);
     localStorage.setItem("TenureOfSuscriptionID", 2);
 
     navigate("/signuporganization", {

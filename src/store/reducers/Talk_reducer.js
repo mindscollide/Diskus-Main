@@ -309,8 +309,6 @@ const initialState = {
 };
 
 const talkReducer = (state = initialState, action) => {
-  console.log("talkReducer", state);
-
   switch (action.type) {
     case actions.REFRESH_TOKEN_TALK_SUCCESS: {
       localStorage.setItem("token", JSON.stringify(action.response.token));
@@ -327,7 +325,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.REFRESH_TOKEN_TALK_FAIL: {
-      console.log("RefreshToken", action);
       return {
         ...state,
         UserDetails: action.response,
@@ -340,7 +337,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.GET_ACTIVECHATID: {
-      console.log("GET_ACTIVECHATID", action);
       return {
         ...state,
         activeChatIdData: {
@@ -351,7 +347,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.GET_ACTIVEMESSAGEID: {
-      console.log("GET_ACTIVEMESSAGEID", action);
       return {
         ...state,
         activeMessageIdData: {
@@ -857,7 +852,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.GET_BLOCKEDUSERS_SUCCESS: {
-      console.log("GET_BLOCKEDUSERS", action);
       return {
         ...state,
         BlockedUsers: {
@@ -869,7 +863,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.GET_BLOCKEDUSERS_FAIL: {
-      console.log("GET_BLOCKEDUSERS", action);
       return {
         ...state,
         BlockedUsers: {
@@ -1025,14 +1018,12 @@ const talkReducer = (state = initialState, action) => {
       };
 
     case actions.OTO_RETRY_FLAG:
-      console.log("OTO_RETRY_FLAG", action);
       return {
         ...state,
         OtoMessageFlag: action.response,
       };
 
     case actions.OTO_MESSAGESEND_SUCCESS:
-      console.log("OTO_MESSAGESEND_SUCCESS", action);
       return {
         ...state,
         MessageSendOTO: {
@@ -1042,7 +1033,6 @@ const talkReducer = (state = initialState, action) => {
       };
 
     case actions.OTO_MESSAGESEND_FAIL:
-      console.log("OTO_MESSAGESEND_FAIL", action);
       return {
         ...state,
         MessageSendOTO: {
@@ -1147,7 +1137,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_PRIVATEGROUP_INIT: {
-      console.log("UPDATE_PRIVATEGROUP_INIT", action);
       return {
         ...state,
         UpdatePrivateGroup: {
@@ -1158,7 +1147,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.UPDATE_PRIVATEGROUP_NOTIFICATION: {
-      console.log("UPDATE_PRIVATEGROUP_NOTIFICATION", action);
       return {
         ...state,
         UpdatePrivateGroup: {
@@ -1169,7 +1157,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.LEAVE_GROUP_INIT: {
-      console.log("LEAVE_GROUP_INIT", action);
       return {
         ...state,
         LeaveGroup: {
@@ -1180,7 +1167,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.LEAVE_GROUP_NOTIFICATION: {
-      console.log("LEAVE_GROUP_NOTIFICATION", action);
       return {
         ...state,
         LeaveGroup: {
@@ -1216,7 +1202,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.STAR_UNSTAR_MESSAGE_INIT: {
-      console.log("STAR_UNSTAR_MESSAGE_INIT", action.response);
       return {
         ...state,
         MarkStarUnstarMessage: {
@@ -1226,7 +1211,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.STAR_UNSTAR_MESSAGE_NOTIFICATION: {
-      console.log("STAR_UNSTAR_MESSAGE_NOTIFICATION", action.response);
       return {
         ...state,
 
@@ -1237,7 +1221,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_INSERT_OTO_MESSAGE: {
-      console.log("MQTT_INSERT_OTO_MESSAGE", action);
       return {
         ...state,
         talkSocketData: {
@@ -1268,9 +1251,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_BLOCK_USER: {
-      console.log("MQTT_BLOCK_USER", action.response);
-      console.log("MQTT_INSERT_OTO_MESSAGE");
-
       // if (
       //   action.response.message !== 'NEW_ONE_TO_ONE_MESSAGE' &&
       //   action.response.message !== 'NEW_GROUP_MESSAGE'
@@ -1286,9 +1266,6 @@ const talkReducer = (state = initialState, action) => {
     // }
 
     case actions.MQTT_UNBLOCK_USER: {
-      console.log("MQTT_UNBLOCK_USER", action.response);
-      console.log("MQTT_INSERT_OTO_MESSAGE");
-
       // if (
       //   action.response.message !== 'NEW_ONE_TO_ONE_MESSAGE' &&
       //   action.response.message !== 'NEW_GROUP_MESSAGE'
@@ -1304,7 +1281,6 @@ const talkReducer = (state = initialState, action) => {
     // }
 
     case actions.MQTT_STAR_MESSAGE: {
-      console.log("MQTT_STAR_MESSAGE", action.response);
       return {
         ...state,
         talkSocketDataStarUnstar: {
@@ -1319,7 +1295,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_UNSTAR_MESSAGE: {
-      console.log("MQTT_UNSTAR_MESSAGE", action.response);
       return {
         ...state,
         talkSocketDataStarUnstar: {
@@ -1334,9 +1309,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_GROUP_CREATED: {
-      console.log("reciver check reducer", action.response);
-
-      console.log("MQTT_GROUP_CREATED", action.response);
       return {
         ...state,
         talkSocketGroupCreation: {
@@ -1346,7 +1318,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_GROUP_UPDATED: {
-      console.log("MQTT_GROUP_UPDATED", action.response);
       return {
         ...state,
         talkSocketGroupUpdation: {
@@ -1356,7 +1327,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_UNREAD_MESSAGE_COUNT: {
-      console.log("MQTT_UNREAD_MESSAGE_COUNT", action.response);
       return {
         ...state,
         talkSocketUnreadMessageCount: {
@@ -1366,7 +1336,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.RESET_LEAVE_GROUP_MESSAGE: {
-      console.log("RESET_LEAVE_GROUP_MESSAGE", action.response);
       return {
         ...state,
         LeaveGroup: {
@@ -1377,7 +1346,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.RESET_GROUP_MODIFY_MESSAGE: {
-      console.log("RESET_GROUP_MODIFY_MESSAGE", action.response);
       return {
         ...state,
         UpdatePrivateGroup: {
@@ -1388,7 +1356,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.CREATE_SHOUTALL_INIT: {
-      console.log("CREATE_SHOUTALL_INIT", action.response);
       return {
         ...state,
         CreateShoutAllList: {
@@ -1399,7 +1366,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.CREATE_SHOUTALL_SUCCESS: {
-      console.log("CREATE_SHOUTALL_SUCCESS", action.response);
       return {
         ...state,
         CreateShoutAllList: {
@@ -1410,7 +1376,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.CREATE_SHOUTALL_FAIL: {
-      console.log("CREATE_SHOUTALL_FAIL", action.response);
       return {
         ...state,
         CreateShoutAllList: {
@@ -1421,7 +1386,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.RESET_SHOUTALL_CREATED_MESSAGE: {
-      console.log("RESET_SHOUTALL_CREATED_MESSAGE", action.response);
       return {
         ...state,
         CreateShoutAllList: {
@@ -1432,7 +1396,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_INSERT_BROADCAST_MESSAGE: {
-      console.log("MQTT_INSERT_BROADCAST_MESSAGE", action.response);
       return {
         ...state,
         talkSocketInsertBroadcastMessage: {
@@ -1442,7 +1405,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.DELETE_SHOUT_INIT: {
-      console.log("DELETE_SHOUT_INIT", action.response);
       return {
         ...state,
         DeleteShout: {
@@ -1453,7 +1415,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.DELETE_SHOUT_SUCCESS: {
-      console.log("DELETE_SHOUT_SUCCESS", action.response);
       return {
         ...state,
         DeleteShout: {
@@ -1464,7 +1425,6 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.DELETE_SHOUT_FAIL: {
-      console.log("DELETE_SHOUT_FAIL", action.response);
       return {
         ...state,
         DeleteShout: {

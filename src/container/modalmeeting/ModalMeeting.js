@@ -36,7 +36,10 @@ import {
   GetAllReminders,
 } from "../../store/actions/Get_List_Of_Assignees";
 import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar";
-import { FileUploadToDo } from "../../store/actions/Upload_action";
+import {
+  FileUploadToDo,
+  ResetAllFilesUpload,
+} from "../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import InputIcon from "react-multi-date-picker/components/input_icon";
@@ -554,7 +557,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           if (data === false) {
             setOpen({
               ...open,
-              message: "This File Already Exist",
+              message: t("This-file-already-exist"),
               flag: true,
             });
           } else if (size === false) {
@@ -994,7 +997,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       }
     }
   };
-
+  useEffect(() => {
+    return () => {
+      dispatch(ResetAllFilesUpload());
+    };
+  }, []);
   // for list of all assignees
   useEffect(() => {
     try {
@@ -1690,7 +1697,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
-                        maxLength={500}
+                        // maxLength={500}
                       />
                       {/* {modalField === true &&
                       createMeeting.MeetingDescription === "" ? (

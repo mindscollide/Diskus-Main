@@ -256,7 +256,7 @@ const CommitteeMeetingTab = () => {
         return a?.host.toLowerCase().localeCompare(b?.host.toLowerCase());
       },
       render: (text, record) => {
-        return <span>{text}</span>;
+        return <span className={styles["meeting-start"]}>{text}</span>;
       },
     },
     {
@@ -267,7 +267,7 @@ const CommitteeMeetingTab = () => {
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span>
+            <span className={styles["meeting-start"]}>
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime
               )}
@@ -397,6 +397,7 @@ const CommitteeMeetingTab = () => {
       key: "Join",
       width: "55px",
       render: (text, record) => {
+        console.log("recordrecordrecord", record);
         const isParticipant = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
@@ -549,8 +550,9 @@ const CommitteeMeetingTab = () => {
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Agenda Contributor"
         );
-
         const isQuickMeeting = record.isQuickMeeting;
+        console.log(isOrganiser, isQuickMeeting, "isOrganiserisOrganiser");
+
         if (record.status === "8") {
           return null;
         } else {
@@ -560,24 +562,24 @@ const CommitteeMeetingTab = () => {
                 <>
                   <Row>
                     <Col sm={12} md={12} lg={12}>
-                      <Tooltip placement="topRight" title={t("Edit")}>
-                        <img
-                          src={EditIcon}
-                          className="cursor-pointer"
-                          width="17.11px"
-                          height="17.11px"
-                          alt=""
-                          draggable="false"
-                          onClick={() =>
-                            handleEditMeeting(
-                              record.pK_MDID,
-                              record.isQuickMeeting,
-                              isAgendaContributor,
-                              record
-                            )
-                          }
-                        />
-                      </Tooltip>
+                      {/* <Tooltip placement="topRight" title={t("Edit")}> */}
+                      <img
+                        src={EditIcon}
+                        className="cursor-pointer"
+                        width="17.11px"
+                        height="17.11px"
+                        alt=""
+                        draggable="false"
+                        onClick={() =>
+                          handleEditMeeting(
+                            record.pK_MDID,
+                            record.isQuickMeeting,
+                            isAgendaContributor,
+                            record
+                          )
+                        }
+                      />
+                      {/* </Tooltip> */}
                     </Col>
                   </Row>
                 </>

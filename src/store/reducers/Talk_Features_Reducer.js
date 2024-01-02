@@ -24,6 +24,7 @@ const initialState = {
   FileUploadType: "",
   GlobalChatsSearchFlag: false,
   ActiveChatBoxGS: false,
+  RetryFlagState: false,
 };
 
 const talkFeatureReducer = (state = initialState, action) => {
@@ -193,6 +194,13 @@ const talkFeatureReducer = (state = initialState, action) => {
         PrintModalFlag: false,
         EmailModalFlag: false,
         FileUploadFlag: false,
+      };
+    }
+
+    case actions.RETRY_FLAG_STATE: {
+      return {
+        ...state,
+        RetryFlagState: action.response,
       };
     }
 

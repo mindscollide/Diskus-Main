@@ -592,10 +592,10 @@ const Polling = () => {
 
   const handleKeyDownSearch = (e) => {
     if (e.key === "Enter" && pollsState.searchValue !== "") {
-      setPollsState({
-        ...pollsState,
-        searchValue: "",
-      });
+      // setPollsState({
+      //   ...pollsState,
+      //   searchValue: "",
+      // });
       setEnterpressed(true);
       let data = {
         UserID: parseInt(userID),
@@ -718,12 +718,27 @@ const Polling = () => {
   };
 
   const HandleCloseSearchModal = () => {
-    setSearchpoll(false);
     setsearchBoxState({
       ...searchBoxState,
       searchByName: "",
       searchByTitle: "",
     });
+    setSearchpoll(false);
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: "",
+      PollTitle: "",
+      PageNumber: JSON.parse(currentPage),
+      Length: JSON.parse(currentPageSize),
+    };
+    dispatch(searchPollsApi(navigate, t, data));
+    // setSearchpoll(false);
+    // setsearchBoxState({
+    //   ...searchBoxState,
+    //   searchByName: "",
+    //   searchByTitle: "",
+    // });
   };
 
   const handleResettingPage = () => {

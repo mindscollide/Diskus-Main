@@ -1,36 +1,37 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { newTimeFormaterAsPerUTCTalkDate } from '../../../../../commen/functions/date_formater'
-import { Spin } from 'antd'
-import { GetAllStarredMessages } from '../../../../../store/actions/Talk_action'
-import SingleIcon from '../../../../../assets/images/Single-Icon.png'
-import StarredMessageIcon from '../../../../../assets/images/Starred-Message-Icon.png'
-import StarredMessages from '../../../../../assets/images/Starred-Messages.png'
-import { ResultMessage, LoaderPanel } from '../../../../elements'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { newTimeFormaterAsPerUTCTalkDate } from "../../../../../commen/functions/date_formater";
+import { Spin } from "antd";
+import { GetAllStarredMessages } from "../../../../../store/actions/Talk_action";
+import SingleIcon from "../../../../../assets/images/Single-Icon.png";
+import StarredMessageIcon from "../../../../../assets/images/Starred-Message-Icon.png";
+import StarredMessages from "../../../../../assets/images/Starred-Messages.png";
+import { ResultMessage, LoaderPanel, TextField } from "../../../../elements";
 
 const StarredMessagesList = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const { talkStateData } = useSelector((state) => state)
+  const { talkStateData, talkFeatureStates } = useSelector((state) => state);
 
-  let currentUserId = localStorage.getItem('userID')
-  let currentOrganizationId = localStorage.getItem('organizationID')
+  let currentUserId = localStorage.getItem("userID");
+  let currentOrganizationId = localStorage.getItem("organizationID");
 
-  const date = new Date()
+  const date = new Date();
   //CURRENT DATE TIME UTC
 
   //YESTERDAY'S DATE
-  let yesterdayDate = new Date()
-  yesterdayDate.setDate(yesterdayDate.getDate() - 1) // Subtract 1 day
+  let yesterdayDate = new Date();
+  yesterdayDate.setDate(yesterdayDate.getDate() - 1); // Subtract 1 day
 
-  const [allStarredMessagesData, setAllStarredMessagesData] = useState([])
+  const [allStarredMessagesData, setAllStarredMessagesData] = useState([]);
+  const [searchChatValue, setSearchChatValue] = useState("");
 
   useEffect(() => {
     let data = {
@@ -38,9 +39,9 @@ const StarredMessagesList = () => {
         UserID: parseInt(currentUserId),
         ChannelID: parseInt(currentOrganizationId),
       },
-    }
-    dispatch(GetAllStarredMessages(data, t, navigate))
-  }, [])
+    };
+    dispatch(GetAllStarredMessages(data, t, navigate));
+  }, []);
 
   useEffect(() => {
     if (
@@ -49,12 +50,51 @@ const StarredMessagesList = () => {
       talkStateData.AllStarMessagesData.AllStarMessagesResponse.length !== 0
     ) {
       setAllStarredMessagesData(
-        talkStateData.AllStarMessagesData.AllStarMessagesResponse.flagMessages,
-      )
+        talkStateData.AllStarMessagesData.AllStarMessagesResponse.flagMessages
+      );
     } else {
-      setAllStarredMessagesData([])
+      setAllStarredMessagesData([]);
     }
-  }, [talkStateData.AllStarMessagesData.AllStarMessagesResponse])
+  }, [talkStateData.AllStarMessagesData.AllStarMessagesResponse]);
+
+  //Search Chats
+  const searchChat = (e) => {
+    setSearchChatValue(e);
+    try {
+      if (
+        talkStateData.AllStarMessagesData.AllStarMessagesResponse !==
+          undefined &&
+        talkStateData.AllStarMessagesData.AllStarMessagesResponse !== null &&
+        talkStateData.AllStarMessagesData.AllStarMessagesResponse.length !== 0
+      ) {
+        if (e !== "") {
+          let filteredData =
+            talkStateData.AllStarMessagesData.AllStarMessagesResponse.flagMessages.filter(
+              (value) => {
+                return value.messageBody
+                  .toLowerCase()
+                  .includes(e.toLowerCase());
+              }
+            );
+
+          if (filteredData.length === 0) {
+            setAllStarredMessagesData(
+              talkStateData.AllStarMessagesData.AllStarMessagesResponse
+                .flagMessages
+            );
+          } else {
+            setAllStarredMessagesData(filteredData);
+          }
+        } else if (e === "" || e === null) {
+          let data =
+            talkStateData.AllStarMessagesData.AllStarMessagesResponse
+              .flagMessages;
+          setSearchChatValue("");
+          setAllStarredMessagesData(data);
+        }
+      }
+    } catch {}
+  };
 
   useEffect(() => {
     if (
@@ -63,14 +103,14 @@ const StarredMessagesList = () => {
       talkStateData.talkSocketDataStarUnstar.socketStarMessage.length !== 0
     ) {
       const starredMessage =
-        talkStateData.talkSocketDataStarUnstar.socketStarMessage
-      if (starredMessage.messageType === 'O') {
-        let allMessages = talkStateData.AllMessagesData.oneToOneMessages
+        talkStateData.talkSocketDataStarUnstar.socketStarMessage;
+      if (starredMessage.messageType === "O") {
+        let allMessages = talkStateData.AllMessagesData.oneToOneMessages;
         const matchingMessages = allMessages.filter(
-          (message) => message.messageID === starredMessage.messageID,
-        )
+          (message) => message.messageID === starredMessage.messageID
+        );
 
-        const messagesWithSameMessageID = matchingMessages
+        const messagesWithSameMessageID = matchingMessages;
 
         let updatedStarredMessage = {
           messageID: messagesWithSameMessageID[0].messageID,
@@ -88,17 +128,17 @@ const StarredMessagesList = () => {
           fileName: messagesWithSameMessageID[0].fileName,
           attachmentLocation: messagesWithSameMessageID[0].attachmentLocation,
           messageType: messagesWithSameMessageID[0].messageType,
-        }
+        };
 
-        const updatedData = [updatedStarredMessage, ...allStarredMessagesData]
-        setAllStarredMessagesData(updatedData)
-      } else if (starredMessage.messageType === 'G') {
-        let allMessages = talkStateData.AllMessagesData.groupMessages
+        const updatedData = [updatedStarredMessage, ...allStarredMessagesData];
+        setAllStarredMessagesData(updatedData);
+      } else if (starredMessage.messageType === "G") {
+        let allMessages = talkStateData.AllMessagesData.groupMessages;
         const matchingMessages = allMessages.filter(
-          (message) => message.messageID === starredMessage.messageID,
-        )
+          (message) => message.messageID === starredMessage.messageID
+        );
 
-        const messagesWithSameMessageID = matchingMessages
+        const messagesWithSameMessageID = matchingMessages;
 
         let updatedStarredMessage = {
           messageID: messagesWithSameMessageID[0].messageID,
@@ -116,13 +156,13 @@ const StarredMessagesList = () => {
           fileName: messagesWithSameMessageID[0].fileName,
           attachmentLocation: messagesWithSameMessageID[0].attachmentLocation,
           messageType: messagesWithSameMessageID[0].messageType,
-        }
+        };
 
-        const updatedData = [updatedStarredMessage, ...allStarredMessagesData]
-        setAllStarredMessagesData(updatedData)
+        const updatedData = [updatedStarredMessage, ...allStarredMessagesData];
+        setAllStarredMessagesData(updatedData);
       }
     }
-  }, [talkStateData.talkSocketDataStarUnstar.socketStarMessage])
+  }, [talkStateData.talkSocketDataStarUnstar.socketStarMessage]);
 
   useEffect(() => {
     if (
@@ -132,24 +172,41 @@ const StarredMessagesList = () => {
       talkStateData.talkSocketDataStarUnstar.socketUnstarMessage.length !== 0
     ) {
       let unstarredMessage =
-        talkStateData.talkSocketDataStarUnstar.socketUnstarMessage
+        talkStateData.talkSocketDataStarUnstar.socketUnstarMessage;
       const updatedData = allStarredMessagesData.filter(
-        (message) => message.messageID !== unstarredMessage.messageID,
-      )
-      setAllStarredMessagesData(updatedData)
+        (message) => message.messageID !== unstarredMessage.messageID
+      );
+      setAllStarredMessagesData(updatedData);
     }
-  }, [talkStateData.talkSocketDataStarUnstar.socketUnstarMessage])
+  }, [talkStateData.talkSocketDataStarUnstar.socketUnstarMessage]);
 
-  console.log('Talk state Data', talkStateData, allStarredMessagesData)
+  console.log("Talk state Data", talkStateData, allStarredMessagesData);
 
   return (
     <>
+      {talkFeatureStates.GlobalChatsSearchFlag === true ? (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <TextField
+              maxLength={200}
+              applyClass="form-control2"
+              name="Name"
+              change={(e) => {
+                searchChat(e.target.value);
+              }}
+              value={searchChatValue}
+              placeholder={t("Search-Chat")}
+              labelClass={"d-none"}
+            />
+          </Col>
+        </Row>
+      ) : null}
       {talkStateData.AllStarMessagesData.Loading === true &&
       allStarredMessagesData.length === 0 ? (
         <>
           {/* <Spin className="talk-overallchat-spinner" /> */}
           <LoaderPanel
-            message={'Safeguarding your data to enhance the experience'}
+            message={"Safeguarding your data to enhance the experience"}
           />
         </>
       ) : talkStateData.AllStarMessagesData.Loading === false &&
@@ -177,8 +234,8 @@ const StarredMessagesList = () => {
                   <div
                     className={
                       dataItem.senderID === parseInt(currentUserId)
-                        ? 'sender-message-star'
-                        : 'reply-message'
+                        ? "sender-message-star"
+                        : "reply-message"
                     }
                   >
                     <p className="m-0">{dataItem.messageBody}</p>
@@ -191,17 +248,17 @@ const StarredMessagesList = () => {
                         />
                       </span>
                       <p className="m-0">
-                        {' '}
-                        {dataItem.sentDate !== ''
+                        {" "}
+                        {dataItem.sentDate !== ""
                           ? newTimeFormaterAsPerUTCTalkDate(dataItem.sentDate)
-                          : ''}
+                          : ""}
                       </p>
                     </div>
                   </div>
                 </Col>
               </Row>
             </>
-          )
+          );
         })
       ) : talkStateData.AllStarMessagesData.Loading === false &&
         allStarredMessagesData.length === 0 ? (
@@ -214,7 +271,7 @@ const StarredMessagesList = () => {
         />
       ) : null}
     </>
-  )
-}
+  );
+};
 
-export default StarredMessagesList
+export default StarredMessagesList;

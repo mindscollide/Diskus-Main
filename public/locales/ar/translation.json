@@ -1672,5 +1672,10 @@
   "Access-requested": "Access requested",
   "Failed-to-request-access": "Failed to request access",
   "Date-and-time-should-be-greater-than-current-system-time": "Date and time should be greater than current system time",
-  "Free-trail": "Free trail"
+  "Free-trail": "Free trail",
+  "You-can-not-upload-more-then-100MB-file": "You can not upload more then 100MB file",
+  "You-can-not-upload-more-then-10MB-file": "You can not upload more then 10MB file",
+  "Poll-deleted-successfully": "Poll deleted successfully",
+  "Poll-status-updated-successfully": "Poll status updated successfully",
+  "Meeting-ended-successfully": "Meeting ended successfully"
 }

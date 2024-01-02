@@ -1,5 +1,5 @@
 export const oneToOneMessages = (setAllOtoMessages, allotomessages) => {
-  let allMessagesArr = []
+  let allMessagesArr = [];
   if (
     allotomessages !== undefined &&
     allotomessages !== null &&
@@ -7,12 +7,12 @@ export const oneToOneMessages = (setAllOtoMessages, allotomessages) => {
   ) {
     allotomessages.map((messagesData) => {
       if (
-        messagesData.frMessages !== 'Direct Message' &&
+        messagesData.frMessages !== "Direct Message" &&
         messagesData.frMessages.length > 0 &&
         messagesData.frMessages !== undefined &&
-        typeof messagesData.frMessages !== 'object'
+        typeof messagesData.frMessages !== "object"
       ) {
-        messagesData.frMessages = messagesData.frMessages.split('|')
+        messagesData.frMessages = messagesData.frMessages.split("|");
       }
       allMessagesArr.push({
         attachmentLocation: messagesData.attachmentLocation,
@@ -39,16 +39,32 @@ export const oneToOneMessages = (setAllOtoMessages, allotomessages) => {
         sourceMessageBody: messagesData.sourceMessageBody,
         sourceMessageId: messagesData.sourceMessageId,
         isRetry: false,
-      })
-    })
+      });
+    });
   } else {
-    allMessagesArr = []
+    allMessagesArr = [];
   }
-  return setAllOtoMessages([...allMessagesArr])
-}
+
+  let unsentMessagesPushLocal =
+    JSON.parse(localStorage.getItem("chatMessagesLocal")) || [];
+  if (unsentMessagesPushLocal.length > 0) {
+    const updatedAllMessages = [...allMessagesArr];
+    unsentMessagesPushLocal.forEach((chatMessage) => {
+      const existingMessageIndex = updatedAllMessages.findIndex(
+        (message) => message.receiverID === chatMessage.receiverID
+      );
+      if (existingMessageIndex !== -1) {
+        updatedAllMessages.push(chatMessage);
+      }
+    });
+    return setAllOtoMessages([...updatedAllMessages]);
+  } else {
+    return setAllOtoMessages([...allMessagesArr]);
+  }
+};
 
 export const groupMessages = (allGroupMessagesReducer, setAllGroupMessages) => {
-  let allGroupMessagesArr = []
+  let allGroupMessagesArr = [];
   if (
     allGroupMessagesReducer !== undefined &&
     allGroupMessagesReducer !== null &&
@@ -56,12 +72,12 @@ export const groupMessages = (allGroupMessagesReducer, setAllGroupMessages) => {
   ) {
     allGroupMessagesReducer.map((messagesData) => {
       if (
-        messagesData.frMessages !== 'Direct Message' &&
+        messagesData.frMessages !== "Direct Message" &&
         messagesData.frMessages.length > 0 &&
         messagesData.frMessages !== undefined &&
-        typeof messagesData.frMessages !== 'object'
+        typeof messagesData.frMessages !== "object"
       ) {
-        messagesData.frMessages = messagesData.frMessages.split('|')
+        messagesData.frMessages = messagesData.frMessages.split("|");
       }
       allGroupMessagesArr.push({
         attachmentLocation: messagesData.attachmentLocation,
@@ -81,21 +97,21 @@ export const groupMessages = (allGroupMessagesReducer, setAllGroupMessages) => {
         sourceMessageBody: messagesData.sourceMessageBody,
         sourceMessageId: messagesData.sourceMessageId,
         isRetryFlag: false,
-      })
-    })
+      });
+    });
   } else {
-    allGroupMessagesArr = []
+    allGroupMessagesArr = [];
   }
-  return setAllGroupMessages([...allGroupMessagesArr])
-}
+  return setAllGroupMessages([...allGroupMessagesArr]);
+};
 
 export const unreadMessageCountFunction = (
   talkStateData,
   allChatData,
-  setAllChatData,
+  setAllChatData
 ) => {
   const mqttUnreadMessageCount =
-    talkStateData.talkSocketUnreadMessageCount.unreadMessageData.data[0]
+    talkStateData.talkSocketUnreadMessageCount.unreadMessageData.data[0];
   const mqttUnreadMessageData = {
     userID: mqttUnreadMessageCount.userID,
     channelID: mqttUnreadMessageCount.channelID,
@@ -106,15 +122,15 @@ export const unreadMessageCountFunction = (
     groupCount: mqttUnreadMessageCount.groupCount,
     roomCount: mqttUnreadMessageCount.roomCount,
     totalCount: mqttUnreadMessageCount.totalCount,
-  }
+  };
   if (mqttUnreadMessageData.chatID === allChatData.id) {
     const updatedAllChatData = {
       ...allChatData,
       notiCount: mqttUnreadMessageData.chatCount,
-    }
-    setAllChatData(updatedAllChatData)
+    };
+    setAllChatData(updatedAllChatData);
   }
-}
+};
 
 export const markStarUnstarFunction = (
   talkStateData,
@@ -122,62 +138,62 @@ export const markStarUnstarFunction = (
   setAllOtoMessages,
   allOtoMessages,
   allGroupMessages,
-  setAllGroupMessages,
+  setAllGroupMessages
 ) => {
   let mqttUnStarMessageData =
-    talkStateData.talkSocketDataStarUnstar.socketUnstarMessage
+    talkStateData.talkSocketDataStarUnstar.socketUnstarMessage;
   if (Object.keys(mqttUnStarMessageData) !== null) {
-    if (mqttUnStarMessageData.messageType === 'O') {
+    if (mqttUnStarMessageData.messageType === "O") {
       let messageOtoUnStarred = allOtoMessages.find(
-        (item) => item.messageID === mqttUnStarMessageData.messageID,
-      )
+        (item) => item.messageID === mqttUnStarMessageData.messageID
+      );
       if (messageOtoUnStarred !== undefined) {
         if (messageOtoUnStarred.isFlag === 1) {
-          messageOtoUnStarred.isFlag = 0
+          messageOtoUnStarred.isFlag = 0;
         } else if (messageOtoUnStarred.isFlag === 0) {
-          messageOtoUnStarred.isFlag = 1
+          messageOtoUnStarred.isFlag = 1;
         }
       }
       setAllOtoMessages(
         allOtoMessages.map((data) =>
           data.messageID === messageOtoUnStarred.messageID
             ? messageOtoUnStarred
-            : data,
-        ),
-      )
-    } else if (mqttUnStarMessageData.messageType === 'G') {
+            : data
+        )
+      );
+    } else if (mqttUnStarMessageData.messageType === "G") {
       let messageGroupUnStarred = allGroupMessages.find(
-        (item) => item.messageID === mqttUnStarMessageData.messageID,
-      )
+        (item) => item.messageID === mqttUnStarMessageData.messageID
+      );
       if (messageGroupUnStarred !== undefined) {
         if (messageGroupUnStarred.isFlag === 1) {
-          messageGroupUnStarred.isFlag = 0
+          messageGroupUnStarred.isFlag = 0;
         } else if (messageGroupUnStarred.isFlag === 0) {
-          messageGroupUnStarred.isFlag = 1
+          messageGroupUnStarred.isFlag = 1;
         }
       }
       setAllGroupMessages(
         allGroupMessages.map((data) =>
           data.messageID === messageGroupUnStarred.messageID
             ? messageGroupUnStarred
-            : data,
-        ),
-      )
+            : data
+        )
+      );
     }
   }
-}
+};
 
 export const groupCreationFunction = (
   talkStateData,
   setAllChatData,
-  allChatData,
+  allChatData
 ) => {
   let mqttCreatedGroup =
-    talkStateData.talkSocketGroupCreation.groupCreatedData.data[0]
+    talkStateData.talkSocketGroupCreation.groupCreatedData.data[0];
   let groupCreationDataMqtt = {
     admin: mqttCreatedGroup.admin,
-    attachmentLocation: '',
-    companyName: '',
+    attachmentLocation: "",
+    companyName: "",
     fullName: mqttCreatedGroup.fullName,
     id: mqttCreatedGroup.id,
     imgURL: mqttCreatedGroup.imgURL,
@@ -185,30 +201,30 @@ export const groupCreationFunction = (
     isOnline: false,
     messageBody: mqttCreatedGroup.messageBody,
     messageDate: mqttCreatedGroup.messageDate,
-    messageType: 'G',
+    messageType: "G",
     notiCount: 0,
-    receivedDate: '',
-    seenDate: '',
+    receivedDate: "",
+    seenDate: "",
     senderID: 0,
-    sentDate: '',
-  }
+    sentDate: "",
+  };
   if (Object.keys(groupCreationDataMqtt) !== null) {
-    setAllChatData([groupCreationDataMqtt, ...allChatData])
+    setAllChatData([groupCreationDataMqtt, ...allChatData]);
   } else {
   }
-}
+};
 
 export const groupUpdationFunction = (
   talkStateData,
   setAllChatData,
-  allChatData,
+  allChatData
 ) => {
   let mqttCreatedGroup =
-    talkStateData.talkSocketGroupUpdation.groupUpdatedData.data[0]
+    talkStateData.talkSocketGroupUpdation.groupUpdatedData.data[0];
   let groupUpdationDataMqtt = {
     admin: mqttCreatedGroup.admin,
-    attachmentLocation: '',
-    companyName: '',
+    attachmentLocation: "",
+    companyName: "",
     fullName: mqttCreatedGroup.fullName,
     id: mqttCreatedGroup.id,
     imgURL: mqttCreatedGroup.imgURL,
@@ -216,15 +232,15 @@ export const groupUpdationFunction = (
     isOnline: false,
     messageBody: mqttCreatedGroup.messageBody,
     messageDate: mqttCreatedGroup.messageDate,
-    messageType: 'G',
+    messageType: "G",
     notiCount: 0,
-    receivedDate: '',
-    seenDate: '',
+    receivedDate: "",
+    seenDate: "",
     senderID: 0,
-    sentDate: '',
-  }
+    sentDate: "",
+  };
   if (Object.keys(groupUpdationDataMqtt) !== null) {
-    setAllChatData([groupUpdationDataMqtt, ...allChatData])
+    setAllChatData([groupUpdationDataMqtt, ...allChatData]);
   } else {
   }
-}
+};

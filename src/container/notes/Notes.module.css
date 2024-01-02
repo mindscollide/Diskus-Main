@@ -168,16 +168,18 @@ body[dir="rtl"] .collapse-text-attached-material {
 }
 
 .MinusIcon {
-  margin-right: 40px !important;
+  /* margin-right: 40px !important; */
   color: #6172d6 !important;
+  cursor: pointer;
   /* margin-bottom: 16px !important; */
 }
-body[dir="rtl"] .MinusIcon {
+/* body[dir="rtl"] .MinusIcon {
   margin-right: 60px !important;
-}
+} */
 .PlusIcon {
-  margin-right: 30px !important;
+  /* margin-right: 30px !important; */
   color: #6172d6 !important;
+  cursor: pointer;
 }
 
 .editIcon-In-Collapse-material {
@@ -303,4 +305,8 @@ body[dir="rtl"] .notes-attachment-text {
 body[dir="rtl"] .PaginationStyle-Notes {
   width: auto !important;
   padding: 12px 10px !important;
+}
+.MinusIcon_span {
+  width: 20px;
+  height: 20px;
 }
