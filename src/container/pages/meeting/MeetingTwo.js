@@ -1373,23 +1373,18 @@ const NewMeeting = () => {
       NewMeetingreducer.meetingStatusNotConductedMqttData !== undefined &&
       NewMeetingreducer.meetingStatusNotConductedMqttData.length !== 0
     ) {
-      if (
-        NewMeetingreducer.meetingStatusNotConductedMqttData &&
-        NewMeetingreducer.meetingStatusNotConductedMqttData.meetingDetails
-      ) {
-        let meetingDetailsMqtt =
-          NewMeetingreducer.meetingStatusNotConductedMqttData.meetingDetails;
-        const updatedRows = rows.map((row) => {
-          if (row.pK_MDID === meetingDetailsMqtt.pK_MDID) {
-            return {
-              ...row,
-              status: String(test.meetingDetails.statusID),
-            };
-          }
-          return row;
-        });
-        setRow(updatedRows);
-      }
+      let meetingDetailsMqtt =
+        NewMeetingreducer.meetingStatusNotConductedMqttData.meetingDetails;
+      const updatedRows = rows.map((row) => {
+        if (row.pK_MDID === meetingDetailsMqtt.pK_MDID) {
+          return {
+            ...row,
+            status: String(test.meetingDetails.statusID),
+          };
+        }
+        return row;
+      });
+      setRow(updatedRows);
     }
   }, [NewMeetingreducer.meetingStatusNotConductedMqttData, rows]);
 
